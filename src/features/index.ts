@@ -7,6 +7,5 @@ export {
     HowItWorks,
     Testimonials,
     BlogPreview,
-    Faq,
     Cta,
 } from './home'

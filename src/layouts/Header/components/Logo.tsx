@@ -10,7 +10,7 @@ export default function Logo() {
         width={250}
         height={48}
         priority
-        className="h-8 sm:h-10 w-auto transition-transform group-hover:scale-105"
+        className="h-6 sm:h-7 w-auto transition-transform group-hover:scale-105"
       />
     </Link>
   );

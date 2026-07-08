@@ -123,6 +123,10 @@ When a button navigates, wrap with `asChild` + `Link` from `@/i18n/navigation` (
 - Hover interactions: CSS `transition-colors` / `transition-opacity` / `transition-transform`, not framer-motion
 - Don't add motion to every new page indiscriminately — plain server components with CSS `:hover` are fine and better for performance (see CLAUDE.md priority #1); reserve framer-motion for genuinely above/below-the-fold entrance effects matching the homepage's existing rhythm.
 
+## Barrel-export discipline (perf, not style, but easy to break by accident)
+
+`src/components/sections/index.ts` re-exports the grid/section patterns that are actually in use. `StatsSection`, `FAQSection`, and `PricingSection` are preserved (real, working components) but not wired into any page yet — they're **intentionally left out of that barrel** and importable only via their direct file path (e.g. `@/components/sections/FAQSection`). Confirmed by measurement: barrel-exporting all three added ~40kB of First Load JS to every page that imports anything from `@/components/sections`, even pages that use none of them, because they're `"use client"` + framer-motion and webpack couldn't shake them through the re-export. Add a component to the barrel only once a real page imports it.
+
 ## Component mapping (blueprint → this codebase)
 
 The content blueprint (`docs/content-blueprint.md`) suggests generic names like `Section`, `Container`, `CTASection`, `ServiceGrid`. These now live in `src/components/ui/` (primitives: `Section`, `Container`, `GlowCard`, `NeonButton`, `Badge`) and `src/components/sections/` (composed patterns: `PageHero`, `CTASection`, `ServiceGrid`, `RegionGrid`, `CaseGrid`, `BlogGrid`) — see those folders for the actual implementations. New content-driven pages (`/diensten/[slug]`, `/regio/[slug]`, etc.) should compose from these instead of hand-writing Tailwind, so the whole site stays visually consistent by construction.
