@@ -36,8 +36,5 @@ functions/lib/
 *.tsbuildinfo
 next-env.d.ts
 
-# yarn
+# yarn leftovers (project uses npm; kept ignored just in case)
 .yarn/
-
-# npm
-package-lock.json

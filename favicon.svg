@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #333;
+      }
+
+      .cls-2 {
+        stroke-dasharray: 30.36 30.36;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-7, .cls-8 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 10px;
+      }
+
+      .cls-3 {
+        stroke-dasharray: 31.42 31.42;
+      }
+
+      .cls-9 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        stroke-dasharray: 30.36 30.36;
+      }
+
+      .cls-5 {
+        stroke-dasharray: 31.46 31.46;
+      }
+
+      .cls-10 {
+        fill: url(#Naamloos_verloop_74);
+      }
+
+      .cls-11 {
+        fill: #333;
+      }
+
+      .cls-8 {
+        stroke-dasharray: 18.7 18.7;
+      }
+    </style>
+    <linearGradient id="Naamloos_verloop_74" data-name="Naamloos verloop 74" x1="4" y1="251.77" x2="429.5" y2="251.77" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff7500"/>
+      <stop offset="1" stop-color="#ff7500"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-1" width="500" height="500"/>
+  <g id="Layer_1" data-name="Layer 1">
+    <rect class="cls-11" width="500" height="500"/>
+    <polygon class="cls-10" points="4 14.86 146.55 488.68 289.57 488.68 429.5 14.86 344.25 14.86 230.61 401.68 202.35 401.68 90.51 14.86 4 14.86"/>
+    <g>
+      <polygon class="cls-9" points="130.56 19.68 266.56 485.68 352.67 485.68 488.5 19.68 442.55 19.68 319.25 441.06 298.82 441.06 177.5 19.68 130.56 19.68"/>
+      <g>
+        <polyline class="cls-7" points="145.56 19.68 130.56 19.68 134.76 34.08"/>
+        <line class="cls-4" x1="143.27" y1="63.23" x2="258.11" y2="456.71"/>
+        <polyline class="cls-7" points="262.36 471.29 266.56 485.68 281.56 485.68"/>
+        <line class="cls-8" x1="300.26" y1="485.68" x2="328.32" y2="485.68"/>
+        <polyline class="cls-7" points="337.67 485.68 352.67 485.68 356.87 471.28"/>
+        <line class="cls-2" x1="365.36" y1="442.14" x2="480.05" y2="48.66"/>
+        <polyline class="cls-7" points="484.3 34.09 488.5 19.68 473.5 19.68"/>
+        <polyline class="cls-7" points="457.55 19.68 442.55 19.68 438.33 34.08"/>
+        <line class="cls-5" x1="429.5" y1="64.28" x2="327.88" y2="411.56"/>
+        <polyline class="cls-7" points="323.46 426.66 319.25 441.06 298.82 441.06 294.67 426.64"/>
+        <line class="cls-3" x1="285.98" y1="396.45" x2="186" y2="49.2"/>
+        <polyline class="cls-7" points="181.65 34.1 177.5 19.68 162.5 19.68"/>
+      </g>
+    </g>
+    <rect class="cls-6" y="-4.32" width="500" height="504.32"/>
+  </g>
+</svg>
