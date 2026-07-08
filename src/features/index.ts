@@ -1,12 +1,11 @@
 // Home features
 export {
     Hero,
-    SocialProof,
     Features,
+    RegionIntro,
+    SectorIntro,
     HowItWorks,
     Testimonials,
-    Pricing,
-    Integrations,
     BlogPreview,
     Faq,
     Cta,

@@ -1,13 +1,18 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type NavDropdownItem = {
+  label: string;
+  href: string;
+};
+
 type NavDropdownProps = {
   label: string;
-  items: string[];
+  items: NavDropdownItem[];
   id: string;
   isMobile?: boolean;
   className?: string;
@@ -146,8 +151,8 @@ export default function NavDropdown({
       {isOpen && (
         <div ref={dropdownRef} className={mobileStyles.content}>
           {items.map((item) => (
-            <Link key={item} href="#" className={mobileStyles.item}>
-              <span className={cn("font-medium", "text-sm")}>{item}</span>
+            <Link key={item.href} href={item.href} className={mobileStyles.item}>
+              <span className={cn("font-medium", "text-sm")}>{item.label}</span>
             </Link>
           ))}
         </div>

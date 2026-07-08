@@ -1,34 +1,34 @@
 export const howItWorksConfig = {
-    title: "How It Works",
-    subtitle: "Simple four-step process",
+    title: "Zo werken we",
+    subtitle: "Van kennismaking tot oplevering in vier stappen",
 
     steps: [
         {
             number: "01",
-            title: "Sign Up",
+            title: "Kennismaking & briefing",
             description:
-                "Create your account in seconds. No credit card required for the free trial.",
+                "We bespreken je doelen, doelgroep en gewenste uitstraling — vrijblijvend en zonder verplichtingen.",
             image: "/images/HowItWorks/step1.webp",
         },
         {
             number: "02",
-            title: "Integrate",
+            title: "Concept & planning",
             description:
-                "Connect your existing tools and services with our one-click integrations.",
+                "We werken een concept, sitemap of shotlist uit, afgestemd op je budget en timing.",
             image: "/images/HowItWorks/step2.webp",
         },
         {
             number: "03",
-            title: "Customize",
+            title: "Productie",
             description:
-                "Configure your workspace and workflows to match your unique business needs.",
+                "Ontwikkeling, opname of montage door ons team — met tussentijdse feedbackmomenten.",
             image: "/images/HowItWorks/step3.webp",
         },
         {
             number: "04",
-            title: "Launch",
+            title: "Oplevering & promotie",
             description:
-                "Go live with your optimized workflows and start seeing results immediately.",
+                "Je krijgt het eindresultaat, met advies over hoe je het optimaal inzet voor je zichtbaarheid.",
             image: "/images/HowItWorks/step4.webp",
         },
     ],

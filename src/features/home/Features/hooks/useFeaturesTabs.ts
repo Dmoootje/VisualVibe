@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function useFeaturesTabs() {
-    const [activeTab, setActiveTab] = useState("analytics");
+    const [activeTab, setActiveTab] = useState("webdesign");
     const isMobile = useIsMobile();
     const [mounted, setMounted] = useState(false);
 

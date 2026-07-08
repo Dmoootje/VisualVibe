@@ -1,18 +1,19 @@
 export const heroConfig = {
-    badge: "Introducing Nova AI Assistant",
+    badge: "Creatief mediabureau in Limburg",
     title: {
-        line1: "Elevate Your",
-        line2: "Digital Experience",
+        line1: "Webdesign, foto & video",
+        line2: "voor bedrijven in Limburg",
     },
-    description: "Transform how you work with our AI-powered platform. Automate workflows, gain insights, and boost productivity.",
-    primaryCta: "Start Free Trial",
-    secondaryCta: "Watch Demo",
+    description:
+        "VisualVibe is het creatief mediabureau voor KMO's in Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg: websites, fotografie, videografie, drone, 3D/VR/AR en podcasting onder één dak.",
+    primaryCta: "Offerte aanvragen",
+    secondaryCta: "Bekijk diensten",
     stats: {
-        trustedBy: "10,000+",
-        label: "companies",
+        trustedBy: "50+",
+        label: "projecten in Limburg",
     },
     image: {
         src: "/images/hero.webp",
-        alt: "Dashboard Preview",
+        alt: "VisualVibe mediaproductie",
     },
 }

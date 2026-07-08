@@ -1,7 +1,8 @@
 export const ctaConfig = {
-    title: "Ready to Transform Your Workflow?",
-    description: "Join thousands of satisfied customers who are already using Nova to streamline their operations and boost productivity.",
-    primaryCta: "Start Free Trial",
-    secondaryCta: "Schedule Demo",
-    note: "No credit card required. 14-day free trial.",
+    title: "Klaar om je project te bespreken?",
+    description:
+        "Vraag een vrijblijvende offerte aan en ontdek hoe VisualVibe jouw bedrijf zichtbaarder maakt met een sterke website, beelden, video of SEO-strategie.",
+    primaryCta: "Offerte aanvragen",
+    secondaryCta: "Bekijk realisaties",
+    note: "Antwoord binnen de 2 werkdagen.",
 }

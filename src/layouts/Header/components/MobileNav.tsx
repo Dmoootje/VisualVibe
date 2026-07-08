@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import NavDropdown from "./NavDropdown";
 import { cn } from "@/lib/utils";
@@ -28,18 +28,18 @@ export default function MobileNav({ isOpen }: MobileNavProps) {
         )}
       >
         <NavDropdown
-          id="mobileProducts"
-          label="Products"
-          items={siteConfig.productItems}
+          id="mobileDiensten"
+          label="Diensten"
+          items={siteConfig.dienstenNav}
           isMobile={true}
           activeDropdown={activeDropdown}
           setActiveDropdown={setActiveDropdown}
         />
 
         <NavDropdown
-          id="mobileSolutions"
-          label="Solutions"
-          items={siteConfig.solutionItems}
+          id="mobileRegio"
+          label="Regio"
+          items={siteConfig.regioNav}
           isMobile={true}
           activeDropdown={activeDropdown}
           setActiveDropdown={setActiveDropdown}
@@ -57,13 +57,10 @@ export default function MobileNav({ isOpen }: MobileNavProps) {
 
         <div className="flex flex-col gap-2 pt-3">
           <Button
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10 h-10 active:bg-white/20"
+            asChild
+            className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 h-10 shadow-lg shadow-amber-500/20 active:opacity-90"
           >
-            Log in
-          </Button>
-          <Button className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 h-10 shadow-lg shadow-amber-500/20 active:opacity-90">
-            Get Started
+            <Link href={siteConfig.ctaHref}>{siteConfig.ctaLabel}</Link>
           </Button>
         </div>
       </div>

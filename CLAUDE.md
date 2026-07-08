@@ -2,32 +2,39 @@
 
 ## What this is
 
-A marketing website for a **web design & development agency based in Antwerp, Belgium**, built on the NOVA Next.js template (`src/features` architecture — see the `nova-nextjs-template` skill for structural conventions: barrel exports, config-driven content, `@/` imports).
+A marketing website for **VisualVibe, a creative media agency based in Limburg, Belgium** — webdesign, SEO, fotografie, videografie, drone/FPV, 3D/VR/AR, and podcasting, not a web-design-only shop. Built on the NOVA Next.js template (`src/features` architecture — see the `nova-nextjs-template` skill for structural conventions: barrel exports, config-driven content, `@/` imports).
 
-The repo currently still contains the template's generic SaaS placeholder content (Nova, "AI-powered platform", pricing tiers, etc. in `src/config/site.config.ts` and `src/features/home/*`). That needs to be replaced with the agency's real copy, services, and case studies as the project is built out.
+The full content/route structure (services, subservices, regions, sectors, case studies, kennisbank/blog pillars, data models) is specified in [`docs/content-blueprint.md`](docs/content-blueprint.md) — read that before adding a new page type or section. It also flags where its suggested architecture (flat `components/sections/`, `src/data/`) needs reconciling against this repo's actual NOVA conventions (see Conventions below) rather than introducing a second competing structure.
+
+The repo currently still contains some of the template's generic SaaS placeholder content (pricing tiers, integrations logos, etc. in `src/features/home/*`) that doesn't fit a media agency and needs replacing/removing as Fase 1 of the blueprint is implemented.
 
 ## Business context
 
-- **Who**: a Belgian web design company, based in Antwerp.
-- **Who they serve**: local businesses in Antwerp/Flanders, national clients across Belgium, and some international clients.
-- **Languages**: Dutch (primary — Flanders/Antwerp market), French (Wallonia/Brussels), English (international clients + business lingua franca). All three are in scope; NL is the anchor locale for local SEO.
-- **Open decision**: i18n routing strategy (e.g. `next-intl` with `/nl`, `/fr`, `/en` locale prefixes, vs. a NL-only site first with FR/EN added later) hasn't been chosen yet — surface this as a real decision when i18n work starts rather than assuming a structure.
+- **Who**: VisualVibe, a creative media agency headquartered in **Limburg** (Hasselt-area placeholder address in `business.config.ts` — replace with the real address).
+- **Home region**: Limburg (detailed city-level pages: Hasselt, Genk, Bilzen-Hoeselt, Tongeren-Borgloon, Sint-Truiden, Maasmechelen, Lanaken, Diepenbeek, Beringen, Houthalen-Helchteren, Lommel, Pelt).
+- **Expansion regions**: Vlaanderen, Antwerpen, Nederlands-Limburg (Maastricht, Sittard-Geleen, Heerlen, Roermond, Venlo, Weert, Valkenburg) — regio hubs first, city pages only added once unique content/cases justify them (never thin duplicate location pages).
+- **Services**: webdesign, SEO (incl. lokale SEO, technische SEO, AI SEO/AEO/GEO), fotografie, videografie, drone/FPV, 3D/VR/AR, podcasting, masterclasses — each with subservices, see the blueprint.
+- **Sectors served**: KMO, bouw-renovatie, horeca, vastgoed/immo, retail/webshops, events, sportclubs, opleidingen/masterclasses, wellness/beauty, industrie.
+- **Languages**: Dutch (primary, already wired via `next-intl` with `nl` as the unprefixed default), French (`/fr`), English (`/en`).
 
 ## Priorities (in order)
 
-1. **Speed** — this is a web design agency's site; a slow site undermines the pitch. Target strong Core Web Vitals (LCP, INP, CLS). Keep the App Router's server-first rendering, lazy-load below-the-fold sections, keep client bundles (`"use client"`) minimal and scoped to interactive leaves only, optimize images via `next/image`.
-2. **Local SEO** — Antwerp/Flanders/Belgium targeting: `LocalBusiness` schema (NAP consistency — Name, Address, Phone), city/region landing pages, Google Business Profile alignment, localized metadata per page.
-3. **GEO (Generative Engine Optimization)** — make content easy for AI answer engines (ChatGPT, Perplexity, Google AI Overviews) to parse, cite, and recommend: clear semantic HTML structure, direct-answer paragraphs near the top of key pages, FAQ blocks with structured `FAQPage` schema, consistent factual claims (services, location, pricing model) repeated verbatim across pages rather than reworded, descriptive headings that double as question phrasing.
-4. **Navigation simplicity** — flat nav, no more than 5–6 top-level items, obvious path from any page to Contact/Quote.
+1. **Speed** — strong Core Web Vitals (LCP, INP, CLS). Server-first rendering, lazy-load below-the-fold sections, minimal scoped `"use client"`, `next/image` everywhere.
+2. **Local SEO** — Limburg-first, then Vlaanderen/Antwerpen/Nederlands-Limburg: `LocalBusiness` schema (NAP via `business.config.ts`), regio/stad hub pages (not thin duplicate city pages — see blueprint's "Belangrijke SEO-waarschuwing"), Google Business Profile alignment, localized metadata per page.
+3. **GEO (Generative Engine Optimization)** — content easy for AI answer engines to parse/cite: direct-answer paragraphs near the top, `FAQPage` schema, consistent factual claims repeated verbatim across pages, descriptive question-phrased headings. The blueprint's own kennisbank pillar 2 (`wat-is-aeo`, `wat-is-geo-generative-engine-optimization`) is itself a GEO play — VisualVibe writing about AEO/GEO is a genuine differentiator.
+4. **Navigation simplicity** — top nav: Home, Diensten, Realisaties, Sectoren, Regio, Kennisbank, Over ons, Contact, with an "Offerte aanvragen" CTA button — per the blueprint, not the original 5–6-item flat nav assumption.
+5. **Strong internal linking** — every dienst/regio/sector/case/kennisbank page follows the blueprint's internal-link rules (dienst → subdiensten/regio's/cases/blog/contact, blog → dienst/regio/case/contact, etc.) — this is core to the SEO strategy, not optional polish.
 
 ## Conventions
 
-- Follow the `nova-nextjs-template` skill for all structural work: two-hop barrel exports (`features/<page>/index.ts` → `features/index.ts`), config-driven copy (`config/<feature>.config.ts`), `@/` alias imports only, `"use client"` on any file using `framer-motion`, hooks, or handlers.
-- Reuse `src/components/ui/` primitives (Button, Accordion, Tabs, etc.) instead of rebuilding them.
+- Follow the `nova-nextjs-template` skill for structural work: two-hop barrel exports (`features/<page>/index.ts` → `features/index.ts`), config-driven copy, `@/` alias imports only, `"use client"` on any file using `framer-motion`, hooks, or handlers.
+- **Blueprint content vs. NOVA features**: the blueprint's `src/data/*.ts` (services, regions, sectors, cases, blog) hold the structured content behind *dynamic* routes (`/diensten/[slug]`, `/regio/[slug]`, etc.) shared across hub + detail + related-links everywhere — that's a deliberate, documented exception to "content lives in a feature's `config/`", since this content isn't scoped to one static feature. Page *composition* (hero, grids, sections) still follows NOVA's feature/barrel pattern where the page is a fixed static composition (e.g. the homepage); genuinely dynamic per-slug detail pages compose directly from `src/data/` + shared presentational components instead of a per-slug feature folder.
+- Reuse `src/components/ui/` primitives instead of rebuilding them.
 - Theme colors go through the CSS variables in `src/app/globals.css` — no raw hex values in components.
+- All routes live under `src/app/[locale]/...` (next-intl); `/nl` is unprefixed (default), `/fr` and `/en` are prefixed.
 
-## Content/SEO conventions (project-specific, in addition to the skill)
+## Content/SEO conventions
 
-- Every page needs: a unique `<title>` and meta description mentioning Antwerp/Belgium where relevant, one `<h1>`, `LocalBusiness`/`Organization`/`FAQPage`/`Article` JSON-LD as applicable (via Next.js `generateMetadata` + a schema helper — not yet built).
-- Blog posts live under a `blog` feature/route with per-post metadata (title, description, date, author, canonical URL) — structure TBD when the blog is built.
-- Avoid stock-SaaS language ("AI-powered", "boost productivity") left over from the template — replace with concrete, local, agency-specific copy.
+- Every page: unique title/description (55–60 / 150–160 chars per the blueprint), one `<h1>`, canonical, OpenGraph, and `LocalBusiness`/`Organization`/`FAQPage`/`Article`/`BreadcrumbList` JSON-LD as applicable via `src/components/seo/*`.
+- Never build thin, near-duplicate city pages "for SEO" — regio hubs first, city pages only with genuinely unique content/cases (blueprint's explicit warning).
+- Avoid stock-SaaS language ("AI-powered", "boost productivity") left over from the template — replace with concrete, Limburg/media-agency-specific copy.

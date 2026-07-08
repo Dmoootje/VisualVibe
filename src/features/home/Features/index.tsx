@@ -24,7 +24,7 @@ export default function Features() {
         <FeaturesHeader />
 
         <Tabs
-          defaultValue="analytics"
+          defaultValue="webdesign"
           value={activeTab}
           onValueChange={handleTabChange}
           className="w-full"

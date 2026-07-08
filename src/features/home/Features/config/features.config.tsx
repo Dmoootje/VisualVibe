@@ -1,4 +1,4 @@
-import { Zap, Users, Shield, BarChart3 } from "lucide-react";
+import { Monitor, Search, Camera, Video } from "lucide-react";
 import { ReactNode } from "react";
 
 export interface Feature {
@@ -11,68 +11,69 @@ export interface Feature {
 }
 
 export const featuresConfig = {
-  title: "Powerful Features",
-  subtitle: "Everything you need to streamline your workflow",
+  title: "Alles onder één dak",
+  subtitle: "Van website tot beeldmateriaal: één aanspreekpunt voor je volledige online uitstraling",
 
   features: [
     {
-      id: "analytics",
-      icon: <BarChart3 className="h-5 w-5" />,
-      title: "Advanced Analytics",
+      id: "webdesign",
+      icon: <Monitor className="h-5 w-5" />,
+      title: "Webdesign",
       description:
-        "Gain deep insights with our powerful analytics tools. Track performance, identify trends, and make data-driven decisions.",
+        "Snelle, gebruiksvriendelijke websites en webshops die gebouwd zijn om klanten op te leveren, niet enkel goed te ogen.",
       benefits: [
-        "Real-time data visualization",
-        "Custom reporting dashboards",
-        "Predictive analytics with AI",
-        "Automated insights generation",
-      ],
-      image: "/images/hero1.webp",
-    },
-    {
-      id: "automation",
-      icon: <Zap className="h-5 w-5" />,
-      title: "Intelligent Automation",
-      description:
-        "Streamline your workflows with smart automation. Reduce manual tasks and focus on what matters most.",
-      benefits: [
-        "Workflow automation builder",
-        "Trigger-based actions",
-        "Integration with 100+ tools",
-        "AI-powered suggestions",
+        "Website & webshop laten maken",
+        "Snelheid en SEO als basisprincipe",
+        "WordPress of maatwerk",
+        "Doorlopend onderhoud mogelijk",
       ],
       image:
-        "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2070&auto=format&fit=crop",
     },
     {
-      id: "collaboration",
-      icon: <Users className="h-5 w-5" />,
-      title: "Team Collaboration",
+      id: "seo",
+      icon: <Search className="h-5 w-5" />,
+      title: "SEO",
       description:
-        "Work seamlessly with your team in real-time. Share, edit, and collaborate on projects from anywhere.",
+        "Lokale vindbaarheid in Google en in AI-zoekresultaten zoals ChatGPT en Google AI Overviews.",
       benefits: [
-        "Real-time document editing",
-        "Project management tools",
-        "Team chat and video calls",
-        "Permission controls",
+        "Lokale SEO voor Limburg",
+        "Technische SEO-audits",
+        "AI SEO / AEO / GEO",
+        "Google Business Profiel-optimalisatie",
       ],
       image:
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=2070&auto=format&fit=crop",
     },
     {
-      id: "security",
-      icon: <Shield className="h-5 w-5" />,
-      title: "Enterprise Security",
+      id: "fotografie",
+      icon: <Camera className="h-5 w-5" />,
+      title: "Fotografie",
       description:
-        "Protect your data with enterprise-grade security. Ensure compliance and maintain privacy.",
+        "Bedrijfsfotografie, productfotografie en eventfotografie die je merk professioneel in beeld brengt.",
       benefits: [
-        "End-to-end encryption",
-        "Role-based access control",
-        "Compliance monitoring",
-        "Audit logs and reporting",
+        "Bedrijfs- en productfotografie",
+        "Zakelijke portretten",
+        "Eventfotografie",
+        "Vastgoed- en realisatiefotografie",
       ],
       image:
-        "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=2070&auto=format&fit=crop",
+    },
+    {
+      id: "videografie",
+      icon: <Video className="h-5 w-5" />,
+      title: "Videografie",
+      description:
+        "Bedrijfsvideo's, promovideo's en social content die je verhaal vertellen en opvallen.",
+      benefits: [
+        "Bedrijfsvideo & promovideo",
+        "Social media video",
+        "Event-aftermovies",
+        "Wervings- en testimonial-video",
+      ],
+      image:
+        "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop",
     },
   ] as Feature[],
 };

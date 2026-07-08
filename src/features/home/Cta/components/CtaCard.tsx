@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { ctaConfig } from "../config/cta.config";
+import { siteConfig } from "@/config";
 
 export function CtaCard() {
   return (
@@ -46,15 +48,21 @@ function CtaContent() {
 function CtaButtons() {
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-      <Button className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base">
-        {ctaConfig.primaryCta}
-        <ArrowRight className="ml-2 h-4 w-4" />
+      <Button
+        asChild
+        className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base"
+      >
+        <Link href={siteConfig.ctaHref}>
+          {ctaConfig.primaryCta}
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
       </Button>
       <Button
+        asChild
         variant="outline"
         className="border-white/20 text-white hover:bg-white/10 h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base"
       >
-        {ctaConfig.secondaryCta}
+        <Link href="/realisaties">{ctaConfig.secondaryCta}</Link>
       </Button>
     </div>
   );

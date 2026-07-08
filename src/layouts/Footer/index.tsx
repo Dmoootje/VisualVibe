@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { FooterLogo, SocialLinks, FooterNav } from "./components";
 import { footerConfig } from "./config/footer.config";
+import { businessConfig } from "@/config/business.config";
 
 export function Footer() {
   return (
@@ -18,7 +19,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center">
           <p className="text-white/50 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Nova. All rights reserved.
+            © {new Date().getFullYear()} {businessConfig.displayName}. Alle rechten voorbehouden.
           </p>
           <div className="flex gap-6">
             {footerConfig.legalLinks.map((link) => (

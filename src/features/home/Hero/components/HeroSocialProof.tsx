@@ -23,7 +23,7 @@ export function HeroSocialProof() {
         ))}
       </div>
       <div className="text-xs sm:text-sm">
-        <span className="text-white/70">Trusted by</span>{" "}
+        <span className="text-white/70">Vertrouwd door</span>{" "}
         <span className="font-bold">{heroConfig.stats.trustedBy}</span>{" "}
         <span className="text-white/70">{heroConfig.stats.label}</span>
       </div>

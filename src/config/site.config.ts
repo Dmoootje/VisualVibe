@@ -1,69 +1,40 @@
+import { services } from "@/data/services";
+import { regions } from "@/data/regions";
+import { businessConfig } from "./business.config";
+
 // Site configuration
 export const siteConfig = {
-    name: "Nova",
-    description: "Transform how you work with our AI-powered platform. Automate workflows, gain insights, and boost productivity.",
-    url: "https://nova.example.com",
+    name: businessConfig.displayName,
+    description: businessConfig.description,
+    url: businessConfig.url,
 
-    // Navigation links
+    // Flat top-level navigation links (Diensten and Regio render as dropdowns, see below)
     navLinks: [
-        { label: "Pricing", href: "#pricing" },
-        { label: "Testimonials", href: "#testimonials" },
+        { label: "Realisaties", href: "/realisaties" },
+        { label: "Sectoren", href: "/sectoren" },
+        { label: "Kennisbank", href: "/kennisbank" },
+        { label: "Over ons", href: "/over-ons" },
+        { label: "Contact", href: "/contact" },
     ],
 
-    // Product dropdown items
-    productItems: [
-        "Analytics",
-        "Automation",
-        "Collaboration",
-        "Security",
-    ],
+    // "Diensten" dropdown — hoofddiensten, sourced from the services data
+    dienstenNav: services.map((service) => ({
+        label: service.title,
+        href: `/diensten/${service.slug}`,
+    })),
 
-    // Solutions dropdown items
-    solutionItems: [
-        "For Startups",
-        "For Enterprise",
-        "For Teams",
-        "For Developers",
-    ],
+    // "Regio" dropdown — hoofdregio's, sourced from the regions data
+    regioNav: regions.map((region) => ({
+        label: region.title,
+        href: `/regio/${region.slug}`,
+    })),
 
-    // Footer links
-    footerLinks: {
-        product: [
-            { label: "Features", href: "#" },
-            { label: "Pricing", href: "#" },
-            { label: "Integrations", href: "#" },
-            { label: "Roadmap", href: "#" },
-            { label: "Changelog", href: "#" },
-        ],
-        company: [
-            { label: "About", href: "#" },
-            { label: "Blog", href: "#" },
-            { label: "Careers", href: "#" },
-            { label: "Customers", href: "#" },
-            { label: "Contact", href: "#" },
-        ],
-        resources: [
-            { label: "Documentation", href: "#" },
-            { label: "Help Center", href: "#" },
-            { label: "API Reference", href: "#" },
-            { label: "Community", href: "#" },
-            { label: "Status", href: "#" },
-        ],
-        legal: [
-            { label: "Privacy Policy", href: "#" },
-            { label: "Terms of Service", href: "#" },
-            { label: "Cookie Policy", href: "#" },
-        ],
-    },
-
-    // Social links
-    socialLinks: [
-        { name: "Twitter", href: "#" },
-        { name: "Facebook", href: "#" },
-        { name: "Instagram", href: "#" },
-        { name: "LinkedIn", href: "#" },
-        { name: "GitHub", href: "#" },
-    ],
+    ctaLabel: "Offerte aanvragen",
+    ctaHref: "/offerte-aanvragen",
 }
+
+// Note: footer link groups and social links live in
+// src/layouts/Footer/config/footer.config.tsx — that's what the Footer
+// component actually reads (this file's equivalents were unused dead code).
 
 export type SiteConfig = typeof siteConfig

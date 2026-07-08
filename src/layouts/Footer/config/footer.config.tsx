@@ -1,5 +1,8 @@
-import { Twitter, Facebook, Instagram, Linkedin, Github } from "lucide-react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 import { ReactNode } from "react";
+import { services } from "@/data/services";
+import { regions } from "@/data/regions";
+import { businessConfig } from "@/config/business.config";
 
 export interface FooterLinkGroup {
   title: string;
@@ -13,53 +16,44 @@ export interface SocialLink {
 }
 
 export const footerConfig = {
-  description:
-    "Empowering businesses with AI-powered solutions that drive growth and efficiency.",
+  description: businessConfig.description,
 
   linkGroups: [
     {
-      title: "Product",
+      title: "Diensten",
+      links: services.map((service) => ({
+        label: service.title,
+        href: `/diensten/${service.slug}`,
+      })),
+    },
+    {
+      title: "Bedrijf",
       links: [
-        { label: "Features", href: "#" },
-        { label: "Pricing", href: "#" },
-        { label: "Integrations", href: "#" },
-        { label: "Roadmap", href: "#" },
-        { label: "Changelog", href: "#" },
+        { label: "Over ons", href: "/over-ons" },
+        { label: "Realisaties", href: "/realisaties" },
+        { label: "Kennisbank", href: "/kennisbank" },
+        { label: "Sectoren", href: "/sectoren" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
-      title: "Company",
-      links: [
-        { label: "About", href: "#" },
-        { label: "Blog", href: "#" },
-        { label: "Careers", href: "#" },
-        { label: "Customers", href: "#" },
-        { label: "Contact", href: "#" },
-      ],
-    },
-    {
-      title: "Resources",
-      links: [
-        { label: "Documentation", href: "#" },
-        { label: "Help Center", href: "#" },
-        { label: "API Reference", href: "#" },
-        { label: "Community", href: "#" },
-        { label: "Status", href: "#" },
-      ],
+      title: "Regio",
+      links: regions.map((region) => ({
+        label: region.title,
+        href: `/regio/${region.slug}`,
+      })),
     },
   ] as FooterLinkGroup[],
 
   legalLinks: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
+    { label: "Privacybeleid", href: "#" },
+    { label: "Algemene voorwaarden", href: "#" },
+    { label: "Cookiebeleid", href: "#" },
   ],
 };
 
 export const socialLinks: SocialLink[] = [
-  { name: "Twitter", href: "#", icon: <Twitter className="h-5 w-5" /> },
   { name: "Facebook", href: "#", icon: <Facebook className="h-5 w-5" /> },
   { name: "Instagram", href: "#", icon: <Instagram className="h-5 w-5" /> },
   { name: "LinkedIn", href: "#", icon: <Linkedin className="h-5 w-5" /> },
-  { name: "GitHub", href: "#", icon: <Github className="h-5 w-5" /> },
 ];
