@@ -1,21 +1,71 @@
 "use client";
 
-import { useActionState } from "react";
-import { useLocale } from "next-intl";
-import { usePathname } from "@/i18n/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { services } from "@/data/services";
-import { submitLead, type LeadFormState } from "@/lib/leads/submitLead";
-
-const initialState: LeadFormState = { status: "idle" };
+import { regions } from "@/data/regions";
 
 const inputClasses =
   "w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-500/70";
 
+type SubmitState = { status: "idle" | "success" | "error"; message?: string };
+
+// Reads location/search params from `window` at submit time rather than via
+// next/navigation's usePathname/useSearchParams — the latter requires a
+// Suspense boundary on statically prerendered pages, which would blank the
+// form until client-side hydration. Not needed here since we only read
+// these values on submit, never during render.
 export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
-  const [state, formAction, isPending] = useActionState(submitLead, initialState);
-  const locale = useLocale();
-  const pathname = usePathname();
+  const [state, setState] = useState<SubmitState>({ status: "idle" });
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsPending(true);
+    setState({ status: "idle" });
+
+    const formData = new FormData(event.currentTarget);
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone") || undefined,
+      company: formData.get("company") || undefined,
+      serviceInterest: formData.get("serviceInterest") || undefined,
+      region: formData.get("region") || undefined,
+      message: formData.get("message"),
+      privacyAccepted: formData.get("privacyAccepted") === "on",
+      sourcePage: window.location.pathname,
+      sourceUrl: window.location.href,
+      utmSource: searchParams.get("utm_source") || undefined,
+      utmMedium: searchParams.get("utm_medium") || undefined,
+      utmCampaign: searchParams.get("utm_campaign") || undefined,
+      // Honeypot: left empty by real visitors, sometimes filled by bots.
+      website: formData.get("website") || undefined,
+    };
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setState({ status: "error", message: data.error ?? "Er ging iets mis. Probeer opnieuw." });
+        setIsPending(false);
+        return;
+      }
+
+      setState({ status: "success", message: "Bedankt! We nemen binnen de 2 werkdagen contact met je op." });
+    } catch {
+      setState({ status: "error", message: "Er ging iets mis. Probeer opnieuw." });
+      setIsPending(false);
+    }
+  }
 
   if (state.status === "success") {
     return (
@@ -26,9 +76,12 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
   }
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
-      <input type="hidden" name="locale" value={locale} />
-      <input type="hidden" name="sourcePath" value={pathname} />
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* Honeypot field — hidden from real visitors via CSS, bots fill every field they find. */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
@@ -64,20 +117,38 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       </div>
 
       {variant === "offerte" ? (
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="serviceInterest" className="text-sm text-white/70">
-            Waarin ben je geïnteresseerd?
-          </label>
-          <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
-            <option value="" disabled>
-              Kies een dienst
-            </option>
-            {services.map((service) => (
-              <option key={service.slug} value={service.slug}>
-                {service.title}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="serviceInterest" className="text-sm text-white/70">
+              Waarin ben je geïnteresseerd?
+            </label>
+            <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
+              <option value="" disabled>
+                Kies een dienst
               </option>
-            ))}
-          </select>
+              {services.map((service) => (
+                <option key={service.slug} value={service.slug}>
+                  {service.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="region" className="text-sm text-white/70">
+              Regio
+            </label>
+            <select id="region" name="region" className={inputClasses} defaultValue="">
+              <option value="" disabled>
+                Kies een regio
+              </option>
+              {regions.map((region) => (
+                <option key={region.slug} value={region.slug}>
+                  {region.title}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       ) : null}
 
@@ -89,7 +160,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       </div>
 
       <label className="flex items-start gap-2 text-sm text-white/60">
-        <input type="checkbox" name="consentGiven" required className="mt-1" />
+        <input type="checkbox" name="privacyAccepted" required className="mt-1" />
         Ik ga akkoord dat VisualVibe mijn gegevens verwerkt om mijn aanvraag te beantwoorden.
       </label>
 

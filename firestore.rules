@@ -2,14 +2,31 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // All reads/writes for posts and leads go through the Admin SDK on the
-    // server (Route Handlers / Server Actions). Deny direct client access
-    // entirely so there's no client-side security surface to reason about.
+    // Everything here goes through the Admin SDK on the server (Route
+    // Handlers / Server Actions), which bypasses these rules entirely. They
+    // exist as defense-in-depth so an accidental client-side Firestore call
+    // is denied rather than silently allowed.
     match /posts/{postId} {
       allow read, write: if false;
     }
 
     match /leads/{leadId} {
+      allow read, write: if false;
+    }
+
+    match /lead_notes/{noteId} {
+      allow read, write: if false;
+    }
+
+    match /lead_events/{eventId} {
+      allow read, write: if false;
+    }
+
+    match /profiles/{profileId} {
+      allow read, write: if false;
+    }
+
+    match /site_settings/{settingsId} {
       allow read, write: if false;
     }
   }
