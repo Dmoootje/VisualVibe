@@ -1,7 +1,10 @@
 export type BlogPost = {
   title: string;
   slug: string;
+  /** Display category name, e.g. "SEO & GEO" — matches a KennisbankCategory.name. */
   category: string;
+  /** URL category segment, e.g. "seo-geo". Derived from `category` when omitted in frontmatter. */
+  categorySlug: string;
   pillar: boolean;
   author: string;
   publishedAt: string;

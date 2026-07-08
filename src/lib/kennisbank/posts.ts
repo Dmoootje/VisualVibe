@@ -2,8 +2,18 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import type { BlogPost } from "@/types";
+import { getCategoryByName } from "@/data/kennisbankCategories";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "kennisbank");
+
+/** Fallback slugifier for a category name when it isn't in the registry. */
+function slugifyCategory(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "en")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 // The page template renders `title` as the page's H1 (via PageHero); MDX
 // authors typically repeat it as a leading "# ..." line for readability in
@@ -36,6 +46,13 @@ function resolveImage(imagePath: string | undefined): string | undefined {
   return fs.existsSync(absolutePath) ? imagePath : undefined;
 }
 
+// MDX (unlike plain markdown) doesn't support HTML comments — an authored
+// `<!-- ... -->` throws a compile error. Strip them so content can still be
+// written/annotated as markdown.
+function stripHtmlComments(content: string): string {
+  return content.replace(/<!--[\s\S]*?-->/g, "");
+}
+
 function readPostFile(filename: string): BlogPost {
   const raw = fs.readFileSync(path.join(CONTENT_DIR, filename), "utf8");
   const { data, content } = matter(raw);
@@ -44,13 +61,15 @@ function readPostFile(filename: string): BlogPost {
     title: data.title,
     slug: data.slug,
     category: data.category,
+    categorySlug:
+      data.categorySlug ?? getCategoryByName(data.category)?.slug ?? slugifyCategory(data.category),
     pillar: Boolean(data.pillar),
     author: data.author,
     publishedAt: data.publishedAt,
     updatedAt: data.updatedAt,
     readingTime: data.readingTime,
     excerpt: data.excerpt,
-    content: stripLeadingH1(content, data.title),
+    content: stripHtmlComments(stripLeadingH1(content, data.title)),
     focusKeyword: data.focusKeyword,
     secondaryKeywords: data.secondaryKeywords,
     seoTitle: data.seoTitle,
@@ -94,6 +113,13 @@ export function getAllPosts(): BlogPost[] {
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return getAllPosts().find((post) => post.slug === slug);
 }
+
+export function getPostsByCategory(categorySlug: string): BlogPost[] {
+  return getAllPosts().filter((post) => post.categorySlug === categorySlug);
+}
+
+// Pure URL helpers live in ./urls (no fs) so client components can use them too.
+export { postHref, categoryHref } from "./urls";
 
 /** Extracts the last non-empty path segment from an absolute site path, e.g. "/diensten/webdesign/" -> "webdesign". */
 export function slugFromPath(sitePath: string): string {

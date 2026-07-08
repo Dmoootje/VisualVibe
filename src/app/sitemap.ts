@@ -5,6 +5,7 @@ import { allServices } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
+import { kennisbankCategories } from "@/data/kennisbankCategories";
 
 // Static + data-driven routes today. Case (realisaties) slugs are added
 // once that dataset is populated in Fase 4.
@@ -24,22 +25,31 @@ const dataPaths = [
   ...allServices.map((service) => `diensten/${service.slug}`),
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
-  ...blogPosts.map((post) => `kennisbank/${post.slug}`),
+  ...kennisbankCategories.map((category) => `kennisbank/${category.slug}`),
+  ...blogPosts.map((post) => `kennisbank/${post.categorySlug}/${post.slug}`),
 ];
+
+/** Normalises to a leading-and-trailing-slashed path ("" -> "/"). */
+function withSlash(path: string): string {
+  return path === "" ? "/" : `/${path}/`;
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const { url } = businessConfig;
 
-  return [...staticPaths, ...dataPaths].map((path) => ({
-    url: `${url}/${path}`,
-    lastModified: new Date(),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((locale) => [
-          locale,
-          locale === routing.defaultLocale ? `${url}/${path}` : `${url}/${locale}/${path}`,
-        ])
-      ),
-    },
-  }));
+  return [...staticPaths, ...dataPaths].map((path) => {
+    const rel = withSlash(path);
+    return {
+      url: `${url}${rel}`,
+      lastModified: new Date(),
+      alternates: {
+        languages: Object.fromEntries(
+          routing.locales.map((locale) => [
+            locale,
+            locale === routing.defaultLocale ? `${url}${rel}` : `${url}/${locale}${rel}`,
+          ])
+        ),
+      },
+    };
+  });
 }

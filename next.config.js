@@ -5,6 +5,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Consistent trailing slashes across the whole site; non-slashed URLs 308 to
+  // the slashed form. Aligns with the kennisbank canonical URLs.
+  trailingSlash: true,
   // Add image optimization configuration
   images: {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],

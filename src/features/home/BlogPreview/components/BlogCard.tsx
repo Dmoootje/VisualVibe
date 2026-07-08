@@ -6,6 +6,7 @@ import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { BlogPost } from "@/types";
+import { postHref } from "@/lib/kennisbank/urls";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -43,7 +44,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
       className="group h-full"
     >
       <Link
-        href={`/kennisbank/${post.slug}`}
+        href={postHref(post)}
         aria-label={`Lees het volledige artikel: ${post.title}`}
         className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition-all duration-300 hover:border-amber-500/40 hover:shadow-[0_0_35px_-10px_rgba(245,158,11,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       >

@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/types";
+import { postHref } from "@/lib/kennisbank/urls";
 
 export function BlogGrid({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) {
@@ -12,7 +13,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
       {posts.map((post) => (
         <Link
           key={post.slug}
-          href={`/kennisbank/${post.slug}`}
+          href={postHref(post)}
           className="group flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
         >
           <span className="text-xs uppercase tracking-wide text-white/50">{post.category}</span>
