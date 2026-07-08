@@ -26,7 +26,10 @@ const dataPaths = [
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
   ...kennisbankCategories.map((category) => `kennisbank/${category.slug}`),
-  ...blogPosts.map((post) => `kennisbank/${post.categorySlug}/${post.slug}`),
+  ...blogPosts
+    // Keep noindex drafts out of the sitemap.
+    .filter((post) => !post.robots?.includes("noindex"))
+    .map((post) => `kennisbank/${post.categorySlug}/${post.slug}`),
 ];
 
 /** Normalises to a leading-and-trailing-slashed path ("" -> "/"). */

@@ -11,10 +11,16 @@ export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin")) {
-    // Cheap existence check only — the authoritative signature verification
+    // `trailingSlash: true` means paths arrive as "/admin/login/"; normalise the
+    // trailing slash before matching public paths, otherwise the public-path
+    // check never matches and login redirects into an infinite loop.
+    const normalizedPath =
+      pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+
+    // Cheap existence check only. The authoritative signature verification
     // happens in src/app/admin/(protected)/layout.tsx via the Admin SDK,
     // which needs the Node.js runtime and can't run in Edge middleware.
-    if (PUBLIC_ADMIN_PATHS.includes(pathname)) {
+    if (PUBLIC_ADMIN_PATHS.includes(normalizedPath)) {
       return NextResponse.next();
     }
 

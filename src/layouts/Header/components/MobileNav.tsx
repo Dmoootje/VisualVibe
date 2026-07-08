@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Home, User } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import NavDropdown from "./NavDropdown";
@@ -27,6 +28,15 @@ export default function MobileNav({ isOpen }: MobileNavProps) {
           isOpen ? "translate-y-0" : "-translate-y-4"
         )}
       >
+        <Link
+          href="/"
+          aria-label="Home"
+          className="flex items-center gap-2 py-2 px-2 border-b border-white/10 hover:bg-white/5 rounded-md transition-colors active:bg-white/10"
+        >
+          <Home className="h-5 w-5" />
+          Home
+        </Link>
+
         <NavDropdown
           id="mobileDiensten"
           label="Diensten"
@@ -54,6 +64,15 @@ export default function MobileNav({ isOpen }: MobileNavProps) {
             {link.label}
           </Link>
         ))}
+
+        <a
+          href="/admin"
+          aria-label="Beheer (admin)"
+          className="flex items-center gap-2 py-2 px-2 border-b border-white/10 hover:bg-white/5 rounded-md transition-colors active:bg-white/10"
+        >
+          <User className="h-5 w-5" />
+          Beheer
+        </a>
 
         <div className="flex flex-col gap-2 pt-3">
           <Button

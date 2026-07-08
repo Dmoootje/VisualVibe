@@ -33,6 +33,12 @@ The repo currently still contains some of the template's generic SaaS placeholde
 - Theme colors go through the CSS variables in `src/app/globals.css` — no raw hex values in components.
 - All routes live under `src/app/[locale]/...` (next-intl); `/nl` is unprefixed (default), `/fr` and `/en` are prefixed.
 
+## Hard rules (never break)
+
+- **No images in the repo.** All content/blog images live in Firebase object storage (the VisualVibe bucket) and are referenced by URL. The only image files allowed in `public/` are the site logo(s) and the favicon. Never add `.webp`/`.png`/`.jpg` content images to the repo.
+- **Never use a long dash** (em dash or en dash) in any text: copy, headings, MDX content, code comments, commit messages, or replies. Use a normal hyphen `-`, a comma, or rewrite the sentence.
+- **Never start a paragraph with a space.** No leading whitespace on paragraphs in MDX/markdown content or copy.
+
 ## Content/SEO conventions
 
 - Every page: unique title/description (55–60 / 150–160 chars per the blueprint), one `<h1>`, canonical, OpenGraph, and `LocalBusiness`/`Organization`/`FAQPage`/`Article`/`BreadcrumbList` JSON-LD as applicable via `src/components/seo/*`.

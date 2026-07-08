@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Home, User } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import NavDropdown from "./NavDropdown";
@@ -31,6 +32,16 @@ export default function DesktopNav() {
   return (
     <>
       <nav className="hidden md:flex items-center gap-4 lg:gap-8">
+        <Link
+          href="/"
+          aria-label="Home"
+          title="Home"
+          className="text-white/80 hover:text-white transition-colors p-1.5 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
+          onMouseEnter={() => setActiveDropdown(null)}
+        >
+          <Home className="h-5 w-5" />
+        </Link>
+
         <NavDropdown
           id="diensten"
           label="Diensten"
@@ -63,6 +74,15 @@ export default function DesktopNav() {
         className="hidden md:flex items-center gap-2 lg:gap-4"
         onMouseEnter={() => setActiveDropdown(null)}
       >
+        <a
+          href="/admin"
+          aria-label="Beheer (admin)"
+          title="Beheer"
+          className="text-white/80 hover:text-white transition-colors p-1.5 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
+        >
+          <User className="h-5 w-5" />
+        </a>
+
         <Button
           asChild
           className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-shadow text-sm lg:text-base px-3 lg:px-4"

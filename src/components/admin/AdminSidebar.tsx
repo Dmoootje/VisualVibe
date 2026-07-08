@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Settings } from "lucide-react";
+import { LayoutDashboard, Users, Settings, Palette, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
 
@@ -11,6 +11,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/leads", label: "Leads", icon: Users },
   { href: "/admin/settings", label: "Instellingen", icon: Settings },
+  { href: "/internal/blog-styleguide", label: "Branding", icon: Palette },
 ];
 
 export function AdminSidebar({ email }: { email: string }) {
@@ -42,6 +43,13 @@ export function AdminSidebar({ email }: { email: string }) {
         </nav>
 
         <div className="hidden sm:flex flex-col gap-2 mt-auto pt-4 border-t border-white/10 w-full">
+          <Link
+            href="/"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white/60 transition-colors hover:bg-white/5 hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Terug naar site
+          </Link>
           <span className="text-xs text-white/40 truncate">{email}</span>
           <LogoutButton />
         </div>
