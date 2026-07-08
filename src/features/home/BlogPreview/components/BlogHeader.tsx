@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { blogConfig } from "../config/articles.config";
 
 export function BlogHeader() {
@@ -27,12 +28,14 @@ export function BlogHeader() {
       </div>
       <div className="mt-6 md:mt-0">
         <Button
+          asChild
           variant="outline"
           className="border-white/20 text-white hover:bg-white/10 text-sm sm:text-base focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-          aria-label="View all blog articles"
         >
-          {blogConfig.viewAllText}
-          <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+          <Link href="/kennisbank" aria-label="Bekijk alle kennisbank-artikelen">
+            {blogConfig.viewAllText}
+            <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+          </Link>
         </Button>
       </div>
     </motion.div>
