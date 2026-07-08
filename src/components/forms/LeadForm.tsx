@@ -24,7 +24,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
     setIsPending(true);
     setState({ status: "idle" });
 
-    const formData = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
     const searchParams = new URLSearchParams(window.location.search);
 
     const payload = {
@@ -60,23 +61,23 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         return;
       }
 
+      formElement.reset();
       setState({ status: "success", message: "Bedankt! We nemen binnen de 2 werkdagen contact met je op." });
+      setIsPending(false);
     } catch {
       setState({ status: "error", message: "Er ging iets mis. Probeer opnieuw." });
       setIsPending(false);
     }
   }
 
-  if (state.status === "success") {
-    return (
-      <div className="rounded-xl border border-white/10 bg-white/5 p-8 text-center text-white/80">
-        {state.message}
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {state.status === "success" && (
+        <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4 text-center text-green-400" role="status">
+          {state.message}
+        </div>
+      )}
+
       {/* Honeypot field — hidden from real visitors via CSS, bots fill every field they find. */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <label htmlFor="website">Website</label>
