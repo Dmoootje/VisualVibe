@@ -16,6 +16,9 @@ export type BlogPost = {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  /** When true, the hero image is a fully composed banner (badge/title/logo baked in),
+   * so the preview card renders it as-is instead of overlaying its own chrome. */
+  heroComposed?: boolean;
   /** Alt/title/caption for the visible hero image rendered on the post page (falls back to title/excerpt when absent). */
   heroImageAlt?: string;
   heroImageTitle?: string;

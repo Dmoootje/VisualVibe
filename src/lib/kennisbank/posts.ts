@@ -58,6 +58,7 @@ function readPostFile(filename: string): BlogPost {
     ogTitle: data.ogTitle,
     ogDescription: data.ogDescription,
     ogImage: resolveImage(data.ogImage),
+    heroComposed: Boolean(data.heroComposed),
     heroImageAlt: data.heroImageAlt,
     heroImageTitle: data.heroImageTitle,
     heroImageCaption: data.heroImageCaption,

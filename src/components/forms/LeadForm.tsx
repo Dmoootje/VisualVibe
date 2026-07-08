@@ -6,7 +6,7 @@ import { services } from "@/data/services";
 import { regions } from "@/data/regions";
 
 const inputClasses =
-  "w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-500/70";
+  "w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-amber-500/70";
 
 type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 
