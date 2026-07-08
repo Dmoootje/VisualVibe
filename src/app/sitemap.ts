@@ -4,9 +4,10 @@ import { routing } from "@/i18n/routing";
 import { allServices } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
+import { blogPosts } from "@/data/blog";
 
-// Static + data-driven routes today. Case (realisaties) and kennisbank post
-// slugs are added here once those datasets are populated in Fase 4/5.
+// Static + data-driven routes today. Case (realisaties) slugs are added
+// once that dataset is populated in Fase 4.
 const staticPaths = [
   "",
   "diensten",
@@ -23,6 +24,7 @@ const dataPaths = [
   ...allServices.map((service) => `diensten/${service.slug}`),
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
+  ...blogPosts.map((post) => `kennisbank/${post.slug}`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

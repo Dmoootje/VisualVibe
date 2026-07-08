@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { blogPosts } from "@/data/blog";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { Section, Container } from "@/components/ui";
+import { PageHero, BlogGrid } from "@/components/sections";
 
 export const metadata: Metadata = {
   title: { absolute: `Kennisbank | ${businessConfig.displayName}` },
@@ -10,20 +12,19 @@ export const metadata: Metadata = {
 
 export default function KennisbankHubPage() {
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Kennisbank", path: "/kennisbank" }]} />
 
-      <div className="container mx-auto max-w-4xl">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Kennisbank</h1>
-        <p className="text-lg text-white/70 mb-12">
-          Binnenkort delen we hier praktische inzichten over webdesign, SEO (incl. AEO/GEO), fotografie, video,
-          drone en 3D/VR/AR.
-        </p>
+      <PageHero
+        title="Kennisbank"
+        subtitle="Praktische inzichten over webdesign, SEO (incl. AEO/GEO), fotografie, video, drone en 3D/VR/AR."
+      />
 
-        {blogPosts.length === 0 && (
-          <p className="text-center text-sm text-white/40">De eerste artikels volgen binnenkort.</p>
-        )}
-      </div>
+      <Section orbs="tl-br">
+        <Container>
+          <BlogGrid posts={blogPosts} />
+        </Container>
+      </Section>
     </div>
   );
 }

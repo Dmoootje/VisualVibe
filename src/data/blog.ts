@@ -1,9 +1,10 @@
-import type { BlogPost } from "@/types";
+import { getAllPosts, getPostBySlug } from "@/lib/kennisbank/posts";
 
-// Populated in Fase 5 (kennisbank). Kept typed + empty so hub components
-// can render a graceful "binnenkort" state rather than assuming data exists.
-export const blogPosts: BlogPost[] = [];
+// Kennisbank posts are authored as .mdx files in content/kennisbank/ (code-driven,
+// edited in VS Code) — this just re-exposes them under the same data/ API the
+// rest of the site already uses (BlogGrid, sitemap.ts).
+export const blogPosts = getAllPosts();
 
-export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug);
+export function getBlogPostBySlug(slug: string) {
+  return getPostBySlug(slug);
 }
