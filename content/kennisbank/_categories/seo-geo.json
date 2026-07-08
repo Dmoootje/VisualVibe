@@ -1,0 +1,23 @@
+{
+  "category": "SEO & GEO",
+  "slug": "seo-geo",
+  "description": "Artikels over lokale SEO, AEO, GEO, AI-vindbaarheid en online zichtbaarheid voor KMO's.",
+  "posts": [
+    {
+      "title": "Lokale SEO voor KMO's in Limburg: zo word je gevonden door klanten in je regio",
+      "slug": "lokale-seo-voor-kmos-in-limburg",
+      "type": "sub",
+      "focusKeyword": "lokale SEO Limburg",
+      "excerpt": "Lokale SEO helpt KMO's in Limburg beter gevonden worden door klanten in hun regio.",
+      "image": "/images/blog/lokale-seo-limburg-kmo-hero.webp"
+    },
+    {
+      "title": "GEO en AEO voor KMO's: gevonden worden in Google, ChatGPT en AI-zoekresultaten",
+      "slug": "gevonden-worden-in-ai-zoekresultaten-geo-aeo",
+      "type": "sub",
+      "focusKeyword": "GEO voor KMO",
+      "excerpt": "AI verandert hoe mensen zoeken. Ontdek hoe KMO's beter zichtbaar worden in Google en AI-zoekresultaten.",
+      "image": "/images/blog/geo-aeo-ai-seo-kmo-hero.webp"
+    }
+  ]
+}

@@ -52,6 +52,8 @@ function readPostFile(filename: string): BlogPost {
     ogDescription: data.ogDescription,
     ogImage: resolveLocalImage(data.ogImage),
     robots: data.robots,
+    clusterType: data.clusterType,
+    parentPillar: data.parentPillar,
     relatedServices: data.relatedServices,
     relatedRegions: data.relatedRegions,
     relatedPosts: data.relatedPosts,
@@ -86,4 +88,11 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 export function slugFromPath(sitePath: string): string {
   const segments = sitePath.split("/").filter(Boolean);
   return segments[segments.length - 1] ?? "";
+}
+
+/** Sub-articles whose parentPillar resolves to the given pillar post's slug. */
+export function getClusterPosts(pillarSlug: string): BlogPost[] {
+  return getAllPosts().filter(
+    (post) => post.parentPillar && slugFromPath(post.parentPillar) === pillarSlug
+  );
 }

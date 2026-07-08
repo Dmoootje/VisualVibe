@@ -17,6 +17,9 @@ export type BlogPost = {
   ogDescription?: string;
   ogImage?: string;
   robots?: string;
+  /** "sub" articles belong to a pillar via parentPillar (an absolute kennisbank path). */
+  clusterType?: "pillar" | "sub";
+  parentPillar?: string;
   /** Absolute site paths, e.g. "/diensten/webdesign/" */
   relatedServices?: string[];
   relatedRegions?: string[];

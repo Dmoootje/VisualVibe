@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
-import { getAllPosts, getPostBySlug, slugFromPath } from "@/lib/kennisbank/posts";
+import { getAllPosts, getPostBySlug, getClusterPosts, slugFromPath } from "@/lib/kennisbank/posts";
 import { getServiceBySlug } from "@/data/services";
 import { getRegionBySlug } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid, RegionGrid } from "@/components/sections";
+import { PageHero, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/components/sections";
 import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
@@ -60,12 +60,21 @@ export default async function KennisbankPostPage({
     .map((regionPath) => getRegionBySlug(slugFromPath(regionPath)))
     .filter((region): region is NonNullable<typeof region> => Boolean(region));
 
+  const parentPost = post.parentPillar ? getPostBySlug(slugFromPath(post.parentPillar)) : undefined;
+
+  const clusterPosts = post.pillar ? getClusterPosts(post.slug) : [];
+
+  const relatedPosts = (post.relatedPosts ?? [])
+    .map((postPath) => getPostBySlug(slugFromPath(postPath)))
+    .filter((related): related is NonNullable<typeof related> => related != null && related.slug !== post.slug);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
           { name: "Kennisbank", path: "/kennisbank" },
+          ...(parentPost ? [{ name: parentPost.title, path: `/kennisbank/${parentPost.slug}` }] : []),
           { name: post.title, path: `/kennisbank/${post.slug}` },
         ]}
       />
@@ -85,7 +94,11 @@ export default async function KennisbankPostPage({
         title={post.title}
         subtitle={post.excerpt}
         eyebrow={[post.category, post.readingTime].filter(Boolean).join(" · ")}
-        backLink={{ label: "Kennisbank", href: "/kennisbank" }}
+        backLink={
+          parentPost
+            ? { label: `Onderdeel van ${parentPost.title}`, href: `/kennisbank/${parentPost.slug}` }
+            : { label: "Kennisbank", href: "/kennisbank" }
+        }
       />
 
       <Section orbs="none">
@@ -125,6 +138,24 @@ export default async function KennisbankPostPage({
                 <RegionGrid regions={relatedRegions} showIntro={false} />
               </div>
             )}
+          </Container>
+        </Section>
+      )}
+
+      {clusterPosts.length > 0 && (
+        <Section orbs="tr-bl">
+          <Container className="max-w-3xl">
+            <h2 className="text-2xl font-bold mb-4">Artikels in deze reeks</h2>
+            <BlogGrid posts={clusterPosts} />
+          </Container>
+        </Section>
+      )}
+
+      {clusterPosts.length === 0 && relatedPosts.length > 0 && (
+        <Section orbs="tr-bl">
+          <Container className="max-w-3xl">
+            <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
+            <BlogGrid posts={relatedPosts} />
           </Container>
         </Section>
       )}
