@@ -18,11 +18,18 @@ function stripLeadingH1(content: string, title: string): string {
 }
 
 // Content briefs often reference an og/cover image before it's actually been
-// shot/uploaded. Only expose the path if the file genuinely exists under
-// /public, so consumers (BlogPreview, BlogPostingJsonLd) never point at a
-// 404'ing image and can fall back cleanly instead.
-function resolveLocalImage(imagePath: string | undefined): string | undefined {
-  if (!imagePath || !imagePath.startsWith("/")) {
+// shot/uploaded. A remote URL (the real photo, once uploaded to Storage) is
+// used as-is; a local "/..." path is only exposed if that file genuinely
+// exists under /public. Either way, consumers (BlogPreview, BlogPostingJsonLd)
+// never point at a 404'ing image and can fall back cleanly instead.
+function resolveImage(imagePath: string | undefined): string | undefined {
+  if (!imagePath) {
+    return undefined;
+  }
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+  if (!imagePath.startsWith("/")) {
     return undefined;
   }
   const absolutePath = path.join(process.cwd(), "public", imagePath);
@@ -50,7 +57,10 @@ function readPostFile(filename: string): BlogPost {
     seoDescription: data.seoDescription,
     ogTitle: data.ogTitle,
     ogDescription: data.ogDescription,
-    ogImage: resolveLocalImage(data.ogImage),
+    ogImage: resolveImage(data.ogImage),
+    heroImageAlt: data.heroImageAlt,
+    heroImageTitle: data.heroImageTitle,
+    heroImageCaption: data.heroImageCaption,
     robots: data.robots,
     clusterType: data.clusterType,
     parentPillar: data.parentPillar,

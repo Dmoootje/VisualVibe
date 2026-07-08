@@ -16,6 +16,10 @@ export type BlogPost = {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  /** Alt/title/caption for the visible hero image rendered on the post page (falls back to title/excerpt when absent). */
+  heroImageAlt?: string;
+  heroImageTitle?: string;
+  heroImageCaption?: string;
   robots?: string;
   /** "sub" articles belong to a pillar via parentPillar (an absolute kennisbank path). */
   clusterType?: "pillar" | "sub";

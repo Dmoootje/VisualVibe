@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
@@ -103,6 +104,25 @@ export default async function KennisbankPostPage({
 
       <Section orbs="none">
         <Container className="max-w-3xl">
+          {post.ogImage && (
+            <figure className="mb-10">
+              <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10">
+                <Image
+                  src={post.ogImage}
+                  alt={post.heroImageAlt ?? post.title}
+                  title={post.heroImageTitle}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              {post.heroImageCaption && (
+                <figcaption className="mt-3 text-sm text-white/50 italic">{post.heroImageCaption}</figcaption>
+              )}
+            </figure>
+          )}
+
           <div className="mb-8 flex items-center gap-3 text-sm text-white/50">
             <span>{post.author}</span>
             <span>&middot;</span>
