@@ -8,8 +8,11 @@ import {
   BlogPreview,
   Cta,
 } from "@/features/home";
+import { getGoogleReviews, GOOGLE_MAPS_PROFILE_URL } from "@/lib/reviews/google";
 
-export default function Home() {
+export default async function Home() {
+  const reviews = await getGoogleReviews();
+
   return (
     <div className="min-h-screen bg-black px-0 sm:px-4 text-white">
       <Hero />
@@ -17,7 +20,7 @@ export default function Home() {
       <RegionIntro />
       <SectorIntro />
       <HowItWorks />
-      <Testimonials />
+      <Testimonials testimonials={reviews} sourceUrl={GOOGLE_MAPS_PROFILE_URL} />
       <BlogPreview />
       <Cta />
     </div>

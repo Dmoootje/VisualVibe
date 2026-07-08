@@ -54,12 +54,22 @@ function TestimonialAuthor({ testimonial }: { testimonial: Testimonial }) {
           aria-hidden="true"
         ></div>
         <div className="relative h-20 w-20 sm:h-24 sm:w-24 mx-auto">
-          <Image
-            src={testimonial.avatar || "/placeholder.svg"}
-            alt={`Portrait of ${testimonial.author}`}
-            fill
-            className="object-cover rounded-full"
-          />
+          {testimonial.avatar ? (
+            <Image
+              src={testimonial.avatar}
+              alt={`Foto van ${testimonial.author}`}
+              fill
+              sizes="96px"
+              className="object-cover rounded-full"
+            />
+          ) : (
+            <div
+              className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-amber-500 text-2xl font-bold text-white"
+              aria-hidden="true"
+            >
+              {testimonial.author.trim().charAt(0).toUpperCase() || "?"}
+            </div>
+          )}
         </div>
       </div>
 

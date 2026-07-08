@@ -7,11 +7,25 @@ import {
   TestimonialsControls,
   QuoteIcon,
 } from "./components";
-import { useTestimonialsCarousel } from "./hooks/useTestimonialsCarousel";
+import {
+  useTestimonialsCarousel,
+  type CarouselTestimonial,
+} from "./hooks/useTestimonialsCarousel";
+import { testimonialsConfig } from "./config/testimonials.config";
 
-export default function Testimonials() {
+type TestimonialsProps = {
+  /** Live Google reviews (server-fetched). Falls back to curated quotes when empty. */
+  testimonials?: CarouselTestimonial[];
+  /** Link to the Google Maps profile, shown as attribution when reviews are live. */
+  sourceUrl?: string;
+};
+
+export default function Testimonials({ testimonials, sourceUrl }: TestimonialsProps) {
+  const isGoogle = Boolean(testimonials && testimonials.length > 0);
+  const items = isGoogle ? testimonials! : testimonialsConfig.testimonials;
+
   const { current, total, testimonial, next, prev, goTo } =
-    useTestimonialsCarousel();
+    useTestimonialsCarousel(items);
 
   return (
     <section
@@ -31,7 +45,7 @@ export default function Testimonials() {
             className="min-h-[400px] flex items-center"
             role="region"
             aria-roledescription="testimonial carousel"
-            aria-label="Customer testimonials"
+            aria-label="Klantenreviews"
           >
             <TestimonialCard
               testimonial={testimonial}
@@ -47,6 +61,20 @@ export default function Testimonials() {
             total={total}
             onDotClick={goTo}
           />
+
+          {isGoogle && (
+            <p className="mt-6 text-center text-sm text-white/50">
+              Reviews via{" "}
+              <a
+                href={sourceUrl ?? "https://www.google.com/maps"}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="text-amber-400 hover:underline"
+              >
+                Google
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </section>

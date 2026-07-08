@@ -30,6 +30,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
       },
+      {
+        // Google review author profile photos (Places API).
+        protocol: 'https',
+        hostname: '*.googleusercontent.com',
+      },
     ],
   },
   // Add compiler options for production

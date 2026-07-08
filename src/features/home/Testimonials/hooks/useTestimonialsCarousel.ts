@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
-import { testimonialsConfig } from "../config/testimonials.config";
 
-export function useTestimonialsCarousel() {
+export type CarouselTestimonial = {
+  quote: string;
+  author: string;
+  role: string;
+  avatar: string;
+  rating: number;
+};
+
+export function useTestimonialsCarousel(items: CarouselTestimonial[]) {
     const [current, setCurrent] = useState(0);
     const [autoplay, setAutoplay] = useState(true);
-    const total = testimonialsConfig.testimonials.length;
+    const total = items.length;
 
     useEffect(() => {
-        if (!autoplay) return;
+        if (!autoplay || total === 0) return;
 
         const interval = setInterval(() => {
             setCurrent((prev) => (prev + 1) % total);
@@ -31,7 +38,7 @@ export function useTestimonialsCarousel() {
         setCurrent(index);
     };
 
-    const testimonial = testimonialsConfig.testimonials[current];
+    const testimonial = items[current];
 
     return {
         current,
