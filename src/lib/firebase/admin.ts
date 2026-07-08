@@ -1,6 +1,12 @@
 import { cert, getApps, initializeApp, type App } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
+
+// Dedicated bucket for VisualVibe uploads — this GCP project is shared with
+// other, unrelated apps (e.g. "vsaanhangwagens"), so we never touch the
+// project's implicit default bucket, only this one.
+export const STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET ?? "gen-lang-client-0235296023";
 
 /**
  * In production (Firebase App Hosting / Cloud Run) this authenticates via
@@ -18,13 +24,16 @@ function getAdminApp(): App {
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     return initializeApp({
       credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)),
+      storageBucket: STORAGE_BUCKET,
     });
   }
 
-  return initializeApp();
+  return initializeApp({ storageBucket: STORAGE_BUCKET });
 }
 
 const adminApp = getAdminApp();
 
 export const adminAuth = getAuth(adminApp);
 export const adminDb = getFirestore(adminApp);
+/** `adminStorageBucket.file(path).save(...)` etc. — always resolves to STORAGE_BUCKET. */
+export const adminStorageBucket = getStorage(adminApp).bucket(STORAGE_BUCKET);

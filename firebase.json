@@ -4,6 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "storage": {
+    "bucket": "gen-lang-client-0235296023",
     "rules": "storage.rules"
   },
   "emulators": {

@@ -24,3 +24,10 @@ env:
     availability:
       - BUILD
       - RUNTIME
+  # Dedicated Storage bucket for VisualVibe uploads (this GCP project is
+  # shared with other, unrelated apps, so we never use its default bucket).
+  - variable: FIREBASE_STORAGE_BUCKET
+    value: gen-lang-client-0235296023
+    availability:
+      - BUILD
+      - RUNTIME
