@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Link } from "@/i18n/navigation";
-import { ArrowRight } from "lucide-react";
+import { Section, Container } from "@/components/ui";
+import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug } from "@/data/services";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -46,7 +46,7 @@ export default async function RegionDetailPage({
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
@@ -55,41 +55,18 @@ export default async function RegionDetailPage({
         ]}
       />
 
-      <div className="container mx-auto max-w-4xl">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">{region.title}</h1>
-        <p className="text-lg text-white/70 mb-12">{region.intro}</p>
+      <PageHero title={region.title} subtitle={region.intro} backLink={{ label: "Alle regio's", href: "/regio" }} />
 
-        {localServices.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold mb-4">Onze diensten in {region.title}</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {localServices.map((service) => (
-                <Link
-                  key={service.slug}
-                  href={`/diensten/${service.slug}`}
-                  className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-5 hover:bg-white/10 transition-colors"
-                >
-                  <span className="font-medium group-hover:text-amber-400 transition-colors">
-                    {service.title}
-                  </span>
-                  <ArrowRight className="h-4 w-4 text-white/50" />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+      {localServices.length > 0 && (
+        <Section orbs="tl-br">
+          <Container className="max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Onze diensten in {region.title}</h2>
+            <ServiceGrid services={localServices} />
+          </Container>
+        </Section>
+      )}
 
-        <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-          <h2 className="text-2xl font-bold">Actief in {region.title}? Laten we kennismaken.</h2>
-          <Link
-            href="/offerte-aanvragen"
-            className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-red-500 to-amber-500 px-6 py-3 font-medium text-white hover:from-red-600 hover:to-amber-600 transition-colors"
-          >
-            Offerte aanvragen
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
+      <CTASection title={`Actief in ${region.title}? Laten we kennismaken.`} />
     </div>
   );
 }

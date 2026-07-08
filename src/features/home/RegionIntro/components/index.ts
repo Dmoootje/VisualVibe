@@ -1,1 +1,0 @@
-export { RegionCard } from "./RegionCard";

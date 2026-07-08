@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { regions } from "@/data/regions";
 import { regionIntroConfig } from "./config/regionIntro.config";
-import { RegionCard } from "./components";
+import { RegionCard } from "@/components/cards/RegionCard";
 
 export default function RegionIntro() {
   return (
