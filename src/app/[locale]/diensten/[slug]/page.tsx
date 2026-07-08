@@ -8,12 +8,12 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { services, getServiceBySlug } from "@/data/services";
+import { allServices, getServiceBySlug } from "@/data/services";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+  return allServices.map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({
@@ -51,15 +51,19 @@ export default async function ServiceDetailPage({
     .map((relatedSlug) => getServiceBySlug(relatedSlug))
     .filter((related): related is NonNullable<typeof related> => Boolean(related));
 
+  const parentService = service.parentSlug ? getServiceBySlug(service.parentSlug) : undefined;
+  const childServices = allServices.filter((s) => s.parentSlug === service.slug);
+
+  const breadcrumbItems = [
+    { name: "Home", path: "/" },
+    { name: "Diensten", path: "/diensten" },
+    ...(parentService ? [{ name: parentService.title, path: `/diensten/${parentService.slug}` }] : []),
+    { name: service.title, path: `/diensten/${service.slug}` },
+  ];
+
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", path: "/" },
-          { name: "Diensten", path: "/diensten" },
-          { name: service.title, path: `/diensten/${service.slug}` },
-        ]}
-      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <ServiceJsonLd
         service={{
           name: service.title,
@@ -70,21 +74,47 @@ export default async function ServiceDetailPage({
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
 
       <div className="container mx-auto max-w-4xl">
+        {parentService && (
+          <Link
+            href={`/diensten/${parentService.slug}`}
+            className="inline-block mb-4 text-sm text-white/50 hover:text-white transition-colors"
+          >
+            &larr; Onderdeel van {parentService.title}
+          </Link>
+        )}
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">{service.title}</h1>
         <p className="text-lg text-white/70 mb-10">{service.intro}</p>
 
-        {service.benefits.length > 0 && (
+        {childServices.length > 0 ? (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold mb-4">Wat we voor je doen</h2>
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {service.benefits.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-2 text-white/80">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-                  {benefit}
-                </li>
+            <h2 className="text-2xl font-bold mb-4">Subdiensten</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {childServices.map((child) => (
+                <Link
+                  key={child.slug}
+                  href={`/diensten/${child.slug}`}
+                  className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-5 hover:bg-white/10 transition-colors"
+                >
+                  <span className="font-medium group-hover:text-amber-400 transition-colors">{child.title}</span>
+                  <ArrowRight className="h-4 w-4 text-white/50" />
+                </Link>
               ))}
-            </ul>
+            </div>
           </section>
+        ) : (
+          service.benefits.length > 0 && (
+            <section className="mb-12">
+              <h2 className="text-2xl font-bold mb-4">Wat we voor je doen</h2>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {service.benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-2 text-white/80">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
         )}
 
         {service.process.length > 0 && (

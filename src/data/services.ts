@@ -1,7 +1,9 @@
 import type { Service } from "@/types";
+import { subservices } from "./subservices";
 
-// The 8 hoofddiensten (main services). Subdiensten (child services with
-// parentSlug set) are added in Fase 2 — see docs/content-blueprint.md.
+// The 8 hoofddiensten (main services) — used for the top-level grid, nav,
+// and footer. Subdiensten (child services with parentSlug set) live in
+// ./subservices; use `allServices`/`getServiceBySlug` to look up either.
 export const services: Service[] = [
   {
     title: "Webdesign",
@@ -318,6 +320,8 @@ export const services: Service[] = [
   },
 ];
 
+export const allServices: Service[] = [...services, ...subservices];
+
 export function getServiceBySlug(slug: string): Service | undefined {
-  return services.find((service) => service.slug === slug);
+  return allServices.find((service) => service.slug === slug);
 }

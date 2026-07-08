@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { businessConfig } from "@/config/business.config";
 import { routing } from "@/i18n/routing";
-import { services } from "@/data/services";
+import { allServices } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 
@@ -20,7 +20,7 @@ const staticPaths = [
 ];
 
 const dataPaths = [
-  ...services.map((service) => `diensten/${service.slug}`),
+  ...allServices.map((service) => `diensten/${service.slug}`),
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
 ];
