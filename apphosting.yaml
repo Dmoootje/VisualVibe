@@ -1,0 +1,26 @@
+# Firebase App Hosting build/runtime config.
+# NEXT_PUBLIC_* values below are the public Firebase web app config — safe to
+# commit (not secrets; security comes from firestore.rules + App Check, not
+# from hiding this key). Anything sensitive (API keys for third-party
+# services, etc.) belongs in Secret Manager via `firebase apphosting:secrets:set`
+# and referenced here as `secret: NAME` instead of `value: ...`.
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyBsjhuCzVdqsQdORzwwL6ooROLltQjUnHQ
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: gen-lang-client-0235296023.firebaseapp.com
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: gen-lang-client-0235296023
+    availability:
+      - BUILD
+      - RUNTIME
