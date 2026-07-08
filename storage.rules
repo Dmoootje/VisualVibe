@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Blog cover images/media are uploaded via the authenticated /admin
+    // route (Admin SDK on the server); publicly readable since they're
+    // rendered on public blog pages.
+    match /blog/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

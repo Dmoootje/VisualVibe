@@ -22,12 +22,21 @@ yarn-error.log*
 # vercel
 .vercel
 
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*-debug.log
+functions/node_modules/
+functions/lib/
+*serviceAccountKey*.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
 # yarn
-yarn.lock
 .yarn/
 
 # npm
