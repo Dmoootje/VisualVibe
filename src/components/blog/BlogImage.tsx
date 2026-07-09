@@ -24,7 +24,7 @@ export function BlogImage({
   return (
     <figure className={cn("my-8", className)}>
       <div
-        className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_40px_-15px_rgba(245,158,11,0.35)]"
+        className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_40px_-15px_rgba(255,117,0,0.35)]"
         style={{ aspectRatio: aspect }}
       >
         <Image

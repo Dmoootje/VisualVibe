@@ -17,7 +17,7 @@ export function CategoryGrid({ items }: { items: CategoryCard[] }) {
         <Link
           key={category.slug}
           href={categoryHref(category.slug)}
-          className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-amber-500/40 hover:shadow-[0_0_35px_-12px_rgba(245,158,11,0.45)]"
+          className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-amber-500/40 hover:shadow-[0_0_35px_-12px_rgba(255,117,0,0.45)]"
         >
           <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20">
             <FolderOpen className="h-5 w-5" aria-hidden="true" />

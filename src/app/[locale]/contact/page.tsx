@@ -89,10 +89,10 @@ export default async function ContactPage() {
 
           {/* Right: lead form with orange glow */}
           <div
-            className="rounded-[18px] border border-[rgba(255,122,24,0.35)] p-6 shadow-[0_0_50px_rgba(255,122,24,0.14),inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur-sm sm:p-8"
+            className="rounded-[18px] border border-[rgba(255,117,0,0.35)] p-6 shadow-[0_0_50px_rgba(255,117,0,0.14),inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur-sm sm:p-8"
             style={{
               background:
-                "radial-gradient(circle at top right, rgba(255,122,24,0.10), transparent 35%), rgba(12,12,12,0.88)",
+                "radial-gradient(circle at top right, rgba(255,117,0,0.10), transparent 35%), rgba(12,12,12,0.88)",
             }}
           >
             <h2 className="mb-6 text-xl font-bold">Stuur ons een bericht</h2>

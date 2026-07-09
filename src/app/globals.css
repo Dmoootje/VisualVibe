@@ -220,7 +220,7 @@ html {
 
 /* Gradient border */
 .border-gradient-to-r {
-    border-image: linear-gradient(to right, #ef4444, #f59e0b) 1;
+    border-image: linear-gradient(to right, #ef4444, #ff7500) 1;
 }
 
 /* Hide scrollbar for mobile swipe components */
@@ -293,7 +293,7 @@ html {
     width: 3rem;
     height: 2px;
     border-radius: 9999px;
-    background: linear-gradient(to right, #f59e0b, #ef4444);
+    background: linear-gradient(to right, #ff7500, #ef4444);
 }
 
 .blog-prose h3 {
@@ -322,7 +322,7 @@ html {
 }
 
 .blog-prose a {
-    color: #fbbf24;
+    color: #ff7500;
     text-decoration: none;
     font-weight: 500;
     text-underline-offset: 3px;
@@ -330,9 +330,9 @@ html {
 }
 
 .blog-prose a:hover {
-    color: #fcd34d;
+    color: #ff9440;
     text-decoration: underline;
-    text-decoration-color: rgba(245, 158, 11, 0.5);
+    text-decoration-color: rgba(255, 117, 0, 0.5);
 }
 
 /* Lists ------------------------------------------------------------------- */
@@ -348,7 +348,7 @@ html {
 }
 
 .blog-prose li::marker {
-    color: #f59e0b;
+    color: #ff7500;
     font-weight: 600;
 }
 
@@ -366,7 +366,7 @@ html {
     margin: 1.75rem 0;
     padding: 1rem 1.25rem;
     border-left: 3px solid transparent;
-    border-image: linear-gradient(to bottom, #f59e0b, #ef4444) 1;
+    border-image: linear-gradient(to bottom, #ff7500, #ef4444) 1;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 0 0.5rem 0.5rem 0;
     color: rgba(255, 255, 255, 0.85);
@@ -381,7 +381,7 @@ html {
 .blog-prose code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.875em;
-    color: #fcd34d;
+    color: #ff9440;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 0.15em 0.4em;
@@ -420,7 +420,7 @@ html {
 }
 
 .blog-prose thead {
-    background: linear-gradient(to right, rgba(245, 158, 11, 0.18), rgba(239, 68, 68, 0.12));
+    background: linear-gradient(to right, rgba(255, 117, 0, 0.18), rgba(239, 68, 68, 0.12));
 }
 
 .blog-prose th {
@@ -451,5 +451,5 @@ html {
     margin: 2.5rem 0;
     border: 0;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(245, 158, 11, 0.4), transparent);
+    background: linear-gradient(to right, transparent, rgba(255, 117, 0, 0.4), transparent);
 }

@@ -29,7 +29,7 @@ export function ContactMap({
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLines.join(" "))}`);
 
   return (
-    <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,122,24,0.22)] shadow-[0_0_60px_-18px_rgba(255,122,24,0.4)]">
+    <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,117,0,0.22)] shadow-[0_0_60px_-18px_rgba(255,117,0,0.4)]">
       <div className="relative h-[280px] w-full sm:h-[300px] lg:h-[340px]">
         {embedUrl ? (
           <iframe
@@ -45,7 +45,7 @@ export function ContactMap({
         )}
 
         {/* Route overlay card */}
-        <div className="absolute bottom-4 right-4 z-10 w-[min(18rem,calc(100%-2rem))] rounded-xl border border-[rgba(255,122,24,0.3)] bg-black/70 p-4 backdrop-blur-md sm:bottom-6 sm:right-6">
+        <div className="absolute bottom-4 right-4 z-10 w-[min(18rem,calc(100%-2rem))] rounded-xl border border-[rgba(255,117,0,0.3)] bg-black/70 p-4 backdrop-blur-md sm:bottom-6 sm:right-6">
           {markerTitle && <p className="font-semibold text-white">{markerTitle}</p>}
           {addressLines.map((line, i) => (
             <p key={i} className="text-sm text-white/65">
@@ -77,7 +77,7 @@ function NeonMap({ markerTitle }: { markerTitle?: string }) {
           className="absolute inset-0 origin-bottom [transform:rotateX(62deg)]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,122,24,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,122,24,0.16) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,117,0,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,117,0,0.16) 1px, transparent 1px)",
             backgroundSize: "46px 46px",
             maskImage: "linear-gradient(to top, black 15%, transparent 85%)",
             WebkitMaskImage: "linear-gradient(to top, black 15%, transparent 85%)",
@@ -86,7 +86,7 @@ function NeonMap({ markerTitle }: { markerTitle?: string }) {
       </div>
 
       {/* Center glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_56%,rgba(255,122,24,0.22),transparent_58%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_56%,rgba(255,117,0,0.22),transparent_58%)]" />
 
       {/* Glowing arterials */}
       <svg
@@ -158,8 +158,8 @@ function Marker({
       <span
         className={`relative flex items-center justify-center rounded-full ${
           big
-            ? "h-12 w-12 bg-amber-500/25 shadow-[0_0_45px_12px_rgba(255,122,24,0.4)]"
-            : "h-8 w-8 bg-amber-500/15 shadow-[0_0_22px_6px_rgba(255,122,24,0.25)]"
+            ? "h-12 w-12 bg-amber-500/25 shadow-[0_0_45px_12px_rgba(255,117,0,0.4)]"
+            : "h-8 w-8 bg-amber-500/15 shadow-[0_0_22px_6px_rgba(255,117,0,0.25)]"
         }`}
       >
         <MapPin

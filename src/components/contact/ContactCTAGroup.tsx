@@ -12,7 +12,7 @@ export type ContactCTAGroupProps = {
 /** One wide glass card with three divided columns: office hours, appointment, quick contact. */
 export function ContactCTAGroup({ openingHours, appointment, urgent }: ContactCTAGroupProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-[rgba(255,122,24,0.18)] bg-neutral-950/80 shadow-[0_0_45px_-18px_rgba(255,122,24,0.35)] backdrop-blur-sm">
+    <div className="overflow-hidden rounded-2xl border border-[rgba(255,117,0,0.18)] bg-neutral-950/80 shadow-[0_0_45px_-18px_rgba(255,117,0,0.35)] backdrop-blur-sm">
       <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
         <div className="p-6">
           <OpeningHoursCard openingHours={openingHours} />

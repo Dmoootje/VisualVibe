@@ -94,7 +94,7 @@ export function StickyBlogSidebar({
       {service && (
         <Link
           href={service.href}
-          className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-all hover:border-amber-500/40 hover:shadow-[0_0_30px_-12px_rgba(245,158,11,0.45)]"
+          className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-all hover:border-amber-500/40 hover:shadow-[0_0_30px_-12px_rgba(255,117,0,0.45)]"
         >
           {service.icon && (
             <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20">
