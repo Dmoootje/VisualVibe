@@ -3,3 +3,8 @@ export { FeaturesHeader } from "./FeaturesHeader";
 export { FeaturesTabs } from "./FeaturesTabs";
 export { MobileFeatureTitle } from "./MobileFeatureTitle";
 export { FeatureContent } from "./FeatureContent";
+export { ServiceFeatureList } from "./ServiceFeatureList";
+export { ServiceMiniBlock } from "./ServiceMiniBlock";
+export { ServiceImageCard } from "./ServiceImageCard";
+export { ServiceTrustRow } from "./ServiceTrustRow";
+export { ExtraServiceChips } from "./ExtraServiceChips";

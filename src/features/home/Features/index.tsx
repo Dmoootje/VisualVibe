@@ -7,6 +7,8 @@ import {
   FeaturesTabs,
   MobileFeatureTitle,
   FeatureContent,
+  ServiceTrustRow,
+  ExtraServiceChips,
 } from "./components";
 import { useFeaturesTabs } from "./hooks/useFeaturesTabs";
 
@@ -33,6 +35,10 @@ export default function Features() {
           <MobileFeatureTitle activeTab={activeTab} />
           <FeatureContent contentStyle={contentStyle} />
         </Tabs>
+
+        {/* Shared trust badges + supporting-service chips (under active content) */}
+        <ServiceTrustRow />
+        <ExtraServiceChips />
       </div>
     </section>
   );
