@@ -1,51 +1,86 @@
+import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
-import type { SiteSettings } from "@/types";
+import {
+  DEFAULT_OPENING_HOURS,
+  DEFAULT_SITE_SETTINGS,
+  type OpeningHoursDay,
+  type SiteSettings,
+} from "@/types/siteSettings";
 
 const COLLECTION = "site_settings";
 const SETTINGS_ID = "default";
 
-const FALLBACK = {
-  companyName: "VisualVibe",
-  mainEmail: "hello@visualvibe.be",
-  leadNotificationEmail: "hello@visualvibe.be",
-};
-
-export async function getSiteSettings(): Promise<SiteSettings> {
-  const doc = await adminDb.collection(COLLECTION).doc(SETTINGS_ID).get();
-  const now = new Date().toISOString();
-
-  if (!doc.exists) {
-    return { id: SETTINGS_ID, ...FALLBACK, createdAt: now, updatedAt: now };
-  }
-
-  const data = doc.data()!;
-  return {
-    id: SETTINGS_ID,
-    companyName: data.companyName ?? FALLBACK.companyName,
-    mainEmail: data.mainEmail ?? FALLBACK.mainEmail,
-    leadNotificationEmail: data.leadNotificationEmail ?? FALLBACK.leadNotificationEmail,
-    phone: data.phone ?? undefined,
-    whatsapp: data.whatsapp ?? undefined,
-    address: data.address ?? undefined,
-    googleMapsUrl: data.googleMapsUrl ?? undefined,
-    facebookUrl: data.facebookUrl ?? undefined,
-    instagramUrl: data.instagramUrl ?? undefined,
-    linkedinUrl: data.linkedinUrl ?? undefined,
-    createdAt: data.createdAt?.toDate?.().toISOString() ?? now,
-    updatedAt: data.updatedAt?.toDate?.().toISOString() ?? now,
-  };
+function toOpeningHours(value: unknown): OpeningHoursDay[] {
+  if (!Array.isArray(value) || value.length === 0) return DEFAULT_OPENING_HOURS;
+  return value.map((raw) => {
+    const day = (raw ?? {}) as Partial<OpeningHoursDay>;
+    return {
+      day: String(day.day ?? ""),
+      label: String(day.label ?? ""),
+      isOpen: Boolean(day.isOpen),
+      openTime: String(day.openTime ?? ""),
+      closeTime: String(day.closeTime ?? ""),
+      pauseStart: String(day.pauseStart ?? ""),
+      pauseEnd: String(day.pauseEnd ?? ""),
+      note: String(day.note ?? ""),
+    };
+  });
 }
 
+/**
+ * Reads the singleton site settings. Resilient by design: if the doc is missing
+ * or Firestore is unreachable (e.g. no credentials at build time) it returns the
+ * defaults, so public pages never crash or render empty contact details.
+ */
+async function readSiteSettings(): Promise<SiteSettings> {
+  const now = new Date().toISOString();
+  const base: SiteSettings = {
+    id: SETTINGS_ID,
+    ...DEFAULT_SITE_SETTINGS,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  try {
+    const doc = await adminDb.collection(COLLECTION).doc(SETTINGS_ID).get();
+    if (!doc.exists) return base;
+
+    const data = doc.data()!;
+    const { createdAt, updatedAt, openingHours, ...rest } = data;
+
+    return {
+      ...base,
+      ...(rest as Partial<SiteSettings>),
+      openingHours: toOpeningHours(openingHours),
+      createdAt: createdAt?.toDate?.().toISOString() ?? now,
+      updatedAt: updatedAt?.toDate?.().toISOString() ?? now,
+    };
+  } catch {
+    return base;
+  }
+}
+
+/** Cached per request so the footer, schema and page share a single read. */
+export const getSiteSettings = cache(readSiteSettings);
+
 export type UpdateSiteSettingsInput = Partial<Omit<SiteSettings, "id" | "createdAt" | "updatedAt">>;
+
+/** Drops undefined values so Firestore never receives them. */
+function stripUndefined<T extends Record<string, unknown>>(input: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(input).filter(([, value]) => value !== undefined)
+  ) as Partial<T>;
+}
 
 export async function updateSiteSettings(input: UpdateSiteSettingsInput): Promise<void> {
   const ref = adminDb.collection(COLLECTION).doc(SETTINGS_ID);
   const doc = await ref.get();
   const now = new Date();
+  const clean = stripUndefined(input);
 
   if (!doc.exists) {
-    await ref.set({ ...FALLBACK, ...input, createdAt: now, updatedAt: now });
+    await ref.set({ ...DEFAULT_SITE_SETTINGS, ...clean, createdAt: now, updatedAt: now });
   } else {
-    await ref.update({ ...input, updatedAt: now });
+    await ref.update({ ...clean, updatedAt: now });
   }
 }
