@@ -122,11 +122,11 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
             Waarin ben je geïnteresseerd?
           </label>
           <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
-            <option value="" disabled>
+            <option value="" disabled className="bg-neutral-900 text-white">
               Kies een dienst
             </option>
             {services.map((service) => (
-              <option key={service.slug} value={service.slug}>
+              <option key={service.slug} value={service.slug} className="bg-neutral-900 text-white">
                 {service.title}
               </option>
             ))}
@@ -138,11 +138,11 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
             Regio
           </label>
           <select id="region" name="region" className={inputClasses} defaultValue="">
-            <option value="" disabled>
+            <option value="" disabled className="bg-neutral-900 text-white">
               Kies een regio
             </option>
             {regions.map((region) => (
-              <option key={region.slug} value={region.slug}>
+              <option key={region.slug} value={region.slug} className="bg-neutral-900 text-white">
                 {region.title}
               </option>
             ))}
