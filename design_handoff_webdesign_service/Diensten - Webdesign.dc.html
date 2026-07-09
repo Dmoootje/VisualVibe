@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF7A00;}
+  image-slot{--is-bg:#141210;--is-border:rgba(255,122,0,.18);}
+  @keyframes spin{to{transform:rotate(1turn);}}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.6);}70%{box-shadow:0 0 0 7px rgba(255,122,0,0);}}
+  .liveDot{animation:livePulse 2.2s ease-out infinite;}
+  @keyframes scanY{0%{transform:translateY(-10%);opacity:0;}12%{opacity:.9;}88%{opacity:.9;}100%{transform:translateY(1000%);opacity:0;}}
+  .scan{animation:scanY 3.6s cubic-bezier(.6,0,.4,1) infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .bob{animation:bob 4s ease-in-out infinite;}
+  @keyframes bob2{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+  .bob2{animation:bob2 5s ease-in-out infinite;}
+  @keyframes cursorMove{0%{transform:translate(40px,150px);}25%{transform:translate(230px,60px);}50%{transform:translate(120px,190px);}75%{transform:translate(320px,110px);}100%{transform:translate(40px,150px);}}
+  .cursor{animation:cursorMove 7s ease-in-out infinite;}
+  @keyframes glowB{0%,100%{opacity:.45;}50%{opacity:.8;}}
+  .glowB{animation:glowB 6s ease-in-out infinite;}
+  @keyframes rowIn{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .caseRow{opacity:0;animation:rowIn .6s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * .11s + .15s);}
+  .heroBtn,.navBtn{transition:transform .25s ease,box-shadow .25s ease;}
+  .heroBtn:hover,.navBtn:hover{transform:translateY(-2px);}
+  .heroBtn .ar{transition:transform .3s ease;}.heroBtn:hover .ar{transform:translateX(5px);}
+  .caseHead{transition:background .3s ease,border-color .3s ease;}
+  .visitLink{transition:gap .25s ease;}
+  .visitLink:hover{gap:12px !important;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}.caseRow{opacity:1;}}
+</style>
+</helmet>
+<x-import component-from-global-scope="image-slot" from="./image-slot.js" id="wd-loader" hint-size="1px,1px" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;"></x-import>
+
+<div style="position:relative;width:1440px;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;">
+
+  <!-- ambient -->
+  <div style="position:absolute;top:-140px;right:-160px;width:760px;height:760px;background:radial-gradient(circle at center,rgba(255,90,0,.14),transparent 66%);pointer-events:none;z-index:0;"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div style="display:flex;align-items:center;gap:28px;font-weight:600;font-size:15px;color:rgba(255,255,255,.85);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></svg>
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#fff;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span>Realisaties</span><span>Sectoren</span><span>Kennisbank</span><span>Over ons</span><span>Contact</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+      <a href="#" class="navBtn" style="font-weight:700;font-size:14px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO (product vibe) ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:64px 56px 44px;display:grid;grid-template-columns:1fr 560px;gap:56px;align-items:center;">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.04em;margin-bottom:22px;">
+        <span>Diensten</span><span style="color:rgba(255,255,255,.25);">/</span><span style="color:#FF9A45;">Webdesign</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-weight:700;font-size:13px;color:#FF9A45;margin-bottom:24px;">
+        <span class="liveDot" style="width:7px;height:7px;border-radius:9999px;background:#FF7A00;"></span>Websites & webshops
+      </div>
+      <h1 style="font-family:'Sora';font-weight:800;font-size:66px;line-height:1.02;letter-spacing:-.03em;color:#fff;margin:0 0 22px;">Webdesign</h1>
+      <p style="font-size:19px;line-height:1.6;color:rgba(255,255,255,.62);margin:0 0 34px;max-width:500px;">VisualVibe bouwt snelle, gebruiksvriendelijke websites en webshops voor KMO's in Limburg. Van een strakke onepager tot een volledige webshop: elke website wordt opgebouwd rond snelheid, vindbaarheid en een duidelijk pad naar contact.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="#" class="heroBtn" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:#fff;padding:15px 28px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 16px 40px -14px rgba(255,90,0,.85);">Offerte aanvragen <svg class="ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+        <a href="#showcase" class="heroBtn" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:#fff;padding:15px 28px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);">Bekijk realisaties <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m5 12 7 7 7-7"></path></svg></a>
+      </div>
+    </div>
+
+    <!-- live mini-mockup -->
+    <div style="position:relative;">
+      <div class="glowB" style="position:absolute;inset:-30px;background:radial-gradient(circle at 60% 45%,rgba(255,100,0,.4),transparent 68%);filter:blur(30px);z-index:0;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;border-radius:18px;padding:1.5px;background:linear-gradient(150deg,rgba(255,150,60,.7),rgba(255,90,0,.25) 55%,rgba(255,255,255,.05));box-shadow:0 40px 90px -34px rgba(255,80,0,.6);">
+        <div style="border-radius:16px;overflow:hidden;background:#0e0d0c;border:1px solid rgba(255,255,255,.05);">
+          <div style="display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:#100e0d;">
+            <span style="width:9px;height:9px;border-radius:9999px;background:#FF3B2E;"></span><span style="width:9px;height:9px;border-radius:9999px;background:#FF7A00;"></span><span style="width:9px;height:9px;border-radius:9999px;background:#FFA23A;"></span>
+            <span style="margin-left:8px;flex:1;height:22px;border-radius:7px;background:rgba(255,255,255,.05);display:flex;align-items:center;gap:7px;padding:0 10px;font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.5);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5ac47d" stroke-width="2.4"><path d="M7 11V7a5 5 0 0 1 10 0v4"></path><rect x="4" y="11" width="16" height="10" rx="2"></rect></svg>klant-website.be</span>
+          </div>
+          <div style="position:relative;height:340px;">
+            <image-slot id="wd-hero-preview" shape="rect" fit="cover" src="https://visualvibe.be/wp-content/uploads/2023/08/website-mockup.png" placeholder="Sleep hier een website-screenshot"></image-slot>
+            <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
+              <div class="scan" style="position:absolute;left:0;right:0;top:0;height:34px;background:linear-gradient(180deg,transparent,rgba(255,122,0,.35),transparent);"></div>
+            </div>
+            <div class="cursor" style="position:absolute;top:0;left:0;width:18px;height:18px;pointer-events:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1"><path d="M4 2l16 9-7 2-3 7z"></path></svg></div>
+          </div>
+        </div>
+      </div>
+      <!-- floating metric chips -->
+      <div class="bob" style="position:absolute;top:24px;right:-26px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(20,17,14,.9);backdrop-filter:blur(8px);border:1px solid rgba(255,122,0,.22);box-shadow:0 16px 34px -16px rgba(0,0,0,.8);">
+        <svg width="26" height="26" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"></circle><circle cx="18" cy="18" r="15" fill="none" stroke="#5ac47d" stroke-width="4" stroke-linecap="round" stroke-dasharray="94" stroke-dashoffset="6" transform="rotate(-90 18 18)"></circle></svg>
+        <div><div style="font-family:'Sora';font-weight:800;font-size:16px;color:#fff;line-height:1;">98</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;">PageSpeed</div></div>
+      </div>
+      <div class="bob2" style="position:absolute;bottom:20px;left:-24px;z-index:2;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:rgba(20,17,14,.9);backdrop-filter:blur(8px);border:1px solid rgba(255,122,0,.22);box-shadow:0 16px 34px -16px rgba(0,0,0,.8);">
+        <span style="width:22px;height:22px;border-radius:7px;background:rgba(90,196,125,.16);display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5ac47d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span style="font-weight:700;font-size:13px;color:#fff;">SEO-ready</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SHOWCASE ===== -->
+  <section id="showcase" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:60px 56px 110px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px;">
+      <div>
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:14px;">REALISATIES</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:40px;line-height:1.08;letter-spacing:-.02em;color:#fff;margin:0;max-width:620px;">Websites die we voor KMO's bouwden</h2>
+      </div>
+      <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.5);max-width:290px;margin:0 0 6px;">Klik een project open voor screenshots en wat we precies leverden.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <sc-for list="{{ cases }}" as="c" hint-placeholder-count="5">
+        <div class="caseRow" style="--i:{{ c.i }};">
+          <div class="caseHead" onClick="{{ c.onToggle }}" style="cursor:pointer;border-radius:18px;border:1px solid rgba(255,255,255,.09);padding:22px 24px;display:flex;align-items:center;gap:24px;{{ c.headStyle }}">
+            <span style="font-family:'JetBrains Mono';font-weight:700;font-size:15px;color:#FF9A45;min-width:34px;">{{ c.num }}</span>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <span style="font-family:'Sora';font-weight:700;font-size:22px;color:#fff;">{{ c.name }}</span>
+                <span style="display:inline-flex;gap:6px;">
+                  <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="2"><span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9999px;padding:3px 10px;">{{ t }}</span></sc-for>
+                </span>
+              </div>
+              <div style="font-size:14px;color:rgba(255,255,255,.5);margin-top:6px;">{{ c.teaser }}</div>
+            </div>
+            <div style="width:132px;height:82px;border-radius:11px;overflow:hidden;flex:none;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);"><image-slot id="{{ c.thumbId }}" shape="rect" fit="contain" src="{{ c.thumbSrc }}" placeholder="Thumb"></image-slot></div>
+            <span style="width:38px;height:38px;border-radius:9999px;flex:none;border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;transform:{{ c.chev }};transition:transform .4s ease;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+
+          <div style="display:grid;grid-template-rows:{{ c.rows }};transition:grid-template-rows .5s cubic-bezier(.2,.7,.2,1);">
+            <div style="overflow:hidden;">
+              <div style="display:grid;grid-template-columns:668px 1fr;gap:36px;padding:26px 24px 8px;">
+                <!-- gallery -->
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="width:668px;max-width:100%;aspect-ratio:16/9;border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.08);"><image-slot id="{{ c.shot0 }}" shape="rect" fit="cover" src="{{ c.shot0src }}" placeholder="Hoofdscreenshot"></image-slot></div>
+                  <div style="display:flex;gap:16px;align-items:flex-start;">
+                    <div style="height:210px;aspect-ratio:16/9;border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative;flex:none;"><div style="position:absolute;inset:0;"><image-slot id="{{ c.shot1 }}" shape="rect" fit="cover" src="{{ c.shot1src }}" placeholder="Desktop-screenshot"></image-slot></div><span style="position:absolute;top:8px;left:8px;z-index:3;font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.1em;color:#fff;background:rgba(10,10,10,.6);border-radius:5px;padding:3px 7px;pointer-events:none;">DESKTOP</span></div>
+                    <div style="height:210px;aspect-ratio:3/4;border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative;flex:none;"><div style="position:absolute;inset:0;"><image-slot id="{{ c.shot2 }}" shape="rect" fit="cover" src="{{ c.shot2src }}" placeholder="Tablet"></image-slot></div><span style="position:absolute;top:8px;left:8px;z-index:3;font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.1em;color:#fff;background:rgba(10,10,10,.6);border-radius:5px;padding:3px 7px;pointer-events:none;">TABLET</span></div>
+                    <div style="height:210px;aspect-ratio:1/2;border-radius:13px;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative;flex:none;"><div style="position:absolute;inset:0;"><image-slot id="{{ c.shot3 }}" shape="rect" fit="cover" src="{{ c.shot3src }}" placeholder="Mobiel"></image-slot></div><span style="position:absolute;top:8px;left:8px;z-index:3;font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.1em;color:#fff;background:rgba(10,10,10,.6);border-radius:5px;padding:3px 7px;pointer-events:none;">MOBIEL</span></div>
+                  </div>
+                </div>
+                <!-- info -->
+                <div>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:8px;">{{ c.client }}</div>
+                  <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.7);margin:0 0 20px;">{{ c.text }}</p>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:10px;">SEO-FOCUS</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px;">
+                    <sc-for list="{{ c.terms }}" as="tm" hint-placeholder-count="2"><span style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono';font-size:11px;font-weight:500;color:#FF9A45;background:rgba(255,122,0,.08);border:1px solid rgba(255,122,0,.22);border-radius:7px;padding:5px 9px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="2.4"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3" stroke-linecap="round"></path></svg>{{ tm }}</span></sc-for>
+                  </div>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:12px;">WAT WE LEVERDEN</div>
+                  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:26px;">
+                    <sc-for list="{{ c.checklist }}" as="ci" hint-placeholder-count="5">
+                      <div style="display:flex;align-items:center;gap:11px;">
+                        <span style="width:22px;height:22px;border-radius:7px;flex:none;background:rgba(255,122,0,.14);border:1px solid rgba(255,122,0,.3);display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                        <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,.85);">{{ ci }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <a href="{{ c.url }}" class="visitLink" style="display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:#fff;padding:12px 22px;border-radius:11px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);">Bekijk site <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{ &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1180 } }">
+class Component extends DCLogic {
+  state = { open: 0 };
+  toggle(i) { this.setState(s => ({ open: s.open === i ? -1 : i })); }
+  renderVals() {
+    const open = this.state.open;
+    const base = [
+      { id: 'gordijnenmyriam', name: 'Gordijnen Myriam', client: 'GORDIJNEN MYRIAM · GORDIJNEN & MEER', url: 'https://gordijnenmyriam.be/',
+        tags: ['Huisstijl', 'Fotografie', 'SEO + GEO'],
+        teaser: 'Eigen huisstijl & webdesign met prachtige realisatiepagina’s.',
+        text: 'Website met eigen creatie van huisstijl & webdesign inclusief prachtige foto’s voor Gordijnen Myriam. Geoptimaliseerd voor zoekmachines (SEO) én de AI-zoekmachines (GEO), met op maat gemaakte pagina’s en realisatiepagina’s.',
+        features: ['Eigen huisstijl & webdesign', 'Professionele fotografie', 'SEO-optimalisatie', 'GEO / AI-zoekmachines', 'Realisatiepagina’s op maat'],
+        terms: ['SEO', 'GEO / AI'] },
+      { id: 'hetmagazijn', name: 'Het Magazijn', client: 'HET MAGAZIJN · RESTAURANT · BILZEN', url: 'https://www.hetmagazijn.be',
+        tags: ['Horeca', 'Reservatie', 'SEO'],
+        teaser: 'Restaurantsite met tafelreserveersysteem & feestzaalpagina’s.',
+        text: 'Website met eigen creatie van huisstijl & webdesign, met integratie van een tafelreserveersysteem en professionele foto’s. Geoptimaliseerd voor lokale zoekmachines met op maat gemaakte restaurant- en feestzaalpagina’s.',
+        features: ['Eigen huisstijl & webdesign', 'Tafelreserveersysteem', 'Professionele fotografie', 'Restaurant- & feestzaalpagina’s', 'Lokale SEO'],
+        terms: ['Het Magazijn', 'Restaurant Bilzen', 'Uiteten Bilzen'] },
+      { id: 'aussems', name: 'Schrijnwerkerij Aussems', client: 'AUSSEMS · SCHRIJNWERKER', url: 'https://schrijnwerkerijaussems.be/',
+        tags: ['Bedrijfssite', 'Contactformulier', 'SEO'],
+        teaser: 'Bedrijfssite met specifiek contactformulier & referentiepagina’s.',
+        text: 'Website met eigen creatie van huisstijl & webdesign, met integratie van een specifiek contactformulier voor Schrijnwerkerij Aussems. Geoptimaliseerd voor zoekmachines, met op maat gemaakte diensten- en referentiepagina’s.',
+        features: ['Eigen huisstijl & webdesign', 'Specifiek contactformulier', 'Diensten- & referentiepagina’s', 'SEO-optimalisatie'],
+        terms: ['Schrijnwerkerij', 'Gevelbekleding', 'Houtconstructies'] },
+      { id: 'gprenting', name: 'GPRenting', client: 'GPRENTING · PAARDENCAMIONETTE VERHUUR', url: 'https://gprenting.be/',
+        tags: ['Verhuur', 'Reservatiesysteem', 'SEO'],
+        teaser: 'Verhuursite met offerteformulieren & online reservatiesysteem.',
+        text: 'Website met webdesign in de huisstijl van GPRenting. Geoptimaliseerd voor zoekmachines, met op maat gemaakte offerteformulieren en een eigen online reservatiesysteem.',
+        features: ['Webdesign in huisstijl', 'Offerteformulieren op maat', 'Online reservatiesysteem', 'SEO-optimalisatie'],
+        terms: ['paardencamionette verhuur', 'paardencamionette huren'] },
+      { id: 'intramarket', name: 'Intramarket', client: 'INTRAMARKET · TRANSPORT', url: 'https://intramarket.be/',
+        tags: ['Transport', 'Offerte-systeem', 'SEO'],
+        teaser: 'Transportsite met offerte-aanvraag & galerijpagina’s.',
+        text: 'Website met eigen creatie van huisstijl & webdesign, met integratie van een offerte-aanvraagsysteem voor Intramarket. Geoptimaliseerd voor zoekmachines, met op maat gemaakte diensten- en galerijpagina’s.',
+        features: ['Eigen huisstijl & webdesign', 'Offerte-aanvraagsysteem', 'Diensten- & galerijpagina’s', 'SEO-optimalisatie'],
+        terms: ['Transport met vrachtwagen', 'Transport van planten'] },
+      { id: 'eluk', name: 'Eluk', client: 'ELUK · ELEKTRICITEITSWERKEN & DAKREINIGING', url: 'https://eluk.be/',
+        tags: ['Bedrijfssite', 'SEO'],
+        teaser: 'Bedrijfssite in huisstijl met diensten- & referentiepagina’s.',
+        text: 'Website met webdesign in de huisstijl van Eluk. Geoptimaliseerd voor zoekmachines, met op maat gemaakte diensten- en referentiepagina’s.',
+        features: ['Webdesign in huisstijl', 'Diensten- & referentiepagina’s', 'SEO-optimalisatie'],
+        terms: ['Elektriciteitswerken', 'Zonnepanelen'] },
+      { id: 'nelissen', name: 'Dr. Laurine Nelissen', client: 'DR. LAURINE NELISSEN · ESTHETISCHE GENEESKUNDE', url: 'https://drlaurinenelissen.be/',
+        tags: ['Zorg', 'Online boeking', 'SEO'],
+        teaser: 'Zorgsite met behandelingenoverzicht, prijzen & online boeking.',
+        text: 'Website met webdesign in de huisstijl van Dr. Laurine Nelissen. Geoptimaliseerd voor zoekmachines, met een op maat gemaakt overzicht van alle behandelingen, prijsoverzicht en online boekingsmogelijkheid.',
+        features: ['Webdesign in huisstijl', 'Behandelingenoverzicht op maat', 'Prijsoverzicht', 'Online boeking', 'SEO-optimalisatie'],
+        terms: ['Esthetische Geneeskunde'] },
+      { id: 'studentenkot', name: 'Studentenkot Hasselt', client: 'STUDENTENKOT HASSELT · KAMERS & STUDIO’S', url: 'https://studentenkothasselt.be',
+        tags: ['Verhuur', 'SEO'],
+        teaser: 'Verhuursite met plattegrond & reserveringsinformatie.',
+        text: 'Website in een herkenbare huisstijl, SEO-gericht op “studentenkot” en “Hasselt”. Inclusief gemeubelde kamers & studio’s, plattegrond én reserveringsinformatie.',
+        features: ['Herkenbare huisstijl', 'Overzicht kamers & studio’s', 'Plattegrond', 'Reserveringsinformatie', 'SEO-optimalisatie'],
+        terms: ['studentenkot', 'Hasselt'] },
+      { id: 'nozeco', name: 'Nozeco', client: 'NOZECO · ELEKTRISCHE OPLOSSINGEN', url: 'https://nozeco.be',
+        tags: ['Bedrijfssite', 'Offerte', 'SEO'],
+        teaser: 'Professionele dienstensite met offerte- & contactflow.',
+        text: 'Website in een professionele stijl voor Nozeco, SEO-gericht op “zonnepanelen” en “EV laadstations”. Inclusief een gedetailleerd dienstenaanbod en de mogelijkheid tot offerte/contact.',
+        features: ['Professionele stijl', 'Gedetailleerd dienstenaanbod', 'Offerte- & contactflow', 'SEO-optimalisatie'],
+        terms: ['zonnepanelen', 'EV laadstations'] },
+      { id: 'horsespa', name: 'HorseSpa', client: 'HORSESPA · MOBIELE SPA & BEHANDELINGEN', url: 'https://horsespa.eu',
+        tags: ['Dienstensite', 'Galerij', 'SEO'],
+        teaser: 'Dienstensite met foto-galerij & contactfunctie.',
+        text: 'Website volgens de huisstijl van HorseSpa, SEO-gericht op “mobile spa voor paarden” en “behandelingen staldieren”. Met dienstenoverzicht, foto-galerij en contactfunctie.',
+        features: ['Webdesign in huisstijl', 'Dienstenoverzicht', 'Foto-galerij', 'Contactfunctie', 'SEO-optimalisatie'],
+        terms: ['mobile spa voor paarden', 'behandelingen staldieren'] },
+      { id: 'snellinx', name: 'Renovaties Snellinx', client: 'RENOVATIES SNELLINX · BADKAMER & ZOLDER', url: 'https://renovatiesnellinx.be',
+        tags: ['Renovatie', 'SEO'],
+        teaser: 'Renovatiesite met voorbeelden & contactmogelijkheid.',
+        text: 'Website met webdesign in de huisstijl van Renovaties Snellinx. Geoptimaliseerd voor zoekmachines op “badkamerrenovaties” en “zolderverbouwing”, met overzicht van diensten, voorbeelden en contactmogelijkheid.',
+        features: ['Webdesign in huisstijl', 'Diensten & voorbeelden', 'Contactmogelijkheid', 'SEO-optimalisatie'],
+        terms: ['badkamerrenovaties', 'zolderverbouwing'] },
+      { id: 'weddingvibe', name: 'WeddingVibe', client: 'WEDDINGVIBE · TROUWFOTOGRAFIE LIMBURG', url: 'https://weddingvibe.be',
+        tags: ['Portfolio', 'Fotografie', 'SEO'],
+        teaser: 'Fotografie-portfolio met prijsinfo & contact.',
+        text: 'Website met webdesign in de huisstijl van WeddingVibe. Geoptimaliseerd voor zoekmachines op “huwelijksfotografie Limburg” en “trouwfotograaf”, met portfolio, prijsinfo en contactmogelijkheid.',
+        features: ['Webdesign in huisstijl', 'Portfolio', 'Prijsinfo', 'Contactmogelijkheid', 'SEO-optimalisatie'],
+        terms: ['huwelijksfotografie Limburg', 'trouwfotograaf'] },
+    ];
+    const prefill = {
+      gordijnenmyriam: {
+        s0: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FSEO-Webdesign-Gordijnen-Myriam.webp?alt=media&token=46e73430-abd1-4c5c-a6ea-bca9e7da3e92',
+        s1: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FSEO-Webdesign-Gordijnen-Myriam-3.webp?alt=media&token=d02e89cb-51d4-4284-a3eb-6fa9cdcc8dd8',
+        s2: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FSEO-Mobiel-tablet-Webdesign-Gordijnen-Myriam.webp?alt=media&token=378976c5-4bf3-43c7-b94f-10848fc11558',
+        s3: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FSEO-Mobiel-Webdesign-Gordijnen-Myriam.webp?alt=media&token=61f49379-f945-41c6-975d-8d121416b17e',
+        thumb: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FGordijnen-Myriam-website-design.webp?alt=media&token=2b24c37b-8192-4e42-babc-cdd2b2196fb1',
+      },
+    };
+    const cases = base.map((c, i) => {
+      const isOpen = open === i;
+      const p = prefill[c.id] || {};
+      return {
+        ...c, i, num: String(i + 1).padStart(2, '0'),
+        thumbId: 'wd-' + c.id + '-thumb', shot0: 'wd-' + c.id + '-1', shot1: 'wd-' + c.id + '-2', shot2: 'wd-' + c.id + '-3', shot3: 'wd-' + c.id + '-4',
+        shot0src: p.s0 || '', shot1src: p.s1 || '', shot2src: p.s2 || '', shot3src: p.s3 || '', thumbSrc: p.thumb || '',
+        checklist: c.features,
+        rows: isOpen ? '1fr' : '0fr',
+        chev: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+        headStyle: isOpen ? 'border-color:rgba(255,122,0,.5);background:rgba(255,122,0,.05);' : 'background:rgba(255,255,255,.02);',
+        onToggle: () => this.toggle(i),
+      };
+    });
+    return { cases };
+  }
+}
+</script>
+</body>
+</html>

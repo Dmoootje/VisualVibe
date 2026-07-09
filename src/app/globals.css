@@ -951,3 +951,31 @@ html {
     .vvh-scene { opacity: 0; }
     .vvh-scene[style*="--s:0"] { opacity: 1; }
 }
+
+/* ── Webdesign service page (hero mockup + showcase accordion) ───────────── */
+@keyframes vvw-livePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,122,0,.6); } 70% { box-shadow: 0 0 0 7px rgba(255,122,0,0); } }
+.vvw-liveDot { animation: vvw-livePulse 2.2s ease-out infinite; }
+@keyframes vvw-scanY { 0% { transform: translateY(-10%); opacity: 0; } 12% { opacity: .9; } 88% { opacity: .9; } 100% { transform: translateY(1000%); opacity: 0; } }
+.vvw-scan { animation: vvw-scanY 3.6s cubic-bezier(.6,0,.4,1) infinite; }
+@keyframes vvw-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.vvw-bob { animation: vvw-bob 4s ease-in-out infinite; }
+@keyframes vvw-bob2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+.vvw-bob2 { animation: vvw-bob2 5s ease-in-out infinite; }
+@keyframes vvw-cursor { 0% { transform: translate(40px,150px); } 25% { transform: translate(230px,60px); } 50% { transform: translate(120px,190px); } 75% { transform: translate(320px,110px); } 100% { transform: translate(40px,150px); } }
+.vvw-cursor { animation: vvw-cursor 7s ease-in-out infinite; }
+@keyframes vvw-glowB { 0%, 100% { opacity: .45; } 50% { opacity: .8; } }
+.vvw-glowB { animation: vvw-glowB 6s ease-in-out infinite; }
+@keyframes vvw-rowIn { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.vvw-caseRow { opacity: 0; animation: vvw-rowIn .6s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--i) * .11s + .15s); }
+.vvw-btn { transition: transform .25s ease, box-shadow .25s ease; }
+.vvw-btn:hover { transform: translateY(-2px); }
+.vvw-btn .vvw-ar { transition: transform .3s ease; }
+.vvw-btn:hover .vvw-ar { transform: translateX(5px); }
+.vvw-caseHead { transition: background .3s ease, border-color .3s ease; }
+.vvw-visitLink { transition: gap .25s ease; }
+.vvw-visitLink:hover { gap: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vvw-liveDot, .vvw-scan, .vvw-bob, .vvw-bob2, .vvw-cursor, .vvw-glowB, .vvw-caseRow { animation: none !important; }
+    .vvw-caseRow { opacity: 1; }
+}

@@ -11,13 +11,18 @@ import {
   Container,
 } from "@/components/ui";
 import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
+import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { allServices, getServiceBySlug } from "@/data/services";
+import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
   return allServices.map((service) => ({ slug: service.slug }));
 }
+
+// ISR so admin-managed Webdesign showcase images propagate without a rebuild.
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -57,6 +62,11 @@ export default async function ServiceDetailPage({
   const parentService = service.parentSlug ? getServiceBySlug(service.parentSlug) : undefined;
   const childServices = allServices.filter((s) => s.parentSlug === service.slug);
 
+  // The Webdesign service leads with the bespoke animated hero + realisatie
+  // showcase (admin-managed images); its regular content follows below.
+  const isWebdesign = service.slug === "webdesign";
+  const webdesignImages = isWebdesign ? await getWebdesignImages() : null;
+
   const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Diensten", path: "/diensten" },
@@ -76,11 +86,18 @@ export default async function ServiceDetailPage({
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
 
-      <PageHero
-        title={service.title}
-        subtitle={service.intro}
-        backLink={parentService ? { label: `Onderdeel van ${parentService.title}`, href: `/diensten/${parentService.slug}` } : undefined}
-      />
+      {isWebdesign && webdesignImages ? (
+        <>
+          <WebdesignHero heroImage={webdesignImages.hero} />
+          <WebdesignShowcase images={webdesignImages} />
+        </>
+      ) : (
+        <PageHero
+          title={service.title}
+          subtitle={service.intro}
+          backLink={parentService ? { label: `Onderdeel van ${parentService.title}`, href: `/diensten/${parentService.slug}` } : undefined}
+        />
+      )}
 
       {childServices.length > 0 ? (
         <Section orbs="tl-br">
