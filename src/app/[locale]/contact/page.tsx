@@ -27,29 +27,34 @@ export default async function ContactPage() {
   const addressLines = [streetLine, cityLine].filter(Boolean);
   if (addressLines.length === 0 && settings.fullAddress) addressLines.push(settings.fullAddress);
 
+  // Compact 2-line address for the card: street, then "postcode stad, land".
+  const cityCountryLine = [cityLine, settings.country].filter(Boolean).join(", ");
+  const cardAddressLines = (streetLine ? [streetLine, cityCountryLine] : [settings.fullAddress]).filter(
+    (line): line is string => Boolean(line)
+  );
+
   const routeUrl = settings.routeUrl || settings.googleMapsUrl;
 
   return (
-    <div className="min-h-screen bg-black px-4 pb-16 pt-24 text-white">
+    <div className="min-h-screen bg-black pb-16 pt-24 text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
 
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto px-4">
         {/* Hero */}
-        <header className="mb-10">
+        <header className="mb-8">
           <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">Contact</h1>
           <p className="mt-3 max-w-2xl text-lg text-white/70">
             Heb je een vraag, een idee of wil je samen bouwen aan groei? We denken graag met je mee.
           </p>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.35fr]">
           {/* Left: contact info cards */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3.5">
             <ContactInfoCard icon={MapPin} title="Adres">
-              {addressLines.map((line, i) => (
+              {cardAddressLines.map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
-              {settings.country && <p>{settings.country}</p>}
             </ContactInfoCard>
 
             {(settings.phone || settings.mobilePhone) && (
@@ -82,15 +87,21 @@ export default async function ContactPage() {
             </ContactInfoCard>
           </div>
 
-          {/* Right: lead form */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm sm:p-8">
+          {/* Right: lead form with orange glow */}
+          <div
+            className="rounded-[18px] border border-[rgba(255,122,24,0.35)] p-6 shadow-[0_0_50px_rgba(255,122,24,0.14),inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur-sm sm:p-8"
+            style={{
+              background:
+                "radial-gradient(circle at top right, rgba(255,122,24,0.10), transparent 35%), rgba(12,12,12,0.88)",
+            }}
+          >
             <h2 className="mb-6 text-xl font-bold">Stuur ons een bericht</h2>
             <LeadForm variant="contact" />
           </div>
         </div>
 
         {/* Map section */}
-        <div className="mt-12">
+        <div className="mt-10">
           <ContactMap
             embedUrl={settings.googleMapsEmbedUrl}
             latitude={settings.latitude}
@@ -102,7 +113,7 @@ export default async function ContactPage() {
         </div>
 
         {/* Office hours + CTA cards */}
-        <div className="mt-8">
+        <div className="mt-6">
           <ContactCTAGroup
             openingHours={settings.openingHours}
             appointment={{

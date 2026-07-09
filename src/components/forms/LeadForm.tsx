@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { services } from "@/data/services";
 import { regions } from "@/data/regions";
@@ -107,51 +108,47 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           <input id="phone" name="phone" type="tel" className={inputClasses} />
         </div>
 
-        {variant === "offerte" ? (
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="company" className="text-sm text-white/70">
-              Bedrijf
-            </label>
-            <input id="company" name="company" className={inputClasses} />
-          </div>
-        ) : null}
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="company" className="text-sm text-white/70">
+            Bedrijf
+          </label>
+          <input id="company" name="company" className={inputClasses} />
+        </div>
       </div>
 
-      {variant === "offerte" ? (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="serviceInterest" className="text-sm text-white/70">
-              Waarin ben je geïnteresseerd?
-            </label>
-            <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
-              <option value="" disabled>
-                Kies een dienst
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="serviceInterest" className="text-sm text-white/70">
+            Waarin ben je geïnteresseerd?
+          </label>
+          <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
+            <option value="" disabled>
+              Kies een dienst
+            </option>
+            {services.map((service) => (
+              <option key={service.slug} value={service.slug}>
+                {service.title}
               </option>
-              {services.map((service) => (
-                <option key={service.slug} value={service.slug}>
-                  {service.title}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="region" className="text-sm text-white/70">
-              Regio
-            </label>
-            <select id="region" name="region" className={inputClasses} defaultValue="">
-              <option value="" disabled>
-                Kies een regio
-              </option>
-              {regions.map((region) => (
-                <option key={region.slug} value={region.slug}>
-                  {region.title}
-                </option>
-              ))}
-            </select>
-          </div>
+            ))}
+          </select>
         </div>
-      ) : null}
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="region" className="text-sm text-white/70">
+            Regio
+          </label>
+          <select id="region" name="region" className={inputClasses} defaultValue="">
+            <option value="" disabled>
+              Kies een regio
+            </option>
+            {regions.map((region) => (
+              <option key={region.slug} value={region.slug}>
+                {region.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="message" className="text-sm text-white/70">
@@ -171,13 +168,16 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         </p>
       )}
 
-      <Button
-        type="submit"
-        disabled={isPending}
-        className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white border-0 h-11"
-      >
-        {isPending ? "Bezig met verzenden..." : variant === "offerte" ? "Offerte aanvragen" : "Versturen"}
-      </Button>
+      <div className="sm:flex sm:justify-end">
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="h-11 w-full gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600 sm:w-auto"
+        >
+          {isPending ? "Bezig met verzenden..." : variant === "offerte" ? "Offerte aanvragen" : "Bericht versturen"}
+          {!isPending && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
+        </Button>
+      </div>
     </form>
   );
 }

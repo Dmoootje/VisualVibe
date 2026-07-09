@@ -10,9 +10,9 @@ type ContactMapProps = {
 };
 
 /**
- * Dark/neon map section. Uses the Google Maps embed iframe when configured,
- * otherwise a styled CSS "neon grid" fallback with a glowing marker. Always
- * wrapped in the VisualVibe glow-border frame with an address overlay card.
+ * Dark/neon map section, near full container width. Uses the Google Maps embed
+ * iframe when configured, otherwise a designed neon road-network fallback (never
+ * an empty grid or a visible load error). A glass route-card overlays the map.
  */
 export function ContactMap({
   embedUrl,
@@ -29,8 +29,8 @@ export function ContactMap({
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLines.join(" "))}`);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 shadow-[0_0_50px_-15px_rgba(245,158,11,0.4)]">
-      <div className="relative h-[320px] w-full sm:h-[420px]">
+    <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,122,24,0.22)] shadow-[0_0_60px_-18px_rgba(255,122,24,0.4)]">
+      <div className="relative h-[280px] w-full sm:h-[300px] lg:h-[340px]">
         {embedUrl ? (
           <iframe
             src={embedUrl}
@@ -41,16 +41,14 @@ export function ContactMap({
             allowFullScreen
           />
         ) : (
-          <NeonMapFallback markerTitle={markerTitle} />
+          <NeonMap markerTitle={markerTitle} />
         )}
-      </div>
 
-      {/* Address overlay card */}
-      <div className="pointer-events-none absolute inset-0 flex items-end justify-end p-4 sm:p-6">
-        <div className="pointer-events-auto max-w-xs rounded-xl border border-white/10 bg-black/70 p-4 backdrop-blur-md">
+        {/* Route overlay card */}
+        <div className="absolute bottom-4 right-4 z-10 w-[min(18rem,calc(100%-2rem))] rounded-xl border border-[rgba(255,122,24,0.3)] bg-black/70 p-4 backdrop-blur-md sm:bottom-6 sm:right-6">
           {markerTitle && <p className="font-semibold text-white">{markerTitle}</p>}
           {addressLines.map((line, i) => (
-            <p key={i} className="text-sm text-white/70">
+            <p key={i} className="text-sm text-white/65">
               {line}
             </p>
           ))}
@@ -69,27 +67,107 @@ export function ContactMap({
   );
 }
 
-function NeonMapFallback({ markerTitle }: { markerTitle?: string }) {
+/** Designed dark map fallback: perspective ground grid + glowing arterials + markers. */
+function NeonMap({ markerTitle }: { markerTitle?: string }) {
   return (
-    <div
-      className="relative h-full w-full bg-neutral-950"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(245,158,11,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,0.12) 1px, transparent 1px)",
-        backgroundSize: "44px 44px",
-      }}
-      aria-hidden="true"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_55%,rgba(245,158,11,0.22),transparent_60%)]" />
-      {/* a couple of faint "roads" */}
-      <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
-      <div className="absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-amber-500/30 to-transparent" />
-      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
-        <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/20 shadow-[0_0_40px_10px_rgba(245,158,11,0.35)]">
-          <MapPin className="h-8 w-8 text-amber-400" strokeWidth={2.2} />
-        </span>
-        {markerTitle && <span className="mt-2 text-sm font-medium text-white/80">{markerTitle}</span>}
+    <div className="absolute inset-0 overflow-hidden bg-[#0a0705]" aria-hidden="true">
+      {/* Perspective ground grid */}
+      <div className="absolute inset-x-[-20%] bottom-[-10%] top-[28%] [perspective:520px]">
+        <div
+          className="absolute inset-0 origin-bottom [transform:rotateX(62deg)]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,122,24,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,122,24,0.16) 1px, transparent 1px)",
+            backgroundSize: "46px 46px",
+            maskImage: "linear-gradient(to top, black 15%, transparent 85%)",
+            WebkitMaskImage: "linear-gradient(to top, black 15%, transparent 85%)",
+          }}
+        />
       </div>
+
+      {/* Center glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_56%,rgba(255,122,24,0.22),transparent_58%)]" />
+
+      {/* Glowing arterials */}
+      <svg
+        viewBox="0 0 1200 380"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full"
+      >
+        <defs>
+          <linearGradient id="vvRoad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#ff7a18" stopOpacity="0.1" />
+            <stop offset="0.5" stopColor="#ffab54" stopOpacity="0.95" />
+            <stop offset="1" stopColor="#ff7a18" stopOpacity="0.1" />
+          </linearGradient>
+          <filter id="vvGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <g
+          stroke="url(#vvRoad)"
+          strokeWidth="2.4"
+          fill="none"
+          strokeLinecap="round"
+          filter="url(#vvGlow)"
+        >
+          <path d="M-20,296 C250,272 384,156 650,178 S1040,122 1230,96" />
+          <path d="M-20,128 C205,152 430,250 700,254 S1050,300 1230,326" />
+          <path d="M212,-20 C232,120 300,232 360,400" />
+          <path d="M772,-20 C744,130 826,250 770,400" />
+          <path d="M980,-20 C960,150 1032,270 1092,400" />
+          <path d="M60,-20 C90,120 40,250 150,400" opacity="0.5" />
+        </g>
+
+        <g fill="#ffc487" filter="url(#vvGlow)">
+          <circle cx="360" cy="196" r="3.5" />
+          <circle cx="650" cy="178" r="3" />
+          <circle cx="770" cy="250" r="3.5" />
+          <circle cx="700" cy="254" r="3" />
+          <circle cx="980" cy="210" r="2.5" />
+          <circle cx="230" cy="150" r="2.5" />
+          <circle cx="1050" cy="300" r="2.5" />
+        </g>
+      </svg>
+
+      {/* Markers */}
+      <Marker className="left-[22%] top-[38%]" size="sm" />
+      <Marker className="left-[78%] top-[42%]" size="sm" />
+      <Marker className="left-1/2 top-[55%] -translate-x-1/2" size="lg" label={markerTitle} />
+    </div>
+  );
+}
+
+function Marker({
+  className,
+  size,
+  label,
+}: {
+  className: string;
+  size: "sm" | "lg";
+  label?: string;
+}) {
+  const big = size === "lg";
+  return (
+    <div className={`absolute flex flex-col items-center ${className}`}>
+      <span
+        className={`relative flex items-center justify-center rounded-full ${
+          big
+            ? "h-12 w-12 bg-amber-500/25 shadow-[0_0_45px_12px_rgba(255,122,24,0.4)]"
+            : "h-8 w-8 bg-amber-500/15 shadow-[0_0_22px_6px_rgba(255,122,24,0.25)]"
+        }`}
+      >
+        <MapPin
+          className={big ? "h-7 w-7 text-amber-400" : "h-4 w-4 text-amber-400/80"}
+          strokeWidth={2.2}
+        />
+      </span>
+      {big && label && <span className="mt-1.5 text-sm font-medium text-white/85">{label}</span>}
     </div>
   );
 }

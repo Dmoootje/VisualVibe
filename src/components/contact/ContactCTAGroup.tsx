@@ -9,30 +9,34 @@ export type ContactCTAGroupProps = {
   urgent: { title: string; text: string; buttonLabel: string; buttonUrl: string };
 };
 
-/** The three cards below the map: office hours, appointment, quick contact. */
+/** One wide glass card with three divided columns: office hours, appointment, quick contact. */
 export function ContactCTAGroup({ openingHours, appointment, urgent }: ContactCTAGroupProps) {
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
-      <OpeningHoursCard openingHours={openingHours} />
-      <CtaCard
-        icon={CalendarClock}
-        title={appointment.title}
-        text={appointment.text}
-        buttonLabel={appointment.buttonLabel}
-        buttonUrl={appointment.buttonUrl}
-      />
-      <CtaCard
-        icon={Zap}
-        title={urgent.title}
-        text={urgent.text}
-        buttonLabel={urgent.buttonLabel}
-        buttonUrl={urgent.buttonUrl}
-      />
+    <div className="overflow-hidden rounded-2xl border border-[rgba(255,122,24,0.18)] bg-neutral-950/80 shadow-[0_0_45px_-18px_rgba(255,122,24,0.35)] backdrop-blur-sm">
+      <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="p-6">
+          <OpeningHoursCard openingHours={openingHours} />
+        </div>
+        <CtaColumn
+          icon={CalendarClock}
+          title={appointment.title}
+          text={appointment.text}
+          buttonLabel={appointment.buttonLabel}
+          buttonUrl={appointment.buttonUrl}
+        />
+        <CtaColumn
+          icon={Zap}
+          title={urgent.title}
+          text={urgent.text}
+          buttonLabel={urgent.buttonLabel}
+          buttonUrl={urgent.buttonUrl}
+        />
+      </div>
     </div>
   );
 }
 
-function CtaCard({
+function CtaColumn({
   icon: Icon,
   title,
   text,
@@ -48,21 +52,21 @@ function CtaCard({
   const isExternal = /^(https?:|tel:|mailto:)/.test(buttonUrl);
 
   const label = (
-    <span className="inline-flex items-center gap-1 text-sm font-medium text-amber-400 transition-colors group-hover:text-amber-300">
+    <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-amber-400 transition-colors group-hover:text-amber-300">
       {buttonLabel}
       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
     </span>
   );
 
   return (
-    <div className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors hover:border-amber-500/30">
-      <div className="mb-4 flex items-center gap-2.5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20">
+    <div className="group flex flex-col p-6">
+      <div className="mb-3 flex items-center gap-2.5">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/25 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/25">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
         <h3 className="font-semibold text-white">{title}</h3>
       </div>
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-white/70">{text}</p>
+      <p className="flex-1 text-sm leading-relaxed text-white/60">{text}</p>
       {buttonUrl &&
         (isExternal ? (
           <a href={buttonUrl} target={buttonUrl.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
