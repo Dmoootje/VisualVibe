@@ -1,7 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { sectors } from "@/data/sectors";
-import { SectorTile } from "@/components/sectors";
+import { SectorMarquee } from "@/components/sectors";
 import { sectorIntroConfig } from "./config/sectorIntro.config";
 
 export default function SectorIntro() {
@@ -33,12 +32,8 @@ export default function SectorIntro() {
           </Link>
         </div>
 
-        {/* Tile grid */}
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(160px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(180px,1fr))]">
-          {sectors.map((sector) => (
-            <SectorTile key={sector.slug} sector={sector} />
-          ))}
-        </div>
+        {/* Two-row marquee scrolling in opposite directions */}
+        <SectorMarquee />
       </div>
     </section>
   );
