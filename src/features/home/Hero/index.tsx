@@ -1,34 +1,19 @@
-"use client";
-
-import {
-  HeroBadge,
-  HeroTitle,
-  HeroDescription,
-  HeroButtons,
-  HeroSocialProof,
-  HeroImage,
-  HeroBackground,
-} from "./components";
+import { HeroMessage, HeroStage, HeroFalling } from "./components";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100svh] flex items-center pt-16 sm:pt-20 overflow-hidden bg-black">
-      <HeroBackground />
+    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#080808] pb-14 pt-24">
+      {/* Ambient glow, bottom-left behind the headline */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[-120px] top-[340px] z-0 h-[620px] w-[760px] max-w-full"
+        style={{ background: "radial-gradient(ellipse at center,rgba(255,80,0,.16),transparent 68%)" }}
+      />
+      <HeroFalling />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 py-8 sm:py-0">
-          {/* Hero content */}
-          <div className="flex-1 text-center lg:text-left">
-            <HeroBadge />
-            <HeroTitle />
-            <HeroDescription />
-            <HeroButtons />
-            <HeroSocialProof />
-          </div>
-
-          {/* Hero image */}
-          <HeroImage />
-        </div>
+      <div className="container relative z-[4] mx-auto grid w-full items-center gap-10 px-4 lg:grid-cols-[1fr_540px] lg:gap-12">
+        <HeroMessage />
+        <HeroStage />
       </div>
     </section>
   );
