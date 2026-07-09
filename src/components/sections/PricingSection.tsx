@@ -25,10 +25,10 @@ type PricingSectionProps = {
   annualDiscountLabel?: string;
 };
 
-/** Preserved from the original template's Pricing feature — generalized with
+/** Preserved from the original template's Pricing feature - generalized with
  * real props instead of a fixed config, not yet wired to any page (the
  * quote-based "Offerte aanvragen" model may replace fixed tiers, or this may
- * become a service-package page — decide before using). */
+ * become a service-package page - decide before using). */
 export function PricingSection({
   plans,
   title = "Tarieven",

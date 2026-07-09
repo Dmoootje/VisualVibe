@@ -1,4 +1,4 @@
-// VisualVibe blog block library — reusable, MDX-ready components for long-form
+// VisualVibe blog block library - reusable, MDX-ready components for long-form
 // SEO/AEO/GEO articles. Import from "@/components/blog".
 export { BlogProse } from "./BlogProse";
 export { MdxContent } from "./MdxContent";

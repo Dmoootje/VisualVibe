@@ -9,14 +9,26 @@ import { SectorHeroEmblem } from "./SectorIcon";
  */
 export function SectorDetailHero({ sector }: { sector: Sector }) {
   return (
-    <section className="relative overflow-hidden px-4 pb-12 pt-28 sm:pb-16">
-      {/* Amber radial glow, top-right */}
+    <section className="relative overflow-x-clip px-4 pb-12 pt-28 sm:pb-16">
+      {/* Faint background grid, fading in toward the emblem (top-right). */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 h-[640px] w-[640px] max-w-full -translate-y-1/4 translate-x-1/4 bg-[radial-gradient(circle_at_center,rgba(255,117,0,0.14),transparent_62%)]"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px)",
+          backgroundSize: "52px 52px",
+          WebkitMaskImage: "radial-gradient(ellipse at 72% 32%, #000, transparent 72%)",
+          maskImage: "radial-gradient(ellipse at 72% 32%, #000, transparent 72%)",
+        }}
       />
 
-      <div className="container relative z-10 mx-auto">
+      {/* Amber radial glow, top-right (clipped to the section). */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute right-0 top-0 h-[720px] w-[720px] max-w-full -translate-y-1/4 translate-x-1/4 bg-[radial-gradient(circle_at_center,rgba(255,117,0,0.16),transparent_62%)]" />
+      </div>
+
+      <div className="container relative z-10 mx-auto md:-mt-[120px]">
         <div className="grid items-center gap-10 md:grid-cols-[1.15fr_0.85fr]">
           {/* Left: copy */}
           <div>
@@ -57,9 +69,11 @@ export function SectorDetailHero({ sector }: { sector: Sector }) {
             </div>
           </div>
 
-          {/* Right: emblem */}
-          <div className="flex justify-center md:justify-end">
-            {sector.icon && <SectorHeroEmblem id={sector.icon} />}
+          {/* Right: large emblem. Big enough to dominate the hero; any bleed
+              past the viewport is clipped by the section's overflow-x-clip.
+              Desktop offsets pull it up/right to the intended composition. */}
+          <div className="flex justify-center md:-mr-[100px] md:justify-end">
+            {sector.icon && <SectorHeroEmblem id={sector.icon} size={700} />}
           </div>
         </div>
       </div>

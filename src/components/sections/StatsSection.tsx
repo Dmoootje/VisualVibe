@@ -24,7 +24,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
-/** Preserved from the original template's SocialProof/StatsGrid — generalized
+/** Preserved from the original template's SocialProof/StatsGrid - generalized
  * with real props instead of a fixed config, not yet wired to any page. */
 export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
   return (

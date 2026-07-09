@@ -3605,7 +3605,7 @@ html {
    VisualVibe blog prose
    Scoped typography for long-form SEO/AEO/GEO article bodies. Everything
    below is namespaced under `.blog-prose`, so it never leaks into the public
-   site, homepage or global branding — it only styles content wrapped in the
+   site, homepage or global branding - it only styles content wrapped in the
    <BlogProse> component (or a `.blog-prose` container). Dark, premium, amber
    glow, tuned for readability.
    ========================================================================== */
@@ -4916,6 +4916,6 @@ html {
 html, body { background-color: hsl(240 10% 3.9%); color: hsl(0 0% 98%); }
 
 /* design-sync: the preview HTML template hard-codes `body{background:#fff}` in
-   an inline <style>. VisualVibe is dark-first, so force the dark canvas — a
+   an inline <style>. VisualVibe is dark-first, so force the dark canvas - a
    linked stylesheet's !important beats a non-important rule in a <style> tag. */
 html, body { background-color: hsl(240 10% 3.9%) !important; color: hsl(0 0% 98%); }

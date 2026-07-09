@@ -2,14 +2,14 @@ import { getApps, initializeApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 
 /**
- * Client SDK — used only by the /admin login screen for Firebase Auth.
+ * Client SDK - used only by the /admin login screen for Firebase Auth.
  * All Firestore/Storage reads and writes go through the Admin SDK on the
  * server instead (see ./admin.ts); firestore.rules denies client access
  * entirely, so this file intentionally does not export a client Firestore
  * instance.
  *
  * Initialization is lazy (behind a function, not a module-level constant)
- * so importing this file has no side effect — Next.js still executes
+ * so importing this file has no side effect - Next.js still executes
  * client-component modules during server-side rendering/static generation,
  * and eager init would throw if NEXT_PUBLIC_FIREBASE_* env vars aren't set
  * at build time. Calling getClientAuth() only ever happens from a browser

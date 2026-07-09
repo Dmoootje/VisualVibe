@@ -43,7 +43,7 @@ export type SidebarService = {
   title: string;
   description?: string;
   href: string;
-  /** An already-rendered icon element, e.g. <Search className="h-5 w-5" /> —
+  /** An already-rendered icon element, e.g. <Search className="h-5 w-5" /> -
    * a node, not a component, so it can cross the server→client boundary. */
   icon?: React.ReactNode;
   linkLabel?: string;

@@ -8,7 +8,7 @@ export type RoadmapStep = {
 };
 
 /**
- * A vertical numbered timeline — for step-by-step processes, roadmaps or
+ * A vertical numbered timeline - for step-by-step processes, roadmaps or
  * "hoe werkt het" sections. Uses a connecting gradient line down the nodes.
  */
 export function RoadmapBlock({

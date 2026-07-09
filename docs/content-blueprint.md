@@ -640,7 +640,7 @@ Categorieën:
 
 ## Blog pillars en clusters
 
-### Pillar 1: Webdesign — `/kennisbank/webdesign/`
+### Pillar 1: Webdesign - `/kennisbank/webdesign/`
 
 - website-laten-maken-kosten/
 - onepager-of-volledige-website/
@@ -651,7 +651,7 @@ Categorieën:
 
 Linkt naar: `/diensten/webdesign/`, `/diensten/website-laten-maken/`, `/diensten/webshop-laten-maken/`, `/regio/limburg/webdesign-limburg/`
 
-### Pillar 2: SEO / AEO / GEO — `/kennisbank/seo/`
+### Pillar 2: SEO / AEO / GEO - `/kennisbank/seo/`
 
 - lokale-seo-voor-kmo/
 - seo-voor-websites-in-limburg/
@@ -664,7 +664,7 @@ Linkt naar: `/diensten/webdesign/`, `/diensten/website-laten-maken/`, `/diensten
 
 Linkt naar: `/diensten/seo/`, `/diensten/lokale-seo/`, `/diensten/ai-seo-aeo-geo/`, `/regio/limburg/seo-bureau-limburg/`
 
-### Pillar 3: Fotografie — `/kennisbank/fotografie/`
+### Pillar 3: Fotografie - `/kennisbank/fotografie/`
 
 - wat-is-bedrijfsfotografie/
 - hoe-bereid-je-een-bedrijfsshoot-voor/
@@ -676,7 +676,7 @@ Linkt naar: `/diensten/seo/`, `/diensten/lokale-seo/`, `/diensten/ai-seo-aeo-geo
 
 Linkt naar: `/diensten/fotografie/`, `/diensten/bedrijfsfotografie/`, `/diensten/productfotografie/`, `/diensten/realisatiefotografie/`, `/regio/limburg/fotograaf-limburg/`
 
-### Pillar 4: Videografie — `/kennisbank/videografie/`
+### Pillar 4: Videografie - `/kennisbank/videografie/`
 
 - waarom-een-bedrijfsvideo-laten-maken/
 - bedrijfsvideo-script-opbouwen/
@@ -805,7 +805,7 @@ export type BlogPost = {
 
 Elke pagina moet hebben: title, description, canonical, openGraph title, openGraph description, openGraph image, twitter card, robots index/follow, structured data waar relevant.
 
-Titel-limieten: SEO title max. 55–60 tekens, meta description max. 150–160 tekens.
+Titel-limieten: SEO title max. 55-60 tekens, meta description max. 150-160 tekens.
 
 Voorbeeld:
 
@@ -825,7 +825,7 @@ Voorzie schema's voor: LocalBusiness, Organization, Service, Article, BlogPostin
 
 # Componenten per paginatype
 
-- **Home**: Hero, ServiceGrid, FeaturedCases, RegionIntro, SectorIntro, ProcessSection, Testimonials, BlogPreview, CTASection. Home mag niet te smal op "fotograaf Limburg" zitten — positioneer breed.
+- **Home**: Hero, ServiceGrid, FeaturedCases, RegionIntro, SectorIntro, ProcessSection, Testimonials, BlogPreview, CTASection. Home mag niet te smal op "fotograaf Limburg" zitten - positioneer breed.
 - **Dienstenhub**: Hero, ServiceCategoryGrid, ServiceGrid, ProcessSection, FeaturedCases, FAQSection, CTASection
 - **Dienst detailpagina**: Hero, ServiceIntro, BenefitsSection, ProcessSection, RelatedCases, RelatedBlogPosts, RelatedRegions, FAQSection, CTASection
 - **Regiopagina**: Hero, RegionIntro, LocalServiceGrid, RelatedCases, SectorGrid, FAQSection, CTASection
@@ -863,17 +863,17 @@ En pas uitbreiden naar meer steden wanneer er unieke content, cases, beelden of 
 
 # Prioriteiten voor implementatie
 
-**Fase 1: Basis** — Next.js template opschonen; layout, header, footer en navigatie bouwen; data-structuur aanmaken; home bouwen; dienstenhub bouwen; contact en offertepagina bouwen.
+**Fase 1: Basis** - Next.js template opschonen; layout, header, footer en navigatie bouwen; data-structuur aanmaken; home bouwen; dienstenhub bouwen; contact en offertepagina bouwen.
 
-**Fase 2: Diensten** — dynamische dienstpagina's maken; hoofddiensten vullen; subdiensten vullen; interne links toevoegen; FAQ's per dienst toevoegen.
+**Fase 2: Diensten** - dynamische dienstpagina's maken; hoofddiensten vullen; subdiensten vullen; interne links toevoegen; FAQ's per dienst toevoegen.
 
-**Fase 3: Regio en sectoren** — regiohub bouwen; Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg bouwen; prioritaire stadspagina's bouwen; sectorhub bouwen; sectorpagina's vullen.
+**Fase 3: Regio en sectoren** - regiohub bouwen; Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg bouwen; prioritaire stadspagina's bouwen; sectorhub bouwen; sectorpagina's vullen.
 
-**Fase 4: Realisaties** — realisatie-overzicht bouwen; categoriepagina's bouwen; case detailpagina's bouwen; cases koppelen aan diensten, regio's en sectoren.
+**Fase 4: Realisaties** - realisatie-overzicht bouwen; categoriepagina's bouwen; case detailpagina's bouwen; cases koppelen aan diensten, regio's en sectoren.
 
-**Fase 5: Kennisbank** — kennisbankoverzicht bouwen; categoriepagina's bouwen; blogdetailpagina's bouwen; pillars en clusters structureren; interne links automatiseren.
+**Fase 5: Kennisbank** - kennisbankoverzicht bouwen; categoriepagina's bouwen; blogdetailpagina's bouwen; pillars en clusters structureren; interne links automatiseren.
 
-**Fase 6: SEO-afwerking** — metadata API per pagina; sitemap.ts; robots.ts; canonicals; JSON-LD; OpenGraph images; performance check; mobile check; Core Web Vitals check.
+**Fase 6: SEO-afwerking** - metadata API per pagina; sitemap.ts; robots.ts; canonicals; JSON-LD; OpenGraph images; performance check; mobile check; Core Web Vitals check.
 
 ---
 

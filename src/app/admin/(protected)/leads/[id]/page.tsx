@@ -56,7 +56,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 <li key={note.id} className="rounded-md border border-white/10 bg-black/40 p-3 text-sm">
                   <p className="text-white/80 whitespace-pre-wrap">{note.note}</p>
                   <p className="mt-1 text-xs text-white/40">
-                    {note.createdBy} — {new Date(note.createdAt).toLocaleString("nl-BE")}
+                    {note.createdBy} - {new Date(note.createdAt).toLocaleString("nl-BE")}
                   </p>
                 </li>
               ))}
@@ -106,7 +106,7 @@ function Field({ label, value }: { label: string; value?: string }) {
   return (
     <div>
       <dt className="text-xs text-white/50 uppercase tracking-wide">{label}</dt>
-      <dd className="text-white/80">{value || "—"}</dd>
+      <dd className="text-white/80">{value || "-"}</dd>
     </div>
   );
 }

@@ -19,7 +19,7 @@ const leadSchema = z.object({
   privacyAccepted: z.literal(true, {
     errorMap: () => ({ message: "Bevestig dat we je gegevens mogen verwerken" }),
   }),
-  // Honeypot — real users never fill this in; bots that fill every field do.
+  // Honeypot - real users never fill this in; bots that fill every field do.
   website: z.string().max(0, "Spam gedetecteerd").optional(),
 });
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Honeypot tripped — pretend success so the bot doesn't learn anything, but don't save.
+  // Honeypot tripped - pretend success so the bot doesn't learn anything, but don't save.
   if (parsed.data.website) {
     return NextResponse.json({ status: "ok" });
   }

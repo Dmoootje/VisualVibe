@@ -1,4 +1,4 @@
-// No firebase-admin import here — this file is imported by middleware.ts,
+// No firebase-admin import here - this file is imported by middleware.ts,
 // which runs on the Edge runtime and can't bundle the Admin SDK's Node.js
 // dependencies (node:crypto, node:fs, ...). Keep it dependency-free.
 export const SESSION_COOKIE_NAME = "vv_session";

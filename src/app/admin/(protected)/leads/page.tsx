@@ -50,8 +50,8 @@ export default async function AdminLeadsPage({
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-white/70">{lead.email}</td>
-                  <td className="px-4 py-3 hidden sm:table-cell text-white/70">{lead.serviceInterest ?? "—"}</td>
-                  <td className="px-4 py-3 hidden md:table-cell text-white/70">{lead.region ?? "—"}</td>
+                  <td className="px-4 py-3 hidden sm:table-cell text-white/70">{lead.serviceInterest ?? "-"}</td>
+                  <td className="px-4 py-3 hidden md:table-cell text-white/70">{lead.region ?? "-"}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={lead.status} />
                   </td>

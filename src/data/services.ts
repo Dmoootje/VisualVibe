@@ -1,7 +1,7 @@
 import type { Service } from "@/types";
 import { subservices } from "./subservices";
 
-// The 8 hoofddiensten (main services) — used for the top-level grid, nav,
+// The 8 hoofddiensten (main services) - used for the top-level grid, nav,
 // and footer. Subdiensten (child services with parentSlug set) live in
 // ./subservices; use `allServices`/`getServiceBySlug` to look up either.
 export const services: Service[] = [
@@ -31,7 +31,7 @@ export const services: Service[] = [
       {
         question: "Hoeveel kost een website laten maken bij VisualVibe?",
         answer:
-          "De prijs hangt af van omvang en functionaliteit — een onepager kost minder dan een webshop. Vraag een vrijblijvende offerte aan voor een prijsvoorstel op maat.",
+          "De prijs hangt af van omvang en functionaliteit - een onepager kost minder dan een webshop. Vraag een vrijblijvende offerte aan voor een prijsvoorstel op maat.",
       },
       {
         question: "Werken jullie met WordPress of maatwerk?",
@@ -134,7 +134,7 @@ export const services: Service[] = [
       {
         question: "Komen jullie ook buiten Limburg fotograferen?",
         answer:
-          "Ja, we werken in heel Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg — vraag ernaar bij je offerte.",
+          "Ja, we werken in heel Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg - vraag ernaar bij je offerte.",
       },
     ],
     relatedServices: ["videografie", "drone-fpv", "webdesign"],
@@ -300,7 +300,7 @@ export const services: Service[] = [
     category: "masterclasses",
     excerpt: "Masterclasses, opleidingen en workshops professioneel laten opnemen.",
     intro:
-      "Zet je opleiding, workshop of masterclass om in professionele video content — voor eigen gebruik of als online cursus.",
+      "Zet je opleiding, workshop of masterclass om in professionele video content - voor eigen gebruik of als online cursus.",
     benefits: ["Opleiding opnemen", "Online cursus video", "Workshop filmen"],
     process: [
       { title: "Planning", description: "Afstemmen op locatie, timing en gewenst eindresultaat." },

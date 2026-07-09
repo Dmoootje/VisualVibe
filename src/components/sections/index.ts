@@ -8,6 +8,6 @@ export { BlogGrid } from "./BlogGrid";
 export { CategoryGrid, type CategoryCard } from "./CategoryGrid";
 
 // StatsSection, FAQSection, and PricingSection are preserved but not yet
-// wired into any page — import them directly from their file (e.g.
+// wired into any page - import them directly from their file (e.g.
 // "@/components/sections/FAQSection") when a page actually uses one, rather
 // than re-exporting here, so unused ones aren't pulled into shared bundles.

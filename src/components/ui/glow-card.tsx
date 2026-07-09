@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 type GlowCardProps = {
   children: React.ReactNode;
   className?: string;
-  /** Blur/radius scale per the visual style guide — "lg" for hero/CTA-scale cards, "sm" for small elements. */
+  /** Blur/radius scale per the visual style guide - "lg" for hero/CTA-scale cards, "sm" for small elements. */
   size?: "sm" | "md" | "lg";
 };
 

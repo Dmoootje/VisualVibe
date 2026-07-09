@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * The lead / direct-answer paragraph at the top of an article — larger, lighter
+ * The lead / direct-answer paragraph at the top of an article - larger, lighter
  * weight, with a subtle amber left accent. Great for the GEO "answer up front"
  * pattern the content blueprint calls for.
  */

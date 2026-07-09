@@ -7,7 +7,7 @@ export type CurrentAdmin = {
   email: string;
 };
 
-/** Authoritative session check — verifies the cookie signature via the Admin SDK. */
+/** Authoritative session check - verifies the cookie signature via the Admin SDK. */
 export async function getCurrentAdmin(): Promise<CurrentAdmin | null> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;

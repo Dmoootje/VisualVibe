@@ -45,7 +45,7 @@ export default async function KennisbankCategoryPage({
   const { category } = await params;
   const categoryDef = getCategoryBySlug(category);
 
-  // Legacy flat URL (/kennisbank/<post-slug>) lands here — 308 to the nested URL.
+  // Legacy flat URL (/kennisbank/<post-slug>) lands here - 308 to the nested URL.
   if (!categoryDef) {
     const legacyPost = getPostBySlug(category);
     if (legacyPost) {

@@ -18,7 +18,7 @@ type FAQSectionProps = {
   contactHref?: string;
 };
 
-/** Preserved from the original template's Faq feature — generalized with real
+/** Preserved from the original template's Faq feature - generalized with real
  * props instead of a fixed config, not yet wired to any page. */
 export function FAQSection({
   title = "Veelgestelde vragen",

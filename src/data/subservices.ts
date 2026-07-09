@@ -1,6 +1,6 @@
 import type { Service } from "@/types";
 
-// Subdiensten (child services) for each hoofddienst — see docs/content-blueprint.md.
+// Subdiensten (child services) for each hoofddienst - see docs/content-blueprint.md.
 // Each entry sets parentSlug to the hoofddienst slug it belongs to.
 export const subservices: Service[] = [
   // Webdesign
@@ -488,7 +488,7 @@ export const subservices: Service[] = [
     parentSlug: "videografie",
     category: "videografie",
     excerpt: "Toon je bedrijfscultuur en trek nieuwe medewerkers aan.",
-    intro: "Een wervingsvideo laat kandidaten zien hoe het is om bij jou te werken — vaak overtuigender dan een vacaturetekst alleen.",
+    intro: "Een wervingsvideo laat kandidaten zien hoe het is om bij jou te werken - vaak overtuigender dan een vacaturetekst alleen.",
     benefits: ["Interviews met medewerkers", "Sfeerbeelden van de werkvloer", "Geschikt voor vacaturesites en social media"],
     process: [],
     faqs: [],
@@ -548,7 +548,7 @@ export const subservices: Service[] = [
     parentSlug: "videografie",
     category: "videografie",
     excerpt: "Een journalistieke video-reportage over je bedrijf of project.",
-    intro: "Voor bedrijven die een verhaal willen brengen op een journalistieke manier — bijvoorbeeld bij een opening, mijlpaal of bedrijfsnieuws.",
+    intro: "Voor bedrijven die een verhaal willen brengen op een journalistieke manier - bijvoorbeeld bij een opening, mijlpaal of bedrijfsnieuws.",
     benefits: ["Interviews en voice-over", "Journalistieke montagestijl", "Geschikt voor pers en eigen kanalen"],
     process: [],
     faqs: [],
@@ -570,7 +570,7 @@ export const subservices: Service[] = [
     parentSlug: "drone-fpv",
     category: "drone-fpv",
     excerpt: "Luchtfoto's die een uniek perspectief geven op je bedrijf of project.",
-    intro: "Vanuit de lucht krijg je een compleet beeld van een terrein, gebouw of project — ideaal voor vastgoed en grote werven.",
+    intro: "Vanuit de lucht krijg je een compleet beeld van een terrein, gebouw of project - ideaal voor vastgoed en grote werven.",
     benefits: ["Scherpe luchtfoto's", "Overzicht van volledige site", "Combineerbaar met grondfotografie"],
     process: [],
     faqs: [],
@@ -772,7 +772,7 @@ export const subservices: Service[] = [
     parentSlug: "3d-vr-ar",
     category: "3d-vr-ar",
     excerpt: "Laat gasten de sfeer van je horecazaak online proeven.",
-    intro: "Voor restaurants en zalen helpt een virtuele tour gasten de sfeer inschatten voor ze reserveren — sterk voor feestzalen en evenementenlocaties.",
+    intro: "Voor restaurants en zalen helpt een virtuele tour gasten de sfeer inschatten voor ze reserveren - sterk voor feestzalen en evenementenlocaties.",
     benefits: ["Toont sfeer en indeling", "Ideaal voor feestzalen en events", "Verhoogt reserveringen"],
     process: [],
     faqs: [],
@@ -814,7 +814,7 @@ export const subservices: Service[] = [
     parentSlug: "podcasting",
     category: "podcasting",
     excerpt: "Je podcast ook in video, klaar voor YouTube en social media.",
-    intro: "Een videopodcast combineert audio en beeld — ideaal om fragmenten te hergebruiken als social media content.",
+    intro: "Een videopodcast combineert audio en beeld - ideaal om fragmenten te hergebruiken als social media content.",
     benefits: ["Multicamera-opname in studio of op locatie", "Korte fragmenten voor social media", "Audio- en videoversie inbegrepen"],
     process: [],
     faqs: [],

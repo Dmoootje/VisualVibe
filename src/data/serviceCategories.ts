@@ -6,7 +6,7 @@ export type ServiceCategoryMeta = {
   iconName: "Monitor" | "Search" | "Camera" | "Video" | "Plane" | "Box" | "Mic" | "GraduationCap";
 };
 
-// Icon metadata for grids (ServiceGrid/dienstenhub cards) — the icon name is
+// Icon metadata for grids (ServiceGrid/dienstenhub cards) - the icon name is
 // resolved to a lucide-react component by the presentational component so
 // this file stays framework-agnostic data, not JSX.
 export const serviceCategories: ServiceCategoryMeta[] = [

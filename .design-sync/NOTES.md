@@ -1,4 +1,4 @@
-# design-sync notes — VisualVibe
+# design-sync notes - VisualVibe
 
 Repo-specific gotchas for syncing this repo's component library to claude.ai/design.
 Append a bullet whenever a sync teaches you something new.
@@ -10,7 +10,7 @@ Append a bullet whenever a sync teaches you something new.
 - The sync runs in **synth-entry-style but bounded** mode: a hand-written barrel
   at `.design-sync/entry.tsx` is passed as `--entry`, re-exporting only the ~44
   presentational components. Do NOT fall back to real synth-entry (globbing all
-  of `src/`) — it would drag app pages, server actions and firebase-admin into
+  of `src/`) - it would drag app pages, server actions and firebase-admin into
   the browser bundle.
 - Component list is driven by `cfg.componentSrcMap` (44 explicit pins), because
   there is no `.d.ts` to discover exports from.
@@ -29,7 +29,7 @@ Append a bullet whenever a sync teaches you something new.
   token-based components (Button, Badge) render dark without a `.dark` ancestor.
 - Brand accent is **amber/orange** (`amber-*` utilities) + the `NeonButton`
   amber gradient. NOTE: the shadcn `Button` `default`/primary variant still uses
-  the template's **purple** `--primary` (262 hue) token — that is the repo's
+  the template's **purple** `--primary` (262 hue) token - that is the repo's
   real current state, shipped as-is. `NeonButton` is the brand CTA.
 
 ## Shims (via `.design-sync/tsconfig.sync.json` paths)
@@ -57,8 +57,8 @@ Append a bullet whenever a sync teaches you something new.
 
 ## Excluded
 
-- `src/components/admin/*` — internal CRM tooling, not a design system.
-- `MdxContent` — MDX plumbing (next-mdx-remote), not a design block.
+- `src/components/admin/*` - internal CRM tooling, not a design system.
+- `MdxContent` - MDX plumbing (next-mdx-remote), not a design block.
 
 ## Component authoring notes (from wave learnings)
 
@@ -84,8 +84,8 @@ Append a bullet whenever a sync teaches you something new.
 - `compiled.css` is a **generated snapshot** of Tailwind output. If component
   utility classes change and the compile isn't re-run, previews/designs ship
   stale/missing styles. Always re-run the compile on re-sync.
-- Dark theme is baked into `:root` in compiled.css by an appended block — if you
+- Dark theme is baked into `:root` in compiled.css by an appended block - if you
   regenerate compiled.css, that block is lost unless re-appended (the appender
   lives in this repo's sync history / this NOTES file).
-- Shims are tied to the current `next/image` and `@/i18n/navigation` APIs — if
+- Shims are tied to the current `next/image` and `@/i18n/navigation` APIs - if
   those upstream APIs change materially, revisit the shims.

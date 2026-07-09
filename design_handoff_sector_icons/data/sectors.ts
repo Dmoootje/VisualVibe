@@ -1,5 +1,5 @@
 export type Sector = {
-  /** slug — also the sprite symbol id (#sector-<id>) */
+  /** slug - also the sprite symbol id (#sector-<id>) */
   id: string;
   name: string;
   /** short label / eyebrow */

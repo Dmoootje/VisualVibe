@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * A gradient "glow border" frame — a 1px amber→transparent gradient edge around
+ * A gradient "glow border" frame - a 1px amber→transparent gradient edge around
  * a solid dark surface. Used by the premium blocks (CTA, sidebar service card,
  * stat highlights) to get the VisualVibe glow-border look without box-shadow.
  */

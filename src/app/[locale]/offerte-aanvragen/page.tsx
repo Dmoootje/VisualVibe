@@ -19,7 +19,7 @@ export default function OfferteAanvragenPage() {
       <div className="container mx-auto max-w-2xl">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Offerte aanvragen</h1>
         <p className="text-lg text-white/70 mb-10">
-          Vertel ons kort over je project en we bezorgen je een vrijblijvend voorstel op maat — binnen de 2
+          Vertel ons kort over je project en we bezorgen je een vrijblijvend voorstel op maat - binnen de 2
           werkdagen.
         </p>
 

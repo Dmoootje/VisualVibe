@@ -1,7 +1,7 @@
 import type { Region } from "@/types";
 
 // Hoofdregio's only for Fase 1. Stad-pagina's (Bilzen-Hoeselt, Tongeren-Borgloon,
-// Hasselt, ...) are added in Fase 3 once each has genuinely unique content —
+// Hasselt, ...) are added in Fase 3 once each has genuinely unique content -
 // see docs/content-blueprint.md's "Belangrijke SEO-waarschuwing".
 export const regions: Region[] = [
   {
@@ -27,7 +27,7 @@ export const regions: Region[] = [
     type: "market",
     country: "BE",
     intro:
-      "Vanuit Limburg werkt VisualVibe voor bedrijven in heel Vlaanderen — webdesign, fotografie, videografie en SEO op maat van je regio en sector.",
+      "Vanuit Limburg werkt VisualVibe voor bedrijven in heel Vlaanderen - webdesign, fotografie, videografie en SEO op maat van je regio en sector.",
     localServices: ["webdesign", "seo", "fotografie", "videografie"],
     relatedCases: [],
     relatedSectors: [],

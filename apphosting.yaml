@@ -1,5 +1,5 @@
 # Firebase App Hosting build/runtime config.
-# NEXT_PUBLIC_* values below are the public Firebase web app config — safe to
+# NEXT_PUBLIC_* values below are the public Firebase web app config - safe to
 # commit (not secrets; security comes from firestore.rules + App Check, not
 # from hiding this key). Anything sensitive (API keys for third-party
 # services, etc.) belongs in Secret Manager via `firebase apphosting:secrets:set`

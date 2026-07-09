@@ -26,7 +26,7 @@ export default function DienstenPage() {
           </h1>
           <p className="text-lg text-white/70">
             Van website tot beeldmateriaal: VisualVibe biedt alle diensten die je nodig hebt om online én lokaal
-            zichtbaar te worden — onder één dak, afgestemd op elkaar.
+            zichtbaar te worden - onder één dak, afgestemd op elkaar.
           </p>
         </div>
 
@@ -46,7 +46,7 @@ export default function DienstenPage() {
         <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
           <h2 className="text-2xl font-bold">Niet zeker welke dienst je nodig hebt?</h2>
           <p className="max-w-xl text-white/70">
-            Vraag een vrijblijvende offerte aan — we denken mee over de beste aanpak voor jouw project.
+            Vraag een vrijblijvende offerte aan - we denken mee over de beste aanpak voor jouw project.
           </p>
           <Link
             href="/offerte-aanvragen"

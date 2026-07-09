@@ -14,7 +14,7 @@ export type FaqItem = {
 };
 
 /**
- * Question-phrased FAQ accordion — a core GEO/AEO pattern. Emits FAQPage
+ * Question-phrased FAQ accordion - a core GEO/AEO pattern. Emits FAQPage
  * JSON-LD by default so answer engines can parse the Q&A directly.
  */
 export function FaqAccordion({

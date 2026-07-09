@@ -12,7 +12,7 @@ const inputClasses =
 type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 
 // Reads location/search params from `window` at submit time rather than via
-// next/navigation's usePathname/useSearchParams — the latter requires a
+// next/navigation's usePathname/useSearchParams - the latter requires a
 // Suspense boundary on statically prerendered pages, which would blank the
 // form until client-side hydration. Not needed here since we only read
 // these values on submit, never during render.
@@ -79,7 +79,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         </div>
       )}
 
-      {/* Honeypot field — hidden from real visitors via CSS, bots fill every field they find. */}
+      {/* Honeypot field - hidden from real visitors via CSS, bots fill every field they find. */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />

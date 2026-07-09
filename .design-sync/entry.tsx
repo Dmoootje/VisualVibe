@@ -1,4 +1,4 @@
-// design-sync bundle entry — the explicit, bounded surface of VisualVibe's
+// design-sync bundle entry - the explicit, bounded surface of VisualVibe's
 // presentational component library. Kept narrow on purpose: a synth-entry that
 // globbed all of src/ would drag app pages, server actions and firebase-admin
 // into the browser bundle. Only real, reusable design components belong here.
@@ -21,7 +21,7 @@ export * from "@/components/ui/tabs";
 export { ServiceCard } from "@/components/cards/ServiceCard";
 export { RegionCard } from "@/components/cards/RegionCard";
 
-// Blog / long-form content blocks (MdxContent is intentionally excluded — it is
+// Blog / long-form content blocks (MdxContent is intentionally excluded - it is
 // MDX plumbing that needs next-mdx-remote, not a design block).
 export { BlogCTA } from "@/components/blog/BlogCTA";
 export { BlogHero } from "@/components/blog/BlogHero";
@@ -61,6 +61,6 @@ export { PricingSection } from "@/components/sections/PricingSection";
 // Forms
 export { LeadForm } from "@/components/forms/LeadForm";
 
-// Home / kennisbank — the rich blog card used in the homepage "Uit de kennisbank"
+// Home / kennisbank - the rich blog card used in the homepage "Uit de kennisbank"
 // section (hero image, category badge, logo, meta row, CTA).
 export { BlogCard } from "@/features/home/BlogPreview/components/BlogCard";

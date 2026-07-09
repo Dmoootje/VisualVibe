@@ -3,14 +3,14 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 
-// Dedicated bucket for VisualVibe uploads — this GCP project is shared with
+// Dedicated bucket for VisualVibe uploads - this GCP project is shared with
 // other, unrelated apps (e.g. "vsaanhangwagens"), so we never touch the
 // project's implicit default bucket, only this one.
 export const STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET ?? "gen-lang-client-0235296023";
 
 /**
  * In production (Firebase App Hosting / Cloud Run) this authenticates via
- * Application Default Credentials automatically — no key file involved.
+ * Application Default Credentials automatically - no key file involved.
  * Locally, point GOOGLE_APPLICATION_CREDENTIALS at a downloaded service
  * account key that only has access to the Firestore/Auth *emulators*,
  * never at production data.
@@ -35,5 +35,5 @@ const adminApp = getAdminApp();
 
 export const adminAuth = getAuth(adminApp);
 export const adminDb = getFirestore(adminApp);
-/** `adminStorageBucket.file(path).save(...)` etc. — always resolves to STORAGE_BUCKET. */
+/** `adminStorageBucket.file(path).save(...)` etc. - always resolves to STORAGE_BUCKET. */
 export const adminStorageBucket = getStorage(adminApp).bucket(STORAGE_BUCKET);

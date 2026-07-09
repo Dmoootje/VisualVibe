@@ -1,4 +1,4 @@
-# NOVA – Business Case Studies Template (Next.js + Tailwind CSS)
+# NOVA - Business Case Studies Template (Next.js + Tailwind CSS)
 
 **NOVA** is a professional and elegant template built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**, designed to showcase detailed business case studies, client success stories, and project highlights. Perfect for consultancies, agencies, and SaaS businesses.
 
@@ -346,4 +346,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Created by [Aniq UI](https://www.aniq-ui.com) — Premium Next.js Templates for modern web apps.
+Created by [Aniq UI](https://www.aniq-ui.com) - Premium Next.js Templates for modern web apps.

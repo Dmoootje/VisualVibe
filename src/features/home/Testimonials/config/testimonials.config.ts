@@ -1,4 +1,4 @@
-// Placeholder testimonials pending real client quotes — replace before launch.
+// Placeholder testimonials pending real client quotes - replace before launch.
 export const testimonialsConfig = {
     title: "Wat klanten zeggen",
     subtitle: "Enkele reacties van bedrijven die we hielpen met hun website, beelden of video.",
@@ -26,7 +26,7 @@ export const testimonialsConfig = {
         },
         {
             quote:
-                "Dankzij de dronebeelden en de 3D-tour verkopen we panden sneller — kopers krijgen meteen een goed beeld vooraf.",
+                "Dankzij de dronebeelden en de 3D-tour verkopen we panden sneller - kopers krijgen meteen een goed beeld vooraf.",
             author: "Makelaar",
             role: "Vastgoedkantoor, Genk",
             avatar:

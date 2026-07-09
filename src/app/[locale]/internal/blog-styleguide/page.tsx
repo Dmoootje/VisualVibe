@@ -81,14 +81,14 @@ export default function BlogStyleguidePage() {
             Blog styleguide
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-white/70">
-            Herbruikbare bouwblokken voor lange SEO/AEO/GEO-artikels — in de
+            Herbruikbare bouwblokken voor lange SEO/AEO/GEO-artikels - in de
             VisualVibe dark neon orange stijl. Alle blokken zijn MDX-klaar.
           </p>
         </div>
       </div>
 
       {/* ===================================================================
-          Live article demo — sidebar + real sections (scrollspy works here)
+          Live article demo - sidebar + real sections (scrollspy works here)
           =================================================================== */}
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-6 flex items-center gap-3">
@@ -104,7 +104,7 @@ export default function BlogStyleguidePage() {
               category="SEO & GEO"
               title="GEO en AEO voor KMO's:"
               titleAccent="gevonden worden in AI-zoekresultaten"
-              excerpt="Een voorbeeldartikel dat elk blok in context toont — van lead-intro tot FAQ met schema."
+              excerpt="Een voorbeeldartikel dat elk blok in context toont - van lead-intro tot FAQ met schema."
               author="VisualVibe"
               publishedAt="2026-07-08"
               readingTime="12 min"
@@ -184,7 +184,7 @@ export default function BlogStyleguidePage() {
                 />
 
                 <QuoteBlock author="Team VisualVibe" role="Creatief mediabureau">
-                  Wie vandaag begrijpelijk is voor AI, wint morgen de klik — of het antwoord.
+                  Wie vandaag begrijpelijk is voor AI, wint morgen de klik - of het antwoord.
                 </QuoteBlock>
               </ContentSection>
 
@@ -267,7 +267,7 @@ export default function BlogStyleguidePage() {
       </div>
 
       {/* ===================================================================
-          Component reference — every remaining block, annotated
+          Component reference - every remaining block, annotated
           =================================================================== */}
       <div className="mx-auto max-w-4xl space-y-14 px-4 pb-24">
         <div className="border-t border-white/10 pt-12">
@@ -279,8 +279,8 @@ export default function BlogStyleguidePage() {
           <div className="space-y-3">
             <NoticeBox variant="info">Neutrale context of achtergrondinformatie.</NoticeBox>
             <NoticeBox variant="success">Iets is gelukt of aanbevolen.</NoticeBox>
-            <NoticeBox variant="warning">Let op — een valkuil of aandachtspunt.</NoticeBox>
-            <NoticeBox variant="danger">Belangrijk — dit mag je niet negeren.</NoticeBox>
+            <NoticeBox variant="warning">Let op - een valkuil of aandachtspunt.</NoticeBox>
+            <NoticeBox variant="danger">Belangrijk - dit mag je niet negeren.</NoticeBox>
             <NoticeBox variant="tip">Een praktische tip van het team.</NoticeBox>
           </div>
         </Demo>
@@ -333,7 +333,7 @@ export default function BlogStyleguidePage() {
           />
         </Demo>
 
-        <Demo label="BlogProse · h1–hr">
+        <Demo label="BlogProse · h1-hr">
           <BlogProse>
             <h2>Voorbeeldkop niveau 2</h2>
             <p>

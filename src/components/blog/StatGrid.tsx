@@ -15,7 +15,7 @@ const COLS: Record<number, string> = {
 };
 
 /**
- * A row of headline statistics with big amber-gradient numbers — social proof /
+ * A row of headline statistics with big amber-gradient numbers - social proof /
  * impact figures inside an article.
  */
 export function StatGrid({

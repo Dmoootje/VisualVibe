@@ -1,4 +1,4 @@
-// Kennisbank categories — the taxonomy behind the nested URL structure
+// Kennisbank categories - the taxonomy behind the nested URL structure
 // /kennisbank/[categorySlug]/[slug]/. `name` must match the `category` field in
 // each post's MDX frontmatter (that's how posts are grouped into a category).
 export type KennisbankCategory = {

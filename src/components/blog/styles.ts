@@ -1,6 +1,6 @@
 // Shared class tokens for the VisualVibe blog block library.
 // Keeping the "look" in one place means every block reads as one system and a
-// future restyle is a single-file change — no hardcoded surfaces per block.
+// future restyle is a single-file change - no hardcoded surfaces per block.
 
 /** Dark glassmorphism surface used by most content cards. */
 export const CARD =

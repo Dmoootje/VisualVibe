@@ -59,8 +59,9 @@ export default async function SectorDetailPage({
 
       <SectorDetailHero sector={sector} />
 
-      {/* Andere sectoren marquee */}
-      <div className="border-t border-white/[0.08] px-4 pb-4 pt-7">
+      {/* Andere sectoren marquee. Pulled up on desktop so it tucks into the
+          space the large hero emblem leaves below it. */}
+      <div className="relative z-10 border-t border-white/[0.08] px-4 pb-4 pt-7 md:-mt-[200px]">
         <div className="container mx-auto">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/35">
             Andere sectoren

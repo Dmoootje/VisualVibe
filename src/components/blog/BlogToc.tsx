@@ -9,7 +9,7 @@ export type TocItem = {
 };
 
 /**
- * Presentational table of contents. Highlights `activeId` — pass it from
+ * Presentational table of contents. Highlights `activeId` - pass it from
  * StickyBlogSidebar (which runs the scrollspy) or leave undefined for a static
  * list. Renders in-page hash links so it works without JS.
  */

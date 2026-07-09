@@ -46,7 +46,7 @@ function resolveImage(imagePath: string | undefined): string | undefined {
   return fs.existsSync(absolutePath) ? imagePath : undefined;
 }
 
-// MDX (unlike plain markdown) doesn't support HTML comments — an authored
+// MDX (unlike plain markdown) doesn't support HTML comments - an authored
 // `<!-- ... -->` throws a compile error. Strip them so content can still be
 // written/annotated as markdown.
 function stripHtmlComments(content: string): string {

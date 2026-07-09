@@ -162,7 +162,7 @@ export const sectors: Sector[] = [
     tag: "Kennis & groei",
     cardDescription: "Cursussen en masterclasses professioneel in de markt gezet.",
     intro:
-      "Zet je opleiding, workshop of masterclass om in herbruikbare video content — voor eigen gebruik of als online cursus.",
+      "Zet je opleiding, workshop of masterclass om in herbruikbare video content - voor eigen gebruik of als online cursus.",
     painPoints: [
       "Kennis en opleidingen blijven eenmalig zonder herbruikbaar materiaal",
       "Geen professionele video om een online cursus te lanceren",

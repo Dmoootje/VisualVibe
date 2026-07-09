@@ -2,7 +2,7 @@
 // LocalBusinessJsonLd, the contact page, and the footer all read from here
 // so the same details can never drift out of sync across the site.
 // TODO: replace every placeholder value below with the agency's real details
-// (street address in particular — Hasselt is a placeholder for "somewhere in Limburg").
+// (street address in particular - Hasselt is a placeholder for "somewhere in Limburg").
 export const businessConfig = {
   legalName: "VisualVibe BV",
   displayName: "VisualVibe",

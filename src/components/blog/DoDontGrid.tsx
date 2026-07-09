@@ -2,7 +2,7 @@ import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Side-by-side "wel doen / niet doen" comparison — a strong scannable pattern
+ * Side-by-side "wel doen / niet doen" comparison - a strong scannable pattern
  * for practical SEO/AEO guidance.
  */
 export function DoDontGrid({

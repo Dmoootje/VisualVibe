@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       colors: {
-        // Brand orange scale — overrides Tailwind's yellow-ish `amber` so every
+        // Brand orange scale - overrides Tailwind's yellow-ish `amber` so every
         // amber-* utility across the app renders as VisualVibe orange (#FF7500).
         amber: {
           50: "#fff3e8",

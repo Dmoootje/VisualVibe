@@ -13,7 +13,7 @@ export type GoogleReview = {
   rating: number;
 };
 
-// Public Maps profile — used for the "Reviews via Google" attribution link.
+// Public Maps profile - used for the "Reviews via Google" attribution link.
 export const GOOGLE_MAPS_PROFILE_URL =
   "https://www.google.com/maps/place/VisualVibe+-+Fotograaf+Limburg/@50.7926451,5.469349,17z/data=!4m6!3m5!1s0x47c0dd0f1b0799b7:0xe29d6668387bd875";
 

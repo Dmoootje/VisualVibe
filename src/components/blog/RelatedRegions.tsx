@@ -8,7 +8,7 @@ export type RelatedRegion = {
 };
 
 /**
- * Compact pill links to region hub pages — supports the local-SEO internal
+ * Compact pill links to region hub pages - supports the local-SEO internal
  * linking the blueprint requires, without heavy thin-content cards.
  */
 export function RelatedRegions({

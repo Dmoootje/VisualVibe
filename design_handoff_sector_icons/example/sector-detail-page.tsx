@@ -1,6 +1,6 @@
 "use client";
 /**
- * EXAMPLE — Sector detail page (App Router).
+ * EXAMPLE - Sector detail page (App Router).
  * Illustrates how the provided components compose. Adapt to your routing/layout.
  * Requires: <SectorIconSprite/> mounted in app/layout.tsx, and visualvibe.css imported globally.
  */

@@ -30,7 +30,7 @@ export function QuoteBlock({
           <span className="h-px w-8 bg-gradient-to-r from-amber-400 to-red-500" aria-hidden="true" />
           <span className="text-sm text-white/70">
             {author && <span className="font-semibold text-white">{author}</span>}
-            {author && role && <span className="text-white/40"> — </span>}
+            {author && role && <span className="text-white/40"> - </span>}
             {role}
           </span>
         </figcaption>

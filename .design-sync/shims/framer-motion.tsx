@@ -3,7 +3,7 @@
 // animations. In a static design surface (and in headless capture) the
 // intersection/scroll events never fire, so those elements stay at opacity 0 and
 // render blank. For a design system the correct behavior is "render at the final
-// visible state" — so motion.<tag> becomes a plain <tag> with motion-only props
+// visible state" - so motion.<tag> becomes a plain <tag> with motion-only props
 // stripped, and the rest of the API is inert passthrough.
 import * as React from "react";
 

@@ -3,7 +3,7 @@ import type { TocItem } from "@/components/blog";
 
 /**
  * Builds a table of contents from markdown/MDX headings. Ids are generated with
- * github-slugger in document order — the exact algorithm rehype-slug uses — so
+ * github-slugger in document order - the exact algorithm rehype-slug uses - so
  * the TOC anchors match the ids rendered on the headings.
  */
 export function extractToc(

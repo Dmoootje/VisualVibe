@@ -1,5 +1,5 @@
 /* =========================================================================
-   VisualVibe — Sector-iconen thema
+   VisualVibe - Sector-iconen thema
    Global stylesheet. Import once (e.g. in app/layout.tsx: import "@/styles/visualvibe.css").
    Fonts: load Sora (headings) + Manrope (body) via next/font (see README).
    ========================================================================= */
@@ -10,7 +10,7 @@
   --vv-surface:       #111111;   /* raised panel */
   --vv-fg:            #ffffff;   /* primary text */
 
-  /* Accent (amber neon) — the ONE colour that themes the whole system */
+  /* Accent (amber neon) - the ONE colour that themes the whole system */
   --vv-accent:        #F28A10;   /* default */
   --vv-accent-2:      #FF7500;   /* alt */
   --vv-accent-3:      #FFA23A;   /* light */

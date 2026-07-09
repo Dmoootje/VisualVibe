@@ -1,6 +1,6 @@
 # VisualVibe Visual Style Guide
 
-Source of truth for the "dark neon orange" visual language, extracted verbatim from the existing, already-working homepage template (`src/features/home/*`, `src/layouts/Header`). Any new page or component must match this — do not invent new colors, radii, or motion patterns.
+Source of truth for the "dark neon orange" visual language, extracted verbatim from the existing, already-working homepage template (`src/features/home/*`, `src/layouts/Header`). Any new page or component must match this - do not invent new colors, radii, or motion patterns.
 
 ## Rule zero
 
@@ -8,7 +8,7 @@ Don't touch the existing homepage feature components (`Hero`, `Features`, `Regio
 
 ## Known inconsistency (not fixed here, just documented)
 
-`tailwind.config.ts`'s shadcn-style CSS variables (`--primary`, `--card`, etc. in `globals.css`) define a **purple** theme that nothing on the actual site uses — every real button/card overrides them with explicit red/amber classes. Don't reach for `bg-primary` or `variant="default"` on `Button` expecting brand colors; it renders purple. Use the components in this guide instead.
+`tailwind.config.ts`'s shadcn-style CSS variables (`--primary`, `--card`, etc. in `globals.css`) define a **purple** theme that nothing on the actual site uses - every real button/card overrides them with explicit red/amber classes. Don't reach for `bg-primary` or `variant="default"` on `Button` expecting brand colors; it renders purple. Use the components in this guide instead.
 
 ## Colors
 
@@ -46,7 +46,7 @@ bg-gradient-radial from-red-500/20 via-transparent to-transparent opacity-30
 
 ## The glow-card pattern
 
-The signature visual element. Two stacked divs — a blurred gradient glow behind a solid dark card:
+The signature visual element. Two stacked divs - a blurred gradient glow behind a solid dark card:
 
 ```tsx
 <div className="relative">
@@ -57,9 +57,9 @@ The signature visual element. Two stacked divs — a blurred gradient glow behin
 </div>
 ```
 
-Radius steps down one size from glow to surface (`rounded-2xl` → `rounded-xl`, or `rounded-xl` → `rounded-lg` for smaller elements like step cards). Blur scales with element size: `blur-sm` (small/avatar), `blur-md` (medium), `blur-lg` (hero/CTA-scale). This is the `GlowCard` component — always use it instead of hand-rolling the two divs.
+Radius steps down one size from glow to surface (`rounded-2xl` → `rounded-xl`, or `rounded-xl` → `rounded-lg` for smaller elements like step cards). Blur scales with element size: `blur-sm` (small/avatar), `blur-md` (medium), `blur-lg` (hero/CTA-scale). This is the `GlowCard` component - always use it instead of hand-rolling the two divs.
 
-**Flat surface variant** (no glow, for less prominent cards — testimonial box, tab list, badges):
+**Flat surface variant** (no glow, for less prominent cards - testimonial box, tab list, badges):
 ```
 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl
 ```
@@ -73,20 +73,20 @@ Every section has a decorative blurred-orb background layer, absolutely position
   <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-amber-500/10 rounded-full blur-[100px]" />
 </div>
 ```
-Content then sits in a sibling `relative z-10` container. Corner placement (top-right/bottom-left vs top-left/bottom-right) is varied per section for visual rhythm — it doesn't need to be identical every time, but always one red-tinted and one amber-tinted blob.
+Content then sits in a sibling `relative z-10` container. Corner placement (top-right/bottom-left vs top-left/bottom-right) is varied per section for visual rhythm - it doesn't need to be identical every time, but always one red-tinted and one amber-tinted blob.
 
 ## Borders & radii
 
-- `rounded-full` — pills, badges, avatars, dots
-- `rounded-2xl` — glow wrapper, prominent flat card surfaces
-- `rounded-xl` — glow inner surface, tab containers
-- `rounded-lg` — nested/smaller elements (chips, small badges)
-- `rounded-md` — buttons, inputs (from `buttonVariants`)
+- `rounded-full` - pills, badges, avatars, dots
+- `rounded-2xl` - glow wrapper, prominent flat card surfaces
+- `rounded-xl` - glow inner surface, tab containers
+- `rounded-lg` - nested/smaller elements (chips, small badges)
+- `rounded-md` - buttons, inputs (from `buttonVariants`)
 
 ## Spacing
 
 - Section wrapper: `py-12 px-4 sm:py-16 md:py-24 bg-black relative overflow-hidden` (padding scale varies slightly per section, always mobile-first 3-step)
-- Container: `container mx-auto px-4 relative z-10` (horizontal padding sometimes `px-4 sm:px-6` or `px-5 sm:px-6 md:px-8` — pick one consistently per new component, don't mix within it)
+- Container: `container mx-auto px-4 relative z-10` (horizontal padding sometimes `px-4 sm:px-6` or `px-5 sm:px-6 md:px-8` - pick one consistently per new component, don't mix within it)
 - Card internal padding: `p-5 sm:p-8 md:p-12` (large cards), `p-4 sm:p-6` (compact cards)
 
 ## Typography
@@ -121,12 +121,12 @@ When a button navigates, wrap with `asChild` + `Link` from `@/i18n/navigation` (
 - Above-the-fold (Hero children): `initial`/`animate` (mounts immediately), staggered by `delay: 0, 0.1, 0.2, 0.3...`
 - Below-the-fold sections: `whileInView`/`viewport={{ once: true }}` scroll-triggered, same `{ opacity: 0, y: 20 } → { opacity: 1, y: 0 }`, `duration: 0.5`
 - Hover interactions: CSS `transition-colors` / `transition-opacity` / `transition-transform`, not framer-motion
-- Don't add motion to every new page indiscriminately — plain server components with CSS `:hover` are fine and better for performance (see CLAUDE.md priority #1); reserve framer-motion for genuinely above/below-the-fold entrance effects matching the homepage's existing rhythm.
+- Don't add motion to every new page indiscriminately - plain server components with CSS `:hover` are fine and better for performance (see CLAUDE.md priority #1); reserve framer-motion for genuinely above/below-the-fold entrance effects matching the homepage's existing rhythm.
 
 ## Barrel-export discipline (perf, not style, but easy to break by accident)
 
-`src/components/sections/index.ts` re-exports the grid/section patterns that are actually in use. `StatsSection`, `FAQSection`, and `PricingSection` are preserved (real, working components) but not wired into any page yet — they're **intentionally left out of that barrel** and importable only via their direct file path (e.g. `@/components/sections/FAQSection`). Confirmed by measurement: barrel-exporting all three added ~40kB of First Load JS to every page that imports anything from `@/components/sections`, even pages that use none of them, because they're `"use client"` + framer-motion and webpack couldn't shake them through the re-export. Add a component to the barrel only once a real page imports it.
+`src/components/sections/index.ts` re-exports the grid/section patterns that are actually in use. `StatsSection`, `FAQSection`, and `PricingSection` are preserved (real, working components) but not wired into any page yet - they're **intentionally left out of that barrel** and importable only via their direct file path (e.g. `@/components/sections/FAQSection`). Confirmed by measurement: barrel-exporting all three added ~40kB of First Load JS to every page that imports anything from `@/components/sections`, even pages that use none of them, because they're `"use client"` + framer-motion and webpack couldn't shake them through the re-export. Add a component to the barrel only once a real page imports it.
 
 ## Component mapping (blueprint → this codebase)
 
-The content blueprint (`docs/content-blueprint.md`) suggests generic names like `Section`, `Container`, `CTASection`, `ServiceGrid`. These now live in `src/components/ui/` (primitives: `Section`, `Container`, `GlowCard`, `NeonButton`, `Badge`) and `src/components/sections/` (composed patterns: `PageHero`, `CTASection`, `ServiceGrid`, `RegionGrid`, `CaseGrid`, `BlogGrid`) — see those folders for the actual implementations. New content-driven pages (`/diensten/[slug]`, `/regio/[slug]`, etc.) should compose from these instead of hand-writing Tailwind, so the whole site stays visually consistent by construction.
+The content blueprint (`docs/content-blueprint.md`) suggests generic names like `Section`, `Container`, `CTASection`, `ServiceGrid`. These now live in `src/components/ui/` (primitives: `Section`, `Container`, `GlowCard`, `NeonButton`, `Badge`) and `src/components/sections/` (composed patterns: `PageHero`, `CTASection`, `ServiceGrid`, `RegionGrid`, `CaseGrid`, `BlogGrid`) - see those folders for the actual implementations. New content-driven pages (`/diensten/[slug]`, `/regio/[slug]`, etc.) should compose from these instead of hand-writing Tailwind, so the whole site stays visually consistent by construction.
