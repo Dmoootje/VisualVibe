@@ -1,0 +1,99 @@
+/* =========================================================================
+   VisualVibe — Sector-iconen thema
+   Global stylesheet. Import once (e.g. in app/layout.tsx: import "@/styles/visualvibe.css").
+   Fonts: load Sora (headings) + Manrope (body) via next/font (see README).
+   ========================================================================= */
+
+:root {
+  /* Surfaces */
+  --vv-bg:            #0a0a0a;   /* page background (near-black) */
+  --vv-surface:       #111111;   /* raised panel */
+  --vv-fg:            #ffffff;   /* primary text */
+
+  /* Accent (amber neon) — the ONE colour that themes the whole system */
+  --vv-accent:        #F28A10;   /* default */
+  --vv-accent-2:      #FF7500;   /* alt */
+  --vv-accent-3:      #FFA23A;   /* light */
+  --vv-accent-strong: #FF5A00;   /* deep */
+
+  /* Text on dark */
+  --vv-text-60: rgba(255,255,255,0.60);
+  --vv-text-45: rgba(255,255,255,0.45);
+  --vv-text-35: rgba(255,255,255,0.35);
+
+  /* Hairlines / fills on dark */
+  --vv-line:      rgba(255,255,255,0.10);
+  --vv-line-soft: rgba(255,255,255,0.08);
+  --vv-fill:      rgba(255,255,255,0.02);
+
+  /* Radii */
+  --vv-r-pill: 9999px;
+  --vv-r-lg:   20px;
+  --vv-r-md:   18px;
+  --vv-r-sm:   14px;
+
+  /* Accent tints (derived from #F28A10) */
+  --vv-accent-08: rgba(242,138,16,0.08);
+  --vv-accent-16: rgba(242,138,16,0.16);
+  --vv-accent-glow: 0 20px 55px -22px rgba(242,138,16,0.5);
+}
+
+/* ---- Icon system ---------------------------------------------------------
+   Colour flows from --vv-accent through currentColor.
+   Set --vv-accent on any ancestor (e.g. :root or a section) to retheme. */
+.vv-ico { color: var(--vv-accent, #F28A10); overflow: visible; display: block; }
+.vv-base { filter: drop-shadow(0 0 2.5px rgba(242,138,16,0.30)); }
+.vv-shim { stroke: #ffe3b8; opacity: 0; }
+
+.vv-animate .vv-base { animation: vvPulse 3.6s ease-in-out infinite; }
+.vv-animate .vv-shim { stroke-dasharray: 15 260; animation: vvShim 5s linear infinite; }
+
+.vv-ring, .vv-ring2 { transform-box: fill-box; transform-origin: center; }
+.vv-animate .vv-ring  { animation: vvSpin 30s linear infinite; }
+.vv-animate .vv-ring2 { animation: vvSpin 40s linear infinite reverse; }
+
+@keyframes vvPulse { 0%,100%{ filter: drop-shadow(0 0 2px rgba(242,138,16,0.22)); } 50%{ filter: drop-shadow(0 0 6px rgba(242,138,16,0.5)); } }
+@keyframes vvShim  { 0%{ stroke-dashoffset:0; opacity:0; } 12%{ opacity:.55; } 70%{ opacity:.55; } 100%{ stroke-dashoffset:-275; opacity:0; } }
+@keyframes vvSpin  { to { transform: rotate(360deg); } }
+
+/* ---- Marquee (two opposite rows, infinite) ------------------------------- */
+.vv-mq {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.vv-mq-track { display: flex; gap: 16px; width: max-content; will-change: transform; }
+.vv-mq-l { animation: vvMqL 42s linear infinite; }
+.vv-mq-r { animation: vvMqR 42s linear infinite; }
+.vv-mq:hover .vv-mq-track { animation-play-state: paused; }
+@keyframes vvMqL { from { transform: translateX(0); }     to { transform: translateX(-50%); } }
+@keyframes vvMqR { from { transform: translateX(-50%); }  to { transform: translateX(0); } }
+
+/* ---- Pill (marquee item) ------------------------------------------------- */
+.vv-pill {
+  flex: none; display: inline-flex; align-items: center; gap: 13px;
+  padding: 14px 24px 14px 16px; border-radius: var(--vv-r-pill);
+  border: 1px solid var(--vv-line); background: var(--vv-fill);
+  color: rgba(255,255,255,0.85); font-size: 16px; font-weight: 500;
+  white-space: nowrap; text-decoration: none;
+  transition: border-color .25s ease, background .25s ease;
+}
+.vv-pill:hover { border-color: rgba(242,138,16,0.4); background: rgba(242,138,16,0.06); }
+
+/* ---- Card (sector tile / overview card) ---------------------------------- */
+.vv-card {
+  position: relative; display: flex; flex-direction: column;
+  border: 1px solid var(--vv-line-soft); background: var(--vv-fill);
+  transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
+  text-decoration: none; color: inherit;
+}
+.vv-card:hover { transform: translateY(-4px); border-color: rgba(242,138,16,0.4); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vv-animate .vv-base,
+  .vv-animate .vv-shim,
+  .vv-animate .vv-ring,
+  .vv-animate .vv-ring2,
+  .vv-mq-l, .vv-mq-r { animation: none !important; }
+  .vv-shim { opacity: 0; }
+}
