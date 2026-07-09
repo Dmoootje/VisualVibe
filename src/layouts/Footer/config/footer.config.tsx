@@ -15,6 +15,13 @@ export interface SocialLink {
   icon: ReactNode;
 }
 
+export interface FooterPartner {
+  /** Key into PARTNER_LOGOS (inlined SVG). */
+  logo: string;
+  alt: string;
+  href?: string;
+}
+
 export const footerConfig = {
   description: businessConfig.description,
 
@@ -50,6 +57,16 @@ export const footerConfig = {
     { label: "Algemene voorwaarden", href: "#" },
     { label: "Cookiebeleid", href: "#" },
   ],
+
+  partners: {
+    title: "Officieel partner & gecertificeerd",
+    subtitle: "Erkend door de platformen waarop we jouw merk laten groeien.",
+    items: [
+      { logo: "google", alt: "Google Partner" },
+      { logo: "meta", alt: "Meta Business Partner" },
+      { logo: "leadinfo", alt: "Leadinfo Certified Partner" },
+    ] as FooterPartner[],
+  },
 };
 
 export const socialLinks: SocialLink[] = [

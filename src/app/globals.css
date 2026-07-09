@@ -704,3 +704,118 @@ html {
     }
     .vv-shim { opacity: 0; }
 }
+
+/* ── Footer (design handoff, themed orange) ──────────────────────────────
+   Reuses --vv-accent (#FF7500). Server-Component friendly: all motion is CSS. */
+.vv-topline {
+    background: linear-gradient(90deg, transparent 0%, var(--vv-accent, #ff7500) 50%, transparent 100%);
+    background-size: 220% 100%;
+    background-position: 0 0;
+}
+
+.vv-anim .vv-topline {
+    animation: vvFlow 7s linear infinite;
+}
+
+@keyframes vvFlow {
+    to { background-position: 220% 0; }
+}
+
+.vv-contact {
+    transition: color 0.2s ease;
+}
+
+.vv-contact[href]:hover {
+    color: #fff;
+}
+
+.vv-flink {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.vv-flink::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    width: 8px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--vv-accent, #ff7500);
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.vv-flink:hover {
+    color: #fff;
+    transform: translateX(14px);
+}
+
+.vv-flink:hover::before {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1);
+}
+
+.vv-soc {
+    transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.vv-soc:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 117, 0, 0.5);
+    color: var(--vv-accent, #ff7500);
+    box-shadow: 0 8px 22px -10px rgba(255, 117, 0, 0.7);
+}
+
+.vv-legal {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease;
+}
+
+.vv-legal:hover {
+    color: var(--vv-accent, #ff7500);
+}
+
+.vv-partner {
+    display: inline-flex;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.vv-partner svg {
+    height: 26px;
+    width: auto;
+    display: block;
+}
+
+.vv-pchip {
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.vv-pchip:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 117, 0, 0.35);
+    background: rgba(255, 117, 0, 0.05);
+}
+
+.vv-pchip:hover .vv-partner {
+    opacity: 0.95;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vv-anim .vv-topline { animation: none; }
+    .vv-partner,
+    .vv-pchip,
+    .vv-flink,
+    .vv-flink::before,
+    .vv-soc,
+    .vv-legal,
+    .vv-contact { transition: none; }
+}

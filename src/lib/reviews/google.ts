@@ -20,6 +20,11 @@ export const GOOGLE_MAPS_PROFILE_URL =
 const PLACE_TEXT_QUERY = "VisualVibe - Fotograaf Limburg";
 const DAY = 60 * 60 * 24;
 
+// Zero-tolerance on long dashes (em/en/horizontal bar) extends to external
+// content: Google reviewers often use them, so normalise to a hyphen at the
+// ingestion boundary before any review text is rendered.
+const stripDashes = (text: string) => text.replace(/[–—―]/g, "-");
+
 /** Resolve the Places API place id from the business name (cached ~30 days). */
 async function resolvePlaceId(apiKey: string): Promise<string | null> {
   const fromEnv = process.env.GOOGLE_PLACE_ID;
@@ -78,9 +83,9 @@ export async function getGoogleReviews(): Promise<GoogleReview[]> {
 
     return (data.reviews ?? [])
       .map((review) => ({
-        quote: review.text?.text ?? review.originalText?.text ?? "",
-        author: review.authorAttribution?.displayName ?? "Google-gebruiker",
-        role: review.relativePublishTimeDescription ?? "Google review",
+        quote: stripDashes(review.text?.text ?? review.originalText?.text ?? ""),
+        author: stripDashes(review.authorAttribution?.displayName ?? "Google-gebruiker"),
+        role: stripDashes(review.relativePublishTimeDescription ?? "Google review"),
         avatar: review.authorAttribution?.photoUri ?? "",
         rating: Math.round(review.rating ?? 5),
       }))
