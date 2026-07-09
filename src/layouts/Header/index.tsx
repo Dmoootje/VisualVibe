@@ -40,6 +40,13 @@ export function Header() {
           : "bg-transparent"
       )}
     >
+      {/* Animated orange neon divider under the header (subtle, decorative) */}
+      <div className="header-neon-glow" aria-hidden="true" />
+      <div className="header-neon-line" aria-hidden="true" />
+      <div className="header-neon-track" aria-hidden="true">
+        <div className="header-neon-runner" />
+      </div>
+
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Logo />
