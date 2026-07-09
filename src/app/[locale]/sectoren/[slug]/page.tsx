@@ -61,13 +61,14 @@ export default async function SectorDetailPage({
 
       {/* Andere sectoren marquee. Pulled up on desktop so it tucks into the
           space the large hero emblem leaves below it. */}
-      <div className="relative z-10 border-t border-white/[0.08] px-4 pb-4 pt-7 md:-mt-[200px]">
-        <div className="container mx-auto">
+      <div className="relative z-10 border-t border-white/[0.08] pb-4 pt-7 md:-mt-[200px]">
+        <div className="container mx-auto px-4">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/35">
             Andere sectoren
           </p>
-          <SectorMarquee exclude={sector.slug} />
         </div>
+        {/* Full-bleed: the two rows run edge to edge, only the label stays aligned. */}
+        <SectorMarquee exclude={sector.slug} />
       </div>
 
       {sector.painPoints.length > 0 && (
