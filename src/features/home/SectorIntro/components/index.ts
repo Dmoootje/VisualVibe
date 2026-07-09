@@ -1,1 +1,0 @@
-export { SectorChip } from "./SectorChip";

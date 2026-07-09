@@ -1,6 +1,8 @@
 export const sectorIntroConfig = {
-    title: "Voor elke sector een aanpak op maat",
-    subtitle: "Van bouwbedrijf tot horecazaak: we kennen de uitdagingen van jouw sector.",
-    ctaLabel: "Bekijk alle sectoren",
-    ctaHref: "/sectoren",
-}
+  eyebrow: "Sectoren",
+  title: "Elke sector zijn eigen aanpak",
+  subtitle:
+    "Van lokale KMO tot industrie: we spreken de taal van jouw markt en vertalen die naar sterke visuals.",
+  ctaLabel: "Alle sectoren",
+  ctaHref: "/sectoren",
+};

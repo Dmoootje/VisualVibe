@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Link } from "@/i18n/navigation";
 import { sectors } from "@/data/sectors";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { SectorCard } from "@/components/sectors";
 
 export const metadata: Metadata = {
   title: { absolute: `Sectoren | ${businessConfig.displayName}` },
@@ -11,24 +11,28 @@ export const metadata: Metadata = {
 
 export default function SectorenHubPage() {
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen bg-black px-4 pb-20 pt-28 text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Sectoren", path: "/sectoren" }]} />
 
-      <div className="container mx-auto max-w-4xl">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Voor elke sector een aanpak op maat</h1>
-        <p className="text-lg text-white/70 mb-12">
-          Elke sector heeft eigen uitdagingen. Ontdek hoe we bedrijven in jouw sector helpen.
-        </p>
+      <div className="container mx-auto">
+        {/* Centered header */}
+        <div className="mx-auto mb-[52px] max-w-[640px] text-center">
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <span className="h-px w-5 bg-[#ff7500]" />
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ff7500]">Overzicht</span>
+          </div>
+          <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
+            Sectoren waarin wij uitblinken
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-white/60">
+            Tien werelden, één doel: jouw merk laten opvallen met werk dat past bij jouw publiek.
+          </p>
+        </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        {/* Card grid */}
+        <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]">
           {sectors.map((sector) => (
-            <Link
-              key={sector.slug}
-              href={`/sectoren/${sector.slug}`}
-              className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-5 hover:bg-white/10 transition-colors"
-            >
-              <span className="font-medium group-hover:text-amber-400 transition-colors">{sector.title}</span>
-            </Link>
+            <SectorCard key={sector.slug} sector={sector} />
           ))}
         </div>
       </div>

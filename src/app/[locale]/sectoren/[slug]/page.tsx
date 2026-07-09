@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import { Section, Container } from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
+import { CTASection, ServiceGrid } from "@/components/sections";
 import { sectors, getSectorBySlug } from "@/data/sectors";
 import { getServiceBySlug } from "@/data/services";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { SectorDetailHero, SectorMarquee } from "@/components/sectors";
 
 export function generateStaticParams() {
   return sectors.map((sector) => ({ slug: sector.slug }));
@@ -56,7 +57,17 @@ export default async function SectorDetailPage({
         ]}
       />
 
-      <PageHero title={sector.title} subtitle={sector.intro} backLink={{ label: "Alle sectoren", href: "/sectoren" }} />
+      <SectorDetailHero sector={sector} />
+
+      {/* Andere sectoren marquee */}
+      <div className="border-t border-white/[0.08] px-4 pb-4 pt-7">
+        <div className="container mx-auto">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/35">
+            Andere sectoren
+          </p>
+          <SectorMarquee exclude={sector.slug} />
+        </div>
+      </div>
 
       {sector.painPoints.length > 0 && (
         <Section orbs="tl-br">

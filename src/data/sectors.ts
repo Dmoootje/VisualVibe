@@ -4,6 +4,9 @@ export const sectors: Sector[] = [
   {
     title: "KMO",
     slug: "kmo",
+    icon: "kmo",
+    tag: "Ondernemerschap & lokaal",
+    cardDescription: "Websites en branding die lokale ondernemers doen opvallen.",
     intro:
       "Als KMO concurreer je met bedrijven die vaak een groter marketingbudget hebben. Een snelle website, sterke lokale SEO en professionele beelden helpen je toch op te vallen.",
     painPoints: [
@@ -23,6 +26,9 @@ export const sectors: Sector[] = [
   {
     title: "Bouw & Renovatie",
     slug: "bouw-renovatie",
+    icon: "bouw",
+    tag: "Constructie & vakwerk",
+    cardDescription: "Digitale uitstraling voor aannemers en renovatiespecialisten.",
     intro:
       "Marketing, fotografie en webdesign voor bouw- en renovatiebedrijven: laat je afgewerkte projecten het werk doen om nieuwe klanten te overtuigen.",
     painPoints: [
@@ -42,6 +48,9 @@ export const sectors: Sector[] = [
   {
     title: "Horeca",
     slug: "horeca",
+    icon: "horeca",
+    tag: "Gastvrijheid & beleving",
+    cardDescription: "Menu's, reservaties en beeld dat honger opwekt.",
     intro:
       "Voor restaurants, cafés en feestzalen is sfeer alles. We brengen die sfeer online tot leven met fotografie, video en een virtuele tour.",
     painPoints: [
@@ -61,6 +70,9 @@ export const sectors: Sector[] = [
   {
     title: "Vastgoed & Immo",
     slug: "vastgoed-immo",
+    icon: "vastgoed",
+    tag: "Panden & makelaardij",
+    cardDescription: "Panden presenteren met sfeervolle sites en visuals.",
     intro:
       "Panden die er online net zo aantrekkelijk uitzien als in het echt, verkopen sneller. We combineren fotografie, drone en 3D-tours voor makelaars.",
     painPoints: [
@@ -80,6 +92,9 @@ export const sectors: Sector[] = [
   {
     title: "Retail & Webshops",
     slug: "retail-webshops",
+    icon: "retail",
+    tag: "Online & offline verkoop",
+    cardDescription: "Webshops en campagnes die verkopen, online én in de winkel.",
     intro:
       "Voor winkels en webshops draait alles om aantrekkelijke productpresentatie en een webshop die converteert.",
     painPoints: [
@@ -99,6 +114,9 @@ export const sectors: Sector[] = [
   {
     title: "Events",
     slug: "events",
+    icon: "events",
+    tag: "Sfeer & organisatie",
+    cardDescription: "Strakke event-branding, van teaser tot aftermovie.",
     intro:
       "Van bedrijfsevent tot festival: we leggen de sfeer vast en helpen je volgende editie te promoten met sterke beelden en video.",
     painPoints: [
@@ -118,6 +136,9 @@ export const sectors: Sector[] = [
   {
     title: "Sportclubs",
     slug: "sportclubs",
+    icon: "sport",
+    tag: "Beweging & teamgevoel",
+    cardDescription: "Clubidentiteit en platforms die supporters verbinden.",
     intro:
       "Sportclubs hebben zichtbaarheid nodig om sponsors, leden en supporters aan te trekken. We helpen met website, fotografie en video.",
     painPoints: [
@@ -137,6 +158,9 @@ export const sectors: Sector[] = [
   {
     title: "Opleidingen & Masterclasses",
     slug: "opleidingen-masterclasses",
+    icon: "opleidingen",
+    tag: "Kennis & groei",
+    cardDescription: "Cursussen en masterclasses professioneel in de markt gezet.",
     intro:
       "Zet je opleiding, workshop of masterclass om in herbruikbare video content — voor eigen gebruik of als online cursus.",
     painPoints: [
@@ -156,6 +180,9 @@ export const sectors: Sector[] = [
   {
     title: "Wellness & Beauty",
     slug: "wellness-beauty",
+    icon: "wellness",
+    tag: "Rust & verzorging",
+    cardDescription: "Rustige, verfijnde beeldtaal voor salons en spa's.",
     intro:
       "Voor wellness- en beautyzaken is de juiste sfeer cruciaal. We tonen die sfeer via fotografie, virtuele tours en een sterke website.",
     painPoints: [
@@ -175,6 +202,9 @@ export const sectors: Sector[] = [
   {
     title: "Industrie",
     slug: "industrie",
+    icon: "industrie",
+    tag: "Techniek & productie",
+    cardDescription: "Technische bedrijven helder en modern gepositioneerd.",
     intro:
       "Industriële bedrijven tonen hun schaal, machines en processen het best met professionele fotografie, dronebeelden en een heldere website.",
     painPoints: [

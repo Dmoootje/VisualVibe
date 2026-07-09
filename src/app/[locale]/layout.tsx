@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/providers";
 import { Header, Footer } from "@/layouts";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd } from "@/components/seo";
+import { SectorIconSprite } from "@/components/sectors";
 import { businessConfig } from "@/config/business.config";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -68,6 +69,7 @@ export default async function LocaleLayout({
         {/* Add any other head tags if needed, metadata object handles common ones */}
       </head>
       <body className={`${inter.className} bg-black text-white`}>
+        <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <NextIntlClientProvider locale={locale} messages={messages}>

@@ -579,3 +579,128 @@ html {
         opacity: 0.4;
     }
 }
+
+/* ── Sector-icon system ──────────────────────────────────────────────────
+   Ported from the design handoff, themed to the VisualVibe house orange
+   (#FF7500). The 10 glyphs live in <SectorIconSprite/>; colour flows through
+   currentColor from --vv-accent. Set --vv-accent on any ancestor to retheme. */
+:root {
+    --vv-accent: #ff7500;
+}
+
+.vv-ico {
+    color: var(--vv-accent, #ff7500);
+    overflow: visible;
+    display: block;
+}
+
+.vv-base {
+    filter: drop-shadow(0 0 2.5px rgba(255, 117, 0, 0.3));
+}
+
+.vv-shim {
+    stroke: #ffe3b8;
+    opacity: 0;
+}
+
+.vv-animate .vv-base {
+    animation: vvPulse 3.6s ease-in-out infinite;
+}
+
+.vv-animate .vv-shim {
+    stroke-dasharray: 15 260;
+    animation: vvShim 5s linear infinite;
+}
+
+.vv-ring,
+.vv-ring2 {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.vv-animate .vv-ring {
+    animation: vvSpin 30s linear infinite;
+}
+
+.vv-animate .vv-ring2 {
+    animation: vvSpin 40s linear infinite reverse;
+}
+
+@keyframes vvPulse {
+    0%, 100% { filter: drop-shadow(0 0 2px rgba(255, 117, 0, 0.22)); }
+    50% { filter: drop-shadow(0 0 6px rgba(255, 117, 0, 0.5)); }
+}
+
+@keyframes vvShim {
+    0% { stroke-dashoffset: 0; opacity: 0; }
+    12% { opacity: 0.55; }
+    70% { opacity: 0.55; }
+    100% { stroke-dashoffset: -275; opacity: 0; }
+}
+
+@keyframes vvSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Marquee (two opposite rows, infinite) */
+.vv-mq {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.vv-mq-track {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    will-change: transform;
+}
+
+.vv-mq-l { animation: vvMqL 42s linear infinite; }
+.vv-mq-r { animation: vvMqR 42s linear infinite; }
+.vv-mq:hover .vv-mq-track { animation-play-state: paused; }
+
+@keyframes vvMqL {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes vvMqR {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+}
+
+/* Pill (marquee item) */
+.vv-pill {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px 24px 14px 16px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.vv-pill:hover {
+    border-color: rgba(255, 117, 0, 0.4);
+    background: rgba(255, 117, 0, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vv-animate .vv-base,
+    .vv-animate .vv-shim,
+    .vv-animate .vv-ring,
+    .vv-animate .vv-ring2,
+    .vv-mq-l,
+    .vv-mq-r {
+        animation: none !important;
+    }
+    .vv-shim { opacity: 0; }
+}
