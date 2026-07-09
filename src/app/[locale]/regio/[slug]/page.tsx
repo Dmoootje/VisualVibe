@@ -59,7 +59,7 @@ export default async function RegionDetailPage({
 
       {localServices.length > 0 && (
         <Section orbs="tl-br">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Onze diensten in {region.title}</h2>
             <ServiceGrid services={localServices} />
           </Container>

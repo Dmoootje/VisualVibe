@@ -72,7 +72,7 @@ export default async function SectorDetailPage({
 
       {sector.painPoints.length > 0 && (
         <Section orbs="tl-br">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Herkenbare uitdagingen</h2>
             <ul className="grid gap-3 sm:grid-cols-2">
               {sector.painPoints.map((point) => (
@@ -88,7 +88,7 @@ export default async function SectorDetailPage({
 
       {recommendedServices.length > 0 && (
         <Section orbs="tr-bl">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Aanbevolen diensten</h2>
             <ServiceGrid services={recommendedServices} />
           </Container>

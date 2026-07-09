@@ -7,17 +7,21 @@ import type { OpeningHoursDay } from "@/types/siteSettings";
 
 export type SettingsFormState = { status: "idle" | "success" | "error"; message?: string };
 
-/** "" -> undefined, trimmed otherwise. */
-function optional(formData: FormData, key: string): string | undefined {
-  const value = String(formData.get(key) ?? "").trim();
-  return value || undefined;
+// Return the trimmed value, or "" when the admin clears a field. We persist the
+// empty string (rather than dropping it) so blanking a field actually sticks
+// instead of the old value / default refilling on the next read.
+function optional(formData: FormData, key: string): string {
+  return String(formData.get(key) ?? "").trim();
 }
 
-function optionalNumber(formData: FormData, key: string): number | undefined {
+// Parsed number, or null when cleared/invalid. null is written to Firestore (a
+// present value that overrides the default) and normalised back to undefined on
+// read, so clearing latitude/longitude actually blanks them.
+function optionalNumber(formData: FormData, key: string): number | null {
   const value = String(formData.get(key) ?? "").trim().replace(",", ".");
-  if (!value) return undefined;
+  if (!value) return null;
   const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function parseOpeningHours(

@@ -84,7 +84,7 @@ export default async function ServiceDetailPage({
 
       {childServices.length > 0 ? (
         <Section orbs="tl-br">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Subdiensten</h2>
             <ServiceGrid services={childServices} />
           </Container>
@@ -92,7 +92,7 @@ export default async function ServiceDetailPage({
       ) : (
         service.benefits.length > 0 && (
           <Section orbs="tl-br">
-            <Container className="max-w-4xl">
+            <Container>
               <h2 className="text-2xl sm:text-3xl font-bold mb-6">Wat we voor je doen</h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
@@ -109,7 +109,7 @@ export default async function ServiceDetailPage({
 
       {service.process.length > 0 && (
         <Section orbs="tr-bl">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Hoe we werken</h2>
             <ol className="grid gap-6 sm:grid-cols-2">
               {service.process.map((step, index) => (
@@ -128,7 +128,7 @@ export default async function ServiceDetailPage({
 
       {service.faqs.length > 0 && (
         <Section orbs="tl-br">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Veelgestelde vragen</h2>
             <Accordion type="single" collapsible>
               {service.faqs.map((faq) => (
@@ -144,7 +144,7 @@ export default async function ServiceDetailPage({
 
       {relatedServices.length > 0 && (
         <Section orbs="tr-bl">
-          <Container className="max-w-4xl">
+          <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Gerelateerde diensten</h2>
             <div className="flex flex-wrap gap-3">
               {relatedServices.map((related) => (

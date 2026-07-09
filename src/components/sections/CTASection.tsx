@@ -20,7 +20,7 @@ export function CTASection({
 }: CTASectionProps) {
   return (
     <Section orbs="radial" className="py-10 sm:py-12 md:py-16">
-      <Container className="max-w-3xl">
+      <Container>
         <GlowCard size="lg" className="p-6 sm:p-10 md:p-12 text-center flex flex-col items-center gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold">{title}</h2>
           {description && <p className="max-w-xl text-white/70">{description}</p>}

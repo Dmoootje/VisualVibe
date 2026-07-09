@@ -12,7 +12,10 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      // 1rem gutters everywhere so bare `.container` usages line up exactly with
+      // the header/footer (which use `container ... px-4`). Single max-width at 2xl
+      // keeps every page the same fixed width across the app.
+      padding: "1rem",
       screens: {
         "2xl": "1400px",
       },

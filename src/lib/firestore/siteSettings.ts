@@ -48,13 +48,20 @@ async function readSiteSettings(): Promise<SiteSettings> {
     const data = doc.data()!;
     const { createdAt, updatedAt, openingHours, ...rest } = data;
 
-    return {
+    const merged: SiteSettings = {
       ...base,
       ...(rest as Partial<SiteSettings>),
       openingHours: toOpeningHours(openingHours),
       createdAt: createdAt?.toDate?.().toISOString() ?? now,
       updatedAt: updatedAt?.toDate?.().toISOString() ?? now,
     };
+
+    // A cleared number is stored as null; surface it as "unset" (undefined) so
+    // the admin field shows empty and consumers get a proper number | undefined.
+    if (typeof merged.latitude !== "number") merged.latitude = undefined;
+    if (typeof merged.longitude !== "number") merged.longitude = undefined;
+
+    return merged;
   } catch {
     return base;
   }
@@ -63,7 +70,11 @@ async function readSiteSettings(): Promise<SiteSettings> {
 /** Cached per request so the footer, schema and page share a single read. */
 export const getSiteSettings = cache(readSiteSettings);
 
-export type UpdateSiteSettingsInput = Partial<Omit<SiteSettings, "id" | "createdAt" | "updatedAt">>;
+// null is allowed so a cleared numeric field can be written to Firestore (a
+// present value that overrides the default) instead of being dropped.
+export type UpdateSiteSettingsInput = {
+  [K in keyof Omit<SiteSettings, "id" | "createdAt" | "updatedAt">]?: SiteSettings[K] | null;
+};
 
 /** Drops undefined values so Firestore never receives them. */
 function stripUndefined<T extends Record<string, unknown>>(input: T): Partial<T> {

@@ -14,15 +14,15 @@ export default function OverOnsPage() {
     <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Over ons", path: "/over-ons" }]} />
 
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Over VisualVibe</h1>
-        <p className="text-lg text-white/70 mb-6">
+        <p className="text-lg text-white/70 mb-6 max-w-3xl">
           VisualVibe is het creatief mediabureau van {businessConfig.address.addressLocality}, Limburg.
           We combineren webdesign, SEO, fotografie, videografie, drone/FPV, 3D/VR/AR en podcasting onder één
           dak - zodat KMO's in Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg niet met verschillende
           bureaus hoeven te schakelen voor hun online uitstraling.
         </p>
-        <p className="text-lg text-white/70 mb-12">
+        <p className="text-lg text-white/70 mb-12 max-w-3xl">
           Of het nu gaat om een nieuwe website, professionele bedrijfsfotografie, een pakkende bedrijfsvideo of
           een sterke lokale SEO-strategie: we denken mee vanaf de eerste kennismaking tot de oplevering.
         </p>

@@ -16,14 +16,14 @@ export default function OfferteAanvragenPage() {
         items={[{ name: "Home", path: "/" }, { name: "Offerte aanvragen", path: "/offerte-aanvragen" }]}
       />
 
-      <div className="container mx-auto max-w-2xl">
+      <div className="container mx-auto px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Offerte aanvragen</h1>
-        <p className="text-lg text-white/70 mb-10">
+        <p className="text-lg text-white/70 mb-10 max-w-2xl">
           Vertel ons kort over je project en we bezorgen je een vrijblijvend voorstel op maat - binnen de 2
           werkdagen.
         </p>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
+        <div className="max-w-2xl rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
           <LeadForm variant="offerte" />
         </div>
       </div>
