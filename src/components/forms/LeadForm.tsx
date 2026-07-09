@@ -7,7 +7,7 @@ import { services } from "@/data/services";
 import { regions } from "@/data/regions";
 
 const inputClasses =
-  "w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-amber-500/70";
+  "w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-white/40 [color-scheme:dark] transition-colors focus:border-amber-500/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30";
 
 type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 
@@ -86,81 +86,85 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm text-white/70">
-            Naam *
-          </label>
-          <input id="name" name="name" required className={inputClasses} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm text-white/70">
-            E-mail *
-          </label>
-          <input id="email" name="email" type="email" required className={inputClasses} />
-        </div>
+        <input
+          name="name"
+          required
+          aria-label="Voor- en achternaam"
+          placeholder="Voor- en achternaam*"
+          className={inputClasses}
+        />
+        <input
+          name="email"
+          type="email"
+          required
+          aria-label="E-mailadres"
+          placeholder="E-mailadres*"
+          className={inputClasses}
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="phone" className="text-sm text-white/70">
-            Telefoon
-          </label>
-          <input id="phone" name="phone" type="tel" className={inputClasses} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="company" className="text-sm text-white/70">
-            Bedrijf
-          </label>
-          <input id="company" name="company" className={inputClasses} />
-        </div>
+        <input
+          name="phone"
+          type="tel"
+          aria-label="Telefoonnummer"
+          placeholder="Telefoonnummer"
+          className={inputClasses}
+        />
+        <input
+          name="company"
+          aria-label="Bedrijfsnaam"
+          placeholder="Bedrijfsnaam"
+          className={inputClasses}
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="serviceInterest" className="text-sm text-white/70">
-            Waarin ben je geïnteresseerd?
-          </label>
-          <select id="serviceInterest" name="serviceInterest" className={inputClasses} defaultValue="">
-            <option value="" disabled className="bg-neutral-900 text-white">
-              Kies een dienst
+        <select
+          name="serviceInterest"
+          defaultValue=""
+          aria-label="Waar ben je in geïnteresseerd?"
+          className={inputClasses}
+        >
+          <option value="" disabled className="bg-neutral-900 text-white">
+            Waar ben je in geïnteresseerd?
+          </option>
+          {services.map((service) => (
+            <option key={service.slug} value={service.slug} className="bg-neutral-900 text-white">
+              {service.title}
             </option>
-            {services.map((service) => (
-              <option key={service.slug} value={service.slug} className="bg-neutral-900 text-white">
-                {service.title}
-              </option>
-            ))}
-          </select>
-        </div>
+          ))}
+        </select>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="region" className="text-sm text-white/70">
-            Regio
-          </label>
-          <select id="region" name="region" className={inputClasses} defaultValue="">
-            <option value="" disabled className="bg-neutral-900 text-white">
-              Kies een regio
+        <select
+          name="region"
+          defaultValue=""
+          aria-label="Regio / doelgroep"
+          className={inputClasses}
+        >
+          <option value="" disabled className="bg-neutral-900 text-white">
+            Regio / doelgroep
+          </option>
+          {regions.map((region) => (
+            <option key={region.slug} value={region.slug} className="bg-neutral-900 text-white">
+              {region.title}
             </option>
-            {regions.map((region) => (
-              <option key={region.slug} value={region.slug} className="bg-neutral-900 text-white">
-                {region.title}
-              </option>
-            ))}
-          </select>
-        </div>
+          ))}
+        </select>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="message" className="text-sm text-white/70">
-          {variant === "offerte" ? "Vertel ons over je project *" : "Bericht *"}
-        </label>
-        <textarea id="message" name="message" required rows={5} className={inputClasses} />
-      </div>
-
-      <label className="flex items-start gap-2 text-sm text-white/60">
-        <input type="checkbox" name="privacyAccepted" required className="mt-1" />
-        Ik ga akkoord dat VisualVibe mijn gegevens verwerkt om mijn aanvraag te beantwoorden.
-      </label>
+      <textarea
+        name="message"
+        required
+        rows={5}
+        aria-label="Je bericht"
+        placeholder={
+          variant === "offerte"
+            ? "Vertel ons over je project, doelen en wensen…"
+            : "Je bericht*\nVertel ons over je uitdaging, doelen en wensen…"
+        }
+        className={inputClasses}
+      />
 
       {state.status === "error" && (
         <p className="text-sm text-red-400" role="alert">
@@ -168,11 +172,27 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         </p>
       )}
 
-      <div className="sm:flex sm:justify-end">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <label className="flex items-start gap-2.5 text-sm text-white/60">
+          <input
+            type="checkbox"
+            name="privacyAccepted"
+            required
+            className="mt-0.5 h-4 w-4 shrink-0 accent-amber-500"
+          />
+          <span>
+            Ik ga akkoord met de verwerking van mijn gegevens volgens het{" "}
+            <a href="#" className="text-amber-400 hover:underline">
+              privacybeleid
+            </a>
+            .
+          </span>
+        </label>
+
         <Button
           type="submit"
           disabled={isPending}
-          className="h-11 w-full gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600 sm:w-auto"
+          className="h-11 w-full shrink-0 gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600 sm:w-auto"
         >
           {isPending ? "Bezig met verzenden..." : variant === "offerte" ? "Offerte aanvragen" : "Bericht versturen"}
           {!isPending && <ArrowRight className="h-4 w-4" aria-hidden="true" />}

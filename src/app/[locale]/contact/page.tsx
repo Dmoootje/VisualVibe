@@ -27,11 +27,10 @@ export default async function ContactPage() {
   const addressLines = [streetLine, cityLine].filter(Boolean);
   if (addressLines.length === 0 && settings.fullAddress) addressLines.push(settings.fullAddress);
 
-  // Compact 2-line address for the card: street, then "postcode stad, land".
-  const cityCountryLine = [cityLine, settings.country].filter(Boolean).join(", ");
-  const cardAddressLines = (streetLine ? [streetLine, cityCountryLine] : [settings.fullAddress]).filter(
-    (line): line is string => Boolean(line)
-  );
+  // 3-line address for the card: street, postcode + city, country.
+  const cardAddressLines = (
+    streetLine ? [streetLine, cityLine, settings.country] : [settings.fullAddress]
+  ).filter((line): line is string => Boolean(line));
 
   const routeUrl = settings.routeUrl || settings.googleMapsUrl;
 
