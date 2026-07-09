@@ -38,7 +38,7 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
       <div className="container mx-auto px-5 sm:px-6 md:px-8 relative z-10">
         <TestimonialsHeader />
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-6xl mx-auto">
           <QuoteIcon />
 
           <div

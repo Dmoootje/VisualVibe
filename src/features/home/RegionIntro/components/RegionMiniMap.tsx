@@ -1,19 +1,16 @@
-import {
-  MAP_VIEWBOX,
-  countryOutlines,
-  regionMaps,
-} from "../config/regionMaps";
+import { MAP_VIEWBOX, countryProvinces, regionMaps } from "../config/regionMaps";
 import { RegionMarker } from "./RegionMarker";
 
 /**
- * Mini-map visual for a region card: a faint graticule grid, a soft country
- * silhouette, the active region highlighted in orange with a glow, and a
- * pulsing marker at its centre. Falls back gracefully if a slug has no geometry.
+ * Mini-map visual for a region card: a faint graticule grid, the country's
+ * province silhouettes, the active region's province(s) highlighted in orange
+ * with a glow, and a pulsing marker. Reproduces the provided real-map SVGs.
  */
 export function RegionMiniMap({ slug }: { slug: string }) {
   const geo = regionMaps[slug];
   if (!geo) return null;
 
+  const provinces = countryProvinces[geo.country];
   const gridId = `region-grid-${slug}`;
   const glowId = `region-glow-${slug}`;
   const fillId = `region-fill-${slug}`;
@@ -35,7 +32,7 @@ export function RegionMiniMap({ slug }: { slug: string }) {
           <stop offset="100%" stopColor="#ff5a00" />
         </linearGradient>
         <filter id={glowId} x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="2.4" result="blur" />
+          <feGaussianBlur stdDeviation="2.2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -46,25 +43,31 @@ export function RegionMiniMap({ slug }: { slug: string }) {
       {/* Graticule grid */}
       <rect x="0" y="0" width="120" height="100" fill={`url(#${gridId})`} />
 
-      {/* Country silhouette */}
-      <path
-        d={countryOutlines[geo.country]}
-        fill="rgba(255,255,255,0.035)"
-        stroke="rgba(255,255,255,0.14)"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
+      {/* Province silhouettes */}
+      {provinces.map((d, i) => (
+        <path
+          key={i}
+          d={d}
+          fill="rgba(255,255,255,0.04)"
+          stroke="rgba(255,255,255,0.16)"
+          strokeWidth="0.6"
+          strokeLinejoin="round"
+        />
+      ))}
 
-      {/* Active region highlight (glows a touch stronger on hover) */}
-      <path
-        d={geo.highlight}
-        fill={`url(#${fillId})`}
-        filter={`url(#${glowId})`}
-        stroke="rgba(255,150,60,0.9)"
-        strokeWidth="0.8"
-        strokeLinejoin="round"
-        className="opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-      />
+      {/* Active region highlight(s) (glow a touch stronger on hover) */}
+      {geo.highlightIndices.map((i) => (
+        <path
+          key={`h-${i}`}
+          d={provinces[i]}
+          fill={`url(#${fillId})`}
+          filter={`url(#${glowId})`}
+          stroke="rgba(255,175,95,0.95)"
+          strokeWidth="0.7"
+          strokeLinejoin="round"
+          className="opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      ))}
 
       <RegionMarker x={geo.marker.x} y={geo.marker.y} />
     </svg>

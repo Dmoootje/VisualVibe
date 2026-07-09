@@ -102,11 +102,18 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+/** Keeps at most `max` sentences and appends an ellipsis when the quote is cut. */
+function truncateSentences(text: string, max = 3): string {
+  const sentences = text.match(/[^.!?]+[.!?]+/g);
+  if (!sentences || sentences.length <= max) return text.trim();
+  return sentences.slice(0, max).join("").replace(/[.!?\s]+$/, "").trim() + "...";
+}
+
 function TestimonialQuote({ quote }: { quote: string }) {
   return (
     <div className="md:w-2/3 w-full">
       <p className="text-base sm:text-lg md:text-xl italic mb-4 sm:mb-6 text-center md:text-left">
-        "{quote}"
+        "{truncateSentences(quote)}"
       </p>
       <div
         className="h-px w-16 bg-gradient-to-r from-red-500 to-amber-500 mx-auto md:mx-0"
