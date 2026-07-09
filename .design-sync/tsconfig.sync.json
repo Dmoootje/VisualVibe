@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "..",
+    "jsx": "preserve",
+    "paths": {
+      "@/i18n/navigation": ["./.design-sync/shims/i18n-navigation.tsx"],
+      "next/image": ["./.design-sync/shims/next-image.tsx"],
+      "framer-motion": ["./.design-sync/shims/framer-motion.tsx"],
+      "@/components/ui": ["./src/components/ui/index.ts"],
+      "@/components/blog": ["./src/components/blog/index.ts"],
+      "@/components/cards": ["./src/components/cards/index.ts"],
+      "@/types": ["./src/types/index.ts"],
+      "@/*": ["./src/*"]
+    }
+  }
+}
