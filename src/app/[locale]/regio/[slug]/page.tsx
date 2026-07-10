@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Section, Container } from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
+import { CTASection, ServiceGrid } from "@/components/sections";
+import { RegionDetailHero } from "@/components/regio";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug } from "@/data/services";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -55,7 +56,7 @@ export default async function RegionDetailPage({
         ]}
       />
 
-      <PageHero title={region.title} subtitle={region.intro} backLink={{ label: "Alle regio's", href: "/regio" }} />
+      <RegionDetailHero region={region} />
 
       {localServices.length > 0 && (
         <Section orbs="tl-br">

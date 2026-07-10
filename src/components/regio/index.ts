@@ -1,0 +1,1 @@
+export { RegionDetailHero } from "./RegionDetailHero";
