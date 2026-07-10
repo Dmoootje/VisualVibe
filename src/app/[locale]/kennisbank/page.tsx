@@ -1,28 +1,57 @@
 import type { Metadata } from "next";
-import { blogPosts } from "@/data/blog";
-import { getPostsByCategory } from "@/lib/kennisbank/posts";
+import { notFound } from "next/navigation";
+import {
+  getAllPosts,
+  getPostsByCategory,
+  isBlogLocale,
+  localizedPath,
+} from "@/lib/kennisbank/posts";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { Section, Container } from "@/components/ui";
 import { PageHero, BlogGrid, CategoryGrid } from "@/components/sections";
 
-export const metadata: Metadata = {
-  title: { absolute: `Kennisbank | ${businessConfig.displayName}` },
-  description: "Praktische inzichten over webdesign, SEO, fotografie, video, drone en 3D/VR/AR.",
-  alternates: { canonical: `${businessConfig.url}/kennisbank/` },
-};
+const description =
+  "Praktische inzichten over webdesign, SEO, fotografie, video, drone en 3D/VR/AR.";
 
-export default function KennisbankHubPage() {
-  // Only surface categories that already have at least one post. Registered-but-
-  // empty pillars (fotografie, videografie, ...) stay hidden until content lands,
-  // so we never ship thin empty category pages.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isBlogLocale(locale) || getAllPosts({ locale }).length === 0) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  return {
+    title: { absolute: `Kennisbank | ${businessConfig.displayName}` },
+    description,
+    alternates: {
+      canonical: `${businessConfig.url}${localizedPath(locale, "/kennisbank/")}`,
+    },
+  };
+}
+
+export default async function KennisbankHubPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!isBlogLocale(locale)) notFound();
+
+  const blogPosts = getAllPosts({ locale });
+  if (blogPosts.length === 0) notFound();
+
+  // Empty clusters stay hidden until their first substantial article is live.
   const categoryCards = kennisbankCategories
     .map((category) => ({
       slug: category.slug,
       name: category.name,
       description: category.description,
-      count: getPostsByCategory(category.slug).length,
+      count: getPostsByCategory(category.slug, locale).length,
     }))
     .filter((category) => category.count > 0);
 
@@ -30,8 +59,8 @@ export default function KennisbankHubPage() {
     <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", path: "/" },
-          { name: "Kennisbank", path: "/kennisbank/" },
+          { name: "Home", path: localizedPath(locale, "/") },
+          { name: "Kennisbank", path: localizedPath(locale, "/kennisbank/") },
         ]}
       />
 

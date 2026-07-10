@@ -7,6 +7,7 @@ import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import {
+  assertValidKennisbankContent,
   categoryHref,
   getPostTranslations,
   localizedPath,
@@ -54,6 +55,10 @@ function withSlash(path: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // Publishing must stop when a live article points to a missing or
+  // non-canonical pillar, post, service, region, sector, case or source.
+  assertValidKennisbankContent();
+
   const { url } = businessConfig;
 
   // Preserve the existing behavior for every non-kennisbank route. Kennisbank

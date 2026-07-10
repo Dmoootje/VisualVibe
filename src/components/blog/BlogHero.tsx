@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CalendarDays, Clock, User } from "lucide-react";
+import { CalendarDays, Clock, History, User } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { EYEBROW, GLOW_SHADOW, GRADIENT_TEXT } from "./styles";
 
@@ -11,11 +12,16 @@ export type BlogHeroProps = {
   titleAccent?: string;
   excerpt?: string;
   author?: string;
+  authorUrl?: string;
+  authorRole?: string;
   /** ISO date string; formatted nl-BE. */
   publishedAt?: string;
+  updatedAt?: string;
   readingTime?: string;
   image?: string;
   imageAlt?: string;
+  imageTitle?: string;
+  imageCaption?: string;
   className?: string;
 };
 
@@ -25,10 +31,15 @@ export function BlogHero({
   titleAccent,
   excerpt,
   author,
+  authorUrl,
+  authorRole,
   publishedAt,
+  updatedAt,
   readingTime,
   image,
   imageAlt,
+  imageTitle,
+  imageCaption,
   className,
 }: BlogHeroProps) {
   const date = publishedAt
@@ -38,6 +49,21 @@ export function BlogHero({
         year: "numeric",
       })
     : undefined;
+  const updatedDate = updatedAt
+    ? new Date(updatedAt).toLocaleDateString("nl-BE", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : undefined;
+  const showUpdatedDate = Boolean(updatedDate && updatedDate !== date);
+
+  const authorLabel = author && (
+    <span>
+      {author}
+      {authorRole && <span className="text-white/40"> · {authorRole}</span>}
+    </span>
+  );
 
   return (
     <header className={cn("relative", className)}>
@@ -59,13 +85,36 @@ export function BlogHero({
           {author && (
             <span className="inline-flex items-center gap-1.5">
               <User className="h-4 w-4 text-amber-500" aria-hidden="true" />
-              {author}
+              {authorUrl ? (
+                authorUrl.startsWith("/") ? (
+                  <Link href={authorUrl} className="transition-colors hover:text-white">
+                    {authorLabel}
+                  </Link>
+                ) : (
+                  <a
+                    href={authorUrl}
+                    className="transition-colors hover:text-white"
+                    target="_blank"
+                    rel="external noopener noreferrer"
+                  >
+                    {authorLabel}
+                  </a>
+                )
+              ) : (
+                authorLabel
+              )}
             </span>
           )}
           {date && (
             <span className="inline-flex items-center gap-1.5">
               <CalendarDays className="h-4 w-4 text-amber-500" aria-hidden="true" />
               {date}
+            </span>
+          )}
+          {showUpdatedDate && (
+            <span className="inline-flex items-center gap-1.5">
+              <History className="h-4 w-4 text-amber-500" aria-hidden="true" />
+              Bijgewerkt {updatedDate}
             </span>
           )}
           {readingTime && (
@@ -78,21 +127,29 @@ export function BlogHero({
       )}
 
       {image && (
-        <div
-          className={cn(
-            "relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10",
-            GLOW_SHADOW
+        <figure className="mt-8">
+          <div
+            className={cn(
+              "relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10",
+              GLOW_SHADOW
+            )}
+          >
+            <Image
+              src={image}
+              alt={imageAlt ?? title}
+              title={imageTitle}
+              fill
+              sizes="(max-width: 1024px) 100vw, 768px"
+              className="object-cover"
+              priority
+            />
+          </div>
+          {imageCaption && (
+            <figcaption className="mt-3 text-center text-sm italic text-white/50">
+              {imageCaption}
+            </figcaption>
           )}
-        >
-          <Image
-            src={image}
-            alt={imageAlt ?? title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 768px"
-            className="object-cover"
-            priority
-          />
-        </div>
+        </figure>
       )}
     </header>
   );

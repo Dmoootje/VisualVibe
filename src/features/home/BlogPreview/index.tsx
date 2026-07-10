@@ -1,7 +1,11 @@
-import { blogPosts } from "@/data/blog";
+import { getLocale } from "next-intl/server";
+import { getAllPosts, isBlogLocale } from "@/lib/kennisbank/posts";
 import { BlogBackground, BlogHeader, BlogGrid } from "./components";
 
-export default function BlogPreview() {
+export default async function BlogPreview() {
+  const locale = await getLocale();
+  const blogPosts = isBlogLocale(locale) ? getAllPosts({ locale }) : [];
+
   if (blogPosts.length === 0) {
     return null;
   }

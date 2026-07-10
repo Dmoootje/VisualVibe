@@ -16,6 +16,11 @@ export type BlogPostingData = {
   inLanguage: string;
   articleSection?: string;
   keywords?: string[];
+  citations?: Array<{
+    name: string;
+    url: string;
+    publisher?: string;
+  }>;
 };
 
 function absoluteUrl(url: string): string {
@@ -44,6 +49,17 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
         inLanguage: post.inLanguage,
         articleSection: post.articleSection,
         keywords: post.keywords?.join(", "),
+        citation: post.citations?.map((citation) => ({
+          "@type": "CreativeWork",
+          name: citation.name,
+          url: citation.url,
+          publisher: citation.publisher
+            ? {
+                "@type": "Organization",
+                name: citation.publisher,
+              }
+            : undefined,
+        })),
         author: {
           "@type": "Person",
           name: post.author.name,

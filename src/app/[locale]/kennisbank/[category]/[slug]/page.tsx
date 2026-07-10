@@ -290,6 +290,11 @@ export default async function KennisbankPostPage({
           inLanguage: HREFLANG[post.locale],
           articleSection: post.category,
           keywords,
+          citations: post.sources?.map((source) => ({
+            name: source.title,
+            url: source.url,
+            publisher: source.publisher,
+          })),
         }}
       />
 
@@ -310,10 +315,15 @@ export default async function KennisbankPostPage({
             titleAccent={titleAccent}
             excerpt={post.excerpt}
             author={post.author}
+            authorUrl={post.authorProfile.url}
+            authorRole={post.authorProfile.jobTitle}
             publishedAt={post.publishedAt}
+            updatedAt={post.updatedAt}
             readingTime={post.readingTime}
             image={post.ogImage}
             imageAlt={post.heroImageAlt ?? post.title}
+            imageTitle={post.heroImageTitle}
+            imageCaption={post.heroImageCaption}
           />
         </Container>
       </Section>

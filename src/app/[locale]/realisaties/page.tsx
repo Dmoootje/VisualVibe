@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { cases } from "@/data/cases";
+import { realisatieCategories } from "@/data/realisatieCategories";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { RealisatieCategoryGrid } from "@/components/realisaties/RealisatieCategoryGrid";
 
 export const metadata: Metadata = {
   title: { absolute: `Realisaties | ${businessConfig.displayName}` },
@@ -22,7 +23,10 @@ export default function RealisatiesHubPage() {
           tussentijd? Neem gerust contact op.
         </p>
 
-        <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
+        <h2 className="mb-6 text-2xl font-bold">Categorieën</h2>
+        <RealisatieCategoryGrid items={realisatieCategories} />
+
+        <div className="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
           <h2 className="text-2xl font-bold">Vraag je project op maat aan</h2>
           <Link
             href="/offerte-aanvragen"
@@ -32,10 +36,6 @@ export default function RealisatiesHubPage() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-
-        {cases.length > 0 ? null : (
-          <p className="mt-8 text-center text-sm text-white/40">Realisaties volgen binnenkort.</p>
-        )}
       </div>
     </div>
   );

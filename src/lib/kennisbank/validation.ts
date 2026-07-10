@@ -236,7 +236,11 @@ export function validateKennisbankPosts(
 
     for (const casePath of post.relatedCases ?? []) {
       const relatedCase = getCaseBySlug(slugFromPath(casePath));
-      if (!relatedCase || normalizedSitePath(casePath) !== `/realisaties/${relatedCase.slug}/`) {
+      if (
+        !relatedCase ||
+        normalizedSitePath(casePath) !==
+          `/realisaties/${relatedCase.category}/${relatedCase.slug}/`
+      ) {
         issues.push({
           code: "missing-related-case",
           field: "relatedCases",

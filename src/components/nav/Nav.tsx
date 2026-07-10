@@ -2,15 +2,24 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
+import { regions } from "@/data/regions";
+import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import { NavIcon } from "./nav-icons";
-import { pillars, regioItems, sectorItems, type NavLink } from "./navData";
+import {
+  pillars,
+  regioItems,
+  sectorItems,
+  realisatieItems,
+  kennisbankItems as defaultKennisbankItems,
+  type NavLink,
+} from "./navData";
 
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";
 const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
 
-type DesktopMenu = "diensten" | "regio" | "sectoren" | "kennisbank" | null;
-type DrawerSection = "regio" | "sectoren" | "kennisbank" | null;
+type DesktopMenu = "diensten" | "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
+type DrawerSection = "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
 
 function ChevDown({ className, color = "#FF7A00" }: { className?: string; color?: string }) {
   return (
@@ -51,7 +60,11 @@ function Logo({ size = 24 }: { size?: number }) {
 
 const rowLink = "flex items-center gap-2";
 
-export function Nav({ kennisbankItems }: { kennisbankItems: NavLink[] }) {
+export function Nav({
+  kennisbankItems = defaultKennisbankItems,
+}: {
+  kennisbankItems?: NavLink[];
+}) {
   const pathname = usePathname();
 
   // Desktop
@@ -228,11 +241,13 @@ export function Nav({ kennisbankItems }: { kennisbankItems: NavLink[] }) {
             </div>
           </div>
 
-          {/* Regio / Sectoren / Kennisbank simple dropdowns + plain links */}
-          <DesktopDropdown label="Regio" items={regioItems} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <Link href="/realisaties" className="vvnav-link">Realisaties</Link>
+          {/* Regio mega-menu with region map cards */}
+          <RegioMega open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
+          <DesktopDropdown label="Realisaties" items={realisatieItems} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} />
           <DesktopDropdown label="Sectoren" items={sectorItems} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
-          <DesktopDropdown label="Kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
+          {kennisbankItems.length > 0 && (
+            <DesktopDropdown label="Kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
+          )}
           <Link href="/over-ons" className="vvnav-link">Over ons</Link>
           <Link href="/contact" className="vvnav-link">Contact</Link>
         </div>
@@ -321,11 +336,13 @@ export function Nav({ kennisbankItems }: { kennisbankItems: NavLink[] }) {
               </div>
             </div>
 
-            {/* Regio / Sectoren / Kennisbank accordions */}
+            {/* Regio / Realisaties / Sectoren / Kennisbank accordions */}
             <DrawerAccordion label="Regio" items={regioItems} open={mSection === "regio"} onToggle={() => setMSection((s) => (s === "regio" ? null : "regio"))} onNavigate={() => setDrawer(false)} />
-            <DrawerLink href="/realisaties" onNavigate={() => setDrawer(false)}>Realisaties</DrawerLink>
+            <DrawerAccordion label="Realisaties" items={realisatieItems} open={mSection === "realisaties"} onToggle={() => setMSection((s) => (s === "realisaties" ? null : "realisaties"))} onNavigate={() => setDrawer(false)} />
             <DrawerAccordion label="Sectoren" items={sectorItems} open={mSection === "sectoren"} onToggle={() => setMSection((s) => (s === "sectoren" ? null : "sectoren"))} onNavigate={() => setDrawer(false)} />
-            <DrawerAccordion label="Kennisbank" items={kennisbankItems} open={mSection === "kennisbank"} onToggle={() => setMSection((s) => (s === "kennisbank" ? null : "kennisbank"))} onNavigate={() => setDrawer(false)} />
+            {kennisbankItems.length > 0 && (
+              <DrawerAccordion label="Kennisbank" items={kennisbankItems} open={mSection === "kennisbank"} onToggle={() => setMSection((s) => (s === "kennisbank" ? null : "kennisbank"))} onNavigate={() => setDrawer(false)} />
+            )}
             <DrawerLink href="/over-ons" onNavigate={() => setDrawer(false)}>Over ons</DrawerLink>
             <DrawerLink href="/contact" onNavigate={() => setDrawer(false)}>Contact</DrawerLink>
           </div>
@@ -357,6 +374,59 @@ function DesktopDropdown({ label, items, open, onOpen, onClose }: { label: strin
               {it.name} <ChevRight color="rgba(255,255,255,.3)" size={14} />
             </Link>
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RegioMega({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; onClose: () => void }) {
+  return (
+    <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer" }}>
+        Regio <ChevDown className="vvnav-navChev" color="currentColor" />
+      </span>
+      <div className={`vvnav-mega vvnav-megaC ${open ? "is-open" : ""}`}>
+        <div style={{ width: "min(760px, calc(100vw - 32px))", padding: 16, borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "2px 6px 12px" }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>
+              Onze regio&apos;s
+            </span>
+            <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
+              Alle regio&apos;s <ArrowRight />
+            </Link>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+            {regions.map((region) => {
+              const isHome = region.type === "province";
+              return (
+                <Link
+                  key={region.slug}
+                  href={`/regio/${region.slug}`}
+                  className="vvnav-regionCard group"
+                  style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRadius: 14, border: "1px solid rgba(255,255,255,.1)", background: "rgba(255,255,255,.02)" }}
+                >
+                  <div style={{ position: "relative", height: 96, overflow: "hidden", background: "linear-gradient(to bottom,#171717,#0a0a0a)" }}>
+                    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 60% 45%,rgba(255,117,0,.16),transparent 60%)" }} />
+                    <RegionMiniMap slug={region.slug} />
+                    <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 28, background: "linear-gradient(to top,#0a0a0a,transparent)" }} />
+                  </div>
+                  <div style={{ padding: "11px 12px 13px", display: "flex", flexDirection: "column", gap: 6 }}>
+                    <span
+                      style={
+                        isHome
+                          ? { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,122,0,.3)", background: "rgba(255,122,0,.1)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#FF9A45" }
+                          : { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.05)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }
+                      }
+                    >
+                      {isHome ? "Thuisregio" : "Regio"}
+                    </span>
+                    <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 14.5, color: "#fff", lineHeight: 1.15 }}>{region.title}</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

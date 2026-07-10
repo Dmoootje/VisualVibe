@@ -2,6 +2,8 @@ import { services } from "@/data/services";
 import { getSubservicesByParent } from "@/data/subservices";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
+import { kennisbankCategories } from "@/data/kennisbankCategories";
+import { realisatieCategories } from "@/data/realisatieCategories";
 
 export type NavLink = { name: string; href: string };
 export type NavSub = { name: string; href: string; icon: string };
@@ -78,4 +80,16 @@ export const regioItems: NavLink[] = [
 export const sectorItems: NavLink[] = [
   { name: "Alle sectoren", href: "/sectoren" },
   ...sectors.map((sector) => ({ name: sector.title, href: `/sectoren/${sector.slug}` })),
+];
+
+// Realisaties dropdown (hub + all realisatie categories).
+export const realisatieItems: NavLink[] = [
+  { name: "Alle realisaties", href: "/realisaties" },
+  ...realisatieCategories.map((category) => ({ name: category.name, href: `/realisaties/${category.slug}` })),
+];
+
+// Kennisbank dropdown (hub + all registered categories).
+export const kennisbankItems: NavLink[] = [
+  { name: "Alle artikels", href: "/kennisbank" },
+  ...kennisbankCategories.map((category) => ({ name: category.name, href: `/kennisbank/${category.slug}` })),
 ];

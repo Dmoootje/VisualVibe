@@ -1389,3 +1389,18 @@ html {
         animation: none !important;
     }
 }
+
+/* Regio mega-menu: centered variant (wide panel from a mid-nav trigger) + map cards */
+.vvnav-megaC {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -10px) scale(0.98);
+    transform-origin: top center;
+}
+.vvnav-megaC.is-open { transform: translate(-50%, 0) scale(1); }
+.vvnav-regionCard { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+.vvnav-regionCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 122, 0, 0.4) !important;
+    box-shadow: 0 18px 50px -18px rgba(255, 117, 0, 0.55);
+}
