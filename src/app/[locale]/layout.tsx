@@ -9,6 +9,7 @@ import { Header, Footer } from "@/layouts";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd } from "@/components/seo";
 import { SectorIconSprite } from "@/components/sectors";
+import { QuoteModalProvider } from "@/components/quote";
 import { businessConfig } from "@/config/business.config";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -87,9 +88,11 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <QuoteModalProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </QuoteModalProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

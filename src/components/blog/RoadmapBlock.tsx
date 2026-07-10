@@ -26,11 +26,11 @@ export function RoadmapBlock({
           <li key={i} className="relative flex gap-4">
             {!isLast && (
               <span
-                className="absolute left-[1.15rem] top-10 bottom-[-1.5rem] w-px bg-gradient-to-b from-amber-500/50 to-white/5"
+                className="absolute left-[1.15rem] top-10 bottom-[-1.5rem] w-px bg-gradient-to-b from-[#ff7500]/50 to-white/5"
                 aria-hidden="true"
               />
             )}
-            <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-red-500 text-sm font-bold text-black">
+            <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#ff7500] to-red-500 text-sm font-bold text-black">
               {step.label ?? i + 1}
             </span>
             <div className="pt-1">

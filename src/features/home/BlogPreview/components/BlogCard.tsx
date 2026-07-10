@@ -46,7 +46,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
       <Link
         href={postHref(post)}
         aria-label={`Lees het volledige artikel: ${post.title}`}
-        className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition-all duration-300 hover:border-amber-500/40 hover:shadow-[0_0_35px_-10px_rgba(255,117,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+        className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#ff7500]/20 bg-neutral-950 transition-all duration-300 hover:border-[#ff7500]/40 hover:shadow-[0_0_35px_-10px_rgba(255,117,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       >
         {/* Hero image + (optional) overlaid badge, logo and title */}
         <div className="relative aspect-[16/9] w-full overflow-hidden">
@@ -60,7 +60,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
             />
           ) : (
             <div
-              className="h-full w-full bg-gradient-to-br from-amber-500/25 to-orange-600/10"
+              className="h-full w-full bg-gradient-to-br from-[#ff7500]/25 to-orange-600/10"
               aria-hidden="true"
             />
           )}
@@ -74,7 +74,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
               />
 
               <span
-                className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-orange-950/40"
+                className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#ff7500] to-orange-600 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-orange-950/40"
                 aria-hidden="true"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-white/90" />
@@ -94,13 +94,13 @@ export function BlogCard({ post, index }: BlogCardProps) {
                 <h3 className="text-lg font-bold leading-tight text-white sm:text-xl">
                   <span className="block">{lead}</span>
                   {accent && (
-                    <span className="block bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                    <span className="block bg-gradient-to-r from-[#ff7500] to-orange-500 bg-clip-text text-transparent">
                       {accent}
                     </span>
                   )}
                 </h3>
                 <span
-                  className="mt-2.5 block h-0.5 w-10 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"
+                  className="mt-2.5 block h-0.5 w-10 rounded-full bg-gradient-to-r from-[#ff7500] to-orange-500"
                   aria-hidden="true"
                 />
               </div>
@@ -125,7 +125,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
             {post.excerpt}
           </p>
 
-          <span className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-500/40 px-4 py-2.5 text-sm font-medium text-amber-400 transition-colors group-hover:border-amber-400 group-hover:bg-amber-500/10 group-hover:text-amber-300">
+          <span className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#ff7500]/40 px-4 py-2.5 text-sm font-medium text-[#ff7500] transition-colors group-hover:border-[#ff7500] group-hover:bg-[#ff7500]/10 group-hover:text-[#ff9a45]">
             Lees het volledige artikel
             <ArrowRight
               className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -153,7 +153,7 @@ function Meta({
 
   return (
     <div className="flex items-center gap-2" aria-label={`${label}: ${value}`}>
-      <Icon className="h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
+      <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
       <div className="min-w-0 leading-tight">
         <div className="text-[10px] uppercase tracking-wide text-white/40">{label}</div>
         <div className="truncate text-xs font-medium text-white">{value}</div>

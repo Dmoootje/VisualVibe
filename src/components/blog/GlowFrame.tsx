@@ -17,7 +17,7 @@ export function GlowFrame({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-gradient-to-br from-amber-500/50 via-white/10 to-transparent p-px",
+        "rounded-2xl bg-gradient-to-br from-[#ff7500]/50 via-white/10 to-transparent p-px",
         className
       )}
     >

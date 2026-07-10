@@ -45,7 +45,7 @@ export function RelatedArticles({
             <div className="flex flex-1 flex-col p-4">
               {(item.category || item.readingTime) && (
                 <div className="mb-2 flex items-center gap-2 text-xs text-white/50">
-                  {item.category && <span className="text-amber-400">{item.category}</span>}
+                  {item.category && <span className="text-[#ff7500]">{item.category}</span>}
                   {item.category && item.readingTime && <span>·</span>}
                   {item.readingTime && (
                     <span className="inline-flex items-center gap-1">
@@ -58,7 +58,7 @@ export function RelatedArticles({
               <h3 className="font-semibold leading-snug text-white line-clamp-2">
                 {item.title}
               </h3>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm text-amber-400">
+              <span className="mt-3 inline-flex items-center gap-1 text-sm text-[#ff7500]">
                 Lees meer
                 <ArrowRight
                   className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"

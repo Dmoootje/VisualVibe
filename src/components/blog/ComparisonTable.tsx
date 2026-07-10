@@ -22,7 +22,7 @@ export function ComparisonTable({
     <figure className={cn("my-8", className)}>
       <div className="overflow-x-auto rounded-2xl border border-white/10">
         <table className="w-full border-collapse text-left text-sm">
-          <thead className="bg-gradient-to-r from-amber-500/[0.18] to-red-500/[0.12]">
+          <thead className="bg-gradient-to-r from-[#ff7500]/[0.18] to-red-500/[0.12]">
             <tr>
               {headers.map((h, i) => (
                 <th key={i} className="whitespace-nowrap px-4 py-3 font-semibold text-white">

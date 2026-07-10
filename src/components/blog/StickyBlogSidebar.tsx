@@ -73,7 +73,7 @@ export function StickyBlogSidebar({
       {cta && (
         <GlowFrame>
           <div className="relative overflow-hidden rounded-2xl p-5">
-            <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-amber-500/20 blur-2xl" />
+            <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#ff7500]/20 blur-2xl" />
             <div className="relative">
               {cta.title && <p className="font-semibold text-white">{cta.title}</p>}
               {cta.description && (
@@ -81,7 +81,7 @@ export function StickyBlogSidebar({
               )}
               <Link
                 href={cta.href}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-amber-500 px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-[#ff7500] px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
               >
                 {cta.label}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -94,10 +94,10 @@ export function StickyBlogSidebar({
       {service && (
         <Link
           href={service.href}
-          className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-all hover:border-amber-500/40 hover:shadow-[0_0_30px_-12px_rgba(255,117,0,0.45)]"
+          className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-all hover:border-[#ff7500]/40 hover:shadow-[0_0_30px_-12px_rgba(255,117,0,0.45)]"
         >
           {service.icon && (
-            <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20">
+            <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff7500]/20 to-red-500/10 text-[#ff9a45] ring-1 ring-inset ring-[#ff7500]/20">
               {service.icon}
             </span>
           )}
@@ -105,7 +105,7 @@ export function StickyBlogSidebar({
           {service.description && (
             <p className="mt-1 text-sm leading-relaxed text-white/65">{service.description}</p>
           )}
-          <span className="mt-3 inline-flex items-center gap-1 text-sm text-amber-400">
+          <span className="mt-3 inline-flex items-center gap-1 text-sm text-[#ff7500]">
             {service.linkLabel ?? "Ontdek deze dienst"}
             <ArrowRight
               className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"

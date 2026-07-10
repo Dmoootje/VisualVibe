@@ -30,9 +30,9 @@ const VARIANTS: Record<
   },
   warning: {
     icon: AlertTriangle,
-    ring: "border-amber-400/30 bg-amber-400/[0.07]",
-    iconWrap: "bg-amber-400/15 text-amber-300",
-    bar: "bg-amber-400",
+    ring: "border-[#ff7500]/30 bg-[#ff7500]/[0.07]",
+    iconWrap: "bg-[#ff7500]/15 text-[#ff9a45]",
+    bar: "bg-[#ff7500]",
     defaultTitle: "Let op",
   },
   danger: {
@@ -85,7 +85,7 @@ export function NoticeBox({
         </span>
         <div className="min-w-0 flex-1">
           <p className="mb-1 font-semibold text-white">{title ?? v.defaultTitle}</p>
-          <div className="text-sm leading-relaxed text-white/75 [&_a]:text-amber-400 [&_a:hover]:underline [&_strong]:text-white">
+          <div className="text-sm leading-relaxed text-white/75 [&_a]:text-[#ff7500] [&_a:hover]:underline [&_strong]:text-white">
             {children}
           </div>
         </div>

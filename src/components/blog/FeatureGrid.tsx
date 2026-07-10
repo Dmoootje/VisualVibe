@@ -37,7 +37,7 @@ export function FeatureCard({
   return (
     <div className={cn("group p-5", CARD_INTERACTIVE, className)}>
       {Icon && (
-        <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20 transition-colors group-hover:text-amber-200">
+        <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff7500]/20 to-red-500/10 text-[#ff9a45] ring-1 ring-inset ring-[#ff7500]/20 transition-colors group-hover:text-[#ffc489]">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
       )}

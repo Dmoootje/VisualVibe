@@ -6,6 +6,7 @@ import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { WeddingVibeLogo } from "@/components/over-ons/WeddingVibeLogo";
 import { OvIcon } from "@/components/over-ons/ov-icons";
+import { QuoteButton } from "@/components/quote";
 
 export const metadata: Metadata = {
   title: { absolute: `Over ons | ${businessConfig.displayName}` },
@@ -52,7 +53,8 @@ const values = [
 ];
 const regionPills = ["Hasselt", "Tongeren", "Bilzen", "Borgloon", "Genk", "Sint-Truiden", "Antwerpen", "Maastricht", "Vlaanderen", "Nederlands-Limburg"];
 
-const SECTION = "mx-auto w-full max-w-[1300px] px-5 sm:px-8 lg:px-14";
+// Match the site-wide standard width (home/contact use the same .container).
+const SECTION = "container mx-auto px-4";
 const eyebrow: CSSProperties = { fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#FF9A45", margin: 0 };
 const h2: CSSProperties = { fontFamily: SORA, fontWeight: 800, fontSize: "clamp(28px,4.4vw,38px)", letterSpacing: "-.025em", color: "#fff", margin: 0, textWrap: "balance" };
 
@@ -112,9 +114,9 @@ export default function OverOnsPage() {
                 Eén partner, van de eerste kennismaking tot de oplevering.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-                <Link href="/offerte-aanvragen" className="vvov-btn" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 16, color: "#fff", padding: "15px 28px", borderRadius: 12, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)" }}>
+                <QuoteButton mode="kennis" className="vvov-btn" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 16, color: "#fff", padding: "15px 28px", borderRadius: 12, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)", border: 0, cursor: "pointer" }}>
                   Laten we kennismaken <Arrow />
-                </Link>
+                </QuoteButton>
                 <Link href="/realisaties" className="vvov-btn" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 16, color: "#fff", padding: "15px 28px", borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.14)" }}>
                   Bekijk realisaties
                 </Link>

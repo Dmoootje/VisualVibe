@@ -58,12 +58,12 @@ export function FaqAccordion({
           <AccordionItem
             key={i}
             value={`faq-${i}`}
-            className="rounded-xl border border-white/10 bg-white/[0.03] px-4 backdrop-blur-sm transition-colors data-[state=open]:border-amber-500/30 data-[state=open]:bg-amber-500/[0.04]"
+            className="rounded-xl border border-white/10 bg-white/[0.03] px-4 backdrop-blur-sm transition-colors data-[state=open]:border-[#ff7500]/30 data-[state=open]:bg-[#ff7500]/[0.04]"
           >
-            <AccordionTrigger className="py-4 text-left text-base font-semibold text-white hover:no-underline [&>svg]:text-amber-400">
+            <AccordionTrigger className="py-4 text-left text-base font-semibold text-white hover:no-underline [&>svg]:text-[#ff7500]">
               {item.question}
             </AccordionTrigger>
-            <AccordionContent className="pb-4 text-sm leading-relaxed text-white/75 [&_a]:text-amber-400 [&_a:hover]:underline [&_strong]:text-white">
+            <AccordionContent className="pb-4 text-sm leading-relaxed text-white/75 [&_a]:text-[#ff7500] [&_a:hover]:underline [&_strong]:text-white">
               {item.answer}
             </AccordionContent>
           </AccordionItem>

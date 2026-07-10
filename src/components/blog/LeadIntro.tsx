@@ -15,7 +15,7 @@ export function LeadIntro({
   return (
     <div
       className={cn(
-        "border-l-2 border-amber-500/60 pl-5 text-lg leading-relaxed text-white/80 sm:text-xl [&_strong]:font-semibold [&_strong]:text-white",
+        "border-l-2 border-[#ff7500]/60 pl-5 text-lg leading-relaxed text-white/80 sm:text-xl [&_strong]:font-semibold [&_strong]:text-white",
         className
       )}
     >

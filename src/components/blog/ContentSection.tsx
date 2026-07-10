@@ -32,7 +32,7 @@ export function ContentSection({
           className="relative mb-5 inline-block pb-2 text-2xl font-bold tracking-tight text-white sm:text-3xl"
         >
           {title}
-          <span className="absolute bottom-0 left-0 h-0.5 w-12 rounded-full bg-gradient-to-r from-amber-400 to-red-500" />
+          <span className="absolute bottom-0 left-0 h-0.5 w-12 rounded-full bg-gradient-to-r from-[#ff7500] to-red-500" />
         </h2>
       )}
       <div className="text-white/75">{children}</div>

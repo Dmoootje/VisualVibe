@@ -41,7 +41,7 @@ export function BlogToc({
                   "-ml-px block border-l-2 py-1.5 text-sm transition-colors",
                   item.level === 3 ? "pl-6" : "pl-4",
                   isActive
-                    ? "border-amber-400 font-medium text-amber-300"
+                    ? "border-[#ff7500] font-medium text-[#ff9a45]"
                     : "border-transparent text-white/55 hover:border-white/30 hover:text-white/90"
                 )}
               >

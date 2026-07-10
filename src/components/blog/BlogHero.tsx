@@ -69,7 +69,10 @@ export function BlogHero({
     <header className={cn("relative", className)}>
       {category && <span className={EYEBROW}>{category}</span>}
 
-      <h1 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+      <h1
+        className="mt-5 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl"
+        style={{ fontFamily: "var(--font-sora), sans-serif" }}
+      >
         {title}
         {titleAccent && (
           <span className={cn("mt-1 block", GRADIENT_TEXT)}>{titleAccent}</span>
@@ -84,7 +87,7 @@ export function BlogHero({
         <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
           {author && (
             <span className="inline-flex items-center gap-1.5">
-              <User className="h-4 w-4 text-amber-500" aria-hidden="true" />
+              <User className="h-4 w-4 text-[#ff7500]" aria-hidden="true" />
               {authorUrl ? (
                 authorUrl.startsWith("/") ? (
                   <Link href={authorUrl} className="transition-colors hover:text-white">
@@ -107,19 +110,19 @@ export function BlogHero({
           )}
           {date && (
             <span className="inline-flex items-center gap-1.5">
-              <CalendarDays className="h-4 w-4 text-amber-500" aria-hidden="true" />
+              <CalendarDays className="h-4 w-4 text-[#ff7500]" aria-hidden="true" />
               {date}
             </span>
           )}
           {showUpdatedDate && (
             <span className="inline-flex items-center gap-1.5">
-              <History className="h-4 w-4 text-amber-500" aria-hidden="true" />
+              <History className="h-4 w-4 text-[#ff7500]" aria-hidden="true" />
               Bijgewerkt {updatedDate}
             </span>
           )}
           {readingTime && (
             <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-amber-500" aria-hidden="true" />
+              <Clock className="h-4 w-4 text-[#ff7500]" aria-hidden="true" />
               {readingTime}
             </span>
           )}

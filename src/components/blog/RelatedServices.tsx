@@ -32,7 +32,7 @@ export function RelatedServices({
               className={cn("group flex items-start gap-4 p-5", CARD_INTERACTIVE)}
             >
               {Icon && (
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/20 to-red-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/20">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff7500]/20 to-red-500/10 text-[#ff9a45] ring-1 ring-inset ring-[#ff7500]/20">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
               )}
@@ -40,7 +40,7 @@ export function RelatedServices({
                 <span className="flex items-center gap-1 font-semibold text-white">
                   {item.title}
                   <ArrowUpRight
-                    className="h-4 w-4 text-amber-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    className="h-4 w-4 text-[#ff7500] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     aria-hidden="true"
                   />
                 </span>

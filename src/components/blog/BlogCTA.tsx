@@ -27,7 +27,7 @@ export function BlogCTA({
   return (
     <GlowFrame className={cn("my-8", className)}>
       <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-amber-500/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#ff7500]/15 blur-3xl" />
         <div className="relative">
           <h3 className="text-xl font-bold text-white sm:text-2xl">{title}</h3>
           {description && (
@@ -36,7 +36,7 @@ export function BlogCTA({
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href={href}
-              className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-amber-500 px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-[#ff7500] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
             >
               {buttonLabel}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />

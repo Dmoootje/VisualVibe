@@ -28,9 +28,9 @@ export function RelatedRegions({
           <li key={item.href}>
             <Link
               href={item.href}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-sm text-white/80 transition-colors hover:border-amber-500/40 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-sm text-white/80 transition-colors hover:border-[#ff7500]/40 hover:text-white"
             >
-              <MapPin className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
+              <MapPin className="h-3.5 w-3.5 text-[#ff7500]" aria-hidden="true" />
               {item.name}
             </Link>
           </li>
