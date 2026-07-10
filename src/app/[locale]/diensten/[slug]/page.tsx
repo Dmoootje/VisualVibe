@@ -105,7 +105,7 @@ export default async function ServiceDetailPage({
       {childServices.length > 0 ? (
         <Section orbs="tl-br">
           <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Subdiensten</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">{service.title} diensten overzicht</h2>
             <ServiceGrid services={childServices} />
           </Container>
         </Section>

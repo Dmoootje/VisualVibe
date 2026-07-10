@@ -693,6 +693,15 @@ html {
     background: rgba(255, 117, 0, 0.06);
 }
 
+/* Blinking caret for the contact-form typewriter placeholders. */
+@keyframes vvCaretBlink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+}
+.vv-caret {
+    animation: vvCaretBlink 1.05s steps(1, end) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .vv-animate .vv-base,
     .vv-animate .vv-shim,
@@ -703,6 +712,7 @@ html {
         animation: none !important;
     }
     .vv-shim { opacity: 0; }
+    .vv-caret { animation: none; opacity: 1; }
 }
 
 /* ── Footer (design handoff, themed orange) ──────────────────────────────
