@@ -1404,3 +1404,104 @@ html {
     border-color: rgba(255, 122, 0, 0.4) !important;
     box-shadow: 0 18px 50px -18px rgba(255, 117, 0, 0.55);
 }
+
+/* ── Over ons page (design handoff) ─────────────────────────────────────── */
+@keyframes vvovSpin { to { transform: rotate(360deg); } }
+@keyframes vvovLivePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,122,0,.6); } 70% { box-shadow: 0 0 0 8px rgba(255,122,0,0); } }
+@keyframes vvovFloaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes vvovBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+@keyframes vvovQwob { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes vvovMqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@property --wedA { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes vvovWedSpin { to { --wedA: 360deg; } }
+
+.vvov-anim .vvov-liveDot { animation: vvovLivePulse 2.2s ease-out infinite; }
+.vvov-anim .vvov-ring1 { transform-box: fill-box; transform-origin: center; animation: vvovSpin 34s linear infinite; }
+.vvov-anim .vvov-ring2 { transform-box: fill-box; transform-origin: center; animation: vvovSpin 46s linear infinite reverse; }
+.vvov-anim .vvov-conic { animation: vvovSpin 20s linear infinite; }
+.vvov-anim .vvov-glowpulse { animation: vvovBreathe 7s ease-in-out infinite; }
+
+.vvov-btn { transition: transform .25s ease, box-shadow .25s ease; white-space: nowrap; }
+.vvov-btn:hover { transform: translateY(-2px); }
+.vvov-btn .vvov-ar { transition: transform .3s ease; }
+.vvov-btn:hover .vvov-ar { transform: translateX(5px); }
+
+.vvov-role { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.vvov-role:hover { border-color: rgba(255,122,0,.55); background: rgba(255,122,0,.13); transform: translateY(-2px); }
+
+.vvov-disc { transition: border-color .3s ease, background .3s ease, transform .3s ease; }
+.vvov-disc:hover { border-color: rgba(255,122,0,.42) !important; background: rgba(255,122,0,.05) !important; transform: translateY(-4px); }
+.vvov-disc .vvov-ar { transition: transform .3s ease; }
+.vvov-disc:hover .vvov-ar { transform: translateX(4px); }
+
+.vvov-val { transition: border-color .3s ease, background .3s ease, transform .3s ease; }
+.vvov-val:hover { border-color: rgba(255,122,0,.32) !important; background: rgba(255,255,255,.035) !important; transform: translateY(-4px); }
+
+/* discipline card: ghost-glyph watermark + tracing conic border (reuses --vvA) */
+.vvov-svc { transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease, background .35s ease, box-shadow .45s ease; }
+.vvov-svc::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: conic-gradient(from var(--vvA), rgba(255,122,0,0) 0deg, #ff7a00 70deg, #ffc489 118deg, rgba(255,122,0,0) 205deg, rgba(255,122,0,0) 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .4s ease; pointer-events: none; z-index: 3;
+}
+.vvov-svc:hover {
+    transform: translateY(-7px) scale(1.014);
+    border-color: rgba(255,122,0,.16) !important; background: rgba(255,122,0,.05) !important;
+    box-shadow: 0 28px 64px -22px rgba(255,90,0,.6), 0 8px 22px -14px rgba(0,0,0,.7);
+}
+.vvov-svc:hover::before { opacity: 1; animation: vvSubSpinBorder 3.4s linear infinite; }
+.vvov-wm { transition: color .4s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+.vvov-svc:hover .vvov-wm { color: rgba(255,122,0,.12) !important; transform: translate(-6px,-6px) rotate(-4deg); }
+
+/* gallery tiles */
+.vvov-gal { transition: border-color .35s ease, box-shadow .35s ease; }
+.vvov-gal:hover { border-color: rgba(255,122,0,.45) !important; box-shadow: 0 30px 70px -30px rgba(255,90,0,.4); }
+.vvov-gimg { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.vvov-gal:hover .vvov-gimg { transform: scale(1.07); }
+
+/* WeddingVibe gold conic border card */
+.vvov-wed { transition: transform .35s ease, box-shadow .35s ease; }
+.vvov-wed::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
+    background: conic-gradient(from var(--wedA), #8A6D2B 0deg, #F4E3B0 55deg, #C9A24B 120deg, #FFF6DA 180deg, #B8860B 245deg, #F4E3B0 310deg, #8A6D2B 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none; z-index: 0;
+}
+.vvov-anim .vvov-wed::before { animation: vvovWedSpin 6s linear infinite; }
+.vvov-wed:hover { transform: translateY(-2px); box-shadow: 0 24px 52px -18px rgba(201,162,75,.8), 0 6px 16px -8px rgba(0,0,0,.5); }
+.vvov-wed .vvov-ar { transition: transform .3s ease; }
+.vvov-wed:hover .vvov-ar { transform: translateX(4px); }
+
+/* secret reveal card */
+.vvov-secret { transition: border-color .35s ease, transform .35s ease, box-shadow .35s ease; }
+.vvov-secret:hover { border-color: rgba(255,122,0,.7); box-shadow: 0 44px 100px -30px rgba(255,90,0,.4), inset 0 0 0 1px rgba(255,255,255,.05); }
+.vvov-qmark { transition: transform .75s cubic-bezier(.2,.7,.2,1), opacity .4s ease; }
+.vvov-smiley { opacity: 0; transform: scale(.5) rotate(-45deg); transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .45s ease; }
+.vvov-secret:hover .vvov-qmark { transform: rotate(360deg) scale(.35); opacity: 0; }
+.vvov-secret:hover .vvov-smiley { opacity: 1; transform: scale(1) rotate(0); }
+.vvov-twiglow { transition: opacity .5s ease; }
+.vvov-secret:hover .vvov-twiglow { opacity: 1; }
+.vvov-silho { transition: opacity .5s ease, transform .5s ease; }
+.vvov-secret:hover .vvov-silho { opacity: .92; transform: translateX(-50%) translateY(-5px); }
+.vvov-anim .vvov-secret:not(:hover) .vvov-qwrap { animation: vvovQwob 3.4s ease-in-out infinite; }
+
+/* region marquee (masked, single left track) */
+.vvov-mq { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.vvov-mqTrack { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.vvov-anim .vvov-mqL { animation: vvovMqL 46s linear infinite; }
+.vvov-mq:hover .vvov-mqTrack { animation-play-state: paused; }
+
+/* social icons */
+.vvov-soc { transition: transform .25s ease, border-color .25s ease, color .25s ease; }
+.vvov-soc:hover { transform: translateY(-3px); border-color: rgba(255,122,0,.5); color: #FF7A00; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vvov-anim .vvov-liveDot, .vvov-anim .vvov-ring1, .vvov-anim .vvov-ring2, .vvov-anim .vvov-conic,
+    .vvov-anim .vvov-glowpulse, .vvov-anim .vvov-wed::before, .vvov-anim .vvov-mqL,
+    .vvov-anim .vvov-secret:not(:hover) .vvov-qwrap { animation: none !important; }
+    .vvov-svc, .vvov-svc::before, .vvov-wm, .vvov-gal, .vvov-gimg, .vvov-wed, .vvov-secret,
+    .vvov-qmark, .vvov-smiley, .vvov-role, .vvov-disc, .vvov-val, .vvov-btn { transition: none !important; }
+}

@@ -171,8 +171,9 @@ export function Nav({
                   {pillars.map((p, i) => {
                     const on = i === active;
                     return (
-                      <div
+                      <Link
                         key={p.id}
+                        href={p.href}
                         className="vvnav-railItem"
                         onMouseEnter={() => pick(i)}
                         style={{
@@ -189,7 +190,7 @@ export function Nav({
                           <span style={{ display: "block", fontSize: 11.5, color: "rgba(255,255,255,.42)", marginTop: 1 }}>{p.tag}</span>
                         </span>
                         <ChevRight className="vvnav-rchev" color={on ? "#FF7A00" : "rgba(255,255,255,.28)"} />
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -316,6 +317,10 @@ export function Nav({
                           <div className="vvnav-macc" style={{ gridTemplateRows: ex ? "1fr" : "0fr" }}>
                             <div style={{ overflow: "hidden" }}>
                               <div style={{ padding: "4px 10px 12px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
+                                <Link href={p.href} onClick={() => setDrawer(false)} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 11, padding: "11px 10px", borderRadius: 10, fontSize: 13.5, fontWeight: 700, color: "#FF9A45" }}>
+                                  Bekijk {p.name}
+                                  <ChevRight color="#FF9A45" size={13} />
+                                </Link>
                                 {p.subs.map((s) => (
                                   <Link key={s.href} href={s.href} onClick={() => setDrawer(false)} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 10px", borderRadius: 10 }}>
                                     <span style={{ flex: "none", width: 26, height: 26, borderRadius: 7, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF9A45" }}>

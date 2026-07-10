@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF7A00;}
+  image-slot{--is-bg:#141210;--is-border:rgba(255,122,0,.18);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.6);}70%{box-shadow:0 0 0 8px rgba(255,122,0,0);}}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+  .vv-anim .liveDot{animation:livePulse 2.2s ease-out infinite;}
+  .vv-anim .ring1{transform-box:fill-box;transform-origin:center;animation:spin 34s linear infinite;}
+  .vv-anim .ring2{transform-box:fill-box;transform-origin:center;animation:spin 46s linear infinite reverse;}
+  .vv-anim .conic{animation:spin 20s linear infinite;}
+  .vv-anim .floatchip{animation:floaty 6s ease-in-out infinite;}
+  .vv-anim .floatchip.d{animation-delay:1.4s;}
+  .vv-anim .glowpulse{animation:breathe 7s ease-in-out infinite;}
+  .vv-mq{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  .vv-mq-track{display:flex;gap:14px;width:max-content;will-change:transform;}
+  .vv-anim .vv-mq-l{animation:mqL 46s linear infinite;}
+  .vv-mq:hover .vv-mq-track{animation-play-state:paused;}
+  @keyframes mqL{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .btn{transition:transform .25s ease,box-shadow .25s ease;white-space:nowrap;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn .ar{transition:transform .3s ease;}.btn:hover .ar{transform:translateX(5px);}
+  .discCard{transition:border-color .3s ease,background .3s ease,transform .3s ease;}
+  .discCard:hover{border-color:rgba(255,122,0,.42) !important;background:rgba(255,122,0,.05) !important;transform:translateY(-4px);}
+  .valCard{transition:border-color .3s ease,background .3s ease,transform .3s ease;}
+  .valCard:hover{border-color:rgba(255,122,0,.32) !important;background:rgba(255,255,255,.035) !important;transform:translateY(-4px);}
+  .roleChip{transition:border-color .25s ease,background .25s ease,transform .25s ease;}
+  .roleChip:hover{border-color:rgba(255,122,0,.55);background:rgba(255,122,0,.13);transform:translateY(-2px);}
+  @property --vvA{syntax:'<angle>';inherits:false;initial-value:0deg;}
+  @keyframes vvSpinBorder{to{--vvA:360deg;}}
+  .svcCard{transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s ease,background .35s ease,box-shadow .45s ease;}
+  .svcCard::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--vvA),rgba(255,122,0,0) 0deg,#FF7A00 70deg,#FFC489 118deg,rgba(255,122,0,0) 205deg,rgba(255,122,0,0) 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s ease;pointer-events:none;z-index:3;}
+  .svcCard:hover::before{opacity:1;animation:vvSpinBorder 3.4s linear infinite;}
+  .svcCard .wm{transition:color .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);}
+  .svcCard:hover .wm{color:rgba(255,122,0,.12) !important;transform:translate(-6px,-6px) rotate(-4deg);}
+  .svcCard:hover .arr{border-color:rgba(255,122,0,.5) !important;background:rgba(255,122,0,.12) !important;}
+  .svcCard .arr svg{transition:transform .3s ease;}.svcCard:hover .arr svg{transform:translateX(3px);}
+  @property --wedA{syntax:'<angle>';inherits:false;initial-value:0deg;}
+  @keyframes wedSpin{to{--wedA:360deg;}}
+  .wedCta{transition:transform .35s ease,box-shadow .35s ease;}
+  .wedCta::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:conic-gradient(from var(--wedA),#8A6D2B 0deg,#F4E3B0 55deg,#C9A24B 120deg,#FFF6DA 180deg,#B8860B 245deg,#F4E3B0 310deg,#8A6D2B 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:0;}
+  .vv-anim .wedCta::before{animation:wedSpin 6s linear infinite;}
+  .wedCta:hover{transform:translateY(-2px);box-shadow:0 24px 52px -18px rgba(201,162,75,.8),0 6px 16px -8px rgba(0,0,0,.5);}
+  .wedCta .ar{transition:transform .3s ease;}.wedCta:hover .ar{transform:translateX(4px);}
+  .navlink{transition:color .2s ease;}.navlink:hover{color:#fff;}
+  .secretCard{transition:border-color .35s ease,transform .35s ease,box-shadow .35s ease;}
+  .secretCard:hover{border-color:rgba(255,122,0,.7);box-shadow:0 44px 100px -30px rgba(255,90,0,.4),inset 0 0 0 1px rgba(255,255,255,.05);}
+  .secretCard .qmark{transition:transform .75s cubic-bezier(.2,.7,.2,1),opacity .4s ease;}
+  .secretCard .smiley{opacity:0;transform:scale(.5) rotate(-45deg);transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .45s ease;}
+  .secretCard:hover .qmark{transform:rotate(360deg) scale(.35);opacity:0;}
+  .secretCard:hover .smiley{opacity:1;transform:scale(1) rotate(0);}
+  .secretCard .twiglow{transition:opacity .5s ease;}
+  .secretCard:hover .twiglow{opacity:1;}
+  .secretCard .silho{transition:opacity .5s ease,transform .5s ease;}
+  .secretCard:hover .silho{opacity:.92;transform:translateX(-50%) translateY(-5px);}
+  @keyframes qwob{0%,100%{transform:rotate(-7deg);}50%{transform:rotate(7deg);}}
+  .vv-anim .secretCard:not(:hover) .qwrap{animation:qwob 3.4s ease-in-out infinite;}
+  .galTile{transition:border-color .35s ease,box-shadow .35s ease;}
+  .galTile:hover{border-color:rgba(255,122,0,.45) !important;box-shadow:0 30px 70px -30px rgba(255,90,0,.4);}
+  .galTile .gimg{transition:transform .8s cubic-bezier(.2,.7,.2,1);}
+  .galTile:hover .gimg{transform:scale(1.07);}
+  .galTile .glabel{transform:translateY(0);transition:transform .4s ease;}
+  .vv-soc{transition:transform .25s ease,border-color .25s ease,color .25s ease;}
+  .vv-soc:hover{transform:translateY(-3px);border-color:rgba(255,122,0,.5);color:#FF7A00;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#0a0a0a">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0a0a0a"></rect>
+    <circle cx="600" cy="360" r="180" fill="none" stroke="#FF7A00" stroke-width="10"></circle>
+    <circle cx="600" cy="330" r="55" fill="#FF7A00"></circle>
+    <rect x="500" y="410" width="200" height="150" rx="30" fill="#FF7A00"></rect>
+    <rect x="430" y="620" width="340" height="26" rx="8" fill="#ffffff"></rect>
+  </svg>
+</template>
+
+<!-- image-slot loader -->
+<x-import component-from-global-scope="image-slot" from="./image-slot.js" hint-size="1px,1px" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;"></x-import>
+
+<!-- shared icon defs -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"><defs>
+  <g id="ic-website" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"></rect><path d="M3 9h18"></path><path d="M6 6.75h.01M8.5 6.75h.01"></path></g>
+  <g id="ic-seo" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path><path d="M8.6 12.5v-1.5M11 12.5V9M13.4 12.5V8"></path></g>
+  <g id="ic-foto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="12.5" r="3.4"></circle></g>
+  <g id="ic-video" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"></rect><path d="m16 10 5-3v10l-5-3z"></path></g>
+  <g id="ic-drone" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="5" r="2.4"></circle><circle cx="19" cy="5" r="2.4"></circle><circle cx="5" cy="19" r="2.4"></circle><circle cx="19" cy="19" r="2.4"></circle><path d="M6.7 6.7 9.5 9.5M17.3 6.7 14.5 9.5M6.7 17.3 9.5 14.5M17.3 17.3 14.5 14.5"></path><rect x="9.2" y="9.2" width="5.6" height="5.6" rx="1.4"></rect></g>
+  <g id="ic-cube" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 21 7v10l-9 4.5L3 17V7z"></path><path d="M3 7l9 4.5L21 7"></path><path d="M12 21.5v-10"></path></g>
+  <g id="ic-mic" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"></rect><path d="M6 11a6 6 0 0 0 12 0"></path><path d="M12 17v4M9 21h6"></path></g>
+  <g id="ic-check" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></g>
+  <g id="ic-pin" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></g>
+  <g id="ic-spark" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></g>
+  <g id="ic-heart" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9C1 8 2.5 4.5 6 4.5c2 0 3.2 1.2 4 2.3.8-1.1 2-2.3 4-2.3 3.5 0 5 3.5 3.5 6.5C19 15.5 12 20 12 20z"></path></g>
+</defs></svg>
+
+<div class="{{ animClass }}" style="position:relative;width:1440px;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;--acc:{{ accent }};">
+
+  <!-- ===== NAV ===== -->
+  <nav style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:22px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div style="display:flex;align-items:center;gap:28px;font-weight:600;font-size:15px;color:rgba(255,255,255,.85);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></svg>
+      <span class="navlink" style="display:inline-flex;align-items:center;gap:5px;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span class="navlink" style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span class="navlink">Realisaties</span><span class="navlink">Sectoren</span><span class="navlink">Kennisbank</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;color:#fff;">Over ons<span style="width:5px;height:5px;border-radius:9999px;background:#FF7A00;"></span></span>
+      <span class="navlink">Contact</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+      <a href="#" class="btn" style="font-weight:700;font-size:14px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section style="position:relative;overflow:hidden;padding:78px 56px 46px;">
+    <div class="glowpulse" style="position:absolute;top:-180px;right:-80px;width:820px;height:820px;background:radial-gradient(circle at center,rgba(255,90,0,.18),transparent 62%);pointer-events:none;z-index:0;"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse at 74% 40%,#000,transparent 68%);mask-image:radial-gradient(ellipse at 74% 40%,#000,transparent 68%);"></div>
+
+    <div style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;">
+      <!-- left -->
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.08em;color:#FF9A45;margin-bottom:24px;text-transform:uppercase;white-space:nowrap;">
+          <span class="liveDot" style="width:7px;height:7px;border-radius:9999px;background:#FF7A00;"></span>Het gezicht achter VisualVibe
+        </div>
+        <h1 style="font-family:'Sora';font-weight:800;font-size:64px;line-height:1.0;letter-spacing:-.03em;color:#fff;margin:0 0 24px;text-wrap:balance;">Over <span style="color:#FF7A00;">VisualVibe</span></h1>
+        <p style="font-size:19px;line-height:1.62;color:rgba(255,255,255,.68);margin:0 0 20px;max-width:520px;text-wrap:pretty;">VisualVibe is het creatief mediabureau uit Limburg. We brengen webdesign, SEO, fotografie, videografie, drone/FPV, 3D/VR/AR en podcasting onder één dak — zodat KMO&#39;s niet met verschillende bureaus hoeven te schakelen voor hun online uitstraling.</p>
+        <p style="font-size:16.5px;line-height:1.62;color:rgba(255,255,255,.55);margin:0 0 34px;max-width:520px;text-wrap:pretty;">Eén partner, van de eerste kennismaking tot de oplevering.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <a href="#" class="btn" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:#fff;padding:15px 28px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 16px 40px -14px rgba(255,90,0,.85);">Laten we kennismaken <svg class="ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+          <a href="#" class="btn" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:#fff;padding:15px 28px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);">Bekijk realisaties</a>
+        </div>
+      </div>
+
+      <!-- right: portrait in ringed frame -->
+      <div style="position:relative;display:flex;justify-content:center;align-items:center;min-height:560px;">
+        <div class="conic" style="position:absolute;width:560px;height:560px;border-radius:9999px;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,.30) 80deg,transparent 180deg,rgba(255,90,0,.22) 280deg,transparent 360deg);filter:blur(50px);pointer-events:none;"></div>
+        <svg viewBox="0 0 200 200" style="position:absolute;width:520px;height:520px;pointer-events:none;">
+          <circle class="ring1" cx="100" cy="100" r="96" fill="none" stroke="rgba(255,122,0,.30)" stroke-width="1" stroke-dasharray="2 9" stroke-linecap="round"></circle>
+          <circle class="ring2" cx="100" cy="100" r="82" fill="none" stroke="rgba(255,122,0,.18)" stroke-width="1" stroke-dasharray="1 11" stroke-linecap="round"></circle>
+        </svg>
+        <!-- Jens (big) + tiny secret card in the corner -->
+        <div style="position:relative;z-index:2;">
+          <!-- Jens card -->
+          <div style="position:relative;width:368px;height:492px;border-radius:28px;overflow:hidden;border:1px solid rgba(255,122,0,.28);box-shadow:0 46px 100px -32px rgba(255,90,0,.5),inset 0 0 0 1px rgba(255,255,255,.04);">
+            <image-slot id="ov-portrait" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FFotografie%20-%20Jens%20Hardy%20fotograaf%20Limburg.webp?alt=media&token=1ecd395c-f1aa-4458-a4db-bb3ad7e62fa3" placeholder="Portretfoto Jens Hardy"></image-slot>
+            <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 46%,rgba(10,10,10,.9));"></div>
+            <div style="position:absolute;left:15px;top:15px;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9999px;background:rgba(12,10,14,.8);border:1px solid rgba(255,122,0,.3);backdrop-filter:blur(6px);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.08em;">
+              <span class="liveDot" style="width:6px;height:6px;border-radius:9999px;background:#FF7A00;"></span>IN BEELD
+            </div>
+            <div style="position:absolute;left:22px;bottom:20px;right:22px;">
+              <div style="font-family:'Sora';font-weight:700;font-size:25px;color:#fff;">Jens Hardy</div>
+              <div style="font-family:'JetBrains Mono';font-size:12px;letter-spacing:.03em;color:#FF9A45;margin-top:5px;">Fotograaf · Cameraman · Marketeer</div>
+            </div>
+          </div>
+          <!-- tiny secret card, overlapping bottom-right corner -->
+          <div class="secretCard" style="position:absolute;right:-26px;bottom:-24px;z-index:3;width:134px;height:178px;border-radius:18px;overflow:hidden;border:1px dashed rgba(255,122,0,.45);background:radial-gradient(120% 85% at 50% 24%,rgba(72,46,108,.6),transparent 62%),linear-gradient(180deg,#151019,#0b0a0e);box-shadow:0 30px 70px -26px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.03);cursor:pointer;">
+            <div class="twiglow" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(62% 46% at 50% 38%,rgba(255,122,0,.22),transparent 66%);opacity:.5;"></div>
+            <svg class="silho" viewBox="0 0 100 120" style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:106px;height:auto;opacity:.55;">
+              <defs><linearGradient id="ov-silg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(255,255,255,.16)"></stop><stop offset="1" stop-color="rgba(255,255,255,.015)"></stop></linearGradient></defs>
+              <circle cx="50" cy="33" r="17" fill="url(#ov-silg)"></circle>
+              <path d="M20 120 C20 86 33 69 50 69 C67 69 80 86 80 120 Z" fill="url(#ov-silg)"></path>
+            </svg>
+            <div class="qwrap" style="position:absolute;left:0;right:0;top:0;bottom:34px;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+              <span class="qmark" style="font-family:'Sora';font-weight:800;font-size:58px;line-height:1;color:#FF7A00;text-shadow:0 8px 26px rgba(255,90,0,.55);">?</span>
+              <svg class="smiley" viewBox="0 0 24 24" style="position:absolute;width:46px;height:46px;filter:drop-shadow(0 6px 18px rgba(255,90,0,.5));" fill="none" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"></circle><path d="M8 14.5s1.4 2 4 2 4-2 4-2"></path><path d="M9 9.5h.01M15 9.5h.01"></path></svg>
+            </div>
+            <div style="position:absolute;right:9px;top:9px;color:#FF9A45;opacity:.85;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg></div>
+            <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 56%,rgba(10,10,10,.94));"></div>
+            <div style="position:absolute;left:11px;bottom:10px;right:11px;">
+              <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#fff;letter-spacing:.16em;">???</div>
+              <div style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:.02em;color:#FF9A45;margin-top:2px;">Secret webdesigner</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- fact strip -->
+    <div style="position:relative;z-index:2;max-width:1300px;margin:52px auto 0;padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+      <sc-for list="{{ facts }}" as="f" hint-placeholder-count="4">
+        <div>
+          <div style="font-family:'Sora';font-weight:800;font-size:30px;letter-spacing:-.02em;color:#fff;">{{ f.big }}</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.55);margin-top:5px;">{{ f.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===== FOUNDER STORY ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:64px 56px;">
+    <div style="display:grid;grid-template-columns:.42fr .58fr;gap:56px;align-items:start;">
+      <div>
+        <p style="font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF9A45;margin:0 0 14px;">Ontmoet Jens Hardy</p>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:40px;line-height:1.06;letter-spacing:-.025em;color:#fff;margin:0 0 22px;text-wrap:balance;">Eén gezicht, van eerste idee tot oplevering</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;">
+          <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+            <span class="roleChip" style="display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:9999px;border:1px solid rgba(255,122,0,.25);background:rgba(255,122,0,.07);font-size:13.5px;font-weight:600;color:#fff;"><span style="width:6px;height:6px;border-radius:9999px;background:#FF7A00;"></span>{{ r }}</span>
+          </sc-for>
+        </div>
+        <a href="https://weddingvibe.be/" rel="dofollow" target="_blank" class="wedCta" style="margin-top:26px;position:relative;display:inline-flex;align-items:center;gap:16px;padding:15px 18px 15px 22px;border-radius:16px;background:#FFFFFF;width:fit-content;max-width:100%;overflow:hidden;box-shadow:0 18px 42px -20px rgba(201,162,75,.6),0 4px 14px -8px rgba(0,0,0,.5);">
+          <img src="assets/weddingvibe.svg" alt="WeddingVibe" style="position:relative;z-index:1;height:34px;width:auto;display:block;flex:none;"></img>
+          <span style="position:relative;z-index:1;width:1px;align-self:stretch;background:linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent);"></span>
+          <span style="position:relative;z-index:1;display:flex;flex-direction:column;gap:3px;min-width:0;">
+            <span style="font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#B8860B;">Ook voor je mooiste dag</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;line-height:1.05;color:#2A2320;letter-spacing:.01em;">Huwelijks- &amp; bruidsfotografie</span>
+          </span>
+          <span style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#EED89A,#C9A24B);flex:none;box-shadow:0 5px 14px -5px rgba(201,162,75,.8);">
+            <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </span>
+        </a>
+      </div>
+      <div style="position:relative;padding-left:30px;">
+        <span style="position:absolute;left:0;top:2px;font-family:'Sora';font-weight:800;font-size:64px;line-height:.6;color:rgba(255,122,0,.28);">&#8220;</span>
+        <p style="font-size:22px;line-height:1.55;font-weight:600;color:#fff;margin:0 0 22px;text-wrap:pretty;">Welkom bij VisualVibe. Ik ben Jens Hardy — gepassioneerd fotograaf, cameraman en ervaren marketeer, en de drijvende kracht achter alles wat we maken.</p>
+        <p style="font-size:16.5px;line-height:1.68;color:rgba(255,255,255,.62);margin:0 0 16px;text-wrap:pretty;">VisualVibe is gespecialiseerd in foto-, video- en websiteprojecten. Of het nu gaat om een nieuwe website, professionele bedrijfsfotografie, een pakkende bedrijfsvideo of een sterke lokale SEO-strategie: ik denk met je mee vanaf de eerste kennismaking.</p>
+        <p style="font-size:16.5px;line-height:1.68;color:rgba(255,255,255,.62);margin:0;text-wrap:pretty;">Door beeld, verhaal en techniek in één hand te houden, zorg ik dat alles klopt — en dat jouw merk online precies de vibe uitstraalt die het verdient.</p>
+        <div style="margin-top:26px;font-family:'Sora';font-weight:700;font-size:20px;color:rgba(255,255,255,.85);font-style:italic;">Jens Hardy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PHOTO GALLERY / SHOWCASE ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:24px 56px 64px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px;">
+      <div>
+        <p style="font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF9A45;margin:0 0 12px;">Achter de lens</p>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:38px;letter-spacing:-.025em;color:#fff;margin:0;text-wrap:balance;">Beeld dat vanuit de lucht vertelt</h2>
+      </div>
+      <p style="font-size:15.5px;line-height:1.6;color:rgba(255,255,255,.55);max-width:360px;margin:0 0 4px;text-wrap:pretty;">Een greep uit ons drone-, lucht- en bedrijfsfotografiewerk — van bedrijfspand tot bergtop.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:230px;gap:16px;">
+
+      <!-- 1. Drone nachtfotografie (groot) -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:1 / span 2;grid-row:1 / span 2;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g1" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20Nacht%20fotografie.webp?alt=media&token=a607907f-b11e-42d8-b576-d64cbde39c8f" placeholder="Drone nachtfotografie"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 48%,rgba(10,10,10,.86));"></div>
+        <div style="position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:9999px;background:rgba(12,10,14,.82);border:1px solid rgba(255,122,0,.3);backdrop-filter:blur(6px);color:#FF9A45;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.06em;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-drone"></use></svg>DRONE · NACHT</div>
+        <div class="glabel" style="position:absolute;left:22px;bottom:22px;right:22px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:23px;color:#fff;">Nachtfotografie vanuit de lucht</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.72);margin-top:5px;">Sfeervolle luchtbeelden wanneer de stad oplicht.</div>
+        </div>
+      </div>
+
+      <!-- 2. Alpen (drone & fpv) -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:3 / span 2;grid-row:1 / span 1;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g2" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FAlpen-drone-fotos-scaled.webp?alt=media&token=fe09068a-ff73-4ec8-8a70-382681272bd5" placeholder="Alpen drone"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 46%,rgba(10,10,10,.85));"></div>
+        <div style="position:absolute;left:16px;top:14px;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9999px;background:rgba(12,10,14,.82);border:1px solid rgba(255,122,0,.3);backdrop-filter:blur(6px);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-drone"></use></svg>DRONE &amp; FPV</div>
+        <div class="glabel" style="position:absolute;left:18px;bottom:16px;right:18px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:18px;color:#fff;">De Alpen vanuit de lucht</div>
+        </div>
+      </div>
+
+      <!-- 3. Bedrijfsfotografie met drone -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:3 / span 1;grid-row:2 / span 1;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g3" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-drone.webp?alt=media&token=105ae204-ca42-48e3-9d5f-ec9ed86c8c43" placeholder="Bedrijfsfoto drone"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 50%,rgba(10,10,10,.85));"></div>
+        <div class="glabel" style="position:absolute;left:15px;bottom:14px;right:15px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:15.5px;color:#fff;">Bedrijfsfotografie</div>
+        </div>
+      </div>
+
+      <!-- 4. Bedrijfsfoto met drone -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:4 / span 1;grid-row:2 / span 1;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g4" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-met-drone.webp?alt=media&token=c0d95d8b-b352-41b3-8f9d-330a77549cb1" placeholder="Bedrijfsbeeld met drone"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 50%,rgba(10,10,10,.85));"></div>
+        <div class="glabel" style="position:absolute;left:15px;bottom:14px;right:15px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:15.5px;color:#fff;">Bedrijfsbeeld op locatie</div>
+        </div>
+      </div>
+
+      <!-- 5. Woonplaats luchtfoto -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:1 / span 2;grid-row:3 / span 1;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g5" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20woonplaats%20luchtfoto.webp?alt=media&token=6c6e1b31-b0a0-48e2-bac0-42bfaab5c35b" placeholder="Luchtfoto woonplaats"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 52%,rgba(10,10,10,.85));"></div>
+        <div class="glabel" style="position:absolute;left:18px;bottom:16px;right:18px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:18px;color:#fff;">Luchtfoto van je woonplaats</div>
+        </div>
+      </div>
+
+      <!-- 6. Zonnepanelen -->
+      <div class="galTile" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);grid-column:3 / span 2;grid-row:3 / span 1;">
+        <div class="gimg" style="position:absolute;inset:0;"><image-slot id="ov-g6" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone-zonnepanelen.webp?alt=media&token=419485d3-1c72-49b0-8ef0-020b58afce51" placeholder="Drone zonnepanelen"></image-slot></div>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 50%,rgba(10,10,10,.85));"></div>
+        <div class="glabel" style="position:absolute;left:18px;bottom:16px;right:18px;">
+          <div style="font-family:'Sora';font-weight:700;font-size:18px;color:#fff;">Inspectie van zonnepanelen</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== DISCIPLINES ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:20px 56px 30px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:30px;">
+      <div>
+        <p style="font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF9A45;margin:0 0 12px;">Alles onder één dak</p>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:38px;letter-spacing:-.025em;color:#fff;margin:0;text-wrap:balance;">Zeven disciplines, één aanspreekpunt</h2>
+      </div>
+      <p style="font-size:15.5px;line-height:1.6;color:rgba(255,255,255,.55);max-width:340px;margin:0 0 4px;text-wrap:pretty;">Geen versnippering over losse leveranciers. Alles wat je online nodig hebt, in één samenhangend geheel.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <sc-for list="{{ disciplines }}" as="d" hint-placeholder-count="7">
+        <div class="svcCard" style="position:relative;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);padding:22px 22px 24px;" style-hover="transform:translateY(-7px) scale(1.014);border-color:rgba(255,122,0,.16);background:rgba(255,122,0,.05);box-shadow:0 28px 64px -22px rgba(255,90,0,.6),0 8px 22px -14px rgba(0,0,0,.7);">
+          <svg class="wm" viewBox="0 0 24 24" style="position:absolute;right:-24px;bottom:-28px;width:150px;height:150px;color:rgba(255,122,0,.055);pointer-events:none;" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-{{ d.id }}"></use></svg>
+          <div style="position:relative;">
+            <span style="display:flex;width:46px;height:46px;border-radius:12px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.24);align-items:center;justify-content:center;color:#FF9A45;margin-bottom:16px;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-{{ d.id }}"></use></svg></span>
+            <div style="font-family:'Sora';font-weight:700;font-size:17px;color:#fff;margin-bottom:6px;">{{ d.name }}</div>
+            <div style="font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.52);text-wrap:pretty;">{{ d.desc }}</div>
+          </div>
+        </div>
+      </sc-for>
+      <!-- CTA tile -->
+      <a href="#" class="discCard" style="padding:22px 20px;border-radius:16px;border:1px solid rgba(255,122,0,.3);background:radial-gradient(120% 140% at 100% 0%,rgba(255,90,0,.16),transparent 65%),rgba(255,255,255,.02);display:flex;flex-direction:column;justify-content:space-between;">
+        <span style="display:flex;width:46px;height:46px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);align-items:center;justify-content:center;color:#fff;margin-bottom:16px;"><svg class="ar" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+        <div>
+          <div style="font-family:'Sora';font-weight:700;font-size:17px;color:#fff;margin-bottom:6px;">Ontdek alle diensten</div>
+          <div style="font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">Bekijk wat we voor jouw KMO kunnen betekenen.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== VALUES ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:44px 56px 20px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+        <div class="valCard" style="padding:30px 26px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);">
+          <span style="display:flex;width:44px;height:44px;border-radius:12px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.24);align-items:center;justify-content:center;color:#FF9A45;margin-bottom:18px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-{{ v.id }}"></use></svg></span>
+          <div style="font-family:'Sora';font-weight:700;font-size:20px;color:#fff;margin-bottom:10px;">{{ v.title }}</div>
+          <div style="font-size:15px;line-height:1.62;color:rgba(255,255,255,.58);text-wrap:pretty;">{{ v.body }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===== REGIO / marquee ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:44px 56px 20px;">
+    <p style="font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin:0 0 18px;text-align:center;">Voor KMO&#39;s in Limburg, Vlaanderen, Antwerpen &amp; Nederlands-Limburg</p>
+    <div class="vv-mq">
+      <div class="vv-mq-track vv-mq-l">
+        <sc-for list="{{ regions }}" as="r" hint-placeholder-count="10">
+          <span style="flex:none;display:inline-flex;align-items:center;gap:11px;padding:12px 22px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-pin"></use></svg>
+            <span style="font-size:15px;font-weight:600;color:rgba(255,255,255,.82);white-space:nowrap;">{{ r }}</span>
+          </span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BAND ===== -->
+  <section style="position:relative;z-index:2;max-width:1300px;margin:44px auto 80px;padding:0 56px;">
+    <div style="position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(255,122,0,.25);background:radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.18),transparent 60%),rgba(255,255,255,.02);padding:52px 56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px;">
+      <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 90% 10%,#000,transparent 70%);mask-image:radial-gradient(ellipse at 90% 10%,#000,transparent 70%);"></div>
+      <div style="position:relative;">
+        <h3 style="font-family:'Sora';font-weight:800;font-size:34px;letter-spacing:-.025em;color:#fff;margin:0 0 10px;">Laten we kennismaken</h3>
+        <p style="font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.65);margin:0;max-width:560px;text-wrap:pretty;">Vertel kort over je project — je krijgt snel een helder voorstel, rechtstreeks van Jens.</p>
+      </div>
+      <a href="#" class="btn" style="position:relative;display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px;color:#fff;padding:17px 32px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 16px 40px -14px rgba(255,90,0,.85);">Offerte aanvragen <svg class="ar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="position:relative;background:#0a0a0a;color:#fff;overflow:hidden;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="height:2px;width:100%;background:linear-gradient(90deg,transparent,#FF7A00 50%,transparent);"></div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:64px 56px 0;">
+      <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:48px;">
+        <div>
+          <div style="font-family:'Sora';font-weight:800;font-size:26px;letter-spacing:-.02em;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+          <p style="margin:16px 0 0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);max-width:330px;text-wrap:pretty;">Creatief mediabureau in Limburg voor webdesign, SEO, fotografie, videografie, drone, 3D/VR/AR en podcasting.</p>
+          <div style="display:flex;flex-direction:column;gap:11px;margin-top:24px;">
+            <a href="mailto:jens@visualvibe.be" style="display:inline-flex;align-items:center;gap:11px;font-size:14.5px;color:rgba(255,255,255,.75);width:fit-content;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>jens@visualvibe.be</a>
+            <a href="tel:+32472964599" style="display:inline-flex;align-items:center;gap:11px;font-size:14.5px;color:rgba(255,255,255,.75);width:fit-content;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>+32 472 96 45 99</a>
+            <div style="display:inline-flex;align-items:center;gap:11px;font-size:14.5px;color:rgba(255,255,255,.6);">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-pin"></use></svg>Tongeren – Borgloon &amp; Bilzen – Hoeselt, Limburg</div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:24px;">
+            <a class="vv-soc" href="#" aria-label="Facebook" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+            <a class="vv-soc" href="#" aria-label="Instagram" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            <a class="vv-soc" href="#" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-9h4v1.5"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+            <a class="vv-soc" href="#" aria-label="YouTube" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:'Sora';font-size:15px;font-weight:600;margin:0 0 18px;color:#fff;">Diensten</h3>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ footDiensten }}" as="l" hint-placeholder-count="6"><li><a href="#" style="font-size:14.5px;color:rgba(255,255,255,.6);">{{ l }}</a></li></sc-for>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-family:'Sora';font-size:15px;font-weight:600;margin:0 0 18px;color:#fff;">Bedrijf</h3>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ footBedrijf }}" as="l" hint-placeholder-count="5"><li><a href="#" style="font-size:14.5px;color:rgba(255,255,255,.6);">{{ l }}</a></li></sc-for>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:52px;padding:26px 0 30px;border-top:1px solid rgba(255,255,255,.08);">
+        <span style="font-size:13.5px;color:rgba(255,255,255,.45);">© 2026 VisualVibe. Alle rechten voorbehouden. · BTW BE1014 755 897</span>
+        <div style="display:flex;flex-wrap:wrap;gap:26px;">
+          <a href="#" style="font-size:13.5px;color:rgba(255,255,255,.5);">Privacybeleid</a>
+          <a href="#" style="font-size:13.5px;color:rgba(255,255,255,.5);">Algemene voorwaarden</a>
+          <a href="#" style="font-size:13.5px;color:rgba(255,255,255,.5);">Cookiebeleid</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:2900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF5A00&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF7A00&quot;,&quot;#FF5A00&quot;,&quot;#F28A10&quot;,&quot;#FFA23A&quot;],&quot;section&quot;:&quot;Stijl&quot;},&quot;animate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Stijl&quot;}}">
+class Component extends DCLogic {
+  facts = [
+    { big: 'Sinds 2020', label: 'Creatief mediabureau in Limburg' },
+    { big: '7 disciplines', label: 'Onder één dak' },
+    { big: '1 aanspreekpunt', label: 'Van idee tot oplevering' },
+    { big: '3 partners', label: 'Google · Meta · Leadinfo' },
+  ];
+  roles = ['Fotograaf', 'Cameraman', 'Marketeer', 'Dronepiloot', 'Webdesigner', 'Adviseur'];
+  disciplines = [
+    { id: 'website', name: 'Webdesign', desc: 'Snelle websites & webshops die bezoekers omzetten in klanten.' },
+    { id: 'seo', name: 'SEO', desc: 'Vindbaar in Google én de nieuwe AI-zoekmachines.' },
+    { id: 'foto', name: 'Fotografie', desc: 'Professionele bedrijfs- en productfotografie.' },
+    { id: 'video', name: 'Videografie', desc: 'Pakkende bedrijfsvideo die jouw verhaal vertelt.' },
+    { id: 'drone', name: 'Drone & FPV', desc: 'Luchtbeelden en dynamische FPV-shots.' },
+    { id: 'cube', name: '3D, VR & AR', desc: 'Immersieve 3D-, VR- en AR-ervaringen.' },
+    { id: 'mic', name: 'Podcasting', desc: 'Van opname tot afgewerkte podcast.' },
+  ];
+  values = [
+    { id: 'website', title: 'Alles onder één dak', body: 'Webdesign, SEO, fotografie, videografie, drone, 3D/VR/AR en podcasting bij één partner. Geen schakelen tussen losse bureaus.' },
+    { id: 'pin', title: 'Lokaal verankerd', body: 'Vanuit Limburg werken we voor KMO\u2019s in Vlaanderen, Antwerpen en Nederlands-Limburg — dichtbij en betrokken.' },
+    { id: 'heart', title: 'Van kennismaking tot oplevering', body: 'We denken mee vanaf de eerste kennismaking en blijven betrokken tot het project live staat.' },
+  ];
+  regions = ['Hasselt', 'Tongeren', 'Bilzen', 'Borgloon', 'Genk', 'Sint-Truiden', 'Antwerpen', 'Maastricht', 'Vlaanderen', 'Nederlands-Limburg'];
+  footDiensten = ['Webdesign', 'SEO', 'Fotografie', 'Videografie', 'Drone & FPV', '3D, VR & AR', 'Podcasting'];
+  footBedrijf = ['Over ons', 'Realisaties', 'Kennisbank', 'Sectoren', 'Contact'];
+  renderVals() {
+    const accent = this.props.accent || '#FF7A00';
+    const animClass = (this.props.animate !== false) ? 'vv-anim' : '';
+    const regions = this.regions.concat(this.regions);
+    return {
+      accent, animClass, regions,
+      facts: this.facts, roles: this.roles, disciplines: this.disciplines,
+      values: this.values, footDiensten: this.footDiensten, footBedrijf: this.footBedrijf,
+    };
+  }
+}
+</script>
+</body>
+</html>

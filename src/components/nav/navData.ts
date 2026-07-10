@@ -61,7 +61,7 @@ export const pillars: NavPillar[] = services.map((service) => {
     href: `/diensten/${service.slug}`,
     subs: getSubservicesByParent(service.slug).map((sub) => ({
       name: sub.title,
-      href: `/diensten/${sub.slug}`,
+      href: `/diensten/${service.slug}/${sub.slug}`,
       icon:
         service.slug === "webdesign"
           ? WEBDESIGN_SUB_ICON[sub.slug] ?? "website"

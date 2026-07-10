@@ -57,12 +57,12 @@ function PillIcon({ icon }: { icon: ResolvedIcon }) {
   return <Icon size={19} strokeWidth={1.7} />;
 }
 
-function Pills({ items, cls }: { items: SubHeroItem[]; cls: string }) {
+function Pills({ items, cls, pillarSlug }: { items: SubHeroItem[]; cls: string; pillarSlug: string }) {
   return (
     <div className="vvsh-mqMask">
       <div className={`vvsh-mqTrack ${cls}`}>
         {items.map((s, j) => (
-          <Link href={`/diensten/${s.slug}`} key={`${s.slug}-${j}`} className="vvsh-pill">
+          <Link href={`/diensten/${pillarSlug}/${s.slug}`} key={`${s.slug}-${j}`} className="vvsh-pill">
             <span className="vvsh-pillIcon">
               <PillIcon icon={iconForSubdienst(s.slug, s.category)} />
             </span>
@@ -83,11 +83,13 @@ function Pills({ items, cls }: { items: SubHeroItem[]; cls: string }) {
 export function SubdienstHero({
   pillar,
   pillarHref,
+  pillarSlug,
   hero,
   siblings,
 }: {
   pillar: string;
   pillarHref: string;
+  pillarSlug: string;
   hero: SubHeroItem;
   siblings: SubHeroItem[];
 }) {
@@ -159,8 +161,8 @@ export function SubdienstHero({
       {siblings.length > 0 && (
         <div className="vvsh-mq">
           <p className="vvsh-mqLabel">Andere diensten binnen {pillar}</p>
-          <Pills items={top} cls="vvsh-mqL" />
-          <Pills items={bottom} cls="vvsh-mqR" />
+          <Pills items={top} cls="vvsh-mqL" pillarSlug={pillarSlug} />
+          <Pills items={bottom} cls="vvsh-mqR" pillarSlug={pillarSlug} />
         </div>
       )}
     </section>

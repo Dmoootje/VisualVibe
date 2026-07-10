@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Check } from "lucide-react";
 import {
@@ -13,17 +13,16 @@ import {
 import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SubdienstenGrid } from "@/components/subdiensten";
-import { SubdienstHero } from "@/components/subdienst";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
-import { getSubservicesByParent } from "@/data/subservices";
-import { allServices, getServiceBySlug } from "@/data/services";
+import { allServices, services, getServiceBySlug, serviceHref, serviceHrefBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
-  return allServices.map((service) => ({ slug: service.slug }));
+  // Flat route serves hoofddiensten only; sub-services live at /diensten/<parent>/<sub>.
+  return services.map((service) => ({ slug: service.slug }));
 }
 
 // ISR so admin-managed Webdesign showcase images propagate without a rebuild.
@@ -58,6 +57,11 @@ export default async function ServiceDetailPage({
 
   if (!service) {
     notFound();
+  }
+
+  // A sub-service reached via its old flat URL: 308 to the nested canonical.
+  if (service.parentSlug) {
+    permanentRedirect(serviceHref(service));
   }
 
   const relatedServices = service.relatedServices
@@ -98,20 +102,6 @@ export default async function ServiceDetailPage({
           <WebdesignHero heroImage={webdesignImages.hero} />
           <WebdesignShowcase projects={webdesignProjects} images={webdesignImages} />
         </>
-      ) : parentService ? (
-        <SubdienstHero
-          pillar={parentService.title}
-          pillarHref={`/diensten/${parentService.slug}`}
-          hero={{
-            slug: service.slug,
-            name: service.title,
-            category: service.category,
-            desc: service.intro,
-          }}
-          siblings={getSubservicesByParent(parentService.slug)
-            .filter((s) => s.slug !== service.slug)
-            .map((s) => ({ slug: s.slug, name: s.title, category: s.category }))}
-        />
       ) : (
         <PageHero title={service.title} subtitle={service.intro} />
       )}
@@ -181,7 +171,7 @@ export default async function ServiceDetailPage({
               {relatedServices.map((related) => (
                 <Link
                   key={related.slug}
-                  href={`/diensten/${related.slug}`}
+                  href={serviceHrefBySlug(related.slug)}
                   className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors"
                 >
                   {related.title}

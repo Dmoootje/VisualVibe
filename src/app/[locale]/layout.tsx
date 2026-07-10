@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Sora, Manrope, JetBrains_Mono } from "next/font/google";
+import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -18,6 +18,8 @@ const inter = Inter({ subsets: ["latin"] });
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
+// Elegant serif, only used in the WeddingVibe cross-promo card (Over ons).
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -74,7 +76,7 @@ export default async function LocaleLayout({
       <head>
         {/* Add any other head tags if needed, metadata object handles common ones */}
       </head>
-      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} bg-black text-white`}>
+      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-black text-white`}>
         <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />

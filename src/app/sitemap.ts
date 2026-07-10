@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { businessConfig } from "@/config/business.config";
 import { routing } from "@/i18n/routing";
-import { allServices } from "@/data/services";
+import { allServices, serviceHref } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
@@ -38,7 +38,7 @@ const activeCategorySlugs = new Set(
 );
 
 const dataPaths = [
-  ...allServices.map((service) => `diensten/${service.slug}`),
+  ...allServices.map((service) => serviceHref(service).slice(1)),
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
 ];

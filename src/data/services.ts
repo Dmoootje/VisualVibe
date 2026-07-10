@@ -325,3 +325,19 @@ export const allServices: Service[] = [...services, ...subservices];
 export function getServiceBySlug(slug: string): Service | undefined {
   return allServices.find((service) => service.slug === slug);
 }
+
+/**
+ * Canonical path for a service. Sub-services are nested under their hoofddienst
+ * (`/diensten/<parent>/<sub>`); hoofddiensten stay flat (`/diensten/<slug>`).
+ */
+export function serviceHref(service: Service): string {
+  return service.parentSlug
+    ? `/diensten/${service.parentSlug}/${service.slug}`
+    : `/diensten/${service.slug}`;
+}
+
+/** serviceHref by slug; falls back to a flat path for an unknown slug. */
+export function serviceHrefBySlug(slug: string): string {
+  const service = getServiceBySlug(slug);
+  return service ? serviceHref(service) : `/diensten/${slug}`;
+}
