@@ -12,6 +12,10 @@ import {
 } from "@/components/ui";
 import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
+import { SubdienstenGrid } from "@/components/subdiensten";
+import { SubdienstHero } from "@/components/subdienst";
+import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
+import { getSubservicesByParent } from "@/data/subservices";
 import { allServices, getServiceBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
@@ -94,15 +98,32 @@ export default async function ServiceDetailPage({
           <WebdesignHero heroImage={webdesignImages.hero} />
           <WebdesignShowcase projects={webdesignProjects} images={webdesignImages} />
         </>
-      ) : (
-        <PageHero
-          title={service.title}
-          subtitle={service.intro}
-          backLink={parentService ? { label: `Onderdeel van ${parentService.title}`, href: `/diensten/${parentService.slug}` } : undefined}
+      ) : parentService ? (
+        <SubdienstHero
+          pillar={parentService.title}
+          pillarHref={`/diensten/${parentService.slug}`}
+          hero={{
+            slug: service.slug,
+            name: service.title,
+            category: service.category,
+            desc: service.intro,
+          }}
+          siblings={getSubservicesByParent(parentService.slug)
+            .filter((s) => s.slug !== service.slug)
+            .map((s) => ({ slug: s.slug, name: s.title, category: s.category }))}
         />
+      ) : (
+        <PageHero title={service.title} subtitle={service.intro} />
       )}
 
-      {childServices.length > 0 ? (
+      {isWebdesign ? (
+        <Section orbs="tl-br">
+          <Container>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">{service.title} diensten overzicht</h2>
+            <SubdienstenGrid services={webdesignSubdiensten} />
+          </Container>
+        </Section>
+      ) : childServices.length > 0 ? (
         <Section orbs="tl-br">
           <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">{service.title} diensten overzicht</h2>

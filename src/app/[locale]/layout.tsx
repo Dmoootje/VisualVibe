@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Sora, Manrope, JetBrains_Mono } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -12,6 +12,12 @@ import { SectorIconSprite } from "@/components/sectors";
 import { businessConfig } from "@/config/business.config";
 
 const inter = Inter({ subsets: ["latin"] });
+// Handoff typography for the Subdiensten cards: Sora (titles) + Manrope (body),
+// exposed as CSS variables so scoped components can opt in without changing the
+// site-wide Inter default.
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -68,7 +74,7 @@ export default async function LocaleLayout({
       <head>
         {/* Add any other head tags if needed, metadata object handles common ones */}
       </head>
-      <body className={`${inter.className} bg-black text-white`}>
+      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} bg-black text-white`}>
         <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
