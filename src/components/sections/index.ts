@@ -3,6 +3,7 @@ export { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 export { CTASection } from "./CTASection";
 export { CTABlock } from "./CTABlock";
 export { ServiceGrid } from "./ServiceGrid";
+export { ProcessSteps } from "./ProcessSteps";
 export { RegionGrid } from "./RegionGrid";
 export { CaseGrid } from "./CaseGrid";
 export { BlogGrid } from "./BlogGrid";

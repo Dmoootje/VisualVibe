@@ -7,10 +7,21 @@ import { LayoutDashboard, Users, Settings, Palette, ArrowLeft } from "lucide-rea
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
 
-const navItems = [
+type NavChild = { href: string; label: string };
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; children?: NavChild[] };
+
+const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/leads", label: "Leads", icon: Users },
-  { href: "/admin/settings", label: "Instellingen", icon: Settings },
+  {
+    href: "/admin/settings",
+    label: "Instellingen",
+    icon: Settings,
+    children: [
+      { href: "/admin/settings/contact", label: "Contact" },
+      { href: "/admin/settings/webdesign", label: "Realisaties" },
+    ],
+  },
   { href: "/internal/blog-styleguide", label: "Branding", icon: Palette },
 ];
 
@@ -18,40 +29,75 @@ export function AdminSidebar({ email }: { email: string }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full sm:w-60 shrink-0 border-b sm:border-b-0 sm:border-r border-white/10 bg-black flex sm:flex-col">
-      <div className="p-4 sm:p-6 flex items-center sm:items-start sm:flex-col gap-4 w-full">
-        <Image src="/logo.svg" alt="VisualVibe" width={250} height={48} className="h-6 w-auto" />
+    <aside className="w-full shrink-0 border-b border-white/10 bg-black sm:sticky sm:top-0 sm:h-screen sm:w-60 sm:self-start sm:overflow-y-auto sm:border-b-0 sm:border-r">
+      <div className="flex h-full w-full items-center gap-4 p-4 sm:flex-col sm:items-stretch sm:p-6">
+        {/* Back to site: a visible button, above the logo on desktop. */}
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20 hover:text-amber-200 sm:w-full"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Terug naar site
+        </Link>
 
-        <nav className="flex sm:flex-col gap-1 flex-1 sm:w-full sm:mt-4">
+        <Image
+          src="/logo.svg"
+          alt="VisualVibe"
+          width={250}
+          height={48}
+          className="h-6 w-auto sm:mt-1"
+        />
+
+        <nav className="flex flex-1 gap-1 sm:mt-4 sm:w-full sm:flex-col">
           {navItems.map((item) => {
-            const isActive = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+            const isActive =
+              item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
             const Icon = item.icon;
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
-                  isActive ? "bg-white/10 text-white" : "text-white/60 hover:bg-white/5 hover:text-white"
+              <div key={item.href} className="sm:w-full">
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+
+                {item.children && (
+                  <div className="ml-4 mt-0.5 hidden flex-col gap-0.5 border-l border-white/10 pl-3 sm:flex">
+                    {item.children.map((child) => {
+                      const childActive = pathname.startsWith(child.href);
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={cn(
+                            "rounded-md px-3 py-1.5 text-sm transition-colors",
+                            childActive
+                              ? "bg-white/10 text-white"
+                              : "text-white/50 hover:bg-white/5 hover:text-white"
+                          )}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 )}
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </Link>
+              </div>
             );
           })}
         </nav>
 
-        <div className="hidden sm:flex flex-col gap-2 mt-auto pt-4 border-t border-white/10 w-full">
-          <Link
-            href="/"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white/60 transition-colors hover:bg-white/5 hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Terug naar site
-          </Link>
-          <span className="text-xs text-white/40 truncate">{email}</span>
+        {/* Account block, pinned to the bottom on desktop. */}
+        <div className="mt-auto hidden w-full flex-col gap-2 border-t border-white/10 pt-4 sm:flex">
           <LogoutButton />
+          <span className="truncate text-xs text-white/40">{email}</span>
         </div>
       </div>
     </aside>

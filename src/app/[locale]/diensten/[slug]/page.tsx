@@ -10,7 +10,7 @@ import {
   Section,
   Container,
 } from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
+import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { allServices, getServiceBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
@@ -131,17 +131,7 @@ export default async function ServiceDetailPage({
         <Section orbs="tr-bl">
           <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Hoe we werken</h2>
-            <ol className="grid gap-6 sm:grid-cols-2">
-              {service.process.map((step, index) => (
-                <li key={step.title} className="rounded-xl border border-white/10 bg-white/5 p-5">
-                  <span className="text-sm text-amber-400 font-semibold">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="text-lg font-semibold mt-1 mb-2">{step.title}</h3>
-                  <p className="text-white/70 text-sm">{step.description}</p>
-                </li>
-              ))}
-            </ol>
+            <ProcessSteps steps={service.process} />
           </Container>
         </Section>
       )}
