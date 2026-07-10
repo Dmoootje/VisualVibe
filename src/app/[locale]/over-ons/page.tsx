@@ -183,7 +183,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== FOUNDER STORY ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: "64px 0" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 64, paddingBottom: 64 }}>
         <div className="grid items-start gap-10 lg:gap-14 lg:grid-cols-[.42fr_.58fr]">
           <div>
             <p style={{ ...eyebrow, marginBottom: 14 }}>Ontmoet Jens Hardy</p>
@@ -218,7 +218,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== PHOTO GALLERY ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: "24px 0 64px" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 24, paddingBottom: 64 }}>
         <div className="mb-[26px] flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p style={{ ...eyebrow, marginBottom: 12 }}>Achter de lens</p>
@@ -274,7 +274,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== DISCIPLINES ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: "20px 0 30px" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 20, paddingBottom: 30 }}>
         <div className="mb-[30px] flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p style={{ ...eyebrow, marginBottom: 12 }}>Alles onder één dak</p>
@@ -304,7 +304,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== VALUES ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: "44px 0 20px" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 44, paddingBottom: 20 }}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {values.map((v) => (
             <div key={v.title} className="vvov-val" style={{ padding: "30px 26px", borderRadius: 18, border: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
@@ -317,7 +317,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== REGION MARQUEE ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: "44px 0 20px" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 44, paddingBottom: 20 }}>
         <p style={{ fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(255,255,255,.45)", margin: "0 0 18px", textAlign: "center" }}>Voor KMO&apos;s in Limburg, Vlaanderen, Antwerpen &amp; Nederlands-Limburg</p>
         <div className="vvov-mq">
           <div className="vvov-mqTrack vvov-mqL">
@@ -332,7 +332,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ===== CTA BAND ===== */}
-      <section className={`relative z-[2] ${SECTION}`} style={{ padding: 0, margin: "44px auto 80px" }}>
+      <section className={`relative z-[2] ${SECTION}`} style={{ margin: "44px auto 80px" }}>
         <div style={{ position: "relative", overflow: "hidden", borderRadius: 24, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.18),transparent 60%),rgba(255,255,255,.02)", padding: "clamp(36px,5vw,52px)", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 28 }}>
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px)", backgroundSize: "44px 44px", WebkitMaskImage: "radial-gradient(ellipse at 90% 10%,#000,transparent 70%)", maskImage: "radial-gradient(ellipse at 90% 10%,#000,transparent 70%)" }} />
           <div style={{ position: "relative" }}>

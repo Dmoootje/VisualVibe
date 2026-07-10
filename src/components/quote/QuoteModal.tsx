@@ -122,8 +122,10 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
         openOfferte();
       }
     }
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    // Capture phase: run before next-intl <Link>'s own handler so preventDefault
+    // stops the navigation and the sheet opens instead.
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, [openOfferte]);
 
   const ctx = useMemo(() => ({ openOfferte, openKennis }), [openOfferte, openKennis]);
