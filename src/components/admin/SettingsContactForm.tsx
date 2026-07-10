@@ -59,7 +59,7 @@ export function SettingsContactForm({ settings }: { settings: SiteSettings }) {
           label="Google Maps embed-URL (iframe src)"
           name="googleMapsEmbedUrl"
           defaultValue={settings.googleMapsEmbedUrl}
-          hint="Optioneel. Leeg = een donkere neon fallback-kaart met je coordinaten."
+          hint="Optioneel. Plak de embed-link uit Google Maps (Delen > Kaart insluiten): een https://www.google.com/maps/embed?... URL of de volledige <iframe> code. Een gewone deel-link werkt niet. Leeg = donkere neon fallback-kaart."
         />
         <Field label="Kaartomschrijving" name="mapDescription" defaultValue={settings.mapDescription} />
       </Section>

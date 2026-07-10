@@ -1,4 +1,5 @@
 import { MapPin, Navigation } from "lucide-react";
+import { resolveMapEmbedUrl } from "@/lib/maps/embedUrl";
 
 type ContactMapProps = {
   embedUrl?: string;
@@ -22,6 +23,10 @@ export function ContactMap({
   addressLines,
   routeUrl,
 }: ContactMapProps) {
+  // Only iframe a genuinely embeddable Google Maps URL; a bad/relative value
+  // would otherwise render this app's own 404 inside the map.
+  const safeEmbedUrl = resolveMapEmbedUrl(embedUrl);
+
   const fallbackRoute =
     routeUrl ||
     (latitude != null && longitude != null
@@ -31,9 +36,9 @@ export function ContactMap({
   return (
     <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,117,0,0.22)] shadow-[0_0_60px_-18px_rgba(255,117,0,0.4)]">
       <div className="relative h-[280px] w-full sm:h-[300px] lg:h-[340px]">
-        {embedUrl ? (
+        {safeEmbedUrl ? (
           <iframe
-            src={embedUrl}
+            src={safeEmbedUrl}
             title={markerTitle ?? "Kaart"}
             className="h-full w-full border-0"
             loading="lazy"

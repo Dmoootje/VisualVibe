@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { updateSiteSettings, type UpdateSiteSettingsInput } from "@/lib/firestore/siteSettings";
 import type { OpeningHoursDay } from "@/types/siteSettings";
+import { resolveMapEmbedUrl } from "@/lib/maps/embedUrl";
 
 export type SettingsFormState = { status: "idle" | "success" | "error"; message?: string };
 
@@ -91,7 +92,9 @@ export async function saveContactSettings(
     latitude: optionalNumber(formData, "latitude"),
     longitude: optionalNumber(formData, "longitude"),
     googleMapsUrl: optional(formData, "googleMapsUrl"),
-    googleMapsEmbedUrl: optional(formData, "googleMapsEmbedUrl"),
+    // Store a normalised embed URL (extracts the src from a pasted <iframe>,
+    // rejects non-embeddable/relative values that would 404 in the iframe).
+    googleMapsEmbedUrl: resolveMapEmbedUrl(optional(formData, "googleMapsEmbedUrl")) ?? "",
     routeUrl: optional(formData, "routeUrl"),
     mapMarkerTitle: optional(formData, "mapMarkerTitle"),
     mapDescription: optional(formData, "mapDescription"),
