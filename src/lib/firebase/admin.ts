@@ -21,11 +21,22 @@ function getAdminApp(): App {
     return existing[0];
   }
 
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    return initializeApp({
-      credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)),
-      storageBucket: STORAGE_BUCKET,
-    });
+  const rawKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY?.trim();
+  if (rawKey) {
+    try {
+      return initializeApp({
+        credential: cert(JSON.parse(rawKey)),
+        storageBucket: STORAGE_BUCKET,
+      });
+    } catch (err) {
+      // A malformed value (e.g. only "{" because the JSON was pasted across
+      // multiple lines in .env, or a file path) must not crash every request.
+      // Fall back to Application Default Credentials with a clear hint.
+      console.error(
+        "FIREBASE_SERVICE_ACCOUNT_KEY is geen geldige JSON. Zet de volledige sleutel op EEN regel, of gebruik liever GOOGLE_APPLICATION_CREDENTIALS met een bestandspad. Val nu terug op Application Default Credentials.",
+        err,
+      );
+    }
   }
 
   return initializeApp({ storageBucket: STORAGE_BUCKET });
