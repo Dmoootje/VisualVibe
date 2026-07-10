@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { webdesignProjects, imageKey } from "@/data/webdesignShowcase";
+import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "./ShowcaseImage";
 
@@ -14,7 +14,13 @@ const Check = () => (
 
 /** Animated realisatie-showcase: an accordion of real web projects. One open at
  * a time (first open by default). Images are admin-managed (passed in). */
-export function WebdesignShowcase({ images }: { images: WebdesignImages }) {
+export function WebdesignShowcase({
+  projects,
+  images,
+}: {
+  projects: WebdesignProject[];
+  images: WebdesignImages;
+}) {
   const [open, setOpen] = useState(0);
 
   return (
@@ -33,7 +39,7 @@ export function WebdesignShowcase({ images }: { images: WebdesignImages }) {
         </div>
 
         <div className="flex flex-col gap-3.5">
-          {webdesignProjects.map((c, i) => {
+          {projects.map((c, i) => {
             const isOpen = open === i;
             const img = (slot: "thumb" | "1" | "2" | "3" | "4") => images[imageKey(c.id, slot)];
             return (

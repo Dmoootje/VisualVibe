@@ -14,6 +14,7 @@ import { PageHero, CTASection, ServiceGrid } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { allServices, getServiceBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
+import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
@@ -65,7 +66,9 @@ export default async function ServiceDetailPage({
   // The Webdesign service leads with the bespoke animated hero + realisatie
   // showcase (admin-managed images); its regular content follows below.
   const isWebdesign = service.slug === "webdesign";
-  const webdesignImages = isWebdesign ? await getWebdesignImages() : null;
+  const [webdesignImages, webdesignProjects] = isWebdesign
+    ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
+    : [null, null];
 
   const breadcrumbItems = [
     { name: "Home", path: "/" },
@@ -86,10 +89,10 @@ export default async function ServiceDetailPage({
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
 
-      {isWebdesign && webdesignImages ? (
+      {isWebdesign && webdesignImages && webdesignProjects ? (
         <>
           <WebdesignHero heroImage={webdesignImages.hero} />
-          <WebdesignShowcase images={webdesignImages} />
+          <WebdesignShowcase projects={webdesignProjects} images={webdesignImages} />
         </>
       ) : (
         <PageHero
