@@ -30,7 +30,7 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
   return (
     <section
       id="testimonials"
-      className="py-16 sm:py-20 md:py-24 bg-black relative overflow-hidden"
+      className="py-16 sm:py-20 md:py-24 relative overflow-hidden"
       aria-labelledby="testimonials-heading"
     >
       <TestimonialsBackground />

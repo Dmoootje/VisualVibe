@@ -1,4 +1,5 @@
 import {
+  HomeBackground,
   Hero,
   Features,
   RegionIntro,
@@ -14,7 +15,9 @@ export default async function Home() {
   const reviews = await getGoogleReviews();
 
   return (
-    <div className="min-h-screen bg-black px-0 sm:px-4 text-white">
+    <div className="relative isolate min-h-screen text-white">
+      {/* Single continuous background behind all sections (no per-section seams). */}
+      <HomeBackground />
       <Hero />
       <Features />
       <RegionIntro />

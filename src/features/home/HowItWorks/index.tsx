@@ -17,7 +17,7 @@ export default function HowItWorks() {
   const activeTrack = processTracks.find((t) => t.id === activeId) ?? processTracks[0];
 
   return (
-    <section className="relative overflow-hidden bg-black py-12 sm:py-16 md:py-24">
+    <section className="relative overflow-hidden py-12 sm:py-16 md:py-24">
       <HowItWorksBackground />
 
       <div className="container relative z-10 mx-auto px-4">

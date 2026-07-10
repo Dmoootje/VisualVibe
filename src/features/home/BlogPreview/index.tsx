@@ -8,7 +8,7 @@ export default function BlogPreview() {
 
   return (
     <section
-      className="py-5 sm:py-20 md:py-24 bg-black relative overflow-hidden"
+      className="py-5 sm:py-20 md:py-24 relative overflow-hidden"
       aria-labelledby="blog-heading"
     >
       <BlogBackground />

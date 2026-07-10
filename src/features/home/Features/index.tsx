@@ -18,7 +18,7 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="py-12 px-4 sm:py-16 md:py-24 bg-black relative"
+      className="py-12 px-4 sm:py-16 md:py-24 relative"
     >
       <FeaturesBackground />
 

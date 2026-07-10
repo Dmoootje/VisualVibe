@@ -5,9 +5,9 @@ import { sectorIntroConfig } from "./config/sectorIntro.config";
 
 export default function SectorIntro() {
   return (
-    <section className="bg-black px-4 py-12 sm:py-16 md:py-24">
-      <div className="container mx-auto">
-        {/* Header row */}
+    <section className="py-12 sm:py-16 md:py-24">
+      {/* Header row stays in the container; the marquee below runs full-bleed. */}
+      <div className="container mx-auto px-4">
         <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-11 md:flex-row md:items-end">
           <div>
             <div className="mb-4 flex items-center gap-3">
@@ -31,10 +31,10 @@ export default function SectorIntro() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-
-        {/* Two-row marquee scrolling in opposite directions */}
-        <SectorMarquee />
       </div>
+
+      {/* Two-row marquee scrolling in opposite directions, full page width. */}
+      <SectorMarquee />
     </section>
   );
 }
