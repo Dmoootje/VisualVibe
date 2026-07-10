@@ -38,3 +38,11 @@ env:
     availability:
       - BUILD
       - RUNTIME
+  - variable: FIRECRAWL_API_KEY
+    secret: FIRECRAWL_API_KEY
+    availability:
+      - RUNTIME
+  - variable: ANTHROPIC_API_KEY
+    secret: ANTHROPIC_API_KEY
+    availability:
+      - RUNTIME
