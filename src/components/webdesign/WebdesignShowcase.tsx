@@ -129,12 +129,12 @@ function RealisatieModal({
       onClick={onClose}
     >
       <div className="relative w-full max-w-[1040px]" onClick={(e) => e.stopPropagation()}>
-        {/* Oranje gloed achter de popup, in dezelfde stijl als de offerte-box. */}
+        {/* Oranje gloed achter de popup (thema-oranje, geen rood). */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-1 rounded-[26px] bg-gradient-to-r from-red-500 to-amber-500 opacity-45 blur-2xl"
+          className="pointer-events-none absolute -inset-2 rounded-[28px] bg-gradient-to-r from-[#FF7A00] to-[#FF9A45] opacity-40 blur-2xl"
         />
-        <div className="relative max-h-[88vh] overflow-y-auto rounded-[20px] border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl sm:p-8">
+        <div className="vvw-modalPanel relative max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-[20px] border border-[rgba(255,122,0,0.18)] bg-[#0d0d0d] p-5 shadow-2xl sm:p-8">
           <button
             type="button"
           onClick={onClose}
@@ -155,9 +155,9 @@ function RealisatieModal({
           </span>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
           {/* gallery - toon alleen ingevulde beelden, geen lege placeholders */}
-          <div className="flex flex-col gap-3">
+          <div className="flex min-w-0 flex-col gap-3">
             {(img("1") ?? img("2")) && (
               <div className="aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
                 <ShowcaseImage src={img("1") ?? img("2")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
@@ -173,11 +173,11 @@ function RealisatieModal({
           </div>
 
           {/* info */}
-          <div>
+          <div className="min-w-0">
             {c.client && (
-              <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">{c.client}</div>
+              <div className="mb-2 break-words font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">{c.client}</div>
             )}
-            {c.text && <p className="mb-5 text-[15px] leading-relaxed text-white/70">{c.text}</p>}
+            {c.text && <p className="mb-5 break-words text-[15px] leading-relaxed text-white/70">{c.text}</p>}
 
             {c.terms.length > 0 && (
               <>
