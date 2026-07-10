@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "./ShowcaseImage";
@@ -11,9 +11,12 @@ const Magnifier = () => (
 const Check = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
 );
+const ArrowUpRight = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+);
 
-/** Animated realisatie-showcase: an accordion of real web projects. One open at
- * a time (first open by default). Images are admin-managed (passed in). */
+/** Realisatie-showcase: a grid of project cards. Clicking a card opens a modal
+ * with the screenshots and what we delivered. Images are admin-managed. */
 export function WebdesignShowcase({
   projects,
   images,
@@ -21,7 +24,24 @@ export function WebdesignShowcase({
   projects: WebdesignProject[];
   images: WebdesignImages;
 }) {
-  const [open, setOpen] = useState(0);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const open = openId ? projects.find((p) => p.id === openId) ?? null : null;
+  const img = (c: WebdesignProject, slot: "thumb" | "1" | "2" | "3" | "4") => images[imageKey(c.id, slot)];
+
+  // Lock scroll and close on Escape while the modal is open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenId(null);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
   return (
     <section id="showcase" className="relative z-[2] bg-[#0a0a0a] pb-24 pt-6 text-white">
@@ -30,7 +50,7 @@ export function WebdesignShowcase({
           <div>
             <div className="mb-3.5 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">REALISATIES</div>
             <h2 className="max-w-[620px] text-3xl font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:text-4xl">
-              Websites die we voor KMO's bouwden
+              Websites die we voor KMO&apos;s bouwden
             </h2>
           </div>
           <p className="max-w-[290px] text-[15px] leading-relaxed text-white/50">
@@ -38,113 +58,165 @@ export function WebdesignShowcase({
           </p>
         </div>
 
-        <div className="flex flex-col gap-3.5">
-          {projects.map((c, i) => {
-            const isOpen = open === i;
-            const img = (slot: "thumb" | "1" | "2" | "3" | "4") => images[imageKey(c.id, slot)];
-            return (
-              <div key={c.id} className="vvw-caseRow" style={{ ["--i" as string]: i } as React.CSSProperties}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  aria-expanded={isOpen}
-                  className="vvw-caseHead flex w-full items-center gap-4 rounded-[18px] border p-5 text-left sm:gap-6"
-                  style={{
-                    borderColor: isOpen ? "rgba(255,122,0,.5)" : "rgba(255,255,255,.09)",
-                    background: isOpen ? "rgba(255,122,0,.05)" : "rgba(255,255,255,.02)",
-                  }}
-                >
-                  <span className="min-w-[34px] font-mono text-[15px] font-bold text-[#FF9A45]">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-xl font-bold text-white sm:text-[22px]">{c.name}</span>
-                      <span className="inline-flex flex-wrap gap-1.5">
-                        {c.tags.map((t) => (
-                          <span key={t} className="rounded-full border border-white/[0.09] bg-white/5 px-2.5 py-0.5 text-[11px] font-semibold text-white/60">
-                            {t}
-                          </span>
-                        ))}
-                      </span>
-                    </div>
-                    <div className="mt-1.5 text-sm text-white/50">{c.teaser}</div>
-                  </div>
-                  <span className="hidden h-[82px] w-[132px] flex-none overflow-hidden rounded-[11px] border border-white/[0.09] bg-white/[0.04] sm:block">
-                    <ShowcaseImage src={img("thumb")} alt={`${c.name} thumbnail`} placeholder="Thumb" className="h-full w-full object-contain" />
-                  </span>
-                  <span
-                    className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-full border border-white/[0.14] transition-transform duration-[400ms]"
-                    style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-                  </span>
-                </button>
-
-                <div
-                  className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(.2,.7,.2,1)]"
-                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
-                >
-                  <div className="overflow-hidden">
-                    <div className="grid gap-9 px-1 pb-2 pt-6 lg:grid-cols-[668px_1fr]">
-                      {/* gallery */}
-                      <div className="flex flex-col gap-3">
-                        <div className="aspect-video w-full max-w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
-                          <ShowcaseImage src={img("1")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
-                        </div>
-                        <div className="flex items-start gap-4 overflow-x-auto pb-1">
-                          <Device label="DESKTOP" ratio="aspect-video" src={img("2")} name={c.name} />
-                          <Device label="TABLET" ratio="aspect-[3/4]" src={img("3")} name={c.name} />
-                          <Device label="MOBIEL" ratio="aspect-[1/2]" src={img("4")} name={c.name} />
-                        </div>
-                      </div>
-
-                      {/* info */}
-                      <div>
-                        <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">{c.client}</div>
-                        <p className="mb-5 text-[15px] leading-relaxed text-white/70">{c.text}</p>
-
-                        <div className="mb-2.5 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">SEO-FOCUS</div>
-                        <div className="mb-5 flex flex-wrap gap-1.5">
-                          {c.terms.map((tm) => (
-                            <span key={tm} className="inline-flex items-center gap-1.5 rounded-[7px] border border-[rgba(255,122,0,0.22)] bg-[rgba(255,122,0,0.08)] px-2.5 py-1.5 font-mono text-[11px] text-[#FF9A45]">
-                              <Magnifier />
-                              {tm}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="mb-3 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">WAT WE LEVERDEN</div>
-                        <div className="mb-6 flex flex-col gap-2.5">
-                          {c.features.map((f) => (
-                            <div key={f} className="flex items-center gap-3">
-                              <span className="flex h-[22px] w-[22px] flex-none items-center justify-center rounded-[7px] border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.14)]">
-                                <Check />
-                              </span>
-                              <span className="text-sm font-semibold text-white/85">{f}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        <a
-                          href={c.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="vvw-visitLink inline-flex items-center gap-2 rounded-[11px] border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-5 py-3 text-sm font-bold text-white"
-                        >
-                          Bekijk site
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((c, i) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setOpenId(c.id)}
+              aria-label={`${c.name} openen`}
+              className="vvw-caseRow group flex flex-col overflow-hidden rounded-[18px] border border-white/[0.09] bg-white/[0.02] text-left transition-colors duration-300 hover:border-[rgba(255,122,0,0.45)]"
+              style={{ ["--i" as string]: i } as React.CSSProperties}
+            >
+              <div className="relative aspect-video w-full overflow-hidden border-b border-white/[0.06] bg-white/[0.03]">
+                <ShowcaseImage
+                  src={img(c, "thumb") ?? img(c, "1")}
+                  alt={`${c.name} website`}
+                  placeholder="Screenshot"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+                <span className="pointer-events-none absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-[rgba(10,10,10,0.55)] backdrop-blur">
+                  <ArrowUpRight />
+                </span>
               </div>
-            );
-          })}
+
+              <div className="flex flex-1 flex-col gap-3 p-5">
+                {c.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {c.tags.map((t) => (
+                      <span key={t} className="rounded-full border border-white/[0.09] bg-white/5 px-2.5 py-0.5 text-[11px] font-semibold text-white/60">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-xl font-bold text-white">{c.name}</h3>
+                  {c.teaser && <p className="mt-1.5 text-sm leading-relaxed text-white/50">{c.teaser}</p>}
+                </div>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-1 font-mono text-[11px] font-bold tracking-[0.1em] text-[#FF9A45]">
+                  BEKIJK REALISATIE
+                  <ArrowUpRight />
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
+
+      {open && (
+        <RealisatieModal project={open} img={(slot) => img(open, slot)} onClose={() => setOpenId(null)} />
+      )}
     </section>
+  );
+}
+
+function RealisatieModal({
+  project: c,
+  img,
+  onClose,
+}: {
+  project: WebdesignProject;
+  img: (slot: "thumb" | "1" | "2" | "3" | "4") => string | undefined;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/75 p-4 backdrop-blur-sm sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${c.name} details`}
+      onClick={onClose}
+    >
+      <div
+        className="relative my-6 w-full max-w-[1040px] rounded-[20px] border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl sm:p-8"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Sluiten"
+          className="absolute right-4 top-4 z-[2] flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+
+        <div className="mb-6 flex flex-wrap items-center gap-3 pr-10">
+          <span className="text-2xl font-bold text-white sm:text-3xl">{c.name}</span>
+          <span className="inline-flex flex-wrap gap-1.5">
+            {c.tags.map((t) => (
+              <span key={t} className="rounded-full border border-white/[0.09] bg-white/5 px-2.5 py-0.5 text-[11px] font-semibold text-white/60">
+                {t}
+              </span>
+            ))}
+          </span>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+          {/* gallery */}
+          <div className="flex flex-col gap-3">
+            <div className="aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
+              <ShowcaseImage src={img("1") ?? img("2")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
+            </div>
+            <div className="flex items-start gap-4 overflow-x-auto pb-1">
+              <Device label="DESKTOP" ratio="aspect-video" src={img("2")} name={c.name} />
+              <Device label="TABLET" ratio="aspect-[3/4]" src={img("3")} name={c.name} />
+              <Device label="MOBIEL" ratio="aspect-[1/2]" src={img("4")} name={c.name} />
+            </div>
+          </div>
+
+          {/* info */}
+          <div>
+            {c.client && (
+              <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">{c.client}</div>
+            )}
+            {c.text && <p className="mb-5 text-[15px] leading-relaxed text-white/70">{c.text}</p>}
+
+            {c.terms.length > 0 && (
+              <>
+                <div className="mb-2.5 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">SEO-FOCUS</div>
+                <div className="mb-5 flex flex-wrap gap-1.5">
+                  {c.terms.map((tm) => (
+                    <span key={tm} className="inline-flex items-center gap-1.5 rounded-[7px] border border-[rgba(255,122,0,0.22)] bg-[rgba(255,122,0,0.08)] px-2.5 py-1.5 font-mono text-[11px] text-[#FF9A45]">
+                      <Magnifier />
+                      {tm}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {c.features.length > 0 && (
+              <>
+                <div className="mb-3 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">WAT WE LEVERDEN</div>
+                <div className="mb-6 flex flex-col gap-2.5">
+                  {c.features.map((f) => (
+                    <div key={f} className="flex items-center gap-3">
+                      <span className="flex h-[22px] w-[22px] flex-none items-center justify-center rounded-[7px] border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.14)]">
+                        <Check />
+                      </span>
+                      <span className="text-sm font-semibold text-white/85">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {c.url && (
+              <a
+                href={c.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="vvw-visitLink inline-flex items-center gap-2 rounded-[11px] border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-5 py-3 text-sm font-bold text-white"
+              >
+                Bekijk site
+                <ArrowUpRight />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

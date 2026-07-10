@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, ChevronUp, ChevronDown, Loader2, Save, X } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown, Loader2, Save, X, Sparkles } from "lucide-react";
 import type { WebdesignProject } from "@/data/webdesignShowcase";
 import { WEBDESIGN_IMAGE_SLOTS, imageKey } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
@@ -14,6 +14,13 @@ const aspectForSlot: Record<string, string> = {
   "2": "aspect-video",
   "3": "aspect-[3/4]",
   "4": "aspect-[1/2]",
+};
+
+type GeneratedCopy = {
+  text: string;
+  tags: string[];
+  terms: string[];
+  features: string[];
 };
 
 function newId() {
@@ -110,6 +117,7 @@ function ProjectCard({
   onChange,
   onMove,
   onDelete,
+  onImagesMerge,
 }: {
   project: WebdesignProject;
   index: number;
@@ -118,9 +126,55 @@ function ProjectCard({
   onChange: (next: WebdesignProject) => void;
   onMove: (dir: -1 | 1) => void;
   onDelete: () => void;
+  onImagesMerge: (partial: WebdesignImages) => void;
 }) {
   const set = <K extends keyof WebdesignProject>(key: K, value: WebdesignProject[K]) =>
     onChange({ ...project, [key]: value });
+
+  const [genBusy, setGenBusy] = useState(false);
+  const [genStatus, setGenStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+
+  async function autoGenerate() {
+    if (!project.url.trim()) {
+      setGenStatus({ ok: false, msg: "Vul eerst de knop-link (URL) onderaan in." });
+      return;
+    }
+    setGenBusy(true);
+    setGenStatus(null);
+    try {
+      const res = await fetch("/api/admin/generate/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: project.url.trim(), projectId: project.id, siteName: project.name }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Genereren mislukt.");
+
+      if (data.images && typeof data.images === "object") {
+        onImagesMerge(data.images as WebdesignImages);
+      }
+      const copy = data.copy as GeneratedCopy | null;
+      if (copy) {
+        onChange({
+          ...project,
+          text: copy.text,
+          tags: copy.tags.slice(0, 3),
+          terms: copy.terms,
+          features: copy.features,
+        });
+      }
+      setGenStatus({
+        ok: !data.copyError,
+        msg: data.copyError
+          ? `Screenshots klaar. Tekst niet gelukt: ${data.copyError}`
+          : "Screenshots en tekst gegenereerd. Controleer en sla op.",
+      });
+    } catch (e) {
+      setGenStatus({ ok: false, msg: e instanceof Error ? e.message : "Er ging iets mis." });
+    } finally {
+      setGenBusy(false);
+    }
+  }
 
   return (
     <section className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
@@ -158,6 +212,36 @@ function ProjectCard({
           </button>
         </div>
       </header>
+
+      {/* AI auto-generate: screenshots + copy from the site URL. */}
+      <div className="mb-5 rounded-lg border border-amber-400/25 bg-amber-400/[0.06] p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-amber-200">
+              <Sparkles className="h-4 w-4" />
+              Automatisch invullen
+            </div>
+            <p className="mt-1 text-[13px] leading-relaxed text-white/55">
+              Maakt een desktop- en mobiel-screenshot van de knop-link en schrijft de beschrijving,
+              badges, SEO-termen en checklist. Controleer alles voor je opslaat.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={autoGenerate}
+            disabled={genBusy}
+            className="inline-flex flex-none items-center gap-2 rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-black hover:bg-amber-400 disabled:opacity-50"
+          >
+            {genBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {genBusy ? "Bezig..." : "Auto-genereer uit URL"}
+          </button>
+        </div>
+        {genStatus && (
+          <p className={`mt-2 text-xs ${genStatus.ok ? "text-emerald-400" : "text-red-400"}`}>
+            {genStatus.msg}
+          </p>
+        )}
+      </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <label className="flex flex-col gap-1.5">
@@ -230,7 +314,7 @@ function ProjectCard({
 
       <label className="mt-4 flex flex-col gap-1.5">
         <span className="text-xs font-medium text-white/60">
-          Knop-link <span className="text-white/30">(Bekijk site)</span>
+          Knop-link <span className="text-white/30">(Bekijk site, ook bron voor AI)</span>
         </span>
         <input
           className={inputCls}
@@ -243,15 +327,18 @@ function ProjectCard({
       <div className="mt-5">
         <span className="text-xs font-medium text-white/60">Afbeeldingen</span>
         <div className="mt-2 grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {WEBDESIGN_IMAGE_SLOTS.map(({ slot, label }) => (
-            <ImageUploadField
-              key={slot}
-              imageKey={imageKey(project.id, slot)}
-              label={label}
-              initialUrl={images[imageKey(project.id, slot)]}
-              aspect={aspectForSlot[slot]}
-            />
-          ))}
+          {WEBDESIGN_IMAGE_SLOTS.map(({ slot, label }) => {
+            const key = imageKey(project.id, slot);
+            return (
+              <ImageUploadField
+                key={`${key}:${images[key] ?? ""}`}
+                imageKey={key}
+                label={label}
+                initialUrl={images[key]}
+                aspect={aspectForSlot[slot]}
+              />
+            );
+          })}
         </div>
         <p className="mt-2 text-[11px] text-white/30">
           Afbeeldingen worden meteen opgeslagen. Sla de realisatie op zodat ze publiek verschijnt.
@@ -263,12 +350,13 @@ function ProjectCard({
 
 export function WebdesignProjectsManager({
   initialProjects,
-  images,
+  images: initialImages,
 }: {
   initialProjects: WebdesignProject[];
   images: WebdesignImages;
 }) {
   const [projects, setProjects] = useState<WebdesignProject[]>(initialProjects);
+  const [images, setImages] = useState<WebdesignImages>(initialImages);
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -321,6 +409,7 @@ export function WebdesignProjectsManager({
           onChange={(next) => update(projects.map((x, j) => (j === i ? next : x)))}
           onMove={(dir) => move(i, dir)}
           onDelete={() => update(projects.filter((_, j) => j !== i))}
+          onImagesMerge={(partial) => setImages((prev) => ({ ...prev, ...partial }))}
         />
       ))}
 
