@@ -21,15 +21,20 @@ const staticPaths = [
   "offerte-aanvragen",
 ];
 
+// Indexable posts only (noindex drafts stay out of the sitemap).
+const indexablePosts = blogPosts.filter((post) => !post.robots?.includes("noindex"));
+// A category only enters the sitemap once it has an indexable post, so
+// registered-but-empty pillars (fotografie, videografie, ...) emit no URL.
+const activeCategorySlugs = new Set(indexablePosts.map((post) => post.categorySlug));
+
 const dataPaths = [
   ...allServices.map((service) => `diensten/${service.slug}`),
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
-  ...kennisbankCategories.map((category) => `kennisbank/${category.slug}`),
-  ...blogPosts
-    // Keep noindex drafts out of the sitemap.
-    .filter((post) => !post.robots?.includes("noindex"))
-    .map((post) => `kennisbank/${post.categorySlug}/${post.slug}`),
+  ...kennisbankCategories
+    .filter((category) => activeCategorySlugs.has(category.slug))
+    .map((category) => `kennisbank/${category.slug}`),
+  ...indexablePosts.map((post) => `kennisbank/${post.categorySlug}/${post.slug}`),
 ];
 
 /** Normalises to a leading-and-trailing-slashed path ("" -> "/"). */

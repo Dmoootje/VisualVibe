@@ -939,7 +939,13 @@ html {
     letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.42); margin: 0 0 18px;
 }
 .vvsh-mqMask {
-    overflow: hidden; margin-bottom: 14px;
+    /* Full-bleed: the pills travel from the left screen edge to the right,
+       breaking out of the hero padding + 1300px content width. The label and
+       hairline above stay aligned with the content. */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-bottom: 14px;
+    overflow: hidden;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
@@ -1247,4 +1253,139 @@ html {
 @media (prefers-reduced-motion: reduce) {
     .vvw-liveDot, .vvw-scan, .vvw-bob, .vvw-bob2, .vvw-cursor, .vvw-glowB, .vvw-caseRow { animation: none !important; }
     .vvw-caseRow { opacity: 1; }
+}
+/* ── Primary navigation: Diensten mega-menu + responsive drawer (handoff) ── */
+.vvnav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(10, 10, 10, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.vvnav-center,
+.vvnav-right { display: flex; }
+.vvnav-mbBtn { display: none; }
+.vvnav-drawerRoot { display: none; }
+@media (max-width: 1000px) {
+    .vvnav-center,
+    .vvnav-right { display: none !important; }
+    .vvnav-mbBtn { display: inline-flex !important; }
+    .vvnav-drawerRoot { display: block !important; }
+}
+
+/* desktop mega panel + simple dropdowns share the open/close animation */
+.vvnav-mega,
+.vvnav-dd {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 0;
+    z-index: 60;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transform-origin: top left;
+    transition: opacity 0.26s ease, transform 0.36s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.26s;
+}
+.vvnav-mega.is-open,
+.vvnav-dd.is-open { opacity: 1; visibility: visible; transform: none; }
+.vvnav-wrap::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: -40px;
+    top: 100%;
+    height: 18px;
+}
+.vvnav-navChev { transition: transform 0.3s ease; }
+.vvnav-wrap.is-on .vvnav-navChev { transform: rotate(180deg); }
+
+@keyframes vvnavRailIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: none; }
+}
+.vvnav-mega.is-open .vvnav-railItem { opacity: 0; animation: vvnavRailIn 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(1) { animation-delay: 0.02s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(2) { animation-delay: 0.06s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(3) { animation-delay: 0.10s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(4) { animation-delay: 0.14s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(5) { animation-delay: 0.18s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(6) { animation-delay: 0.22s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(7) { animation-delay: 0.26s; }
+.vvnav-mega.is-open .vvnav-railItem:nth-child(8) { animation-delay: 0.30s; }
+.vvnav-railItem { transition: background 0.22s ease, border-color 0.22s ease; }
+.vvnav-rchev { transition: transform 0.3s ease, color 0.22s ease; }
+.vvnav-railItem:hover .vvnav-rchev { transform: translateX(3px); }
+
+.vvnav-sub { width: 0; opacity: 0; overflow: hidden; transition: width 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease; }
+.vvnav-sub.is-show { width: 560px; opacity: 1; }
+.vvnav-subInner { opacity: 0; transform: translateX(10px); transition: opacity 0.32s ease, transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.vvnav-subInner.is-on { opacity: 1; transform: none; }
+@keyframes vvnavItemIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+}
+.vvnav-subInner.is-on .vvnav-subItem { opacity: 0; animation: vvnavItemIn 0.4s ease forwards; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(1) { animation-delay: 0.04s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(2) { animation-delay: 0.08s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(3) { animation-delay: 0.12s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(4) { animation-delay: 0.16s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(5) { animation-delay: 0.20s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(6) { animation-delay: 0.24s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(7) { animation-delay: 0.28s; }
+.vvnav-subInner.is-on .vvnav-subItem:nth-child(8) { animation-delay: 0.32s; }
+.vvnav-subItem { transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease; }
+.vvnav-subItem:hover { background: rgba(255, 122, 0, 0.06) !important; border-color: rgba(255, 122, 0, 0.35) !important; transform: translateX(3px); }
+.vvnav-schev { transition: transform 0.25s ease; }
+.vvnav-subItem:hover .vvnav-schev { transform: translateX(3px); }
+.vvnav-navBtn { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.vvnav-navBtn:hover { transform: translateY(-2px); }
+.vvnav-featCard { transition: border-color 0.25s ease, transform 0.25s ease; }
+.vvnav-featCard:hover { border-color: rgba(255, 122, 0, 0.5) !important; transform: translateY(-3px); }
+.vvnav-link { transition: color 0.2s ease; }
+.vvnav-link:hover { color: #fff; }
+.vvnav-ddItem { transition: background 0.2s ease, color 0.2s ease; }
+.vvnav-ddItem:hover { background: rgba(255, 122, 0, 0.08); color: #fff; }
+
+/* mobile drawer */
+.vvnav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.62);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+    z-index: 70;
+}
+.vvnav-drawerRoot.is-open .vvnav-backdrop { opacity: 1; visibility: visible; }
+.vvnav-drawerPanel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(420px, 90%);
+    background: #0e0d0c;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateX(102%);
+    transition: transform 0.44s cubic-bezier(0.2, 0.85, 0.2, 1);
+    z-index: 71;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -40px 0 90px -30px rgba(0, 0, 0, 0.95);
+}
+.vvnav-drawerRoot.is-open .vvnav-drawerPanel { transform: none; }
+.vvnav-mrow { transition: background 0.2s ease; }
+.vvnav-mrow:active { background: rgba(255, 122, 0, 0.08); }
+.vvnav-macc { display: grid; transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.vvnav-mchev { transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+    .vvnav-mega, .vvnav-dd, .vvnav-sub, .vvnav-subInner, .vvnav-railItem, .vvnav-subItem,
+    .vvnav-backdrop, .vvnav-drawerPanel, .vvnav-macc, .vvnav-mchev, .vvnav-navChev, .vvnav-rchev {
+        transition: none !important;
+        animation: none !important;
+    }
 }

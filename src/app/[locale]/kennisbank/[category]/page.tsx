@@ -16,7 +16,11 @@ import { PageHero, Breadcrumbs, BlogGrid, CategoryGrid } from "@/components/sect
 import { BreadcrumbJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
-  return kennisbankCategories.map((category) => ({ category: category.slug }));
+  // Pre-render only categories that have posts. Registered-but-empty pillars
+  // render on demand and 404 (see the notFound guard below) until content lands.
+  return kennisbankCategories
+    .filter((category) => getPostsByCategory(category.slug).length > 0)
+    .map((category) => ({ category: category.slug }));
 }
 
 export async function generateMetadata({
@@ -55,6 +59,12 @@ export default async function KennisbankCategoryPage({
   }
 
   const posts = getPostsByCategory(categoryDef.slug);
+
+  // A registered-but-empty category (no posts yet) must not render a thin page.
+  if (posts.length === 0) {
+    notFound();
+  }
+
   const otherCategories = kennisbankCategories
     .filter((c) => c.slug !== categoryDef.slug)
     .map((c) => ({
@@ -62,7 +72,8 @@ export default async function KennisbankCategoryPage({
       name: c.name,
       description: c.description,
       count: getPostsByCategory(c.slug).length,
-    }));
+    }))
+    .filter((c) => c.count > 0);
 
   return (
     <div className="min-h-screen bg-black text-white">

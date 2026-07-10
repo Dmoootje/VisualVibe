@@ -14,12 +14,17 @@ export const metadata: Metadata = {
 };
 
 export default function KennisbankHubPage() {
-  const categoryCards = kennisbankCategories.map((category) => ({
-    slug: category.slug,
-    name: category.name,
-    description: category.description,
-    count: getPostsByCategory(category.slug).length,
-  }));
+  // Only surface categories that already have at least one post. Registered-but-
+  // empty pillars (fotografie, videografie, ...) stay hidden until content lands,
+  // so we never ship thin empty category pages.
+  const categoryCards = kennisbankCategories
+    .map((category) => ({
+      slug: category.slug,
+      name: category.name,
+      description: category.description,
+      count: getPostsByCategory(category.slug).length,
+    }))
+    .filter((category) => category.count > 0);
 
   return (
     <div className="min-h-screen bg-black text-white">

@@ -1,80 +1,20 @@
-"use client";
+import { getPostsByCategory } from "@/lib/kennisbank/posts";
+import { kennisbankCategories } from "@/data/kennisbankCategories";
+import { Nav } from "@/components/nav/Nav";
+import type { NavLink } from "@/components/nav/navData";
 
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Logo, DesktopNav, MobileNav } from "./components";
-
+// Server component: builds the Kennisbank dropdown (hub + only the categories
+// that actually have posts - never article links) and hands it to the client
+// Nav. Pillars/regio/sectoren are pure data the client Nav imports itself.
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const kennisbankItems: NavLink[] = [
+    { name: "Alle artikels", href: "/kennisbank" },
+    ...kennisbankCategories
+      .filter((category) => getPostsByCategory(category.slug).length > 0)
+      .map((category) => ({ name: category.name, href: `/kennisbank/${category.slug}` })),
+  ];
 
-  // Handle scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isMenuOpen]);
-
-  return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-[60px] flex items-center",
-        scrolled
-          ? "bg-black/80 backdrop-blur-lg shadow-lg shadow-black/20 border-b border-white/10"
-          : "bg-transparent"
-      )}
-    >
-      {/* Animated orange neon divider under the header (subtle, decorative) */}
-      <div className="header-neon-glow" aria-hidden="true" />
-      <div className="header-neon-line" aria-hidden="true" />
-      <div className="header-neon-track" aria-hidden="true">
-        <div className="header-neon-runner" />
-      </div>
-
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
-        <Logo />
-
-        {/* Desktop Navigation */}
-        <DesktopNav />
-
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden text-white focus-visible:ring-2 focus-visible:ring-amber-500/70 h-9 w-9"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-expanded={isMenuOpen}
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {isMenuOpen ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
-        </Button>
-      </div>
-
-      {/* Mobile Menu */}
-      <MobileNav isOpen={isMenuOpen} />
-    </header>
-  );
+  return <Nav kennisbankItems={kennisbankItems} />;
 }
 
 export default Header;
