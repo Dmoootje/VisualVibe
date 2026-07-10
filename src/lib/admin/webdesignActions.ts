@@ -1,9 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { setWebdesignImage } from "@/lib/firestore/webdesignImages";
 import { setWebdesignProjects } from "@/lib/firestore/webdesignProjects";
+import { revalidateWebdesign } from "@/lib/admin/revalidateWebdesign";
 import type { WebdesignProject } from "@/data/webdesignShowcase";
 
 export type ImageActionResult = { ok: boolean; error?: string };
@@ -20,8 +20,7 @@ export async function saveWebdesignImage(key: string, url: string): Promise<Imag
     return { ok: false, error: "Opslaan mislukt." };
   }
 
-  revalidatePath("/diensten/webdesign");
-  revalidatePath("/admin/settings/webdesign");
+  revalidateWebdesign();
   return { ok: true };
 }
 
@@ -64,7 +63,6 @@ export async function saveWebdesignProjects(
     return { ok: false, error: "Opslaan mislukt." };
   }
 
-  revalidatePath("/diensten/webdesign");
-  revalidatePath("/admin/settings/webdesign");
+  revalidateWebdesign();
   return { ok: true };
 }

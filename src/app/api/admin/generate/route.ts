@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { uploadImageBuffer } from "@/lib/firebase/uploadImage";
 import { setWebdesignImage } from "@/lib/firestore/webdesignImages";
+import { revalidateWebdesign } from "@/lib/admin/revalidateWebdesign";
 import { imageKey } from "@/data/webdesignShowcase";
 import { hasFirecrawl, scrapeSite } from "@/lib/firecrawl";
 import { generateRealisatie, hasAnthropic } from "@/lib/ai/generateRealisatie";
@@ -79,6 +80,8 @@ export async function POST(request: NextRequest) {
     };
     await Promise.all(Object.entries(slotUrls).map(([k, v]) => setWebdesignImage(k, v)));
     Object.assign(images, slotUrls);
+    // Let the new screenshots appear on the public page without the ISR wait.
+    revalidateWebdesign();
   } catch {
     return NextResponse.json({ error: "Screenshots opslaan mislukt." }, { status: 500 });
   }

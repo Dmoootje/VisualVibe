@@ -122,18 +122,21 @@ function RealisatieModal({
 }) {
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/75 p-4 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label={`${c.name} details`}
       onClick={onClose}
     >
-      <div
-        className="relative my-6 w-full max-w-[1040px] rounded-[20px] border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl sm:p-8"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
+      <div className="relative w-full max-w-[1040px]" onClick={(e) => e.stopPropagation()}>
+        {/* Oranje gloed achter de popup, in dezelfde stijl als de offerte-box. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-1 rounded-[26px] bg-gradient-to-r from-red-500 to-amber-500 opacity-45 blur-2xl"
+        />
+        <div className="relative max-h-[88vh] overflow-y-auto rounded-[20px] border border-white/10 bg-[#0d0d0d] p-5 shadow-2xl sm:p-8">
+          <button
+            type="button"
           onClick={onClose}
           aria-label="Sluiten"
           className="absolute right-4 top-4 z-[2] flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
@@ -153,16 +156,20 @@ function RealisatieModal({
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
-          {/* gallery */}
+          {/* gallery - toon alleen ingevulde beelden, geen lege placeholders */}
           <div className="flex flex-col gap-3">
-            <div className="aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
-              <ShowcaseImage src={img("1") ?? img("2")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
-            </div>
-            <div className="flex items-start gap-4 overflow-x-auto pb-1">
-              <Device label="DESKTOP" ratio="aspect-video" src={img("2")} name={c.name} />
-              <Device label="TABLET" ratio="aspect-[3/4]" src={img("3")} name={c.name} />
-              <Device label="MOBIEL" ratio="aspect-[1/2]" src={img("4")} name={c.name} />
-            </div>
+            {(img("1") ?? img("2")) && (
+              <div className="aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
+                <ShowcaseImage src={img("1") ?? img("2")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
+              </div>
+            )}
+            {(img("2") || img("3") || img("4")) && (
+              <div className="flex items-start gap-4 overflow-x-auto pb-1">
+                {img("2") && <Device label="DESKTOP" ratio="aspect-video" src={img("2")} name={c.name} />}
+                {img("3") && <Device label="TABLET" ratio="aspect-[3/4]" src={img("3")} name={c.name} />}
+                {img("4") && <Device label="MOBIEL" ratio="aspect-[1/2]" src={img("4")} name={c.name} />}
+              </div>
+            )}
           </div>
 
           {/* info */}
@@ -214,6 +221,7 @@ function RealisatieModal({
               </a>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>
