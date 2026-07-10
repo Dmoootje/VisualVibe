@@ -15,6 +15,7 @@ export { RoadmapBlock, type RoadmapStep } from "./RoadmapBlock";
 export { FaqAccordion, type FaqItem } from "./FaqAccordion";
 export { BlogCTA } from "./BlogCTA";
 export { BlogImage } from "./BlogImage";
+export { BlogImageLightbox, type BlogImageLightboxProps } from "./BlogImageLightbox";
 export { ComparisonTable } from "./ComparisonTable";
 export { StatGrid, type Stat } from "./StatGrid";
 export { BlogToc, type TocItem } from "./BlogToc";

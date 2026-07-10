@@ -20,7 +20,12 @@ import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
 import { Breadcrumbs, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/components/sections";
 import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/seo";
-import { BlogHero, MdxContent, StickyBlogSidebar } from "@/components/blog";
+import {
+  BlogHero,
+  BlogImageLightbox,
+  MdxContent,
+  StickyBlogSidebar,
+} from "@/components/blog";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
 
 const HREFLANG: Record<BlogLocale, string> = {
@@ -262,7 +267,23 @@ export default async function KennisbankPostPage({
   );
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative min-h-screen bg-[#060404] text-white">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: [
+              "radial-gradient(ellipse 48rem 34rem at 0 9rem, rgba(239,68,68,0.095), transparent 72%)",
+              "radial-gradient(ellipse 44rem 32rem at 100% 68rem, rgba(255,117,0,0.07), transparent 74%)",
+              "radial-gradient(ellipse 42rem 34rem at 0 150rem, rgba(239,68,68,0.055), transparent 75%)",
+              "radial-gradient(ellipse 42rem 34rem at 100% 250rem, rgba(255,117,0,0.05), transparent 76%)",
+              "linear-gradient(180deg, #0b0505 0%, #060505 22%, #080404 58%, #050505 100%)",
+            ].join(", "),
+          }}
+        />
+      </div>
+
+      <div className="relative z-[1]">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: localizedPath(post.locale, "/") },
@@ -298,8 +319,8 @@ export default async function KennisbankPostPage({
         }}
       />
 
-      <Section variant="pageHero" orbs="tl-br">
-        <Container className="max-w-5xl">
+      <Section variant="pageHero" orbs="none" className="!bg-transparent">
+        <Container>
           <Breadcrumbs
             className="mb-6"
             items={[
@@ -320,52 +341,68 @@ export default async function KennisbankPostPage({
             publishedAt={post.publishedAt}
             updatedAt={post.updatedAt}
             readingTime={post.readingTime}
-            image={post.ogImage}
-            imageAlt={post.heroImageAlt ?? post.title}
-            imageTitle={post.heroImageTitle}
-            imageCaption={post.heroImageCaption}
           />
         </Container>
       </Section>
 
-      <Section orbs="none">
-        <Container className="max-w-5xl">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_15rem]">
-            <article>
+      <Section
+        orbs="none"
+        className="!overflow-visible !bg-transparent !pt-6 sm:!pt-8 md:!pt-10"
+      >
+        <Container>
+          <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-14">
+            <article
+              className={post.ogImage ? "order-2 min-w-0 xl:order-1" : "min-w-0"}
+            >
               <MdxContent source={post.content} />
             </article>
 
-            {toc.length > 0 && (
-              <aside className="hidden lg:block">
-                <StickyBlogSidebar
-                  toc={toc}
-                  cta={{
-                    title: cta.title,
-                    description: cta.description,
-                    label: cta.label,
-                    href: cta.href,
-                  }}
-                  service={
-                    sidebarService
-                      ? {
-                          title: sidebarService.title,
-                          description: sidebarService.excerpt,
-                          href: `/diensten/${sidebarService.slug}/`,
-                          icon: <BookOpen className="h-5 w-5" aria-hidden="true" />,
-                          linkLabel: "Bekijk dienst",
-                        }
-                      : undefined
-                  }
+            <aside
+              className={
+                post.ogImage
+                  ? "order-1 min-w-0 self-stretch xl:order-2"
+                  : "hidden min-w-0 self-stretch xl:order-2 xl:block"
+              }
+            >
+              {post.ogImage && (
+                <BlogImageLightbox
+                  src={post.ogImage}
+                  alt={post.heroImageAlt ?? post.title}
+                  title={post.heroImageTitle}
+                  caption={post.heroImageCaption}
+                  className="mx-auto max-w-2xl xl:max-w-none"
                 />
-              </aside>
-            )}
+              )}
+
+              <StickyBlogSidebar
+                className={post.ogImage ? "mt-8 hidden xl:flex" : "hidden xl:flex"}
+                toc={toc}
+                cta={{
+                  title: cta.title,
+                  description: cta.description,
+                  label: cta.label,
+                  href: cta.href,
+                }}
+                service={
+                  sidebarService
+                    ? {
+                        title: sidebarService.title,
+                        description: sidebarService.excerpt,
+                        href: `/diensten/${sidebarService.slug}/`,
+                        icon: <BookOpen className="h-5 w-5" aria-hidden="true" />,
+                        linkLabel: "Bekijk dienst",
+                      }
+                    : undefined
+                }
+              />
+            </aside>
           </div>
         </Container>
       </Section>
 
       {(relatedServices.length > 0 || relatedRegions.length > 0) && (
-        <Section orbs="tl-br">
-          <Container className="max-w-5xl flex flex-col gap-10">
+        <Section orbs="none" className="!bg-transparent">
+          <Container className="flex flex-col gap-10">
             {relatedServices.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-4">Gerelateerde diensten</h2>
@@ -383,8 +420,8 @@ export default async function KennisbankPostPage({
       )}
 
       {clusterPosts.length > 0 && (
-        <Section orbs="tr-bl">
-          <Container className="max-w-5xl">
+        <Section orbs="none" className="!bg-transparent">
+          <Container>
             <h2 className="text-2xl font-bold mb-4">Artikels in deze reeks</h2>
             <BlogGrid posts={clusterPosts} />
           </Container>
@@ -392,8 +429,8 @@ export default async function KennisbankPostPage({
       )}
 
       {clusterPosts.length === 0 && relatedPosts.length > 0 && (
-        <Section orbs="tr-bl">
-          <Container className="max-w-5xl">
+        <Section orbs="none" className="!bg-transparent">
+          <Container>
             <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
             <BlogGrid posts={relatedPosts} />
           </Container>
@@ -405,7 +442,9 @@ export default async function KennisbankPostPage({
         description={cta.description}
         primaryLabel={cta.label}
         primaryHref={cta.href}
+        className="!bg-transparent"
       />
+      </div>
     </div>
   );
 }

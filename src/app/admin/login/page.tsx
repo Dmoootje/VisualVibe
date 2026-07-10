@@ -26,7 +26,9 @@ export default function AdminLoginPage() {
       const credential = await signInWithEmailAndPassword(getClientAuth(), email, password);
       const idToken = await credential.user.getIdToken();
 
-      const response = await fetch("/api/auth/session", {
+      // Trailing slash matches next.config `trailingSlash: true` so the POST
+      // isn't 308-redirected (which can drop the body).
+      const response = await fetch("/api/auth/session/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idToken }),
