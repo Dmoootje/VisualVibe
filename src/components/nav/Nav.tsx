@@ -2,6 +2,9 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
+// Admin lives outside the [locale] tree, so its links must NOT get the locale
+// prefix (the intl Link would turn "/admin/login" into "/be/admin/login" -> 404).
+import NextLink from "next/link";
 import { regions } from "@/data/regions";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import { NavIcon } from "./nav-icons";
@@ -255,9 +258,9 @@ export function Nav({
 
         {/* ===== desktop right ===== */}
         <div className="vvnav-right" style={{ alignItems: "center", gap: 18 }}>
-          <Link href="/admin/login" aria-label="Inloggen" style={{ display: "inline-flex" }}>
+          <NextLink href="/admin/login" aria-label="Inloggen" style={{ display: "inline-flex" }}>
             <UserIcon />
-          </Link>
+          </NextLink>
           <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
             Offerte aanvragen
           </Link>
@@ -356,9 +359,9 @@ export function Nav({
             <Link href="/offerte-aanvragen" onClick={() => setDrawer(false)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 15, borderRadius: 12, background: GRADIENT, boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)" }}>
               Offerte aanvragen <ArrowRight size={16} />
             </Link>
-            <Link href="/admin/login" onClick={() => setDrawer(false)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
+            <NextLink href="/admin/login" onClick={() => setDrawer(false)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
               <UserIcon size={17} color="currentColor" /> Inloggen
-            </Link>
+            </NextLink>
           </div>
         </aside>
       </div>
