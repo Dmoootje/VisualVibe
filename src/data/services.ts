@@ -264,15 +264,50 @@ export const services: Service[] = [
       { title: "Opname", description: "Drone- en/of FPV-opnames op locatie." },
       { title: "Montage", description: "Verwerking tot een afgewerkte video of beeldenset." },
     ],
-    faqs: [],
+    faqs: [
+      {
+        question: "Hebben jullie een drone-vergunning?",
+        answer:
+          "Ja. We vliegen met een gecertificeerde dronepiloot en de nodige vergunningen en verzekering. Zo verloopt elke opname veilig en volgens de EU-droneregels.",
+      },
+      {
+        question: "Wat is het verschil tussen dronevideo en FPV-video?",
+        answer:
+          "Klassieke dronevideo bestaat uit rustige, vloeiende luchtbeelden vanuit een hoog standpunt. FPV-video (First Person View) is dynamischer: de drone vliegt snel door en rond je project, wat een meeslepend, filmisch effect geeft.",
+      },
+      {
+        question: "Mogen jullie overal met een drone vliegen?",
+        answer:
+          "Niet overal. Rond luchthavens, boven mensenmassa's en in bepaalde no-flyzones gelden beperkingen. We controleren vooraf de luchtruimregels voor je locatie en regelen waar nodig de toestemming, zodat je je nergens zorgen over hoeft te maken.",
+      },
+      {
+        question: "Voor welke projecten zijn dronebeelden geschikt?",
+        answer:
+          "Dronebeelden werken sterk voor vastgoed, bouw- en renovatieprojecten, bedrijfsterreinen, events en toeristische locaties. Overal waar schaal, omgeving of voortgang tellen, geeft een luchtbeeld een uniek perspectief.",
+      },
+      {
+        question: "Komen jullie ook buiten Limburg filmen?",
+        answer:
+          "Zeker. Limburg is onze uitvalsbasis, maar we vliegen in heel Vlaanderen, Antwerpen en Nederlands-Limburg, en op aanvraag ook daarbuiten.",
+      },
+    ],
     relatedServices: ["videografie", "fotografie", "3d-vr-ar"],
     relatedRegions: ["limburg"],
     relatedCases: [],
     relatedPosts: [],
     seo: {
-      title: "Drone & FPV Video Limburg | VisualVibe",
-      description: "Dronebeelden en FPV-video voor bedrijven, vastgoed en events in Limburg.",
-      keywords: ["drone Limburg", "dronefotografie", "dronevideo", "FPV video", "vastgoed dronebeelden"],
+      title: "Drone & FPV Limburg | Luchtbeelden en dronevideo | VisualVibe",
+      description:
+        "Professionele drone- en FPV-video in Limburg voor bedrijven, vastgoed, bouw en events. Luchtbeelden in 4K door een gecertificeerde dronepiloot. Vraag je offerte.",
+      keywords: [
+        "drone Limburg",
+        "dronepiloot Limburg",
+        "dronefotografie",
+        "dronevideo",
+        "FPV video",
+        "luchtfotografie",
+        "vastgoed dronebeelden",
+      ],
     },
   },
   {

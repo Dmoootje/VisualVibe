@@ -15,6 +15,7 @@ import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { FotografieService } from "@/components/fotografie";
 import { VideografieService } from "@/components/videografie";
+import { DroneFpvService } from "@/components/drone";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
@@ -82,6 +83,7 @@ export default async function ServiceDetailPage({
   const isSeo = service.slug === "seo";
   const isFotografie = service.slug === "fotografie";
   const isVideografie = service.slug === "videografie";
+  const isDrone = service.slug === "drone-fpv";
   const [webdesignImages, webdesignProjects] =
     isWebdesign || isSeo
       ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
@@ -155,6 +157,16 @@ export default async function ServiceDetailPage({
           videos={videoData.videos}
           filters={videoData.filters}
         />
+      </div>
+    );
+  }
+
+  // Drone & FPV leads with the quadcopter/FPV hero + drone realisaties split.
+  if (isDrone) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        {jsonLd}
+        <DroneFpvService service={service} subServices={childServices} relatedServices={relatedServices} />
       </div>
     );
   }

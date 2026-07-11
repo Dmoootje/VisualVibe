@@ -1775,6 +1775,52 @@ html {
     .vg-vcard { opacity: 1; }
 }
 
+/* ── Drone & FPV service page (design_handoff_drone_fpv_service) ── */
+@keyframes dr-spin { to { transform: rotate(360deg); } }
+@keyframes dr-hover { 0%, 100% { transform: translateY(0) rotate(-1.2deg); } 50% { transform: translateY(-12px) rotate(1.2deg); } }
+@keyframes dr-sigwave { 0% { transform: scale(.4); opacity: .7; } 100% { transform: scale(1.5); opacity: 0; } }
+@keyframes dr-hudscan { 0% { transform: translateY(-100%); opacity: 0; } 20% { opacity: .7; } 80% { opacity: .7; } 100% { transform: translateY(1100%); opacity: 0; } }
+@keyframes dr-recb { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+.dr-rig { transform-box: fill-box; transform-origin: center; animation: dr-hover 4.4s ease-in-out infinite; }
+.dr-rotor { transform-box: fill-box; transform-origin: center; animation: dr-spin .42s linear infinite; }
+.dr-rotor.b { animation-duration: .5s; }
+.dr-sig { transform-box: fill-box; transform-origin: center; }
+.dr-sig.s1 { animation: dr-sigwave 2.4s ease-out infinite; }
+.dr-sig.s2 { animation: dr-sigwave 2.4s ease-out .8s infinite; }
+.dr-sig.s3 { animation: dr-sigwave 2.4s ease-out 1.6s infinite; }
+.dr-hudscan { animation: dr-hudscan 3.8s cubic-bezier(.5, 0, .5, 1) infinite; }
+.dr-recdot { animation: dr-recb 1.3s ease-in-out infinite; }
+
+/* Cursor-following drone (desktop only) */
+.dr-cursor { position: fixed; left: 0; top: 0; z-index: 40; width: 66px; pointer-events: none; will-change: transform; }
+.dr-cursor .dr-rotor { animation-duration: .34s; }
+
+/* Media cards (film frames + FPV video tiles) */
+.dr-mcard { transition: transform .4s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease; cursor: pointer; }
+.dr-mcard:hover { transform: translateY(-5px); border-color: rgba(255, 122, 0, .4); box-shadow: 0 30px 64px -30px rgba(255, 90, 0, .5); }
+.dr-mimg { transition: transform .8s cubic-bezier(.2, .7, .2, 1), filter .5s ease; }
+.dr-mcard:hover .dr-mimg { transform: scale(1.07); filter: saturate(1.1); }
+.dr-play { transition: transform .3s ease, box-shadow .3s ease; }
+.dr-mcard:hover .dr-play { transform: scale(1.1); box-shadow: 0 18px 40px -12px rgba(255, 90, 0, 1); }
+
+/* Hero visual: fixed authoring size, scaled down (clipped) on small screens */
+.dr-visual { width: 560px; height: 452px; flex: none; }
+@media (max-width: 760px) {
+    .dr-visual { transform: scale(.82); transform-origin: top center; }
+    .dr-visual-col { height: 360px; overflow: hidden; }
+}
+@media (max-width: 560px) {
+    .dr-visual { transform: scale(.62); }
+    .dr-visual-col { height: 280px; }
+}
+
+@media (max-width: 1000px) { .dr-cursor { display: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+    .dr-rig, .dr-rotor, .dr-sig, .dr-hudscan, .dr-recdot { animation: none !important; }
+    .dr-cursor { display: none !important; }
+}
+
 /* ── Primary navigation: Diensten mega-menu + responsive drawer (handoff) ── */
 .vvnav-bar {
     position: fixed;
