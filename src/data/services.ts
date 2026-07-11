@@ -34,9 +34,29 @@ export const services: Service[] = [
           "De prijs hangt af van omvang en functionaliteit - een onepager kost minder dan een webshop. Vraag een vrijblijvende offerte aan voor een prijsvoorstel op maat.",
       },
       {
+        question: "Hoe lang duurt het om een website te laten maken?",
+        answer:
+          "Voor een onepager of een compacte KMO-website reken je gemiddeld 3 tot 5 weken, van briefing tot livegang. Een webshop of maatwerkproject duurt langer. Aanlevering van teksten en beeldmateriaal bepaalt mee de doorlooptijd.",
+      },
+      {
         question: "Werken jullie met WordPress of maatwerk?",
         answer:
           "Beide: we adviseren WordPress voor KMO's die zelf content willen beheren, en maatwerk (zoals Next.js) wanneer snelheid en schaalbaarheid vooropstaan.",
+      },
+      {
+        question: "Zorgen jullie ook voor SEO en vindbaarheid in Google?",
+        answer:
+          "Ja. Elke website wordt technisch SEO-klaar opgebouwd: snelle laadtijden, nette structuur, mobielvriendelijk en de juiste metadata. Zo scoor je beter in Google en ben je meteen ook zichtbaar voor AI-zoekmachines. Wil je actieve optimalisatie, dan combineer je webdesign met onze SEO diensten.",
+      },
+      {
+        question: "Is de website ook geschikt voor mobiel?",
+        answer:
+          "Altijd. We ontwerpen responsive, wat betekent dat je website automatisch meeschaalt en vlot werkt op smartphone, tablet en desktop. De meeste bezoekers komen via mobiel, dus daar optimaliseren we standaard voor.",
+      },
+      {
+        question: "Kan ik zelf de website aanpassen na oplevering?",
+        answer:
+          "Bij een WordPress-website beheer je zelf teksten, foto's en pagina's, en je krijgt een korte training zodat je meteen aan de slag kan. Liever uit handen? Dan nemen we het onderhoud met een onderhoudspakket over.",
       },
     ],
     relatedServices: ["seo", "fotografie", "videografie"],
@@ -223,7 +243,28 @@ export const services: Service[] = [
     faqs: [
       {
         question: "Hoe lang duurt het maken van een bedrijfsvideo?",
-        answer: "Van briefing tot eindresultaat reken je meestal op 2 tot 4 weken, afhankelijk van de omvang.",
+        answer:
+          "Van intake tot oplevering reken je gemiddeld 3 tot 6 weken, afhankelijk van de scope, het aantal draaidagen en de montage. Een korte social clip kan sneller, een uitgebreide bedrijfsfilm iets langer.",
+      },
+      {
+        question: "Wat kost een bedrijfsvideo laten maken?",
+        answer:
+          "De prijs hangt af van de lengte, het aantal draaidagen, locaties en de montage. Een korte social video is voordeliger dan een volledige bedrijfsfilm met meerdere draaidagen. Vraag een vrijblijvende offerte aan voor een prijs op maat.",
+      },
+      {
+        question: "Wat is het verschil tussen een bedrijfsvideo en een promovideo?",
+        answer:
+          "Een bedrijfsvideo vertelt wie je bent en wat je doet en bouwt aan vertrouwen op langere termijn. Een promovideo is korter en scherper: die zet één product, dienst of actie in de kijker om snel tot actie aan te zetten.",
+      },
+      {
+        question: "Leveren jullie ook verticale video's voor social media?",
+        answer:
+          "Ja. We leveren standaard in het juiste formaat per kanaal: landscape (16:9) voor YouTube en je website, en vierkant of verticaal (9:16) voor Reels, TikTok en Shorts.",
+      },
+      {
+        question: "Komen jullie ook buiten Limburg filmen?",
+        answer:
+          "Zeker. Limburg is onze uitvalsbasis, maar we draaien in heel Vlaanderen, Antwerpen en Nederlands-Limburg, en op aanvraag ook daarbuiten.",
       },
     ],
     relatedServices: ["fotografie", "drone-fpv", "podcasting"],

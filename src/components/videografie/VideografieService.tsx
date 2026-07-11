@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { CTASection } from "@/components/sections";
 import { VideografieGallery } from "./VideografieGallery";
-import { ArrowRight, ArrowDown, RelIcon } from "./icons";
+import { ArrowRight, ArrowDown, DienstIcon, RelIcon } from "./icons";
 
 /**
  * Bespoke Videografie service page (design_handoff_videografie_service): a
@@ -86,6 +86,9 @@ export function VideografieService({
                   style={{ ["--i" as string]: i } as React.CSSProperties}
                   className="vvw-caseRow vg-ovrow flex items-center gap-4 rounded-[14px] border border-white/[0.08] bg-white/[0.02] px-[22px] py-5"
                 >
+                  <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[10px] border border-[rgba(255,122,0,0.22)] bg-[rgba(255,122,0,0.1)] text-[#FF9A45]">
+                    <DienstIcon slug={sub.slug} size={19} />
+                  </span>
                   <span className="min-w-0 flex-1">
                     <span className="font-sora block text-base font-bold text-white">{sub.title}</span>
                     <span className="mt-1 block text-[13.5px] leading-[1.5] text-white/55">{sub.excerpt}</span>

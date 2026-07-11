@@ -127,3 +127,64 @@ export const RelIcon = ({ slug, size = 16, ...rest }: { slug: string } & IconPro
     {REL_PATHS[slug] ?? REL_PATHS.fotografie}
   </svg>
 );
+
+// Overzicht glyphs, keyed by videografie subservice slug.
+const DIENST_PATHS: Record<string, ReactElement> = {
+  bedrijfsvideo: (
+    <>
+      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+      <path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M12 11h.01M16 11h.01M10 21v-4h4v4" />
+    </>
+  ),
+  promovideo: (
+    <>
+      <path d="m3 11 13-5v12L3 13z" />
+      <path d="M16 8.5a3 3 0 0 1 0 5" />
+      <path d="M6 13v4a2 2 0 0 0 2 2h1" />
+    </>
+  ),
+  "social-media-video": (
+    <>
+      <rect x="7" y="2" width="10" height="20" rx="2.5" />
+      <path d="M11 18h2" />
+    </>
+  ),
+  "event-aftermovie": (
+    <>
+      <rect x="3" y="4.5" width="18" height="17" rx="2" />
+      <path d="M3 9h18M8 2.5v4M16 2.5v4" />
+    </>
+  ),
+  wervingsvideo: (
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3 20c0-3.2 2.7-5.4 6-5.4s6 2.2 6 5.4" />
+      <path d="M16 5.2a3 3 0 0 1 0 5.6M21.5 20c0-2.6-1.7-4.5-4.2-5.1" />
+    </>
+  ),
+  "testimonial-video": (
+    <>
+      <path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z" />
+      <path d="M9.5 10.5h.01M12 10.5h.01M14.5 10.5h.01" />
+    </>
+  ),
+  "podcast-video": (
+    <>
+      <rect x="9" y="2.5" width="6" height="11" rx="3" />
+      <path d="M6 11a6 6 0 0 0 12 0" />
+      <path d="M12 17v4M9 21h6" />
+    </>
+  ),
+  nieuwsreportage: (
+    <>
+      <path d="M4 6h13v13a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 19V7a1 1 0 0 1 1-1z" />
+      <path d="M17 9h2.5A1.5 1.5 0 0 1 21 10.5V19a1.5 1.5 0 0 1-1.5 1.5M7 10h6M7 13h6M7 16h4" />
+    </>
+  ),
+};
+
+export const DienstIcon = ({ slug, size = 19, ...rest }: { slug: string } & IconProps) => (
+  <svg {...stroke(size, 1.7, rest)} aria-hidden="true">
+    {DIENST_PATHS[slug] ?? DIENST_PATHS.bedrijfsvideo}
+  </svg>
+);

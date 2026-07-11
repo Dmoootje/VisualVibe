@@ -60,7 +60,7 @@ export function DroneFpvService({
 
       <div className="relative z-10">
         {/* ===== HERO ===== */}
-        <section className="relative z-[2] pb-12 pt-8 sm:pb-14 sm:pt-12">
+        <section className="relative z-[2] pb-12 pt-24 sm:pb-14">
           <div className="container mx-auto grid items-center gap-8 px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
             <div>
               <nav className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">

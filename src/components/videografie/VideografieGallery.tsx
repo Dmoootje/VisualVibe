@@ -43,7 +43,7 @@ export function VideografieGallery({
   return (
     <>
       {/* ===== HERO ===== */}
-      <section className="relative z-[2] pb-12 pt-8 sm:pb-14 sm:pt-12">
+      <section className="relative z-[2] pb-12 pt-24 sm:pb-14">
         <div className="container mx-auto grid items-center gap-8 px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
           <div>{children}</div>
 
