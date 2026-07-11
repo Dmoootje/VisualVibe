@@ -53,6 +53,7 @@ export const footerConfig = {
   ] as FooterLinkGroup[],
 
   legalLinks: [
+    { label: "Sitemap", href: "/sitemap" },
     { label: "Privacybeleid", href: "#" },
     { label: "Algemene voorwaarden", href: "#" },
     { label: "Cookiebeleid", href: "#" },

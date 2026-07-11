@@ -1538,6 +1538,71 @@ html {
     .vvseo-bar { animation: none !important; transform: scaleX(1); }
 }
 
+/* ── HTML sitemap tree (/sitemap) ─────────────────────────────────────────
+   An indented, guide-lined tree of the whole site. Each node shows a title +
+   its path and is clickable. Guide lines are drawn per <li>. */
+.vvsm-branch {
+    list-style: none;
+    margin: 2px 0 2px 0;
+    padding-left: 26px;
+}
+.vvsm-branch > li {
+    position: relative;
+    padding-left: 20px;
+}
+.vvsm-branch > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+.vvsm-branch > li:last-child::before {
+    height: 22px;
+}
+.vvsm-branch > li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.vvsm-node {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.vvsm-node:hover {
+    background: rgba(255, 122, 0, 0.06);
+    border-color: rgba(255, 122, 0, 0.24);
+}
+.vvsm-title {
+    display: block;
+    font-family: var(--font-sora), "Sora", sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.35;
+    color: #fff;
+}
+.vvsm-path {
+    display: block;
+    margin-top: 1px;
+    font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.4);
+    word-break: break-all;
+    transition: color 0.2s ease;
+}
+.vvsm-node:hover .vvsm-path { color: #ff9a45; }
+/* Grandchildren (subdiensten, artikels) a touch smaller. */
+.vvsm-branch .vvsm-branch .vvsm-title { font-weight: 500; font-size: 13.5px; }
+
 /* ── Primary navigation: Diensten mega-menu + responsive drawer (handoff) ── */
 .vvnav-bar {
     position: fixed;

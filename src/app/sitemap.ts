@@ -26,6 +26,7 @@ const staticPaths = [
   "over-ons",
   "contact",
   "offerte-aanvragen",
+  "sitemap",
 ];
 
 // getAllPosts() already excludes draft, scheduled, archived and future-dated

@@ -11,8 +11,8 @@ export function SeoHero() {
   return (
     <section className="relative z-[2] overflow-hidden pt-24 text-white">
       <div className="container relative z-[2] mx-auto grid items-center gap-8 px-4 py-10 lg:grid-cols-[1fr_540px] lg:gap-14">
-        {/* copy */}
-        <div>
+        {/* copy - centered when stacked (tablet/mobile), left-aligned on desktop */}
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
             <Link href="/diensten" className="transition-colors hover:text-white">
               Diensten
