@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF7A00;}
+  @keyframes vvSpin{to{transform:rotate(1turn);}}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.6);}70%{box-shadow:0 0 0 7px rgba(255,122,0,0);}}
+  .liveDot{animation:livePulse 2.2s ease-out infinite;}
+  @keyframes rowIn{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .vCard{opacity:0;animation:rowIn .55s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * .09s + .1s);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .vCard:hover{transform:translateY(-7px);border-color:rgba(255,122,0,.34) !important;box-shadow:0 34px 70px -30px rgba(255,90,0,.5),0 10px 26px -16px rgba(0,0,0,.8);}
+  .vCard .vThumb{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s ease;}
+  .vCard:hover .vThumb{transform:scale(1.06);filter:saturate(1.1);}
+  .vCard:hover .vgProg{width:64% !important;}
+  .vgProg{transition:width .6s cubic-bezier(.2,.7,.2,1);}
+  .vgPlay{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease;}
+  .frBig:hover .vgPlay,.vCard:hover .vgPlay{transform:scale(1.1);box-shadow:0 20px 46px -12px rgba(255,90,0,1);}
+  @keyframes vgBob2{0%,100%{transform:translate(-50%,-50%);}50%{transform:translate(-50%,calc(-50% - 4px));}}
+  .vgPlayBox{animation:vgBob2 2.8s ease-in-out infinite;}
+  @keyframes vgRingOut{0%{transform:translate(-50%,-50%) scale(.7);opacity:.6;}70%{opacity:0;}100%{transform:translate(-50%,-50%) scale(2.15);opacity:0;}}
+  .vgRing{position:absolute;left:50%;top:50%;width:78px;height:78px;border-radius:9999px;border:2px solid rgba(255,122,0,.7);pointer-events:none;}
+  .vgRing.r1{animation:vgRingOut 2.6s ease-out infinite;}
+  .vgRing.r2{animation:vgRingOut 2.6s ease-out .87s infinite;}
+  .vgRing.r3{animation:vgRingOut 2.6s ease-out 1.74s infinite;}
+  @keyframes vgScan{0%{transform:translateY(120%);opacity:0;}6%{opacity:.9;}22%{transform:translateY(64%);}34%{transform:translateY(56%);opacity:.55;}50%{transform:translateY(10%);opacity:.95;}60%{transform:translateY(4%);}78%{transform:translateY(-10%);opacity:.4;}84%,100%{transform:translateY(-40%);opacity:0;}}
+  .vgGlitch{animation:vgScan 4.6s cubic-bezier(.6,.05,.3,1) infinite;}
+  @keyframes vgJit{0%,86%,100%{transform:translateX(0);filter:none;}87%{transform:translateX(-2px) skewX(-.4deg);filter:contrast(1.25) saturate(1.15) hue-rotate(-5deg);}89%{transform:translateX(2px);}91%{transform:translateX(-1px);}92%{transform:translateX(0);filter:none;}}
+  .vgJit{animation:vgJit 5.5s ease-in-out infinite;}
+  .frBig{transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .frBig:hover{transform:translateY(-4px);border-color:rgba(255,122,0,.4) !important;box-shadow:0 40px 84px -30px rgba(255,90,0,.55);}
+  .heroBtn,.navBtn{transition:transform .25s ease,box-shadow .25s ease;}
+  .heroBtn:hover,.navBtn:hover{transform:translateY(-2px);}
+  .heroBtn .ar{transition:transform .3s ease;}.heroBtn:hover .ar{transform:translateX(5px);}
+  .visitLink{transition:gap .25s ease,background .25s ease;}
+  .visitLink:hover{gap:12px !important;background:rgba(255,122,0,.2) !important;}
+  .moreCard{transition:border-color .3s ease,transform .3s ease,background .3s ease;}
+  .moreCard:hover{border-color:rgba(255,122,0,.5) !important;transform:translateY(-4px);background:rgba(255,122,0,.04) !important;}
+  .moreCard .war{transition:transform .3s ease;}.moreCard:hover .war{transform:translateX(4px);}
+  .segBtn{transition:color .25s ease,background .25s ease,border-color .25s ease;}
+  @keyframes lbFade{from{opacity:0;}to{opacity:1;}}
+  @keyframes lbPop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+  .lbBg{animation:lbFade .3s ease;}
+  .lbCard{animation:lbPop .42s cubic-bezier(.2,.75,.2,1);}
+  .lbArrow{transition:background .25s ease,border-color .25s ease,transform .25s ease;}
+  .lbArrow:hover{background:rgba(255,122,0,.16);border-color:rgba(255,122,0,.5);}
+  .lbArrow:active{transform:scale(.9);}
+  .lbX{transition:border-color .25s ease,background .25s ease,color .25s ease,transform .3s ease;}
+  .lbX:hover{border-color:rgba(255,122,0,.45);background:rgba(255,122,0,.08);color:#FF9A45;transform:rotate(90deg);}
+  .lbMini{transition:border-color .25s ease,opacity .25s ease,transform .25s ease;opacity:.55;cursor:pointer;}
+  .lbMini:hover{opacity:.9;transform:translateY(-2px);}
+  .lbMini.on{opacity:1;border-color:#FF7A00 !important;}
+  .rwNavLinks{display:flex;align-items:center;gap:28px;}
+  .rwBurger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);cursor:pointer;padding:0;color:#fff;}
+  .rwNavPanel{display:none;flex-basis:100%;flex-direction:column;gap:6px;padding-top:14px;margin-top:4px;border-top:1px solid rgba(255,255,255,.07);}
+  @media (max-width:1080px){
+    .frFeatGrid{grid-template-columns:1fr !important;gap:34px !important;}
+    .rwHeadRow{flex-direction:column !important;align-items:flex-start !important;gap:30px !important;}
+    .rwStatRail{flex-direction:row !important;flex-wrap:wrap;}
+    .rwStatRail > div{min-width:0 !important;flex:1 1 200px;}
+    .rwNavLinks,.rwNavUser{display:none !important;}
+    .rwBurger{display:inline-flex !important;}
+    .rwNavPanel.open{display:flex !important;}
+    .vGrid{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:760px){
+    .rwNav{padding:16px 22px !important;}
+    .rwHead{padding:38px 22px 30px !important;}
+    .rwFeat{padding:40px 22px 46px !important;}
+    .rwGridSec{padding:16px 22px 78px !important;}
+    .rwH1{font-size:clamp(38px,12vw,52px) !important;}
+    .frFeatH2{font-size:clamp(30px,9vw,42px) !important;}
+    .rwGridHead{flex-direction:column;align-items:flex-start !important;}
+    .lbTopWrap{flex-direction:column;align-items:flex-start !important;gap:10px !important;}
+  }
+  @media (max-width:560px){
+    .vGrid{grid-template-columns:1fr !important;}
+    .rwHeadIcon{width:54px !important;height:54px !important;}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}.vCard{opacity:1;}}
+</style>
+</helmet>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"><defs>
+  <g id="vi-home" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></g>
+  <g id="vi-user" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></g>
+  <g id="vi-video" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"></rect><path d="m16 10 6-3v10l-6-3z"></path></g>
+  <g id="vi-foto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="12.5" r="3.4"></circle></g>
+  <g id="vi-drone" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="5" r="2.4"></circle><circle cx="19" cy="5" r="2.4"></circle><circle cx="5" cy="19" r="2.4"></circle><circle cx="19" cy="19" r="2.4"></circle><path d="M6.7 6.7 9.5 9.5M17.3 6.7 14.5 9.5M6.7 17.3 9.5 14.5M17.3 17.3 14.5 14.5"></path><rect x="9.2" y="9.2" width="5.6" height="5.6" rx="1.4"></rect></g>
+  <g id="vi-mic" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"></rect><path d="M6 11a6 6 0 0 0 12 0"></path><path d="M12 17v4M9 21h6"></path></g>
+</defs></svg>
+
+<div style="position:relative;width:100%;max-width:1440px;margin:0 auto;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;">
+
+  <!-- ===== NAV ===== -->
+  <nav class="rwNav" style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:22px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div class="rwNavLinks" style="font-weight:600;font-size:15px;color:rgba(255,255,255,.85);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#vi-home"></use></svg>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#fff;">Realisaties <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Sectoren <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Kennisbank <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span>Over ons</span><span>Contact</span>
+    </div>
+    <div class="rwNavUser" style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#vi-user"></use></svg>
+      <a href="#" class="navBtn" style="font-weight:700;font-size:14px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+    <button class="rwBurger" onClick="{{ onNavToggle }}" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
+    </button>
+    <div class="rwNavPanel {{ navPanelClass }}">
+      <sc-for list="{{ navMobile }}" as="item" hint-placeholder-count="8">
+        <a href="#" style="font-size:16px;font-weight:600;color:rgba(255,255,255,.82);padding:13px 14px;border-radius:11px;" style-hover="background:rgba(255,255,255,.05);color:#fff;">{{ item }}</a>
+      </sc-for>
+      <a href="#" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;color:#fff;padding:14px 20px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin-top:4px;">Offerte aanvragen</a>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+  <header class="rwHead" style="position:relative;overflow:hidden;padding:52px 56px 40px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="position:absolute;top:-160px;right:-80px;width:720px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 52% 52% at 60% 42%,rgba(255,90,0,.16),rgba(255,90,0,.05) 44%,transparent 70%);"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:52px 52px;-webkit-mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);"></div>
+
+    <div class="rwHeadRow" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;">
+      <div style="max-width:640px;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);letter-spacing:.03em;margin-bottom:26px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span>Realisaties</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">Videografie</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
+          <span class="rwHeadIcon" style="position:relative;flex:none;width:66px;height:66px;border-radius:17px;background:linear-gradient(150deg,rgba(255,122,0,.18),rgba(255,122,0,.05));border:1px solid rgba(255,122,0,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -20px rgba(255,90,0,.7);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#vi-video"></use></svg>
+          </span>
+          <div>
+            <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.2em;color:#FF9A45;margin-bottom:8px;">REALISATIES</div>
+            <h1 class="rwH1" style="font-family:'Sora';font-weight:800;font-size:58px;line-height:.98;letter-spacing:-.03em;color:#fff;margin:0;">Videografie</h1>
+          </div>
+        </div>
+        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.62);margin:0;max-width:520px;">Een greep uit ons videowerk — bedrijfsvideo's, commercials, aftermovies en wervingsvideo's voor bedrijven in heel Limburg.</p>
+      </div>
+
+      <div class="rwStatRail" style="flex:none;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#fff;line-height:1;">50+</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">videoproducties<br>opgeleverd</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#FF9A45;line-height:1;">4K</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">cinema-kwaliteit<br>· 60fps</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FEATURED — UITGELICHTE VIDEO ===== -->
+  <section class="rwFeat" style="position:relative;overflow:hidden;padding:56px 56px 60px;">
+    <div style="position:absolute;top:40px;right:-120px;width:760px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(circle at 60% 45%,rgba(255,90,0,.12),transparent 64%);"></div>
+
+    <div class="frFeatGrid" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;">
+
+      <!-- LEFT: big video preview -->
+      <div style="order:1;">
+        <div class="frBig" onClick="{{ featOpen }}" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,122,0,.22);background:#141210;aspect-ratio:16/9;box-shadow:0 40px 90px -34px rgba(255,80,0,.5);">
+          {{ featThumbEl }}
+          <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 42%,transparent 45%,rgba(6,6,6,.66));"></div>
+          <div class="vgGlitch" style="position:absolute;left:0;right:0;top:0;height:26px;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(255,200,150,.35),rgba(255,255,255,.55),rgba(255,140,60,.3),transparent);mix-blend-mode:screen;"></div>
+          <div style="position:absolute;left:16px;top:14px;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;background:rgba(8,7,6,.62);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#fff;"><span class="liveDot" style="width:8px;height:8px;border-radius:9999px;background:#FF3B2E;"></span>UITGELICHT</div>
+          <span style="position:absolute;right:14px;bottom:14px;z-index:2;padding:4px 10px;border-radius:7px;background:rgba(8,7,6,.72);font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;">{{ featDur }}</span>
+          <span class="vgPlayBox" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:78px;height:78px;pointer-events:none;">
+            <span class="vgRing r1"></span><span class="vgRing r2"></span><span class="vgRing r3"></span>
+            <span class="vgPlay" style="position:absolute;inset:0;border-radius:9999px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 42px -14px rgba(255,90,0,.9);"><svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"></path></svg></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT: copy -->
+      <div style="order:2;">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.1em;color:#FF9A45;margin-bottom:22px;">
+          <span class="liveDot" style="width:7px;height:7px;border-radius:9999px;background:#FF7A00;"></span>UITGELICHTE VIDEO
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FF3B2E"><path d="M23 12s0-3.5-.4-5.2a2.7 2.7 0 0 0-1.9-1.9C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.7.4a2.7 2.7 0 0 0-1.9 1.9C1 8.5 1 12 1 12s0 3.5.4 5.2a2.7 2.7 0 0 0 1.9 1.9c1.8.4 8.7.4 8.7.4s6.9 0 8.7-.4a2.7 2.7 0 0 0 1.9-1.9C23 15.5 23 12 23 12z"></path><path d="M10 15.5 15 12l-5-3.5z" fill="#fff"></path></svg>{{ featClient }}</div>
+        <h2 class="frFeatH2" style="font-family:'Sora';font-weight:800;font-size:42px;line-height:1.05;letter-spacing:-.025em;color:#fff;margin:0 0 20px;">{{ featTitle }}</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:rgba(255,255,255,.68);margin:0 0 26px;">{{ featDesc }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:30px;">
+          <sc-for list="{{ featTags }}" as="t" hint-placeholder-count="3"><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9999px;padding:6px 12px;">{{ t }}</span></sc-for>
+        </div>
+        <a href="#" onClick="{{ featOpen }}" class="visitLink" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:#fff;padding:14px 26px;border-radius:12px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);">Bekijk video <svg width="17" height="17" viewBox="0 0 24 24" fill="#FF9A45"><path d="M8 5.5v13l11-6.5z"></path></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRID — meer video's ===== -->
+  <section class="rwGridSec" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:24px 56px 110px;">
+    <div class="rwGridHead" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px;">
+      <div>
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:12px;">MEER VIDEO'S</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:34px;line-height:1.08;letter-spacing:-.02em;color:#fff;margin:0;">Ons werk in beweging</h2>
+      </div>
+      <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);max-width:340px;margin:0 0 6px;">{{ catDesc }}</p>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="9">
+        <button class="segBtn" onClick="{{ f.onPick }}" style="{{ f.style }}">{{ f.label }} <span style="opacity:.55;font-family:'JetBrains Mono';font-size:11px;font-weight:700;margin-left:2px;">{{ f.count }}</span></button>
+      </sc-for>
+    </div>
+
+    <div class="vGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <sc-for list="{{ grid }}" as="v" hint-placeholder-count="2">
+        <div class="vCard" onClick="{{ v.onOpen }}" style="--i:{{ v.i }};position:relative;display:flex;flex-direction:column;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.02);overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#141210;">
+            <div class="vThumb" style="position:absolute;inset:0;">{{ v.thumbEl }}</div>
+            <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.15),transparent 40%,rgba(10,10,10,.72));"></div>
+            <span style="position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:9999px;background:rgba(8,7,6,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:.06em;">{{ v.cat }}</span>
+            <span style="position:absolute;right:12px;bottom:12px;z-index:2;padding:4px 9px;border-radius:7px;background:rgba(8,7,6,.72);font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;color:#fff;">{{ v.dur }}</span>
+            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:58px;height:58px;pointer-events:none;"><span class="vgPlay" style="position:absolute;inset:0;border-radius:9999px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 36px -12px rgba(255,90,0,.9);"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"></path></svg></span></span>
+            <div style="position:absolute;left:12px;right:12px;bottom:0;z-index:2;height:4px;"><span class="vgProg" style="display:block;height:100%;width:28%;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);"></span></div>
+          </div>
+          <div style="padding:16px 18px 18px;">
+            <div style="font-family:'Sora';font-weight:700;font-size:17px;color:#fff;line-height:1.25;">{{ v.title }}</div>
+            <div style="display:inline-flex;align-items:center;gap:7px;margin-top:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;color:rgba(255,255,255,.5);"><svg width="12" height="12" viewBox="0 0 24 24" fill="#FF3B2E"><path d="M23 12s0-3.5-.4-5.2a2.7 2.7 0 0 0-1.9-1.9C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.7.4a2.7 2.7 0 0 0-1.9 1.9C1 8.5 1 12 1 12s0 3.5.4 5.2a2.7 2.7 0 0 0 1.9 1.9c1.8.4 8.7.4 8.7.4s6.9 0 8.7-.4a2.7 2.7 0 0 0 1.9-1.9C23 15.5 23 12 23 12z"></path><path d="M10 15.5 15 12l-5-3.5z" fill="#fff"></path></svg>{{ v.client }}</div>
+          </div>
+        </div>
+      </sc-for>
+
+      <!-- empty state -->
+      <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="grid-column:1 / -1;border-radius:18px;border:1px dashed rgba(255,255,255,.14);background:rgba(255,255,255,.02);padding:52px 30px;text-align:center;">
+          <span style="display:inline-flex;width:56px;height:56px;border-radius:15px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);align-items:center;justify-content:center;color:#FF9A45;margin-bottom:18px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#vi-video"></use></svg></span>
+          <h3 style="font-family:'Sora';font-weight:700;font-size:22px;color:#fff;margin:0 0 10px;">Binnenkort video's in deze categorie</h3>
+          <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);margin:0 auto;max-width:420px;">{{ catDesc }} We voegen hier binnenkort werk aan toe.</p>
+        </div>
+      </sc-if>
+
+      <!-- YouTube CTA tile -->
+      <a href="https://www.youtube.com/@visualvibe_be/videos" target="_blank" rel="noopener" class="moreCard" style="position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;border-radius:18px;border:1px solid rgba(255,122,0,.28);background:radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 60%),rgba(255,255,255,.02);padding:24px;min-height:200px;">
+        <span style="display:flex;width:52px;height:52px;border-radius:14px;background:rgba(255,59,46,.14);border:1px solid rgba(255,59,46,.3);align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="#FF3B2E"><path d="M23 12s0-3.5-.4-5.2a2.7 2.7 0 0 0-1.9-1.9C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.7.4a2.7 2.7 0 0 0-1.9 1.9C1 8.5 1 12 1 12s0 3.5.4 5.2a2.7 2.7 0 0 0 1.9 1.9c1.8.4 8.7.4 8.7.4s6.9 0 8.7-.4a2.7 2.7 0 0 0 1.9-1.9C23 15.5 23 12 23 12z"></path><path d="M10 15.5 15 12l-5-3.5z" fill="#fff"></path></svg></span>
+        <div>
+          <div style="font-family:'Sora';font-weight:800;font-size:21px;letter-spacing:-.02em;color:#fff;">Meer op YouTube</div>
+          <div style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.6);margin-top:6px;">Bekijk al onze video's op ons YouTube-kanaal.</div>
+          <span class="war" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.06em;color:#FF9A45;">NAAR HET KANAAL <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX (video popup) ===== -->
+  <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;">
+      <div class="lbBg" onClick="{{ closeLb }}" style="position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(255,90,0,.1),transparent 55%),rgba(4,4,4,.95);backdrop-filter:blur(10px);"></div>
+      <div class="lbCard" onClick="{{ stop }}" style="position:relative;z-index:1;display:flex;flex-direction:column;width:min(1080px,100%);height:100%;margin:0 auto;padding:20px clamp(16px,3vw,40px) 22px;justify-content:center;">
+        <div class="lbTopWrap" style="display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex:none;margin-bottom:14px;">
+          <div style="min-width:0;">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9999px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;margin-bottom:11px;">{{ lbCat }}</span>
+            <h3 style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.02em;color:#fff;margin:0;">{{ lbTitle }}</h3>
+            <p style="font-size:13.5px;color:rgba(255,255,255,.55);margin:5px 0 0;font-family:'JetBrains Mono';">{{ lbClient }}</p>
+          </div>
+          <button onClick="{{ closeLb }}" class="lbX" style="width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+        </div>
+
+        <div style="position:relative;flex:none;border-radius:16px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.1);aspect-ratio:16/9;max-height:64vh;box-shadow:0 40px 90px -30px rgba(255,80,0,.4);">
+          {{ iframeEl }}
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex:none;margin-top:16px;">
+          <button onClick="{{ prev }}" class="lbArrow" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-weight:700;font-size:14px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Vorige</button>
+          <span style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">{{ lbCounter }}</span>
+          <button onClick="{{ next }}" class="lbArrow" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-weight:700;font-size:14px;">Volgende<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        </div>
+
+        <div style="display:flex;gap:10px;flex:none;margin-top:14px;overflow-x:auto;padding:2px;justify-content:center;">
+          <sc-for list="{{ lbMinis }}" as="m">
+            <button onClick="{{ m.onGo }}" class="lbMini {{ m.cls }}" style="position:relative;width:104px;height:59px;border-radius:9px;overflow:hidden;border:2px solid rgba(255,255,255,.12);background:#0b0a09;padding:0;flex:none;">{{ m.thumbEl }}<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:9999px;background:rgba(255,90,0,.9);display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"></path></svg></span></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{ &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1320 } }">
+class Component extends DCLogic {
+  VIDEOS = [
+    { yt:'kfjoL_cUTPQ', title:'Zomerspot voor TV Limburg', cat:'Promovideo', client:'TV Limburg', dur:'0:30', desc:'Een pakkende zomercommercial voor TV Limburg — energiek gemonteerd en broadcast-klaar afgeleverd.', tags:['Promovideo','Broadcast','Kleurcorrectie'] },
+    { yt:'8zGBwfcbX9A', title:'Bouw Realisaties', cat:'Bedrijfsvideo', client:'Bouwsector', dur:'2:10', desc:'Een bedrijfsvideo die afgewerkte bouwprojecten in beeld brengt, van ruwbouw tot oplevering.', tags:['Bedrijfsvideo','Realisatie','Drone'] },
+    { yt:'zj4hvA8tdTA', title:'Baldewijns \u2014 techniekersvideo', cat:'Wervingsvideo', client:'Baldewijns', dur:'1:45', desc:'Een wervingsvideo die de bedrijfscultuur toont en nieuwe techniekers aantrekt.', tags:['Wervingsvideo','Employer branding','Interview'] },
+  ];
+  CATS = [
+    { name:'Bedrijfsvideo', desc:'Een video die vertelt wie je bent en wat je doet.' },
+    { name:'Promovideo', desc:'Een korte, krachtige video om een product, dienst of actie te promoten.' },
+    { name:'Social media video', desc:"Video's op maat van Instagram, TikTok en LinkedIn." },
+    { name:'Event-aftermovie', desc:'Een sfeervolle terugblik op je bedrijfsevent.' },
+    { name:'Wervingsvideo', desc:'Toon je bedrijfscultuur en trek nieuwe medewerkers aan.' },
+    { name:'Testimonial-video', desc:'Laat tevreden klanten zelf aan het woord.' },
+    { name:'Podcastvideo', desc:'Video-opname van je podcast voor YouTube en social media.' },
+    { name:'Nieuwsreportage', desc:'Een journalistieke video-reportage over je bedrijf of project.' },
+  ];
+  navMobile = ['Diensten','Regio','Realisaties','Sectoren','Kennisbank','Over ons','Contact'];
+
+  state = { navOpen:false, lbOpen:false, idx:0, cat:'Alle' };
+
+  componentDidMount(){
+    this._key = (e) => { if (!this.state.lbOpen) return; if (e.key === 'ArrowRight') this.step(1); else if (e.key === 'ArrowLeft') this.step(-1); else if (e.key === 'Escape') this.closeLb(); };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount(){ window.removeEventListener('keydown', this._key); }
+  thumb(v){ return 'https://img.youtube.com/vi/' + v.yt + '/maxresdefault.jpg'; }
+  openLb = (k) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:true, idx:k }); };
+  closeLb = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:false }); };
+  stop = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
+  step(d){ const len = this.VIDEOS.length; this.setState(s => ({ idx: (s.idx + d + len) % len })); }
+  next = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(1); };
+  prev = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(-1); };
+  go = (k) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ idx:k }); };
+  pickCat = (c) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ cat:c }); };
+
+  renderVals(){
+    const st = this.state;
+    const h = React.createElement;
+    const cover = (v, cls) => h('img', { className:cls, src:this.thumb(v), alt:v.title, style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' } });
+
+    const feat = this.VIDEOS[0];
+    const cat = st.cat;
+    const sel = this.VIDEOS.map((v, gi) => ({ v, gi })).filter(x => cat === 'Alle' || x.v.cat === cat);
+    const grid = sel.map((x, k) => ({ i:k, title:x.v.title, cat:x.v.cat, client:x.v.client, dur:x.v.dur, onOpen:this.openLb(x.gi), thumbEl:cover(x.v, 'vThumb') }));
+    const segBase = 'display:inline-flex;align-items:center;font-weight:700;font-size:13px;padding:9px 15px;border-radius:10px;cursor:pointer;font-family:inherit;';
+    const filters = ['Alle'].concat(this.CATS.map(c => c.name)).map(name => {
+      const n = name === 'Alle' ? this.VIDEOS.length : this.VIDEOS.filter(v => v.cat === name).length;
+      const on = name === cat;
+      return { label:name, count:n, onPick:this.pickCat(name), style: segBase + (on ? 'background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;border:1px solid transparent;box-shadow:0 10px 24px -12px rgba(255,90,0,.8);' : 'background:rgba(255,255,255,.03);color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.1);') };
+    });
+    const activeCat = this.CATS.find(c => c.name === cat);
+    const catDesc = activeCat ? activeCat.desc : 'Filter op categorie of bekijk alle video\u2019s — klik om af te spelen.';
+    const cur = this.VIDEOS[st.idx] || feat;
+
+    return {
+      navMobile:this.navMobile, navPanelClass: st.navOpen ? 'open' : '', onNavToggle: () => this.setState(s => ({ navOpen: !s.navOpen })),
+      featThumbEl:cover(feat, 'vThumb'), featTitle:feat.title, featClient:feat.client, featDesc:feat.desc, featTags:feat.tags, featDur:feat.dur, featOpen:this.openLb(0),
+      grid, filters, catDesc, showEmpty: grid.length === 0,
+      lbOpen:st.lbOpen, closeLb:this.closeLb, stop:this.stop, next:this.next, prev:this.prev,
+      lbTitle:cur.title, lbCat:cur.cat, lbClient:cur.client, lbCounter:(st.idx + 1) + ' / ' + this.VIDEOS.length,
+      iframeEl: st.lbOpen ? h('iframe', { src:'https://www.youtube.com/embed/' + cur.yt + '?autoplay=1&rel=0&modestbranding=1', title:cur.title, allow:'accelerated-sensors; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowFullscreen:true, style:{ position:'absolute', inset:0, width:'100%', height:'100%', border:'0' } }) : null,
+      lbMinis: this.VIDEOS.map((v, k) => ({ cls: k === st.idx ? 'on' : '', onGo:this.go(k), thumbEl:cover(v, '') })),
+    };
+  }
+}
+</script>
+</body>
+</html>

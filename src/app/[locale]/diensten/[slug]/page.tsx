@@ -14,12 +14,14 @@ import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/se
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { FotografieService } from "@/components/fotografie";
+import { VideografieService } from "@/components/videografie";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
 import { allServices, services, getServiceBySlug, serviceHref, serviceHrefBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
+import { getVideografieVideos } from "@/lib/youtube";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
@@ -79,10 +81,14 @@ export default async function ServiceDetailPage({
   const isWebdesign = service.slug === "webdesign";
   const isSeo = service.slug === "seo";
   const isFotografie = service.slug === "fotografie";
+  const isVideografie = service.slug === "videografie";
   const [webdesignImages, webdesignProjects] =
     isWebdesign || isSeo
       ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
       : [null, null];
+
+  // Videografie: YouTube-fed video gallery (playlists -> filter tabs).
+  const videoData = isVideografie ? await getVideografieVideos() : null;
 
   // SEO cases = the SEO/GEO-tagged webdesign projects, in configured order.
   const seoItems: SeoCaseItem[] =
@@ -133,6 +139,22 @@ export default async function ServiceDetailPage({
       <div className="min-h-screen bg-black text-white">
         {jsonLd}
         <FotografieService service={service} relatedServices={relatedServices} />
+      </div>
+    );
+  }
+
+  // Videografie leads with the video-player hero + YouTube gallery lightbox.
+  if (isVideografie && videoData) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        {jsonLd}
+        <VideografieService
+          service={service}
+          subServices={childServices}
+          relatedServices={relatedServices}
+          videos={videoData.videos}
+          filters={videoData.filters}
+        />
       </div>
     );
   }

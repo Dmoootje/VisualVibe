@@ -1719,6 +1719,62 @@ html {
     .fg-lbprogbar::after { display: none; }
 }
 
+/* ── Videografie service page (design_handoff_videografie_service) ── */
+/* Hero player visual */
+@keyframes vg-spin { to { transform: translate(-50%, -50%) rotate(1turn); } }
+.vg-spin { animation: vg-spin 22s linear infinite; }
+@keyframes vg-playbob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, calc(-50% - 4px)); } }
+.vg-playbox { animation: vg-playbob 2.8s ease-in-out infinite; }
+@keyframes vg-ringout { 0% { transform: translate(-50%, -50%) scale(.7); opacity: .6; } 70% { opacity: 0; } 100% { transform: translate(-50%, -50%) scale(2.15); opacity: 0; } }
+.vg-ring { position: absolute; left: 50%; top: 50%; width: 74px; height: 74px; border-radius: 9999px; border: 2px solid rgba(255, 122, 0, .7); pointer-events: none; }
+.vg-ring.r1 { animation: vg-ringout 2.6s ease-out infinite; }
+.vg-ring.r2 { animation: vg-ringout 2.6s ease-out .87s infinite; }
+.vg-ring.r3 { animation: vg-ringout 2.6s ease-out 1.74s infinite; }
+@keyframes vg-scan { 0% { transform: translateY(120%); opacity: 0; } 6% { opacity: .9; } 22% { transform: translateY(64%); } 34% { transform: translateY(56%); opacity: .55; } 50% { transform: translateY(10%); opacity: .95; } 60% { transform: translateY(4%); } 78% { transform: translateY(-10%); opacity: .4; } 84%, 100% { transform: translateY(-40%); opacity: 0; } }
+.vg-scan { animation: vg-scan 4.6s cubic-bezier(.6, .05, .3, 1) infinite; }
+@keyframes vg-jit { 0%, 86%, 100% { transform: translateX(0); filter: none; } 87% { transform: translateX(-2px) skewX(-.4deg); filter: contrast(1.25) saturate(1.15) hue-rotate(-5deg); } 89% { transform: translateX(2px); } 91% { transform: translateX(-1px); } 92% { transform: translateX(0); filter: none; } }
+.vg-jit { animation: vg-jit 5.5s ease-in-out infinite; }
+.vg-play { transition: transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s ease; }
+.vg-playring:hover .vg-play, .vg-vcard:hover .vg-play { transform: scale(1.1); box-shadow: 0 20px 46px -12px rgba(255, 90, 0, 1); }
+
+/* Video cards */
+.vg-vcard { opacity: 0; transition: transform .4s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease; cursor: pointer; }
+.vg-vcard:hover { transform: translateY(-7px); border-color: rgba(255, 122, 0, .34); box-shadow: 0 34px 70px -30px rgba(255, 90, 0, .5), 0 10px 26px -16px rgba(0, 0, 0, .8); }
+.vg-vthumb { transition: transform .8s cubic-bezier(.2, .7, .2, 1), filter .5s ease; }
+.vg-vcard:hover .vg-vthumb { transform: scale(1.06); filter: saturate(1.1); }
+.vg-vprog { transition: width .6s cubic-bezier(.2, .7, .2, 1); }
+.vg-vcard:hover .vg-vprog { width: 64%; }
+
+/* Diensten-overzicht rows */
+.vg-ovrow { transition: border-color .3s ease, background .3s ease, transform .3s ease; }
+.vg-ovrow:hover { border-color: rgba(255, 122, 0, .32); background: rgba(255, 122, 0, .04); transform: translateX(4px); }
+.vg-ovar { transition: transform .3s ease, color .3s ease; }
+.vg-ovrow:hover .vg-ovar { transform: translateX(4px); color: #FF9A45; }
+
+/* Step cards */
+.vg-step { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+.vg-step:hover { border-color: rgba(255, 122, 0, .32); transform: translateY(-4px); background: rgba(255, 122, 0, .04); }
+
+/* Segmented filter */
+.vg-seg { transition: color .25s ease, background .25s ease, border-color .25s ease; }
+
+/* Video lightbox (reuses fg-lbfade / fg-lbpop keyframes) */
+.vg-lbbg { animation: fg-lbfade .3s ease; }
+.vg-lbcard { animation: fg-lbpop .42s cubic-bezier(.2, .75, .2, 1); }
+.vg-lbx { transition: border-color .25s ease, background .25s ease, color .25s ease, transform .3s ease; }
+.vg-lbx:hover { border-color: rgba(255, 122, 0, .45); background: rgba(255, 122, 0, .08); color: #FF9A45; transform: rotate(90deg); }
+.vg-lbarrow { transition: background .25s ease, border-color .25s ease, transform .25s ease; }
+.vg-lbarrow:hover { background: rgba(255, 122, 0, .16); border-color: rgba(255, 122, 0, .5); }
+.vg-lbarrow:active { transform: scale(.96); }
+.vg-lbmini { transition: border-color .25s ease, opacity .25s ease, transform .25s ease; opacity: .55; }
+.vg-lbmini:hover { opacity: .9; transform: translateY(-2px); }
+.vg-lbmini.on { opacity: 1; border-color: #FF7A00; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vg-spin, .vg-playbox, .vg-ring, .vg-scan, .vg-jit, .vg-lbbg, .vg-lbcard { animation: none !important; }
+    .vg-vcard { opacity: 1; }
+}
+
 /* ── Primary navigation: Diensten mega-menu + responsive drawer (handoff) ── */
 .vvnav-bar {
     position: fixed;
