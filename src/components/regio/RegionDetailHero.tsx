@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import type { Region } from "@/types";
+import { regionMunicipalities } from "@/data/regionMunicipalities";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import { regionMaps } from "@/features/home/RegionIntro/config/regionMaps";
 
@@ -12,6 +13,9 @@ import { regionMaps } from "@/features/home/RegionIntro/config/regionMaps";
  */
 export function RegionDetailHero({ region }: { region: Region }) {
   const hasMap = Boolean(regionMaps[region.slug]);
+  const municipalities = regionMunicipalities[region.slug] ?? [];
+  // Dupliceren zodat de -50% marquee-keyframe naadloos doorloopt.
+  const runner = [...municipalities, ...municipalities];
   const eyebrow =
     region.type === "province"
       ? "Thuisregio"
@@ -51,7 +55,8 @@ export function RegionDetailHero({ region }: { region: Region }) {
               <span className="text-white/70">{region.title}</span>
             </nav>
 
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#ff7500]">
+            <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
+              <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
               {eyebrow}
             </p>
 
@@ -92,6 +97,29 @@ export function RegionDetailHero({ region }: { region: Region }) {
             )}
           </div>
         </div>
+
+        {/* Gemeente-runner: "Actief in o.a." - een gemaskeerde marquee van
+            gemeentes, goed voor lokale SEO en herkenbaarheid. */}
+        {municipalities.length > 0 && (
+          <div className="relative z-[1] mt-9">
+            <span className="mb-3.5 block text-[11.5px] font-bold uppercase tracking-[0.15em] text-white/40">
+              Actief in o.a.
+            </span>
+            <div className="vv-mq-contain" aria-label={`Gemeentes in ${region.title}`}>
+              <div className="vv-mq-track vv-mq-l">
+                {runner.map((name, i) => (
+                  <span
+                    key={`${name}-${i}`}
+                    className="inline-flex flex-none items-center gap-2.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] px-[18px] py-[9px] text-sm font-semibold text-white/[0.78]"
+                  >
+                    <span className="h-[5px] w-[5px] flex-none rounded-full bg-[#ff7500]" />
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

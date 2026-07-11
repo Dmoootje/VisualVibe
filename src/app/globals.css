@@ -862,6 +862,190 @@ html {
     .vvsub-card { flex-basis: 100%; }
 }
 
+/* Contained marquee (hero gemeente-runner): like .vv-mq but not full-bleed,
+   so it stays within the hero content column and never triggers horizontal
+   overflow. Reuses the .vv-mq-track/.vv-mq-l animation. */
+.vv-mq-contain {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.vv-mq-contain:hover .vv-mq-track { animation-play-state: paused; }
+
+/* ── Region diensten bento (design_handoff_regio_vlaanderen) ──────────────
+   12-col grid with alternating 7/5 spans and larger accent cards. Vertical
+   card: chip + number, title, description, tag-pills + arrow, plus a big faint
+   ghost-glyph watermark. Reuses the spinning conic border (--vvA /
+   vvSubSpinBorder). Stacks full-width at <=860px. */
+.rbento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+}
+.rbento-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 248px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 28px 30px 26px;
+    text-decoration: none;
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.4s ease,
+        background 0.4s ease, box-shadow 0.5s ease;
+}
+.rbento-card.is-accent {
+    border-color: rgba(255, 122, 0, 0.22);
+    background: radial-gradient(140% 150% at 100% 0%, rgba(255, 90, 0, 0.09), transparent 58%),
+        rgba(255, 255, 255, 0.02);
+}
+.rbento-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from var(--vvA),
+        rgba(255, 122, 0, 0) 0deg,
+        #ff7a00 70deg,
+        #ffc489 118deg,
+        rgba(255, 122, 0, 0) 205deg,
+        rgba(255, 122, 0, 0) 360deg
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 4;
+}
+.rbento-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 122, 0, 0.28);
+    box-shadow: 0 34px 74px -26px rgba(255, 90, 0, 0.5), 0 10px 26px -16px rgba(0, 0, 0, 0.8);
+}
+.rbento-card:hover::before {
+    opacity: 1;
+    animation: vvSubSpinBorder 3.4s linear infinite;
+}
+.rbento-wm {
+    position: absolute;
+    right: -22px;
+    bottom: 92px;
+    color: rgba(255, 255, 255, 0.035);
+    pointer-events: none;
+    transition: color 0.45s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.rbento-card.is-accent .rbento-wm { color: rgba(255, 122, 0, 0.06); }
+.rbento-card:hover .rbento-wm {
+    color: rgba(255, 122, 0, 0.12);
+    transform: translate(-10px, -10px) rotate(-5deg) scale(1.04);
+}
+.rbento-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.rbento-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.78);
+    transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+.rbento-card.is-accent .rbento-chip {
+    background: rgba(255, 122, 0, 0.1);
+    border-color: rgba(255, 122, 0, 0.22);
+    color: #ff9a45;
+}
+.rbento-card:hover .rbento-chip {
+    background: rgba(255, 122, 0, 0.16);
+    border-color: rgba(255, 122, 0, 0.32);
+    color: #ff9a45;
+}
+.rbento-num {
+    font-family: var(--font-sora), "Sora", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.28);
+}
+.rbento-title {
+    position: relative;
+    font-family: var(--font-sora), "Sora", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 22px 0 8px;
+}
+.rbento-card.is-accent .rbento-title { font-size: 24px; }
+.rbento-desc {
+    position: relative;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.58);
+    margin: 0;
+    max-width: 400px;
+}
+.rbento-foot {
+    position: relative;
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+.rbento-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.rbento-tag {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.rbento-arr {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    color: #ff9a45;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+.rbento-arr svg { transition: transform 0.3s ease; }
+.rbento-card:hover .rbento-arr {
+    background: rgba(255, 122, 0, 0.14);
+    border-color: rgba(255, 122, 0, 0.5);
+}
+.rbento-card:hover .rbento-arr svg { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+    .rbento-card,
+    .rbento-card::before,
+    .rbento-wm {
+        transition: none;
+    }
+    .rbento-card:hover::before { animation: none; }
+}
+@media (max-width: 860px) {
+    .rbento-card { grid-column: 1 / -1 !important; }
+}
+
 /* ── Subdienst hero (design handoff: revolving icon + marquee) ────────────
    Exact tokens from design_handoff_subdienst_hero. All motion is CSS. */
 @keyframes vvshSpin { to { transform: rotate(360deg); } }

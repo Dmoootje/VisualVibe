@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { Section, Container } from "@/components/ui";
 import { CTASection } from "@/components/sections";
 import { RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
@@ -59,19 +61,31 @@ export default async function RegionDetailPage({
 
       <RegionDetailHero region={region} />
 
-      {/* 1. Wat we doen - herkenbare dienstenkaarten met iconen. */}
+      {/* 1. Wat we doen - dienstenkaarten als bento (design_handoff_regio_vlaanderen). */}
       {localServices.length > 0 && (
         <Section orbs="tl-br">
           <Container>
-            <div className="mb-8 max-w-2xl">
-              <div className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">DIENSTEN</div>
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                Wat we voor bedrijven in {region.title} doen
-              </h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-white/60">
-                Van website en lokale SEO tot fotografie, video en dronebeelden: alles om online op
-                te vallen in {region.title}, onder een dak.
-              </p>
+            <div className="mb-9 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
+              <div className="max-w-xl">
+                <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
+                  <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
+                  Onze diensten
+                </p>
+                <h2 className="text-2xl font-bold leading-tight tracking-tight sm:text-[38px]">
+                  Wat we voor bedrijven in {region.title} doen
+                </h2>
+                <p className="mt-3 max-w-lg text-[15.5px] leading-relaxed text-white/60">
+                  Van website en lokale SEO tot fotografie, video en dronebeelden: alles om online op
+                  te vallen in {region.title}, onder een dak.
+                </p>
+              </div>
+              <Link
+                href="/diensten"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white"
+              >
+                Bekijk alle diensten
+                <ArrowRight className="h-[15px] w-[15px]" />
+              </Link>
             </div>
             <RegionServicesGrid services={localServices} />
           </Container>
@@ -84,7 +98,10 @@ export default async function RegionDetailPage({
       {/* 3. Voor wie we werken - sectoren als 2 tegengestelde badge-rijen. */}
       <section className="overflow-hidden py-16 sm:py-20">
         <div className="container mx-auto mb-8 px-4">
-          <div className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">SECTOREN</div>
+          <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
+            <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
+            Sectoren
+          </p>
           <h2 className="text-2xl font-bold sm:text-3xl">
             Sectoren waarvoor we werken in {region.title}
           </h2>
