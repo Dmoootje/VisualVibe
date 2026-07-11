@@ -13,6 +13,7 @@ import {
 import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
+import { FotografieService } from "@/components/fotografie";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
@@ -77,6 +78,7 @@ export default async function ServiceDetailPage({
   // (admin-managed images/projects); their regular content follows below.
   const isWebdesign = service.slug === "webdesign";
   const isSeo = service.slug === "seo";
+  const isFotografie = service.slug === "fotografie";
   const [webdesignImages, webdesignProjects] =
     isWebdesign || isSeo
       ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
@@ -121,6 +123,16 @@ export default async function ServiceDetailPage({
       <div className="min-h-screen bg-black text-white">
         {jsonLd}
         <SeoService service={service} seoItems={seoItems} images={webdesignImages} relatedServices={relatedServices} />
+      </div>
+    );
+  }
+
+  // Fotografie leads with the cinematic viewfinder hero + gallery lightbox.
+  if (isFotografie) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        {jsonLd}
+        <FotografieService service={service} relatedServices={relatedServices} />
       </div>
     );
   }

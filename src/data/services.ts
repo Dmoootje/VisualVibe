@@ -160,7 +160,22 @@ export const services: Service[] = [
       {
         question: "Komen jullie ook buiten Limburg fotograferen?",
         answer:
-          "Ja, we werken in heel Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg - vraag ernaar bij je offerte.",
+          "Zeker. Limburg is onze thuisbasis, maar we fotograferen in heel Vlaanderen, Antwerpen en Nederlands-Limburg, en op aanvraag ook daarbuiten.",
+      },
+      {
+        question: "Hoe snel ontvang ik de foto's?",
+        answer:
+          "Een eerste selectie krijg je doorgaans binnen enkele werkdagen. De volledige, nabewerkte set volgt afhankelijk van de omvang van de shoot.",
+      },
+      {
+        question: "Mag ik de beelden voor al mijn kanalen gebruiken?",
+        answer:
+          "Ja. Je ontvangt de beelden in web- én printformaat met volledige gebruiksrechten voor je eigen commerciële kanalen.",
+      },
+      {
+        question: "Kunnen fotografie en video gecombineerd worden?",
+        answer:
+          "Absoluut. We combineren foto, video en drone vaak in één shoot, zodat alles in dezelfde stijl en op dezelfde dag gebeurt.",
       },
     ],
     relatedServices: ["videografie", "drone-fpv", "webdesign"],
