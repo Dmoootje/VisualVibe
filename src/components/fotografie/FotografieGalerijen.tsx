@@ -23,7 +23,7 @@ export function FotografieGalerijen() {
   const featured = [0, 1, 2];
 
   return (
-    <section id="galerijen" className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-16 pt-6 sm:px-8">
+    <section id="galerijen" className="container relative z-[2] mx-auto px-4 pb-16 pt-6">
       <div className="mb-8 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#FF9A45]">Onze galerijen</p>

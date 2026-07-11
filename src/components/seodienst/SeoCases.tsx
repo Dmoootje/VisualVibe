@@ -25,7 +25,7 @@ export function SeoCases({ items, images }: { items: SeoCaseItem[]; images: Webd
   const thumb = (c: WebdesignProject) => images[imageKey(c.id, "thumb")] ?? images[imageKey(c.id, "1")];
 
   return (
-    <section id="seo-cases" className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-24 pt-6 sm:px-8">
+    <section id="seo-cases" className="container relative z-[2] mx-auto px-4 pb-24 pt-6">
       <div className="mb-8 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <div className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">

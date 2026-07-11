@@ -26,3 +26,21 @@ export const youtubeChannelUrl = "https://www.youtube.com/@visualvibe_be/videos"
  *   { id: "PLzzzzzzzzzzzzzzzz", category: "Wervingsvideo" },
  */
 export const videografiePlaylists: VideografiePlaylist[] = [];
+
+/**
+ * The 8 videografie categories used by the Realisaties > Videografie filter
+ * (fixed chips with live counts + an empty state per category). A video's
+ * `category` should match one of these `name`s to be bucketed under its chip;
+ * anything else only shows under "Alle". Descriptions drive the active-filter
+ * copy and the empty-state text.
+ */
+export const videografieCategories: { name: string; description: string }[] = [
+  { name: "Bedrijfsvideo", description: "Een video die vertelt wie je bent en wat je doet." },
+  { name: "Promovideo", description: "Korte, krachtige video om een product, dienst of actie te promoten." },
+  { name: "Social media video", description: "Video's op maat van Instagram, TikTok en LinkedIn." },
+  { name: "Event-aftermovie", description: "Een sfeervolle terugblik op je bedrijfsevent." },
+  { name: "Wervingsvideo", description: "Toon je bedrijfscultuur en trek nieuwe medewerkers aan." },
+  { name: "Testimonial-video", description: "Laat tevreden klanten zelf aan het woord." },
+  { name: "Podcastvideo", description: "Video-opname van je podcast voor YouTube en social media." },
+  { name: "Nieuwsreportage", description: "Een journalistieke video-reportage over je bedrijf of project." },
+];

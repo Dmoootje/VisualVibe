@@ -82,7 +82,7 @@ export function FotografieHero() {
   const btnIcon = catIcon ?? "aperture";
 
   return (
-    <section className="relative overflow-hidden px-4 pb-14 pt-24 sm:px-8">
+    <section className="relative overflow-hidden pb-14 pt-24">
       {/* Masked grid texture aimed at the viewfinder. */}
       <div
         aria-hidden="true"
@@ -96,7 +96,7 @@ export function FotografieHero() {
         }}
       />
 
-      <div className="relative z-[2] mx-auto grid max-w-[1300px] items-center gap-10 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
+      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-4 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
         {/* copy */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">

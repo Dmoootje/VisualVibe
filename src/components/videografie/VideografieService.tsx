@@ -74,7 +74,7 @@ export function VideografieService({
 
         {/* DIENSTEN OVERZICHT */}
         {subServices.length > 0 && (
-          <section className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-5 pt-8 sm:px-8">
+          <section className="container relative z-[2] mx-auto px-4 pb-5 pt-8">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               Videografie diensten overzicht
             </h2>
@@ -101,7 +101,7 @@ export function VideografieService({
 
         {/* HOE WE WERKEN */}
         {service.process.length > 0 && (
-          <section className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-5 pt-8 sm:px-8">
+          <section className="container relative z-[2] mx-auto px-4 pb-5 pt-8">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               Hoe we werken
             </h2>
@@ -136,8 +136,8 @@ export function VideografieService({
 
         {/* FAQ */}
         {service.faqs.length > 0 && (
-          <section className="relative z-[2] px-4 py-12 sm:px-8">
-            <div className="mx-auto max-w-[900px]">
+          <section className="relative z-[2] py-12">
+            <div className="container mx-auto max-w-[900px] px-4">
               <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Veelgestelde vragen
               </h2>
@@ -155,7 +155,7 @@ export function VideografieService({
 
         {/* GERELATEERDE DIENSTEN */}
         {relatedServices.length > 0 && (
-          <section className="relative z-[2] mx-auto max-w-[1300px] px-4 py-8 sm:px-8">
+          <section className="container relative z-[2] mx-auto px-4 py-8">
             <h2 className="font-sora mb-5 text-[26px] font-extrabold tracking-[-0.02em] text-white">
               Gerelateerde diensten
             </h2>

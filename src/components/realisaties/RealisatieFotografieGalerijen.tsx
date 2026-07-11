@@ -32,13 +32,13 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
   return (
     <>
       {/* ===== FEATURED - uitgelichte galerij ===== */}
-      <section className="relative overflow-hidden px-4 pb-14 pt-12 sm:px-8 sm:pb-16">
+      <section className="relative overflow-hidden pb-14 pt-12 sm:pb-16">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute right-[-120px] top-10 z-0 h-[620px] w-[760px] max-w-full bg-[radial-gradient(circle_at_60%_45%,rgba(255,90,0,0.12),transparent_64%)]"
         />
 
-        <div className="relative z-[2] mx-auto grid max-w-[1300px] items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* LINKS: galerij-preview */}
           <div>
             <button
@@ -106,7 +106,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
 
       {/* ===== ALLE GALERIJEN ===== */}
       {rest.length > 0 && (
-        <section className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-24 sm:px-8">
+        <section className="container relative z-[2] mx-auto px-4 pb-24">
           <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">Alle galerijen</p>

@@ -46,6 +46,10 @@ export const realisatieCategories: RealisatieCategory[] = [
     description: "Bedrijfsvideo's, promo's, aftermovies en social video's die we maakten.",
     seoTitle: "Videografie realisaties | VisualVibe",
     seoDescription: "Videografie-realisaties van VisualVibe: bedrijfsvideo's, promo's en aftermovies voor bedrijven in Limburg.",
+    stats: [
+      { value: "50+", label: "producties\ngemaakt" },
+      { value: "4K", label: "opname &\nmontage", accent: true },
+    ],
   },
   {
     slug: "drone",

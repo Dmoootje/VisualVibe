@@ -11,19 +11,48 @@ export type VideoItem = {
   /** YouTube video id (the `v=` value). */
   id: string;
   title: string;
-  /** Filter-tab label (from the playlist mapping or the fallback). */
+  /** Filter label; matches a videografieCategories name where possible. */
   category: string;
   /** Optional client/brand shown under the title. */
   client?: string;
   /** Human duration like "0:30" / "2:10". */
   duration?: string;
+  /** Optional longer description (featured block on the realisaties page). */
+  description?: string;
+  /** Optional tag pills (featured block). */
+  tags?: string[];
 };
 
 // The 3 clips the client provided. Used until a key + playlists are configured.
+// Categories map onto videografieCategories so the realisaties filter buckets them.
 const FALLBACK_VIDEOS: VideoItem[] = [
-  { id: "kfjoL_cUTPQ", title: "Zomerspot voor TV Limburg", category: "Commercial", client: "TV Limburg", duration: "0:30" },
-  { id: "8zGBwfcbX9A", title: "Bouw Realisaties", category: "Bedrijfsvideo", client: "Bouwsector", duration: "2:10" },
-  { id: "zj4hvA8tdTA", title: "Baldewijns techniekersvideo", category: "Wervingsvideo", client: "Baldewijns", duration: "1:45" },
+  {
+    id: "kfjoL_cUTPQ",
+    title: "Zomerspot voor TV Limburg",
+    category: "Promovideo",
+    client: "TV Limburg",
+    duration: "0:30",
+    description: "Een pakkende zomerspot voor TV Limburg, van concept tot montage in huis geregisseerd.",
+    tags: ["Commercial", "TV", "Montage"],
+  },
+  {
+    id: "8zGBwfcbX9A",
+    title: "Bouw Realisaties",
+    category: "Bedrijfsvideo",
+    client: "Bouwsector",
+    duration: "2:10",
+    description: "Een bedrijfsvideo die afgewerkte bouwprojecten in beeld brengt, van ruwbouw tot oplevering.",
+    tags: ["Bouw", "Bedrijf", "Realisatie"],
+  },
+  {
+    id: "zj4hvA8tdTA",
+    title: "Baldewijns techniekersvideo",
+    category: "Wervingsvideo",
+    client: "Baldewijns",
+    duration: "1:45",
+    description: "Een wervingsvideo die de bedrijfscultuur toont en nieuwe techniekers aantrekt.",
+    tags: ["Werving", "Team", "Techniek"],
+  },
 ];
 
 /** maxresdefault falls back to hqdefault client-side via onError in the card. */
@@ -43,7 +72,7 @@ function isoDurationToClock(iso: string): string | undefined {
 }
 
 type PlaylistItemsResponse = {
-  items?: { snippet?: { title?: string; resourceId?: { videoId?: string } } }[];
+  items?: { snippet?: { title?: string; description?: string; resourceId?: { videoId?: string } } }[];
 };
 type VideosResponse = {
   items?: { id?: string; contentDetails?: { duration?: string } }[];
@@ -63,7 +92,11 @@ async function fetchPlaylist(playlistId: string, category: string, key: string):
       const title = it.snippet?.title ?? "";
       // Skip private/deleted placeholders that carry no usable title.
       if (!id || !title || title === "Private video" || title === "Deleted video") return null;
-      return { id, title, category } satisfies VideoItem;
+      // First paragraph of the YouTube description makes a decent teaser.
+      const description = it.snippet?.description?.split("\n").find((l) => l.trim())?.trim();
+      const item: VideoItem = { id, title, category };
+      if (description) item.description = description;
+      return item;
     })
     .filter((v): v is VideoItem => v !== null);
 }

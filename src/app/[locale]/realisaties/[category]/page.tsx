@@ -13,9 +13,12 @@ import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
 import { RealisatieWebdesignFeatured } from "@/components/realisaties/RealisatieWebdesignFeatured";
 import { RealisatieWebdesignGrid } from "@/components/realisaties/RealisatieWebdesignGrid";
 import { RealisatieFotografieGalerijen } from "@/components/realisaties/RealisatieFotografieGalerijen";
+import { RealisatieVideografieGalerijen } from "@/components/videografie";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
+import { getVideografieVideos } from "@/lib/youtube";
+import { videografieCategories } from "@/config/videografie.config";
 
 export function generateStaticParams() {
   return realisatieCategories.map((category) => ({ category: category.slug }));
@@ -39,8 +42,12 @@ export async function generateMetadata({
     categoryDef.slug === "fotografie"
       ? (await getFotografieGalleries()).filter((g) => g.images.length > 0).length
       : 0;
-  // Webdesign carries its own showcase content, so it's always indexable.
-  const hasContent = categoryDef.slug === "webdesign" || fotoGalleryCount > 0 || items.length > 0;
+  // Webdesign + videografie carry their own showcase content, so always indexable.
+  const hasContent =
+    categoryDef.slug === "webdesign" ||
+    categoryDef.slug === "videografie" ||
+    fotoGalleryCount > 0 ||
+    items.length > 0;
   return {
     title: { absolute: categoryDef.seoTitle },
     description: categoryDef.seoDescription,
@@ -61,6 +68,7 @@ export default async function RealisatieCategoryPage({
 
   const isWebdesign = categoryDef.slug === "webdesign";
   const isFotografie = categoryDef.slug === "fotografie";
+  const isVideografie = categoryDef.slug === "videografie";
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
 
@@ -91,6 +99,9 @@ export default async function RealisatieCategoryPage({
         ]
       : undefined;
 
+  // Videografie shows the YouTube-fed realisaties gallery (featured + filter grid).
+  const videoData = isVideografie ? await getVideografieVideos() : null;
+
   return (
     <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
@@ -110,6 +121,8 @@ export default async function RealisatieCategoryPage({
         </>
       ) : isFotografie && fotoGalleries.length > 0 ? (
         <RealisatieFotografieGalerijen galleries={fotoGalleries} />
+      ) : isVideografie && videoData && videoData.videos.length > 0 ? (
+        <RealisatieVideografieGalerijen videos={videoData.videos} categories={videografieCategories} />
       ) : (
         <Section orbs="tl-br">
           <Container>

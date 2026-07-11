@@ -34,13 +34,13 @@ export function RealisatieWebdesignFeatured({
   const neutralTags = project.tags.filter((t) => !/seo|geo/i.test(t));
 
   return (
-    <section className="relative overflow-hidden px-4 pb-14 pt-14 sm:px-8 sm:pb-16">
+    <section className="relative overflow-hidden pb-14 pt-14 sm:pb-16">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute right-[-120px] top-10 z-0 h-[620px] w-[760px] max-w-full bg-[radial-gradient(circle_at_60%_45%,rgba(255,90,0,0.12),transparent_64%)]"
       />
 
-      <div className="relative z-[2] mx-auto grid max-w-[1300px] items-center gap-10 lg:grid-cols-[520px_1fr] lg:gap-[60px]">
+      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-4 lg:grid-cols-[520px_1fr] lg:gap-[60px]">
         {/* LINKS: copy */}
         <div>
           <div className="mb-[22px] inline-flex items-center gap-2.5 rounded-full border border-[rgba(255,122,0,0.25)] bg-[rgba(255,122,0,0.1)] px-[15px] py-2 font-mono text-xs font-bold tracking-[0.1em] text-[#FF9A45]">

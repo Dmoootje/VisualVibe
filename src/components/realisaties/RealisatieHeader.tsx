@@ -49,7 +49,7 @@ export function RealisatieHeader({
   const stats = statsOverride ?? category.stats ?? [];
 
   return (
-    <header className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-10 pt-28 sm:px-8 sm:pt-32 md:pb-12">
+    <header className="relative overflow-hidden border-b border-white/[0.06] pb-10 pt-28 sm:pt-32 md:pb-12">
       {/* Ingewerkte achtergrond: warme gloed rechtsboven + radiaal-gemaskeerd raster. */}
       <div
         aria-hidden="true"
@@ -67,7 +67,7 @@ export function RealisatieHeader({
         }}
       />
 
-      <div className="relative z-[2] mx-auto flex max-w-[1300px] flex-col items-start justify-between gap-8 lg:flex-row lg:items-center lg:gap-10">
+      <div className="container relative z-[2] mx-auto flex flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:items-center lg:gap-10">
         <div className="max-w-[640px]">
           {/* Kruimelpad */}
           <nav className="mb-6 flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.03em] text-white/40">

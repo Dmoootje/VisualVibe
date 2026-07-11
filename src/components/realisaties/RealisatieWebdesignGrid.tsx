@@ -50,7 +50,7 @@ export function RealisatieWebdesignGrid({
   const idleSeg = "text-white/60 hover:text-white/85";
 
   return (
-    <section className="relative z-[2] mx-auto max-w-[1300px] px-4 pb-24 pt-6 sm:px-8">
+    <section className="container relative z-[2] mx-auto px-4 pb-24 pt-6">
       <div className="mb-8 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <div className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">

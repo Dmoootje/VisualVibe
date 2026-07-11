@@ -78,8 +78,8 @@ export function SeoService({
         <SeoCases items={seoItems} images={images} />
 
         {/* Wat zijn SEO diensten? - direct-antwoord blok (GEO + SEO). */}
-        <section className="relative px-4 py-14 sm:px-8 sm:py-16">
-          <div className="mx-auto grid max-w-[1300px] items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <section className="relative py-14 sm:py-16">
+          <div className="container mx-auto grid items-start gap-10 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
             <div>
               <Eyebrow>SEO diensten uitgelegd</Eyebrow>
               <h2 className="font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
@@ -124,8 +124,8 @@ export function SeoService({
         </section>
 
         {/* Onze SEO diensten - subdiensten als geanimeerde ghost-glyph kaarten. */}
-        <section className="relative px-4 py-14 sm:px-8 sm:py-16">
-          <div className="mx-auto max-w-[1300px]">
+        <section className="relative py-14 sm:py-16">
+          <div className="container mx-auto px-4">
             <div className="mb-9 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
               <div className="max-w-xl">
                 <Eyebrow>Onze SEO diensten</Eyebrow>
@@ -151,7 +151,7 @@ export function SeoService({
 
         {/* Voor welke sectoren - sector-pills. */}
         <section className="relative overflow-hidden py-14 sm:py-16">
-          <div className="mx-auto mb-8 max-w-[1300px] px-4 sm:px-8">
+          <div className="container mx-auto mb-8 px-4">
             <Eyebrow>Voor wie</Eyebrow>
             <h2 className="font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
               SEO diensten voor elke sector
@@ -166,8 +166,8 @@ export function SeoService({
 
         {/* Hoe we werken. */}
         {service.process.length > 0 && (
-          <section className="relative px-4 py-14 sm:px-8 sm:py-16">
-            <div className="mx-auto max-w-[1300px]">
+          <section className="relative py-14 sm:py-16">
+            <div className="container mx-auto px-4">
               <Eyebrow>Aanpak</Eyebrow>
               <h2 className="mb-8 font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
                 Hoe onze SEO diensten werken
@@ -179,7 +179,7 @@ export function SeoService({
 
         {/* Veelgestelde vragen over SEO diensten. */}
         {service.faqs.length > 0 && (
-          <section className="relative px-4 py-14 sm:px-8 sm:py-16">
+          <section className="relative py-14 sm:py-16">
             <div className="mx-auto max-w-[860px]">
               <Eyebrow>FAQ</Eyebrow>
               <h2 className="mb-8 font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
@@ -199,8 +199,8 @@ export function SeoService({
 
         {/* Gerelateerde diensten. */}
         {relatedServices.length > 0 && (
-          <section className="relative px-4 py-14 sm:px-8 sm:py-16">
-            <div className="mx-auto max-w-[1300px]">
+          <section className="relative py-14 sm:py-16">
+            <div className="container mx-auto px-4">
               <Eyebrow>Meer diensten</Eyebrow>
               <h2 className="mb-6 font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
                 Combineer SEO met

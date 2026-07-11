@@ -44,8 +44,8 @@ export function FotografieService({
 
         {/* Hoe we werken */}
         {service.process.length > 0 && (
-          <section className="relative px-4 py-12 sm:px-8">
-            <div className="mx-auto max-w-[1300px]">
+          <section className="relative py-12">
+            <div className="container mx-auto px-4">
               <h2 className="font-sora mb-8 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Hoe we werken
               </h2>
@@ -56,7 +56,7 @@ export function FotografieService({
 
         {/* FAQ */}
         {service.faqs.length > 0 && (
-          <section className="relative px-4 py-12 sm:px-8">
+          <section className="relative py-12">
             <div className="mx-auto max-w-[900px]">
               <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Veelgestelde vragen
@@ -75,8 +75,8 @@ export function FotografieService({
 
         {/* Gerelateerde diensten */}
         {relatedServices.length > 0 && (
-          <section className="relative px-4 py-10 sm:px-8">
-            <div className="mx-auto max-w-[1300px]">
+          <section className="relative py-10">
+            <div className="container mx-auto px-4">
               <h2 className="font-sora mb-5 text-[26px] font-extrabold tracking-[-0.02em] text-white">
                 Gerelateerde diensten
               </h2>
