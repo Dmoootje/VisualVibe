@@ -15,7 +15,7 @@ export function RegionGeo({ region }: { region: Region }) {
   const [a, b, c, d] = municipalities;
 
   return (
-    <section className="relative border-y border-white/[0.06] bg-white/[0.015] py-16 sm:py-20">
+    <section className="relative py-12 sm:py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl">
           <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">

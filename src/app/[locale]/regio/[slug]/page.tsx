@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Section, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 import { CTASection } from "@/components/sections";
-import { RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
+import { RegionAmbient, RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
 import { SectorMarquee } from "@/components/sectors";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug } from "@/data/services";
@@ -50,7 +50,7 @@ export default async function RegionDetailPage({
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative min-h-screen overflow-hidden bg-black text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
@@ -59,11 +59,15 @@ export default async function RegionDetailPage({
         ]}
       />
 
+      {/* Eén doorlopende, paginabrede achtergrond; alle secties zijn transparant. */}
+      <RegionAmbient />
+
+      <div className="relative z-10">
       <RegionDetailHero region={region} />
 
       {/* 1. Wat we doen - dienstenkaarten als bento (design_handoff_regio_vlaanderen). */}
       {localServices.length > 0 && (
-        <Section orbs="tl-br">
+        <section className="relative px-4 pt-8 pb-16 md:pt-10 md:pb-24">
           <Container>
             <div className="mb-9 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
               <div className="max-w-xl">
@@ -89,14 +93,14 @@ export default async function RegionDetailPage({
             </div>
             <RegionServicesGrid services={localServices} />
           </Container>
-        </Section>
+        </section>
       )}
 
       {/* 2. Waar we actief zijn - GEO-blok met gemeentes. */}
       <RegionGeo region={region} />
 
       {/* 3. Voor wie we werken - sectoren als 2 tegengestelde badge-rijen. */}
-      <section className="overflow-hidden py-16 sm:py-20">
+      <section className="overflow-hidden py-12 sm:py-16">
         <div className="container mx-auto mb-8 px-4">
           <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
@@ -113,7 +117,8 @@ export default async function RegionDetailPage({
         <SectorMarquee />
       </section>
 
-      <CTASection title={`Actief in ${region.title}? Laten we kennismaken.`} />
+      <CTASection className="bg-transparent" title={`Actief in ${region.title}? Laten we kennismaken.`} />
+      </div>
     </div>
   );
 }

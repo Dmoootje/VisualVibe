@@ -24,8 +24,9 @@ export function RegionDetailHero({ region }: { region: Region }) {
         : "Werkgebied · Belgie";
 
   return (
-    <section className="relative overflow-x-clip px-4 pb-12 pt-28 sm:pb-16">
-      {/* Faint background grid, fading in toward the map (top-right). */}
+    <section className="relative overflow-x-clip px-4 pb-8 pt-28 sm:pb-10">
+      {/* Faint background grid, fading in toward the map (top-right). The big amber
+          glow lives in the page-wide RegionAmbient so it never gets cut off here. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -37,11 +38,6 @@ export function RegionDetailHero({ region }: { region: Region }) {
           maskImage: "radial-gradient(ellipse at 70% 52%, #000, transparent 74%)",
         }}
       />
-
-      {/* Amber radial glow, sitting a touch lower to sit behind the dropped map. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute right-0 top-[14%] h-[720px] w-[720px] max-w-full translate-x-1/4 bg-[radial-gradient(circle_at_center,rgba(255,117,0,0.16),transparent_62%)]" />
-      </div>
 
       <div className="container relative z-10 mx-auto md:-mt-[80px]">
         <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
@@ -99,9 +95,10 @@ export function RegionDetailHero({ region }: { region: Region }) {
         </div>
 
         {/* Gemeente-runner: "Actief in o.a." - een gemaskeerde marquee van
-            gemeentes, goed voor lokale SEO en herkenbaarheid. */}
+            gemeentes, goed voor lokale SEO en herkenbaarheid. Op desktop iets
+            omhoog getrokken zodat hij dicht bij de hero-inhoud blijft. */}
         {municipalities.length > 0 && (
-          <div className="relative z-[1] mt-9">
+          <div className="relative z-[1] mt-4 md:-mt-8">
             <span className="mb-3.5 block text-[11.5px] font-bold uppercase tracking-[0.15em] text-white/40">
               Actief in o.a.
             </span>
