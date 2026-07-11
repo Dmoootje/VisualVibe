@@ -1947,6 +1947,9 @@ html {
 .vvnav-drawerRoot.is-open .vvnav-drawerPanel { transform: none; }
 .vvnav-mrow { transition: background 0.2s ease; }
 .vvnav-mrow:active { background: rgba(255, 122, 0, 0.08); }
+/* The submenu caret in a split Diensten row (label navigates, caret expands). */
+.vvnav-mSubBtn { transition: background 0.2s ease, color 0.2s ease; }
+.vvnav-mSubBtn:hover, .vvnav-mSubBtn:active { background: rgba(255, 122, 0, 0.1); color: #ff9a45; }
 .vvnav-macc { display: grid; transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .vvnav-mchev { transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1); }
 

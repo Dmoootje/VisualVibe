@@ -2,6 +2,10 @@ export { PageHero } from "./PageHero";
 export { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 export { CTASection } from "./CTASection";
 export { ServiceFaqCombine } from "./ServiceFaqCombine";
+// NOTE: ServiceRelatedPosts is intentionally NOT re-exported here. It pulls in
+// the kennisbank posts loader (Node `fs`), so importing it via this barrel would
+// drag `fs` into any client component that transitively touches the barrel.
+// Import it directly: `@/components/sections/ServiceRelatedPosts`.
 export { CTABlock } from "./CTABlock";
 export { ServiceGrid } from "./ServiceGrid";
 export { ProcessSteps } from "./ProcessSteps";

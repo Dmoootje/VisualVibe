@@ -4,6 +4,7 @@ import type { Service } from "@/types";
 import { seoSubdiensten } from "@/data/seoSubdiensten";
 import { Container, PageAmbient } from "@/components/ui";
 import { CTASection, ProcessSteps, ServiceFaqCombine } from "@/components/sections";
+import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { SectorMarquee } from "@/components/sectors";
 import { SeoHero } from "./SeoHero";
@@ -169,6 +170,13 @@ export function SeoService({
             </div>
           </section>
         )}
+
+        {/* Uit de kennisbank: SEO/GEO-artikels (interne links + GEO-surface). */}
+        <ServiceRelatedPosts
+          serviceSlug="seo"
+          heading="Verdiep je in SEO en GEO"
+          intro="Praktische gidsen over lokale SEO, technische SEO en zichtbaarheid in AI-zoekmachines."
+        />
 
         {/* Veelgestelde vragen (links) + Combineer SEO met (rechts). */}
         <ServiceFaqCombine

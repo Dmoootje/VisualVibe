@@ -3,6 +3,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { Check } from "lucide-react";
 import { Section, Container } from "@/components/ui";
 import { PageHero, CTASection, ServiceGrid, ProcessSteps, ServiceFaqCombine } from "@/components/sections";
+import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { FotografieService } from "@/components/fotografie";
@@ -12,6 +13,7 @@ import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
 import { allServices, services, getServiceBySlug, serviceHref } from "@/data/services";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getVideografieVideos } from "@/lib/youtube";
@@ -38,11 +40,13 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: { absolute: service.seo.title },
+  return pageMetadata({
+    title: service.seo.title,
     description: service.seo.description,
     keywords: service.seo.keywords,
-  };
+    path: `${serviceHref(service)}/`,
+    ogImage: service.seo.ogImage,
+  });
 }
 
 export default async function ServiceDetailPage({
@@ -216,6 +220,9 @@ export default async function ServiceDetailPage({
           </Container>
         </Section>
       )}
+
+      {/* Uit de kennisbank: gerelateerde artikels (interne links + GEO). */}
+      <ServiceRelatedPosts serviceSlug={service.slug} />
 
       {/* Veelgestelde vragen (links) + Combineer <dienst> met (rechts). */}
       <ServiceFaqCombine

@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { cases } from "@/data/cases";
 import { realisatieCategories, getRealisatieCategoryBySlug } from "@/data/realisatieCategories";
-import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { CaseGrid } from "@/components/sections";
 import { Section, Container } from "@/components/ui";
@@ -48,13 +48,13 @@ export async function generateMetadata({
     categoryDef.slug === "videografie" ||
     fotoGalleryCount > 0 ||
     items.length > 0;
-  return {
-    title: { absolute: categoryDef.seoTitle },
+  return pageMetadata({
+    title: categoryDef.seoTitle,
     description: categoryDef.seoDescription,
-    alternates: { canonical: `${businessConfig.url}/realisaties/${categoryDef.slug}/` },
-    // Empty category: keep it reachable but out of the index until cases land.
-    robots: hasContent ? undefined : { index: false, follow: true },
-  };
+    path: `/realisaties/${categoryDef.slug}/`,
+    // Empty category: keep it reachable but out of the index until content lands.
+    noindex: !hasContent,
+  });
 }
 
 export default async function RealisatieCategoryPage({

@@ -22,6 +22,8 @@ export type ServiceSeo = {
   title: string;
   description: string;
   keywords: string[];
+  /** Absolute (Firebase) or root-relative OG/Twitter image; falls back to the site default. */
+  ogImage?: string;
 };
 
 export type Service = {

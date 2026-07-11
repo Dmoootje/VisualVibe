@@ -476,25 +476,41 @@ export function Nav({
               {pushHead("Diensten", "/diensten")}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {pillars.map((p, i) => (
-                  <button
+                  // Split row: the label/icon navigates to the service page; the
+                  // caret (divided by a line) opens the sub-services push panel.
+                  <div
                     key={p.id}
-                    type="button"
-                    onClick={() => {
-                      setSvc(i);
-                      setView("service");
-                    }}
-                    className="vvnav-mCard"
-                    style={cardBase}
+                    style={{ display: "flex", alignItems: "stretch", width: "100%", borderRadius: 14, border: "1px solid rgba(255,255,255,.07)", background: "rgba(255,255,255,.02)", overflow: "hidden" }}
                   >
-                    <span style={chipStyle(44)}>
-                      <NavIcon id={p.icon} size={22} />
-                    </span>
-                    <span style={{ flex: 1, minWidth: 0 }}>
-                      <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>{p.name}</span>
-                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.45)", marginTop: 1 }}>{p.tag}</span>
-                    </span>
-                    <ChevRight color="rgba(255,255,255,.3)" />
-                  </button>
+                    <Link
+                      href={p.href}
+                      onClick={closeDrawer}
+                      className="vvnav-mrow"
+                      style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 12, padding: "12px", color: "#fff" }}
+                    >
+                      <span style={chipStyle(44)}>
+                        <NavIcon id={p.icon} size={22} />
+                      </span>
+                      <span style={{ flex: 1, minWidth: 0 }}>
+                        <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>{p.name}</span>
+                        <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.45)", marginTop: 1 }}>{p.tag}</span>
+                      </span>
+                    </Link>
+                    {p.subs.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSvc(i);
+                          setView("service");
+                        }}
+                        aria-label={`Toon onderdelen van ${p.name}`}
+                        className="vvnav-mSubBtn"
+                        style={{ flex: "none", width: 54, display: "flex", alignItems: "center", justifyContent: "center", borderWidth: "0 0 0 1px", borderStyle: "solid", borderColor: "rgba(255,255,255,.09)", background: "none", color: "rgba(255,255,255,.45)", cursor: "pointer", padding: 0 }}
+                      >
+                        <ChevRight size={18} />
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
