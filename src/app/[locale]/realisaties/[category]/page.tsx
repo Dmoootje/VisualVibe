@@ -14,6 +14,8 @@ import { RealisatieWebdesignFeatured } from "@/components/realisaties/Realisatie
 import { RealisatieWebdesignGrid } from "@/components/realisaties/RealisatieWebdesignGrid";
 import { RealisatieFotografieGalerijen } from "@/components/realisaties/RealisatieFotografieGalerijen";
 import { RealisatieVideografieGalerijen } from "@/components/videografie";
+import { RealisatieXrTours } from "@/components/xr";
+import { matterportTours } from "@/data/matterportTours";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
@@ -42,10 +44,11 @@ export async function generateMetadata({
     categoryDef.slug === "fotografie"
       ? (await getFotografieGalleries()).filter((g) => g.images.length > 0).length
       : 0;
-  // Webdesign + videografie carry their own showcase content, so always indexable.
+  // Webdesign, videografie + 3D/VR/AR carry their own showcase content, so always indexable.
   const hasContent =
     categoryDef.slug === "webdesign" ||
     categoryDef.slug === "videografie" ||
+    categoryDef.slug === "3d-vr" ||
     fotoGalleryCount > 0 ||
     items.length > 0;
   return pageMetadata({
@@ -69,6 +72,7 @@ export default async function RealisatieCategoryPage({
   const isWebdesign = categoryDef.slug === "webdesign";
   const isFotografie = categoryDef.slug === "fotografie";
   const isVideografie = categoryDef.slug === "videografie";
+  const is3dVr = categoryDef.slug === "3d-vr";
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
 
@@ -102,6 +106,15 @@ export default async function RealisatieCategoryPage({
   // Videografie shows the YouTube-fed realisaties gallery (featured + filter grid).
   const videoData = isVideografie ? await getVideografieVideos() : null;
 
+  // 3D/VR/AR shows all Matterport tours as a grid + lightbox; the header carries
+  // a tour-count + Matterport stat rail.
+  const xrStats = is3dVr
+    ? [
+        { value: String(matterportTours.length), label: "virtuele\ntours" },
+        { value: "360°", label: "Matterport\nscans", accent: true },
+      ]
+    : undefined;
+
   return (
     <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
@@ -112,7 +125,7 @@ export default async function RealisatieCategoryPage({
         ]}
       />
 
-      <RealisatieHeader category={categoryDef} stats={fotoStats} />
+      <RealisatieHeader category={categoryDef} stats={fotoStats ?? xrStats} />
 
       {isWebdesign && webdesignImages && featured ? (
         <>
@@ -123,6 +136,8 @@ export default async function RealisatieCategoryPage({
         <RealisatieFotografieGalerijen galleries={fotoGalleries} />
       ) : isVideografie && videoData && videoData.videos.length > 0 ? (
         <RealisatieVideografieGalerijen videos={videoData.videos} categories={videografieCategories} />
+      ) : is3dVr ? (
+        <RealisatieXrTours tours={matterportTours} />
       ) : (
         <Section orbs="tl-br">
           <Container>

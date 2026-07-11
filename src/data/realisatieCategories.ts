@@ -60,10 +60,11 @@ export const realisatieCategories: RealisatieCategory[] = [
   },
   {
     slug: "3d-vr",
-    name: "3D & VR",
-    description: "3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.",
-    seoTitle: "3D & VR realisaties | VisualVibe",
-    seoDescription: "3D- en VR-realisaties van VisualVibe: virtuele tours voor showrooms, vastgoed en horeca in Limburg.",
+    name: "3D, VR & AR",
+    description:
+      "Wandel zelf door onze projecten. Elke tour is een live, navigeerbare 3D-scan, klik en verken de ruimte in 360°.",
+    seoTitle: "3D, VR & AR realisaties | VisualVibe",
+    seoDescription: "3D-, VR- en AR-realisaties van VisualVibe: navigeerbare Matterport virtual tours voor vastgoed, showrooms en horeca in Limburg.",
   },
   {
     slug: "podcasting",

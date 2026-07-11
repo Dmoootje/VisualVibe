@@ -386,7 +386,7 @@ export const services: Service[] = [
       { title: "Integratie", description: "Inbouw op je website of Google Business Profiel." },
     ],
     faqs: [],
-    relatedServices: ["drone-fpv", "fotografie"],
+    relatedServices: ["fotografie", "videografie", "drone-fpv"],
     relatedRegions: ["limburg"],
     relatedCases: [],
     relatedPosts: [],
