@@ -12,8 +12,10 @@ import { RealisatieCategoryGrid } from "@/components/realisaties/RealisatieCateg
 import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
 import { RealisatieWebdesignFeatured } from "@/components/realisaties/RealisatieWebdesignFeatured";
 import { RealisatieWebdesignGrid } from "@/components/realisaties/RealisatieWebdesignGrid";
+import { RealisatieFotografieGalerijen } from "@/components/realisaties/RealisatieFotografieGalerijen";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
+import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 
 export function generateStaticParams() {
   return realisatieCategories.map((category) => ({ category: category.slug }));
@@ -32,8 +34,13 @@ export async function generateMetadata({
   if (!categoryDef) return {};
 
   const items = cases.filter((item) => item.category === categoryDef.slug);
+  // Fotografie is indexable once it has at least one non-empty gallery.
+  const fotoGalleryCount =
+    categoryDef.slug === "fotografie"
+      ? (await getFotografieGalleries()).filter((g) => g.images.length > 0).length
+      : 0;
   // Webdesign carries its own showcase content, so it's always indexable.
-  const hasContent = categoryDef.slug === "webdesign" || items.length > 0;
+  const hasContent = categoryDef.slug === "webdesign" || fotoGalleryCount > 0 || items.length > 0;
   return {
     title: { absolute: categoryDef.seoTitle },
     description: categoryDef.seoDescription,
@@ -53,6 +60,7 @@ export default async function RealisatieCategoryPage({
   if (!categoryDef) notFound();
 
   const isWebdesign = categoryDef.slug === "webdesign";
+  const isFotografie = categoryDef.slug === "fotografie";
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
 
@@ -64,6 +72,11 @@ export default async function RealisatieCategoryPage({
   const featured =
     webdesignProjects?.find((p) => p.id === "gordijnenmyriam") ?? webdesignProjects?.[0] ?? null;
   const gridProjects = webdesignProjects?.filter((p) => p.id !== featured?.id) ?? [];
+
+  // Fotografie shows admin-managed galleries; empty galleries are skipped.
+  const fotoGalleries = isFotografie
+    ? (await getFotografieGalleries()).filter((g) => g.images.length > 0)
+    : [];
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -82,6 +95,8 @@ export default async function RealisatieCategoryPage({
           <RealisatieWebdesignFeatured project={featured} images={webdesignImages} />
           <RealisatieWebdesignGrid projects={gridProjects} images={webdesignImages} />
         </>
+      ) : isFotografie && fotoGalleries.length > 0 ? (
+        <RealisatieFotografieGalerijen galleries={fotoGalleries} />
       ) : (
         <Section orbs="tl-br">
           <Container>

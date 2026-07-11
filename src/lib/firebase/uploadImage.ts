@@ -17,7 +17,7 @@ export const IMAGE_EXT_BY_TYPE: Record<string, string> = {
   "image/svg+xml": "svg",
 };
 
-const STORAGE_DIR = "images/portfolio/webdesign";
+export const DEFAULT_STORAGE_DIR = "images/portfolio/webdesign";
 
 /** Slugify a key into a clean, safe filename stem (no extension). */
 function slugifyKey(key: string): string {
@@ -34,13 +34,18 @@ function slugifyKey(key: string): string {
  * Convert an image buffer to WebP and store it under a clean filename. Returns
  * the public (token-authenticated) URL. `key` becomes the filename stem, e.g.
  * "studentenkot-desktop" -> images/portfolio/webdesign/studentenkot-desktop.webp
+ * `dir` overrides the storage directory (defaults to the webdesign portfolio).
  */
-export async function uploadImageBuffer(bytes: Buffer, key: string): Promise<string> {
+export async function uploadImageBuffer(
+  bytes: Buffer,
+  key: string,
+  dir: string = DEFAULT_STORAGE_DIR,
+): Promise<string> {
   const webp = await sharp(bytes).webp({ quality: 82 }).toBuffer();
 
   const safeKey = slugifyKey(key);
   const token = randomUUID();
-  const path = `${STORAGE_DIR}/${safeKey}.webp`;
+  const path = `${dir}/${safeKey}.webp`;
 
   await adminStorageBucket.file(path).save(webp, {
     resumable: false,

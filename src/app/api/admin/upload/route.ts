@@ -9,6 +9,12 @@ export const runtime = "nodejs";
 
 const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
 
+// Allowlisted upload scopes -> storage directory. Prevents arbitrary paths.
+const UPLOAD_DIRS: Record<string, string> = {
+  webdesign: "images/portfolio/webdesign",
+  fotografie: "images/library/fotografie",
+};
+
 export async function POST(request: NextRequest) {
   const admin = await getCurrentAdmin();
   if (!admin) {
@@ -24,6 +30,8 @@ export async function POST(request: NextRequest) {
 
   const file = form.get("file");
   const key = String(form.get("key") ?? "").trim();
+  const scope = String(form.get("scope") ?? "webdesign");
+  const dir = UPLOAD_DIRS[scope] ?? UPLOAD_DIRS.webdesign;
 
   if (!(file instanceof File) || file.size === 0) {
     return NextResponse.json({ error: "Geen bestand ontvangen." }, { status: 400 });
@@ -38,7 +46,7 @@ export async function POST(request: NextRequest) {
   let url: string;
   try {
     const bytes = Buffer.from(await file.arrayBuffer());
-    url = await uploadImageBuffer(bytes, key || "image");
+    url = await uploadImageBuffer(bytes, key || "image", dir);
   } catch {
     return NextResponse.json({ error: "Uploaden mislukt. Probeer opnieuw." }, { status: 500 });
   }

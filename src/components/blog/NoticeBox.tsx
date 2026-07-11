@@ -62,7 +62,9 @@ export function NoticeBox({
   children: React.ReactNode;
   className?: string;
 }) {
-  const v = VARIANTS[variant];
+  // Fall back to "info" for an unknown variant so a content typo can never crash
+  // the (prerendered) build.
+  const v = VARIANTS[variant] ?? VARIANTS.info;
   const Icon = v.icon;
 
   return (

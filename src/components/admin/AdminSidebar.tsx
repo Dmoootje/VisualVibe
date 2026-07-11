@@ -19,7 +19,8 @@ const navItems: NavItem[] = [
     icon: Settings,
     children: [
       { href: "/admin/settings/contact", label: "Contact" },
-      { href: "/admin/settings/webdesign", label: "Realisaties" },
+      { href: "/admin/settings/webdesign", label: "Webdesign realisaties" },
+      { href: "/admin/settings/realisaties/fotografie", label: "Fotografie galerijen" },
     ],
   },
   { href: "/internal/blog-styleguide", label: "Branding", icon: Palette },
