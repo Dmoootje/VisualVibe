@@ -14,7 +14,7 @@ import {
   type LucideProps,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import type { RealisatieCategory } from "@/data/realisatieCategories";
+import type { RealisatieCategory, RealisatieStat } from "@/data/realisatieCategories";
 
 // Per-category glyph for the header icon badge. Falls back to a monitor.
 const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
@@ -37,9 +37,16 @@ const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
  * rail. Identiek voor elke realisatie-categorie; alleen icoon, titel, subtitel
  * en stats wisselen. Puur server-side; ambient-lagen zijn decoratief.
  */
-export function RealisatieHeader({ category }: { category: RealisatieCategory }) {
+export function RealisatieHeader({
+  category,
+  stats: statsOverride,
+}: {
+  category: RealisatieCategory;
+  /** Overrides `category.stats` for content-driven categories (e.g. fotografie). */
+  stats?: RealisatieStat[];
+}) {
   const Icon = ICON_BY_SLUG[category.slug] ?? Monitor;
-  const stats = category.stats ?? [];
+  const stats = statsOverride ?? category.stats ?? [];
 
   return (
     <header className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-10 pt-28 sm:px-8 sm:pt-32 md:pb-12">

@@ -1671,6 +1671,11 @@ html {
 .fg-ggo { transition: gap .25s ease, color .25s ease; }
 .fg-gcard:hover .fg-ggo { gap: 12px; color: #ff9a45; }
 
+/* Featured thumbnail (below the big cover) */
+.fg-thumb { transition: border-color .3s ease, transform .3s ease; }
+.fg-thumb:hover { border-color: rgba(255,122,0,.5); transform: translateY(-3px); }
+.fg-thumb:hover .fg-gimg { transform: scale(1.06); }
+
 /* WeddingVibe gold conic border */
 @property --fgWed { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @keyframes fg-wedspin { to { --fgWed: 360deg; } }

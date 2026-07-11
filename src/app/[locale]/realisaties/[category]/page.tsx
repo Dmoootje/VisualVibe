@@ -78,6 +78,19 @@ export default async function RealisatieCategoryPage({
     ? (await getFotografieGalleries()).filter((g) => g.images.length > 0)
     : [];
 
+  // Content-driven stat rail: gallery count + a fixed in-house claim. Only shown
+  // once at least one gallery exists (otherwise the header keeps its plain look).
+  const fotoStats =
+    isFotografie && fotoGalleries.length > 0
+      ? [
+          {
+            value: String(fotoGalleries.length),
+            label: `fotografie-\n${fotoGalleries.length === 1 ? "stijl" : "stijlen"}`,
+          },
+          { value: "100%", label: "in-house\ngeschoten", accent: true },
+        ]
+      : undefined;
+
   return (
     <div className="min-h-screen bg-black text-white">
       <BreadcrumbJsonLd
@@ -88,7 +101,7 @@ export default async function RealisatieCategoryPage({
         ]}
       />
 
-      <RealisatieHeader category={categoryDef} />
+      <RealisatieHeader category={categoryDef} stats={fotoStats} />
 
       {isWebdesign && webdesignImages && featured ? (
         <>
