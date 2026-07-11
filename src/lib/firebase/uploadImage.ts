@@ -1,10 +1,13 @@
 import { randomUUID } from "crypto";
+import sharp from "sharp";
 import { adminStorageBucket, STORAGE_BUCKET } from "@/lib/firebase/admin";
 
-// Shared Firebase Storage upload used by the admin image-upload route and the
-// AI auto-generate route. Saves bytes with a download token so the returned URL
-// is publicly readable without changing Storage rules (matches the existing
-// token-based portfolio URLs). Server-only (Node runtime).
+// Portfolio images are stored as WebP only. Any incoming image (Firecrawl PNG
+// screenshot, or a manual png/jpg/svg upload) is converted to webp here before
+// it hits Storage. Filenames are clean (no timestamp): each save mints a fresh
+// download token, so the URL still changes per upload (cache-busting) without
+// cluttering the name. A `contentDisposition` gives a clean download filename
+// even though the object lives under images/portfolio/webdesign/. Node runtime.
 
 export const IMAGE_EXT_BY_TYPE: Record<string, string> = {
   "image/webp": "webp",
@@ -14,27 +17,38 @@ export const IMAGE_EXT_BY_TYPE: Record<string, string> = {
   "image/svg+xml": "svg",
 };
 
+const STORAGE_DIR = "images/portfolio/webdesign";
+
+/** Slugify a key into a clean, safe filename stem (no extension). */
+function slugifyKey(key: string): string {
+  return (
+    (key || "image")
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 60) || "image"
+  );
+}
+
 /**
- * Save an image buffer to Storage under a token-authenticated public URL.
- * `key` is slugified into the filename; `ext` must be one of IMAGE_EXT_BY_TYPE.
+ * Convert an image buffer to WebP and store it under a clean filename. Returns
+ * the public (token-authenticated) URL. `key` becomes the filename stem, e.g.
+ * "studentenkot-desktop" -> images/portfolio/webdesign/studentenkot-desktop.webp
  */
-export async function uploadImageBuffer(
-  bytes: Buffer,
-  key: string,
-  contentType: string,
-): Promise<string> {
-  const ext = IMAGE_EXT_BY_TYPE[contentType];
-  if (!ext) {
-    throw new Error(`Niet-ondersteund beeldtype: ${contentType}`);
-  }
+export async function uploadImageBuffer(bytes: Buffer, key: string): Promise<string> {
+  const webp = await sharp(bytes).webp({ quality: 82 }).toBuffer();
 
-  const safeKey = (key || "image").replace(/[^a-z0-9-]/gi, "-").slice(0, 60);
+  const safeKey = slugifyKey(key);
   const token = randomUUID();
-  const path = `images/portfolio/webdesign/${safeKey}-${Date.now()}.${ext}`;
+  const path = `${STORAGE_DIR}/${safeKey}.webp`;
 
-  await adminStorageBucket.file(path).save(bytes, {
+  await adminStorageBucket.file(path).save(webp, {
     resumable: false,
-    metadata: { contentType, metadata: { firebaseStorageDownloadTokens: token } },
+    metadata: {
+      contentType: "image/webp",
+      contentDisposition: `inline; filename="${safeKey}.webp"`,
+      metadata: { firebaseStorageDownloadTokens: token },
+    },
   });
 
   return `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o/${encodeURIComponent(

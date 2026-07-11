@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   let url: string;
   try {
     const bytes = Buffer.from(await file.arrayBuffer());
-    url = await uploadImageBuffer(bytes, key || "image", file.type);
+    url = await uploadImageBuffer(bytes, key || "image");
   } catch {
     return NextResponse.json({ error: "Uploaden mislukt. Probeer opnieuw." }, { status: 500 });
   }

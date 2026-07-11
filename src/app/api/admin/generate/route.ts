@@ -68,8 +68,8 @@ export async function POST(request: NextRequest) {
   const images: Record<string, string> = {};
   try {
     const [desktopUrl, mobileUrl] = await Promise.all([
-      uploadImageBuffer(desktop.screenshot, `${projectId}-desktop`, "image/png"),
-      uploadImageBuffer(mobile.screenshot, `${projectId}-mobiel`, "image/png"),
+      uploadImageBuffer(desktop.screenshot, `${projectId}-desktop`),
+      uploadImageBuffer(mobile.screenshot, `${projectId}-mobiel`),
     ]);
     // thumb + hoofdscreenshot (1) + desktop (2) share the desktop shot; mobiel (4) is the phone shot.
     const slotUrls: Record<string, string> = {

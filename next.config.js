@@ -5,6 +5,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // sharp is a native module used server-side (portfolio image -> webp); keep it
+  // external so webpack doesn't try to bundle it.
+  serverExternalPackages: ['sharp'],
   // Consistent trailing slashes across the whole site; non-slashed URLs 308 to
   // the slashed form. Aligns with the kennisbank canonical URLs.
   trailingSlash: true,

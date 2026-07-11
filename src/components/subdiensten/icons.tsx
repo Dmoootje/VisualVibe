@@ -49,6 +49,59 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M8.6 12.5v-1.5M11 12.5V9M13.4 12.5V8" />
     </>
   ),
+  // Hoofddienst-categorie glyphs (gebruikt op de regio-dienstenkaarten).
+  webdesign: (
+    <>
+      <rect x="3" y="4.5" width="18" height="15" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M6 6.75h.01M8.5 6.75h.01" />
+      <path d="M7 13h5M7 16h9" />
+    </>
+  ),
+  fotografie: (
+    <>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M8.5 7 10 4.5h4L15.5 7" />
+      <circle cx="12" cy="13.5" r="3.4" />
+    </>
+  ),
+  videografie: (
+    <>
+      <rect x="3" y="7" width="12" height="10" rx="2" />
+      <path d="M15 10.5 21 7v10l-6-3.5z" />
+    </>
+  ),
+  "drone-fpv": (
+    <>
+      <circle cx="6" cy="6" r="2.2" />
+      <circle cx="18" cy="6" r="2.2" />
+      <circle cx="6" cy="18" r="2.2" />
+      <circle cx="18" cy="18" r="2.2" />
+      <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
+      <path d="m8 8 2 2M16 8l-2 2M8 16l2-2M16 16l-2-2" />
+    </>
+  ),
+  "3d-vr-ar": (
+    <>
+      <path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z" />
+      <path d="M4 7.5 12 12l8-4.5" />
+      <path d="M12 12v9" />
+    </>
+  ),
+  podcasting: (
+    <>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M6 11a6 6 0 0 0 12 0" />
+      <path d="M12 17v3M9 21h6" />
+    </>
+  ),
+  masterclasses: (
+    <>
+      <path d="M12 4 2 9l10 5 10-5-10-5z" />
+      <path d="M6 11v4c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-4" />
+      <path d="M22 9v5" />
+    </>
+  ),
 };
 
 /** Just the inner paths for one glyph, to embed inside another <svg>/<g>. */

@@ -36,9 +36,9 @@ export function RoadmapBlock({
             <div className="pt-1">
               <h3 className="font-semibold text-white">{step.title}</h3>
               {step.description && (
-                <p className="mt-1 text-sm leading-relaxed text-white/70">
+                <div className="mt-1 text-sm leading-relaxed text-white/70 [&>p]:m-0">
                   {step.description}
-                </p>
+                </div>
               )}
             </div>
           </li>

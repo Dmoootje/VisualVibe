@@ -29,14 +29,14 @@ export function RegionDetailHero({ region }: { region: Region }) {
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px)",
           backgroundSize: "52px 52px",
-          WebkitMaskImage: "radial-gradient(ellipse at 72% 32%, #000, transparent 72%)",
-          maskImage: "radial-gradient(ellipse at 72% 32%, #000, transparent 72%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 70% 52%, #000, transparent 74%)",
+          maskImage: "radial-gradient(ellipse at 70% 52%, #000, transparent 74%)",
         }}
       />
 
-      {/* Amber radial glow, top-right (clipped to the section). */}
+      {/* Amber radial glow, sitting a touch lower to sit behind the dropped map. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute right-0 top-0 h-[720px] w-[720px] max-w-full -translate-y-1/4 translate-x-1/4 bg-[radial-gradient(circle_at_center,rgba(255,117,0,0.16),transparent_62%)]" />
+        <div className="absolute right-0 top-[14%] h-[720px] w-[720px] max-w-full translate-x-1/4 bg-[radial-gradient(circle_at_center,rgba(255,117,0,0.16),transparent_62%)]" />
       </div>
 
       <div className="container relative z-10 mx-auto md:-mt-[80px]">
@@ -78,8 +78,8 @@ export function RegionDetailHero({ region }: { region: Region }) {
             </div>
           </div>
 
-          {/* Right: the region's real map, large, with the pulsing marker. */}
-          <div className="flex justify-center md:justify-end">
+          {/* Right: the region's real map, large, dropped a bit, with the pulsing marker. */}
+          <div className="flex justify-center md:mt-16 md:justify-end">
             {hasMap && (
               <div className="group relative aspect-[6/5] w-full max-w-[600px]">
                 {/* Soft glow directly behind the map so it lifts off the page. */}

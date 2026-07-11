@@ -23,9 +23,9 @@ export function ChecklistBlock({
             <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#ff7500] to-red-500">
               <Check className="h-3 w-3 text-black" strokeWidth={3} aria-hidden="true" />
             </span>
-            <span className="text-sm leading-relaxed text-white/80 [&_a]:text-[#ff7500] [&_a:hover]:underline [&_strong]:text-white">
+            <div className="text-sm leading-relaxed text-white/80 [&>p]:m-0 [&_a]:text-[#ff7500] [&_a:hover]:underline [&_strong]:text-white">
               {item}
-            </span>
+            </div>
           </li>
         ))}
       </ul>

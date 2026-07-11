@@ -29,7 +29,7 @@ export function DoDontGrid({
           {dos.map((item, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm text-white/80">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" />
-              <span>{item}</span>
+              <div className="[&>p]:m-0">{item}</div>
             </li>
           ))}
         </ul>
@@ -44,7 +44,7 @@ export function DoDontGrid({
           {donts.map((item, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm text-white/80">
               <X className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" aria-hidden="true" />
-              <span>{item}</span>
+              <div className="[&>p]:m-0">{item}</div>
             </li>
           ))}
         </ul>

@@ -2,6 +2,7 @@ import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { WebdesignProjectsManager } from "@/components/admin/WebdesignProjectsManager";
+import { MigrateImagesButton } from "@/components/admin/MigrateImagesButton";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,11 @@ export default async function AdminWebdesignSettingsPage() {
           afbeeldingen, beschrijving, SEO-focus, wat je leverde en de knop-link in.
         </p>
       </div>
+
+      <section className="mb-10">
+        <h2 className="mb-3 border-b border-white/10 pb-2 text-lg font-semibold">Onderhoud</h2>
+        <MigrateImagesButton />
+      </section>
 
       <section className="mb-10">
         <h2 className="mb-3 border-b border-white/10 pb-2 text-lg font-semibold">Hero-preview</h2>

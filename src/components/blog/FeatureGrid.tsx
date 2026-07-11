@@ -42,7 +42,9 @@ export function FeatureCard({
         </span>
       )}
       <h3 className="mb-1.5 font-semibold text-white">{title}</h3>
-      {children && <p className="text-sm leading-relaxed text-white/70">{children}</p>}
+      {children && (
+        <div className="text-sm leading-relaxed text-white/70 [&>p]:m-0">{children}</div>
+      )}
     </div>
   );
 }
