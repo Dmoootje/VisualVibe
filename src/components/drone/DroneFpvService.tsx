@@ -1,21 +1,15 @@
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
-import { serviceHref, serviceHrefBySlug } from "@/data/services";
+import { serviceHref } from "@/data/services";
 import { dronePhotos } from "@/data/droneShowcase";
 import { PageAmbient } from "@/components/ui";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-import { CTASection } from "@/components/sections";
+import { CTASection, ServiceFaqCombine } from "@/components/sections";
 import { DroneShowcase } from "./DroneShowcase";
 import { CursorDrone } from "./CursorDrone";
 import { Quad } from "./Quad";
 import { ArrowDown, ArrowRight, Check, DrIcon } from "./icons";
 
-// Subservice slug -> overzicht glyph, and related-service slug -> chip glyph.
+// Subservice slug -> overzicht glyph.
 const OV_ICON: Record<string, string> = {
   dronefotografie: "foto",
   dronevideo: "video",
@@ -24,7 +18,6 @@ const OV_ICON: Record<string, string> = {
   "realisatie-dronebeelden": "layers",
   "event-dronebeelden": "cal",
 };
-const REL_ICON: Record<string, string> = { videografie: "video", fotografie: "foto", "3d-vr-ar": "cube" };
 
 // GEO direct-answer checklist (what a drone & FPV opdracht includes).
 const INCLUDED = [
@@ -296,49 +289,8 @@ export function DroneFpvService({
           </section>
         )}
 
-        {/* ===== FAQ ===== */}
-        {service.faqs.length > 0 && (
-          <section className="relative py-12">
-            <div className="container mx-auto max-w-[900px] px-4">
-              <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
-                Veelgestelde vragen
-              </h2>
-              <Accordion type="single" collapsible>
-                {service.faqs.map((faq) => (
-                  <AccordionItem key={faq.question} value={faq.question}>
-                    <AccordionTrigger>{faq.question}</AccordionTrigger>
-                    <AccordionContent className="text-white/70">{faq.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </section>
-        )}
-
-        {/* ===== GERELATEERDE DIENSTEN ===== */}
-        {relatedServices.length > 0 && (
-          <section className="relative py-8">
-            <div className="container mx-auto px-4">
-              <h2 className="font-sora mb-5 text-[26px] font-extrabold tracking-[-0.02em] text-white">
-                Gerelateerde diensten
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {relatedServices.map((related) => (
-                  <Link
-                    key={related.slug}
-                    href={serviceHrefBySlug(related.slug)}
-                    className="relChip inline-flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.02] px-5 py-3 text-[15px] font-semibold text-white transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.1)]"
-                  >
-                    <span className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-[rgba(255,122,0,0.22)] bg-[rgba(255,122,0,0.1)] text-[#FF9A45]">
-                      <DrIcon id={REL_ICON[related.slug] ?? "drone"} size={16} />
-                    </span>
-                    {related.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+        {/* Veelgestelde vragen (links) + Combineer drone & FPV met (rechts). */}
+        <ServiceFaqCombine faqs={service.faqs} combineWith="drone & FPV" relatedServices={relatedServices} />
 
         <CTASection
           className="bg-transparent"

@@ -1,6 +1,7 @@
 export { PageHero } from "./PageHero";
 export { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 export { CTASection } from "./CTASection";
+export { ServiceFaqCombine } from "./ServiceFaqCombine";
 export { CTABlock } from "./CTABlock";
 export { ServiceGrid } from "./ServiceGrid";
 export { ProcessSteps } from "./ProcessSteps";

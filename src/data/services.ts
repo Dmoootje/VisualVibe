@@ -197,6 +197,21 @@ export const services: Service[] = [
         answer:
           "Absoluut. We combineren foto, video en drone vaak in één shoot, zodat alles in dezelfde stijl en op dezelfde dag gebeurt.",
       },
+      {
+        question: "Wat kost een professionele fotoshoot?",
+        answer:
+          "De prijs hangt af van het type shoot, de duur en het aantal nabewerkte beelden. Een korte bedrijfsreportage is voordeliger dan een volledige dag op locatie. Vraag een vrijblijvende offerte aan voor een prijs op maat.",
+      },
+      {
+        question: "Welke soorten fotografie bieden jullie aan?",
+        answer:
+          "We doen bedrijfs-, portret-, product-, event- en vastgoedfotografie, plus dronefotografie voor beelden vanuit de lucht. Van een enkele reportage tot een volledige beeldbank voor je website en socials.",
+      },
+      {
+        question: "Fotograferen jullie op locatie of in een studio?",
+        answer:
+          "Allebei. We komen naar je bedrijf, pand of event, of werken in een studio-opstelling wanneer een neutrale achtergrond of gecontroleerd licht nodig is, bijvoorbeeld voor product- en portretfotografie.",
+      },
     ],
     relatedServices: ["videografie", "drone-fpv", "webdesign"],
     relatedRegions: ["limburg"],

@@ -1,16 +1,9 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, Check } from "lucide-react";
 import type { Service } from "@/types";
-import { serviceHrefBySlug } from "@/data/services";
 import { seoSubdiensten } from "@/data/seoSubdiensten";
 import { Container, PageAmbient } from "@/components/ui";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-import { CTASection, ProcessSteps } from "@/components/sections";
+import { CTASection, ProcessSteps, ServiceFaqCombine } from "@/components/sections";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { SectorMarquee } from "@/components/sectors";
 import { SeoHero } from "./SeoHero";
@@ -177,48 +170,13 @@ export function SeoService({
           </section>
         )}
 
-        {/* Veelgestelde vragen over SEO diensten. */}
-        {service.faqs.length > 0 && (
-          <section className="relative py-14 sm:py-16">
-            <div className="mx-auto max-w-[860px]">
-              <Eyebrow>FAQ</Eyebrow>
-              <h2 className="mb-8 font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
-                Veelgestelde vragen over SEO diensten
-              </h2>
-              <Accordion type="single" collapsible>
-                {service.faqs.map((faq) => (
-                  <AccordionItem key={faq.question} value={faq.question}>
-                    <AccordionTrigger>{faq.question}</AccordionTrigger>
-                    <AccordionContent className="text-white/70">{faq.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </section>
-        )}
-
-        {/* Gerelateerde diensten. */}
-        {relatedServices.length > 0 && (
-          <section className="relative py-14 sm:py-16">
-            <div className="container mx-auto px-4">
-              <Eyebrow>Meer diensten</Eyebrow>
-              <h2 className="mb-6 font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]">
-                Combineer SEO met
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {relatedServices.map((related) => (
-                  <Link
-                    key={related.slug}
-                    href={serviceHrefBySlug(related.slug)}
-                    className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[rgba(255,122,0,0.4)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white"
-                  >
-                    {related.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+        {/* Veelgestelde vragen (links) + Combineer SEO met (rechts). */}
+        <ServiceFaqCombine
+          faqs={service.faqs}
+          faqHeading="Veelgestelde vragen over SEO diensten"
+          combineWith="SEO"
+          relatedServices={relatedServices}
+        />
 
         <CTASection
           className="bg-transparent"

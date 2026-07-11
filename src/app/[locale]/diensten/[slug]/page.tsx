@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Link } from "@/i18n/navigation";
 import { Check } from "lucide-react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-  Section,
-  Container,
-} from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
+import { Section, Container } from "@/components/ui";
+import { PageHero, CTASection, ServiceGrid, ProcessSteps, ServiceFaqCombine } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { FotografieService } from "@/components/fotografie";
@@ -19,7 +11,7 @@ import { DroneFpvService } from "@/components/drone";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
-import { allServices, services, getServiceBySlug, serviceHref, serviceHrefBySlug } from "@/data/services";
+import { allServices, services, getServiceBySlug, serviceHref } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getVideografieVideos } from "@/lib/youtube";
@@ -225,40 +217,12 @@ export default async function ServiceDetailPage({
         </Section>
       )}
 
-      {service.faqs.length > 0 && (
-        <Section orbs="tl-br">
-          <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Veelgestelde vragen</h2>
-            <Accordion type="single" collapsible>
-              {service.faqs.map((faq) => (
-                <AccordionItem key={faq.question} value={faq.question}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent className="text-white/70">{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Container>
-        </Section>
-      )}
-
-      {relatedServices.length > 0 && (
-        <Section orbs="tr-bl">
-          <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Gerelateerde diensten</h2>
-            <div className="flex flex-wrap gap-3">
-              {relatedServices.map((related) => (
-                <Link
-                  key={related.slug}
-                  href={serviceHrefBySlug(related.slug)}
-                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors"
-                >
-                  {related.title}
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      )}
+      {/* Veelgestelde vragen (links) + Combineer <dienst> met (rechts). */}
+      <ServiceFaqCombine
+        faqs={service.faqs}
+        combineWith={service.title}
+        relatedServices={relatedServices}
+      />
 
       <CTASection
         title={`Interesse in ${service.title.toLowerCase()}?`}
