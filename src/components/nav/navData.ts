@@ -6,6 +6,15 @@ import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { realisatieCategories } from "@/data/realisatieCategories";
 
 export type NavLink = { name: string; href: string };
+/** A richer nav row: icon + name + a one-line subtitle (used in the dropdowns/submenus). */
+export type NavCard = {
+  name: string;
+  href: string;
+  /** Glyph id: a nav-icon id, or a sector sprite id when iconKind is "sector". */
+  icon: string;
+  desc: string;
+  iconKind?: "nav" | "sector";
+};
 export type NavSub = { name: string; href: string; icon: string };
 export type NavPillar = {
   id: string;
@@ -76,20 +85,61 @@ export const regioItems: NavLink[] = [
   ...regions.map((region) => ({ name: region.title, href: `/regio/${region.slug}` })),
 ];
 
-// Sectoren dropdown (hub + all 10 sectors).
-export const sectorItems: NavLink[] = [
-  { name: "Alle sectoren", href: "/sectoren" },
-  ...sectors.map((sector) => ({ name: sector.title, href: `/sectoren/${sector.slug}` })),
-];
+// Realisatie-categorie glyph per slug (reuse service glyphs; extra ones for the
+// cross-service categories bedrijven/projecten/events/sport/buitenland).
+const REALISATIE_ICON: Record<string, string> = {
+  webdesign: "website",
+  fotografie: "camera",
+  videografie: "film",
+  drone: "drone",
+  "3d-vr": "cube",
+  podcasting: "mic",
+  bedrijven: "building",
+  projecten: "hardhat",
+  events: "calendar",
+  sport: "trophy",
+  buitenland: "globe",
+};
 
-// Realisaties dropdown (hub + all realisatie categories).
-export const realisatieItems: NavLink[] = [
-  { name: "Alle realisaties", href: "/realisaties" },
-  ...realisatieCategories.map((category) => ({ name: category.name, href: `/realisaties/${category.slug}` })),
-];
+// Kennisbank-categorie glyph per slug (maps onto the matching service glyph).
+export const KENNISBANK_ICON: Record<string, string> = {
+  "seo-geo": "seo",
+  webdesign: "website",
+  fotografie: "camera",
+  videografie: "film",
+  drone: "drone",
+  "3d-vr": "cube",
+  podcasting: "mic",
+  masterclasses: "cap",
+};
 
-// Kennisbank dropdown (hub + all registered categories).
-export const kennisbankItems: NavLink[] = [
-  { name: "Alle artikels", href: "/kennisbank" },
-  ...kennisbankCategories.map((category) => ({ name: category.name, href: `/kennisbank/${category.slug}` })),
-];
+// Sectoren cards (all 10 sectors, sector-sprite icons + their eyebrow tag).
+export const sectorCards: NavCard[] = sectors.map((sector) => ({
+  name: sector.title,
+  href: `/sectoren/${sector.slug}`,
+  icon: sector.icon ?? "kmo",
+  iconKind: "sector",
+  desc: sector.tag ?? sector.cardDescription ?? "",
+}));
+
+// Realisaties cards (all realisatie categories, iconed + short description).
+export const realisatieCards: NavCard[] = realisatieCategories.map((category) => ({
+  name: category.name,
+  href: `/realisaties/${category.slug}`,
+  icon: REALISATIE_ICON[category.slug] ?? "layers",
+  desc: category.description,
+}));
+
+/** Build a kennisbank card for a category (the Header filters to non-empty ones). */
+export function kennisbankCard(category: { slug: string; name: string; description: string }): NavCard {
+  return {
+    name: category.name,
+    href: `/kennisbank/${category.slug}`,
+    icon: KENNISBANK_ICON[category.slug] ?? "book",
+    desc: category.description,
+  };
+}
+
+// Default kennisbank cards (all registered categories); the Header narrows this
+// to only categories that actually have posts.
+export const kennisbankCards: NavCard[] = kennisbankCategories.map(kennisbankCard);

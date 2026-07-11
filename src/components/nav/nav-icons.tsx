@@ -93,6 +93,60 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M21.5 9v5" />
     </>
   ),
+  // Top-level dropdown glyphs
+  layers: (
+    <>
+      <path d="m12 2 9 5-9 5-9-5 9-5z" />
+      <path d="m3 12 9 5 9-5M3 17l9 5 9-5" />
+    </>
+  ),
+  briefcase: (
+    <>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <path d="M3 13h18" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z" />
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+    </>
+  ),
+  // Cross-service realisatie-category glyphs
+  building: (
+    <>
+      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+      <path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M12 11h.01M16 11h.01M10 21v-4h4v4" />
+    </>
+  ),
+  hardhat: (
+    <>
+      <path d="M4 15a8 8 0 0 1 16 0" />
+      <path d="M2 18.5h20" />
+      <path d="M10 6.4V4.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.9" />
+      <path d="M8 15V9.5M16 15V9.5" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3" y="4.5" width="18" height="17" rx="2" />
+      <path d="M3 9h18M8 2.5v4M16 2.5v4" />
+    </>
+  ),
+  trophy: (
+    <>
+      <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
+      <path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3" />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
+    </>
+  ),
 };
 
 export function NavIcon({

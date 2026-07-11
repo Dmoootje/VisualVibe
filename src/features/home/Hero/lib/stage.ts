@@ -35,6 +35,31 @@ const bars = Array.from({ length: 30 }, () => barStyle(1.25));
 
 const MONO = "font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;";
 
+// The real VisualVibe quadcopter (same drawing as <Quad> on the drone page),
+// as an HTML string for the drone hero scene. `.dr-rotor` spins the props
+// (globals.css); `.vvh-bob` handles the hover and `.vvh-fly` the flight path.
+const droneQuad = `<svg width="46" height="40" viewBox="0 0 120 104" fill="none" style="overflow:visible;filter:drop-shadow(0 5px 9px rgba(0,0,0,.55));">
+  <ellipse cx="60" cy="98" rx="46" ry="7" fill="rgba(0,0,0,.35)"></ellipse>
+  <line x1="60" y1="52" x2="22" y2="30" stroke="#3a3a40" stroke-width="5" stroke-linecap="round"></line>
+  <line x1="60" y1="52" x2="98" y2="30" stroke="#3a3a40" stroke-width="5" stroke-linecap="round"></line>
+  <line x1="60" y1="56" x2="24" y2="74" stroke="#2c2c30" stroke-width="5" stroke-linecap="round"></line>
+  <line x1="60" y1="56" x2="96" y2="74" stroke="#2c2c30" stroke-width="5" stroke-linecap="round"></line>
+  <g class="dr-rotor"><circle cx="22" cy="30" r="17" fill="rgba(255,122,0,.08)"></circle><rect x="6" y="28" width="32" height="4" rx="2" fill="rgba(255,180,120,.55)"></rect></g>
+  <g class="dr-rotor b"><circle cx="98" cy="30" r="17" fill="rgba(255,122,0,.08)"></circle><rect x="82" y="28" width="32" height="4" rx="2" fill="rgba(255,180,120,.55)"></rect></g>
+  <g class="dr-rotor b"><circle cx="24" cy="74" r="17" fill="rgba(255,122,0,.08)"></circle><rect x="8" y="72" width="32" height="4" rx="2" fill="rgba(255,180,120,.55)"></rect></g>
+  <g class="dr-rotor"><circle cx="96" cy="74" r="17" fill="rgba(255,122,0,.08)"></circle><rect x="80" y="72" width="32" height="4" rx="2" fill="rgba(255,180,120,.55)"></rect></g>
+  <circle cx="22" cy="30" r="5" fill="#18181c" stroke="#4a4a50" stroke-width="1.5"></circle>
+  <circle cx="98" cy="30" r="5" fill="#18181c" stroke="#4a4a50" stroke-width="1.5"></circle>
+  <circle cx="24" cy="74" r="5" fill="#18181c" stroke="#4a4a50" stroke-width="1.5"></circle>
+  <circle cx="96" cy="74" r="5" fill="#18181c" stroke="#4a4a50" stroke-width="1.5"></circle>
+  <rect x="44" y="42" width="32" height="24" rx="8" fill="#232329" stroke="#4a4a52" stroke-width="1.5"></rect>
+  <circle cx="26" cy="30" r="2" fill="#FF3B2E"></circle>
+  <circle cx="94" cy="30" r="2" fill="#FF3B2E"></circle>
+  <path d="M52 66 q8 8 16 0" fill="none" stroke="#3a3a42" stroke-width="4" stroke-linecap="round"></path>
+  <circle cx="60" cy="70" r="7" fill="#0e0e12" stroke="#5a5a62" stroke-width="2"></circle>
+  <circle cx="60" cy="70" r="3" fill="#FF7A00"></circle>
+</svg>`;
+
 /** Background falling blocks (behind the whole hero). */
 export const FALLING_HTML = blocks.map((s) => `<span class="vvh-blk" style="${s}"></span>`).join("");
 
@@ -171,7 +196,7 @@ export const STAGE_HTML = `
             <div class="vvh-sweep" style="position:absolute;inset:0;background:conic-gradient(from 0deg,rgba(255,122,0,.5),transparent 70deg);"></div>
           </div>
           <svg width="100%" height="100%" viewBox="0 0 564 300" preserveAspectRatio="none" style="position:absolute;inset:0;"><path d="M 24 250 C 150 110, 250 300, 380 160 S 540 60, 556 200" fill="none" stroke="rgba(255,122,0,.5)" stroke-width="1.5" stroke-dasharray="4 6"></path></svg>
-          <div class="vvh-fly" style="position:absolute;top:0;left:0;"><div class="vvh-bob"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.7"><circle cx="5" cy="6" r="2.2"></circle><circle cx="19" cy="6" r="2.2"></circle><circle cx="5" cy="18" r="2.2"></circle><circle cx="19" cy="18" r="2.2"></circle><path d="M7 7.5 10.5 11M16.5 7.5 13 11M7 16.5 10.5 13M16.5 16.5 13 13"></path><rect x="9.5" y="9.5" width="5" height="5" rx="1.2" fill="#FF7A00" stroke="none"></rect></svg></div></div>
+          <div class="vvh-fly" style="position:absolute;top:0;left:0;offset-rotate:0deg;"><div class="vvh-bob">${droneQuad}</div></div>
           <div style="position:absolute;top:26px;left:26px;${MONO}color:#fff;">
             <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;">ALTITUDE</div>
             <div style="font-weight:800;font-size:34px;color:#fff;line-height:1;">62.4<span style="font-size:14px;color:#FF9A45;">m</span></div>

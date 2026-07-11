@@ -7,18 +7,30 @@ import { Link, usePathname } from "@/i18n/navigation";
 import NextLink from "next/link";
 import { regions } from "@/data/regions";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
+import { SectorIcon } from "@/components/sectors";
 import { NavIcon } from "./nav-icons";
 import {
   pillars,
-  sectorItems,
-  realisatieItems,
-  kennisbankItems as defaultKennisbankItems,
-  type NavLink,
+  sectorCards,
+  realisatieCards,
+  kennisbankCards as defaultKennisbankCards,
+  type NavCard,
 } from "./navData";
+
+// Renders a nav glyph from either the nav-icon set or the sector sprite.
+function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav" | "sector"; size?: number }) {
+  return iconKind === "sector" ? (
+    <SectorIcon id={icon} size={size} animate={false} />
+  ) : (
+    <NavIcon id={icon} size={size} />
+  );
+}
 
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";
 const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
+// Two-line ellipsis for the card sublines in the dropdowns/submenus.
+const CLAMP2: CSSProperties = { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" };
 
 type DesktopMenu = "diensten" | "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
 
@@ -104,9 +116,11 @@ function Logo({ size = 24 }: { size?: number }) {
 }
 
 export function Nav({
-  kennisbankItems = defaultKennisbankItems,
+  kennisbankItems = defaultKennisbankCards,
+  kennisbankPostCount = 0,
 }: {
-  kennisbankItems?: NavLink[];
+  kennisbankItems?: NavCard[];
+  kennisbankPostCount?: number;
 }) {
   const pathname = usePathname();
 
@@ -265,25 +279,25 @@ export function Nav({
       <ChevRight color="rgba(255,255,255,.3)" />
     </button>
   );
-  const chevRow = (label: string, onClick: () => void) => (
-    <button type="button" onClick={onClick} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", padding: "15px 12px", borderRadius: 12, background: "none", border: 0, color: "#fff", font: "inherit", cursor: "pointer" }}>
-      <span style={{ flex: 1, fontFamily: SORA, fontWeight: 700, fontSize: 16 }}>{label}</span>
-      <ChevRight color="rgba(255,255,255,.3)" />
-    </button>
-  );
   const linkRow = (href: string, label: string) => (
     <Link href={href} onClick={closeDrawer} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", padding: "15px 12px", borderRadius: 12, fontFamily: SORA, fontWeight: 700, fontSize: 16, color: "#fff" }}>
       {label}
     </Link>
   );
 
-  const listPanel = (name: DrawerView, title: string, allHref: string, items: NavLink[]) => (
+  const cardPanel = (name: DrawerView, title: string, allHref: string, items: NavCard[]) => (
     <div className="vvnav-mvPanel" style={panelStyle(name)}>
       {pushHead(title, allHref)}
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {items.map((it) => (
-          <Link key={it.href} href={it.href} onClick={closeDrawer} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 12px", borderRadius: 11, fontSize: 14.5, fontWeight: 600, color: "rgba(255,255,255,.85)" }}>
-            {it.name}
+          <Link key={it.href} href={it.href} onClick={closeDrawer} className="vvnav-mCard" style={cardBase}>
+            <span style={chipStyle(40)}>
+              <CardIcon icon={it.icon} iconKind={it.iconKind} size={20} />
+            </span>
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15, color: "#fff" }}>{it.name}</span>
+              {it.desc && <span style={{ display: "block", fontSize: 12, lineHeight: 1.35, color: "rgba(255,255,255,.45)", marginTop: 2, ...CLAMP2 }}>{it.desc}</span>}
+            </span>
             <ChevRight color="rgba(255,255,255,.28)" size={14} />
           </Link>
         ))}
@@ -413,10 +427,10 @@ export function Nav({
 
           {/* Regio mega-menu with region map cards */}
           <RegioMega open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <DesktopDropdown label="Realisaties" items={realisatieItems} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} />
-          <DesktopDropdown label="Sectoren" items={sectorItems} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
+          <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} />
+          <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
-            <DesktopDropdown label="Kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
+            <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
           <Link href="/over-ons" className="vvnav-link">Over ons</Link>
           <Link href="/contact" className="vvnav-link">Contact</Link>
@@ -464,9 +478,17 @@ export function Nav({
               {linkRow("/", "Home")}
               {appRow(<GridGlyph />, "Diensten", `${pillars.length} disciplines`, () => setView("diensten"))}
               {appRow(<PinGlyph />, "Regio", `${regions.length} werkgebieden`, () => setView("regio"))}
-              {chevRow("Realisaties", () => setView("realisaties"))}
-              {chevRow("Sectoren", () => setView("sectoren"))}
-              {kennisbankItems.length > 0 && chevRow("Kennisbank", () => setView("kennisbank"))}
+              {appRow(<NavIcon id="layers" size={20} />, "Realisaties", `${realisatieCards.length} categorieën`, () => setView("realisaties"))}
+              {appRow(<NavIcon id="briefcase" size={20} />, "Sectoren", `${sectorCards.length} sectoren`, () => setView("sectoren"))}
+              {kennisbankItems.length > 0 &&
+                appRow(
+                  <NavIcon id="book" size={20} />,
+                  "Kennisbank",
+                  kennisbankPostCount > 0
+                    ? `${kennisbankItems.length} categorieën · ${kennisbankPostCount} artikels`
+                    : `${kennisbankItems.length} categorieën`,
+                  () => setView("kennisbank"),
+                )}
               {linkRow("/over-ons", "Over ons")}
               {linkRow("/contact", "Contact")}
             </div>
@@ -592,10 +614,10 @@ export function Nav({
               </div>
             </div>
 
-            {/* REALISATIES / SECTOREN / KENNISBANK (list panels) */}
-            {listPanel("realisaties", "Realisaties", "/realisaties", realisatieItems)}
-            {listPanel("sectoren", "Sectoren", "/sectoren", sectorItems)}
-            {kennisbankItems.length > 0 && listPanel("kennisbank", "Kennisbank", "/kennisbank", kennisbankItems)}
+            {/* REALISATIES / SECTOREN / KENNISBANK (iconed card panels) */}
+            {cardPanel("realisaties", "Realisaties", "/realisaties", realisatieCards)}
+            {cardPanel("sectoren", "Sectoren", "/sectoren", sectorCards)}
+            {kennisbankItems.length > 0 && cardPanel("kennisbank", "Kennisbank", "/kennisbank", kennisbankItems)}
           </div>
 
           <div style={{ flex: "none", padding: "16px 18px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -612,19 +634,34 @@ export function Nav({
   );
 }
 
-function DesktopDropdown({ label, items, open, onOpen, onClose }: { label: string; items: NavLink[]; open: boolean; onOpen: () => void; onClose: () => void }) {
+function DesktopDropdown({ label, allHref, items, open, onOpen, onClose }: { label: string; allHref: string; items: NavCard[]; open: boolean; onOpen: () => void; onClose: () => void }) {
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
       <span style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer" }}>
         {label} <ChevDown className="vvnav-navChev" color="currentColor" />
       </span>
       <div className={`vvnav-dd ${open ? "is-open" : ""}`}>
-        <div style={{ minWidth: 240, padding: 8, borderRadius: 14, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
-          {items.map((it) => (
-            <Link key={it.href} href={it.href} className="vvnav-ddItem" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,.82)" }}>
-              {it.name} <ChevRight color="rgba(255,255,255,.3)" size={14} />
+        <div style={{ width: 360, maxWidth: "calc(100vw - 32px)", padding: 8, borderRadius: 16, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "6px 10px 10px" }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>{label}</span>
+            <Link href={allHref} onClick={onClose} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12, color: "#FF9A45", whiteSpace: "nowrap" }}>
+              Alle <ArrowRight />
             </Link>
-          ))}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 3, maxHeight: "min(66vh, 520px)", overflowY: "auto" }}>
+            {items.map((it) => (
+              <Link key={it.href} href={it.href} onClick={onClose} className="vvnav-ddItem" style={{ display: "flex", alignItems: "center", gap: 11, padding: "9px 10px", borderRadius: 11 }}>
+                <span style={{ flex: "none", width: 34, height: 34, borderRadius: 9, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF9A45" }}>
+                  <CardIcon icon={it.icon} iconKind={it.iconKind} size={17} />
+                </span>
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontFamily: SORA, fontSize: 13.5, fontWeight: 700, color: "rgba(255,255,255,.9)" }}>{it.name}</span>
+                  {it.desc && <span style={{ display: "block", fontSize: 11.5, lineHeight: 1.35, color: "rgba(255,255,255,.45)", marginTop: 1, ...CLAMP2 }}>{it.desc}</span>}
+                </span>
+                <ChevRight className="vvnav-schev" color="rgba(255,255,255,.3)" size={14} />
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
