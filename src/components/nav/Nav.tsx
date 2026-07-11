@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 // Admin lives outside the [locale] tree, so its links must NOT get the locale
 // prefix (the intl Link would turn "/admin/login" into "/be/admin/login" -> 404).
@@ -10,7 +10,6 @@ import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMini
 import { NavIcon } from "./nav-icons";
 import {
   pillars,
-  regioItems,
   sectorItems,
   realisatieItems,
   kennisbankItems as defaultKennisbankItems,
@@ -22,7 +21,28 @@ const MONO = "var(--font-jetbrains-mono), monospace";
 const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
 
 type DesktopMenu = "diensten" | "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
-type DrawerSection = "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
+
+// Mobile push-navigation drawer: the current level + its parent chain drive the
+// iOS-style slide/dim transforms.
+type DrawerView = "root" | "diensten" | "service" | "regio" | "realisaties" | "sectoren" | "kennisbank";
+const DRAWER_PARENT: Record<DrawerView, DrawerView | null> = {
+  root: null,
+  diensten: "root",
+  service: "diensten",
+  regio: "root",
+  realisaties: "root",
+  sectoren: "root",
+  kennisbank: "root",
+};
+const DRAWER_DEPTH: Record<DrawerView, number> = {
+  root: 0,
+  diensten: 1,
+  service: 2,
+  regio: 1,
+  realisaties: 1,
+  sectoren: 1,
+  kennisbank: 1,
+};
 
 function ChevDown({ className, color = "#FF7A00" }: { className?: string; color?: string }) {
   return (
@@ -53,6 +73,28 @@ function UserIcon({ size = 20, color = "rgba(255,255,255,.8)" }: { size?: number
   );
 }
 
+function ChevLeft({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m15 6-6 6 6 6" />
+    </svg>
+  );
+}
+function GridGlyph({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+    </svg>
+  );
+}
+function PinGlyph({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z" /><circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+
 function Logo({ size = 24 }: { size?: number }) {
   return (
     <span style={{ fontFamily: SORA, fontWeight: 800, fontSize: size, letterSpacing: "-.01em", color: "#fff" }}>
@@ -60,8 +102,6 @@ function Logo({ size = 24 }: { size?: number }) {
     </span>
   );
 }
-
-const rowLink = "flex items-center gap-2";
 
 export function Nav({
   kennisbankItems = defaultKennisbankItems,
@@ -75,11 +115,10 @@ export function Nav({
   const [active, setActive] = useState<number | null>(null);
   const [fade, setFade] = useState(false);
 
-  // Mobile drawer
+  // Mobile drawer (app-first push navigation)
   const [drawer, setDrawer] = useState(false);
-  const [mNav, setMNav] = useState(true);
-  const [mExp, setMExp] = useState<number | null>(0);
-  const [mSection, setMSection] = useState<DrawerSection>(null);
+  const [view, setView] = useState<DrawerView>("root");
+  const [svc, setSvc] = useState<number | null>(null);
 
   function pick(i: number) {
     setActive(i);
@@ -124,6 +163,133 @@ export function Nav({
   }, []);
 
   const ap = active != null ? pillars[active] : null;
+
+  // ===== mobile drawer helpers =====
+  const closeDrawer = () => setDrawer(false);
+  const back = () => setView(view === "service" ? "diensten" : "root");
+  const openDrawer = () => {
+    setView("root");
+    setSvc(null);
+    setDrawer(true);
+  };
+  const curPillar = svc != null ? pillars[svc] : null;
+
+  // Slide/dim transform for a push panel: active at 0, its parent chain 26% left
+  // and dimmed, everything else parked off-screen right.
+  const panelStyle = (name: DrawerView): CSSProperties => {
+    const ancestors: DrawerView[] = [];
+    let c = DRAWER_PARENT[view];
+    while (c) {
+      ancestors.push(c);
+      c = DRAWER_PARENT[c];
+    }
+    let x = "100%";
+    let op = 1;
+    if (name === view) {
+      x = "0";
+    } else if (ancestors.includes(name)) {
+      x = "-26%";
+      op = 0.35;
+    }
+    return {
+      transform: `translateX(${x})`,
+      opacity: op,
+      zIndex: DRAWER_DEPTH[name] + 1,
+      pointerEvents: name === view ? "auto" : "none",
+    };
+  };
+
+  const chipStyle = (px: number): CSSProperties => ({
+    flex: "none",
+    width: px,
+    height: px,
+    borderRadius: px >= 44 ? 12 : 9,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#FF9A45",
+    background: "rgba(255,122,0,.12)",
+    border: "1px solid rgba(255,122,0,.24)",
+  });
+  const cardBase: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    width: "100%",
+    textAlign: "left",
+    padding: "12px",
+    borderRadius: 14,
+    border: "1px solid rgba(255,255,255,.07)",
+    background: "rgba(255,255,255,.02)",
+    color: "#fff",
+    font: "inherit",
+    cursor: "pointer",
+  };
+  const eyebrowStyle: CSSProperties = {
+    fontFamily: MONO,
+    fontSize: 10.5,
+    fontWeight: 700,
+    letterSpacing: ".18em",
+    textTransform: "uppercase",
+    color: "rgba(255,255,255,.4)",
+    padding: "8px 8px 12px",
+  };
+
+  const pushHead = (title: string, allHref?: string) => (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+      <button
+        type="button"
+        onClick={back}
+        className="vvnav-mrow"
+        style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "8px 12px 8px 6px", borderRadius: 10, background: "none", border: 0, color: "#fff", font: "inherit", cursor: "pointer" }}
+      >
+        <ChevLeft />
+        <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 16 }}>{title}</span>
+      </button>
+      {allHref && (
+        <Link href={allHref} onClick={closeDrawer} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
+          Alle <ArrowRight />
+        </Link>
+      )}
+    </div>
+  );
+
+  // App-style root rows.
+  const appRow = (chip: ReactNode, label: string, sub: string, onClick: () => void) => (
+    <button type="button" onClick={onClick} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", padding: "13px 12px", borderRadius: 13, background: "none", border: 0, color: "#fff", font: "inherit", cursor: "pointer" }}>
+      <span style={chipStyle(40)}>{chip}</span>
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 16 }}>{label}</span>
+        <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.42)", marginTop: 1 }}>{sub}</span>
+      </span>
+      <ChevRight color="rgba(255,255,255,.3)" />
+    </button>
+  );
+  const chevRow = (label: string, onClick: () => void) => (
+    <button type="button" onClick={onClick} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", padding: "15px 12px", borderRadius: 12, background: "none", border: 0, color: "#fff", font: "inherit", cursor: "pointer" }}>
+      <span style={{ flex: 1, fontFamily: SORA, fontWeight: 700, fontSize: 16 }}>{label}</span>
+      <ChevRight color="rgba(255,255,255,.3)" />
+    </button>
+  );
+  const linkRow = (href: string, label: string) => (
+    <Link href={href} onClick={closeDrawer} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", padding: "15px 12px", borderRadius: 12, fontFamily: SORA, fontWeight: 700, fontSize: 16, color: "#fff" }}>
+      {label}
+    </Link>
+  );
+
+  const listPanel = (name: DrawerView, title: string, allHref: string, items: NavLink[]) => (
+    <div className="vvnav-mvPanel" style={panelStyle(name)}>
+      {pushHead(title, allHref)}
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {items.map((it) => (
+          <Link key={it.href} href={it.href} onClick={closeDrawer} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 12px", borderRadius: 11, fontSize: 14.5, fontWeight: 600, color: "rgba(255,255,255,.85)" }}>
+            {it.name}
+            <ChevRight color="rgba(255,255,255,.28)" size={14} />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <header className="vvnav-bar">
@@ -270,7 +436,7 @@ export function Nav({
         <button
           type="button"
           className="vvnav-mbBtn"
-          onClick={() => setDrawer(true)}
+          onClick={openDrawer}
           aria-label="Menu openen"
           style={{ alignItems: "center", justifyContent: "center", width: 46, height: 46, borderRadius: 12, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)", cursor: "pointer", padding: 0 }}
         >
@@ -280,86 +446,147 @@ export function Nav({
         </button>
       </nav>
 
-      {/* ===== mobile drawer ===== */}
+      {/* ===== mobile drawer (app-first push navigation) ===== */}
       <div className={`vvnav-drawerRoot ${drawer ? "is-open" : ""}`}>
-        <div className="vvnav-backdrop" onClick={() => setDrawer(false)} />
+        <div className="vvnav-backdrop" onClick={closeDrawer} />
         <aside className="vvnav-drawerPanel" aria-hidden={!drawer}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", borderBottom: "1px solid rgba(255,255,255,.07)", flex: "none" }}>
             <Logo size={20} />
-            <button type="button" onClick={() => setDrawer(false)} aria-label="Sluiten" style={{ width: 42, height: 42, borderRadius: 11, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0 }}>
+            <button type="button" onClick={closeDrawer} aria-label="Sluiten" style={{ width: 42, height: 42, borderRadius: 11, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0 }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
             </button>
           </div>
 
-          <div style={{ flex: 1, overflowY: "auto", padding: "10px 14px 20px" }}>
-            <DrawerLink href="/" onNavigate={() => setDrawer(false)}>Home</DrawerLink>
+          <div className="vvnav-mvView">
+            {/* ROOT */}
+            <div className="vvnav-mvPanel" style={panelStyle("root")}>
+              <div style={eyebrowStyle}>Menu</div>
+              {linkRow("/", "Home")}
+              {appRow(<GridGlyph />, "Diensten", `${pillars.length} disciplines`, () => setView("diensten"))}
+              {appRow(<PinGlyph />, "Regio", `${regions.length} werkgebieden`, () => setView("regio"))}
+              {chevRow("Realisaties", () => setView("realisaties"))}
+              {chevRow("Sectoren", () => setView("sectoren"))}
+              {kennisbankItems.length > 0 && chevRow("Kennisbank", () => setView("kennisbank"))}
+              {linkRow("/over-ons", "Over ons")}
+              {linkRow("/contact", "Contact")}
+            </div>
 
-            {/* Diensten accordion */}
-            <div style={{ borderRadius: 12, overflow: "hidden" }}>
-              <div className="vvnav-mrow" onClick={() => setMNav((v) => !v)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "15px 12px", cursor: "pointer" }}>
-                <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 17, color: "#fff" }}>Diensten</span>
-                <ChevDown className="vvnav-mchev" />
-              </div>
-              <div className="vvnav-macc" style={{ gridTemplateRows: mNav ? "1fr" : "0fr" }}>
-                <div style={{ overflow: "hidden" }}>
-                  <div style={{ padding: "2px 2px 10px", display: "flex", flexDirection: "column", gap: 6 }}>
-                    {pillars.map((p, i) => {
-                      const ex = i === mExp;
-                      return (
-                        <div key={p.id} style={{ borderRadius: 12, border: "1px solid rgba(255,255,255,.06)", background: "rgba(255,255,255,.02)", overflow: "hidden" }}>
-                          <div className="vvnav-mrow" onClick={() => setMExp((x) => (x === i ? null : i))} style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 12px", cursor: "pointer", background: ex ? "rgba(255,122,0,.06)" : "transparent" }}>
-                            <span style={{ flex: "none", width: 34, height: 34, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", color: ex ? "#FF7A00" : "rgba(255,255,255,.75)", background: ex ? "rgba(255,122,0,.16)" : "rgba(255,255,255,.04)", border: `1px solid ${ex ? "rgba(255,122,0,.3)" : "rgba(255,255,255,.08)"}` }}>
-                              <NavIcon id={p.icon} size={18} />
-                            </span>
-                            <span style={{ flex: 1, minWidth: 0 }}>
-                              <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15, color: "#fff" }}>{p.name}</span>
-                              <span style={{ display: "block", fontSize: 11.5, color: "rgba(255,255,255,.42)" }}>{p.tag}</span>
-                            </span>
-                            <ChevDown className="vvnav-mchev" color={ex ? "#FF7A00" : "rgba(255,255,255,.3)"} />
-                          </div>
-                          <div className="vvnav-macc" style={{ gridTemplateRows: ex ? "1fr" : "0fr" }}>
-                            <div style={{ overflow: "hidden" }}>
-                              <div style={{ padding: "4px 10px 12px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
-                                <Link href={p.href} onClick={() => setDrawer(false)} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 11, padding: "11px 10px", borderRadius: 10, fontSize: 13.5, fontWeight: 700, color: "#FF9A45" }}>
-                                  Bekijk {p.name}
-                                  <ChevRight color="#FF9A45" size={13} />
-                                </Link>
-                                {p.subs.map((s) => (
-                                  <Link key={s.href} href={s.href} onClick={() => setDrawer(false)} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 10px", borderRadius: 10 }}>
-                                    <span style={{ flex: "none", width: 26, height: 26, borderRadius: 7, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF9A45" }}>
-                                      <NavIcon id={s.icon} size={14} strokeWidth={1.8} />
-                                    </span>
-                                    <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, fontWeight: 600, color: "rgba(255,255,255,.82)" }}>{s.name}</span>
-                                    <ChevRight color="rgba(255,255,255,.28)" size={13} />
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+            {/* DIENSTEN (service cards) */}
+            <div className="vvnav-mvPanel" style={panelStyle("diensten")}>
+              {pushHead("Diensten", "/diensten")}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {pillars.map((p, i) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      setSvc(i);
+                      setView("service");
+                    }}
+                    className="vvnav-mCard"
+                    style={cardBase}
+                  >
+                    <span style={chipStyle(44)}>
+                      <NavIcon id={p.icon} size={22} />
+                    </span>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>{p.name}</span>
+                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.45)", marginTop: 1 }}>{p.tag}</span>
+                    </span>
+                    <ChevRight color="rgba(255,255,255,.3)" />
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Regio / Realisaties / Sectoren / Kennisbank accordions */}
-            <DrawerAccordion label="Regio" items={regioItems} open={mSection === "regio"} onToggle={() => setMSection((s) => (s === "regio" ? null : "regio"))} onNavigate={() => setDrawer(false)} />
-            <DrawerAccordion label="Realisaties" items={realisatieItems} open={mSection === "realisaties"} onToggle={() => setMSection((s) => (s === "realisaties" ? null : "realisaties"))} onNavigate={() => setDrawer(false)} />
-            <DrawerAccordion label="Sectoren" items={sectorItems} open={mSection === "sectoren"} onToggle={() => setMSection((s) => (s === "sectoren" ? null : "sectoren"))} onNavigate={() => setDrawer(false)} />
-            {kennisbankItems.length > 0 && (
-              <DrawerAccordion label="Kennisbank" items={kennisbankItems} open={mSection === "kennisbank"} onToggle={() => setMSection((s) => (s === "kennisbank" ? null : "kennisbank"))} onNavigate={() => setDrawer(false)} />
-            )}
-            <DrawerLink href="/over-ons" onNavigate={() => setDrawer(false)}>Over ons</DrawerLink>
-            <DrawerLink href="/contact" onNavigate={() => setDrawer(false)}>Contact</DrawerLink>
+            {/* SERVICE (sub-services) */}
+            <div className="vvnav-mvPanel" style={panelStyle("service")}>
+              {curPillar && (
+                <>
+                  {pushHead(curPillar.name, curPillar.href)}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {curPillar.subs.map((s) => (
+                      <Link key={s.href} href={s.href} onClick={closeDrawer} className="vvnav-mCard" style={cardBase}>
+                        <span style={chipStyle(36)}>
+                          <NavIcon id={s.icon} size={18} strokeWidth={1.8} />
+                        </span>
+                        <span style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,.88)" }}>{s.name}</span>
+                        <ChevRight color="rgba(255,255,255,.28)" size={14} />
+                      </Link>
+                    ))}
+                    <Link
+                      href="/offerte-aanvragen"
+                      onClick={closeDrawer}
+                      style={{ marginTop: 4, display: "flex", alignItems: "center", gap: 14, padding: "15px 16px", borderRadius: 14, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 62%),rgba(255,255,255,.02)" }}
+                    >
+                      <span style={{ flex: "none", width: 44, height: 44, borderRadius: 12, background: "radial-gradient(circle at 35% 30%,rgba(255,122,0,.2),rgba(255,122,0,.05))", border: "1px solid rgba(255,122,0,.25)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF7A00" }}>
+                        <NavIcon id={curPillar.icon} size={24} strokeWidth={1.6} />
+                      </span>
+                      <span style={{ flex: 1, minWidth: 0 }}>
+                        <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 14.5, color: "#fff" }}>Klaar voor {curPillar.name.toLowerCase()}?</span>
+                        <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.55)", marginTop: 2 }}>Vraag vrijblijvend een voorstel aan.</span>
+                      </span>
+                      <span style={{ flex: "none", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, borderRadius: 10, background: GRADIENT, color: "#fff" }}>
+                        <ArrowRight />
+                      </span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* REGIO (map cards) */}
+            <div className="vvnav-mvPanel" style={panelStyle("regio")}>
+              {pushHead("Regio", "/regio")}
+              <div style={eyebrowStyle}>Onze regio&apos;s</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {regions.map((region) => {
+                  const isHome = region.type === "province";
+                  return (
+                    <Link
+                      key={region.slug}
+                      href={`/regio/${region.slug}`}
+                      onClick={closeDrawer}
+                      className="vvnav-mCard"
+                      style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRadius: 15, border: "1px solid rgba(255,255,255,.1)", background: "rgba(255,255,255,.02)", color: "#fff" }}
+                    >
+                      <div style={{ position: "relative", height: 100, overflow: "hidden", background: "linear-gradient(to bottom,#171717,#0a0a0a)" }}>
+                        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 60% 45%,rgba(255,117,0,.16),transparent 60%)" }} />
+                        <RegionMiniMap slug={region.slug} />
+                        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 28, background: "linear-gradient(to top,#0a0a0a,transparent)" }} />
+                      </div>
+                      <div style={{ padding: "10px 11px 12px", display: "flex", flexDirection: "column", gap: 6 }}>
+                        <span
+                          style={
+                            isHome
+                              ? { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,122,0,.3)", background: "rgba(255,122,0,.1)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "#FF9A45" }
+                              : { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.05)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }
+                          }
+                        >
+                          {isHome ? "Thuisregio" : "Regio"}
+                        </span>
+                        <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 14, color: "#fff", lineHeight: 1.15 }}>{region.title}</span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11.5, fontWeight: 700, color: "#FF9A45" }}>
+                          Ontdek <ArrowRight />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* REALISATIES / SECTOREN / KENNISBANK (list panels) */}
+            {listPanel("realisaties", "Realisaties", "/realisaties", realisatieItems)}
+            {listPanel("sectoren", "Sectoren", "/sectoren", sectorItems)}
+            {kennisbankItems.length > 0 && listPanel("kennisbank", "Kennisbank", "/kennisbank", kennisbankItems)}
           </div>
 
           <div style={{ flex: "none", padding: "16px 18px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", flexDirection: "column", gap: 10 }}>
-            <Link href="/offerte-aanvragen" onClick={() => setDrawer(false)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 15, borderRadius: 12, background: GRADIENT, boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)" }}>
+            <Link href="/offerte-aanvragen" onClick={closeDrawer} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 15, borderRadius: 12, background: GRADIENT, boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)" }}>
               Offerte aanvragen <ArrowRight size={16} />
             </Link>
-            <NextLink href="/admin/login" onClick={() => setDrawer(false)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
+            <NextLink href="/admin/login" onClick={closeDrawer} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
               <UserIcon size={17} color="currentColor" /> Inloggen
             </NextLink>
           </div>
@@ -441,33 +668,3 @@ function RegioMega({ open, onOpen, onClose }: { open: boolean; onOpen: () => voi
   );
 }
 
-function DrawerLink({ href, onNavigate, children }: { href: string; onNavigate: () => void; children: React.ReactNode }) {
-  return (
-    <Link href={href} onClick={onNavigate} className={`vvnav-mrow ${rowLink}`} style={{ padding: "15px 12px", borderRadius: 12, fontFamily: SORA, fontWeight: 700, fontSize: 17, color: "#fff" }}>
-      {children}
-    </Link>
-  );
-}
-
-function DrawerAccordion({ label, items, open, onToggle, onNavigate }: { label: string; items: NavLink[]; open: boolean; onToggle: () => void; onNavigate: () => void }) {
-  const rowStyle: CSSProperties = { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "15px 12px", borderRadius: 12, fontFamily: SORA, fontWeight: 700, fontSize: 17, color: "#fff", cursor: "pointer" };
-  return (
-    <div style={{ borderRadius: 12, overflow: "hidden" }}>
-      <div className="vvnav-mrow" onClick={onToggle} style={rowStyle}>
-        <span>{label}</span>
-        <ChevDown className="vvnav-mchev" color={open ? "#FF7A00" : "rgba(255,255,255,.4)"} />
-      </div>
-      <div className="vvnav-macc" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
-        <div style={{ overflow: "hidden" }}>
-          <div style={{ padding: "2px 6px 12px 12px", display: "flex", flexDirection: "column", gap: 2 }}>
-            {items.map((it) => (
-              <Link key={it.href} href={it.href} onClick={onNavigate} className="vvnav-mrow" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 10px", borderRadius: 10, fontSize: 14.5, fontWeight: 600, color: "rgba(255,255,255,.82)" }}>
-                {it.name} <ChevRight color="rgba(255,255,255,.28)" size={14} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}

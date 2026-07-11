@@ -62,7 +62,7 @@ export const services: Service[] = [
     category: "seo",
     excerpt: "Lokale vindbaarheid en zichtbaarheid in AI-zoekresultaten.",
     intro:
-      "VisualVibe helpt KMO's in Limburg beter vindbaar worden in Google én in AI-zoekresultaten zoals ChatGPT en Google AI Overviews. Van technische SEO tot lokale optimalisatie en content die vragen van klanten rechtstreeks beantwoordt.",
+      "SEO diensten van VisualVibe laten je website ranken in Google én zichtbaar zijn in AI-zoekmachines zoals ChatGPT, Perplexity en Google AI Overviews. Van technische SEO en lokale optimalisatie tot content die de vragen van je klanten rechtstreeks beantwoordt: alles om KMO's in Limburg beter vindbaar te maken.",
     benefits: [
       "Lokale SEO",
       "Technische SEO",
@@ -78,14 +78,39 @@ export const services: Service[] = [
     ],
     faqs: [
       {
-        question: "Wat is het verschil tussen SEO en AEO/GEO?",
+        question: "Wat zijn SEO diensten precies?",
         answer:
-          "SEO optimaliseert voor klassieke zoekresultaten; AEO (Answer Engine Optimization) en GEO (Generative Engine Optimization) optimaliseren specifiek voor vraag-antwoord- en AI-gegenereerde resultaten zoals ChatGPT en Google AI Overviews.",
+          "SEO diensten zijn alle diensten die je website beter vindbaar maken in zoekmachines. Bij VisualVibe omvat dat lokale SEO, technische SEO, SEO-copywriting, Google Business Profiel-optimalisatie en AI SEO (AEO/GEO). Samen zorgen ze dat je hoger rankt in Google én zichtbaar bent in AI-zoekmachines.",
+      },
+      {
+        question: "Wat kosten SEO diensten bij VisualVibe?",
+        answer:
+          "De prijs van SEO diensten hangt af van je uitgangssituatie en doelen. Een eenmalige SEO-audit is toegankelijker dan een doorlopend maandelijks traject. Vraag een vrijblijvende offerte aan en je ontvangt een voorstel op maat van je KMO.",
       },
       {
         question: "Hoe snel zie ik resultaat van SEO?",
         answer:
-          "Lokale SEO-verbeteringen zijn vaak binnen enkele weken merkbaar; competitieve landelijke termen vragen meestal 3 tot 6 maanden.",
+          "Lokale SEO-verbeteringen zijn vaak binnen enkele weken merkbaar; competitieve landelijke zoektermen vragen meestal 3 tot 6 maanden. SEO is een investering op lange termijn: de resultaten blijven groeien zolang je content en techniek onderhouden worden.",
+      },
+      {
+        question: "Wat is het verschil tussen SEO en AEO/GEO?",
+        answer:
+          "SEO optimaliseert voor klassieke zoekresultaten in Google; AEO (Answer Engine Optimization) en GEO (Generative Engine Optimization) optimaliseren specifiek voor vraag-antwoord- en AI-gegenereerde resultaten zoals ChatGPT, Perplexity en Google AI Overviews. Onze SEO diensten combineren beide.",
+      },
+      {
+        question: "Doen jullie ook lokale SEO voor mijn regio?",
+        answer:
+          "Ja. Lokale SEO is een kern van onze SEO diensten: we optimaliseren je Google Business Profiel, lokale zoektermen en consistente NAP-gegevens zodat je bovenaan verschijnt voor klanten in Limburg en omstreken.",
+      },
+      {
+        question: "Werken jullie met SEO-contracten?",
+        answer:
+          "Dat kan, maar het hoeft niet. We werken zowel met eenmalige opdrachten (bijvoorbeeld een SEO-audit of een geoptimaliseerde website) als met doorlopende maandelijkse trajecten met rapportage. Je kiest wat bij je bedrijf en budget past.",
+      },
+      {
+        question: "Moet mijn website eerst vernieuwd worden voor SEO?",
+        answer:
+          "Niet altijd. We starten met een SEO-audit; is je website technisch gezond, dan optimaliseren we de bestaande site. Is ze traag of verouderd, dan is een SEO-website laten maken vaak efficiënter dan achteraf blijven bijsturen.",
       },
     ],
     relatedServices: ["webdesign", "fotografie"],
@@ -93,11 +118,12 @@ export const services: Service[] = [
     relatedCases: [],
     relatedPosts: [],
     seo: {
-      title: "SEO Bureau Limburg | Lokale Vindbaarheid | VisualVibe",
+      title: "SEO diensten Limburg | Ranken in Google & AI | VisualVibe",
       description:
-        "SEO bureau in Limburg voor lokale vindbaarheid en AI-zoekresultaten. Technische SEO, lokale SEO en GEO-strategie op maat van je KMO.",
+        "SEO diensten in Limburg: lokale SEO, technische SEO, SEO-copywriting en AI SEO (GEO). Laat je website ranken in Google én AI-zoekmachines. Vraag een offerte.",
       keywords: [
-        "SEO Limburg",
+        "SEO diensten",
+        "SEO diensten Limburg",
         "SEO bureau Limburg",
         "lokale SEO",
         "technische SEO",

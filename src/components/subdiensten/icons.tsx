@@ -49,6 +49,41 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M8.6 12.5v-1.5M11 12.5V9M13.4 12.5V8" />
     </>
   ),
+  // SEO-subdienst glyphs (SEO-dienstenpagina).
+  "seo-lokaal": (
+    <>
+      <path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </>
+  ),
+  "seo-technisch": (
+    <>
+      <path d="M4 14a8 8 0 0 1 16 0" />
+      <path d="m12 14 4.2-3.6" />
+      <circle cx="12" cy="14" r="1.2" />
+      <path d="M4 18h16" />
+    </>
+  ),
+  "seo-copy": (
+    <>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M9 8h6M9 12h6M9 16h4" />
+    </>
+  ),
+  "seo-gbp": (
+    <>
+      <path d="M3.5 9 5 4h14l1.5 5" />
+      <path d="M4.5 9v10h15V9" />
+      <path d="M9.5 19v-5h5v5" />
+      <path d="M3.5 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0" />
+    </>
+  ),
+  "seo-ai": (
+    <>
+      <path d="M12 3.2 13.7 8 18 9.5 13.7 11 12 15.8 10.3 11 6 9.5 10.3 8z" />
+      <path d="M18 14.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z" />
+    </>
+  ),
   // Hoofddienst-categorie glyphs (gebruikt op de regio-dienstenkaarten).
   webdesign: (
     <>

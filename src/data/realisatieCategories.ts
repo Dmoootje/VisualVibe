@@ -1,21 +1,37 @@
 // Realisatie (case) categories - the taxonomy behind /realisaties/[category]/.
 // `slug` is the URL segment; `name` is the display name. Pages exist per
 // category and render a "binnenkort" state until cases are added (Fase 4).
+export type RealisatieStat = {
+  /** Big number/label, e.g. "40+" or "98". */
+  value: string;
+  /** Two-line supporting copy (use \n or a lone \n via the array). */
+  label: string;
+  /** Render the value in accent orange instead of white. */
+  accent?: boolean;
+};
+
 export type RealisatieCategory = {
   slug: string;
   name: string;
   description: string;
   seoTitle: string;
   seoDescription: string;
+  /** Optional stat rail in the realisatie-header (design_handoff_realisaties). */
+  stats?: RealisatieStat[];
 };
 
 export const realisatieCategories: RealisatieCategory[] = [
   {
     slug: "webdesign",
     name: "Webdesign",
-    description: "Websites en webshops die we voor KMO's in Limburg bouwden.",
+    description:
+      "Websites en webshops die we voor KMO's in Limburg bouwden, van huisstijl tot vindbaarheid in Google en AI.",
     seoTitle: "Webdesign realisaties | VisualVibe",
     seoDescription: "Webdesign-realisaties van VisualVibe: websites en webshops voor KMO's in Limburg en Vlaanderen.",
+    stats: [
+      { value: "40+", label: "websites & webshops\nlive gezet" },
+      { value: "98", label: "gem. PageSpeed\nop mobiel", accent: true },
+    ],
   },
   {
     slug: "fotografie",

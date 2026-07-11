@@ -1453,6 +1453,91 @@ html {
     .vvw-liveDot, .vvw-scan, .vvw-bob, .vvw-bob2, .vvw-cursor, .vvw-glowB, .vvw-caseRow { animation: none !important; }
     .vvw-caseRow { opacity: 1; }
 }
+
+/* ── Realisaties: featured device stage + card hover (design_handoff_
+   realisaties_webdesign) ─────────────────────────────────────────────────
+   The device composition is authored at a fixed 700x520 and scaled down at the
+   handoff breakpoints (1080 / 760 / 560) inside a clipped column so it never
+   causes horizontal overflow. */
+.rwd-col { position: relative; display: flex; justify-content: center; }
+.rwd-stage { position: relative; width: 700px; height: 520px; flex: none; }
+@media (max-width: 760px) {
+    .rwd-col { height: 368px; overflow: hidden; }
+    .rwd-stage { transform: scale(0.66); transform-origin: top center; }
+}
+@media (max-width: 560px) {
+    .rwd-col { height: 266px; }
+    .rwd-stage { transform: scale(0.48); }
+}
+
+.rwcard {
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.4s ease, box-shadow 0.5s ease;
+}
+.rwcard:hover {
+    transform: translateY(-7px);
+    border-color: rgba(255, 122, 0, 0.32);
+    box-shadow: 0 34px 70px -30px rgba(255, 90, 0, 0.5), 0 10px 26px -16px rgba(0, 0, 0, 0.8);
+}
+.rwcard-img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.rwcard:hover .rwcard-img { transform: scale(1.05); }
+.rwcard-go { transition: gap 0.25s ease, color 0.25s ease; }
+.rwcard:hover .rwcard-go { gap: 12px; color: #ff9a45; }
+.rwcard-open { transition: background 0.3s ease, border-color 0.3s ease; }
+.rwcard:hover .rwcard-open { background: rgba(255, 122, 0, 0.16); border-color: rgba(255, 122, 0, 0.45); }
+@media (prefers-reduced-motion: reduce) {
+    .rwcard, .rwcard-img, .rwcard-go, .rwcard-open { transition: none; }
+}
+
+/* ── SEO service hero: animated rankings-dashboard (design_handoff_seo_service)
+   The visual is authored at a fixed 540x452 and scaled at the handoff
+   breakpoints inside a clipped column so it never overflows. All motion is
+   CSS keyframes (no JS state). */
+.vvseo-col { position: relative; display: flex; justify-content: center; }
+.vvseo-stage { position: relative; width: 540px; height: 452px; flex: none; }
+@media (max-width: 760px) {
+    .vvseo-col { height: 452px; overflow: hidden; }
+    .vvseo-stage { transform: scale(0.82); transform-origin: top center; }
+}
+@media (max-width: 560px) {
+    .vvseo-col { height: 352px; }
+    .vvseo-stage { transform: scale(0.62); }
+}
+
+@keyframes vvseo-spin { to { transform: rotate(1turn); } }
+.vvseo-spin { animation: vvseo-spin 20s linear infinite; }
+@keyframes vvseo-draw {
+    0% { stroke-dashoffset: 900; }
+    42% { stroke-dashoffset: 0; }
+    92% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 900; }
+}
+.vvseo-line { stroke-dasharray: 900; animation: vvseo-draw 7s cubic-bezier(0.5, 0, 0.3, 1) infinite; }
+@keyframes vvseo-area {
+    0% { opacity: 0; }
+    30% { opacity: 0; }
+    55% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.vvseo-area { animation: vvseo-area 7s ease-in-out infinite; }
+@keyframes vvseo-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.55; }
+}
+.vvseo-dot { transform-origin: center; animation: vvseo-dot 2s ease-in-out infinite; }
+@keyframes vvseo-grow {
+    0% { transform: scaleX(0); }
+    12% { transform: scaleX(0); }
+    55% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+}
+.vvseo-bar { transform-origin: left center; animation: vvseo-grow 4.5s cubic-bezier(0.3, 0.8, 0.3, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+    .vvseo-spin, .vvseo-area, .vvseo-dot { animation: none !important; }
+    .vvseo-line { animation: none !important; stroke-dashoffset: 0; }
+    .vvseo-bar { animation: none !important; transform: scaleX(1); }
+}
+
 /* ── Primary navigation: Diensten mega-menu + responsive drawer (handoff) ── */
 .vvnav-bar {
     position: fixed;
@@ -1564,7 +1649,8 @@ html {
     position: fixed;
     top: 0;
     right: 0;
-    height: 100%;
+    height: 100vh;
+    height: 100dvh;
     width: min(420px, 90%);
     background: #0e0d0c;
     border-left: 1px solid rgba(255, 255, 255, 0.08);
@@ -1581,9 +1667,29 @@ html {
 .vvnav-macc { display: grid; transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .vvnav-mchev { transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
+/* App-first push-navigation drawer (design_handoff_mobile_megamenu): a fixed
+   viewport with absolutely-positioned panels that slide horizontally; the
+   parent panel eases 26% left and dims for the iOS push feel. */
+.vvnav-mvView { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.vvnav-mvPanel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #0e0d0c;
+    padding: 10px 14px 22px;
+    transition: transform 0.42s cubic-bezier(0.2, 0.85, 0.2, 1), opacity 0.42s ease;
+    will-change: transform, opacity;
+}
+.vvnav-mCard { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
+.vvnav-mCard:active { transform: scale(0.985); background: rgba(255, 122, 0, 0.06); border-color: rgba(255, 122, 0, 0.28); }
+
 @media (prefers-reduced-motion: reduce) {
     .vvnav-mega, .vvnav-dd, .vvnav-sub, .vvnav-subInner, .vvnav-railItem, .vvnav-subItem,
-    .vvnav-backdrop, .vvnav-drawerPanel, .vvnav-macc, .vvnav-mchev, .vvnav-navChev, .vvnav-rchev {
+    .vvnav-backdrop, .vvnav-drawerPanel, .vvnav-macc, .vvnav-mchev, .vvnav-navChev, .vvnav-rchev,
+    .vvnav-mvPanel, .vvnav-mCard {
         transition: none !important;
         animation: none !important;
     }

@@ -12,8 +12,10 @@ import {
 } from "@/components/ui";
 import { PageHero, CTASection, ServiceGrid, ProcessSteps } from "@/components/sections";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
+import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
+import { seoCases } from "@/data/seoShowcase";
 import { allServices, services, getServiceBySlug, serviceHref, serviceHrefBySlug } from "@/data/services";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
@@ -71,12 +73,25 @@ export default async function ServiceDetailPage({
   const parentService = service.parentSlug ? getServiceBySlug(service.parentSlug) : undefined;
   const childServices = allServices.filter((s) => s.parentSlug === service.slug);
 
-  // The Webdesign service leads with the bespoke animated hero + realisatie
-  // showcase (admin-managed images); its regular content follows below.
+  // Webdesign and SEO lead with a bespoke animated hero + realisatie showcase
+  // (admin-managed images/projects); their regular content follows below.
   const isWebdesign = service.slug === "webdesign";
-  const [webdesignImages, webdesignProjects] = isWebdesign
-    ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
-    : [null, null];
+  const isSeo = service.slug === "seo";
+  const [webdesignImages, webdesignProjects] =
+    isWebdesign || isSeo
+      ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
+      : [null, null];
+
+  // SEO cases = the SEO/GEO-tagged webdesign projects, in configured order.
+  const seoItems: SeoCaseItem[] =
+    isSeo && webdesignProjects
+      ? seoCases
+          .map((sc) => {
+            const project = webdesignProjects.find((p) => p.id === sc.id);
+            return project ? { project, badge: sc.badge, tags: sc.tags, teaser: sc.teaser } : null;
+          })
+          .filter((it): it is SeoCaseItem => it !== null)
+      : [];
 
   const breadcrumbItems = [
     { name: "Home", path: "/" },
@@ -85,8 +100,8 @@ export default async function ServiceDetailPage({
     { name: service.title, path: `/diensten/${service.slug}` },
   ];
 
-  return (
-    <div className="min-h-screen bg-black text-white">
+  const jsonLd = (
+    <>
       <BreadcrumbJsonLd items={breadcrumbItems} />
       <ServiceJsonLd
         service={{
@@ -96,6 +111,23 @@ export default async function ServiceDetailPage({
         }}
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
+    </>
+  );
+
+  // SEO leads with a fully bespoke, SEO-optimized page (continuous background,
+  // animated hero + realisaties, subdiensten cards, sector pills, FAQ).
+  if (isSeo && webdesignImages) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        {jsonLd}
+        <SeoService service={service} seoItems={seoItems} images={webdesignImages} relatedServices={relatedServices} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      {jsonLd}
 
       {isWebdesign && webdesignImages && webdesignProjects ? (
         <>
