@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF7A00;}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.6);}70%{box-shadow:0 0 0 7px rgba(255,122,0,0);}}
+  .liveDot{animation:livePulse 2.2s ease-out infinite;}
+  @keyframes rowIn{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .gCard{opacity:0;animation:rowIn .55s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * .07s + .1s);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .gCard:hover{transform:translateY(-7px);border-color:rgba(255,122,0,.34) !important;box-shadow:0 34px 70px -30px rgba(255,90,0,.5),0 10px 26px -16px rgba(0,0,0,.8);}
+  .gCard .gImg{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s ease;}
+  .gCard:hover .gImg{transform:scale(1.07);filter:saturate(1.1);}
+  .gCard .gIris{opacity:0;transform:translate(-50%,-50%) scale(.6);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);}
+  .gCard:hover .gIris{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .gCard .gGo{transition:gap .25s ease,color .25s ease;}
+  .gCard:hover .gGo{gap:12px !important;color:#FF9A45 !important;}
+  .frBig{transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .frBig:hover{transform:translateY(-4px);border-color:rgba(255,122,0,.4) !important;box-shadow:0 40px 84px -30px rgba(255,90,0,.55);}
+  .frBig .gImg{transition:transform .9s cubic-bezier(.2,.7,.2,1);}
+  .frBig:hover .gImg{transform:scale(1.05);}
+  .frThumb{transition:border-color .3s ease,transform .3s ease;cursor:pointer;}
+  .frThumb:hover{border-color:rgba(255,122,0,.5) !important;transform:translateY(-3px);}
+  .heroBtn,.navBtn{transition:transform .25s ease,box-shadow .25s ease;}
+  .heroBtn:hover,.navBtn:hover{transform:translateY(-2px);}
+  .heroBtn .ar{transition:transform .3s ease;}.heroBtn:hover .ar{transform:translateX(5px);}
+  .visitLink{transition:gap .25s ease,background .25s ease;}
+  .visitLink:hover{gap:12px !important;background:rgba(255,122,0,.2) !important;}
+  /* lightbox */
+  @keyframes lbFade{from{opacity:0;}to{opacity:1;}}
+  @keyframes lbPop{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+  @keyframes lbProg{from{width:0;}to{width:100%;}}
+  .lbBg{animation:lbFade .3s ease;}
+  .lbCard{animation:lbPop .4s cubic-bezier(.2,.75,.2,1);}
+  .lbTrack{display:flex;height:100%;transition:transform .5s cubic-bezier(.2,.75,.2,1);}
+  .lbArrow{transition:background .25s ease,border-color .25s ease,transform .25s ease;}
+  .lbArrow:hover{background:rgba(255,122,0,.16);border-color:rgba(255,122,0,.5);}
+  .lbArrow:active{transform:scale(.9);}
+  .lbX{transition:border-color .25s ease,background .25s ease,color .25s ease,transform .3s ease;}
+  .lbX:hover{border-color:rgba(255,122,0,.45);background:rgba(255,122,0,.08);color:#FF9A45;transform:rotate(90deg);}
+  .lbThumb{transition:opacity .25s ease,border-color .25s ease,transform .25s ease;opacity:.5;cursor:pointer;flex:none;}
+  .lbThumb:hover{opacity:.85;transform:translateY(-2px);}
+  .lbThumb.on{opacity:1;border-color:#FF7A00 !important;}
+  .lbProgBar::after{content:"";position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#FF3B2E,#FF7A00);animation:lbProg 5s linear infinite;}
+  .lbProgBar.paused::after{animation-play-state:paused;}
+  /* responsive */
+  .rwNavLinks{display:flex;align-items:center;gap:28px;}
+  .rwBurger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);cursor:pointer;padding:0;color:#fff;}
+  .rwNavPanel{display:none;flex-basis:100%;flex-direction:column;gap:6px;padding-top:14px;margin-top:4px;border-top:1px solid rgba(255,255,255,.07);}
+  @media (max-width:1080px){
+    .frFeatGrid{grid-template-columns:1fr !important;gap:34px !important;}
+    .rwHeadRow{flex-direction:column !important;align-items:flex-start !important;gap:30px !important;}
+    .rwStatRail{flex-direction:row !important;flex-wrap:wrap;}
+    .rwStatRail > div{min-width:0 !important;flex:1 1 200px;}
+    .rwNavLinks,.rwNavUser{display:none !important;}
+    .rwBurger{display:inline-flex !important;}
+    .rwNavPanel.open{display:flex !important;}
+    .gGrid{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:760px){
+    .rwNav{padding:16px 22px !important;}
+    .rwHead{padding:38px 22px 30px !important;}
+    .rwFeat{padding:40px 22px 46px !important;}
+    .rwGridSec{padding:16px 22px 78px !important;}
+    .rwH1{font-size:clamp(38px,12vw,52px) !important;}
+    .frFeatH2{font-size:clamp(30px,9vw,42px) !important;}
+    .rwGridHead{flex-direction:column;align-items:flex-start !important;}
+    .lbTopWrap{flex-direction:column;align-items:flex-start !important;gap:12px !important;}
+  }
+  @media (max-width:560px){
+    .gGrid{grid-template-columns:1fr !important;}
+    .rwHeadIcon{width:54px !important;height:54px !important;}
+    .frThumbRow{grid-template-columns:1fr 1fr !important;}
+    .lbArrow{width:42px !important;height:42px !important;}
+    .lbThumb{width:54px !important;height:40px !important;}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}.gCard{opacity:1;}.lbProgBar::after{display:none;}}
+</style>
+</helmet>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"><defs>
+  <g id="fi-foto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="12.5" r="3.4"></circle></g>
+  <g id="fi-biz" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"></rect><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"></path><path d="M3 12.5h18"></path><path d="M12 12.5v2"></path></g>
+  <g id="fi-user" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></g>
+  <g id="fi-box" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 21 7v10l-9 4.5L3 17V7z"></path><path d="M3 7l9 4.5L21 7"></path><path d="M12 21.5v-10"></path></g>
+  <g id="fi-party" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.6-11.4 6.8 6.8L3 21z"></path><path d="M13.5 3.5l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7z"></path><path d="M19.5 10l.5 1.1 1.1.5-1.1.5-.5 1.1-.5-1.1-1.1-.5 1.1-.5z"></path></g>
+  <g id="fi-home" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></g>
+  <g id="fi-layers" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5 9-5z"></path><path d="m3 12 9 5 9-5M3 17l9 5 9-5"></path></g>
+  <g id="fi-spark" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></g>
+  <g id="fi-heart" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-9.4-9.1C1 8 2.6 4.6 6 4.6c2 0 3.3 1.2 4 2.3.7-1.1 2-2.3 4-2.3 3.4 0 5 3.4 3.4 6.3C19 15.4 12 20 12 20z"></path></g>
+  <g id="fi-aperture" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v6.5M20 8l-5.6 3.2M20 16l-5.6-3.2M12 21v-6.5M4 16l5.6-3.2M4 8l5.6 3.2"></path></g>
+</defs></svg>
+
+<div style="position:relative;width:100%;max-width:1440px;margin:0 auto;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;">
+
+  <!-- ===== NAV ===== -->
+  <nav class="rwNav" style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:22px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div class="rwNavLinks" style="font-weight:600;font-size:15px;color:rgba(255,255,255,.85);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-home"></use></svg>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#fff;">Realisaties <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Sectoren <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Kennisbank <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span>Over ons</span><span>Contact</span>
+    </div>
+    <div class="rwNavUser" style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-user"></use></svg>
+      <a href="#" class="navBtn" style="font-weight:700;font-size:14px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+    <button class="rwBurger" onClick="{{ onNavToggle }}" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
+    </button>
+    <div class="rwNavPanel {{ navPanelClass }}">
+      <sc-for list="{{ navMobile }}" as="item" hint-placeholder-count="8">
+        <a href="#" style="font-size:16px;font-weight:600;color:rgba(255,255,255,.82);padding:13px 14px;border-radius:11px;" style-hover="background:rgba(255,255,255,.05);color:#fff;">{{ item }}</a>
+      </sc-for>
+      <a href="#" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;color:#fff;padding:14px 20px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin-top:4px;">Offerte aanvragen</a>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+  <header class="rwHead" style="position:relative;overflow:hidden;padding:52px 56px 40px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="position:absolute;top:-160px;right:-80px;width:720px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 52% 52% at 60% 42%,rgba(255,90,0,.16),rgba(255,90,0,.05) 44%,transparent 70%);"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:52px 52px;-webkit-mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);"></div>
+
+    <div class="rwHeadRow" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;">
+      <div style="max-width:640px;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);letter-spacing:.03em;margin-bottom:26px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span>Realisaties</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">Fotografie</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
+          <span class="rwHeadIcon" style="position:relative;flex:none;width:66px;height:66px;border-radius:17px;background:linear-gradient(150deg,rgba(255,122,0,.18),rgba(255,122,0,.05));border:1px solid rgba(255,122,0,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -20px rgba(255,90,0,.7);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-foto"></use></svg>
+          </span>
+          <div>
+            <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.2em;color:#FF9A45;margin-bottom:8px;">REALISATIES</div>
+            <h1 class="rwH1" style="font-family:'Sora';font-weight:800;font-size:58px;line-height:.98;letter-spacing:-.03em;color:#fff;margin:0;">Fotografie</h1>
+          </div>
+        </div>
+        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.62);margin:0;max-width:520px;">Een greep uit ons fotografiewerk — van bedrijf, team en product tot event, vastgoed en branding, in heel Limburg.</p>
+      </div>
+
+      <div class="rwStatRail" style="flex:none;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#fff;line-height:1;">8</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">fotografie-<br>stijlen</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#FF9A45;line-height:1;">100%</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">in-house<br>geschoten</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FEATURED — EERSTE GALERIJ ===== -->
+  <section class="rwFeat" style="position:relative;overflow:hidden;padding:56px 56px 60px;">
+    <div style="position:absolute;top:40px;right:-120px;width:760px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(circle at 60% 45%,rgba(255,90,0,.12),transparent 64%);"></div>
+
+    <div class="frFeatGrid" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;">
+
+      <!-- LEFT: gallery preview -->
+      <div style="order:1;">
+        <div class="frBig" onClick="{{ featOpen }}" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.09);background:#141210;aspect-ratio:16/10;">
+          {{ featCoverEl }}
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.1),transparent 40%,rgba(10,10,10,.55));"></div>
+          <span class="gIris" style="position:absolute;left:50%;top:50%;z-index:2;width:64px;height:64px;border-radius:9999px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);box-shadow:0 16px 38px -10px rgba(255,90,0,.9);display:flex;align-items:center;justify-content:center;color:#fff;pointer-events:none;"><svg width="29" height="29" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-aperture"></use></svg></span>
+          <span style="position:absolute;left:16px;bottom:16px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:9999px;background:rgba(8,7,6,.6);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-foto"></use></svg>{{ featCount }} beelden</span>
+        </div>
+        <div class="frThumbRow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+          <sc-for list="{{ featThumbs }}" as="th" hint-placeholder-count="3">
+            <div class="frThumb" onClick="{{ th.onOpen }}" style="position:relative;overflow:hidden;border-radius:13px;border:1px solid rgba(255,255,255,.09);background:#141210;aspect-ratio:4/3;">{{ th.el }}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- RIGHT: copy -->
+      <div style="order:2;">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.1em;color:#FF9A45;margin-bottom:22px;">
+          <span class="liveDot" style="width:7px;height:7px;border-radius:9999px;background:#FF7A00;"></span>UITGELICHTE GALERIJ
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-{{ featIcon }}"></use></svg>{{ featBadge }}</div>
+        <h2 class="frFeatH2" style="font-family:'Sora';font-weight:800;font-size:44px;line-height:1.03;letter-spacing:-.025em;color:#fff;margin:0 0 20px;">{{ featTitle }}</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:rgba(255,255,255,.68);margin:0 0 26px;">{{ featDesc }}</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:30px;">
+          <sc-for list="{{ featTags }}" as="t" hint-placeholder-count="3"><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9999px;padding:6px 12px;">{{ t }}</span></sc-for>
+        </div>
+
+        <a href="#" onClick="{{ featOpen }}" class="visitLink" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:#fff;padding:14px 26px;border-radius:12px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);">Bekijk galerij <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRID — alle galerijen ===== -->
+  <section class="rwGridSec" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:24px 56px 110px;">
+    <div class="rwGridHead" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px;">
+      <div>
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:12px;">ALLE GALERIJEN</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:34px;line-height:1.08;letter-spacing:-.02em;color:#fff;margin:0;">Kies een stijl, open de galerij</h2>
+      </div>
+      <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);max-width:300px;margin:0 0 6px;">Elke galerij opent als een browsebare fotoviewer — met autoplay op elk toestel.</p>
+    </div>
+
+    <div class="gGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <sc-for list="{{ galleries }}" as="g" hint-placeholder-count="7">
+        <div class="gCard" onClick="{{ g.onOpen }}" style="--i:{{ g.i }};position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:#141210;aspect-ratio:4/5;">
+          {{ g.coverEl }}
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.12) 0%,transparent 32%,rgba(10,10,10,.9) 100%);"></div>
+          <span style="position:absolute;left:16px;top:16px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9999px;background:rgba(8,7,6,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.05em;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-{{ g.icon }}"></use></svg>{{ g.badge }}</span>
+          <span style="position:absolute;right:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:9999px;background:rgba(8,7,6,.55);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;color:rgba(255,255,255,.85);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-foto"></use></svg>{{ g.count }}</span>
+          <span class="gIris" style="position:absolute;left:50%;top:44%;z-index:2;width:60px;height:60px;border-radius:9999px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);box-shadow:0 14px 34px -10px rgba(255,90,0,.9);display:flex;align-items:center;justify-content:center;color:#fff;pointer-events:none;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-aperture"></use></svg></span>
+          <div style="position:absolute;left:20px;right:20px;bottom:18px;z-index:2;">
+            <div style="font-family:'Sora';font-weight:700;font-size:20px;color:#fff;letter-spacing:-.01em;">{{ g.title }}</div>
+            <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,.72);margin-top:5px;text-wrap:pretty;">{{ g.desc }}</div>
+            <span class="gGo" style="display:inline-flex;align-items:center;gap:7px;margin-top:11px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.05em;color:rgba(255,255,255,.8);">BEKIJK GALERIJ <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;">
+      <div class="lbBg" onClick="{{ closeLb }}" style="position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(255,90,0,.1),transparent 55%),rgba(4,4,4,.94);backdrop-filter:blur(10px);"></div>
+      <div class="lbCard" onClick="{{ stop }}" style="position:relative;z-index:1;display:flex;flex-direction:column;width:min(1120px,100%);height:100%;margin:0 auto;padding:20px clamp(16px,3vw,40px) 22px;">
+        <div class="lbTopWrap" style="display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex:none;margin-bottom:16px;">
+          <div style="min-width:0;">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9999px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;margin-bottom:11px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#fi-{{ lbIcon }}"></use></svg>{{ lbBadge }}</span>
+            <h3 style="font-family:'Sora';font-weight:800;font-size:26px;letter-spacing:-.02em;color:#fff;margin:0;">{{ lbTitle }}</h3>
+            <p style="font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.6);margin:6px 0 0;max-width:560px;text-wrap:pretty;">{{ lbDesc }}</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex:none;">
+            <button onClick="{{ toggleAuto }}" class="lbArrow" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 15px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.04em;">
+              <sc-if value="{{ auto }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>PAUZE</sc-if>
+              <sc-if value="{{ notAuto }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 4 14 8-14 8V4z"></path></svg>PLAY</sc-if>
+            </button>
+            <button onClick="{{ closeLb }}" class="lbX" style="width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+
+        <div class="lbProgBar {{ progPaused }}" style="position:relative;flex:none;height:3px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:14px;"></div>
+
+        <div onTouchStart="{{ onTouchStart }}" onTouchEnd="{{ onTouchEnd }}" style="position:relative;flex:1;min-height:0;border-radius:18px;overflow:hidden;background:#0e0d0c;border:1px solid rgba(255,255,255,.08);">
+          <div class="lbTrack" style="transform:{{ trackT }};">
+            <sc-for list="{{ lbSlides }}" as="s">
+              <div style="position:relative;flex:none;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0b0a09;">
+                {{ s.imgEl }}
+                <div style="position:absolute;left:0;right:0;bottom:0;padding:34px 22px 16px;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(6,6,6,.82));">
+                  <span style="font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.85);">{{ s.cap }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ prev }}" class="lbArrow" aria-label="Vorige" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:9999px;border:1px solid rgba(255,255,255,.16);background:rgba(10,10,10,.55);backdrop-filter:blur(6px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+          <button onClick="{{ next }}" class="lbArrow" aria-label="Volgende" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:9999px;border:1px solid rgba(255,255,255,.16);background:rgba(10,10,10,.55);backdrop-filter:blur(6px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <span style="position:absolute;right:16px;top:16px;z-index:2;padding:6px 12px;border-radius:9999px;background:rgba(8,7,6,.62);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:#fff;">{{ lbCounter }}</span>
+        </div>
+
+        <div style="display:flex;gap:10px;flex:none;margin-top:14px;overflow-x:auto;padding:2px;">
+          <sc-for list="{{ lbThumbs }}" as="t">
+            <button onClick="{{ t.onGo }}" class="lbThumb {{ t.cls }}" style="width:84px;height:60px;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.12);background:#0b0a09;padding:0;">{{ t.imgEl }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{ &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1560 } }">
+class Component extends DCLogic {
+  IMG = {
+    night: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20Nacht%20fotografie.webp?alt=media&token=a607907f-b11e-42d8-b576-d64cbde39c8f',
+    alpen: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FAlpen-drone-fotos-scaled.webp?alt=media&token=fe09068a-ff73-4ec8-8a70-382681272bd5',
+    bedrijf1: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-drone.webp?alt=media&token=105ae204-ca42-48e3-9d5f-ec9ed86c8c43',
+    bedrijf2: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-met-drone.webp?alt=media&token=c0d95d8b-b352-41b3-8f9d-330a77549cb1',
+    woon: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20woonplaats%20luchtfoto.webp?alt=media&token=6c6e1b31-b0a0-48e2-bac0-42bfaab5c35b',
+    zon: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone-zonnepanelen.webp?alt=media&token=419485d3-1c72-49b0-8ef0-020b58afce51',
+    portrait: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FFotografie%20-%20Jens%20Hardy%20fotograaf%20Limburg.webp?alt=media&token=1ecd395c-f1aa-4458-a4db-bb3ad7e62fa3',
+  };
+  COVER = {
+    bedrijf: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F01-bedrijfsfotografie.webp?alt=media&token=464345b0-7db4-4e24-bac9-c96fce9a263d',
+    portret: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F02-zakelijke-portretten.webp?alt=media&token=d2dcf975-9655-4481-a54d-34d8c7fd1dd1',
+    product: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F03-productfotografie.webp?alt=media&token=8cf89e53-5318-47ef-8502-afd01941fa0a',
+    event: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F04-eventfotografie.webp?alt=media&token=4083399d-781e-43bf-bd0e-acf5a85a6816',
+    vastgoed: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F05-vastgoedfotografie.webp?alt=media&token=15bb4033-07c4-48c0-88a4-fe965768242e',
+    realisatie: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F06-realisatiefotografie.webp?alt=media&token=5dfed050-7cc3-40c3-a75d-f90852b120b1',
+    branding: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F07-brandingfotografie.webp?alt=media&token=fa6ac811-bc45-41df-809e-07fd41017c58',
+    huwelijk: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F08-huwelijksfotografie.webp?alt=media&token=b2319bd5-a1b5-4653-9176-83f2936f3a37',
+  };
+  GAL = [
+    { id:'bedrijf', icon:'biz', badge:'Bedrijf', title:'Bedrijfsfotografie', desc:'Professionele beelden van je bedrijf, team en werkplek.', tags:['Bedrijf','Team','Werkplek'], cover:'bedrijf', slides:['bedrijf','bedrijf1','bedrijf2','woon','zon'] },
+    { id:'portret', icon:'user', badge:'Portret', title:'Zakelijke portretten', desc:"Professionele portretfoto's voor je website, LinkedIn en visitekaartje.", tags:['LinkedIn','Team','Studio'], cover:'portret', slides:['portret','portrait','bedrijf1','bedrijf2'] },
+    { id:'product', icon:'box', badge:'Product', title:'Productfotografie', desc:'Scherpe productfoto\u2019s die je webshop of catalogus versterken.', tags:['Webshop','Catalogus','Studio'], cover:'product', slides:['product','zon','bedrijf2'] },
+    { id:'event', icon:'party', badge:'Event', title:'Eventfotografie', desc:'Beeldverslag van je bedrijfsevent, opening of netwerkmoment.', tags:['Event','Opening','Netwerk'], cover:'event', slides:['event','night','alpen','woon'] },
+    { id:'vastgoed', icon:'home', badge:'Vastgoed', title:'Vastgoedfotografie', desc:'Panden die er op foto net zo aantrekkelijk uitzien als in het echt.', tags:['Interieur','Exterieur','Drone'], cover:'vastgoed', slides:['vastgoed','woon','alpen','night','bedrijf1'] },
+    { id:'realisatie', icon:'layers', badge:'Realisatie', title:'Realisatiefotografie', desc:'Afgewerkte projecten in beeld, van bouw tot interieur.', tags:['Bouw','Interieur','Project'], cover:'realisatie', slides:['realisatie','zon','bedrijf1','bedrijf2','woon'] },
+    { id:'branding', icon:'spark', badge:'Branding', title:'Brandingfotografie', desc:'Een consistente beeldtaal die je merk herkenbaar maakt.', tags:['Merk','Sfeer','Content'], cover:'branding', slides:['branding','portrait','night','alpen'] },
+    { id:'huwelijk', icon:'heart', badge:'Huwelijk', title:'Huwelijksfotografie', desc:'Jullie mooiste dag, tijdloos vastgelegd — samen met WeddingVibe.', tags:['Bruiloft','Reportage','WeddingVibe'], cover:'huwelijk', slides:['huwelijk','portrait','alpen'] },
+  ];
+  navMobile = ['Diensten','Regio','Realisaties','Sectoren','Kennisbank','Over ons','Contact'];
+
+  state = { navOpen:false, lbOpen:false, gal:0, idx:0, auto:true };
+
+  componentDidMount(){
+    this._key = (e) => { if (!this.state.lbOpen) return; if (e.key === 'ArrowRight') this.next(); else if (e.key === 'ArrowLeft') this.prev(); else if (e.key === 'Escape') this.closeLb(); };
+    window.addEventListener('keydown', this._key);
+    Object.values(this.COVER).forEach((u) => { const im = new Image(); im.src = u; });
+  }
+  componentWillUnmount(){ window.removeEventListener('keydown', this._key); clearInterval(this._iv); }
+  componentDidUpdate(){ this.syncTimer(); }
+  syncTimer(){ const run = this.state.lbOpen && this.state.auto; if (run && !this._iv){ this._iv = setInterval(() => this.step(1), 5000); } else if (!run && this._iv){ clearInterval(this._iv); this._iv = null; } }
+  srcOf(k){ return this.IMG[k] || this.COVER[k]; }
+  slidesFor(i){ const g = this.GAL[i]; return g.slides.map((k, n) => ({ src: this.srcOf(k), cap: g.title + ' \u2014 ' + (n + 1) })); }
+  restart(){ clearInterval(this._iv); this._iv = null; this.syncTimer(); }
+  step(d){ const len = this.GAL[this.state.gal].slides.length; this.setState(s => ({ idx: (s.idx + d + len) % len })); }
+  next = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(1); this.restart(); };
+  prev = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(-1); this.restart(); };
+  go = (k) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ idx:k }); this.restart(); };
+  toggleAuto = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState(s => ({ auto: !s.auto })); };
+  openLb = (i) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:true, gal:i, idx:0, auto:true }); };
+  closeLb = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:false }); };
+  stop = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
+  onTouchStart = (e) => { this._tx = (e.touches && e.touches[0]) ? e.touches[0].clientX : 0; };
+  onTouchEnd = (e) => { const x = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : 0; const dx = x - (this._tx || 0); if (Math.abs(dx) > 45){ if (dx < 0) this.next(); else this.prev(); } };
+
+  renderVals(){
+    const st = this.state;
+    const h = React.createElement;
+    const coverImg = (src, alt) => h('img', { className:'gImg', src, alt, style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' } });
+
+    const feat = this.GAL[0];
+    const featSlides = this.slidesFor(0);
+    const galleries = this.GAL.slice(1).map((g, k) => {
+      const i = k + 1;
+      return { i, icon:g.icon, badge:g.badge, title:g.title, desc:g.desc, count:g.slides.length, coverEl: coverImg(this.COVER[g.cover], g.title), onOpen:this.openLb(i) };
+    });
+
+    const g = this.GAL[st.gal];
+    const slides = this.slidesFor(st.gal).map((s) => ({ cap:s.cap, imgEl: h('img', { src:s.src, alt:s.cap, style:{ maxWidth:'100%', maxHeight:'100%', width:'100%', height:'100%', objectFit:'contain' } }) }));
+
+    return {
+      navMobile:this.navMobile,
+      navPanelClass: st.navOpen ? 'open' : '',
+      onNavToggle: () => this.setState(s => ({ navOpen: !s.navOpen })),
+
+      featIcon:feat.icon, featBadge:feat.title.toUpperCase(), featTitle:feat.title, featDesc:feat.desc, featTags:feat.tags,
+      featCount:feat.slides.length, featCoverEl: coverImg(this.COVER[feat.cover], feat.title), featOpen:this.openLb(0),
+      featThumbs: [1,2,3].map((n) => ({ el: h('img', { className:'gImg', src:featSlides[n].src, alt:feat.title, style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' } }), onOpen:this.openLb(0) })),
+
+      galleries,
+
+      lbOpen:st.lbOpen, closeLb:this.closeLb, stop:this.stop,
+      lbTitle:g.title, lbDesc:g.desc, lbBadge:g.badge, lbIcon:g.icon,
+      lbSlides:slides,
+      lbThumbs:this.slidesFor(st.gal).map((s, k) => ({ imgEl: h('img', { src:s.src, alt:'', style:{ width:'100%', height:'100%', objectFit:'cover' } }), cls: k === st.idx ? 'on' : '', onGo:this.go(k) })),
+      trackT:'translateX(-' + (st.idx * 100) + '%)',
+      lbCounter:(st.idx + 1) + ' / ' + slides.length,
+      auto:st.auto, notAuto:!st.auto, progPaused: st.auto ? '' : 'paused',
+      next:this.next, prev:this.prev, toggleAuto:this.toggleAuto,
+      onTouchStart:this.onTouchStart, onTouchEnd:this.onTouchEnd,
+    };
+  }
+}
+</script>
+</body>
+</html>

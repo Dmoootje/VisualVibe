@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF9A45;}
+  ::selection{background:rgba(255,122,0,.28);color:#fff;}
+  input{font-family:inherit;}
+  @keyframes kbIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+  @keyframes kbGlow{0%,100%{opacity:.5;}50%{opacity:.9;}}
+  .kbRise{opacity:0;animation:kbIn .55s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0) * .06s + .05s);}
+  .navBtn,.pillBtn{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,color .25s ease,border-color .25s ease;}
+  .navBtn:hover{transform:translateY(-2px);}
+  .artCard{transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .artCard:hover{transform:translateY(-7px);border-color:rgba(255,122,0,.36) !important;box-shadow:0 40px 80px -34px rgba(255,90,0,.55),0 12px 30px -18px rgba(0,0,0,.85);}
+  .artCard .artImg{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s ease;}
+  .artCard:hover .artImg{transform:scale(1.06);filter:saturate(1.08);}
+  .artCard .cta{transition:background .3s ease,border-color .3s ease,color .3s ease,gap .25s ease;}
+  .artCard:hover .cta{background:rgba(255,122,0,.14) !important;border-color:rgba(255,122,0,.5) !important;color:#FF9A45 !important;}
+  .artCard:hover .cta .ar{transform:translateX(4px);}
+  .cta .ar{transition:transform .3s ease;}
+  .miniCard{transition:background .3s ease,border-color .3s ease,transform .3s ease;cursor:pointer;}
+  .miniCard:hover{background:rgba(255,255,255,.04) !important;border-color:rgba(255,122,0,.3) !important;transform:translateX(4px);}
+  .miniCard:hover .miniImg{transform:scale(1.07);}
+  .miniImg{transition:transform .6s cubic-bezier(.2,.7,.2,1);}
+  .catCard{transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease,background .4s ease;cursor:pointer;position:relative;overflow:hidden;}
+  .catCard:hover{transform:translateY(-6px);border-color:rgba(255,122,0,.34) !important;box-shadow:0 34px 66px -34px rgba(255,90,0,.5);}
+  .catCard:hover .catIco{transform:scale(1.08) rotate(-4deg);border-color:rgba(255,122,0,.55) !important;}
+  .catCard .catArr{transition:transform .3s ease,color .3s ease;}
+  .catCard:hover .catArr{transform:translateX(5px);color:#FF9A45;}
+  .catIco{transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease;}
+  .chip{transition:background .25s ease,border-color .25s ease,color .25s ease,transform .2s ease;cursor:pointer;user-select:none;}
+  .chip:hover{border-color:rgba(255,122,0,.45) !important;color:#fff !important;transform:translateY(-1px);}
+  .chip.on{background:linear-gradient(90deg,rgba(255,59,46,.22),rgba(255,122,0,.22)) !important;border-color:rgba(255,122,0,.6) !important;color:#fff !important;}
+  .catRow{transition:background .25s ease,color .25s ease;cursor:pointer;}
+  .catRow:hover{background:rgba(255,255,255,.04) !important;color:#fff !important;}
+  .catRow.on{background:rgba(255,122,0,.1) !important;color:#fff !important;}
+  .catRow.on .catDot{background:linear-gradient(135deg,#FF3B2E,#FF7A00) !important;}
+  .srch{transition:border-color .3s ease,box-shadow .3s ease,background .3s ease;}
+  .srch:focus-within{border-color:rgba(255,122,0,.55) !important;box-shadow:0 0 0 4px rgba(255,122,0,.1),0 20px 40px -24px rgba(255,90,0,.5) !important;background:rgba(255,255,255,.05) !important;}
+  .srch input::placeholder{color:rgba(255,255,255,.4);}
+  .nlBtn{transition:transform .25s ease,box-shadow .25s ease;}
+  .nlBtn:hover{transform:translateY(-2px);box-shadow:0 16px 34px -14px rgba(255,90,0,.8);}
+  .tocLink{transition:color .25s ease,border-color .25s ease,padding .25s ease;border-left:2px solid transparent;}
+  .tocLink:hover{color:#fff !important;border-left-color:rgba(255,122,0,.5);padding-left:16px !important;}
+  .tocLink.on{color:#FF9A45 !important;border-left-color:#FF7A00 !important;}
+  .shareBtn{transition:transform .25s ease,border-color .25s ease,color .25s ease,background .25s ease;}
+  .shareBtn:hover{transform:translateY(-3px);border-color:rgba(255,122,0,.5);color:#FF9A45;background:rgba(255,122,0,.06);}
+  .switchBtn{transition:background .25s ease,color .25s ease;}
+  .switchBtn.on{background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;box-shadow:0 8px 22px -10px rgba(255,90,0,.9);}
+  .rwNavLinks{display:flex;align-items:center;gap:26px;}
+  .rwBurger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);cursor:pointer;padding:0;color:#fff;}
+  .rwNavPanel{display:none;flex-basis:100%;flex-direction:column;gap:6px;padding-top:14px;margin-top:4px;border-top:1px solid rgba(255,255,255,.07);}
+  @media (max-width:1080px){
+    .kbTwoCol{grid-template-columns:1fr !important;}
+    .kbSidebar{position:static !important;}
+    .rwNavLinks,.rwNavUser{display:none !important;}
+    .rwBurger{display:inline-flex !important;}
+    .rwNavPanel.open{display:flex !important;}
+    .newsGrid{grid-template-columns:1fr 1fr !important;}
+    .catGrid{grid-template-columns:1fr 1fr !important;}
+    .guideGrid{grid-template-columns:1fr !important;}
+    .blogHeroGrid{grid-template-columns:1fr !important;}
+    .featCard{grid-template-columns:1fr !important;}
+    .heroGrid{grid-template-columns:1fr !important;}
+    .targetWrap{display:none !important;}
+  }
+  @media (max-width:720px){
+    .kbPad{padding-left:22px !important;padding-right:22px !important;}
+    .newsGrid{grid-template-columns:1fr !important;}
+    .catGrid{grid-template-columns:1fr !important;}
+    .qGrid{grid-template-columns:1fr !important;}
+    .listCard{grid-template-columns:1fr !important;}
+    .listCard .listImg{min-height:200px !important;aspect-ratio:16/10;}
+    .kbH1{font-size:clamp(38px,11vw,58px) !important;}
+    .blogTitle{font-size:clamp(34px,9vw,52px) !important;}
+    .metaRow{gap:14px !important;}
+  }
+  .lyBtn{display:flex;align-items:center;justify-content:center;width:36px;height:32px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.5);cursor:pointer;transition:background .2s ease,color .2s ease;}
+  .lyBtn:hover{color:#fff;background:rgba(255,255,255,.06);}
+  .lyBtn.on{background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;}
+  .tgtSpoke{animation:tgtFlow 1.15s linear infinite;animation-delay:var(--d,0s);}
+  .tgtNode{animation:tgtNodeFloat 3s ease-in-out infinite;animation-delay:var(--d,0s);}
+  .tgtDot{transform-box:fill-box;transform-origin:center;animation:tgtDotPulse 2.4s ease-in-out infinite;}
+  .tgtPing{position:absolute;left:50%;top:50%;border:2px solid rgba(255,122,0,.5);border-radius:9999px;width:36%;height:36%;animation:tgtPing 3s ease-out infinite;pointer-events:none;}
+  .tgtPing2{animation-delay:1.5s;}
+  .tgtSweep{position:absolute;left:50%;top:50%;width:82%;height:82%;transform:translate(-50%,-50%);border-radius:9999px;background:conic-gradient(from 0deg,transparent 0deg 288deg,rgba(255,122,0,.05) 318deg,rgba(255,154,69,.24) 352deg,transparent 360deg);-webkit-mask:radial-gradient(circle,transparent 28%,#000 40%,#000 96%,transparent 100%);mask:radial-gradient(circle,transparent 28%,#000 40%,#000 96%,transparent 100%);animation:tgtSpin 5.5s linear infinite;pointer-events:none;}
+  .tgtGlow{position:absolute;left:50%;top:50%;width:30%;height:30%;transform:translate(-50%,-50%);border-radius:9999px;background:radial-gradient(circle,rgba(255,90,0,.5),transparent 70%);animation:tgtGlow 2.4s ease-in-out infinite;pointer-events:none;}
+  @keyframes tgtFlow{to{stroke-dashoffset:-32;}}
+  @keyframes tgtNodeFloat{0%,100%{opacity:.95;}50%{opacity:.5;}}
+  @keyframes tgtDotPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.16);}}
+  @keyframes tgtPing{0%{transform:translate(-50%,-50%) scale(.4);opacity:.7;}100%{transform:translate(-50%,-50%) scale(1.55);opacity:0;}}
+  @keyframes tgtSpin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+  @keyframes tgtGlow{0%,100%{opacity:.5;}50%{opacity:.9;}}
+  .sideSearch{opacity:0;transform:translateY(-8px);max-height:0;margin-bottom:-20px;overflow:hidden;pointer-events:none;transition:opacity .35s ease,transform .35s ease,max-height .4s ease,margin-bottom .4s ease;}
+  .sideSearch.show{opacity:1;transform:none;max-height:80px;margin-bottom:0;overflow:visible;pointer-events:auto;}
+  .catMedal{animation:catFloat 4.5s ease-in-out infinite;}
+  @keyframes catFloat{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.045);}}
+  .svcGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:20px;}
+  .sp3{grid-column:span 3;}
+  .sp4{grid-column:span 4;}
+  .svcCard{transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease,background .4s ease;cursor:pointer;}
+  .svcCard:hover{transform:translateY(-6px);border-color:rgba(255,122,0,.55) !important;box-shadow:0 48px 96px -40px rgba(255,90,0,.55),0 16px 40px -24px rgba(0,0,0,.9) !important;background:radial-gradient(130% 100% at 18% 112%,rgba(255,90,0,.14),transparent 58%),linear-gradient(160deg,rgba(255,122,0,.04),rgba(255,255,255,.006)) !important;}
+  .svcIco{transition:background .3s ease,border-color .3s ease,color .3s ease,box-shadow .35s ease;}
+  .svcCard:hover .svcIco{background:linear-gradient(145deg,#FFA23A,#FF7A00) !important;border-color:transparent !important;color:#fff !important;box-shadow:0 16px 32px -12px rgba(255,122,0,.85) !important;}
+  .svcArr{transition:background .3s ease,color .3s ease,border-color .3s ease;}
+  .svcCard:hover .svcArr{background:linear-gradient(145deg,#FFA23A,#FF7A00) !important;color:#fff !important;border-color:transparent !important;}
+  .svcWm{transition:color .45s ease;}
+  .svcCard:hover .svcWm{color:rgba(255,122,0,.16) !important;}
+  .svcNum{transition:color .3s ease;}
+  .svcCard:hover .svcNum{color:rgba(255,154,69,.62) !important;}
+  .svcFeat{border-color:rgba(255,122,0,.32) !important;background:radial-gradient(130% 100% at 16% 114%,rgba(255,90,0,.13),transparent 56%),linear-gradient(160deg,rgba(255,122,0,.035),rgba(255,255,255,.006)) !important;box-shadow:0 34px 74px -46px rgba(255,90,0,.45) !important;}
+  .svcFeat .svcIco{background:linear-gradient(145deg,#FFA23A,#FF7A00) !important;border-color:transparent !important;color:#fff !important;box-shadow:0 14px 30px -12px rgba(255,122,0,.75) !important;}
+  .svcFeat .svcArr{background:linear-gradient(145deg,#FFA23A,#FF7A00) !important;color:#fff !important;border-color:transparent !important;}
+  .svcFeat .svcWm{color:rgba(255,122,0,.14) !important;}
+  .svcFeat .svcNum{color:rgba(255,154,69,.52) !important;}
+  .svcFeat:hover{border-color:rgba(255,122,0,.62) !important;}
+  @media (max-width:1080px){.svcGrid{grid-template-columns:1fr !important;}.sp3,.sp4{grid-column:auto !important;}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;}.kbRise{opacity:1;}}
+</style>
+</helmet>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"><defs>
+  <g id="ic-home" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></g>
+  <g id="ic-user" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></g>
+  <g id="ic-search" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></g>
+  <g id="ic-clock" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></g>
+  <g id="ic-cal" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><path d="M3 9.5h18M8 2.5v4M16 2.5v4"></path></g>
+  <g id="ic-arr" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></g>
+  <g id="ic-mail" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></g>
+  <g id="ic-fire" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4 0 6.6-2.7 6.6-6.3 0-2.7-1.7-4.7-2.9-6-.9 1.2-2.2 2-2.2-.2 0-2.3 1-3.9-.8-5-2 1-5 4-5 8.2 0 1 .3 1.8.7 2.4C7.8 14 7 13 7 11c-1.4 1.3-2 3.1-2 4.7C5 19.3 8 22 12 22z"></path></g>
+  <g id="ic-book" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"></path><path d="M4 19V5"></path></g>
+  <g id="ic-check" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></g>
+  <g id="ic-zoom" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"></path></g>
+  <g id="ic-grid" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></g>
+  <g id="ic-rows" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="6" rx="1.6"></rect><rect x="3" y="13.5" width="18" height="6" rx="1.6"></rect></g>
+  <g id="cat-seo" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-4.8-4.8"></path><path d="M7.6 12.5V11M10.5 12.5V9.5M13.4 12.5V8"></path></g>
+  <g id="cat-cube" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7z"></path><path d="M3.7 7.1 12 11.9l8.3-4.8M12 21.6V11.9"></path></g>
+  <g id="cat-web" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M6.4 6.5h.01M8.9 6.5h.01M11.4 6.5h.01"></path></g>
+  <g id="cat-foto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="12.5" r="3.4"></circle></g>
+  <g id="cat-video" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"></rect><path d="m16 10 5-3v10l-5-3z"></path></g>
+  <g id="cat-drone" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"></rect><circle cx="5" cy="5" r="2.3"></circle><circle cx="19" cy="5" r="2.3"></circle><circle cx="5" cy="19" r="2.3"></circle><circle cx="19" cy="19" r="2.3"></circle><path d="M9.2 9.2 6.6 6.6M14.8 9.2l2.6-2.6M9.2 14.8l-2.6 2.6M14.8 14.8l2.6 2.6"></path></g>
+  <g id="cat-vr" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="3.4"></rect><circle cx="7.6" cy="12" r="1.5"></circle><circle cx="16.4" cy="12" r="1.5"></circle></g>
+  <g id="cat-mic" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"></path></g>
+  <g id="cat-cap" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-4 9 4-9 4-9-4z"></path><path d="M7 11.4V16c0 1.4 2.5 2.5 5 2.5s5-1.1 5-2.5v-4.6M21 9v5"></path></g>
+  <g id="cat-all" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5z"></path><path d="m3 12 9 5 9-5"></path><path d="m3 16.5 9 5 9-5"></path></g>
+</defs></svg>
+
+<div style="position:relative;width:100%;max-width:1440px;margin:0 auto;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;">
+
+  <!-- ============ NAV ============ -->
+  <nav class="rwNav kbPad" style="position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:20px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:23px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div class="rwNavLinks" style="font-weight:600;font-size:14.5px;color:rgba(255,255,255,.82);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-home"></use></svg>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Realisaties <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Sectoren <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#fff;">Kennisbank <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span>Over ons</span><span>Contact</span>
+    </div>
+    <div class="rwNavUser" style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9"><use href="#ic-user"></use></svg>
+      <a href="#" class="navBtn" style="font-weight:700;font-size:13.5px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+    <button class="rwBurger" onClick="{{ onNavToggle }}" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+    </button>
+    <div class="rwNavPanel {{ navPanelClass }}">
+      <sc-for list="{{ navMobile }}" as="item" hint-placeholder-count="7">
+        <a href="#" style="font-size:16px;font-weight:600;color:rgba(255,255,255,.82);padding:13px 14px;border-radius:11px;" style-hover="background:rgba(255,255,255,.05);color:#fff;">{{ item }}</a>
+      </sc-for>
+    </div>
+  </nav>
+
+  <!-- ============ LANDING ============ -->
+  <sc-if value="{{ viewLanding }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <!-- HERO -->
+    <header class="kbPad" style="position:relative;overflow:hidden;padding:64px 56px 44px;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="position:absolute;top:-180px;right:-60px;width:760px;height:640px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 52% 52% at 62% 40%,rgba(255,90,0,.18),rgba(255,90,0,.05) 46%,transparent 72%);"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 70% 120% at 20% 20%,#000,transparent 72%);mask-image:radial-gradient(ellipse 70% 120% at 20% 20%,#000,transparent 72%);"></div>
+      <div style="position:relative;z-index:2;max-width:1300px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);margin-bottom:26px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">Kennisbank</span>
+        </div>
+        <div class="heroGrid" style="display:grid;grid-template-columns:1fr 460px;gap:44px;align-items:center;">
+          <div style="max-width:720px;">
+          <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.14em;color:#FF9A45;margin-bottom:22px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-book"></use></svg>KENNISBANK
+          </div>
+          <h1 class="kbH1" style="font-family:'Sora';font-weight:800;font-size:64px;line-height:.98;letter-spacing:-.03em;margin:0 0 20px;">Slim online<br><span style="background:linear-gradient(90deg,#FF3B2E,#FF9A45);-webkit-background-clip:text;background-clip:text;color:transparent;">groeien als KMO</span></h1>
+          <p style="font-size:19px;line-height:1.6;color:rgba(255,255,255,.64);margin:0 0 32px;max-width:600px;">Praktische gidsen en artikels over webdesign, SEO &amp; GEO, fotografie, video en meer — geschreven voor ondernemers in Limburg.</p>
+          <div class="srch" style="display:flex;align-items:center;gap:14px;max-width:600px;padding:5px 6px 5px 20px;border-radius:15px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"><use href="#ic-search"></use></svg>
+            <input value="{{ query }}" onInput="{{ onSearch }}" placeholder="Zoek een gids of artikel…" style="flex:1;min-width:0;border:none;outline:none;background:transparent;color:#fff;font-size:16px;padding:14px 0;"/>
+            <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button onClick="{{ onClear }}" class="navBtn" style="border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);width:34px;height:34px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></sc-if>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:11px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:14px;color:#fff;">Zoeken</span>
+          </div>
+          <div style="display:flex;gap:26px;margin-top:26px;font-family:'JetBrains Mono';font-size:12.5px;color:rgba(255,255,255,.5);">
+            <span><b style="color:#fff;font-size:15px;">{{ totalArticles }}</b> artikels</span>
+            <span><b style="color:#fff;font-size:15px;">8</b> categorie&euml;n</span>
+            <span><b style="color:#fff;font-size:15px;">wekelijks</b> nieuw</span>
+          </div>
+          </div>
+          <div class="targetWrap" style="position:relative;width:100%;max-width:600px;aspect-ratio:1;margin:-110px -60px -40px auto;justify-self:end;opacity:.4;z-index:0;pointer-events:none;transform:translateX(-75px);">
+            <div class="tgtSweep"></div>
+            <div class="tgtGlow"></div>
+            <div class="tgtPing"></div>
+            <div class="tgtPing tgtPing2"></div>
+            <svg viewBox="0 0 400 400" style="position:relative;z-index:2;width:100%;height:100%;overflow:visible;">
+              <defs>
+                <radialGradient id="tgtCore" cx="50%" cy="42%" r="62%">
+                  <stop offset="0%" stop-color="#FFC48A"></stop><stop offset="52%" stop-color="#FF7A00"></stop><stop offset="100%" stop-color="#FF3B2E"></stop>
+                </radialGradient>
+                <marker id="tgtHead" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M1 1 L8 4.5 L1 8 Z" fill="#FF9A45"></path></marker>
+              </defs>
+              <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255,122,0,.14)" stroke-width="1" stroke-dasharray="2 9"></circle>
+              <g fill="none" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 10">
+                <line class="tgtSpoke" style="--d:0s" x1="375" y1="200" x2="270" y2="200" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.13s" x1="288.4" y1="288.4" x2="249.5" y2="249.5" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.26s" x1="200" y1="365" x2="200" y2="270" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.39s" x1="125.8" y1="274.2" x2="150.5" y2="249.5" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.52s" x1="20" y1="200" x2="130" y2="200" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.65s" x1="97.5" y1="97.5" x2="150.5" y2="150.5" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.78s" x1="200" y1="45" x2="200" y2="130" marker-end="url(#tgtHead)"></line>
+                <line class="tgtSpoke" style="--d:.91s" x1="281.3" y1="118.7" x2="249.5" y2="150.5" marker-end="url(#tgtHead)"></line>
+              </g>
+              <g>
+                <g class="tgtNode" style="--d:0s" transform="translate(395 200)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:.35s" transform="translate(302.5 302.5)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:.7s" transform="translate(200 385)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:1.05s" transform="translate(111.6 288.4)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:1.4s" transform="translate(2 200)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:1.75s" transform="translate(83.3 83.3)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:2.1s" transform="translate(200 25)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+                <g class="tgtNode" style="--d:2.45s" transform="translate(295.5 104.5)"><circle r="15" fill="rgba(18,17,16,.92)" stroke="rgba(255,122,0,.55)" stroke-width="1.5"></circle><g stroke="#FF9A45" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-3.6" r="3.3"></circle><path d="M-6 8c0-4 3.1-6 6-6s6 2 6 6"></path></g></g>
+              </g>
+              <g>
+                <circle cx="200" cy="200" r="58" fill="none" stroke="rgba(255,122,0,.3)" stroke-width="2"></circle>
+                <circle cx="200" cy="200" r="42" fill="none" stroke="rgba(255,122,0,.5)" stroke-width="3"></circle>
+                <circle cx="200" cy="200" r="26" fill="url(#tgtCore)" opacity=".18"></circle>
+                <circle cx="200" cy="200" r="26" fill="none" stroke="#FF7A00" stroke-width="3"></circle>
+                <circle class="tgtDot" cx="200" cy="200" r="12" fill="url(#tgtCore)"></circle>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TWO COLUMN BODY -->
+    <div class="kbTwoCol kbPad" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:52px 56px 40px;display:grid;grid-template-columns:1fr 336px;gap:44px;align-items:start;">
+
+      <!-- MAIN COLUMN -->
+      <div style="min-width:0;">
+
+        <!-- UITGELICHT -->
+        <sc-if value="{{ showFeatured }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-bottom:52px;">
+          <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:16px;">UITGELICHT</div>
+          <div class="artCard featCard" onClick="{{ featured.onOpen }}" style="display:grid;grid-template-columns:1.05fr .95fr;gap:0;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#121110;">
+            <div style="position:relative;overflow:hidden;min-height:340px;background:#161412;">
+              {{ featured.imgEl }}
+              <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 40%,rgba(18,17,16,.75));"></div>
+              <span style="position:absolute;left:18px;top:18px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:12px;color:#fff;box-shadow:0 10px 24px -10px rgba(255,90,0,.9);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#cat-{{ featured.icon }}"></use></svg>{{ featured.catLabel }}</span>
+              <sc-if value="{{ watermark }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:18px;top:16px;z-index:2;font-family:'Sora';font-weight:800;font-size:16px;color:rgba(255,255,255,.85);letter-spacing:-.01em;">Visual<span style="color:rgba(255,122,0,.85);">Vibe</span></span></sc-if>
+            </div>
+            <div style="padding:38px 38px 34px;display:flex;flex-direction:column;">
+              <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:14px;"><span style="width:6px;height:6px;border-radius:9999px;background:#FF7A00;"></span>COMPLETE GIDS</div>
+              <h2 style="font-family:'Sora';font-weight:800;font-size:32px;line-height:1.08;letter-spacing:-.02em;margin:0 0 4px;">{{ featured.title }}</h2>
+              <div style="font-family:'Sora';font-weight:800;font-size:32px;line-height:1.08;letter-spacing:-.02em;color:#FF7A00;">{{ featured.titleAccent }}</div>
+              <div style="width:52px;height:3px;border-radius:3px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin:16px 0 18px;"></div>
+              <p style="font-size:15.5px;line-height:1.65;color:rgba(255,255,255,.66);margin:0 0 22px;text-wrap:pretty;">{{ featured.excerpt }}</p>
+              <div class="metaRow" style="display:flex;gap:22px;margin-top:auto;margin-bottom:22px;">
+                <div style="display:flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.4);">LEESTIJD</div><div style="font-size:13.5px;font-weight:700;">{{ featured.read }}</div></div></div>
+                <div style="display:flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-cal"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.4);">GEPUBLICEERD</div><div style="font-size:13.5px;font-weight:700;">{{ featured.date }}</div></div></div>
+              </div>
+              <a href="#" onClick="{{ featured.onOpen }}" class="cta" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 24px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);font-weight:700;font-size:14.5px;color:#fff;">Lees het volledige artikel <svg class="ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><use href="#ic-arr"></use></svg></a>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- NIEUWSTE + FILTER -->
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px;">
+          <div>
+            <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:10px;">{{ gridEyebrow }}</div>
+            <h2 style="font-family:'Sora';font-weight:800;font-size:30px;line-height:1.08;letter-spacing:-.02em;margin:0;">{{ gridTitle }}</h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <span style="font-family:'JetBrains Mono';font-size:12.5px;color:rgba(255,255,255,.5);">{{ resultCount }}</span>
+            <div style="display:inline-flex;gap:4px;padding:4px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+              <button onClick="{{ setGrid }}" class="lyBtn {{ lyGrid }}" title="2 kolommen" aria-label="Rasterweergave"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-grid"></use></svg></button>
+              <button onClick="{{ setList }}" class="lyBtn {{ lyList }}" title="1 per rij" aria-label="Lijstweergave"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-rows"></use></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+            <span onClick="{{ c.onPick }}" class="chip {{ c.cls }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02);font-size:13px;font-weight:600;color:rgba(255,255,255,.62);">{{ c.label }}</span>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ layoutGrid }}" hint-placeholder-val="{{ true }}">
+        <div class="newsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+          <sc-for list="{{ cards }}" as="a" hint-placeholder-count="6">
+            <div class="artCard kbRise" onClick="{{ a.onOpen }}" style="--i:{{ a.i }};display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#121110;">
+              <div style="position:relative;overflow:hidden;aspect-ratio:16/10;background:#161412;">
+                {{ a.imgEl }}
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.08),transparent 42%,rgba(12,11,10,.9));"></div>
+                <span style="position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:11px;color:#fff;box-shadow:0 8px 20px -10px rgba(255,90,0,.9);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><use href="#cat-{{ a.icon }}"></use></svg>{{ a.catLabel }}</span>
+                <sc-if value="{{ watermark }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:14px;top:12px;z-index:2;font-family:'Sora';font-weight:800;font-size:13px;color:rgba(255,255,255,.82);">Visual<span style="color:rgba(255,122,0,.85);">Vibe</span></span></sc-if>
+                <div style="position:absolute;left:18px;right:18px;bottom:15px;z-index:2;">
+                  <div style="font-family:'Sora';font-weight:700;font-size:18px;line-height:1.18;letter-spacing:-.01em;">{{ a.title }}</div>
+                  <div style="font-family:'Sora';font-weight:700;font-size:18px;line-height:1.18;letter-spacing:-.01em;color:#FF9A45;">{{ a.titleAccent }}</div>
+                  <div style="width:38px;height:3px;border-radius:3px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin-top:9px;"></div>
+                </div>
+              </div>
+              <div style="padding:20px 20px 22px;display:flex;flex-direction:column;flex:1;">
+                <div class="metaRow" style="display:flex;gap:18px;padding-bottom:15px;margin-bottom:15px;border-bottom:1px solid rgba(255,255,255,.07);">
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">LEESTIJD</div><div style="font-size:12.5px;font-weight:700;">{{ a.read }}</div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-user"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">AUTEUR</div><div style="font-size:12.5px;font-weight:700;">{{ a.author }}</div></div></div>
+                </div>
+                <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.62);margin:0 0 18px;text-wrap:pretty;">{{ a.excerpt }}</p>
+                <a href="#" onClick="{{ a.onOpen }}" class="cta" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:auto;padding:13px 18px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);font-weight:700;font-size:13.5px;color:#fff;">Lees het volledige artikel <svg class="ar" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><use href="#ic-arr"></use></svg></a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+        <sc-if value="{{ layoutList }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <sc-for list="{{ cards }}" as="a" hint-placeholder-count="4">
+            <div class="artCard listCard kbRise" onClick="{{ a.onOpen }}" style="--i:{{ a.i }};display:grid;grid-template-columns:320px 1fr;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#121110;">
+              <div class="listImg" style="position:relative;overflow:hidden;min-height:230px;background:#161412;">
+                {{ a.imgEl }}
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 42%,rgba(18,17,16,.55));"></div>
+                <span style="position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:11px;color:#fff;box-shadow:0 8px 20px -10px rgba(255,90,0,.9);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><use href="#cat-{{ a.icon }}"></use></svg>{{ a.catLabel }}</span>
+                <sc-if value="{{ watermark }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:14px;top:12px;z-index:2;font-family:'Sora';font-weight:800;font-size:13px;color:rgba(255,255,255,.82);">Visual<span style="color:rgba(255,122,0,.85);">Vibe</span></span></sc-if>
+              </div>
+              <div style="padding:26px 28px;display:flex;flex-direction:column;">
+                <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:12px;"><span style="width:6px;height:6px;border-radius:9999px;background:#FF7A00;"></span>{{ a.catUpper }}</div>
+                <h3 style="font-family:'Sora';font-weight:800;font-size:23px;line-height:1.12;letter-spacing:-.02em;margin:0;">{{ a.title }}</h3>
+                <div style="font-family:'Sora';font-weight:800;font-size:23px;line-height:1.12;letter-spacing:-.02em;color:#FF9A45;">{{ a.titleAccent }}</div>
+                <div style="width:46px;height:3px;border-radius:3px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin:14px 0 16px;"></div>
+                <p style="font-size:14.5px;line-height:1.62;color:rgba(255,255,255,.64);margin:0 0 20px;text-wrap:pretty;">{{ a.excerpt }}</p>
+                <div class="metaRow" style="display:flex;gap:24px;margin-top:auto;margin-bottom:18px;">
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">LEESTIJD</div><div style="font-size:13px;font-weight:700;">{{ a.read }}</div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-cal"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">GEPUBLICEERD</div><div style="font-size:13px;font-weight:700;">{{ a.date }}</div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-user"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">AUTEUR</div><div style="font-size:13px;font-weight:700;">{{ a.author }}</div></div></div>
+                </div>
+                <a href="#" onClick="{{ a.onOpen }}" class="cta" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:fit-content;padding:13px 22px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);font-weight:700;font-size:13.5px;color:#fff;">Lees het volledige artikel <svg class="ar" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><use href="#ic-arr"></use></svg></a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+        </sc-if>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:60px 30px;text-align:center;border:1px dashed rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.02);">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.8" style="margin-bottom:14px;"><use href="#ic-search"></use></svg>
+            <div style="font-family:'Sora';font-weight:700;font-size:18px;margin-bottom:6px;">Geen artikels gevonden</div>
+            <p style="font-size:14px;color:rgba(255,255,255,.55);margin:0 0 18px;">Probeer een andere zoekterm of categorie.</p>
+            <button onClick="{{ onReset }}" class="navBtn" style="border:1px solid rgba(255,122,0,.4);background:rgba(255,122,0,.1);color:#FF9A45;font-weight:700;font-size:13.5px;padding:11px 20px;border-radius:11px;cursor:pointer;">Filters wissen</button>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="kbSidebar" style="position:sticky;top:24px;display:flex;flex-direction:column;gap:20px;">
+        <!-- zoeken (verschijnt na scroll) -->
+        <div class="sideSearch {{ searchCls }}">
+        <div class="srch" style="display:flex;align-items:center;gap:10px;padding:4px 5px 4px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"><use href="#ic-search"></use></svg>
+          <input value="{{ query }}" onInput="{{ onSearch }}" placeholder="Zoeken in kennisbank…" style="flex:1;min-width:0;border:none;outline:none;background:transparent;color:#fff;font-size:14px;padding:11px 0;"/>
+          <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button onClick="{{ onClear }}" class="navBtn" style="border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></sc-if>
+        </div>
+        </div>
+
+        <!-- categories -->
+        <div style="padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);">
+          <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.45);margin-bottom:14px;">CATEGORIE&Euml;N</div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <sc-for list="{{ sideCats }}" as="c" hint-placeholder-count="9">
+              <div onClick="{{ c.onPick }}" class="catRow {{ c.cls }}" style="display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:11px;color:rgba(255,255,255,.72);font-size:14px;font-weight:600;">
+                <span style="flex:none;display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.22);color:#FF9A45;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#cat-{{ c.icon }}"></use></svg></span>
+                <span style="flex:1;">{{ c.label }}</span>
+                <span style="font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.4);">{{ c.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- nieuwsbrief -->
+        <div style="position:relative;overflow:hidden;padding:26px 24px;border-radius:18px;border:1px solid rgba(255,122,0,.28);background:linear-gradient(155deg,rgba(255,90,0,.14),rgba(255,90,0,.03));">
+          <div style="position:absolute;top:-50px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,90,0,.22),transparent 70%);pointer-events:none;"></div>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);color:#fff;margin-bottom:16px;box-shadow:0 14px 30px -12px rgba(255,90,0,.9);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-mail"></use></svg></span>
+          <div style="font-family:'Sora';font-weight:800;font-size:19px;letter-spacing:-.01em;margin-bottom:7px;">Blijf op de hoogte</div>
+          <p style="font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.66);margin:0 0 18px;">Elke maand de beste gidsen en tips voor KMO's in je inbox.</p>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <input value="{{ email }}" onInput="{{ onEmail }}" placeholder="jouw@email.be" style="width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:#fff;font-size:14px;padding:13px 15px;border-radius:11px;outline:none;"/>
+            <button onClick="{{ onSubscribe }}" class="nlBtn" style="width:100%;border:none;cursor:pointer;padding:14px;border-radius:11px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;font-weight:700;font-size:14px;">{{ subLabel }}</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- BLADER PER CATEGORIE (volle breedte) -->
+    <div class="kbPad" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:24px 56px 96px;">
+      <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:10px;">CATEGORIE&Euml;N</div>
+      <h2 style="font-family:'Sora';font-weight:800;font-size:30px;line-height:1.08;letter-spacing:-.02em;margin:0 0 24px;">Blader per onderwerp</h2>
+      <!-- onderwerpinfo: Blader per onderwerp cards komen hier in dezelfde stijl als de homepage. -->
+      <div style="display:flex;align-items:center;gap:16px;padding:34px 36px;border-radius:22px;border:1px dashed rgba(255,255,255,.14);background:rgba(255,255,255,.02);color:rgba(255,255,255,.55);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.8" style="flex:none;"><use href="#cat-all"></use></svg>
+        <div style="font-size:14.5px;line-height:1.55;text-wrap:pretty;"><b style="color:#fff;font-weight:700;">Voor Claude:</b> Blader per onderwerp cards komen hier in dezelfde stijl als de homepage.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ CATEGORY PAGE ============ -->
+  <sc-if value="{{ viewCategory }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <!-- category header -->
+    <header class="kbPad" style="position:relative;overflow:hidden;padding:64px 56px 44px;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="position:absolute;top:-180px;right:-60px;width:760px;height:640px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 52% 52% at 62% 40%,rgba(255,90,0,.18),rgba(255,90,0,.05) 46%,transparent 72%);"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 70% 120% at 20% 20%,#000,transparent 72%);mask-image:radial-gradient(ellipse 70% 120% at 20% 20%,#000,transparent 72%);"></div>
+      <div style="position:relative;z-index:2;max-width:1300px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);margin-bottom:26px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span>Kennisbank</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">SEO &amp; GEO</span>
+        </div>
+        <div class="heroGrid" style="display:grid;grid-template-columns:1fr 460px;gap:44px;align-items:center;">
+          <div style="max-width:720px;">
+            <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.14em;color:#FF9A45;margin-bottom:22px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#cat-seo"></use></svg>CATEGORIE
+            </div>
+            <h1 class="kbH1" style="font-family:'Sora';font-weight:800;font-size:64px;line-height:.98;letter-spacing:-.03em;margin:0 0 20px;">SEO &amp; <span style="background:linear-gradient(90deg,#FF3B2E,#FF9A45);-webkit-background-clip:text;background-clip:text;color:transparent;">GEO</span></h1>
+            <p style="font-size:19px;line-height:1.6;color:rgba(255,255,255,.64);margin:0 0 32px;max-width:600px;">Artikels over lokale SEO, AEO, GEO, AI-vindbaarheid en online zichtbaarheid voor KMO's in Limburg.</p>
+            <div class="srch" style="display:flex;align-items:center;gap:14px;max-width:600px;padding:5px 6px 5px 20px;border-radius:15px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"><use href="#ic-search"></use></svg>
+              <input value="{{ query }}" onInput="{{ onSearch }}" onKeyDown="{{ onSearchKey }}" placeholder="Zoek een gids of artikel…" style="flex:1;min-width:0;border:none;outline:none;background:transparent;color:#fff;font-size:16px;padding:14px 0;"/>
+              <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button onClick="{{ onClear }}" class="navBtn" style="border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);width:34px;height:34px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></sc-if>
+              <button onClick="{{ onSearchGo }}" class="navBtn" style="flex:none;display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:11px;border:none;cursor:pointer;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:14px;color:#fff;">Zoeken</button>
+            </div>
+            <div style="display:flex;gap:26px;margin-top:26px;font-family:'JetBrains Mono';font-size:12.5px;color:rgba(255,255,255,.5);">
+              <span><b style="color:#fff;font-size:15px;">8</b> artikels</span>
+              <span><b style="color:#fff;font-size:15px;">2</b> gidsen</span>
+              <span><b style="color:#fff;font-size:15px;">wekelijks</b> nieuw</span>
+            </div>
+          </div>
+          <div class="targetWrap" style="position:relative;width:100%;max-width:580px;aspect-ratio:1;margin:0 auto;justify-self:end;">
+            <div class="tgtSweep"></div>
+            <div class="tgtGlow"></div>
+            <div class="tgtPing"></div>
+            <div class="tgtPing tgtPing2"></div>
+            <svg viewBox="0 0 400 400" style="position:relative;z-index:2;width:100%;height:100%;overflow:visible;">
+              <circle cx="200" cy="200" r="155" fill="none" stroke="rgba(255,122,0,.14)" stroke-width="1" stroke-dasharray="2 9"></circle>
+              <circle cx="200" cy="200" r="118" fill="none" stroke="rgba(255,122,0,.22)" stroke-width="1.5"></circle>
+              <circle cx="200" cy="200" r="84" fill="none" stroke="rgba(255,122,0,.4)" stroke-width="2"></circle>
+            </svg>
+            <div class="catMedal" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;color:#FF8A2E;filter:drop-shadow(0 16px 34px rgba(255,122,0,.55));z-index:3;">
+              <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><use href="#cat-seo"></use></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="kbTwoCol kbPad" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:52px 56px 40px;display:grid;grid-template-columns:1fr 336px;gap:44px;align-items:start;">
+      <div style="min-width:0;">
+        <!-- complete gidsen -->
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:10px;">START HIER</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:30px;line-height:1.08;letter-spacing:-.02em;margin:0 0 24px;">Complete gidsen</h2>
+        <div class="guideGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:56px;">
+          <sc-for list="{{ guides }}" as="a" hint-placeholder-count="2">
+            <div class="artCard kbRise" onClick="{{ a.onOpen }}" style="--i:{{ a.i }};display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#121110;">
+              <div style="position:relative;overflow:hidden;aspect-ratio:16/9;background:#161412;">
+                {{ a.imgEl }}
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.06),transparent 44%,rgba(12,11,10,.92));"></div>
+                <span style="position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:11px;color:#fff;">GIDS</span>
+                <sc-if value="{{ watermark }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:14px;top:12px;z-index:2;font-family:'Sora';font-weight:800;font-size:13px;color:rgba(255,255,255,.82);">Visual<span style="color:rgba(255,122,0,.85);">Vibe</span></span></sc-if>
+                <div style="position:absolute;left:18px;right:18px;bottom:15px;z-index:2;">
+                  <div style="font-family:'Sora';font-weight:700;font-size:19px;line-height:1.18;letter-spacing:-.01em;">{{ a.title }}</div>
+                  <div style="font-family:'Sora';font-weight:700;font-size:19px;line-height:1.18;letter-spacing:-.01em;color:#FF9A45;">{{ a.titleAccent }}</div>
+                  <div style="width:38px;height:3px;border-radius:3px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin-top:9px;"></div>
+                </div>
+              </div>
+              <div style="padding:20px 20px 22px;display:flex;flex-direction:column;flex:1;">
+                <div class="metaRow" style="display:flex;gap:18px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);">
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">LEESTIJD</div><div style="font-size:12.5px;font-weight:700;">{{ a.read }}</div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-cal"></use></svg><div><div style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.4);">GEPUBLICEERD</div><div style="font-size:12.5px;font-weight:700;">{{ a.date }}</div></div></div>
+                </div>
+                <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.62);margin:0 0 18px;text-wrap:pretty;">{{ a.excerpt }}</p>
+                <a href="#" onClick="{{ a.onOpen }}" class="cta" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:auto;padding:13px 18px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);font-weight:700;font-size:13.5px;color:#fff;">Lees de gids <svg class="ar" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><use href="#ic-arr"></use></svg></a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- artikels per vraag -->
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:10px;">VERDIEPING</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:30px;line-height:1.08;letter-spacing:-.02em;margin:0 0 24px;">Artikels per vraag</h2>
+        <div class="qGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <sc-for list="{{ qArticles }}" as="a" hint-placeholder-count="4">
+            <div class="artCard kbRise" onClick="{{ a.onOpen }}" style="--i:{{ a.i }};display:flex;gap:16px;padding:16px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:#121110;">
+              <div style="flex:none;width:96px;height:96px;border-radius:13px;overflow:hidden;background:#161412;position:relative;">{{ a.imgEl }}</div>
+              <div style="min-width:0;display:flex;flex-direction:column;">
+                <div style="font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#FF9A45;margin-bottom:7px;">SEO &amp; GEO &middot; {{ a.read }}</div>
+                <div style="font-family:'Sora';font-weight:700;font-size:15.5px;line-height:1.2;letter-spacing:-.01em;">{{ a.title }} <span style="color:#FF9A45;">{{ a.titleAccent }}</span></div>
+                <p style="font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.55);margin:8px 0 0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">{{ a.excerpt }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- CATEGORY SIDEBAR -->
+      <aside class="kbSidebar" style="position:sticky;top:24px;display:flex;flex-direction:column;gap:20px;">
+        <!-- zoeken (verschijnt na scroll) -->
+        <div class="sideSearch {{ searchCls }}">
+        <div class="srch" style="display:flex;align-items:center;gap:10px;padding:4px 5px 4px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"><use href="#ic-search"></use></svg>
+          <input value="{{ query }}" onInput="{{ onSearch }}" onKeyDown="{{ onSearchKey }}" placeholder="Zoeken in kennisbank…" style="flex:1;min-width:0;border:none;outline:none;background:transparent;color:#fff;font-size:14px;padding:11px 0;"/>
+          <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button onClick="{{ onClear }}" class="navBtn" style="border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></sc-if>
+        </div>
+        </div>
+
+        <div style="padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);">
+          <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.45);margin-bottom:14px;">IN DEZE CATEGORIE</div>
+          <div style="display:flex;flex-direction:column;">
+            <sc-for list="{{ catToc }}" as="t" hint-placeholder-count="6">
+              <a href="#" onClick="{{ t.onOpen }}" class="tocLink {{ t.cls }}" style="padding:9px 0 9px 12px;font-size:13.5px;line-height:1.35;color:rgba(255,255,255,.66);font-weight:600;">{{ t.title }}</a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);">
+          <div style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.45);margin-bottom:14px;">ANDERE CATEGORIE&Euml;N</div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <sc-for list="{{ otherCats }}" as="c" hint-placeholder-count="7">
+              <div onClick="{{ c.onOpen }}" class="catRow" style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;color:rgba(255,255,255,.72);font-size:14px;font-weight:600;">
+                <span style="flex:none;display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.22);color:#FF9A45;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#cat-{{ c.icon }}"></use></svg></span>
+                <span style="flex:1;">{{ c.label }}</span>
+                <span style="font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.4);">{{ c.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="position:relative;overflow:hidden;padding:26px 24px;border-radius:18px;border:1px solid rgba(255,122,0,.28);background:linear-gradient(155deg,rgba(255,90,0,.14),rgba(255,90,0,.03));">
+          <div style="position:absolute;top:-50px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,90,0,.22),transparent 70%);pointer-events:none;"></div>
+          <div style="font-family:'Sora';font-weight:800;font-size:19px;letter-spacing:-.01em;margin-bottom:7px;">Hulp nodig met SEO?</div>
+          <p style="font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.66);margin:0 0 18px;">Wij zorgen dat KMO's in Limburg gevonden worden. Vraag vrijblijvend een audit aan.</p>
+          <a href="#" class="nlBtn" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:11px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;font-weight:700;font-size:14px;">Gratis SEO-audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><use href="#ic-arr"></use></svg></a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ BLOG HERO ============ -->
+  <sc-if value="{{ viewBlog }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <div class="kbPad" style="position:relative;overflow:hidden;padding:44px 56px 56px;">
+      <div style="position:absolute;top:-120px;left:-60px;width:760px;height:560px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 50% 50% at 30% 40%,rgba(255,90,0,.16),transparent 70%);"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 80% 90% at 40% 20%,#000,transparent 74%);mask-image:radial-gradient(ellipse 80% 90% at 40% 20%,#000,transparent 74%);"></div>
+
+      <div style="position:relative;z-index:2;max-width:1300px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);margin-bottom:30px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span>Kennisbank</span><span style="color:rgba(255,255,255,.22);">/</span><span>{{ blog.catLabel }}</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">Artikel</span>
+        </div>
+
+        <div class="blogHeroGrid" style="display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;">
+          <!-- left copy -->
+          <div>
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.08em;color:#FF9A45;margin-bottom:24px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#cat-{{ blog.icon }}"></use></svg>{{ blog.catUpper }}</span>
+            <h1 class="blogTitle" style="font-family:'Sora';font-weight:800;font-size:52px;line-height:1.04;letter-spacing:-.03em;margin:0 0 6px;">{{ blog.title }}</h1>
+            <div class="blogTitle" style="font-family:'Sora';font-weight:800;font-size:52px;line-height:1.04;letter-spacing:-.03em;color:#FF7A00;">{{ blog.titleAccent }}</div>
+            <p style="font-size:18.5px;line-height:1.6;color:rgba(255,255,255,.66);margin:24px 0 30px;max-width:560px;text-wrap:pretty;">{{ blog.subtitle }}</p>
+
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:30px;">
+              <div style="display:flex;align-items:center;gap:11px;padding-right:16px;border-right:1px solid rgba(255,255,255,.12);">
+                <span style="flex:none;width:42px;height:42px;border-radius:9999px;background:linear-gradient(150deg,rgba(255,122,0,.3),rgba(255,122,0,.08));border:1px solid rgba(255,122,0,.4);display:flex;align-items:center;justify-content:center;color:#FF9A45;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-user"></use></svg></span>
+                <div><div style="font-size:14px;font-weight:700;">{{ blog.author }}</div><div style="font-size:12px;color:rgba(255,255,255,.5);">Oprichter &amp; creative lead</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:rgba(255,255,255,.62);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-cal"></use></svg>{{ blog.date }}</div>
+              <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:rgba(255,255,255,.62);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg>{{ blog.read }}</div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;">
+              <a href="#" class="nlBtn" style="display:inline-flex;align-items:center;gap:9px;padding:15px 26px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:14.5px;color:#fff;">Begin met lezen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></a>
+              <span style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-left:6px;">DELEN</span>
+              <div style="display:flex;gap:8px;">
+                <a href="#" class="shareBtn" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-9h4v1.5"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                <a href="#" class="shareBtn" aria-label="Facebook" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" class="shareBtn" aria-label="Link kopi&euml;ren" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- right image card -->
+          <div style="position:relative;">
+            <div style="position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.1);background:#161412;aspect-ratio:4/5;box-shadow:0 50px 100px -40px rgba(255,90,0,.35),0 20px 50px -30px rgba(0,0,0,.9);">
+              {{ blog.imgEl }}
+              <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.1),transparent 40%,rgba(12,11,10,.55));"></div>
+              <span style="position:absolute;left:18px;top:18px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9999px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);font-weight:700;font-size:12px;color:#fff;">{{ blog.catUpper }}</span>
+              <sc-if value="{{ watermark }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;right:18px;top:16px;z-index:2;font-family:'Sora';font-weight:800;font-size:16px;color:rgba(255,255,255,.85);">Visual<span style="color:rgba(255,122,0,.85);">Vibe</span></span></sc-if>
+              <div style="position:absolute;left:20px;right:20px;bottom:20px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <span style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:11px;background:rgba(8,7,6,.6);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:#fff;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.9"><use href="#ic-clock"></use></svg>{{ blog.read }}</span>
+                <span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:rgba(8,7,6,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><use href="#ic-zoom"></use></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- in dit artikel quick chips -->
+        <div style="margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <span style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.4);">IN DIT ARTIKEL</span>
+          <sc-for list="{{ blogToc }}" as="t" hint-placeholder-count="5">
+            <span class="chip" style="display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02);font-size:13px;font-weight:600;color:rgba(255,255,255,.66);"><span style="width:6px;height:6px;border-radius:9999px;background:#FF7A00;"></span>{{ t }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="position:relative;background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06);overflow:hidden;">
+    <div style="height:2px;width:100%;background:linear-gradient(90deg,transparent,#FF7A00,transparent);"></div>
+    <div style="position:absolute;top:-160px;left:12%;width:620px;height:360px;background:radial-gradient(ellipse at center,rgba(255,90,0,.08),transparent 70%);pointer-events:none;"></div>
+    <div class="kbPad" style="position:relative;max-width:1300px;margin:0 auto;padding:64px 56px 0;">
+      <div class="vv-fgrid" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;">
+        <div>
+          <div style="font-family:'Sora';font-weight:800;font-size:26px;letter-spacing:-.02em;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+          <p style="margin:18px 0 0;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.55);max-width:320px;text-wrap:pretty;">Creatief mediabureau in Limburg voor webdesign, SEO, fotografie, videografie, drone, 3D/VR/AR en podcasting.</p>
+          <div style="display:flex;flex-direction:column;gap:11px;margin-top:24px;">
+            <a href="mailto:info@visualvibe.be" style="display:inline-flex;align-items:center;gap:11px;font-size:14px;color:rgba(255,255,255,.72);width:fit-content;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2"><use href="#ic-mail"></use></svg>info@visualvibe.be</a>
+          </div>
+        </div>
+        <sc-for list="{{ footCols }}" as="col" hint-placeholder-count="3">
+          <div>
+            <h3 style="font-family:'Sora';font-size:15px;font-weight:600;margin:0 0 18px;color:#fff;">{{ col.title }}</h3>
+            <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="5">
+                <li><a href="#" style="font-size:14px;color:rgba(255,255,255,.6);" style-hover="color:#fff;">{{ link }}</a></li>
+              </sc-for>
+            </ul>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:26px 0 30px;margin-top:48px;border-top:1px solid rgba(255,255,255,.08);">
+        <span style="font-size:13px;color:rgba(255,255,255,.45);">&copy; 2026 VisualVibe. Alle rechten voorbehouden.</span>
+        <div style="display:flex;flex-wrap:wrap;gap:24px;">
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,.5);" style-hover="color:#FF9A45;">Privacybeleid</a>
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,.5);" style-hover="color:#FF9A45;">Algemene voorwaarden</a>
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,.5);" style-hover="color:#FF9A45;">Cookiebeleid</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ VIEW SWITCHER (prototype nav) ============ -->
+  <div style="position:sticky;bottom:20px;z-index:40;display:flex;justify-content:center;pointer-events:none;margin-top:-64px;">
+    <div style="pointer-events:auto;display:inline-flex;align-items:center;gap:5px;padding:6px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:rgba(16,14,13,.82);backdrop-filter:blur(14px);box-shadow:0 20px 50px -20px rgba(0,0,0,.9);">
+      <span style="font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.4);padding:0 10px 0 12px;">PREVIEW</span>
+      <button onClick="{{ goLanding }}" class="switchBtn pillBtn {{ swLanding }}" style="border:none;cursor:pointer;font-family:'Manrope';font-weight:700;font-size:13px;color:rgba(255,255,255,.72);padding:9px 16px;border-radius:9999px;background:transparent;">Landing</button>
+      <button onClick="{{ goCategory }}" class="switchBtn pillBtn {{ swCategory }}" style="border:none;cursor:pointer;font-family:'Manrope';font-weight:700;font-size:13px;color:rgba(255,255,255,.72);padding:9px 16px;border-radius:9999px;background:transparent;">Categorie</button>
+      <button onClick="{{ goBlog }}" class="switchBtn pillBtn {{ swBlog }}" style="border:none;cursor:pointer;font-family:'Manrope';font-weight:700;font-size:13px;color:rgba(255,255,255,.72);padding:9px 16px;border-radius:9999px;background:transparent;">Blog hero</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:2680},&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Landing&quot;,&quot;options&quot;:[&quot;Landing&quot;,&quot;Categorie&quot;,&quot;Blog hero&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Pagina&quot;},&quot;gridLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Grid&quot;,&quot;options&quot;:[&quot;Grid&quot;,&quot;Lijst&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nieuwste artikels&quot;},&quot;showWatermark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Kaarten&quot;}}">
+class Component extends DCLogic {
+  IMG = {
+    bedrijf: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F01-bedrijfsfotografie.webp?alt=media&token=464345b0-7db4-4e24-bac9-c96fce9a263d',
+    portret: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F02-zakelijke-portretten.webp?alt=media&token=d2dcf975-9655-4481-a54d-34d8c7fd1dd1',
+    product: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F03-productfotografie.webp?alt=media&token=8cf89e53-5318-47ef-8502-afd01941fa0a',
+    event: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F04-eventfotografie.webp?alt=media&token=4083399d-781e-43bf-bd0e-acf5a85a6816',
+    vastgoed: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F05-vastgoedfotografie.webp?alt=media&token=15bb4033-07c4-48c0-88a4-fe965768242e',
+    realisatie: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F06-realisatiefotografie.webp?alt=media&token=5dfed050-7cc3-40c3-a75d-f90852b120b1',
+    branding: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F07-brandingfotografie.webp?alt=media&token=fa6ac811-bc45-41df-809e-07fd41017c58',
+    night: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20Nacht%20fotografie.webp?alt=media&token=a607907f-b11e-42d8-b576-d64cbde39c8f',
+    alpen: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FAlpen-drone-fotos-scaled.webp?alt=media&token=fe09068a-ff73-4ec8-8a70-382681272bd5',
+    woon: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone%20woonplaats%20luchtfoto.webp?alt=media&token=6c6e1b31-b0a0-48e2-bac0-42bfaab5c35b',
+    zon: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FDrone-zonnepanelen.webp?alt=media&token=419485d3-1c72-49b0-8ef0-020b58afce51',
+    portrait: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FFotografie%20-%20Jens%20Hardy%20fotograaf%20Limburg.webp?alt=media&token=1ecd395c-f1aa-4458-a4db-bb3ad7e62fa3',
+    bedrijf1: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-drone.webp?alt=media&token=105ae204-ca42-48e3-9d5f-ec9ed86c8c43',
+    bedrijf2: 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FBedrijfssfotos-met-drone.webp?alt=media&token=c0d95d8b-b352-41b3-8f9d-330a77549cb1',
+  };
+
+  CATS = [
+    { key:'seo', label:'SEO & GEO', icon:'seo', count:8, desc:"Lokale SEO, AEO, GEO en AI-vindbaarheid voor KMO's in Limburg." },
+    { key:'webdesign', label:'Webdesign', icon:'web', count:7, desc:'Professionele website laten maken: design, snelheid, conversie en techniek.' },
+    { key:'fotografie', label:'Fotografie', icon:'foto', count:7, desc:'Bedrijfs-, product-, event- en vastgoedfotografie voor KMO\u2019s.' },
+    { key:'videografie', label:'Videografie', icon:'video', count:4, desc:'Bedrijfsvideo, promo, social video en aftermovies die je merk versterken.' },
+    { key:'drone', label:'Drone & FPV', icon:'drone', count:3, desc:'Dronefotografie, dronevideo en FPV voor bedrijven, vastgoed en events.' },
+    { key:'vr', label:'3D, VR & AR', icon:'cube', count:2, desc:'3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.' },
+    { key:'podcast', label:'Podcasting', icon:'mic', count:2, desc:'Een bedrijfspodcast of videopodcast starten en inzetten als kanaal.' },
+    { key:'master', label:'Masterclasses', icon:'cap', count:1, desc:'Opleidingen, cursussen en workshops professioneel op video zetten.' },
+  ];
+
+  ART = [
+    { id:'geo', cat:'seo', title:"GEO en AEO voor KMO's:", acc:'gevonden worden in Google, ChatGPT en AI', read:'14 min', date:'11 juli 2026', img:'bedrijf', guide:true, featured:true, pop:1,
+      excerpt:"AI verandert hoe mensen zoeken. Ontdek hoe KMO's met GEO, AEO, SEO, structured data en sterke content beter zichtbaar worden in Google en AI-zoekresultaten." },
+    { id:'lokaal', cat:'seo', title:'Lokale SEO voor KMO\u2019s in Limburg:', acc:'zo word je gevonden door klanten in je regio', read:'13 min', date:'11 juli 2026', img:'woon', guide:true, pop:2,
+      excerpt:"Lokale SEO helpt KMO's in Limburg beter gevonden worden door klanten in hun regio via Google Business Profiel, dienstenpagina's en lokale content." },
+    { id:'watgeo', cat:'seo', title:'Wat is GEO?', acc:'Vindbaar in generatieve antwoorden', read:'8 min', date:'10 juli 2026', img:'alpen', pop:3,
+      excerpt:'GEO richt zich op de kans dat generatieve systemen je pagina ophalen, begrijpen en als bron vermelden. Leer hoe retrieval en citeerbaarheid samenhangen.' },
+    { id:'wataeo', cat:'seo', title:'Wat is AEO?', acc:'Content die directe vragen beantwoordt', read:'7 min', date:'10 juli 2026', img:'zon',
+      excerpt:'AEO helpt je echte klantvragen te vertalen naar korte, duidelijke antwoorden. Leer hoe vraaganalyse, snippets en meting samenkomen.' },
+    { id:'gbp', cat:'seo', title:'Google Business Profiel:', acc:'praktische checklist voor KMO\u2019s', read:'9 min', date:'9 juli 2026', img:'bedrijf1',
+      excerpt:"Controleer en verbeter je Google Business Profiel met een praktische audit voor categorie\u00ebn, diensten, foto's en reviews." },
+    { id:'techseo', cat:'seo', title:'Technische SEO-checklist', acc:'voor KMO-websites', read:'11 min', date:'8 juli 2026', img:'realisatie',
+      excerpt:'Gebruik deze checklist om crawlbaarheid, indexering, canonicals, redirects, mobiel, structured data en snelheid systematisch te controleren.' },
+    { id:'website', cat:'webdesign', title:'Website laten maken:', acc:'waar let je op in 2026', read:'12 min', date:'7 juli 2026', img:'product', pop:4,
+      excerpt:'Van doel en structuur tot snelheid, conversie en techniek: een praktische gids om de juiste keuzes te maken voor je nieuwe KMO-website.' },
+    { id:'landing', cat:'webdesign', title:'Conversiegerichte landingspagina\u2019s:', acc:'van klik tot klant', read:'10 min', date:'6 juli 2026', img:'branding',
+      excerpt:'Bouw landingspagina\u2019s die bezoekers begeleiden naar actie met een heldere boodschap, sociale bewijskracht en een sterke call-to-action.' },
+    { id:'event', cat:'fotografie', title:'Eventfotografie checklist:', acc:'van draaiboek tot snelle publicatie', read:'17 min', date:'11 juli 2026', img:'event', pop:5,
+      excerpt:'Plan eventfotografie van doel en draaiboek tot accreditatie, privacy, shotlist, snelle selectie, oplevering en publicatie. Inclusief checklist per fase.' },
+    { id:'product', cat:'fotografie', title:'Productfotografie voor webshops:', acc:'van shotlist tot productfeed', read:'16 min', date:'11 juli 2026', img:'product',
+      excerpt:"Een praktische gids voor consistente productfoto's: van beeldtypes, varianten en kleurcontrole tot SKU-workflow, gebruiksrechten en alt-tekst." },
+    { id:'vastgoed', cat:'fotografie', title:'Vastgoedfotografie tips:', acc:'een eerlijk en volledig pandverhaal', read:'16 min', date:'11 juli 2026', img:'vastgoed',
+      excerpt:'Praktische vastgoedfotografie-tips voor voorbereiding, shotlist, licht, perspectief, privacy en selectie, met een eerlijke presentatie van interieur en exterieur.' },
+    { id:'bedrijfsvideo', cat:'videografie', title:'Bedrijfsvideo die werkt:', acc:'van script tot publicatie', read:'12 min', date:'5 juli 2026', img:'night',
+      excerpt:'Zet een bedrijfsvideo op die kijkers vasthoudt: van doelbepaling en script tot draaidag, montage en publicatie op de juiste kanalen.' },
+    { id:'dronevastgoed', cat:'drone', title:'Dronebeelden voor vastgoed:', acc:'regels, veiligheid en resultaat', read:'9 min', date:'4 juli 2026', img:'alpen',
+      excerpt:'Wat mag wel en niet met een drone, hoe bereid je een vlucht voor en hoe lever je luchtbeelden die een pand echt sterker presenteren.' },
+    { id:'vrtour', cat:'vr', title:'Virtuele rondleidingen:', acc:'een showroom die altijd open is', read:'8 min', date:'3 juli 2026', img:'portret',
+      excerpt:'Ontdek hoe een 3D-tour bezoekers laat rondkijken in je zaak, showroom of pand \u2014 dag en nacht, op elk toestel.' },
+    { id:'podcast', cat:'podcast', title:'Bedrijfspodcast starten:', acc:'van idee tot vaste luisteraars', read:'10 min', date:'2 juli 2026', img:'portrait',
+      excerpt:'Van concept en format tot opname, montage en distributie: zo bouw je met een podcast een kanaal dat je merk versterkt.' },
+    { id:'masterclass', cat:'master', title:'Video zelf professioneel maken:', acc:'onze masterclass-aanpak', read:'11 min', date:'1 juli 2026', img:'bedrijf2',
+      excerpt:'Leer hoe je met beperkte middelen sterke video maakt \u2014 van cameravoering en licht tot montage \u2014 in onze praktische masterclass.' },
+  ];
+
+  navMobile = ['Diensten','Regio','Realisaties','Sectoren','Kennisbank','Over ons','Contact'];
+  footCols = [
+    { title:'Diensten', links:['Webdesign','SEO','Fotografie','Videografie','Drone & FPV','3D, VR & AR'] },
+    { title:'Bedrijf', links:['Over ons','Realisaties','Kennisbank','Sectoren','Contact'] },
+    { title:'Regio', links:['Limburg','Vlaanderen','Antwerpen','Nederlands-Limburg'] },
+  ];
+
+  state = { view:'landing', navOpen:false, query:'', cat:'all', email:'', subscribed:false, blogId:'event', layout:'grid', scrolled:false };
+
+  componentDidMount(){
+    const m = { 'Landing':'landing', 'Categorie':'category', 'Blog hero':'blog' };
+    if (this.props.view && m[this.props.view]) this.setState({ view:m[this.props.view] });
+    if (this.props.gridLayout) this.setState({ layout: this.props.gridLayout === 'Lijst' ? 'list' : 'grid' });
+    Object.values(this.IMG).forEach(u => { const im = new Image(); im.src = u; });
+    this._onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || (document.scrollingElement && document.scrollingElement.scrollTop) || 0;
+      const s = y > 160;
+      if (s !== this.state.scrolled) this.setState({ scrolled:s });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    this._onScroll();
+  }
+  componentWillUnmount(){ if (this._onScroll) window.removeEventListener('scroll', this._onScroll); }
+  componentDidUpdate(prev){
+    const m = { 'Landing':'landing', 'Categorie':'category', 'Blog hero':'blog' };
+    if (this.props.view !== prev.props.view && m[this.props.view] && m[this.props.view] !== this.state.view){
+      this.setState({ view:m[this.props.view] });
+    }
+    if (this.props.gridLayout !== prev.props.gridLayout && this.props.gridLayout){
+      const ly = this.props.gridLayout === 'Lijst' ? 'list' : 'grid';
+      if (ly !== this.state.layout) this.setState({ layout:ly });
+    }
+  }
+
+  catOf(k){ return this.CATS.find(c => c.key === k) || this.CATS[0]; }
+  imgEl(k, cls){ return React.createElement('img', { className:cls || 'artImg', src:this.IMG[k], alt:'', loading:'lazy', style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' } }); }
+
+  card(a){
+    const c = this.catOf(a.cat);
+    return { id:a.id, icon:c.icon, catLabel:c.label, catUpper:c.label.toUpperCase(), title:a.title, titleAccent:a.acc, excerpt:a.excerpt, read:a.read, date:a.date, author:'Jens Hardy', imgEl:this.imgEl(a.img), onOpen:this.openArticle(a.id) };
+  }
+
+  openArticle = (id) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view:'blog', blogId:id }); window.scrollTo && window.scrollTo(0,0); };
+  goView = (v) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view:v }); };
+  setLayout = (v) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ layout:v }); };
+  onSearchGo = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view:'landing' }); window.scrollTo && window.scrollTo(0,0); };
+  onSearchKey = (e) => { if (e && e.key === 'Enter') this.onSearchGo(e); };
+  pickCat = (k) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view:'landing', cat:k }); };
+  onSearch = (e) => this.setState({ query:e.target.value });
+  onClear = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ query:'' }); };
+  onReset = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ query:'', cat:'all' }); };
+  onEmail = (e) => this.setState({ email:e.target.value, subscribed:false });
+  onSubscribe = (e) => { if (e && e.preventDefault) e.preventDefault(); if (this.state.email) this.setState({ subscribed:true }); };
+
+  renderVals(){
+    const st = this.state;
+    const wm = this.props.showWatermark !== false;
+    const q = st.query.trim().toLowerCase();
+
+    let list = this.ART.filter(a => !a.featured);
+    if (st.cat !== 'all') list = list.filter(a => a.cat === st.cat);
+    if (q) list = list.filter(a => (a.title + ' ' + a.acc + ' ' + a.excerpt + ' ' + this.catOf(a.cat).label).toLowerCase().includes(q));
+
+    const filtering = st.cat !== 'all' || q.length > 0;
+    const featured = this.ART.find(a => a.featured);
+
+    const chips = [{ key:'all', label:'Alle' }].concat(this.CATS.map(c => ({ key:c.key, label:c.label }))).map(c => ({
+      label:c.label, cls: st.cat === c.key ? 'on' : '', onPick:this.pickCat(c.key),
+    }));
+
+    const cards = list.map((a, i) => Object.assign(this.card(a), { i }));
+
+    const sideCats = [{ key:'all', label:'Alle artikels', icon:'all', count:this.ART.length }].concat(this.CATS.map(c => ({ key:c.key, label:c.label, icon:c.icon, count:c.count }))).map(c => ({
+      label:c.label, icon:c.icon, count:c.count, cls: st.cat === c.key ? 'on' : '', onPick:this.pickCat(c.key),
+    }));
+
+    const DESC = {
+      seo:'Lokale vindbaarheid en zichtbaarheid in AI-zoekresultaten.',
+      webdesign:'Websites en webshops die klanten opleveren, niet enkel goed ogen.',
+      fotografie:'Bedrijfsfotografie die je merk professioneel in beeld brengt.',
+      videografie:"Bedrijfsvideo's, promovideo's en social content die opvallen.",
+      drone:'Dronebeelden en FPV-video voor bedrijven, vastgoed en events.',
+      vr:'3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.',
+      podcast:'Een bedrijfspodcast of videopodcast starten en uitbouwen.',
+      master:'Opleidingen en workshops om video zelf onder de knie te krijgen.',
+    };
+    const SUBS = {
+      seo:['Lokale SEO','Technische SEO'],
+      webdesign:['Website laten maken','Webshop','Onepager'],
+      fotografie:['Bedrijfsfotografie','Zakelijke portretten'],
+      videografie:['Bedrijfsvideo','Promovideo','Social media video'],
+      drone:['Dronefotografie','Dronevideo','FPV-video'],
+      vr:['3D-tour','Virtuele rondleiding'],
+      podcast:['Bedrijfspodcast','Videopodcast'],
+      master:['Video-opleiding','Workshop'],
+    };
+    const ORDER = ['webdesign','seo','fotografie','videografie','drone','vr','podcast','master'];
+    const catCards = ORDER.map((key, i) => {
+      const c = this.catOf(key);
+      const pos = i % 2, pair = Math.floor(i / 2);
+      const wide = (pair % 2 === 0) ? (pos === 0) : (pos === 1);
+      return { i, icon:c.icon, label:c.label, desc: DESC[key] || c.desc, num: String(i + 1).padStart(2, '0'), subs: SUBS[key] || [], spanCls: wide ? 'sp4' : 'sp3', featCls: wide ? 'svcFeat' : '', onOpen:this.pickCat(key) };
+    });
+
+    const popular = this.ART.filter(a => a.pop).sort((x,y) => x.pop - y.pop).map(a => {
+      const c = this.catOf(a.cat);
+      return { rank:a.pop, title:a.title + ' ' + a.acc, catLabel:c.label, read:a.read, imgEl:this.imgEl(a.img, 'miniImg'), onOpen:this.openArticle(a.id) };
+    });
+
+    // category page (SEO)
+    const seoArts = this.ART.filter(a => a.cat === 'seo');
+    const guides = seoArts.filter(a => a.guide).map((a, i) => Object.assign(this.card(a), { i }));
+    const qArticles = seoArts.filter(a => !a.guide).map((a, i) => Object.assign(this.card(a), { i }));
+    const catToc = seoArts.map((a, i) => ({ title:a.title + ' ' + a.acc, cls: i === 0 ? 'on' : '', onOpen:this.openArticle(a.id) }));
+    const otherCats = this.CATS.filter(c => c.key !== 'seo').map(c => ({ icon:c.icon, label:c.label, count:c.count, onOpen:this.pickCat(c.key) }));
+
+    // blog hero
+    const ba = this.ART.find(a => a.id === st.blogId) || this.ART.find(a => a.id === 'event');
+    const bc = this.catOf(ba.cat);
+    const blog = {
+      catLabel:bc.label, catUpper:bc.label.toUpperCase(), icon:bc.icon,
+      title:ba.title, titleAccent:ba.acc, subtitle:ba.excerpt, author:'Jens Hardy', date:ba.date, read:ba.read,
+      imgEl:this.imgEl(ba.img),
+    };
+    const blogToc = ['Waarom dit telt','De aanpak','Checklist per fase','Veelgemaakte fouten','Aan de slag'];
+
+    return {
+      navMobile:this.navMobile, footCols:this.footCols,
+      navPanelClass: st.navOpen ? 'open' : '',
+      onNavToggle: () => this.setState(s => ({ navOpen: !s.navOpen })),
+
+      viewLanding: st.view === 'landing', viewCategory: st.view === 'category', viewBlog: st.view === 'blog',
+      goLanding:this.goView('landing'), goCategory:this.goView('category'), goBlog:this.goView('blog'),
+      swLanding: st.view === 'landing' ? 'on' : '', swCategory: st.view === 'category' ? 'on' : '', swBlog: st.view === 'blog' ? 'on' : '',
+
+      query:st.query, hasQuery: st.query.length > 0, onSearch:this.onSearch, onClear:this.onClear, onReset:this.onReset,
+      searchCls: st.scrolled ? 'show' : '',
+      onSearchGo:this.onSearchGo, onSearchKey:this.onSearchKey,
+      totalArticles:this.ART.length, watermark:wm,
+
+      showFeatured: !filtering, featured:Object.assign(this.card(featured), {}),
+      gridEyebrow: filtering ? 'RESULTATEN' : 'NIEUWSTE ARTIKELS',
+      gridTitle: filtering ? (st.cat !== 'all' ? this.catOf(st.cat).label : 'Zoekresultaten') : 'Vers uit de kennisbank',
+      resultCount: cards.length + (cards.length === 1 ? ' artikel' : ' artikels'),
+      chips, cards, hasResults: cards.length > 0, noResults: cards.length === 0,
+      layoutGrid: st.layout !== 'list', layoutList: st.layout === 'list',
+      lyGrid: st.layout !== 'list' ? 'on' : '', lyList: st.layout === 'list' ? 'on' : '',
+      setGrid: this.setLayout('grid'), setList: this.setLayout('list'),
+      catCards, sideCats, popular,
+
+      email:st.email, onEmail:this.onEmail, onSubscribe:this.onSubscribe, subLabel: st.subscribed ? 'Ingeschreven \u2713' : 'Inschrijven',
+
+      guides, qArticles, catToc, otherCats,
+      blog, blogToc,
+    };
+  }
+}
+</script>
+</body>
+</html>

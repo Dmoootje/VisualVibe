@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Users, Settings, Palette, Globe, type LucideIcon } from "lucide-react";
+import { ArrowRight, Users, Mail, Settings, Palette, Globe, type LucideIcon } from "lucide-react";
 import { listLeads } from "@/lib/firestore/leads";
 import { LEAD_STATUSES } from "@/types";
 import { STATUS_LABELS } from "@/components/admin/StatusBadge";
@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 const modules: { href: string; label: string; description: string; icon: LucideIcon }[] = [
   { href: "/admin/leads", label: "Leads", description: "Beheer en volg alle aanvragen op.", icon: Users },
+  { href: "/admin/nieuwsbrief", label: "Nieuwsbrief", description: "Inschrijvingen bekijken en exporteren.", icon: Mail },
   { href: "/admin/settings", label: "Instellingen", description: "Site- en accountinstellingen.", icon: Settings },
   { href: "/internal/blog-styleguide", label: "Branding", description: "Styleguide en herbruikbare blogblokken.", icon: Palette },
   { href: "/", label: "Naar de site", description: "Ga naar de publieke website.", icon: Globe },

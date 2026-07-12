@@ -5,6 +5,8 @@ export { MdxContent } from "./MdxContent";
 export { GlowFrame } from "./GlowFrame";
 export { ContentSection } from "./ContentSection";
 export { BlogHero, type BlogHeroProps } from "./BlogHero";
+export { BlogHeroImage } from "./BlogHeroImage";
+export { ShareButtons } from "./ShareButtons";
 export { LeadIntro } from "./LeadIntro";
 export { NoticeBox, type NoticeVariant } from "./NoticeBox";
 export { QuoteBlock } from "./QuoteBlock";

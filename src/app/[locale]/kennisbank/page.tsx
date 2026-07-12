@@ -9,8 +9,8 @@ import {
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { Section, Container } from "@/components/ui";
-import { PageHero, BlogGrid, CategoryGrid } from "@/components/sections";
+import { KennisbankLandingView } from "@/components/kennisbank";
+import { toArticleCardData, type KbCategoryData } from "@/components/kennisbank/data";
 
 const description =
   "Praktische inzichten over webdesign, SEO, fotografie, video, drone en 3D/VR/AR.";
@@ -42,21 +42,27 @@ export default async function KennisbankHubPage({
   const { locale } = await params;
   if (!isBlogLocale(locale)) notFound();
 
-  const blogPosts = getAllPosts({ locale });
-  if (blogPosts.length === 0) notFound();
+  const posts = getAllPosts({ locale });
+  if (posts.length === 0) notFound();
 
-  // Empty clusters stay hidden until their first substantial article is live.
-  const categoryCards = kennisbankCategories
-    .map((category) => ({
-      slug: category.slug,
-      name: category.name,
-      description: category.description,
-      count: getPostsByCategory(category.slug, locale).length,
-    }))
-    .filter((category) => category.count > 0);
+  // All eight registered categories with live counts (Blader per onderwerp);
+  // the subset with content drives the filter chips + sidebar.
+  const allCategories: KbCategoryData[] = kennisbankCategories.map((category) => ({
+    slug: category.slug,
+    name: category.name,
+    description: category.description,
+    count: getPostsByCategory(category.slug, locale).length,
+  }));
+  const activeCategories = allCategories.filter((category) => category.count > 0);
+
+  // Featured = newest pillar guide, else the newest post; excluded from the grid.
+  const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
+  const articles = posts
+    .filter((post) => post.slug !== featuredPost.slug)
+    .map(toArticleCardData);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: localizedPath(locale, "/") },
@@ -64,24 +70,13 @@ export default async function KennisbankHubPage({
         ]}
       />
 
-      <PageHero
-        title="Kennisbank"
-        subtitle="Praktische inzichten over webdesign, SEO (incl. AEO/GEO), fotografie, video, drone en 3D/VR/AR."
+      <KennisbankLandingView
+        articles={articles}
+        featured={toArticleCardData(featuredPost)}
+        activeCategories={activeCategories}
+        allCategories={allCategories}
+        totalArticles={posts.length}
       />
-
-      <Section orbs="tl-br">
-        <Container>
-          <h2 className="mb-6 text-2xl font-bold">Categorieën</h2>
-          <CategoryGrid items={categoryCards} />
-        </Container>
-      </Section>
-
-      <Section orbs="tr-bl">
-        <Container>
-          <h2 className="mb-6 text-2xl font-bold">Alle artikels</h2>
-          <BlogGrid posts={blogPosts} />
-        </Container>
-      </Section>
     </div>
   );
 }

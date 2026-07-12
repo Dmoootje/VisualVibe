@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Settings, Palette, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Users, Mail, Settings, Palette, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
 
@@ -13,6 +13,7 @@ type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; chil
 const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/leads", label: "Leads", icon: Users },
+  { href: "/admin/nieuwsbrief", label: "Nieuwsbrief", icon: Mail },
   {
     href: "/admin/settings",
     label: "Instellingen",

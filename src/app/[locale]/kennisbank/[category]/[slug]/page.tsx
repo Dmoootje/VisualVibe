@@ -20,12 +20,7 @@ import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
 import { Breadcrumbs, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/components/sections";
 import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/seo";
-import {
-  BlogHero,
-  BlogImageLightbox,
-  MdxContent,
-  StickyBlogSidebar,
-} from "@/components/blog";
+import { BlogHero, MdxContent, StickyBlogSidebar } from "@/components/blog";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
 
 const HREFLANG: Record<BlogLocale, string> = {
@@ -339,8 +334,13 @@ export default async function KennisbankPostPage({
             authorUrl={post.authorProfile.url}
             authorRole={post.authorProfile.jobTitle}
             publishedAt={post.publishedAt}
-            updatedAt={post.updatedAt}
             readingTime={post.readingTime}
+            image={post.ogImage}
+            imageAlt={post.heroImageAlt ?? post.title}
+            imageTitle={post.heroImageTitle}
+            imageCaption={post.heroImageCaption}
+            shareUrl={canonical}
+            toc={toc}
           />
         </Container>
       </Section>
@@ -351,31 +351,13 @@ export default async function KennisbankPostPage({
       >
         <Container>
           <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-14">
-            <article
-              className={post.ogImage ? "order-2 min-w-0 xl:order-1" : "min-w-0"}
-            >
+            <article id="artikel" className="min-w-0 scroll-mt-24">
               <MdxContent source={post.content} />
             </article>
 
-            <aside
-              className={
-                post.ogImage
-                  ? "order-1 min-w-0 self-stretch xl:order-2"
-                  : "hidden min-w-0 self-stretch xl:order-2 xl:block"
-              }
-            >
-              {post.ogImage && (
-                <BlogImageLightbox
-                  src={post.ogImage}
-                  alt={post.heroImageAlt ?? post.title}
-                  title={post.heroImageTitle}
-                  caption={post.heroImageCaption}
-                  className="mx-auto max-w-2xl xl:max-w-none"
-                />
-              )}
-
+            <aside className="hidden min-w-0 self-stretch xl:block">
               <StickyBlogSidebar
-                className={post.ogImage ? "mt-8 hidden xl:flex" : "hidden xl:flex"}
+                className="hidden xl:flex"
                 toc={toc}
                 cta={{
                   title: cta.title,

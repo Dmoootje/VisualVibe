@@ -13,9 +13,17 @@ import {
   kennisbankCategories,
 } from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
-import { Section, Container } from "@/components/ui";
-import { PageHero, Breadcrumbs, BlogGrid, CategoryGrid } from "@/components/sections";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
+import {
+  KbHeroShell,
+  CategoryHeroSearch,
+  CategoryRingGraphic,
+  CategorySidebar,
+  CategoryIcon,
+  ArticleCard,
+  QuestionCard,
+  toArticleCardData,
+} from "@/components/kennisbank";
 
 const OPEN_GRAPH_LOCALE: Record<string, string> = {
   nl: "nl_BE",
@@ -29,8 +37,14 @@ const CONTENT_LANGUAGE: Record<string, string> = {
   en: "en-BE",
 };
 
+/** Two-tones a category name: last word becomes the amber accent line. */
+function splitCategoryName(name: string): { title: string; titleAccent?: string } {
+  const lastSpace = name.lastIndexOf(" ");
+  if (lastSpace === -1) return { title: name };
+  return { title: name.slice(0, lastSpace), titleAccent: name.slice(lastSpace + 1) };
+}
+
 export function generateStaticParams() {
-  // Pre-render only categories that contain live content in at least one locale.
   return kennisbankCategories
     .filter((category) => getPostsByCategory(category.slug).length > 0)
     .map((category) => ({ category: category.slug }));
@@ -77,7 +91,6 @@ export async function generateMetadata({
       description: categoryDef.seoDescription,
       images: [socialImage],
     },
-    // Empty category: reachable + in the menu, but out of the index until posts land.
     robots: empty ? { index: false, follow: true } : undefined,
   };
 }
@@ -112,13 +125,15 @@ export default async function KennisbankCategoryPage({
     .map((c) => ({
       slug: c.slug,
       name: c.name,
-      description: c.description,
       count: getPostsByCategory(c.slug, locale).length,
     }))
     .filter((otherCategory) => otherCategory.count > 0);
 
+  const { title, titleAccent } = splitCategoryName(categoryDef.name);
+  const canonicalUrl = `${businessConfig.url}${localizedPath(locale, categoryHref(categoryDef.slug))}`;
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: localizedPath(locale, "/") },
@@ -136,10 +151,7 @@ export default async function KennisbankCategoryPage({
           name: categoryDef.name,
           headline: categoryDef.seoTitle,
           description: categoryDef.seoDescription,
-          url: `${businessConfig.url}${localizedPath(
-            locale,
-            categoryHref(categoryDef.slug)
-          )}`,
+          url: canonicalUrl,
           inLanguage: CONTENT_LANGUAGE[locale],
           mainEntity: {
             "@type": "ItemList",
@@ -154,50 +166,95 @@ export default async function KennisbankCategoryPage({
         }}
       />
 
-      <PageHero title={categoryDef.name} subtitle={categoryDef.description} />
+      <KbHeroShell
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Kennisbank", href: "/kennisbank/" },
+          { label: categoryDef.name },
+        ]}
+        eyebrow={{
+          icon: <CategoryIcon slug={categoryDef.slug} className="h-3.5 w-3.5" />,
+          label: "Categorie",
+        }}
+        title={title}
+        titleAccent={titleAccent}
+        subtitle={categoryDef.description}
+        stats={[
+          { value: String(posts.length), label: posts.length === 1 ? "artikel" : "artikels" },
+          { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? "gids" : "gidsen" },
+          { value: "wekelijks", label: "nieuw" },
+        ]}
+        graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
+        search={<CategoryHeroSearch />}
+      />
 
-      <Section orbs="tl-br">
-        <Container>
-          <Breadcrumbs
-            className="mb-8"
-            items={[
-              { name: "Home", href: "/" },
-              { name: "Kennisbank", href: "/kennisbank/" },
-              { name: categoryDef.name },
-            ]}
+      <section className="relative z-[2]">
+        <div className="container mx-auto grid items-start gap-11 px-4 py-14 lg:grid-cols-[1fr_336px]">
+          <div className="min-w-0">
+            {pillarPosts.length > 0 && (
+              <div className="mb-14">
+                <div
+                  className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
+                  style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+                >
+                  Start hier
+                </div>
+                <h2
+                  className="mb-6 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
+                  style={{ fontFamily: "var(--font-sora), sans-serif" }}
+                >
+                  {pillarPosts.length === 1 ? "Complete gids" : "Complete gidsen"}
+                </h2>
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                  {pillarPosts.map((post, i) => (
+                    <ArticleCard
+                      key={post.slug}
+                      article={toArticleCardData(post)}
+                      variant="grid"
+                      index={i}
+                      ctaLabel="Lees de gids"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {supportingPosts.length > 0 && (
+              <div>
+                <div
+                  className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
+                  style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+                >
+                  Verdieping
+                </div>
+                <h2
+                  className="mb-6 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
+                  style={{ fontFamily: "var(--font-sora), sans-serif" }}
+                >
+                  Artikels per vraag
+                </h2>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {supportingPosts.map((post, i) => (
+                    <QuestionCard key={post.slug} article={toArticleCardData(post)} index={i} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <CategorySidebar
+            tocLinks={posts.map((post) => ({ title: post.title, href: postHref(post) }))}
+            otherCategories={otherCategories}
+            cta={{
+              title: `Hulp nodig met ${categoryDef.name}?`,
+              description:
+                "Wij helpen KMO's in Limburg vooruit met concrete, meetbare resultaten. Vraag vrijblijvend advies aan.",
+              label: "Vraag advies aan",
+              href: "/offerte-aanvragen/",
+            }}
           />
-          {pillarPosts.length > 0 && (
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-amber-400">
-                Start hier
-              </p>
-              <h2 className="mb-4 text-2xl font-bold">
-                {pillarPosts.length === 1 ? "Complete gids" : "Complete gidsen"}
-              </h2>
-              <BlogGrid posts={pillarPosts} />
-            </div>
-          )}
-
-          {supportingPosts.length > 0 && (
-            <div className={pillarPosts.length > 0 ? "mt-12" : undefined}>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-amber-400">
-                Verdieping
-              </p>
-              <h2 className="mb-4 text-2xl font-bold">Artikels per vraag</h2>
-              <BlogGrid posts={supportingPosts} />
-            </div>
-          )}
-        </Container>
-      </Section>
-
-      {otherCategories.length > 0 && (
-        <Section orbs="tr-bl">
-          <Container>
-            <h2 className="mb-6 text-2xl font-bold">Andere categorieën</h2>
-            <CategoryGrid items={otherCategories} />
-          </Container>
-        </Section>
-      )}
+        </div>
+      </section>
     </div>
   );
 }

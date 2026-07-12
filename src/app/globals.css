@@ -2240,3 +2240,39 @@ html {
 @media (prefers-reduced-motion: reduce) {
     .vvqm-bg, .vvqm-card, .vvqm-stepBody, .vvqm-sel, .vvqm-sel::before, .vvqm-wmC, .vvqm-doneWrap, .vvqm-doneChk, .vvqm-x, .vvqm-back, .vvqm-btn { animation: none !important; transition: none !important; }
 }
+
+/* ==========================================================================
+   Kennisbank (landing, categorie, blog hero) - shared animations
+   Scoped with a kb- prefix so nothing collides with the other systems above.
+   ========================================================================== */
+
+/* Entrance fade-up, staggered via --i on each card. */
+@keyframes kb-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.kb-rise { opacity: 0; animation: kb-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; animation-delay: calc(var(--i, 0) * 0.06s + 0.05s); }
+
+/* Hero "doelgroep" radar target + category ring system. */
+@keyframes kb-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes kb-ping { 0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.55); opacity: 0; } }
+@keyframes kb-glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+@keyframes kb-flow { to { stroke-dashoffset: -32; } }
+@keyframes kb-nodefloat { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.5; } }
+@keyframes kb-dotpulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.16); } }
+@keyframes kb-catfloat { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.045); } }
+
+.kb-sweep { position: absolute; left: 50%; top: 50%; width: 82%; height: 82%; transform: translate(-50%, -50%); border-radius: 9999px; background: conic-gradient(from 0deg, transparent 0deg 288deg, rgba(255, 122, 0, 0.05) 318deg, rgba(255, 154, 69, 0.24) 352deg, transparent 360deg); -webkit-mask: radial-gradient(circle, transparent 28%, #000 40%, #000 96%, transparent 100%); mask: radial-gradient(circle, transparent 28%, #000 40%, #000 96%, transparent 100%); animation: kb-spin 5.5s linear infinite; pointer-events: none; }
+.kb-glow-orb { position: absolute; left: 50%; top: 50%; width: 30%; height: 30%; transform: translate(-50%, -50%); border-radius: 9999px; background: radial-gradient(circle, rgba(255, 90, 0, 0.5), transparent 70%); animation: kb-glow 2.4s ease-in-out infinite; pointer-events: none; }
+.kb-ping { position: absolute; left: 50%; top: 50%; border: 2px solid rgba(255, 122, 0, 0.5); border-radius: 9999px; width: 36%; height: 36%; animation: kb-ping 3s ease-out infinite; pointer-events: none; }
+.kb-ping-2 { animation-delay: 1.5s; }
+.kb-spoke { animation: kb-flow 1.15s linear infinite; animation-delay: var(--d, 0s); }
+.kb-node { animation: kb-nodefloat 3s ease-in-out infinite; animation-delay: var(--d, 0s); }
+.kb-dot { transform-box: fill-box; transform-origin: center; animation: kb-dotpulse 2.4s ease-in-out infinite; }
+.kb-catmedal { animation: kb-catfloat 4.5s ease-in-out infinite; }
+
+/* Sidebar search that reveals after the page is scrolled. */
+.kb-side-search { opacity: 0; transform: translateY(-8px); max-height: 0; margin-bottom: -20px; overflow: hidden; pointer-events: none; transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.4s ease, margin-bottom 0.4s ease; }
+.kb-side-search.kb-show { opacity: 1; transform: none; max-height: 90px; margin-bottom: 0; overflow: visible; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+    .kb-rise { opacity: 1; animation: none !important; }
+    .kb-sweep, .kb-glow-orb, .kb-ping, .kb-spoke, .kb-node, .kb-dot, .kb-catmedal { animation: none !important; }
+}
