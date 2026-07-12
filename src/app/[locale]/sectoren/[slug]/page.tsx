@@ -48,7 +48,7 @@ export default async function SectorDetailPage({
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },

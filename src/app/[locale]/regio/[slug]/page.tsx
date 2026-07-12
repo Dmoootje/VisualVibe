@@ -50,7 +50,7 @@ export default async function RegionDetailPage({
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
+    <div className="relative min-h-screen overflow-hidden text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },

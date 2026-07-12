@@ -96,6 +96,14 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M19.5 10l.5 1.1 1.1.5-1.1.5-.5 1.1-.5-1.1-1.1-.5 1.1-.5z" />
     </>
   ),
+  sport: (
+    <>
+      <path d="M6 4h12v3.5a6 6 0 0 1-12 0V4z" />
+      <path d="M6 5H3.4v1.6A3.4 3.4 0 0 0 7 10M18 5h2.6v1.6A3.4 3.4 0 0 1 17 10" />
+      <path d="M12 13.5V16" />
+      <path d="M8.5 20h7M9.6 20a2.4 2.4 0 0 1 4.8 0" />
+    </>
+  ),
 };
 
 export function FiIcon({

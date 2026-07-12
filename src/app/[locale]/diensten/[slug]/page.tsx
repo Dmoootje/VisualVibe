@@ -126,7 +126,7 @@ export default async function ServiceDetailPage({
   // animated hero + realisaties, subdiensten cards, sector pills, FAQ).
   if (isSeo && webdesignImages) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen text-white">
         {jsonLd}
         <SeoService service={service} seoItems={seoItems} images={webdesignImages} relatedServices={relatedServices} />
       </div>
@@ -136,7 +136,7 @@ export default async function ServiceDetailPage({
   // Fotografie leads with the cinematic viewfinder hero + gallery lightbox.
   if (isFotografie) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen text-white">
         {jsonLd}
         <FotografieService service={service} relatedServices={relatedServices} />
       </div>
@@ -146,7 +146,7 @@ export default async function ServiceDetailPage({
   // Videografie leads with the video-player hero + YouTube gallery lightbox.
   if (isVideografie && videoData) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen text-white">
         {jsonLd}
         <VideografieService
           service={service}
@@ -162,7 +162,7 @@ export default async function ServiceDetailPage({
   // Drone & FPV leads with the quadcopter/FPV hero + drone realisaties split.
   if (isDrone) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen text-white">
         {jsonLd}
         <DroneFpvService service={service} subServices={childServices} relatedServices={relatedServices} />
       </div>
@@ -173,7 +173,7 @@ export default async function ServiceDetailPage({
   // and the two most recent Matterport tours embedded live in-page.
   if (is3dVrAr) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen text-white">
         {jsonLd}
         <XrService service={service} relatedServices={relatedServices} />
       </div>
@@ -181,7 +181,7 @@ export default async function ServiceDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       {jsonLd}
 
       {isWebdesign && webdesignImages && webdesignProjects ? (

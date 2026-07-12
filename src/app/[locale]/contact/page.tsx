@@ -36,7 +36,7 @@ export default async function ContactPage() {
   const routeUrl = settings.routeUrl || settings.googleMapsUrl;
 
   return (
-    <div className="min-h-screen bg-black pb-16 pt-24 text-white">
+    <div className="min-h-screen pb-16 pt-24 text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
 
       <div className="container mx-auto px-4">

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Plus, Trash2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save, Upload, X } from "lucide-react";
 import type { FotoGallery, FotoGalleryImage } from "@/data/fotografieGalleries";
 import { FOTO_GALLERY_ICONS } from "@/data/fotografieGalleries";
+import { FiIcon } from "@/components/fotografie";
 import { saveFotografieGalleries } from "@/lib/admin/fotografieActions";
 
 const inputCls =
@@ -196,12 +197,17 @@ function GalleryCard({
           <input className={inputCls} value={gallery.description} placeholder="Korte zin onder de titel." onChange={(e) => set("description", e.target.value)} />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-white/60">Categorie-icoon</span>
-          <select className={inputCls} value={gallery.icon} onChange={(e) => set("icon", e.target.value)}>
-            {FOTO_GALLERY_ICONS.map((opt) => (
-              <option key={opt.id} value={opt.id}>{opt.label}</option>
-            ))}
-          </select>
+          <span className="text-xs font-medium text-white/60">Categorie</span>
+          <div className="flex items-center gap-2">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-amber-400/25 bg-amber-400/10 text-amber-300">
+              <FiIcon id={gallery.icon} size={18} />
+            </span>
+            <select className={`${inputCls} flex-1`} value={gallery.icon} onChange={(e) => set("icon", e.target.value)}>
+              {FOTO_GALLERY_ICONS.map((opt) => (
+                <option key={opt.id} value={opt.id}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
         </label>
       </div>
 

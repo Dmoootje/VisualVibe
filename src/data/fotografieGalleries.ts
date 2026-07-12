@@ -20,16 +20,20 @@ export type FotoGallery = {
   images: FotoGalleryImage[];
 };
 
-// Icon choices offered in the admin select (FiIcon ids + a readable label).
+// Gallery categories offered in the admin. The picker doubles as both the
+// category and its badge icon: `label` is the category shown on the public page
+// (via the badge), `id` is the FiIcon glyph. Add a category here to expose it.
 export const FOTO_GALLERY_ICONS: { id: string; label: string }[] = [
+  { id: "biz", label: "Bedrijfsfotografie" },
+  { id: "user", label: "Zakelijke portretten" },
+  { id: "box", label: "Productfotografie" },
+  { id: "party", label: "Eventfotografie" },
+  { id: "home", label: "Vastgoedfotografie" },
+  { id: "layers", label: "Realisatiefotografie" },
+  { id: "spark", label: "Brandingfotografie" },
+  { id: "sport", label: "Sportfotografie" },
+  { id: "heart", label: "Huwelijksfotografie" },
   { id: "foto", label: "Algemeen" },
-  { id: "user", label: "Portret" },
-  { id: "box", label: "Product" },
-  { id: "cal", label: "Event" },
-  { id: "home", label: "Vastgoed" },
-  { id: "layers", label: "Realisatie" },
-  { id: "spark", label: "Branding" },
-  { id: "heart", label: "Huwelijk" },
   { id: "aperture", label: "Overig" },
 ];
 

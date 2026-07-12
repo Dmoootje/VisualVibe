@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function OfferteAanvragenPage() {
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16 px-4">
       <BreadcrumbJsonLd
         items={[{ name: "Home", path: "/" }, { name: "Offerte aanvragen", path: "/offerte-aanvragen" }]}
       />

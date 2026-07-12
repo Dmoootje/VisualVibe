@@ -8,6 +8,19 @@ body {
     overflow-x: clip;
 }
 
+/* The whole UI is dark: tell the browser so native controls (select popups,
+   date pickers, scrollbars) render dark instead of a white default. */
+html {
+    color-scheme: dark;
+}
+
+/* Belt-and-suspenders for the native <select> option list, so it never shows
+   white text on a white background. */
+select option {
+    background-color: #141210;
+    color: #ffffff;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;

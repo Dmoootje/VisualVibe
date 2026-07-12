@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RegioHubPage() {
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16 px-4">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Regio", path: "/regio" }]} />
 
       <div className="container mx-auto px-4">

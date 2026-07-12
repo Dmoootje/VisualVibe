@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function DienstenPage() {
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16 px-4">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Diensten", path: "/diensten" }]} />
 
       <div className="container mx-auto">

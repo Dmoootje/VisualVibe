@@ -133,7 +133,7 @@ export default async function KennisbankCategoryPage({
   const canonicalUrl = `${businessConfig.url}${localizedPath(locale, categoryHref(categoryDef.slug))}`;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: localizedPath(locale, "/") },

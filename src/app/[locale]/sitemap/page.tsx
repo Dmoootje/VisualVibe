@@ -136,7 +136,7 @@ export default function SitemapPage() {
   const totalPages = 1 + sections.reduce((sum, section) => sum + countNodes(section.nodes), 0);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
+    <div className="relative min-h-screen overflow-hidden text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },

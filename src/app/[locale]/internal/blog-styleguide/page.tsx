@@ -69,7 +69,7 @@ function Demo({ label, children }: { label: string; children: React.ReactNode })
 
 export default function BlogStyleguidePage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       {/* Page header */}
       <div className="border-b border-white/10 bg-gradient-to-b from-amber-500/[0.06] to-transparent px-4 pb-10 pt-28 sm:pt-32">
         <div className="mx-auto max-w-6xl">

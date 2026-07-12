@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { ThemeProvider } from "@/providers";
 import { Header, Footer } from "@/layouts";
+import { SiteBackground } from "@/components/ui";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd } from "@/components/seo";
 import { SectorIconSprite } from "@/components/sectors";
@@ -77,7 +78,8 @@ export default async function LocaleLayout({
       <head>
         {/* Add any other head tags if needed, metadata object handles common ones */}
       </head>
-      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-black text-white`}>
+      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-[#0a0a0a] text-white`}>
+        <SiteBackground />
         <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />

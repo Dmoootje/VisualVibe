@@ -1,4 +1,3 @@
-export { default as HomeBackground } from './HomeBackground'
 export { default as Hero } from './Hero'
 export { default as Features } from './Features'
 export { default as RegionIntro } from './RegionIntro'

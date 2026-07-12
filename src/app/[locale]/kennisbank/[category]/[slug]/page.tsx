@@ -262,22 +262,7 @@ export default async function KennisbankPostPage({
   );
 
   return (
-    <div className="relative min-h-screen bg-[#060404] text-white">
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: [
-              "radial-gradient(ellipse 48rem 34rem at 0 9rem, rgba(239,68,68,0.095), transparent 72%)",
-              "radial-gradient(ellipse 44rem 32rem at 100% 68rem, rgba(255,117,0,0.07), transparent 74%)",
-              "radial-gradient(ellipse 42rem 34rem at 0 150rem, rgba(239,68,68,0.055), transparent 75%)",
-              "radial-gradient(ellipse 42rem 34rem at 100% 250rem, rgba(255,117,0,0.05), transparent 76%)",
-              "linear-gradient(180deg, #0b0505 0%, #060505 22%, #080404 58%, #050505 100%)",
-            ].join(", "),
-          }}
-        />
-      </div>
-
+    <div className="relative min-h-screen text-white">
       <div className="relative z-[1]">
       <BreadcrumbJsonLd
         items={[

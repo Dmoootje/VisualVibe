@@ -335,14 +335,13 @@ export function Nav({
             onMouseEnter={openMega}
             onMouseLeave={closeMenu}
           >
-            <button
-              type="button"
-              onClick={() => (menu === "diensten" ? closeMenu() : openMega())}
-              style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "#fff", padding: "8px 0", background: "none", border: 0, font: "inherit" }}
+            <Link
+              href="/diensten"
+              style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "#fff", padding: "8px 0" }}
               aria-expanded={menu === "diensten"}
             >
               Diensten <ChevDown className="vvnav-navChev" />
-            </button>
+            </Link>
 
             <div className={`vvnav-mega ${menu === "diensten" ? "is-open" : ""}`}>
               <div style={{ display: "flex", borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)", overflow: "hidden" }}>
@@ -637,9 +636,9 @@ export function Nav({
 function DesktopDropdown({ label, allHref, items, open, onOpen, onClose }: { label: string; allHref: string; items: NavCard[]; open: boolean; onOpen: () => void; onClose: () => void }) {
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer" }}>
+      <Link href={allHref} style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
         {label} <ChevDown className="vvnav-navChev" color="currentColor" />
-      </span>
+      </Link>
       <div className={`vvnav-dd ${open ? "is-open" : ""}`}>
         <div style={{ width: 360, maxWidth: "calc(100vw - 32px)", padding: 8, borderRadius: 16, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "6px 10px 10px" }}>
@@ -671,9 +670,9 @@ function DesktopDropdown({ label, allHref, items, open, onOpen, onClose }: { lab
 function RegioMega({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; onClose: () => void }) {
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer" }}>
+      <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
         Regio <ChevDown className="vvnav-navChev" color="currentColor" />
-      </span>
+      </Link>
       <div className={`vvnav-mega vvnav-megaC ${open ? "is-open" : ""}`}>
         <div style={{ width: "min(760px, calc(100vw - 32px))", padding: 16, borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "2px 6px 12px" }}>
