@@ -17,6 +17,7 @@ import { subservices, getSubservicesByParent } from "@/data/subservices";
 import { getServiceBySlug, serviceHrefBySlug } from "@/data/services";
 import { regions } from "@/data/regions";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import { localizedPath } from "@/lib/kennisbank/posts";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
@@ -78,7 +79,7 @@ export default async function SubServiceDetailPage({
         service={{
           name: service.title,
           description: service.excerpt,
-          url: `${businessConfig.url}/diensten/${parentService.slug}/${service.slug}`,
+          url: `${businessConfig.url}${localizedPath("nl", `/diensten/${parentService.slug}/${service.slug}/`)}`,
         }}
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}

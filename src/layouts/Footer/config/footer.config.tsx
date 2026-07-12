@@ -1,5 +1,3 @@
-import { Facebook, Instagram, Linkedin } from "lucide-react";
-import { ReactNode } from "react";
 import { services } from "@/data/services";
 import { regions } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
@@ -7,12 +5,6 @@ import { businessConfig } from "@/config/business.config";
 export interface FooterLinkGroup {
   title: string;
   links: { label: string; href: string }[];
-}
-
-export interface SocialLink {
-  name: string;
-  href: string;
-  icon: ReactNode;
 }
 
 export interface FooterPartner {
@@ -52,12 +44,9 @@ export const footerConfig = {
     },
   ] as FooterLinkGroup[],
 
-  legalLinks: [
-    { label: "Sitemap", href: "/sitemap" },
-    { label: "Privacybeleid", href: "#" },
-    { label: "Algemene voorwaarden", href: "#" },
-    { label: "Cookiebeleid", href: "#" },
-  ],
+  // Juridische pagina's (privacybeleid, voorwaarden, cookiebeleid) komen hier
+  // pas bij zodra die pagina's echt bestaan - geen placeholder "#"-links.
+  legalLinks: [{ label: "Sitemap", href: "/sitemap" }],
 
   partners: {
     title: "Officieel partner & gecertificeerd",
@@ -69,9 +58,3 @@ export const footerConfig = {
     ] as FooterPartner[],
   },
 };
-
-export const socialLinks: SocialLink[] = [
-  { name: "Facebook", href: "#", icon: <Facebook className="h-5 w-5" /> },
-  { name: "Instagram", href: "#", icon: <Instagram className="h-5 w-5" /> },
-  { name: "LinkedIn", href: "#", icon: <Linkedin className="h-5 w-5" /> },
-];

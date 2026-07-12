@@ -7,7 +7,7 @@ import { localizedPath } from "@/lib/kennisbank/posts";
 // the inherited homepage OG), and an optional noindex - without repeating the
 // same object shape in each generateMetadata.
 
-const DEFAULT_OG_IMAGE = "/image.png";
+const DEFAULT_OG_IMAGE = "/image.jpg";
 
 export type PageMetadataInput = {
   /** Absolute title (rendered as-is, not run through the "%s | VisualVibe" template). */

@@ -70,9 +70,12 @@ const RELATED_ICON: Record<string, string> = {
 export function XrService({
   service,
   relatedServices,
+  crossLinks,
 }: {
   service: Service;
   relatedServices: Service[];
+  /** Gedeelde cross-link-secties (kennisbank, realisaties, regio's), server-side gerenderd. */
+  crossLinks?: React.ReactNode;
 }) {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<HTMLDivElement | null>(null);
@@ -576,6 +579,9 @@ export function XrService({
             </div>
           </div>
         </section>
+
+        {/* ===== CROSS-LINKS (kennisbank, realisaties, regio's) ===== */}
+        {crossLinks}
 
         {/* ===== GERELATEERDE DIENSTEN ===== */}
         {relatedServices.length > 0 && (

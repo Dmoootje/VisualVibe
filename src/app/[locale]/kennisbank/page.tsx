@@ -36,7 +36,7 @@ export async function generateMetadata({
   // Kennisbank has real per-locale translations, so (unlike the nl-only
   // marketing pages) the canonical stays per-locale.
   const canonical = `${businessConfig.url}${localizedPath(locale, "/kennisbank/")}`;
-  const socialImage = `${businessConfig.url}/image.png`;
+  const socialImage = `${businessConfig.url}/image.jpg`;
 
   return {
     title: { absolute: title },
@@ -90,9 +90,10 @@ export default async function KennisbankHubPage({
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale}
         items={[
-          { name: "Home", path: localizedPath(locale, "/") },
-          { name: "Kennisbank", path: localizedPath(locale, "/kennisbank/") },
+          { name: "Home", path: "/" },
+          { name: "Kennisbank", path: "/kennisbank/" },
         ]}
       />
 

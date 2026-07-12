@@ -52,12 +52,12 @@ export async function generateMetadata({
     categoryDef.slug === "fotografie"
       ? (await getFotografieGalleries()).filter((g) => g.images.length > 0).length
       : 0;
-  // Webdesign, videografie + 3D/VR/AR carry their own showcase content, so always indexable.
+  // Webdesign + videografie are always indexable: seeded defaults / the YouTube fallback guarantee content.
   const hasContent =
     categoryDef.slug === "webdesign" ||
     categoryDef.slug === "videografie" ||
-    categoryDef.slug === "3d-vr" ||
-    categoryDef.slug === "drone" ||
+    (categoryDef.slug === "3d-vr" && matterportTours.length > 0) ||
+    (categoryDef.slug === "drone" && droneMedia.length > 0) ||
     fotoGalleryCount > 0 ||
     items.length > 0;
   return pageMetadata({

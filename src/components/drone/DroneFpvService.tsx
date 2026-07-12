@@ -42,10 +42,13 @@ export function DroneFpvService({
   service,
   subServices,
   relatedServices,
+  crossLinks,
 }: {
   service: Service;
   subServices: Service[];
   relatedServices: Service[];
+  /** Gedeelde cross-link-secties (kennisbank, realisaties, regio's) vanuit de dienstpagina. */
+  crossLinks?: React.ReactNode;
 }) {
   return (
     <div className="relative overflow-hidden">
@@ -295,6 +298,9 @@ export function DroneFpvService({
             </div>
           </section>
         )}
+
+        {/* Cross-links naar kennisbank, realisaties en regio-hubs (interne-link-regels). */}
+        {crossLinks}
 
         {/* Veelgestelde vragen (links) + Combineer drone & FPV met (rechts). */}
         <ServiceFaqCombine faqs={service.faqs} combineWith="drone & FPV" relatedServices={relatedServices} />

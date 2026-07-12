@@ -2,7 +2,7 @@ import { getCaseBySlug } from "@/data/cases";
 import { getCategoryByName, getCategoryBySlug } from "@/data/kennisbankCategories";
 import { getRegionBySlug } from "@/data/regions";
 import { getSectorBySlug } from "@/data/sectors";
-import { getServiceBySlug } from "@/data/services";
+import { getServiceBySlug, serviceHref } from "@/data/services";
 import type { BlogPost } from "@/types/blog";
 
 export type KennisbankValidationIssue = {
@@ -200,12 +200,16 @@ export function validateKennisbankPosts(
 
     for (const servicePath of post.relatedServices ?? []) {
       const service = getServiceBySlug(slugFromPath(servicePath));
-      if (!service || normalizedSitePath(servicePath) !== `/diensten/${service.slug}/`) {
+      // Sub-services canonically live under their hoofddienst (serviceHref),
+      // so frontmatter must use the same nested path the site links to.
+      if (!service || normalizedSitePath(servicePath) !== `${serviceHref(service)}/`) {
         issues.push({
           code: "missing-related-service",
           field: "relatedServices",
           postSlug: post.slug,
-          message: `relatedServices entry "${servicePath}" is not the canonical path of a live service.`,
+          message: `relatedServices entry "${servicePath}" is not the canonical path of a live service${
+            service ? ` (expected "${serviceHref(service)}/")` : ""
+          }.`,
         });
       }
     }

@@ -20,11 +20,12 @@ export const GOOGLE_MAPS_PROFILE_URL =
 const PLACE_TEXT_QUERY = "VisualVibe - Fotograaf Limburg";
 const DAY = 60 * 60 * 24;
 
-// Zero-tolerance on long dashes (em/en/horizontal bar) extends to external
-// content: Google reviewers often use them, so normalise to a hyphen at the
-// ingestion boundary before any review text is rendered. Escapes keep the
+// Zero-tolerance on the em dash (U+2014) and horizontal bar (U+2015) extends
+// to external content: Google reviewers often use them, so normalise to a
+// hyphen at the ingestion boundary before any review text is rendered. The
+// en dash (U+2013) is allowed and must be left untouched. Escapes keep the
 // forbidden characters themselves out of the source.
-const stripDashes = (text: string) => text.replace(/[–\u2014\u2015]/g, "-");
+const stripDashes = (text: string) => text.replace(/[\u2014\u2015]/g, "-");
 
 /** Resolve the Places API place id from the business name (cached ~30 days). */
 async function resolvePlaceId(apiKey: string): Promise<string | null> {

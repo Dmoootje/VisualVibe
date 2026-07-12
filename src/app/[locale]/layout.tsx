@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     description: businessConfig.description,
     images: [
       {
-        url: "/image.png",
+        url: "/image.jpg",
         width: 1200,
         height: 630,
         alt: businessConfig.displayName,

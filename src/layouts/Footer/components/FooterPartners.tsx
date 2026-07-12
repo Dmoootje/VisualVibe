@@ -26,15 +26,17 @@ export function FooterPartners({
           if (!html) return null;
           const chip = (
             <div className="vv-pchip flex h-16 items-center justify-center rounded-[14px] border border-white/10 bg-white/[0.02] px-6">
-              <span className="vv-partner" aria-label={p.alt} dangerouslySetInnerHTML={{ __html: html }} />
+              <span className="vv-partner" dangerouslySetInnerHTML={{ __html: html }} />
             </div>
           );
           return p.href ? (
-            <a key={p.alt} href={p.href} target="_blank" rel="noopener noreferrer">
+            <a key={p.alt} href={p.href} target="_blank" rel="noopener noreferrer" aria-label={p.alt}>
               {chip}
             </a>
           ) : (
-            <div key={p.alt}>{chip}</div>
+            <div key={p.alt} role="img" aria-label={p.alt}>
+              {chip}
+            </div>
           );
         })}
       </div>

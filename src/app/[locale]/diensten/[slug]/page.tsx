@@ -120,6 +120,45 @@ export default async function ServiceDetailPage({
           .filter((it): it is SeoCaseItem => it !== null)
       : [];
 
+  // Gedeelde cross-link-secties (kennisbank, realisaties, regio's) conform de
+  // interne-link-regels: elke dienstpagina rendert ze, ook de bespoke varianten.
+  const kennisbankSection = <ServiceRelatedPosts serviceSlug={service.slug} />;
+
+  const realisatieLinkSection = realisatieCategory ? (
+    <Section orbs="tl-br">
+      <Container>
+        <div className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold">
+              Bekijk onze {service.title.toLowerCase()}-realisaties
+            </h2>
+            <p className="mt-2 max-w-xl text-white/60">{realisatieCategory.description}</p>
+          </div>
+          <Link
+            href={`/realisaties/${realisatieCategory.slug}/`}
+            className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
+          >
+            Bekijk de realisaties
+            <ArrowRight className="h-[15px] w-[15px]" />
+          </Link>
+        </div>
+      </Container>
+    </Section>
+  ) : null;
+
+  const regioSection = (
+    <Section orbs="tr-bl">
+      <Container>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">Actief in deze regio&apos;s</h2>
+        <p className="mb-6 max-w-2xl text-white/60">
+          Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
+          en Nederlands-Limburg.
+        </p>
+        <RegionGrid regions={regions} showIntro={false} />
+      </Container>
+    </Section>
+  );
+
   const breadcrumbItems = [
     { name: "Home", path: "/" },
     { name: "Diensten", path: "/diensten" },
@@ -134,7 +173,7 @@ export default async function ServiceDetailPage({
         service={{
           name: service.title,
           description: service.excerpt,
-          url: `${businessConfig.url}/diensten/${service.slug}`,
+          url: `${businessConfig.url}${localizedPath("nl", `${serviceHref(service)}/`)}`,
         }}
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
@@ -147,7 +186,18 @@ export default async function ServiceDetailPage({
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
-        <SeoService service={service} seoItems={seoItems} images={webdesignImages} relatedServices={relatedServices} />
+        <SeoService
+          service={service}
+          seoItems={seoItems}
+          images={webdesignImages}
+          relatedServices={relatedServices}
+          crossLinks={
+            <>
+              {realisatieLinkSection}
+              {regioSection}
+            </>
+          }
+        />
       </div>
     );
   }
@@ -157,7 +207,17 @@ export default async function ServiceDetailPage({
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
-        <FotografieService service={service} relatedServices={relatedServices} />
+        <FotografieService
+          service={service}
+          relatedServices={relatedServices}
+          crossLinks={
+            <>
+              {kennisbankSection}
+              {realisatieLinkSection}
+              {regioSection}
+            </>
+          }
+        />
       </div>
     );
   }
@@ -173,6 +233,12 @@ export default async function ServiceDetailPage({
           relatedServices={relatedServices}
           videos={videoData.videos}
           filters={videoData.filters}
+          crossLinks={
+            <>
+              {realisatieLinkSection}
+              {regioSection}
+            </>
+          }
         />
       </div>
     );
@@ -183,7 +249,18 @@ export default async function ServiceDetailPage({
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
-        <DroneFpvService service={service} subServices={childServices} relatedServices={relatedServices} />
+        <DroneFpvService
+          service={service}
+          subServices={childServices}
+          relatedServices={relatedServices}
+          crossLinks={
+            <>
+              {kennisbankSection}
+              {realisatieLinkSection}
+              {regioSection}
+            </>
+          }
+        />
       </div>
     );
   }
@@ -194,7 +271,17 @@ export default async function ServiceDetailPage({
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
-        <XrService service={service} relatedServices={relatedServices} />
+        <XrService
+          service={service}
+          relatedServices={relatedServices}
+          crossLinks={
+            <>
+              {kennisbankSection}
+              {realisatieLinkSection}
+              {regioSection}
+            </>
+          }
+        />
       </div>
     );
   }
@@ -254,42 +341,13 @@ export default async function ServiceDetailPage({
       )}
 
       {/* Uit de kennisbank: gerelateerde artikels (interne links + GEO). */}
-      <ServiceRelatedPosts serviceSlug={service.slug} />
+      {kennisbankSection}
 
       {/* Cross-link naar de realisaties van deze dienst. */}
-      {realisatieCategory && (
-        <Section orbs="tl-br">
-          <Container>
-            <div className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-bold">
-                  Bekijk onze {service.title.toLowerCase()}-realisaties
-                </h2>
-                <p className="mt-2 max-w-xl text-white/60">{realisatieCategory.description}</p>
-              </div>
-              <Link
-                href={`/realisaties/${realisatieCategory.slug}/`}
-                className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
-              >
-                Bekijk de realisaties
-                <ArrowRight className="h-[15px] w-[15px]" />
-              </Link>
-            </div>
-          </Container>
-        </Section>
-      )}
+      {realisatieLinkSection}
 
       {/* Regio-links: dienst naar regio-hubs, conform de interne-link-regels. */}
-      <Section orbs="tr-bl">
-        <Container>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Actief in deze regio&apos;s</h2>
-          <p className="mb-6 max-w-2xl text-white/60">
-            Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
-            en Nederlands-Limburg.
-          </p>
-          <RegionGrid regions={regions} showIntro={false} />
-        </Container>
-      </Section>
+      {regioSection}
 
       {/* Veelgestelde vragen (links) + Combineer <dienst> met (rechts). */}
       <ServiceFaqCombine

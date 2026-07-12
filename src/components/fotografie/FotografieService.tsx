@@ -12,9 +12,12 @@ import { FotografieGalerijen } from "./FotografieGalerijen";
 export function FotografieService({
   service,
   relatedServices,
+  crossLinks,
 }: {
   service: Service;
   relatedServices: Service[];
+  /** Gedeelde cross-link-secties (kennisbank, realisaties, regio's) vanuit de dienstpagina. */
+  crossLinks?: React.ReactNode;
 }) {
   return (
     <div className="relative overflow-hidden">
@@ -35,6 +38,9 @@ export function FotografieService({
             </div>
           </section>
         )}
+
+        {/* Cross-links naar kennisbank, realisaties en regio-hubs (interne-link-regels). */}
+        {crossLinks}
 
         {/* Veelgestelde vragen (links) + Combineer fotografie met (rechts). */}
         <ServiceFaqCombine faqs={service.faqs} combineWith="fotografie" relatedServices={relatedServices} />

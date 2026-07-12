@@ -70,7 +70,7 @@ export async function generateMetadata({
     categoryHref(categoryDef.slug)
   )}`;
   const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
-  const socialImage = featuredPost?.ogImage ?? `${businessConfig.url}/image.png`;
+  const socialImage = featuredPost?.ogImage ?? `${businessConfig.url}/image.jpg`;
 
   return {
     title: { absolute: categoryDef.seoTitle },
@@ -132,15 +132,25 @@ export default async function KennisbankCategoryPage({
   const { title, titleAccent } = splitCategoryName(categoryDef.name);
   const canonicalUrl = `${businessConfig.url}${localizedPath(locale, categoryHref(categoryDef.slug))}`;
 
+  // Echte freshness-claim: de recentste update binnen de categorie.
+  const lastUpdated = new Date(
+    Math.max(...posts.map((post) => new Date(post.updatedAt ?? post.publishedAt).getTime()))
+  );
+  const lastUpdatedLabel = new Intl.DateTimeFormat(CONTENT_LANGUAGE[locale], {
+    month: "long",
+    year: "numeric",
+  }).format(lastUpdated);
+
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale}
         items={[
-          { name: "Home", path: localizedPath(locale, "/") },
-          { name: "Kennisbank", path: localizedPath(locale, "/kennisbank/") },
+          { name: "Home", path: "/" },
+          { name: "Kennisbank", path: "/kennisbank/" },
           {
             name: categoryDef.name,
-            path: localizedPath(locale, categoryHref(categoryDef.slug)),
+            path: categoryHref(categoryDef.slug),
           },
         ]}
       />
@@ -182,7 +192,7 @@ export default async function KennisbankCategoryPage({
         stats={[
           { value: String(posts.length), label: posts.length === 1 ? "artikel" : "artikels" },
           { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? "gids" : "gidsen" },
-          { value: "wekelijks", label: "nieuw" },
+          { value: lastUpdatedLabel, label: "bijgewerkt" },
         ]}
         graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
         search={<CategoryHeroSearch />}

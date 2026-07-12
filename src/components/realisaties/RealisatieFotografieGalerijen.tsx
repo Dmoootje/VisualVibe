@@ -58,8 +58,8 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
   return (
     <>
       {/* ===== FEATURED - uitgelichte galerij ===== */}
-      <section className="relative px-4 pb-12 pt-10 sm:pb-14">
-        <div className="container relative z-[2] mx-auto grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+      <section className="relative pb-12 pt-10 sm:pb-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* LINKS: galerij-preview (thumbnails ín de hoofdafbeelding) */}
           <button
             type="button"

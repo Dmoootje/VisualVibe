@@ -95,8 +95,8 @@ export function RealisatieDroneMedia({
   return (
     <>
       {/* ===== FEATURED ===== */}
-      <section className="relative px-4 pb-16 pt-14">
-        <div className="container relative z-[2] mx-auto grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+      <section className="relative pb-16 pt-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           <button
             type="button"
             onClick={() => openAt(0)}

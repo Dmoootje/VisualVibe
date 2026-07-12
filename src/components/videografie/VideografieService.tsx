@@ -21,12 +21,15 @@ export function VideografieService({
   relatedServices,
   videos,
   filters,
+  crossLinks,
 }: {
   service: Service;
   subServices: Service[];
   relatedServices: Service[];
   videos: VideoItem[];
   filters: string[];
+  /** Gedeelde cross-link-secties (realisaties, regio's) vanuit de dienstpagina. */
+  crossLinks?: React.ReactNode;
 }) {
   return (
     <div className="relative overflow-hidden">
@@ -137,6 +140,9 @@ export function VideografieService({
           heading="Videografie: praktische gidsen voor KMO's"
           intro="Van videoscript en social content tot testimonials, wervingsvideo's en aftermovies: verdiep je in de keuzes achter een videoproductie die ook echt gebruikt wordt."
         />
+
+        {/* Cross-links naar realisaties en regio-hubs (interne-link-regels). */}
+        {crossLinks}
 
         {/* Veelgestelde vragen (links) + Combineer videografie met (rechts). */}
         <ServiceFaqCombine faqs={service.faqs} combineWith="videografie" relatedServices={relatedServices} />

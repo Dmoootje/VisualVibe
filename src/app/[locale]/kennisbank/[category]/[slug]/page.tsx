@@ -15,7 +15,7 @@ import {
 } from "@/lib/kennisbank/posts";
 import { extractToc } from "@/lib/kennisbank/toc";
 import { getCategoryBySlug } from "@/data/kennisbankCategories";
-import { getServiceBySlug } from "@/data/services";
+import { getServiceBySlug, serviceHref } from "@/data/services";
 import { getRegionBySlug } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
@@ -163,7 +163,7 @@ export async function generateMetadata({
   const alternateLocales = translations
     .filter((translation) => translation.locale !== post.locale)
     .map((translation) => OPEN_GRAPH_LOCALE[translation.locale]);
-  const socialImage = post.ogImage ?? `${businessConfig.url}/image.png`;
+  const socialImage = post.ogImage ?? `${businessConfig.url}/image.jpg`;
   const authorUrl = absoluteAuthorUrl(post);
   const keywords = [post.focusKeyword, ...(post.secondaryKeywords ?? [])].filter(
     (keyword): keyword is string => Boolean(keyword)
@@ -252,6 +252,12 @@ export default async function KennisbankPostPage({
     .map((postPath) => getPostBySlug(slugFromPath(postPath), { locale: post.locale }))
     .filter((related): related is NonNullable<typeof related> => related != null && related.slug !== post.slug);
 
+  // Op een pillar-pagina tonen de clusterartikels al hun eigen reeks; de
+  // "Gerelateerde artikels" houden dan alleen cross-cluster verwijzingen over.
+  const relatedOutsideCluster = relatedPosts.filter(
+    (related) => !clusterPosts.some((cluster) => cluster.slug === related.slug)
+  );
+
   // Fallback zonder frontmatter-relaties: andere artikels uit dezelfde categorie,
   // zodat elk artikel altijd een "Gerelateerde artikels"-blok heeft.
   const fallbackRelated =
@@ -275,14 +281,15 @@ export default async function KennisbankPostPage({
     <div className="relative min-h-screen text-white">
       <div className="relative z-[1]">
       <BreadcrumbJsonLd
+        locale={post.locale}
         items={[
-          { name: "Home", path: localizedPath(post.locale, "/") },
-          { name: "Kennisbank", path: localizedPath(post.locale, "/kennisbank/") },
+          { name: "Home", path: "/" },
+          { name: "Kennisbank", path: "/kennisbank/" },
           {
             name: categoryName,
-            path: localizedPath(post.locale, categoryHref(post.categorySlug)),
+            path: categoryHref(post.categorySlug),
           },
-          { name: post.title, path: localizedPath(post.locale, postHref(post)) },
+          { name: post.title, path: postHref(post) },
         ]}
       />
       <BlogPostingJsonLd
@@ -365,7 +372,7 @@ export default async function KennisbankPostPage({
                     ? {
                         title: sidebarService.title,
                         description: sidebarService.excerpt,
-                        href: `/diensten/${sidebarService.slug}/`,
+                        href: `${serviceHref(sidebarService)}/`,
                         icon: <BookOpen className="h-5 w-5" aria-hidden="true" />,
                         linkLabel: "Bekijk dienst",
                       }
@@ -405,11 +412,11 @@ export default async function KennisbankPostPage({
         </Section>
       )}
 
-      {clusterPosts.length === 0 && (relatedPosts.length > 0 || fallbackRelated.length > 0) && (
+      {(relatedOutsideCluster.length > 0 || fallbackRelated.length > 0) && (
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
-            <BlogGrid posts={relatedPosts.length > 0 ? relatedPosts : fallbackRelated} />
+            <BlogGrid posts={relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated} />
           </Container>
         </Section>
       )}

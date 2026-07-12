@@ -47,10 +47,12 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
       data={{
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
+        "@id": `${businessConfig.url}/#localbusiness`,
         name: settings.companyName,
         legalName: businessConfig.legalName,
         description: businessConfig.description,
         url: businessConfig.url,
+        image: `${businessConfig.url}/logo.svg`,
         telephone: settings.phone,
         email: settings.mainEmail,
         vatID: settings.vatNumber || undefined,

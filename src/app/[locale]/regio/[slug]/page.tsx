@@ -7,10 +7,11 @@ import { BlogGrid, CTASection } from "@/components/sections";
 import { RegionAmbient, RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
 import { SectorMarquee } from "@/components/sectors";
 import { regions, getRegionBySlug } from "@/data/regions";
-import { getServiceBySlug } from "@/data/services";
-import { getAllPosts, slugFromPath } from "@/lib/kennisbank/posts";
+import { getServiceBySlug, serviceHref } from "@/data/services";
+import { getAllPosts, localizedPath, slugFromPath } from "@/lib/kennisbank/posts";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { businessConfig } from "@/config/business.config";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
   return regions.map((region) => ({ slug: region.slug }));
@@ -68,6 +69,17 @@ export default async function RegionDetailPage({
           { name: region.title, path: `/regio/${region.slug}` },
         ]}
       />
+      {localServices.slice(0, 3).map((service) => (
+        <ServiceJsonLd
+          key={service.slug}
+          service={{
+            name: service.title,
+            description: service.excerpt,
+            url: `${businessConfig.url}${localizedPath("nl", `${serviceHref(service)}/`)}`,
+            areaServed: [region.title],
+          }}
+        />
+      ))}
 
       {/* Eén doorlopende, paginabrede achtergrond; alle secties zijn transparant. */}
       <RegionAmbient />
@@ -77,7 +89,7 @@ export default async function RegionDetailPage({
 
       {/* 1. Wat we doen - dienstenkaarten als bento (design_handoff_regio_vlaanderen). */}
       {localServices.length > 0 && (
-        <section className="relative px-4 pt-8 pb-16 md:pt-10 md:pb-24">
+        <section className="relative pt-8 pb-16 md:pt-10 md:pb-24">
           <Container>
             <div className="mb-9 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
               <div className="max-w-xl">

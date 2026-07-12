@@ -6,7 +6,7 @@ import { ShowcaseImage } from "./ShowcaseImage";
  * image is admin-managed. All motion is CSS. */
 export function WebdesignHero({ heroImage }: { heroImage?: string }) {
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] pt-24 text-white">
+    <section className="relative overflow-hidden pt-24 text-white">
       {/* ambient glow */}
       <div
         aria-hidden="true"

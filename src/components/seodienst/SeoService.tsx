@@ -56,11 +56,14 @@ export function SeoService({
   seoItems,
   images,
   relatedServices,
+  crossLinks,
 }: {
   service: Service;
   seoItems: SeoCaseItem[];
   images: import("@/lib/firestore/webdesignImages").WebdesignImages;
   relatedServices: Service[];
+  /** Gedeelde cross-link-secties (realisaties, regio's) vanuit de dienstpagina. */
+  crossLinks?: React.ReactNode;
 }) {
   return (
     <div className="relative overflow-hidden">
@@ -177,6 +180,9 @@ export function SeoService({
           heading="Verdiep je in SEO en GEO"
           intro="Praktische gidsen over lokale SEO, technische SEO en zichtbaarheid in AI-zoekmachines."
         />
+
+        {/* Cross-links naar realisaties en regio-hubs (interne-link-regels). */}
+        {crossLinks}
 
         {/* Veelgestelde vragen (links) + Combineer SEO met (rechts). */}
         <ServiceFaqCombine

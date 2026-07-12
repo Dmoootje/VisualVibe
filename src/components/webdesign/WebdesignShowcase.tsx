@@ -24,7 +24,7 @@ export function WebdesignShowcase({
   const img = (c: WebdesignProject, slot: "thumb" | "1" | "2" | "3" | "4") => images[imageKey(c.id, slot)];
 
   return (
-    <section id="showcase" className="relative z-[2] bg-[#0a0a0a] pb-24 pt-6 text-white">
+    <section id="showcase" className="relative z-[2] pb-24 pt-6 text-white">
       <div className="container mx-auto px-4">
         <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>

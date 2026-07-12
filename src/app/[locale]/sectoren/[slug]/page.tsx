@@ -5,10 +5,11 @@ import { Link } from "@/i18n/navigation";
 import { Section, Container } from "@/components/ui";
 import { BlogGrid, CTASection, ServiceGrid } from "@/components/sections";
 import { sectors, getSectorBySlug } from "@/data/sectors";
-import { getServiceBySlug } from "@/data/services";
-import { getAllPosts, slugFromPath } from "@/lib/kennisbank/posts";
+import { getServiceBySlug, serviceHref } from "@/data/services";
+import { getAllPosts, localizedPath, slugFromPath } from "@/lib/kennisbank/posts";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { businessConfig } from "@/config/business.config";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo";
 import { SectorDetailHero, SectorMarquee } from "@/components/sectors";
 
 export function generateStaticParams() {
@@ -67,6 +68,17 @@ export default async function SectorDetailPage({
           { name: sector.title, path: `/sectoren/${sector.slug}` },
         ]}
       />
+      {recommendedServices.slice(0, 3).map((service) => (
+        <ServiceJsonLd
+          key={service.slug}
+          service={{
+            name: service.title,
+            description: service.excerpt,
+            url: `${businessConfig.url}${localizedPath("nl", `${serviceHref(service)}/`)}`,
+            areaServed: ["Limburg"],
+          }}
+        />
+      ))}
 
       <SectorDetailHero sector={sector} />
 

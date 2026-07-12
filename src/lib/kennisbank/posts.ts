@@ -411,14 +411,7 @@ export function assertValidKennisbankContent(): void {
 }
 
 // Pure URL helpers live in ./urls (no fs) so client components can use them too.
-export { postHref, categoryHref } from "./urls";
-
-/** Adds the real public locale prefix (`nl` is published under `/be`). */
-export function localizedPath(locale: BlogLocale, sitePath: string): string {
-  const normalizedPath = sitePath.startsWith("/") ? sitePath : `/${sitePath}`;
-  const prefix = locale === "nl" ? "/be" : `/${locale}`;
-  return normalizedPath === "/" ? `${prefix}/` : `${prefix}${normalizedPath}`;
-}
+export { postHref, categoryHref, localizedPath } from "./urls";
 
 /** Extracts the last non-empty path segment from an absolute site path. */
 export function slugFromPath(sitePath: string): string {

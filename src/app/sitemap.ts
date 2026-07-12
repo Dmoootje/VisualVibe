@@ -4,6 +4,11 @@ import { allServices, serviceHref } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
+import { cases } from "@/data/cases";
+import { realisatieCategories } from "@/data/realisatieCategories";
+import { matterportTours } from "@/data/matterportTours";
+import { droneMedia } from "@/config/drone.config";
+import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import {
   assertValidKennisbankContent,
@@ -54,12 +59,30 @@ function withSlash(path: string): string {
   return path === "" ? "/" : `/${path}/`;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Publishing must stop when a live article points to a missing or
   // non-canonical pillar, post, service, region, sector, case or source.
   assertValidKennisbankContent();
 
   const { url } = businessConfig;
+
+  // Realisatie-categorieën spiegelen de hasContent/noindex-logica van
+  // realisaties/[category]/page.tsx: alleen categorieën met echte content
+  // (indexeerbaar, self-referencing canonical) horen in de sitemap.
+  const fotoGalleryCount = (await getFotografieGalleries()).filter(
+    (gallery) => gallery.images.length > 0
+  ).length;
+  const realisatiePaths = realisatieCategories
+    .filter(
+      (category) =>
+        category.slug === "webdesign" ||
+        category.slug === "videografie" ||
+        (category.slug === "3d-vr" && matterportTours.length > 0) ||
+        (category.slug === "drone" && droneMedia.length > 0) ||
+        (category.slug === "fotografie" && fotoGalleryCount > 0) ||
+        cases.some((item) => item.category === category.slug)
+    )
+    .map((category) => `realisaties/${category.slug}`);
 
   // Marketing routes exist in Dutch only, published under /be (the locale-less
   // URL 308-redirects). Each entry lists that real nl URL and no language
@@ -67,7 +90,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // must not be advertised as variants. Kennisbank entries below use their
   // real `/be`, `/fr` or `/en` URL and only advertise language alternates
   // backed by an explicit translationKey relationship.
-  const nonKennisbankEntries: MetadataRoute.Sitemap = [...staticPaths, ...dataPaths].map((path) => ({
+  const nonKennisbankEntries: MetadataRoute.Sitemap = [
+    ...staticPaths,
+    ...dataPaths,
+    ...realisatiePaths,
+  ].map((path) => ({
     url: `${url}${localizedPath("nl", withSlash(path))}`,
     lastModified: new Date(),
   }));

@@ -300,12 +300,9 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
             required
             className="mt-0.5 h-4 w-4 shrink-0 accent-amber-500"
           />
+          {/* Link naar het privacybeleid volgt zodra die pagina bestaat - geen "#"-placeholder. */}
           <span>
-            Ik ga akkoord met de verwerking van mijn gegevens volgens het{" "}
-            <a href="#" className="text-amber-400 hover:underline">
-              privacybeleid
-            </a>
-            .
+            Ik ga akkoord met de verwerking van mijn gegevens voor de opvolging van deze aanvraag.
           </span>
         </label>
 

@@ -89,7 +89,7 @@ function GalTile({ src, alt, sizes, className, children }: { src: string; alt: s
 
 export default function OverOnsPage() {
   return (
-    <div className="vvov-anim" style={{ position: "relative", overflow: "hidden", background: "#0a0a0a", color: "#fff", fontFamily: "var(--font-manrope), sans-serif" }}>
+    <div className="vvov-anim" style={{ position: "relative", overflow: "hidden", color: "#fff", fontFamily: "var(--font-manrope), sans-serif" }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Over ons", path: "/over-ons" }]} />
 
       {/* ===== HERO ===== */}
