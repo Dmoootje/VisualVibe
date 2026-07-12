@@ -8,7 +8,7 @@
 // The claude.ai/design app's self-check regenerates the adherence config and
 // ds_manifest.
 //
-// lib/emit.mjs + lib/bundle.mjs are the app contract surface — agent never
+// lib/emit.mjs + lib/bundle.mjs are the app contract surface - agent never
 // edits. Discovery (lib/source-*.mjs) is heuristic; each heuristic has a
 // cfg override (grep ASSUMPTION) so non-matching repos write config, not code.
 //
@@ -46,11 +46,11 @@ const forkedLibs = new Set(
   existsSync(REPO_LIB) ? readdirSync(REPO_LIB).filter((f) => f.endsWith('.mjs')) : [],
 );
 if (forkedLibs.has('sync-hashes.mjs')) {
-  console.error('[OVERRIDE_FORBIDDEN] sync-hashes.mjs cannot be forked — the sidecar, the grading harnesses, and remote-diff must share one recipe or carry-forward becomes unsound');
+  console.error('[OVERRIDE_FORBIDDEN] sync-hashes.mjs cannot be forked - the sidecar, the grading harnesses, and remote-diff must share one recipe or carry-forward becomes unsound');
   process.exit(1);
 }
 if (forkedLibs.has('preview-gen-package.mjs')) {
-  console.error('[OVERRIDE_DEAD] .design-sync/overrides/preview-gen-package.mjs is never loaded — the package-shape generated-preview tier is gone. Author .design-sync/previews/<Name>.tsx instead; delete the fork (and its cfg.libOverrides entry). NOTE: any fork add/delete moves the grade contract for every component — pair the deletion with a full build and expect a one-time full re-verify on the next sync.');
+  console.error('[OVERRIDE_DEAD] .design-sync/overrides/preview-gen-package.mjs is never loaded - the package-shape generated-preview tier is gone. Author .design-sync/previews/<Name>.tsx instead; delete the fork (and its cfg.libOverrides entry). NOTE: any fork add/delete moves the grade contract for every component - pair the deletion with a full build and expect a one-time full re-verify on the next sync.');
 }
 // Repo-local fork (.design-sync/overrides/<name>.mjs) wins, else the bundled copy.
 async function loadLib(name) {
@@ -88,7 +88,7 @@ if (CONFIG_PATH) {
   const cfgErrors = validateConfig?.(cfg) ?? [];
   if (cfgErrors.length) {
     for (const e of cfgErrors) console.error(`✗ config: ${e}`);
-    console.error(`[CONFIG] ${CONFIG_PATH}: ${cfgErrors.length} error(s) — fix the config and re-run`);
+    console.error(`[CONFIG] ${CONFIG_PATH}: ${cfgErrors.length} error(s) - fix the config and re-run`);
     process.exit(1);
   }
 }
@@ -101,8 +101,8 @@ let GLOBAL = cfg.globalName; // normalized to a valid id below, derived from pkg
 const OUT = flag('out');
 const PROVIDER = cfg.provider ?? null; // {component, props, inner?}
 const TOKENS_GLOB = cfg.tokensGlob ?? null;
-// cwd-relative like cfg.entry/cfg.storybookStatic — NOT config-file-relative
-// (most other cfg paths are package-relative via cfgPath) — so the value
+// cwd-relative like cfg.entry/cfg.storybookStatic - NOT config-file-relative
+// (most other cfg paths are package-relative via cfgPath) - so the value
 // survives the config's move into .design-sync/ (a committed root-relative
 // value resolves identically from either location).
 const SB_CONFIG_DIR = flag('storybook-config', null)
@@ -115,12 +115,12 @@ const TITLE_MAP = cfg.titleMap ?? {};
 // Cross-check so an undocumented fork (or a declared-but-missing one) is loud.
 const LIB_OVERRIDES = cfg.libOverrides ?? {};
 for (const f of forkedLibs) {
-  // Dead fork already diagnosed above — an affirmative "[OVERRIDE] using"
+  // Dead fork already diagnosed above - an affirmative "[OVERRIDE] using"
   // line for a module that is never loaded would be a lie.
   if (f === 'preview-gen-package.mjs') continue;
   console.error(LIB_OVERRIDES[f]
-    ? `[OVERRIDE] using .design-sync/overrides/${f} — ${LIB_OVERRIDES[f]}`
-    : `[OVERRIDE_UNDECLARED] .design-sync/overrides/${f} is forked but not in cfg.libOverrides — add it with a one-line reason`);
+    ? `[OVERRIDE] using .design-sync/overrides/${f} - ${LIB_OVERRIDES[f]}`
+    : `[OVERRIDE_UNDECLARED] .design-sync/overrides/${f} is forked but not in cfg.libOverrides - add it with a one-line reason`);
 }
 for (const f of Object.keys(LIB_OVERRIDES)) {
   if (!forkedLibs.has(f)) console.error(`[OVERRIDE_MISSING] cfg.libOverrides declares "${f}" but .design-sync/overrides/${f} doesn't exist`);
@@ -131,7 +131,7 @@ if (!NODE_MODULES || !PKG || !OUT) {
   process.exit(1);
 }
 
-// Derive window.<Namespace> from a DS/package name — mirrors the
+// Derive window.<Namespace> from a DS/package name - mirrors the
 // claude.ai/design app's namespace derivation so a CLI-built bundle and an
 // app-rebuilt one land on the same global. PascalCase the alnum runs; prefix
 // `Ds` if it would start with a digit; fall back to `Ds`. globalName
@@ -152,12 +152,12 @@ function toNamespace(name) {
 const ENTRY_OVERRIDE = flag('entry', cfg.entry);
 // --skip-dts: skip the per-component ts-morph type resolution (the slow part of
 // emit on large DSes). Component discovery/filtering still runs; emitted .d.ts
-// bodies are stubs, so package-validate hard-fails [DTS_STUBBED] — intermediate
+// bodies are stubs, so package-validate hard-fails [DTS_STUBBED] - intermediate
 // fix-loop builds only, never the final build before the upload gate.
 const SKIP_DTS = process.argv.includes('--skip-dts');
 let PKG_DIR;
 if (ENTRY_OVERRIDE) {
-  // Walk up to the package's REAL package.json — one with a name. Skip the
+  // Walk up to the package's REAL package.json - one with a name. Skip the
   // type-marker stubs ({"type":"module"} files dropped into dist/esm|cjs
   // subtrees): stopping at one truncates the walk inside dist/, reporting
   // version 0.0.0 and hiding src/ and the shipped stylesheet.
@@ -168,7 +168,7 @@ if (ENTRY_OVERRIDE) {
       const j = JSON.parse(readFileSync(join(d, 'package.json'), 'utf8'));
       first ??= d;
       if (j.name) { named = d; break; }
-    } catch { /* missing or unparsable — keep walking */ }
+    } catch { /* missing or unparsable - keep walking */ }
     d = dirname(d);
   }
   PKG_DIR = named ?? first ?? dirname(resolve(ENTRY_OVERRIDE));
@@ -178,7 +178,7 @@ if (ENTRY_OVERRIDE) {
 const pkgJson = existsSync(join(PKG_DIR, 'package.json'))
   ? JSON.parse(readFileSync(join(PKG_DIR, 'package.json'), 'utf8'))
   : { name: PKG };
-// VERSION goes into README.md which reaches the design agent — semver-only.
+// VERSION goes into README.md which reaches the design agent - semver-only.
 const VERSION = /^\d+\.\d+\.\d+[\w.+-]*$/.test(pkgJson.version ?? '') ? pkgJson.version : '0.0.0';
 // Generic pkg names (e.g. "app") → prefer the DS dir's own name.
 const GENERIC_PKG = new Set(['app', 'root', 'frontend', 'web', 'www', 'monorepo', '']);
@@ -188,7 +188,7 @@ console.error(`» ${PKG}@${VERSION} → ${OUT} (window.${GLOBAL})`);
 
 // ── reset out dir ────────────────────────────────────────────────────────
 // Guard: refuse to rm -rf cwd, $HOME, /, anything in the durable
-// .design-sync/ tree (user previews/notes/forks live there — no marker file
+// .design-sync/ tree (user previews/notes/forks live there - no marker file
 // can ever authorize wiping it), or a non-empty dir that isn't a prior
 // bundle (no _ds_bundle.js and no .ds-bundle marker). --out is user-supplied.
 {
@@ -198,7 +198,7 @@ console.error(`» ${PKG}@${VERSION} → ${OUT} (window.${GLOBAL})`);
     || outAbs.startsWith(durable + sep)
     || (existsSync(outAbs) && statSync(outAbs).isDirectory() && !existsSync(join(outAbs, '_ds_bundle.js')) && !existsSync(join(outAbs, '.ds-bundle')) && readdirSync(outAbs).length > 0)
     || (existsSync(outAbs) && !statSync(outAbs).isDirectory());
-  if (unsafe) { console.error(`[OUT_UNSAFE] refusing to rm ${outAbs} — point --out at an empty dir or a prior bundle (never inside .design-sync/)`); process.exit(1); }
+  if (unsafe) { console.error(`[OUT_UNSAFE] refusing to rm ${outAbs} - point --out at an empty dir or a prior bundle (never inside .design-sync/)`); process.exit(1); }
 }
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, '_vendor'), { recursive: true });
@@ -224,7 +224,7 @@ if (cfg.shape && cfg.shape !== autodetected)
   console.error(`[CONFIG] cfg.shape=${cfg.shape} overrides auto-detected '${autodetected}'`);
 
 // Storybook shape generates previews from story modules. The package shape
-// has no generated tier — previews are authored (.design-sync/previews/) or
+// has no generated tier - previews are authored (.design-sync/previews/) or
 // the component ships the floor card.
 const { generatePreviewSource } = shape === 'storybook'
   ? await loadLib('preview-gen-storybook')
@@ -251,7 +251,7 @@ const src = await adapters[shape]({
 
 // Extra packages to merge into window.<GLOBAL> alongside the DS entry.
 // Auto-detect icon sibling packages (same scope, name ends in /icons or
-// /icons-react, installed) — otherwise icon components the design agent
+// /icons-react, installed) - otherwise icon components the design agent
 // reaches for aren't on the global. cfg.extraEntries is the manual override.
 // Match any dep whose name ends in `icons`/`icon`/`icons-react` AND whose
 // scope either matches the DS scope OR squash-matches the DS name (covers
@@ -275,14 +275,14 @@ const extraEntries = [...new Set([...(cfg.extraEntries ?? []), ...iconSiblings])
 // inside a fixed root: absolute paths, ../ escapes past the root, and
 // symlinks pointing outside it are rejected rather than read/copied.
 // workspaceRoot = the git repo enclosing dirname(NODE_MODULES), else
-// dirname(NODE_MODULES) itself (not INPUTS — --inputs can point at a source
+// dirname(NODE_MODULES) itself (not INPUTS - --inputs can point at a source
 // subtree that doesn't contain PKG_DIR; see gitWorkspaceRoot in lib/common.mjs
 // for why the git repo is the right ceiling). realpath + path.relative so
 // Windows case-insensitivity and symlink targets are handled by node.
 // Per-field bounds: cssEntry stays bounded to PKG_DIR (its content is
 // uploaded verbatim, so a path anywhere under workspaceRoot would let a
 // malicious dep's config exfiltrate project-root files); tsconfig,
-// extraFonts, docsDir, and guidelinesGlob are bounded to workspaceRoot —
+// extraFonts, docsDir, and guidelinesGlob are bounded to workspaceRoot -
 // guideline .md/.mdx files and docsDir bodies DO reach the upload
 // (near-)verbatim, so this bound is the only thing standing between a
 // hostile config and shipping repo files: it admits only
@@ -297,9 +297,9 @@ const outside = (real, root) => {
 function cfgPath(rel, field, root) {
   if (rel == null) return undefined;
   const p = resolve(PKG_DIR, rel);
-  if (!existsSync(p)) { console.error(`  ! ${field}: ${rel} not found — skipped`); return undefined; }
+  if (!existsSync(p)) { console.error(`  ! ${field}: ${rel} not found - skipped`); return undefined; }
   if (outside(realpathSync(p), root)) {
-    console.error(`  ! ${field}: ${rel} resolves outside ${root === pkgRoot ? 'the package' : 'the workspace root'} — skipped`);
+    console.error(`  ! ${field}: ${rel} resolves outside ${root === pkgRoot ? 'the package' : 'the workspace root'} - skipped`);
     return undefined;
   }
   // Return the resolved path, not the realpath: downstream dirname-relative
@@ -315,11 +315,11 @@ if (extraEntries.length) {
   // ESM drops ambiguous star re-exports to undefined, so an icon named `Tag`
   // would clobber the `Tag` component. Export main's full namespace as a
   // marker (`__dsMainNs`) and let bundleToIife's footer Object.assign it over
-  // the IIFE global at runtime — types are already erased by then.
+  // the IIFE global at runtime - types are already erased by then.
   //
   // Entry forms: a bare specifier resolves from node_modules; an explicit
   // ./ or ../ entry is a repo file (package-relative, workspaceRoot-bounded
-  // like the other cfg paths — .bundle-entry.mjs lives in OUT, so a relative
+  // like the other cfg paths - .bundle-entry.mjs lives in OUT, so a relative
   // specifier emitted verbatim could never reach the repo). Its content gets
   // bundled and shipped, the same exposure class as docsDir/guidelines.
   const mainAbs = JSON.stringify(resolve(src.entry));
@@ -328,7 +328,7 @@ if (extraEntries.length) {
     // Path-form (explicit relative OR absolute) routes through containment;
     // only bare specifiers go to node_modules resolution. An absolute entry
     // emitted verbatim would let an untrusted config bundle any readable
-    // file on disk — same threat model as the other cfg path fields.
+    // file on disk - same threat model as the other cfg path fields.
     if (p.startsWith('./') || p.startsWith('../') || isAbsolute(p)) {
       const bounded = cfgPath(p, 'extraEntries', workspaceRoot);
       if (bounded) specs.push(resolve(bounded));
@@ -352,7 +352,7 @@ const { bundleJs, bundleCss, inlinedExternals } = await bundleToIife({
   out: OUT,
   tsconfig: TSCONFIG_PATH,
 });
-// Same entry the runtime bundle was just built from — the provider gate
+// Same entry the runtime bundle was just built from - the provider gate
 // checks against this export list (ground truth), falling back to the
 // .d.ts/regex scan only when this pass returns null. The gate is the sole
 // consumer, so skip the second esbuild pass entirely when no provider is
@@ -366,8 +366,8 @@ const exportEvidence = PROVIDER ? await bundleExportEvidence({
 // Auto-apply .storybook/preview decorators as the preview wrapper when no
 // cfg.provider is set. Best-effort; cfg.provider remains the override.
 let hasDecorators = false;
-if (PROVIDER) console.error('  (decorator auto-detect skipped — cfg.provider is set)');
-else if (!src.sbDir) console.error('  (decorator auto-detect skipped — no .storybook/ dir found)');
+if (PROVIDER) console.error('  (decorator auto-detect skipped - cfg.provider is set)');
+else if (!src.sbDir) console.error('  (decorator auto-detect skipped - no .storybook/ dir found)');
 else hasDecorators = await bundlePreviewDecorators({ sbDir: src.sbDir, OUT, NODE_MODULES, PKG, PKG_DIR, GLOBAL });
 
 // ── css / fonts / tokens ─────────────────────────────────────────────────
@@ -378,12 +378,12 @@ let bundleCssSrcDir = PKG_DIR;
 const explicitCss = cfgPath(cfg.cssEntry, 'cssEntry', pkgRoot);
 if (explicitCss && existsSync(bundleCss)) {
   // The esbuild bundle already emitted some CSS (often just an icon @font-face
-  // that rode in via the JS module graph) — don't silently drop the explicitly
+  // that rode in via the JS module graph) - don't silently drop the explicitly
   // configured stylesheet on top of it; append it so the DS's real component
   // styles still ship in _ds_bundle.css.
   appendFileSync(bundleCss, `\n/* appended from cfg.cssEntry */\n${readFileSync(explicitCss, 'utf8')}`);
   bundleCssSrcDir = dirname(explicitCss);
-  console.error(`  css: ${relative(INPUTS, explicitCss)} (${(statSync(explicitCss).size / 1024).toFixed(0)} KB, appended — bundle already had CSS)`);
+  console.error(`  css: ${relative(INPUTS, explicitCss)} (${(statSync(explicitCss).size / 1024).toFixed(0)} KB, appended - bundle already had CSS)`);
 } else if (!existsSync(bundleCss)) {
   // explicitCss (cfg.cssEntry/--css, contained); else src.cssEntry (shape
   // default, already absolute); else common dist layouts under PKG_DIR.
@@ -408,12 +408,12 @@ if (src.sbStatic) {
   remoteStyleImports = scrapeRemoteImports(src.sbStatic);
 }
 if (sbFallback) bundleCssSrcDir = sbFallback;
-// styles.css @imports _ds_bundle.css and the cards link it — always emit
+// styles.css @imports _ds_bundle.css and the cards link it - always emit
 // so neither reference 404s.
 // Marker lets package-validate.mjs report [CSS_RUNTIME] not [CSS_PLACEHOLDER].
 if (!existsSync(bundleCss)) {
   writeFileSync(bundleCss,
-    '/* @ds-css-runtime: no extracted CSS — styles are runtime-generated */\n');
+    '/* @ds-css-runtime: no extracted CSS - styles are runtime-generated */\n');
 }
 // Containment roots for extractFonts: PKG_DIR always; sbStatic too when the
 // fallback fired (fonts live under storybook-static/, not under the package).
@@ -431,7 +431,7 @@ const fontRules = [
 // CSS file's directory and are copied when they land anywhere under
 // workspaceRoot (a typography package's sibling fonts dir is a common
 // layout). Containment: see cfgPath above.
-// A bare string here iterates char-by-char — coerce to a one-element list.
+// A bare string here iterates char-by-char - coerce to a one-element list.
 for (const rel of (typeof cfg.extraFonts === 'string' ? [cfg.extraFonts] : cfg.extraFonts) ?? []) {
   const p = cfgPath(rel, 'extraFonts', workspaceRoot);
   if (!p) continue;
@@ -444,13 +444,13 @@ for (const rel of (typeof cfg.extraFonts === 'string' ? [cfg.extraFonts] : cfg.e
   } else if (/\.(woff2?|ttf|otf)$/i.test(p)) {
     mkdirSync(fontsOut, { recursive: true });
     cpSync(pReal, join(fontsOut, basename(p)));
-    console.error(`  extraFonts: copied ${basename(p)} — add a matching @font-face (e.g. an extraFonts .css) to use it`);
+    console.error(`  extraFonts: copied ${basename(p)} - add a matching @font-face (e.g. an extraFonts .css) to use it`);
   } else {
-    console.error(`  ! extraFonts: ${rel} isn't a .css or font file — skipped`);
+    console.error(`  ! extraFonts: ${rel} isn't a .css or font file - skipped`);
   }
 }
 // Brand fonts shipped via .storybook/preview-head.html land inline in the
-// built iframe.html as data-URI @font-face — invisible to every other font
+// built iframe.html as data-URI @font-face - invisible to every other font
 // path here. Harvest them for families nothing above provided, so the bundle
 // renders with the same fonts the reference storybook does.
 if (src.sbStatic) {
@@ -496,18 +496,18 @@ if (!tokenFiles.length && src.tokensCss?.length) {
 
 // ── component list filtering (storybook: must be public exports) ─────────
 const exported = src.exported ?? exportedSet;
-// Synth-entry has no .d.ts — the entry IS the export list.
+// Synth-entry has no .d.ts - the entry IS the export list.
 if (src.synthEntry) for (const c of src.components) exported.add(c.name);
 // extraEntries exports are merged onto window.<GLOBAL>, so treat them as
-// exported — the relative-import redirect and provider gate both check
+// exported - the relative-import redirect and provider gate both check
 // against this set.
-// Starts lossy when the MAIN scan resolved no names (no .d.ts anywhere —
+// Starts lossy when the MAIN scan resolved no names (no .d.ts anywhere -
 // exportedNames returns an empty set either way); only the synth path
 // legitimately begins empty. The extraEntries loop below adds its own
 // loss paths.
 let exportScanLossy = !src.synthEntry && exported.size === 0;
 for (const ep of extraEntries) {
-  // Path-form entries are repo files, not packages — a node_modules
+  // Path-form entries are repo files, not packages - a node_modules
   // package.json probe on them builds a garbage path and silently merges
   // nothing, so the provider gate would false-fire on their exports.
   if (ep.startsWith('./') || ep.startsWith('../') || isAbsolute(ep)) {
@@ -516,14 +516,14 @@ for (const ep of extraEntries) {
     try {
       // Source-scan the module's export names (the guidance's 2-line $ref
       // modules: `export const X`, `export { default as Y } from …`). A
-      // heuristic for the build-time gates only — runtime truth is the
+      // heuristic for the build-time gates only - runtime truth is the
       // bundle merge itself. Star re-exports are followed within the same
       // workspace bound (a 1-line `export * from './providers.mjs'` is a
       // natural spelling of the recommended module), depth-capped and
       // cycle-guarded.
       const names = new Set();
       const seen = new Set();
-      // Literal path first, then esbuild's default resolveExtensions — the
+      // Literal path first, then esbuild's default resolveExtensions - the
       // dominant spelling is extensionless (`from './providers'`), and the
       // gate should see exactly what esbuild will bundle.
       const resolveHop = (abs) => {
@@ -536,7 +536,7 @@ for (const ep of extraEntries) {
       const scan = (file, depth) => {
         const real = realpathSync(file);
         if (seen.has(real)) return;
-        // esbuild has no depth limit — a deeper chain's names still reach
+        // esbuild has no depth limit - a deeper chain's names still reach
         // the runtime global, the scan just can't prove them.
         if (depth > 3) { exportScanLossy = true; return; }
         seen.add(real);
@@ -553,20 +553,20 @@ for (const ep of extraEntries) {
         for (const m of src2.matchAll(/export\s*\*\s*from\s*['"]([^'"]+)['"]/g)) {
           const target = m[1];
           // Bare → node_modules: the runtime re-exports it, the scan can't
-          // follow — the gates must not treat absence as proof.
+          // follow - the gates must not treat absence as proof.
           if (!target.startsWith('./') && !target.startsWith('../')) { exportScanLossy = true; continue; }
           // Per-hop try/catch: one unresolvable hop must not discard the
           // names already collected from the entry module itself.
           try {
             const hop = resolveHop(resolve(dirname(file), target));
             if (!hop || outside(realpathSync(hop), workspaceRoot)) {
-              console.error(`  ! extraEntries: star hop ${target} in ${ep} skipped (unresolvable or outside the workspace) — its names are unknown to the export gates`);
+              console.error(`  ! extraEntries: star hop ${target} in ${ep} skipped (unresolvable or outside the workspace) - its names are unknown to the export gates`);
               exportScanLossy = true;
               continue;
             }
             scan(hop, depth + 1);
           } catch (e) {
-            console.error(`  ! extraEntries: star hop ${target} in ${ep} failed (${String(e.message ?? e).split('\n')[0]}) — its names are unknown to the export gates`);
+            console.error(`  ! extraEntries: star hop ${target} in ${ep} failed (${String(e.message ?? e).split('\n')[0]}) - its names are unknown to the export gates`);
             exportScanLossy = true;
           }
         }
@@ -574,14 +574,14 @@ for (const ep of extraEntries) {
       scan(bounded, 0);
       const collisions = [...names].filter((n) => exported.has(n));
       if (collisions.length) {
-        console.error(`! [EXPORT_COLLISION] ${ep} exports ${collisions.length} name(s) the main package also exports: ${collisions.slice(0, 6).join(', ')}${collisions.length > 6 ? ', …' : ''} — stories importing these from ${ep} render the main package's binding. Fix: rename the export in ${ep}.`);
+        console.error(`! [EXPORT_COLLISION] ${ep} exports ${collisions.length} name(s) the main package also exports: ${collisions.slice(0, 6).join(', ')}${collisions.length > 6 ? ', …' : ''} - stories importing these from ${ep} render the main package's binding. Fix: rename the export in ${ep}.`);
       }
       for (const n of names) exported.add(n);
     } catch (e) {
       // EISDIR (cfgPath can't reject directories), unreadable target of a
-      // star hop, etc. — loud skip, same contract as every other cfg path
+      // star hop, etc. - loud skip, same contract as every other cfg path
       // field. The gates just won't know these exports; runtime still does.
-      console.error(`  ! extraEntries: ${ep} export scan failed (${String(e.message ?? e).split('\n')[0]}) — skipped for the export gates`);
+      console.error(`  ! extraEntries: ${ep} export scan failed (${String(e.message ?? e).split('\n')[0]}) - skipped for the export gates`);
       exportScanLossy = true;
     }
     continue;
@@ -591,34 +591,34 @@ for (const ep of extraEntries) {
     const pj = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
     const names = exportedNames(dir, pj);
     // Empty scan usually means no .d.ts resolved (exportedNames returns an
-    // empty set either way) — the bundle still `export * from`s this entry,
+    // empty set either way) - the bundle still `export * from`s this entry,
     // so the runtime global may carry names the gate can't see.
     if (names.size === 0) exportScanLossy = true;
-    // Main-package names win collisions in the global merge (bundle.mjs) —
+    // Main-package names win collisions in the global merge (bundle.mjs) -
     // a story importing the LOSING name from this sibling gets the main
     // package's binding through the shim (icon sets use bare nouns, so
     // List/Menu/Table-style collisions with component names are common).
     const collisions = [...names].filter((n) => exported.has(n));
     if (collisions.length) {
-      console.error(`! [EXPORT_COLLISION] ${ep} exports ${collisions.length} name(s) the main package also exports: ${collisions.slice(0, 6).join(', ')}${collisions.length > 6 ? ', …' : ''} — stories importing these from ${ep} render the main package's binding. Fix: cfg.storyImports.bundle: ["${ep}"] (bundle the sibling from source).`);
+      console.error(`! [EXPORT_COLLISION] ${ep} exports ${collisions.length} name(s) the main package also exports: ${collisions.slice(0, 6).join(', ')}${collisions.length > 6 ? ', …' : ''} - stories importing these from ${ep} render the main package's binding. Fix: cfg.storyImports.bundle: ["${ep}"] (bundle the sibling from source).`);
     }
     for (const n of names) exported.add(n);
   } catch {
-    // Not installed, or the scan itself threw — dsShim still resolves it at
+    // Not installed, or the scan itself threw - dsShim still resolves it at
     // runtime, so its names are unknown to the gates.
     exportScanLossy = true;
   }
 }
-console.error(`  exported PascalCase symbols: ${exported.size}${!PROVIDER ? '' : exportEvidence ? `; bundle export list: ${exportEvidence.exports.size}` : ' (bundle export evidence unavailable — scan fallback)'}`);
-// Validate the provider chain at build time — everything downstream
+console.error(`  exported PascalCase symbols: ${exported.size}${!PROVIDER ? '' : exportEvidence ? `; bundle export list: ${exportEvidence.exports.size}` : ' (bundle export evidence unavailable - scan fallback)'}`);
+// Validate the provider chain at build time - everything downstream
 // (providerWrapper, prompt.md notes, the README section) trusts it.
 // - Invalid identifier path → always fatal (can never work in a <script>).
 // - Absent from the evidence → fatal ONLY when absence is provable.
 //   Tier 1 (exportEvidence): esbuild's own export list for the very entry
-//   the runtime bundle was built from — absence is proof, EXCEPT when a
+//   the runtime bundle was built from - absence is proof, EXCEPT when a
 //   bundled CJS input is present (`export * from <cjs>` names aren't
 //   statically enumerable, so they're missing from the list).
-//   Tier 2 (evidence pass failed): the .d.ts/regex scan — heuristic, so
+//   Tier 2 (evidence pass failed): the .d.ts/regex scan - heuristic, so
 //   the accumulated exportScanLossy loss paths downgrade fatal to warn.
 //   The warn path trusts the config and still emits the wrap
 //   (pre-validation builds silently dropped it, which hid typos behind
@@ -627,13 +627,13 @@ for (let p = PROVIDER; p; p = p.inner) {
   // Per-segment: a bare character-class dot admits `Theme..Provider` /
   // `Theme.` / `Theme.1x`, which parse-kill every preview <script>.
   if (!/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/.test(String(p.component ?? ''))) {
-    console.error(`[PROVIDER_INVALID] cfg.provider component "${p.component}" isn't a valid identifier path (Name or Name.SubName) — fix cfg.provider.`);
+    console.error(`[PROVIDER_INVALID] cfg.provider component "${p.component}" isn't a valid identifier path (Name or Name.SubName) - fix cfg.provider.`);
     process.exit(1);
   }
   const head = String(p.component).split('.')[0];
   if (exportEvidence) {
     // Union pass: the bundle's export list proves every statically-reachable
-    // ESM name; the .d.ts scan covers the one class the list can't — names
+    // ESM name; the .d.ts scan covers the one class the list can't - names
     // re-exported from CJS (runtime __reExport) that types DO enumerate.
     if (exportEvidence.exports.has(head) || exported.has(head)) continue;
     // Absent from both. scan-lossy flags don't soften this tier (the
@@ -641,10 +641,10 @@ for (let p = PROVIDER; p; p = p.inner) {
     // but the non-PascalCase trust carve-out stays: fatality for the
     // unstable_X convention is a policy question, not an evidence one.
     if (!exportEvidence.cjsPresent && /^[A-Z][A-Za-z0-9]*$/.test(head)) {
-      console.error(`[PROVIDER_UNEXPORTED] cfg.provider component "${p.component}" is not a bundle export (absent from the bundle's own export list) — every preview would fail with "Element type is invalid". Check the exact exported name, or export it via cfg.extraEntries.`);
+      console.error(`[PROVIDER_UNEXPORTED] cfg.provider component "${p.component}" is not a bundle export (absent from the bundle's own export list) - every preview would fail with "Element type is invalid". Check the exact exported name, or export it via cfg.extraEntries.`);
       process.exit(1);
     }
-    console.error(`! [PROVIDER_UNVERIFIED] cfg.provider component "${p.component}" isn't in the bundle's export list (a bundled CJS module's re-exports can't be enumerated, or a non-PascalCase convention name) — proceeding on trust; if every preview fails with "Element type is invalid", the name is wrong.`);
+    console.error(`! [PROVIDER_UNVERIFIED] cfg.provider component "${p.component}" isn't in the bundle's export list (a bundled CJS module's re-exports can't be enumerated, or a non-PascalCase convention name) - proceeding on trust; if every preview fails with "Element type is invalid", the name is wrong.`);
     continue;
   }
   if (exported.has(head)) continue;
@@ -652,14 +652,14 @@ for (let p = PROVIDER; p; p = p.inner) {
     // Set-eligible name, complete scan, still absent: a real typo. Every
     // preview card would render "Element type is invalid", and the docs
     // emitters would ship confident wrap guidance for a broken chain.
-    console.error(`[PROVIDER_UNEXPORTED] cfg.provider component "${p.component}" is not a bundle export — every preview would fail with "Element type is invalid". Check the exact exported name, or export it via cfg.extraEntries.`);
+    console.error(`[PROVIDER_UNEXPORTED] cfg.provider component "${p.component}" is not a bundle export - every preview would fail with "Element type is invalid". Check the exact exported name, or export it via cfg.extraEntries.`);
     process.exit(1);
   }
-  console.error(`! [PROVIDER_UNVERIFIED] cfg.provider component "${p.component}" isn't in the scanned export set (non-PascalCase name or a skipped export scan) — proceeding on trust; if every preview fails with "Element type is invalid", the name is wrong.`);
+  console.error(`! [PROVIDER_UNVERIFIED] cfg.provider component "${p.component}" isn't in the scanned export set (non-PascalCase name or a skipped export scan) - proceeding on trust; if every preview fails with "Element type is invalid", the name is wrong.`);
 }
 
 // _adherence.oxlintrc.json rules: map raw HTML elements to the DS component
-// that should replace them. One rule per raw element — the first name the DS
+// that should replace them. One rule per raw element - the first name the DS
 // actually exports wins. Weak-semantic elements (p/span/h1-h6) are excluded.
 const REPLACES_BY_ELEMENT = {
   button: ['Button'],
@@ -684,7 +684,7 @@ for (const [el, names] of Object.entries(REPLACES_BY_ELEMENT)) {
 }
 
 if (!src.components.length && !src.tokensOnly) {
-  console.error(`[ZERO_MATCH] ${shape === 'storybook' ? 'no story-type entries in storybook-static/index.json (only docs, or empty) — check the storybook config stories glob' : 'no components discovered'}.`);
+  console.error(`[ZERO_MATCH] ${shape === 'storybook' ? 'no story-type entries in storybook-static/index.json (only docs, or empty) - check the storybook config stories glob' : 'no components discovered'}.`);
   process.exit(1);
 }
 let components = src.shape === 'storybook'
@@ -694,7 +694,7 @@ if (src.shape === 'storybook') {
   const unmapped = src.components.filter((c) => !exported.has(c.name)).map((c) => c.name);
   if (unmapped.length) {
     console.error(
-      `[TITLE_UNMAPPED] ${unmapped.length} storybook title(s) don't match a package export — dropped: ` +
+      `[TITLE_UNMAPPED] ${unmapped.length} storybook title(s) don't match a package export - dropped: ` +
         `${unmapped.slice(0, 10).join(', ')}${unmapped.length > 10 ? ', …' : ''}. ` +
         `Add cfg.titleMap {<title-name>: <export-name>} if these are real components under different names.`,
     );
@@ -718,7 +718,7 @@ for (const n of dts.nonComponents) exported.delete(n);
   );
 }
 // Subcomponents (TableRow when Table exists) don't get a standalone preview
-// — they typically need the parent to render. Still in `exported` (importable)
+// - they typically need the parent to render. Still in `exported` (importable)
 // and listed under the parent. cfg.componentSrcMap pins (non-null) force a
 // name to be treated as a root.
 {
@@ -747,12 +747,12 @@ const wsCfgPath = (rel, field) => cfgPath(rel, field, workspaceRoot);
 const guidelineFiles = emitGuidelines({ cfg, PKG_DIR, OUT, cfgPath: wsCfgPath, workspaceRoot });
 discoverDocs({ components, PKG_DIR, cfg, cfgPath: wsCfgPath });
 // A NAMED grouping where EVERY component shares one group carries no
-// information — a global storybook titlePrefix ("All components/",
+// information - a global storybook titlePrefix ("All components/",
 // "Components/") produces exactly that. Blank it to misc so per-component
 // doc categories take over below (misc is already overridable); doc-less
 // components stay in misc, which says "ungrouped" honestly instead of a
 // two-item "all-components". A uniform general/misc/empty group is left
-// alone (already doc-overridable; renaming is churn — package-shape builds
+// alone (already doc-overridable; renaming is churn - package-shape builds
 // default everything to general), and so is a uniform named group when NO
 // doc category ever applies: with nothing to take precedence, blanking
 // would regress a deliberately single-group library (Forms/Input,
@@ -780,7 +780,7 @@ for (const c of components) {
   }
 }
 if (uniformNamed && categoryApplied.size > 0) {
-  console.error(`  (single flat group "${uniformNamed}" across all components — doc frontmatter categories take precedence; doc-less components go to misc)`);
+  console.error(`  (single flat group "${uniformNamed}" across all components - doc frontmatter categories take precedence; doc-less components go to misc)`);
   for (const c of components) if (!categoryApplied.has(c)) c.group = 'misc';
 }
 
@@ -802,7 +802,7 @@ writePreviewFiles({
   }),
 });
 
-// Import resolution policy for preview compiles — a forkable seam
+// Import resolution policy for preview compiles - a forkable seam
 // (.design-sync/overrides/story-imports.mjs + cfg.storyImports patterns).
 const { storyImportPlugins } = await loadLib('story-imports');
 const storyImports = storyImportPlugins({ PKG, GLOBAL, extraEntries, exported, cfg, pkgDir: PKG_DIR });
@@ -819,13 +819,13 @@ emitPerComponent({
   propsBodyFor: (n) => SKIP_DTS
     ? (cfg.dtsPropsFor?.[n]
       ? { body: cfg.dtsPropsFor[n], generics: '', extendsClause: '', prelude: '' }
-      : { body: '  [prop: string]: unknown; // stub — built with --skip-dts', generics: '', extendsClause: '', prelude: '' })
+      : { body: '  [prop: string]: unknown; // stub - built with --skip-dts', generics: '', extendsClause: '', prelude: '' })
     : propsBodyFor(n, { ...dts, dtsPropsFor: cfg.dtsPropsFor }),
   compoundsFor: (n) => dts.compounds.get(n),
   smartDefaultProps,
 });
 
-// sourceKeys — the grade contract (lib/sync-hashes.mjs), computed once and
+// sourceKeys - the grade contract (lib/sync-hashes.mjs), computed once and
 // stamped into the manifest + sidecar. Harnesses read the stamp, never live
 // config, so the key always describes the artifacts this build produced.
 const { KEY_RECIPE, configSlicesFor, scriptsShaFor, sourceKeyFor } = await loadLib('sync-hashes');
@@ -839,12 +839,12 @@ const sourceKeys = Object.fromEntries(components.map((c) => [
   }),
 ]));
 
-// .stories-map.json — LOCAL build manifest for the incremental tooling
+// .stories-map.json - LOCAL build manifest for the incremental tooling
 // (storybook/compare.mjs pairs stories to preview cells; lib/preview-rebuild.mjs
 // recompiles single previews without re-deriving config). Carries the values
 // package-build resolved (auto-detected icon extraEntries, absolute pkgDir)
 // so the small scripts can't drift from the build. Not uploaded (dot-prefixed).
-// Empty `stories` for the package shape — compare has no storybook ground
+// Empty `stories` for the package shape - compare has no storybook ground
 // truth there and skips those components.
 writeFileSync(
   join(OUT, '.stories-map.json'),
@@ -854,7 +854,7 @@ writeFileSync(
     pkgDir: PKG_DIR,
     extraEntries,
     // For preview-rebuild's story-import resolution policy (the provider
-    // gate no longer reads it — cfg.provider is validated at build time).
+    // gate no longer reads it - cfg.provider is validated at build time).
     exported: [...exported].sort(),
     storybookStatic: src.sbStatic ?? null,
     keyRecipe: KEY_RECIPE,
@@ -863,13 +863,13 @@ writeFileSync(
     components: components.map((c) => ({
       name: c.name,
       group: c.group,
-      // srcSha fingerprints the STORY FILE — the "does the owned preview need
+      // srcSha fingerprints the STORY FILE - the "does the owned preview need
       // editing?" signal. A storybook render can move because component
-      // internals changed (srcSha stable — both sides re-render the new code
+      // internals changed (srcSha stable - both sides re-render the new code
       // in lockstep, just re-grade) or because the story code changed (srcSha
-      // differs — the preview must follow). exportKey is the module export
+      // differs - the preview must follow). exportKey is the module export
       // each story composes from; emitted is the exact (deduped) export name
-      // its cell renders under — compare pairs on it, falling back to a
+      // its cell renders under - compare pairs on it, falling back to a
       // fuzzy exportKey match for hand-owned previews.
       srcSha: c.srcSha ?? null,
       sourceKey: sourceKeys[c.name],
@@ -889,7 +889,7 @@ stampHeader(bundleJs, { namespace: GLOBAL, components, inlinedExternals });
 // cfg.readmeHeader: repo-authored conventions/header file, prepended
 // verbatim to the generated README (and thus inlined first into the
 // consumer's agent prompt). Resolved relative to the CONFIG's home (the
-// directory containing .design-sync/) — the file lives beside the config
+// directory containing .design-sync/) - the file lives beside the config
 // by the skill's own convention, and that base is correct in every flow
 // (package checkouts, monorepos, published-dist scratch dirs) where
 // PKG_DIR-relative is not. workspaceRoot-contained like docsDir: the
@@ -899,12 +899,12 @@ if (cfg.readmeHeader != null && CONFIG_PATH) { // cfg keys exist only when CONFI
   // Config home = the directory the .design-sync/ convention hangs off.
   // Canonical layout: <home>/.design-sync/config.json → one hop up from the
   // config's dir. The legacy root layout (the pre-migration config name at
-  // the repo root — see base SKILL.md's migration step) has no .design-sync/
-  // parent — the config's own directory IS the home; an unconditional '..' would anchor resolution
+  // the repo root - see base SKILL.md's migration step) has no .design-sync/
+  // parent - the config's own directory IS the home; an unconditional '..' would anchor resolution
   // and containment on the repo's PARENT.
   const cfgDir = realpathSync(dirname(CONFIG_PATH));
   const cfgHome = basename(cfgDir) === '.design-sync' ? dirname(cfgDir) : cfgDir;
-  // Containment ceiling = the git repo enclosing the CONFIG HOME — not the
+  // Containment ceiling = the git repo enclosing the CONFIG HOME - not the
   // node_modules-derived workspaceRoot, which in the §2.7 scratch-dir flow
   // is a disjoint tree (no .git ancestor → the scratch dir itself) and
   // would guaranteed-reject the canonical config value. The conventions
@@ -913,21 +913,21 @@ if (cfg.readmeHeader != null && CONFIG_PATH) { // cfg keys exist only when CONFI
   const headerRoot = gitWorkspaceRoot(cfgHome);
   const cand = resolve(cfgHome, cfg.readmeHeader);
   if (!existsSync(cand)) {
-    console.error(`  ! readmeHeader: ${cfg.readmeHeader} not found at the config home — skipped`);
+    console.error(`  ! readmeHeader: ${cfg.readmeHeader} not found at the config home - skipped`);
   } else if (outside(realpathSync(cand), headerRoot)) {
-    console.error(`  ! readmeHeader: ${cfg.readmeHeader} resolves outside the config's repo — skipped`);
+    console.error(`  ! readmeHeader: ${cfg.readmeHeader} resolves outside the config's repo - skipped`);
   } else if (!statSync(cand).isFile()) {
-    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is not a regular file — skipped`);
+    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is not a regular file - skipped`);
   } else if (statSync(cand).size <= 1_000_000 && readFileSync(cand, 'utf8').trim().length === 0) {
-    // trim-empty, matching emitReadme's own is-present test — a whitespace-only
+    // trim-empty, matching emitReadme's own is-present test - a whitespace-only
     // file must not earn the positive "stitching" line.
-    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is empty — skipped`);
+    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is empty - skipped`);
   } else if (statSync(cand).size > 1_000_000) {
-    // The consumer inlines only the first 32,000 README chars — anything
+    // The consumer inlines only the first 32,000 README chars - anything
     // past that is dead weight by design, so a cap loses nothing and keeps
     // the field's warn-and-skip degradation contract (vs an
     // ERR_STRING_TOO_LONG crash at the end of an expensive build).
-    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is ${statSync(cand).size} bytes — too large to be a prompt header, skipped`);
+    console.error(`  ! readmeHeader: ${cfg.readmeHeader} is ${statSync(cand).size} bytes - too large to be a prompt header, skipped`);
   } else {
     readmeHeaderPath = cand;
     console.error(`  readmeHeader: stitching ${cfg.readmeHeader}`);
@@ -948,10 +948,10 @@ const count = emitBuildMeta({ OUT, GLOBAL, PKG, VERSION, PROVIDER, OVERRIDES, co
 if (SKIP_DTS) {
   const metaPath = join(OUT, '.ds-build-meta.json');
   writeFileSync(metaPath, JSON.stringify({ ...JSON.parse(readFileSync(metaPath, 'utf8')), dtsStubbed: true }, null, 2) + '\n');
-  console.error('  [DTS_STUBBED] .d.ts bodies are stubs (--skip-dts) — validate will refuse this bundle for upload; run the final build without the flag');
+  console.error('  [DTS_STUBBED] .d.ts bodies are stubs (--skip-dts) - validate will refuse this bundle for upload; run the final build without the flag');
 }
 
-// _ds_sync.json — the verification anchor future syncs diff against (small
+// _ds_sync.json - the verification anchor future syncs diff against (small
 // sidecar, so re-syncs never download the full bundle). sourceKeys use the
 // SAME recipe the grading harnesses key on (lib/sync-hashes.mjs): a component
 // whose sourceKey matches the uploaded sidecar has unchanged sources, so its
@@ -959,7 +959,7 @@ if (SKIP_DTS) {
 // artifact churn on source-stable components (spot-check + re-ship);
 // styleSha/bundleSha12/auxSha drive the upload partition only. Uploaded in
 // the same fenced plan as the bundle; off-script layout generators must
-// produce it too. Written LAST so every hashed surface (README — auxSha)
+// produce it too. Written LAST so every hashed surface (README - auxSha)
 // exists.
 {
   const { auxShaFor, styleShaFor, renderHashFor } = await loadLib('sync-hashes');
@@ -970,21 +970,21 @@ if (SKIP_DTS) {
       ? { stories: (c.visibleStoryIds ?? []).map((s) => ({ name: s.name, exportKey: s.exportKey ?? null, emitted: s.emitted ?? null })), srcSha: c.srcSha ?? null }
       : {}),
   ]));
-  // sourceHashes verbatim from the stamped header (one parse — the sidecar
+  // sourceHashes verbatim from the stamped header (one parse - the sidecar
   // and the header can't disagree), so the incremental-upload diff also
   // works from this 2KB file instead of downloading the bundle.
   const bundleBuf = readFileSync(bundleJs);
   const headerMeta = JSON.parse(/^\/\* @ds-bundle: (.*) \*\//.exec(bundleBuf.toString('utf8').split('\n', 1)[0])[1].replace(/\*\\\//g, '*/'));
-  // Hash the raw bytes — validate and remote-diff hash Buffers, and a
+  // Hash the raw bytes - validate and remote-diff hash Buffers, and a
   // utf8 round-trip diverges on any invalid byte.
   const bundleSha12 = createHash('sha256').update(bundleBuf).digest('hex').slice(0, 12);
-  // sourceKeys/keyRecipe/scriptsSha are additive — pre-sourceKey consumers
+  // sourceKeys/keyRecipe/scriptsSha are additive - pre-sourceKey consumers
   // validate styleSha/renderHashes/sourceHashes and ignore extras.
   writeFileSync(join(OUT, '_ds_sync.json'), JSON.stringify({ shape, styleSha, renderHashes, sourceKeys, keyRecipe: KEY_RECIPE, scriptsSha: scriptsShaFor(), sourceHashes: headerMeta.sourceHashes, auxSha: auxShaFor(OUT), bundleSha12 }, null, 2) + '\n');
   console.error(`  _ds_sync.json: ${components.length} render hash(es) + source key(s) (verification anchor)`);
 }
 
-// The upload rejects files over 12 MB — surface offenders at BUILD time, not
+// The upload rejects files over 12 MB - surface offenders at BUILD time, not
 // after grading (a post-grade slim changes contracts and clears grades).
 {
   const MAX = 12 * 1024 * 1024;
@@ -998,7 +998,7 @@ if (SKIP_DTS) {
   };
   try { walk(OUT); } catch { /* best-effort */ }
   for (const [p, sz] of big) {
-    console.error(`! [FILE_TOO_LARGE] ${p} is ${(sz / 1024 / 1024).toFixed(1)} MB — the upload rejects files over ${MAX / 1024 / 1024} MB. Slim it NOW (before grading): heavy dev-only deps (syntax highlighters, icons-as-code) usually don't belong in a preview or decorator bundle.`);
+    console.error(`! [FILE_TOO_LARGE] ${p} is ${(sz / 1024 / 1024).toFixed(1)} MB - the upload rejects files over ${MAX / 1024 / 1024} MB. Slim it NOW (before grading): heavy dev-only deps (syntax highlighters, icons-as-code) usually don't belong in a preview or decorator bundle.`);
   }
 }
 

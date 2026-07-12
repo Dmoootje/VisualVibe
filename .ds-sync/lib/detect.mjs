@@ -1,4 +1,4 @@
-// Source-shape detection — shared by both adapters so cfg.shape can override
+// Source-shape detection - shared by both adapters so cfg.shape can override
 // the result without either shape's lib importing the other.
 
 import { existsSync } from 'node:fs';
@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { ls } from './common.mjs';
 
 // Enumerate .storybook/ config dirs under root (depth-limited, skips
-// node_modules). Some DSes use `storybook/` (no dot) — match any dir with a
+// node_modules). Some DSes use `storybook/` (no dot) - match any dir with a
 // main.* file.
 export function findStorybookDirs(root, depth = 4) {
   const out = [];

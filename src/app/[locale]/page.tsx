@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Hero,
   Features,
@@ -9,6 +10,17 @@ import {
   Cta,
 } from "@/features/home";
 import { getGoogleReviews, GOOGLE_MAPS_PROFILE_URL } from "@/lib/reviews/google";
+import { businessConfig } from "@/config/business.config";
+import { localizedPath } from "@/lib/kennisbank/posts";
+
+// Canonical only: every locale canonicalizes to the real Dutch homepage under
+// /be (fr/en render the same Dutch content). Title, description and OG stay
+// inherited from the locale layout defaults.
+export function generateMetadata(): Metadata {
+  return {
+    alternates: { canonical: `${businessConfig.url}${localizedPath("nl", "/")}` },
+  };
+}
 
 export default async function Home() {
   const reviews = await getGoogleReviews();

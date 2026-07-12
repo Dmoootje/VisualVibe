@@ -67,6 +67,9 @@ export const services: Service[] = [
       title: "Webdesign Limburg | Websites voor KMO's | VisualVibe",
       description:
         "Website laten maken in Limburg? VisualVibe bouwt snelle, professionele websites met sterke beelden, SEO en conversiegerichte structuur.",
+      // Existing webdesign showcase thumb (Gordijnen Myriam case) from Firebase Storage.
+      ogImage:
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2FGordijnen-Myriam-website-design.webp?alt=media&token=2b24c37b-8192-4e42-babc-cdd2b2196fb1",
       keywords: [
         "webdesign Limburg",
         "website laten maken Limburg",
@@ -141,6 +144,9 @@ export const services: Service[] = [
       title: "SEO diensten Limburg | Ranken in Google & AI | VisualVibe",
       description:
         "SEO diensten in Limburg: lokale SEO, technische SEO, SEO-copywriting en AI SEO (GEO). Laat je website ranken in Google én AI-zoekmachines. Vraag een offerte.",
+      // Existing "seo-websites" hero image (webdesign/SEO showcase) from Firebase Storage.
+      ogImage:
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fportfolio%2Fseo-websites.webp?alt=media&token=5a197734-d989-465f-94bb-f86bb64d9e18",
       keywords: [
         "SEO diensten",
         "SEO diensten Limburg",
@@ -218,9 +224,13 @@ export const services: Service[] = [
     relatedCases: [],
     relatedPosts: [],
     seo: {
-      title: "Bedrijfsfotograaf Limburg | VisualVibe",
+      // 53 chars incl. " | VisualVibe" (50-60 target).
+      title: "Bedrijfsfotografie in Limburg voor KMO's | VisualVibe",
       description:
         "Bedrijfsfotografie in Limburg voor sterke merken en professionele beelden. Zakelijke portretten, productfotografie en eventfotografie.",
+      // Existing bedrijfsfotografie slide (fotografie page) from Firebase Storage.
+      ogImage:
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2F01-bedrijfsfotografie.webp?alt=media&token=464345b0-7db4-4e24-bac9-c96fce9a263d",
       keywords: [
         "fotograaf Limburg",
         "bedrijfsfotograaf Limburg",
@@ -355,6 +365,9 @@ export const services: Service[] = [
       title: "Drone & FPV Limburg | Luchtbeelden en dronevideo | VisualVibe",
       description:
         "Professionele drone- en FPV-video in Limburg voor bedrijven, vastgoed, bouw en events. Luchtbeelden in 4K door een gecertificeerde dronepiloot. Vraag je offerte.",
+      // Existing dronefotografie photo (drone realisaties) from Firebase Storage.
+      ogImage:
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdronefotografie.webp?alt=media&token=8e2e74e6-6c7a-4df2-9e24-2fc254497999",
       keywords: [
         "drone Limburg",
         "dronepiloot Limburg",

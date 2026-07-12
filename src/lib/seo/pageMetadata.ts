@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { businessConfig } from "@/config/business.config";
+import { localizedPath } from "@/lib/kennisbank/posts";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
@@ -29,7 +30,11 @@ export function pageMetadata({
   ogImage,
   noindex,
 }: PageMetadataInput): Metadata {
-  const url = `${businessConfig.url}${path}`;
+  // Marketing pages exist in Dutch only: the /fr and /en routes render the
+  // same Dutch content, and the locale-less URL 308-redirects to /be. So the
+  // canonical (and OG url) always points at the real published nl URL under
+  // /be, for every locale.
+  const url = `${businessConfig.url}${localizedPath("nl", path)}`;
   const image = ogImage ?? DEFAULT_OG_IMAGE;
 
   return {

@@ -1,7 +1,7 @@
 // Shared by probe.mjs, compare.mjs, and package-capture.mjs. Kept standalone
 // (node builtins only) so serving files never drags in the build toolchain
 // (esbuild, ts-morph).
-// Also runnable directly — `node http-serve.mjs <dir>` serves <dir> and
+// Also runnable directly - `node http-serve.mjs <dir>` serves <dir> and
 // prints the URL (used for the human review pass over .review.html).
 
 import { existsSync, readFileSync, statSync } from 'node:fs';

@@ -42,9 +42,10 @@ export function hasAnthropic(): boolean {
 }
 
 // Strip em dash (U+2014) and horizontal bar (U+2015): a hard project rule. The
-// en dash (U+2013) is allowed and left untouched.
+// en dash (U+2013) is allowed and left untouched. Escapes keep the forbidden
+// characters themselves out of the source.
 function stripEmDash(s: string): string {
-  return s.replace(/[—―]/g, "-");
+  return s.replace(/[\u2014\u2015]/g, "-");
 }
 
 const SYSTEM = `Je bent copywriter voor VisualVibe, een creatief mediabureau uit Limburg (Belgie) dat webdesign, SEO, fotografie en videografie levert. Je schrijft een korte realisatie-omschrijving voor een klantwebsite die VisualVibe heeft gebouwd.

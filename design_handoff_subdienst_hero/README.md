@@ -1,9 +1,9 @@
 # Handoff: Subdienst-hero (VisualVibe)
 
 ## Overview
-The **hero of a sub-service detail page** for the VisualVibe website (e.g. "Website laten maken", which sits under the "Webdesign" pillar page). It is the pillar's small child pages' header block. This handoff covers the **hero only** — the animated, premium top section that mirrors the look of the Sectoren detail hero.
+The **hero of a sub-service detail page** for the VisualVibe website (e.g. "Website laten maken", which sits under the "Webdesign" pillar page). It is the pillar's small child pages' header block. This handoff covers the **hero only** - the animated, premium top section that mirrors the look of the Sectoren detail hero.
 
-### Scope — IMPORTANT
+### Scope - IMPORTANT
 This handoff intentionally covers **only the hero block**:
 - ✅ Breadcrumb ("← Onderdeel van Webdesign")
 - ✅ Tag pill (with pulsing live-dot)
@@ -15,12 +15,12 @@ This handoff intentionally covers **only the hero block**:
 **Out of scope / do NOT build from this handoff:** the site header/navigation bar, the "Wat we voor je doen" checklist, the "Gerelateerde diensten" pills, and the bottom CTA band. Those are separate blocks handled elsewhere.
 
 ## About the Design Files
-`reference/Subdienst hero.dc.html` is a **design reference created in HTML** (a prototype showing the intended look + animations) — **not production code to copy directly**. `support.js` is only the runtime so the prototype opens in a browser. Open the HTML in a browser to see the live hero and its motion. Recreate it in the Next.js app with the app's own conventions (App Router, your styling solution). Do **not** ship the HTML or `support.js`.
+`reference/Subdienst hero.dc.html` is a **design reference created in HTML** (a prototype showing the intended look + animations) - **not production code to copy directly**. `support.js` is only the runtime so the prototype opens in a browser. Open the HTML in a browser to see the live hero and its motion. Recreate it in the Next.js app with the app's own conventions (App Router, your styling solution). Do **not** ship the HTML or `support.js`.
 
 The reference has a `dienst` switcher (enum) so you can preview the hero for each of the 7 sub-services; in production the sub-service comes from your route/CMS data.
 
 ## Fidelity
-**High-fidelity (hifi).** Colours, typography, spacing, radii, motion timings are final — recreate pixel-perfectly.
+**High-fidelity (hifi).** Colours, typography, spacing, radii, motion timings are final - recreate pixel-perfectly.
 
 ## Layout
 - Full-bleed section on `#0a0a0a`. Section padding `66px 56px 48px`. Inner content `max-width: 1300px; margin: 0 auto`.
@@ -56,7 +56,7 @@ The reference has a `dienst` switcher (enum) so you can preview the hero for eac
 - **Secondary:** same size, `background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); color:#fff;`.
 - **Hover (both):** `transform: translateY(-2px)` (`transition: transform .25s, box-shadow .25s`). On the primary, the arrow slides: `translateX(5px)`.
 
-## The animated icon (right column) — the "revolving" centerpiece
+## The animated icon (right column) - the "revolving" centerpiece
 A centered stack. Container: `position:relative; display:flex; justify-content:center; align-items:center;`.
 
 1. **Rotating conic glow (behind, blurred):** a `500×500` round div,
@@ -86,7 +86,7 @@ A centered stack. Container: `position:relative; display:flex; justify-content:c
 Two horizontal rows of pills for the **other sub-services** (all sub-services except the current one), sliding in opposite directions and pausing on hover. Each row's list is **duplicated** (`items.concat(items)`) so the `translateX(-50%)` loop is seamless.
 
 - **Label:** `font-family:'JetBrains Mono'; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.42);`
-- **Pill:** `display:inline-flex; align-items:center; gap:13px; padding:13px 24px 13px 15px; border-radius:9999px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.02);` — icon chip `36×36; radius:10px; bg:rgba(255,122,0,.1); border:rgba(255,122,0,.2);` (icon 19×19, `#FF9A45`) + name `15.5px/600, rgba(255,255,255,.85), white-space:nowrap`.
+- **Pill:** `display:inline-flex; align-items:center; gap:13px; padding:13px 24px 13px 15px; border-radius:9999px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.02);` - icon chip `36×36; radius:10px; bg:rgba(255,122,0,.1); border:rgba(255,122,0,.2);` (icon 19×19, `#FF9A45`) + name `15.5px/600, rgba(255,255,255,.85), white-space:nowrap`.
 - **Hover pill:** `border-color:rgba(255,122,0,.45); background:rgba(255,122,0,.06); transform:translateY(-2px)`.
 
 ```css
@@ -102,7 +102,7 @@ Two horizontal rows of pills for the **other sub-services** (all sub-services ex
 ## Interactions & Behavior
 - All motion is CSS-only (rings, conic glow, breathing icon, live dot, marquee). No JS needed for the visuals.
 - Marquee pauses on hover; pills lift on hover; buttons lift on hover.
-- **Respect `prefers-reduced-motion`:** disable all the above animations (`@media (prefers-reduced-motion: reduce){ * { animation:none !important; } }` in the prototype — in your app scope it to this component).
+- **Respect `prefers-reduced-motion`:** disable all the above animations (`@media (prefers-reduced-motion: reduce){ * { animation:none !important; } }` in the prototype - in your app scope it to this component).
 - Breadcrumb → pillar page; CTAs → quote / cases; marquee pills → sibling sub-service pages.
 
 ## State Management
@@ -118,7 +118,7 @@ Prototype is a fixed 1440px desktop. Suggestion: below ~900px stack to one colum
 - Radii: buttons `12px` · icon chip `10px` · pills/dot `9999px`
 - Fonts (Google): **Sora** (700/800 display), **Manrope** (400–800 body), **JetBrains Mono** (600/700 labels)
 
-## Assets — the 7 service icons
+## Assets - the 7 service icons
 24×24 line icons (`fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round`). `id` maps to the sub-service.
 
 ```html
@@ -134,12 +134,12 @@ Prototype is a fixed 1440px desktop. Suggestion: below ~900px stack to one colum
 ## Content (per sub-service: id · name · tag · intro)
 ```
 website     Website laten maken           · Websites op maat      · Of je nu start met je eerste website of een verouderde site vervangt: we bouwen een snelle, duidelijke website die bezoekers omzet in klanten.
-webshop     Webshop laten maken           · Verkopen online       · Een webshop die makkelijk te beheren is en klaar is om te verkopen — met een soepel bestelproces en veilige betaalintegraties.
+webshop     Webshop laten maken           · Verkopen online       · Een webshop die makkelijk te beheren is en klaar is om te verkopen - met een soepel bestelproces en veilige betaalintegraties.
 onepager    Onepager laten maken          · Snel online           · Een strakke onepager voor wie snel online wil staan met een beperkt budget, zonder in te boeten op uitstraling.
-vernieuwen  Website vernieuwen            · Redesign & migratie   · Een verouderde website omgezet naar een snelle, actuele versie — met behoud van je posities in Google.
-onderhoud   Website-onderhoud             · Zorgeloos online      · Doorlopend onderhoud zodat je website veilig, snel en up-to-date blijft — zonder dat jij ernaar om hoeft te kijken.
+vernieuwen  Website vernieuwen            · Redesign & migratie   · Een verouderde website omgezet naar een snelle, actuele versie - met behoud van je posities in Google.
+onderhoud   Website-onderhoud             · Zorgeloos online      · Doorlopend onderhoud zodat je website veilig, snel en up-to-date blijft - zonder dat jij ernaar om hoeft te kijken.
 wordpress   WordPress website laten maken · Zelf beheerbaar       · Een WordPress-website die je zelf makkelijk kan bijwerken, met een flexibel CMS dat met je meegroeit.
-seo         SEO-website laten maken       · Gebouwd om te ranken  · Een website die vanaf de eerste lijn code gebouwd is om te ranken — technisch, snel en vindbaar in Google én AI-zoekmachines.
+seo         SEO-website laten maken       · Gebouwd om te ranken  · Een website die vanaf de eerste lijn code gebouwd is om te ranken - technisch, snel en vindbaar in Google én AI-zoekmachines.
 ```
 Pillar for all of the above: **Webdesign**.
 
@@ -224,7 +224,7 @@ export function SubdienstHero({
 }
 ```
 
-`components/subdienst/SubdienstHero.module.css` — put the icon SVG symbols (the 7 `<g>` from Assets) once in a shared hidden `<svg><defs>…</defs></svg>` in your layout so `<use href="#svc-…">` resolves. Then:
+`components/subdienst/SubdienstHero.module.css` - put the icon SVG symbols (the 7 `<g>` from Assets) once in a shared hidden `<svg><defs>…</defs></svg>` in your layout so `<use href="#svc-…">` resolves. Then:
 ```css
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
@@ -282,5 +282,5 @@ export function SubdienstHero({
 Load fonts with `next/font/google` (Sora, Manrope, JetBrains Mono).
 
 ## Files
-- `reference/Subdienst hero.dc.html` — hero-only HTML prototype (open in a browser to see the motion; has a `dienst` switcher for all 7 sub-services).
-- `reference/support.js` — runtime to open the prototype locally. **Not for production.**
+- `reference/Subdienst hero.dc.html` - hero-only HTML prototype (open in a browser to see the motion; has a `dienst` switcher for all 7 sub-services).
+- `reference/support.js` - runtime to open the prototype locally. **Not for production.**

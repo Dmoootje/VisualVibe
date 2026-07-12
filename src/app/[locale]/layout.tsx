@@ -27,7 +27,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const homeTitle = "Creatief mediabureau voor webdesign, foto, video en SEO in Limburg | VisualVibe";
+const homeTitle = "Webdesign, foto, video & SEO in Limburg | VisualVibe";
 
 export const metadata: Metadata = {
   metadataBase: new URL(businessConfig.url),

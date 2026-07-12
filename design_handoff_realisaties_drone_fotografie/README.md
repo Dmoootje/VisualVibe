@@ -1,14 +1,14 @@
-# Handoff: VisualVibe Realisaties — Drone & FPV + Fotografie
+# Handoff: VisualVibe Realisaties - Drone & FPV + Fotografie
 
 ## Overview
 Two portfolio/showcase pages for the VisualVibe "Realisaties" (case work) section:
-1. **Realisaties — Drone & FPV** — a filterable media grid of drone photos and videos, with a featured item and a lightbox (photos + embedded YouTube video).
-2. **Realisaties — Fotografie** — a portfolio of photography galleries, with one featured gallery and a browsable, auto-playing lightbox slideshow per gallery.
+1. **Realisaties - Drone & FPV** - a filterable media grid of drone photos and videos, with a featured item and a lightbox (photos + embedded YouTube video).
+2. **Realisaties - Fotografie** - a portfolio of photography galleries, with one featured gallery and a browsable, auto-playing lightbox slideshow per gallery.
 
 Both pages share the same layout system, chrome, and design tokens; only the content model and the lightbox behavior differ.
 
 ## About the Design Files
-`Realisaties - Drone en FPV.dc.html` and `Realisaties - Fotografie.dc.html` are **design references created in HTML** ("Design Component" prototypes) showing the intended look and behavior. They are **not production code to ship directly**. Recreate them in the target codebase's existing environment (React/Vue/Astro/CMS, etc.) using its established components, tokens, and patterns; if none exists, choose a suitable framework. `support.js` is only the prototype runtime — do not ship it.
+`Realisaties - Drone en FPV.dc.html` and `Realisaties - Fotografie.dc.html` are **design references created in HTML** ("Design Component" prototypes) showing the intended look and behavior. They are **not production code to ship directly**. Recreate them in the target codebase's existing environment (React/Vue/Astro/CMS, etc.) using its established components, tokens, and patterns; if none exists, choose a suitable framework. `support.js` is only the prototype runtime - do not ship it.
 
 ## Fidelity
 **High-fidelity.** Final colors, typography, spacing, and interactions. Exact values below.
@@ -25,9 +25,9 @@ Both pages share the same layout system, chrome, and design tokens; only the con
 - Link default inherit, hover `#FF7A00`
 
 ### Typography
-- **Sora** 600/700/800 — H1 56–58px (line-height .98, letter-spacing -.03em), featured H2 42–44px, section H2 34px, card titles 17–20px, lightbox title 24–26px.
-- **Manrope** 400–800 — body 15–18.5px (line-height 1.6–1.65), buttons 14–15px.
-- **JetBrains Mono** 500/700 — eyebrows/labels/badges/counters, UPPERCASE, letter-spacing .05–.2em, 10–13px; accent color `#FF9A45`.
+- **Sora** 600/700/800 - H1 56–58px (line-height .98, letter-spacing -.03em), featured H2 42–44px, section H2 34px, card titles 17–20px, lightbox title 24–26px.
+- **Manrope** 400–800 - body 15–18.5px (line-height 1.6–1.65), buttons 14–15px.
+- **JetBrains Mono** 500/700 - eyebrows/labels/badges/counters, UPPERCASE, letter-spacing .05–.2em, 10–13px; accent color `#FF9A45`.
 - Google Fonts: `Sora:600,700,800` · `Manrope:400,500,600,700,800` · `JetBrains Mono:500,700`
 
 ### Spacing / Radius / Shadow
@@ -42,7 +42,7 @@ Both pages share the same layout system, chrome, and design tokens; only the con
 
 ---
 
-## Page 1 — Drone & FPV
+## Page 1 - Drone & FPV
 
 ### Screens / Views
 - **Header**: icon = drone (quadcopter). H1 "Drone & FPV". Stats: "4K luchtbeelden · HDR" and "EASA gecertificeerd & verzekerd".
@@ -59,7 +59,7 @@ Both pages share the same layout system, chrome, and design tokens; only the con
 
 ---
 
-## Page 2 — Fotografie
+## Page 2 - Fotografie
 
 ### Screens / Views
 - **Header**: icon = camera. H1 "Fotografie". Stats: "8 fotografie-stijlen" and "100% in-house geschoten".
@@ -85,11 +85,11 @@ Both pages share the same layout system, chrome, and design tokens; only the con
 - **Responsive**: featured grid → 1 col below 1080px; stat rail → horizontal; grid 3→2 cols below 1080px, →1 col below 560px; nav → burger; paddings reduce below 760px.
 
 ## Assets
-- Icons: inline SVG symbol set (24×24, single-color stroke) — home, user, drone, camera(foto), video, aperture, box, party, layers, spark, heart. Replace with the codebase's icon library.
+- Icons: inline SVG symbol set (24×24, single-color stroke) - home, user, drone, camera(foto), video, aperture, box, party, layers, spark, heart. Replace with the codebase's icon library.
 - Images: external Firebase Storage URLs (VisualVibe portfolio photos) and YouTube video IDs (Drone videos). Replace with real case-work media from the CMS. YouTube embeds: `https://www.youtube.com/embed/<id>?autoplay=1&rel=0&modestbranding=1`.
 - No local image files required by the prototypes.
 
 ## Files
-- `Realisaties - Drone en FPV.dc.html` — Drone & FPV page design reference.
-- `Realisaties - Fotografie.dc.html` — Fotografie page design reference.
-- `support.js` — prototype runtime only (do not ship).
+- `Realisaties - Drone en FPV.dc.html` - Drone & FPV page design reference.
+- `Realisaties - Fotografie.dc.html` - Fotografie page design reference.
+- `support.js` - prototype runtime only (do not ship).

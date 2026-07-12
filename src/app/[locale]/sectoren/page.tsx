@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { sectors } from "@/data/sectors";
 import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SectorCard } from "@/components/sectors";
 
-export const metadata: Metadata = {
-  title: { absolute: `Sectoren | ${businessConfig.displayName}` },
+export const metadata = pageMetadata({
+  title: `Sectoren | ${businessConfig.displayName}`,
   description: "VisualVibe helpt bedrijven in uiteenlopende sectoren met webdesign, fotografie, video en SEO.",
-};
+  path: "/sectoren/",
+});
 
 export default function SectorenHubPage() {
   return (

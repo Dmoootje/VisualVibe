@@ -5,6 +5,7 @@ import { Section, Container } from "@/components/ui";
 import { CTASection, ServiceGrid } from "@/components/sections";
 import { sectors, getSectorBySlug } from "@/data/sectors";
 import { getServiceBySlug } from "@/data/services";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SectorDetailHero, SectorMarquee } from "@/components/sectors";
 
@@ -24,11 +25,12 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: { absolute: sector.seo.title },
+  return pageMetadata({
+    title: sector.seo.title,
     description: sector.seo.description,
     keywords: sector.seo.keywords,
-  };
+    path: `/sectoren/${sector.slug}/`,
+  });
 }
 
 export default async function SectorDetailPage({

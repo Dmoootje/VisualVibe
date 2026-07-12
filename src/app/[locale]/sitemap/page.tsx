@@ -17,7 +17,7 @@ import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { realisatieCategories } from "@/data/realisatieCategories";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
-import { getPostsByCategory, postHref, categoryHref } from "@/lib/kennisbank/posts";
+import { getPostsByCategory, postHref, categoryHref, localizedPath } from "@/lib/kennisbank/posts";
 import { businessConfig } from "@/config/business.config";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -26,7 +26,8 @@ export const metadata: Metadata = {
   title: { absolute: `Sitemap | ${businessConfig.displayName}` },
   description:
     "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
-  alternates: { canonical: `${businessConfig.url}/sitemap/` },
+  // Canonical points at the real published nl URL under /be (locale-less 308s).
+  alternates: { canonical: `${businessConfig.url}${localizedPath("nl", "/sitemap/")}` },
 };
 
 type SmNode = { title: string; href: string; children?: SmNode[] };

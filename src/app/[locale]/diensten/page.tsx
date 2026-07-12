@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { serviceCategories } from "@/data/serviceCategories";
 import { services } from "@/data/services";
 import { ServiceCard } from "@/components/cards/ServiceCard";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "Diensten van VisualVibe: webdesign, fotografie, video, drone, SEO en podcasting",
-  },
+// Title: 57 chars incl. " | VisualVibe" (55-60 target).
+export const metadata = pageMetadata({
+  title: "Diensten: webdesign, fotografie, video & SEO | VisualVibe",
   description:
     "Ontdek alle diensten van VisualVibe: webdesign, SEO, fotografie, videografie, drone/FPV, 3D/VR/AR en podcasting voor bedrijven in Limburg.",
-};
+  path: "/diensten/",
+});
 
 export default function DienstenPage() {
   return (

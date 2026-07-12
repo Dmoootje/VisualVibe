@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
 import { LeadForm } from "@/components/forms/LeadForm";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ContactInfoCard, ContactMap, ContactCTAGroup } from "@/components/contact";
 
@@ -13,10 +14,11 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const place = settings.city ? ` in ${settings.city}` : "";
-  return {
-    title: { absolute: `Contact | ${settings.companyName}` },
+  return pageMetadata({
+    title: `Contact | ${settings.companyName}`,
     description: `Neem contact op met ${settings.companyName}${place}. Vraag vrijblijvend een offerte aan of stel je vraag.`,
-  };
+    path: "/contact/",
+  });
 }
 
 export default async function ContactPage() {

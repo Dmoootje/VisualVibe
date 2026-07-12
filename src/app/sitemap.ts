@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { businessConfig } from "@/config/business.config";
-import { routing } from "@/i18n/routing";
 import { allServices, serviceHref } from "@/data/services";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
@@ -62,24 +61,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const { url } = businessConfig;
 
-  // Preserve the existing behavior for every non-kennisbank route. Kennisbank
-  // entries below use their real `/be`, `/fr` or `/en` URL and only advertise
-  // language alternates backed by an explicit translationKey relationship.
-  const nonKennisbankEntries: MetadataRoute.Sitemap = [...staticPaths, ...dataPaths].map((path) => {
-    const rel = withSlash(path);
-    return {
-      url: `${url}${rel}`,
-      lastModified: new Date(),
-      alternates: {
-        languages: Object.fromEntries(
-          routing.locales.map((locale) => [
-            locale,
-            locale === routing.defaultLocale ? `${url}${rel}` : `${url}/${locale}${rel}`,
-          ])
-        ),
-      },
-    };
-  });
+  // Marketing routes exist in Dutch only, published under /be (the locale-less
+  // URL 308-redirects). Each entry lists that real nl URL and no language
+  // alternates: the /fr and /en routes render untranslated Dutch content and
+  // must not be advertised as variants. Kennisbank entries below use their
+  // real `/be`, `/fr` or `/en` URL and only advertise language alternates
+  // backed by an explicit translationKey relationship.
+  const nonKennisbankEntries: MetadataRoute.Sitemap = [...staticPaths, ...dataPaths].map((path) => ({
+    url: `${url}${localizedPath("nl", withSlash(path))}`,
+    lastModified: new Date(),
+  }));
 
   const kennisbankEntries: MetadataRoute.Sitemap = [
     // Category copy currently exists only in Dutch, so hub/category URLs are
@@ -98,14 +89,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       const translations = getPostTranslations(post).filter(
         (translation) => !translation.robots?.includes("noindex")
       );
+      // hreflang keys are region-qualified (nl-BE/fr-BE/en-BE); x-default
+      // points to the Dutch (/be) URL as the fallback for unmatched languages.
+      const nlTranslation = translations.find((translation) => translation.locale === "nl");
       const languageAlternates =
         translations.length > 1
-          ? Object.fromEntries(
-              translations.map((translation) => [
+          ? Object.fromEntries([
+              ...translations.map((translation) => [
                 hrefLang[translation.locale],
                 `${url}${localizedPath(translation.locale, postHref(translation))}`,
-              ])
-            )
+              ]),
+              ...(nlTranslation
+                ? [["x-default", `${url}${localizedPath("nl", postHref(nlTranslation))}`]]
+                : []),
+            ])
           : undefined;
 
       return {

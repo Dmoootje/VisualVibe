@@ -1,18 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import type { Metadata } from "next";
 import type { CSSProperties, ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { WeddingVibeLogo } from "@/components/over-ons/WeddingVibeLogo";
 import { OvIcon } from "@/components/over-ons/ov-icons";
 import { QuoteButton } from "@/components/quote";
 
-export const metadata: Metadata = {
-  title: { absolute: `Over ons | ${businessConfig.displayName}` },
+export const metadata = pageMetadata({
+  title: `Over ons | ${businessConfig.displayName}`,
   description:
     "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
-};
+  path: "/over-ons/",
+});
 
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";

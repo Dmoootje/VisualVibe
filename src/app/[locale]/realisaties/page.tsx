@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { realisatieCategories } from "@/data/realisatieCategories";
 import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { RealisatieCategoryGrid } from "@/components/realisaties/RealisatieCategoryGrid";
 
-export const metadata: Metadata = {
-  title: { absolute: `Realisaties | ${businessConfig.displayName}` },
+export const metadata = pageMetadata({
+  title: `Realisaties | ${businessConfig.displayName}`,
   description:
     "Ontdek realisaties van VisualVibe in webdesign, SEO, fotografie, video, drone en FPV, 3D/VR/AR, podcasting en masterclasses.",
-};
+  path: "/realisaties/",
+});
 
 export default function RealisatiesHubPage() {
   return (

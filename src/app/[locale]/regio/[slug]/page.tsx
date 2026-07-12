@@ -8,6 +8,7 @@ import { RegionAmbient, RegionDetailHero, RegionGeo, RegionServicesGrid } from "
 import { SectorMarquee } from "@/components/sectors";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug } from "@/data/services";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
 export function generateStaticParams() {
@@ -26,11 +27,12 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: { absolute: region.seo.title },
+  return pageMetadata({
+    title: region.seo.title,
     description: region.seo.description,
     keywords: region.seo.keywords,
-  };
+    path: `/regio/${region.slug}/`,
+  });
 }
 
 export default async function RegionDetailPage({

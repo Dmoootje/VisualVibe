@@ -15,6 +15,7 @@ import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
 import { allServices, services, getServiceBySlug, serviceHref } from "@/data/services";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import { isBlogLocale, localizedPath } from "@/lib/kennisbank/posts";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getVideografieVideos } from "@/lib/youtube";
@@ -53,18 +54,19 @@ export async function generateMetadata({
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const service = getServiceBySlug(slug);
 
   if (!service) {
     notFound();
   }
 
-  // A sub-service reached via its old flat URL: 308 to the nested canonical.
+  // A sub-service reached via its old flat URL: 308 straight to the final
+  // localized nested URL (prefix + trailing slash) so there is exactly one hop.
   if (service.parentSlug) {
-    permanentRedirect(serviceHref(service));
+    permanentRedirect(localizedPath(isBlogLocale(locale) ? locale : "nl", `${serviceHref(service)}/`));
   }
 
   const relatedServices = service.relatedServices

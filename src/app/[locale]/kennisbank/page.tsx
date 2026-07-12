@@ -12,8 +12,16 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { KennisbankLandingView } from "@/components/kennisbank";
 import { toArticleCardData, type KbCategoryData } from "@/components/kennisbank/data";
 
+// Title: 59 chars incl. " | VisualVibe"; description: 155 chars.
+const title = "Kennisbank: gidsen over webdesign, SEO & media | VisualVibe";
 const description =
-  "Praktische inzichten over webdesign, SEO, fotografie, video, drone en 3D/VR/AR.";
+  "Praktische gidsen voor KMO's in Limburg over webdesign, SEO, AEO/GEO, fotografie en video. Leer hoe je online beter gevonden wordt en meer klanten bereikt.";
+
+const OPEN_GRAPH_LOCALE: Record<string, string> = {
+  nl: "nl_BE",
+  fr: "fr_BE",
+  en: "en_BE",
+};
 
 export async function generateMetadata({
   params,
@@ -25,11 +33,29 @@ export async function generateMetadata({
     return { robots: { index: false, follow: false } };
   }
 
+  // Kennisbank has real per-locale translations, so (unlike the nl-only
+  // marketing pages) the canonical stays per-locale.
+  const canonical = `${businessConfig.url}${localizedPath(locale, "/kennisbank/")}`;
+  const socialImage = `${businessConfig.url}/image.png`;
+
   return {
-    title: { absolute: `Kennisbank | ${businessConfig.displayName}` },
+    title: { absolute: title },
     description,
-    alternates: {
-      canonical: `${businessConfig.url}${localizedPath(locale, "/kennisbank/")}`,
+    alternates: { canonical },
+    openGraph: {
+      type: "website",
+      url: canonical,
+      siteName: businessConfig.displayName,
+      locale: OPEN_GRAPH_LOCALE[locale],
+      title,
+      description,
+      images: [{ url: socialImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [socialImage],
     },
   };
 }

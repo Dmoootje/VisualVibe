@@ -17,7 +17,7 @@ export const regions: Region[] = [
     seo: {
       title: "Webdesign, Fotografie & Video in Limburg | VisualVibe",
       description:
-        "VisualVibe is het creatief mediabureau voor Limburg: webdesign, SEO, fotografie, videografie, drone en 3D-tours voor lokale KMO's.",
+        "VisualVibe is het creatief mediabureau voor Limburg: webdesign, SEO, fotografie, videografie, drone en 3D-tours voor KMO's van Hasselt tot Sint-Truiden.",
       keywords: ["mediabureau Limburg", "webdesign Limburg", "fotograaf Limburg", "videograaf Limburg"],
     },
   },
@@ -33,7 +33,8 @@ export const regions: Region[] = [
     relatedSectors: [],
     seo: {
       title: "Creatief Mediabureau Vlaanderen | VisualVibe",
-      description: "VisualVibe helpt bedrijven in heel Vlaanderen met webdesign, fotografie, videografie en SEO.",
+      description:
+        "Vanuit Limburg werkt VisualVibe voor bedrijven in heel Vlaanderen: webdesign, SEO, fotografie en videografie, afgestemd op jouw regio, sector en doelgroep.",
       keywords: ["mediabureau Vlaanderen", "webdesign Vlaanderen"],
     },
   },
@@ -49,7 +50,8 @@ export const regions: Region[] = [
     relatedSectors: [],
     seo: {
       title: "Webdesign & Fotografie Antwerpen | VisualVibe",
-      description: "VisualVibe biedt webdesign, fotografie, videografie en dronebeelden voor bedrijven in Antwerpen.",
+      description:
+        "VisualVibe ondersteunt bedrijven in de provincie Antwerpen met webdesign, fotografie, videografie en dronebeelden. Eén creatief team voor je online uitstraling.",
       keywords: ["webdesign Antwerpen", "fotograaf Antwerpen", "videograaf Antwerpen"],
     },
   },
@@ -65,7 +67,8 @@ export const regions: Region[] = [
     relatedSectors: [],
     seo: {
       title: "Webdesign & Fotografie Nederlands-Limburg | VisualVibe",
-      description: "VisualVibe biedt webdesign, fotografie, videografie en dronebeelden voor bedrijven in Nederlands-Limburg.",
+      description:
+        "Ook over de grens in Nederlands-Limburg helpt VisualVibe bedrijven met webdesign, fotografie, videografie en dronebeelden, van Maastricht tot Venlo en Weert.",
       keywords: ["webdesign Nederlands-Limburg", "fotograaf Nederlands-Limburg"],
     },
   },

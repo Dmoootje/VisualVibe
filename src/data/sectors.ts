@@ -19,7 +19,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webdesign & SEO voor KMO's in Limburg | VisualVibe",
-      description: "VisualVibe helpt KMO's in Limburg met een snelle website, lokale SEO en professionele beelden.",
+      description:
+        "VisualVibe helpt KMO's in Limburg opvallen met een snelle website, lokale SEO en professionele foto's en video. Praktisch, betaalbaar en afgestemd op jouw zaak.",
       keywords: ["webdesign KMO", "SEO voor KMO Limburg"],
     },
   },
@@ -40,8 +41,9 @@ export const sectors: Sector[] = [
     relatedCases: [],
     relatedPosts: [],
     seo: {
-      title: "Webdesign & Fotografie voor Bouw- en Renovatiebedrijven | VisualVibe",
-      description: "Marketing, fotografie en webdesign voor bouw- en renovatiebedrijven in Limburg.",
+      title: "Webdesign & Fotografie voor Bouw & Renovatie | VisualVibe",
+      description:
+        "Webdesign, fotografie en dronebeelden voor bouw- en renovatiebedrijven in Limburg. Toon je afgewerkte projecten online en overtuig nieuwe klanten in je regio.",
       keywords: ["marketing aannemer", "fotografie bouwbedrijf", "webdesign renovatiebedrijf"],
     },
   },
@@ -63,7 +65,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webdesign & Fotografie voor Horeca | VisualVibe",
-      description: "VisualVibe helpt horecazaken in Limburg met fotografie, virtuele tours en lokale vindbaarheid.",
+      description:
+        "Fotografie, virtuele tours en lokale SEO voor restaurants, cafés en feestzalen in Limburg. Breng de sfeer van je zaak online tot leven en trek meer gasten.",
       keywords: ["fotografie restaurant", "marketing horeca Limburg"],
     },
   },
@@ -85,7 +88,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Fotografie & 3D-tours voor Makelaars | VisualVibe",
-      description: "VisualVibe helpt makelaars in Limburg met vastgoedfotografie, 3D-tours en dronebeelden.",
+      description:
+        "Vastgoedfotografie, 3D-tours en dronebeelden voor makelaars in Limburg. Presenteer panden op hun best en verkoop of verhuur sneller met sterke beelden.",
       keywords: ["vastgoedfotografie makelaar", "3d tour vastgoed Limburg"],
     },
   },
@@ -107,7 +111,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webshops & Productfotografie voor Retail | VisualVibe",
-      description: "VisualVibe bouwt webshops en maakt productfotografie voor retailzaken in Limburg.",
+      description:
+        "Webshops en productfotografie voor winkels en webshops in Limburg. Een snelle webshop en professionele productfoto's die bezoekers omzetten in kopers.",
       keywords: ["webshop laten maken retail", "productfotografie webshop"],
     },
   },
@@ -129,7 +134,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Eventfotografie & Aftermovies | VisualVibe",
-      description: "VisualVibe legt bedrijfsevents en festivals in Limburg vast met foto, video en dronebeelden.",
+      description:
+        "Eventfotografie, aftermovies en dronebeelden voor bedrijfsevents en festivals in Limburg. Leg de sfeer vast en promoot je volgende editie met sterk beeld.",
       keywords: ["eventfotografie Limburg", "aftermovie event"],
     },
   },
@@ -151,7 +157,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webdesign & Fotografie voor Sportclubs | VisualVibe",
-      description: "VisualVibe helpt sportclubs in Limburg met een website, fotografie en video voor sponsors en leden.",
+      description:
+        "Website, fotografie en video voor sportclubs in Limburg. Versterk je clubwerking, overtuig sponsors en bereik nieuwe leden en supporters met sterk beeld.",
       keywords: ["website sportclub", "fotografie sportclub Limburg"],
     },
   },
@@ -173,7 +180,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Video voor Opleidingen & Masterclasses | VisualVibe",
-      description: "VisualVibe filmt opleidingen, workshops en masterclasses in Limburg voor hergebruik als online cursus.",
+      description:
+        "VisualVibe filmt opleidingen, workshops en masterclasses in Limburg. Zet je kennis om in professionele video, voor eigen gebruik of als online cursus.",
       keywords: ["opleiding filmen", "masterclass opnemen Limburg"],
     },
   },
@@ -195,7 +203,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webdesign & Fotografie voor Wellness & Beauty | VisualVibe",
-      description: "VisualVibe helpt wellness- en beautyzaken in Limburg met fotografie, virtuele tours en webdesign.",
+      description:
+        "Fotografie, virtuele tours en webdesign voor wellness- en beautyzaken in Limburg. Toon de rust en sfeer van je zaak online en overtuig nieuwe klanten.",
       keywords: ["fotografie wellness", "webdesign beautysalon Limburg"],
     },
   },
@@ -217,7 +226,8 @@ export const sectors: Sector[] = [
     relatedPosts: [],
     seo: {
       title: "Webdesign & Fotografie voor Industrie | VisualVibe",
-      description: "VisualVibe helpt industriële bedrijven in Limburg met fotografie, dronebeelden en webdesign.",
+      description:
+        "Fotografie, dronebeelden en webdesign voor industriële bedrijven in Limburg. Maak schaal, machines en processen zichtbaar voor B2B-klanten en sollicitanten.",
       keywords: ["bedrijfsfotografie industrie", "webdesign industrieel bedrijf"],
     },
   },

@@ -14,6 +14,7 @@ import { CTASection, ProcessSteps } from "@/components/sections";
 import { SubdienstHero } from "@/components/subdienst";
 import { subservices, getSubservicesByParent } from "@/data/subservices";
 import { getServiceBySlug, serviceHrefBySlug } from "@/data/services";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 
@@ -34,12 +35,13 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: { absolute: service.seo.title },
+  return pageMetadata({
+    title: service.seo.title,
     description: service.seo.description,
     keywords: service.seo.keywords,
-    alternates: { canonical: `${businessConfig.url}/diensten/${slug}/${sub}/` },
-  };
+    path: `/diensten/${slug}/${sub}/`,
+    ogImage: service.seo.ogImage,
+  });
 }
 
 export default async function SubServiceDetailPage({

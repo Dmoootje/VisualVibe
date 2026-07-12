@@ -134,7 +134,7 @@
             <h1 class="rwH1" style="font-family:'Sora';font-weight:800;font-size:56px;line-height:.98;letter-spacing:-.03em;color:#fff;margin:0;">Drone &amp; FPV</h1>
           </div>
         </div>
-        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.62);margin:0;max-width:520px;">Luchtbeelden en FPV-video uit heel Limburg — van bedrijfspand en bouwproject tot event, vanuit een uniek perspectief.</p>
+        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.62);margin:0;max-width:520px;">Luchtbeelden en FPV-video uit heel Limburg - van bedrijfspand en bouwproject tot event, vanuit een uniek perspectief.</p>
       </div>
 
       <div class="rwStatRail" style="flex:none;display:flex;flex-direction:column;gap:14px;">
@@ -176,7 +176,7 @@
         </div>
         <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-video"></use></svg>{{ featCat }}</div>
         <h2 class="frFeatH2" style="font-family:'Sora';font-weight:800;font-size:42px;line-height:1.05;letter-spacing:-.025em;color:#fff;margin:0 0 20px;">{{ featTitle }}</h2>
-        <p style="font-size:16.5px;line-height:1.65;color:rgba(255,255,255,.68);margin:0 0 30px;">Vloeiende luchtbeelden die de schaal en context van het project tonen — gedraaid met een gecertificeerde drone in 4K.</p>
+        <p style="font-size:16.5px;line-height:1.65;color:rgba(255,255,255,.68);margin:0 0 30px;">Vloeiende luchtbeelden die de schaal en context van het project tonen - gedraaid met een gecertificeerde drone in 4K.</p>
         <a href="#" onClick="{{ featOpen }}" class="visitLink" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:#fff;padding:14px 26px;border-radius:12px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);">Bekijk realisatie <svg width="17" height="17" viewBox="0 0 24 24" fill="#FF9A45"><path d="M8 5.5v13l11-6.5z"></path></svg></a>
       </div>
     </div>
@@ -259,11 +259,11 @@ class Component extends DCLogic {
   P2 = 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdrone%20fotografie.webp?alt=media&token=1c3d3587-42bb-4e1d-9e3a-e94bbc499a2f';
   P3 = 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdrone%20fotografie%20Belgi%C3%AB%20en%20Nederland.webp?alt=media&token=69384058-2f29-4213-8d71-bc32ed528931';
   MEDIA = [
-    { kind:'video', cat:'Dronevideo', icon:'video', yt:'ZXJNLr5W8eA', title:'Drone-reel — luchtbeelden' },
+    { kind:'video', cat:'Dronevideo', icon:'video', yt:'ZXJNLr5W8eA', title:'Drone-reel - luchtbeelden' },
     { kind:'foto', cat:'Dronefotografie', icon:'foto', src:null, title:'Dronefotografie' },
     { kind:'foto', cat:'Dronefotografie', icon:'foto', src:null, title:'Drone fotografie' },
     { kind:'foto', cat:'Vastgoed-dronebeelden', icon:'foto', src:null, title:'België & Nederland' },
-    { kind:'video', cat:'FPV-video', icon:'video', yt:'FdzjPybGWSo', title:'FPV-video — door het project' },
+    { kind:'video', cat:'FPV-video', icon:'video', yt:'FdzjPybGWSo', title:'FPV-video - door het project' },
   ];
   CATS = [
     { name:'Dronefotografie', desc:"Luchtfoto's die een uniek perspectief geven op je bedrijf of project." },
@@ -321,7 +321,7 @@ class Component extends DCLogic {
       return { label:name, count:n, onPick:this.pickCat(name), style: b + (on ? 'background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;border:1px solid transparent;box-shadow:0 10px 24px -12px rgba(255,90,0,.8);' : 'background:rgba(255,255,255,.03);color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.1);') };
     });
     const active = this.CATS.find(c => c.name === st.cat);
-    const catDesc = active ? active.desc : 'Filter op categorie of bekijk alle beelden — klik om te openen.';
+    const catDesc = active ? active.desc : 'Filter op categorie of bekijk alle beelden - klik om te openen.';
 
     const idx = Math.min(st.idx, this.MEDIA.length - 1);
     const cur = this.MEDIA[idx];

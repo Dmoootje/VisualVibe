@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { MapPin } from "lucide-react";
 import { regions } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = {
-  title: { absolute: `Regio's | ${businessConfig.displayName}` },
+export const metadata = pageMetadata({
+  title: `Regio's | ${businessConfig.displayName}`,
   description:
     "VisualVibe is actief in Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg. Bekijk onze regio's.",
-};
+  path: "/regio/",
+});
 
 export default function RegioHubPage() {
   return (

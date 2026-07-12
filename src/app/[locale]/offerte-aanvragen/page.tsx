@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { businessConfig } from "@/config/business.config";
 import { LeadForm } from "@/components/forms/LeadForm";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = {
-  title: { absolute: `Offerte aanvragen | ${businessConfig.displayName}` },
+export const metadata = pageMetadata({
+  title: `Offerte aanvragen | ${businessConfig.displayName}`,
   description:
     "Vraag een vrijblijvende offerte aan bij VisualVibe voor webdesign, SEO, fotografie, videografie, drone of 3D/VR/AR.",
-};
+  path: "/offerte-aanvragen/",
+});
 
 export default function OfferteAanvragenPage() {
   return (
