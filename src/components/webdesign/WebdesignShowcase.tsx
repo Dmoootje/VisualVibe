@@ -53,7 +53,8 @@ export function WebdesignShowcase({
                   src={img(c, "thumb") ?? img(c, "1")}
                   alt={`${c.name} website`}
                   placeholder="Screenshot"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                 />
                 <span className="pointer-events-none absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-[rgba(10,10,10,0.55)] backdrop-blur">
                   <ArrowUpRight />

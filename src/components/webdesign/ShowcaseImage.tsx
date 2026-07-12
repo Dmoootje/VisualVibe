@@ -1,25 +1,36 @@
-/** Renders a stored image (object-cover) or an empty placeholder when unset. */
+import Image from "next/image";
+
+/**
+ * Renders a stored image via next/image (fill, object-cover by default) or an
+ * empty placeholder when unset. The parent must be positioned (relative or
+ * absolute) with a fixed aspect/height. Pass a per-call-site `sizes` hint so
+ * the optimizer serves the right width; `eager` maps to next/image `priority`
+ * for above-the-fold usage.
+ */
 export function ShowcaseImage({
   src,
   alt,
   placeholder = "Geen afbeelding",
   className,
+  sizes = "100vw",
   eager = false,
 }: {
   src?: string;
   alt: string;
   placeholder?: string;
   className?: string;
+  sizes?: string;
   eager?: boolean;
 }) {
   if (src) {
-    // eslint-disable-next-line @next/next/no-img-element
     return (
-      <img
+      <Image
         src={src}
         alt={alt}
-        loading={eager ? "eager" : "lazy"}
-        className={className ?? "h-full w-full object-cover"}
+        fill
+        sizes={sizes}
+        priority={eager}
+        className={className ?? "object-cover"}
       />
     );
   }

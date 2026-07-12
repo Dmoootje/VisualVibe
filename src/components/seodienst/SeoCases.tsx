@@ -52,7 +52,12 @@ export function SeoCases({ items, images }: { items: SeoCaseItem[]; images: Webd
           >
             <div className="relative aspect-[16/10] overflow-hidden border-b border-white/[0.06] bg-[#141210]">
               <div className="rwcard-img absolute inset-0">
-                <ShowcaseImage src={thumb(c)} alt={`${c.name} website`} placeholder="Screenshot" />
+                <ShowcaseImage
+                  src={thumb(c)}
+                  alt={`${c.name} website`}
+                  placeholder="Screenshot"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               </div>
               <span
                 className="absolute left-3 top-3 z-[3] inline-flex items-center gap-1.5 rounded-[7px] px-2.5 py-1 font-mono text-[10px] font-bold tracking-[0.08em] text-[#0a0a0a] shadow-[0_6px_16px_-6px_rgba(255,90,0,0.8)]"

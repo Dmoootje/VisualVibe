@@ -95,7 +95,12 @@ export function RealisatieWebdesignGrid({
             >
               <div className="relative aspect-[16/10] overflow-hidden border-b border-white/[0.06] bg-[#141210]">
                 <div className="rwcard-img absolute inset-0">
-                  <ShowcaseImage src={thumb(c)} alt={`${c.name} website`} placeholder="Screenshot" />
+                  <ShowcaseImage
+                    src={thumb(c)}
+                    alt={`${c.name} website`}
+                    placeholder="Screenshot"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                 </div>
                 <span className="rwcard-open absolute right-3 top-3 z-[3] flex h-8 w-8 items-center justify-center rounded-[9px] border border-white/[0.14] bg-[rgba(10,10,10,0.6)] backdrop-blur">
                   <ArrowUpRight />

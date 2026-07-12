@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
 import { serviceHref } from "@/data/services";
@@ -110,8 +111,14 @@ export function DroneFpvService({
                   }}
                 >
                   <div className="relative aspect-[16/10] overflow-hidden rounded-[19px] border border-white/5 bg-[#0e0d0c]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={dronePhotos[2].src} alt="Drone's-eye view" className="absolute inset-0 h-full w-full object-cover" />
+                    <Image
+                      src={dronePhotos[2].src}
+                      alt="Luchtbeeld vanuit de drone, gefilmd door VisualVibe"
+                      fill
+                      priority
+                      sizes="(max-width: 640px) 100vw, 530px"
+                      className="object-cover"
+                    />
                     <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(130% 100% at 50% 40%,transparent 55%,rgba(6,10,8,.6))" }} />
                     {/* HUD */}
                     <div aria-hidden="true" className="pointer-events-none absolute inset-3.5">

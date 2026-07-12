@@ -79,7 +79,13 @@ export function WebdesignHero({ heroImage }: { heroImage?: string }) {
                 </span>
               </div>
               <div className="relative h-[340px]">
-                <ShowcaseImage src={heroImage} alt="Website voorbeeld" placeholder="Sleep hier een website-screenshot" eager />
+                <ShowcaseImage
+                  src={heroImage}
+                  alt="Website-realisatie van VisualVibe, webdesign voor KMO's in Limburg"
+                  placeholder="Sleep hier een website-screenshot"
+                  sizes="(max-width: 1024px) 100vw, 560px"
+                  eager
+                />
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                   <div className="vvw-scan absolute left-0 right-0 top-0 h-[34px]" style={{ background: "linear-gradient(180deg,transparent,rgba(255,122,0,.35),transparent)" }} />
                 </div>

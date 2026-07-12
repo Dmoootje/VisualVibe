@@ -138,7 +138,7 @@ export function RealisatieWebdesignFeatured({
                     </span>
                   </div>
                   <div className="relative h-[352px]">
-                    <ShowcaseImage src={laptop} alt={`${project.name} desktop-screenshot`} placeholder="Desktop-screenshot" eager />
+                    <ShowcaseImage src={laptop} alt={`${project.name} desktop-screenshot`} placeholder="Desktop-screenshot" sizes="640px" eager />
                   </div>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export function RealisatieWebdesignFeatured({
             {/* TABLET */}
             <div className="vvw-bob absolute bottom-[6px] left-0 z-[3] w-[186px] rounded-[20px] border border-white/[0.08] bg-[linear-gradient(160deg,#26221f,#131110)] p-2 shadow-[0_34px_60px_-24px_rgba(0,0,0,0.85)]">
               <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#0e0d0c]">
-                <ShowcaseImage src={tablet} alt={`${project.name} tablet-screenshot`} placeholder="Tablet" />
+                <ShowcaseImage src={tablet} alt={`${project.name} tablet-screenshot`} placeholder="Tablet" sizes="170px" />
               </div>
               <span className="absolute left-1/2 top-3.5 z-[2] h-1 w-[26px] -translate-x-1/2 rounded-full bg-white/[0.14]" />
             </div>
@@ -159,7 +159,7 @@ export function RealisatieWebdesignFeatured({
             {/* GSM */}
             <div className="vvw-bob2 absolute bottom-[-6px] right-[22px] z-[4] w-[132px] rounded-[24px] border border-white/[0.09] bg-[linear-gradient(160deg,#2a2622,#131110)] p-1.5 shadow-[0_38px_64px_-22px_rgba(0,0,0,0.9)]">
               <div className="relative aspect-[1/2] overflow-hidden rounded-[19px] bg-[#0e0d0c]">
-                <ShowcaseImage src={phone} alt={`${project.name} mobiel-screenshot`} placeholder="Mobiel" />
+                <ShowcaseImage src={phone} alt={`${project.name} mobiel-screenshot`} placeholder="Mobiel" sizes="120px" />
               </div>
               <span className="absolute left-1/2 top-[13px] z-[2] h-[5px] w-[34px] -translate-x-1/2 rounded-full bg-white/[0.16]" />
             </div>

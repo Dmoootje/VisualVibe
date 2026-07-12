@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { FG_HERO_IMAGE, FG_SLIDES, FG_CAT_ICON } from "@/data/fotografieShowcase";
 import { FiIcon } from "./FiIcon";
@@ -10,7 +11,8 @@ import { FiIcon } from "./FiIcon";
  * Cinematic camera-viewfinder hero (design_handoff_fotografie_service). The
  * orange shutter button is an interactive toy: each click plays a shutter-flash
  * and reveals the next photography category (per-session shuffled, never the same
- * twice in a row). All 8 slides are preloaded so there's no flash of white.
+ * twice in a row). All 8 slides stay mounted (opacity-toggled next/image fills)
+ * so there's no flash of white.
  */
 export function FotografieHero() {
   const [cur, setCur] = useState(-1);
@@ -23,11 +25,6 @@ export function FotografieHero() {
 
   useEffect(() => {
     setMounted(true);
-    // Preload the shutter slides so swaps are instant.
-    FG_SLIDES.forEach((s) => {
-      const im = new Image();
-      im.src = s.image;
-    });
     const t = timers.current;
     return () => {
       clearTimeout(t.sw);
@@ -152,12 +149,25 @@ export function FotografieHero() {
             style={{ background: "linear-gradient(150deg,rgba(255,150,60,.7),rgba(255,90,0,.25) 55%,rgba(255,255,255,.05))", boxShadow: "0 46px 100px -34px rgba(255,80,0,.6)" }}
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-[21px] border border-white/5 bg-[#0e0d0c]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="fg-shot absolute inset-0 h-full w-full object-cover" src={FG_HERO_IMAGE} alt="Fotografie voorbeeld" />
-              {slide && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: "center" }} src={slide.image} alt={`${slide.title} - VisualVibe fotografie`} />
-              )}
+              <Image
+                className="fg-shot object-cover"
+                src={FG_HERO_IMAGE}
+                alt="Sfeervolle nachtelijke luchtfoto met de drone, fotografie door VisualVibe uit Limburg"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 472px"
+              />
+              {FG_SLIDES.map((s, i) => (
+                <Image
+                  key={s.id}
+                  className={`object-cover object-center ${cur === i ? "" : "opacity-0"}`}
+                  src={s.image}
+                  alt={`${s.title} - VisualVibe fotografie`}
+                  aria-hidden={cur !== i}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 472px"
+                />
+              ))}
 
               {/* vignette */}
               <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(6,6,6,.62))" }} />

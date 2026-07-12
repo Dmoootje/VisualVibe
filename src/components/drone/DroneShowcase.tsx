@@ -2,17 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { dronePhotos, droneVideos } from "@/data/droneShowcase";
 import { ChevronLeft, ChevronRight, Close, DrIcon, Expand, PlayGlyph } from "./icons";
 
 const ytThumb = (id: string) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 
-/** YouTube thumbnail that falls back to hqdefault when maxres is missing. */
-function YtThumb({ id, alt, className }: { id: string; alt: string; className?: string }) {
+/** YouTube thumbnail (next/image fill) that falls back to hqdefault when maxres
+ * is missing. The parent must be positioned with a fixed aspect. */
+function YtThumb({ id, alt, sizes, className }: { id: string; alt: string; sizes: string; className?: string }) {
   const [src, setSrc] = useState(ytThumb(id));
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} loading="lazy" onError={() => setSrc(`https://img.youtube.com/vi/${id}/hqdefault.jpg`)} className={className} />
+    <Image src={src} alt={alt} fill sizes={sizes} onError={() => setSrc(`https://img.youtube.com/vi/${id}/hqdefault.jpg`)} className={className} />
   );
 }
 
@@ -99,8 +100,13 @@ export function DroneShowcase() {
                   aria-label={`Open ${p.title}`}
                   className="dr-mcard group relative aspect-[3/2] overflow-hidden rounded-[9px] border border-white/10 bg-[#141210] text-left"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="dr-mimg absolute inset-0 h-full w-full object-cover" src={p.src} alt={p.title} loading="lazy" />
+                  <Image
+                    className="dr-mimg object-cover"
+                    src={p.src}
+                    alt={p.title}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1400px) 33vw, 440px"
+                  />
                   <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,transparent 52%,rgba(10,10,10,.75))" }} />
                   <span className="absolute left-2 top-2 z-[2] rounded-[5px] bg-[rgba(8,7,6,.6)] px-1.5 py-0.5 font-mono text-[10px] font-bold text-white/85">
                     FRAME {String(k + 1).padStart(2, "0")}
@@ -143,7 +149,7 @@ export function DroneShowcase() {
                 aria-label={`Speel ${v.title} af`}
                 className="dr-mcard group relative aspect-video overflow-hidden rounded-[14px] border border-white/[0.09] bg-[#141210] text-left"
               >
-                <YtThumb id={v.yt} alt={v.title} className="dr-mimg absolute inset-0 h-full w-full object-cover" />
+                <YtThumb id={v.yt} alt={v.title} sizes="(max-width: 640px) 100vw, (max-width: 1400px) 50vw, 660px" className="dr-mimg object-cover" />
                 <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(130% 100% at 50% 45%,transparent 52%,rgba(6,8,6,.72))" }} />
                 {/* FPV HUD corners */}
                 <div aria-hidden="true" className="pointer-events-none absolute inset-3 z-[2]">
@@ -230,7 +236,7 @@ export function DroneShowcase() {
                     className={`vg-lbmini relative h-[59px] w-[104px] flex-none overflow-hidden rounded-[9px] border-2 border-white/[0.12] bg-[#0b0a09] ${k === safeIdx ? "on" : ""}`}
                   >
                     {vid ? (
-                      <YtThumb id={it.yt} alt="" className="h-full w-full object-cover" />
+                      <YtThumb id={it.yt} alt="" sizes="104px" className="object-cover" />
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={it.src} alt="" className="h-full w-full object-cover" />

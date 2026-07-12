@@ -85,15 +85,20 @@ export function RealisatieModal({
             {/* gallery - toon alleen ingevulde beelden, geen lege placeholders */}
             <div className="flex min-w-0 flex-col gap-3">
               {(img("1") ?? img("2")) && (
-                <div className="aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
-                  <ShowcaseImage src={img("1") ?? img("2")} alt={`${c.name} hoofdscreenshot`} placeholder="Hoofdscreenshot" />
+                <div className="relative aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
+                  <ShowcaseImage
+                    src={img("1") ?? img("2")}
+                    alt={`${c.name} hoofdscreenshot`}
+                    placeholder="Hoofdscreenshot"
+                    sizes="(max-width: 1024px) 100vw, 660px"
+                  />
                 </div>
               )}
               {(img("2") || img("3") || img("4")) && (
                 <div className="flex items-start gap-4 overflow-x-auto pb-1">
-                  {img("2") && <Device label="DESKTOP" ratio="aspect-video" src={img("2")} name={c.name} />}
-                  {img("3") && <Device label="TABLET" ratio="aspect-[3/4]" src={img("3")} name={c.name} />}
-                  {img("4") && <Device label="MOBIEL" ratio="aspect-[1/2]" src={img("4")} name={c.name} />}
+                  {img("2") && <Device label="DESKTOP" ratio="aspect-video" sizes="374px" src={img("2")} name={c.name} />}
+                  {img("3") && <Device label="TABLET" ratio="aspect-[3/4]" sizes="158px" src={img("3")} name={c.name} />}
+                  {img("4") && <Device label="MOBIEL" ratio="aspect-[1/2]" sizes="105px" src={img("4")} name={c.name} />}
                 </div>
               )}
             </div>
@@ -154,10 +159,10 @@ export function RealisatieModal({
   );
 }
 
-function Device({ label, ratio, src, name }: { label: string; ratio: string; src?: string; name: string }) {
+function Device({ label, ratio, sizes, src, name }: { label: string; ratio: string; sizes: string; src?: string; name: string }) {
   return (
     <div className={`relative h-[210px] flex-none overflow-hidden rounded-[13px] border border-white/[0.08] ${ratio}`}>
-      <ShowcaseImage src={src} alt={`${name} ${label.toLowerCase()}`} placeholder={label} />
+      <ShowcaseImage src={src} alt={`${name} ${label.toLowerCase()}`} placeholder={label} sizes={sizes} />
       <span className="pointer-events-none absolute left-2 top-2 z-[3] rounded-[5px] bg-[rgba(10,10,10,0.6)] px-1.5 py-[3px] font-mono text-[9px] font-bold tracking-[0.1em] text-white">
         {label}
       </span>
