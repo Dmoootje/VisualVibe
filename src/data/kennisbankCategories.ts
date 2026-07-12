@@ -53,10 +53,10 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "drone",
     name: "Drone & FPV",
     description:
-      "Dronefotografie, dronevideo en FPV voor bedrijven, vastgoed, bouw en events.",
-    seoTitle: "Drone & FPV artikels voor bedrijven | Kennisbank VisualVibe",
+      "Praktische gidsen over dronefotografie, dronevideo en FPV voor vastgoed, bouw, bedrijfsvideo's en veilige producties.",
+    seoTitle: "Drone & FPV voor bedrijven: praktische gidsen | VisualVibe",
     seoDescription:
-      "Dronebeelden en FPV-video voor bedrijven, vastgoed en bouwprojecten: tips en toepassingen voor KMO's in Limburg.",
+      "Ontdek hoe je dronefoto, dronevideo en FPV inzet voor vastgoed, bouw en bedrijfsvideo's, met aandacht voor planning, veiligheid, privacy en actuele regels.",
   },
   {
     slug: "3d-vr",
