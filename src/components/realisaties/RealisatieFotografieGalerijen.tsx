@@ -7,6 +7,15 @@ import { FiIcon, Lightbox } from "@/components/fotografie";
 
 const iconLabel = (id: string) => FOTO_GALLERY_ICONS.find((o) => o.id === id)?.label ?? "Fotografie";
 
+// SEO-friendly title + alt per image: the gallery title as the `title`, and the
+// photo's own caption (falling back to the gallery description, then a numbered
+// label) as the descriptive `alt`.
+function imgMeta(gallery: FotoGallery, i: number): { title: string; alt: string } {
+  const caption = gallery.images[i]?.caption?.trim();
+  const alt = caption || gallery.description?.trim() || `${gallery.title} - foto ${i + 1}`;
+  return { title: gallery.title, alt };
+}
+
 const ArrowR = ({ size = 13 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
 );
@@ -22,7 +31,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
   const [open, setOpen] = useState<number | null>(null);
   const g = open !== null ? galleries[open] : null;
   const slides = g
-    ? g.images.map((img, n) => ({ src: img.src, cap: img.caption?.trim() || `${g.title} - ${n + 1}` }))
+    ? g.images.map((img, n) => ({ src: img.src, cap: imgMeta(g, n).alt, title: g.title }))
     : [];
 
   const featured = galleries[0];
@@ -48,7 +57,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
               className="fg-gcard group relative block aspect-[16/10] w-full overflow-hidden rounded-[20px] border border-white/[0.09] bg-[#141210]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={featured.images[0].src} alt={featured.title} />
+              <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={featured.images[0].src} alt={imgMeta(featured, 0).alt} title={imgMeta(featured, 0).title} />
               <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.1),transparent 40%,rgba(10,10,10,.55))" }} />
               <span className="fg-giris absolute left-1/2 top-1/2 z-[2] flex h-16 w-16 items-center justify-center rounded-full text-white shadow-[0_16px_38px_-10px_rgba(255,90,0,0.9)]" style={{ background: "linear-gradient(135deg,#FF3B2E,#FF7A00)" }}>
                 <FiIcon id="aperture" size={29} strokeWidth={1.9} />
@@ -69,7 +78,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
                     className="fg-thumb group relative aspect-[4/3] overflow-hidden rounded-[13px] border border-white/[0.09] bg-[#141210]"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={img.src} alt={`${featured.title} - ${n + 2}`} />
+                    <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={img.src} alt={imgMeta(featured, n + 1).alt} title={imgMeta(featured, n + 1).title} />
                   </button>
                 ))}
               </div>
@@ -144,7 +153,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
                   className="vvw-caseRow fg-gcard group relative aspect-[4/5] overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#141210] text-left"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={gal.images[0].src} alt={gal.title} />
+                  <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={gal.images[0].src} alt={imgMeta(gal, 0).alt} title={imgMeta(gal, 0).title} />
                   <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.12) 0%,transparent 32%,rgba(10,10,10,.9) 100%)" }} />
                   <span className="absolute left-4 top-4 z-[2] inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-3 py-[7px] font-mono text-[10.5px] font-bold tracking-[0.05em] text-[#FF9A45] backdrop-blur">
                     <FiIcon id={gal.icon} size={13} />{iconLabel(gal.icon)}

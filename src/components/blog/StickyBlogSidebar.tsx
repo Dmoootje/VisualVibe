@@ -2,10 +2,44 @@
 
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { SearchBar } from "@/components/kennisbank/SearchBar";
 import { BlogToc, type TocItem } from "./BlogToc";
 import { GlowFrame } from "./GlowFrame";
+
+/** Scroll-reveal search that jumps to the kennisbank landing (?q=...), matching
+ *  the landing + categoriepagina sidebars. */
+function SidebarSearch() {
+  const [scrolled, setScrolled] = useState(false);
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled((window.scrollY || 0) > 160);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const go = () => {
+    const q = query.trim();
+    router.push(q ? `/kennisbank?q=${encodeURIComponent(q)}` : "/kennisbank");
+  };
+
+  return (
+    <div className={cn("kb-side-search", scrolled && "kb-show")}>
+      <SearchBar
+        value={query}
+        onChange={setQuery}
+        onSubmit={go}
+        onClear={() => setQuery("")}
+        placeholder="Zoeken in kennisbank..."
+        size="sidebar"
+      />
+    </div>
+  );
+}
 
 /** Highlights the heading currently in the upper part of the viewport. */
 function useActiveHeading(ids: string[]): string | undefined {
@@ -68,6 +102,8 @@ export function StickyBlogSidebar({
 
   return (
     <div className={cn("sticky top-24 flex flex-col gap-6", className)}>
+      <SidebarSearch />
+
       {toc.length > 0 && <BlogToc items={toc} activeId={activeId} />}
 
       {cta && (

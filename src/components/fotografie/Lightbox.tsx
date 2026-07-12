@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FiIcon } from "./FiIcon";
 
-export type LightboxSlide = { src: string; cap: string };
+export type LightboxSlide = { src: string; cap: string; title?: string };
 
 /**
  * Prop-driven fullscreen gallery lightbox (extracted from the Fotografie service
@@ -141,7 +141,7 @@ export function Lightbox({
                 {slides.map((s) => (
                   <div key={s.cap} className="relative flex h-full w-full flex-none items-center justify-center bg-[#0b0a09]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={s.src} alt={s.cap} className="h-full w-full object-contain" />
+                    <img src={s.src} alt={s.cap} title={s.title} className="h-full w-full object-contain" />
                     <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 px-[22px] pb-4 pt-[34px]" style={{ background: "linear-gradient(180deg,transparent,rgba(6,6,6,.82))" }}>
                       <span className="font-mono text-xs font-semibold text-white/85">{s.cap}</span>
                     </div>

@@ -36,9 +36,10 @@ export function BlogToc({
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
+                title={item.label}
                 aria-current={isActive ? "location" : undefined}
                 className={cn(
-                  "-ml-px block border-l-2 py-1.5 text-sm transition-colors",
+                  "-ml-px block truncate border-l-2 py-1.5 text-sm transition-colors",
                   item.level === 3 ? "pl-6" : "pl-4",
                   isActive
                     ? "border-[#ff7500] font-medium text-[#ff9a45]"

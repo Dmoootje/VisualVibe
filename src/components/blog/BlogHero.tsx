@@ -84,9 +84,11 @@ export function BlogHero({
         className="pointer-events-none absolute -left-16 -top-28 z-0 h-[560px] w-[760px]"
         style={{ background: "radial-gradient(ellipse 50% 50% at 30% 40%,rgba(255,90,0,.16),transparent 70%)" }}
       />
+      {/* Full-bleed (w-screen, centered) so the grid has no hard box edge at the
+          content container - that edge was showing as a faint vertical line. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0"
+        className="pointer-events-none absolute left-1/2 top-0 z-0 h-full w-screen -translate-x-1/2"
         style={{
           backgroundImage: GRID_BG,
           backgroundSize: "54px 54px",

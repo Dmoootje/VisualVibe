@@ -9,5 +9,6 @@ export { QuestionCard } from "./QuestionCard";
 export { BladerPerOnderwerp } from "./BladerPerOnderwerp";
 export { NewsletterBox } from "./NewsletterBox";
 export { CategoryIcon } from "./CategoryIcon";
+export { SearchBar } from "./SearchBar";
 export { toArticleCardData, splitTitle } from "./data";
 export type { ArticleCardData, KbCategoryData } from "./data";

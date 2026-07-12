@@ -3,8 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getPostsByCategory } from "@/lib/kennisbank/posts";
 import { postHref } from "@/lib/kennisbank/urls";
+import type { BlogPost } from "@/types/blog";
 
-// Which kennisbank pillar feeds each service's "Uit de kennisbank" carousel.
+// Which kennisbank pillar feeds each service's "Uit de kennisbank" section.
 const SERVICE_TO_CATEGORY: Record<string, string> = {
   webdesign: "webdesign",
   seo: "seo-geo",
@@ -16,11 +17,44 @@ const SERVICE_TO_CATEGORY: Record<string, string> = {
   masterclasses: "masterclasses",
 };
 
+/** Compact article card for the 6-up grid beside the pillar. */
+function ArticleTile({ post }: { post: BlogPost }) {
+  return (
+    <Link
+      href={postHref(post)}
+      className="vg-vcard group flex flex-col overflow-hidden rounded-[16px] border border-white/[0.09] bg-white/[0.02]"
+    >
+      <div className="relative aspect-[16/9] overflow-hidden bg-[#141210]">
+        {post.ogImage ? (
+          <Image src={post.ogImage} alt={post.heroImageAlt ?? post.title} fill sizes="(max-width:1024px) 45vw, 320px" className="vg-vthumb object-cover" />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.16),transparent_60%)]" />
+        )}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.1),transparent 50%,rgba(10,10,10,.6))" }} />
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="font-sora text-[15px] font-bold leading-[1.3] text-white transition-colors line-clamp-2 group-hover:text-[#FF9A45]">
+          {post.title}
+        </h3>
+        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+          {post.readingTime && (
+            <span className="font-mono text-[10.5px] font-semibold text-white/40">{post.readingTime}</span>
+          )}
+          <span className="inline-flex items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.04em] text-white/60 transition-colors group-hover:text-[#FF9A45]">
+            LEES MEER
+            <ArrowRight className="h-3 w-3" />
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 /**
- * "Uit de kennisbank": a horizontally-scrollable (CSS scroll-snap, no JS) row of
- * the service's related kennisbank articles. Strong internal linking from a
- * service to its pillar/cluster content, and extra GEO surface. Renders nothing
- * when the pillar has no live posts yet.
+ * "Uit de kennisbank": the service's pillar guide as one large block with up to
+ * six supporting articles in a grid beside it. Strong internal linking from a
+ * service to its cluster content, and extra GEO surface. Renders on every
+ * service page; returns nothing when the pillar has no live posts yet.
  */
 export function ServiceRelatedPosts({
   serviceSlug,
@@ -34,11 +68,12 @@ export function ServiceRelatedPosts({
   const categorySlug = SERVICE_TO_CATEGORY[serviceSlug];
   if (!categorySlug) return null;
 
-  const posts = getPostsByCategory(categorySlug, "nl")
-    .slice()
-    .sort((a, b) => (a.pillar === b.pillar ? 0 : a.pillar ? -1 : 1))
-    .slice(0, 6);
+  const posts = getPostsByCategory(categorySlug, "nl");
   if (posts.length === 0) return null;
+
+  // The pillar guide leads; up to six other articles fill the grid beside it.
+  const pillar = posts.find((post) => post.pillar) ?? posts[0];
+  const others = posts.filter((post) => post.slug !== pillar.slug).slice(0, 6);
 
   return (
     <section className="relative py-14 sm:py-16">
@@ -63,47 +98,50 @@ export function ServiceRelatedPosts({
           </Link>
         </div>
 
-        <div className="-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={postHref(post)}
-              className="vg-vcard group flex w-[300px] flex-none snap-start flex-col overflow-hidden rounded-[18px] border border-white/[0.09] bg-white/[0.02] sm:w-[340px]"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-[#141210]">
-                {post.ogImage ? (
-                  <Image
-                    src={post.ogImage}
-                    alt={post.heroImageAlt ?? post.title}
-                    fill
-                    sizes="340px"
-                    className="vg-vthumb object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.16),transparent_60%)]" />
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
+          {/* Pillar: large lead block */}
+          <Link
+            href={postHref(pillar)}
+            className={`vg-vcard group relative flex flex-col overflow-hidden rounded-[20px] border border-white/[0.09] bg-white/[0.02] ${
+              others.length > 0 ? "lg:w-[38%] lg:flex-none" : "w-full"
+            }`}
+          >
+            <div className="relative min-h-[220px] flex-1 overflow-hidden bg-[#141210]">
+              {pillar.ogImage ? (
+                <Image src={pillar.ogImage} alt={pillar.heroImageAlt ?? pillar.title} fill sizes="(max-width:1024px) 100vw, 480px" className="vg-vthumb object-cover" />
+              ) : (
+                <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.18),transparent_62%)]" />
+              )}
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.14),transparent 44%,rgba(10,10,10,.72))" }} />
+              <span className="absolute left-4 top-4 z-[2] inline-flex items-center rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-[11px] py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#FF9A45] backdrop-blur">
+                {pillar.pillar ? "Complete gids" : "Uitgelicht"}
+              </span>
+            </div>
+            <div className="flex flex-col p-6">
+              <h3 className="font-sora text-[21px] font-extrabold leading-[1.16] tracking-[-0.01em] text-white transition-colors group-hover:text-[#FF9A45]">
+                {pillar.title}
+              </h3>
+              <p className="mt-2.5 line-clamp-3 text-[14px] leading-relaxed text-white/60">{pillar.excerpt}</p>
+              <div className="mt-4 flex items-center justify-between gap-2 pt-1">
+                {pillar.readingTime && (
+                  <span className="font-mono text-[11px] font-semibold text-white/40">{pillar.readingTime}</span>
                 )}
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.12),transparent 42%,rgba(10,10,10,.72))" }} />
-                <span className="absolute left-3.5 top-3.5 z-[2] inline-flex items-center rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-[11px] py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#FF9A45] backdrop-blur">
-                  {post.pillar ? "Pillar" : post.category}
+                <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.04em] text-white/70 transition-colors group-hover:text-[#FF9A45]">
+                  {pillar.pillar ? "LEES DE GIDS" : "LEES MEER"}
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </span>
               </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-sora text-[17px] font-bold leading-[1.28] text-white transition-colors group-hover:text-[#FF9A45]">
-                  {post.title}
-                </h3>
-                <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-white/60">{post.excerpt}</p>
-                <div className="mt-4 flex items-center justify-between pt-1">
-                  {post.readingTime && (
-                    <span className="font-mono text-[11px] font-semibold text-white/40">{post.readingTime}</span>
-                  )}
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.04em] text-white/70 transition-colors group-hover:text-[#FF9A45]">
-                    LEES MEER
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+            </div>
+          </Link>
+
+          {/* Supporting articles: up to six in a 2-column grid */}
+          {others.length > 0 && (
+            <div className="grid flex-1 gap-4 sm:grid-cols-2">
+              {others.map((post) => (
+                <ArticleTile key={post.slug} post={post} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
