@@ -10,6 +10,8 @@ export type BlogPostingData = {
     name: string;
     url?: string;
     jobTitle?: string;
+    /** Absolute URL van de auteursfoto (schema.org Person.image). */
+    image?: string;
   };
   publishedAt: string;
   updatedAt: string;
@@ -65,6 +67,7 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
           name: post.author.name,
           url: post.author.url ? absoluteUrl(post.author.url) : undefined,
           jobTitle: post.author.jobTitle,
+          image: post.author.image ? absoluteUrl(post.author.image) : undefined,
         },
         publisher: {
           "@type": "Organization",

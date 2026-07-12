@@ -55,11 +55,33 @@ function ImageOverlay({ article, compact }: { article: ArticleCardData; compact?
   );
 }
 
-function Meta({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value?: string }) {
+function Meta({
+  icon: Icon,
+  imageUrl,
+  label,
+  value,
+}: {
+  icon: LucideIcon;
+  /** Rond avatarfotootje in plaats van het icoon (auteursfoto). */
+  imageUrl?: string;
+  label: string;
+  value?: string;
+}) {
   if (!value) return null;
   return (
     <div className="flex items-center gap-2" aria-label={`${label}: ${value}`}>
-      <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt=""
+          width={32}
+          height={32}
+          className="h-5 w-5 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
+          aria-hidden="true"
+        />
+      ) : (
+        <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
+      )}
       <div className="min-w-0 leading-tight">
         <div className="text-[10px] font-semibold uppercase tracking-wide text-white/40" style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}>
           {label}
@@ -155,7 +177,7 @@ export function ArticleCard({
           <div className="mb-5 mt-auto flex flex-wrap gap-x-6 gap-y-3">
             <Meta icon={Clock} label="Leestijd" value={article.readingTime} />
             <Meta icon={CalendarDays} label="Gepubliceerd" value={article.date} />
-            <Meta icon={User} label="Auteur" value={article.author} />
+            <Meta icon={User} imageUrl={article.authorImage} label="Auteur" value={article.author} />
           </div>
           <Cta label={ctaLabel} />
         </div>
@@ -178,7 +200,7 @@ export function ArticleCard({
         {article.heroComposed && <h3 className="sr-only">{article.fullTitle}</h3>}
         <div className="grid grid-cols-2 gap-3">
           <Meta icon={Clock} label="Leestijd" value={article.readingTime} />
-          <Meta icon={User} label="Auteur" value={article.author} />
+          <Meta icon={User} imageUrl={article.authorImage} label="Auteur" value={article.author} />
         </div>
         <div className="my-4 h-px bg-white/10" />
         <p className="mb-5 flex-1 text-sm leading-relaxed text-white/64 line-clamp-3">{article.excerpt}</p>

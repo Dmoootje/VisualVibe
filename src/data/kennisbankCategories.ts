@@ -62,19 +62,19 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "3d-vr",
     name: "3D & VR",
     description:
-      "3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.",
-    seoTitle: "3D & VR artikels voor bedrijven | Kennisbank VisualVibe",
+      "Praktische gidsen over 3D-tours en virtuele rondleidingen voor showrooms, horeca, vastgoed en vertrouwen.",
+    seoTitle: "3D-tours voor bedrijven: praktische gidsen | VisualVibe",
     seoDescription:
-      "Zo verhogen 3D-tours en virtuele rondleidingen vertrouwen voor showrooms, vastgoed en horeca in Limburg.",
+      "Ontdek hoe je een 3D-tour of virtuele rondleiding inzet voor showrooms, horeca en vastgoed, met aandacht voor voorbereiding, privacy, hosting en vertrouwen.",
   },
   {
     slug: "podcasting",
     name: "Podcasting",
     description:
-      "Een bedrijfspodcast of videopodcast starten en inzetten als contentkanaal.",
-    seoTitle: "Podcasting artikels voor bedrijven | Kennisbank VisualVibe",
+      "Praktische gidsen over bedrijfspodcasts, videopodcasts, opname, publicatie en hergebruik als content.",
+    seoTitle: "Podcasting voor bedrijven: praktische gidsen | VisualVibe",
     seoDescription:
-      "Bedrijfspodcast en videopodcast starten: format, opname en hergebruik als social content voor KMO's in Limburg.",
+      "Leer hoe je een bedrijfspodcast of videopodcast plant, opneemt, publiceert en hergebruikt, van format en techniek tot distributie, rechten en social content.",
   },
   {
     slug: "masterclasses",

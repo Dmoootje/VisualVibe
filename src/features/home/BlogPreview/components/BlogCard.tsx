@@ -11,6 +11,8 @@ import { postHref } from "@/lib/kennisbank/urls";
 interface BlogCardProps {
   post: BlogPost;
   index: number;
+  /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
+  authorImage?: string;
 }
 
 // The overlaid title mirrors the mockup: the part up to (and including) the
@@ -27,7 +29,7 @@ function splitTitle(title: string): { lead: string; accent: string } {
   return { lead, accent };
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
+export function BlogCard({ post, index, authorImage }: BlogCardProps) {
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("nl-BE", {
     day: "numeric",
     month: "long",
@@ -116,7 +118,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
           <div className="grid grid-cols-3 gap-3">
             <Meta icon={Clock} label="Leestijd" value={post.readingTime} />
             <Meta icon={CalendarDays} label="Gepubliceerd" value={formattedDate} />
-            <Meta icon={User} label="Auteur" value={post.author} />
+            <Meta icon={User} imageUrl={authorImage} label="Auteur" value={post.author} />
           </div>
 
           <div className="my-4 h-px bg-white/10" />
@@ -140,10 +142,13 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
 function Meta({
   icon: Icon,
+  imageUrl,
   label,
   value,
 }: {
   icon: LucideIcon;
+  /** Rond avatarfotootje in plaats van het icoon (auteursfoto). */
+  imageUrl?: string;
   label: string;
   value?: string;
 }) {
@@ -153,7 +158,18 @@ function Meta({
 
   return (
     <div className="flex items-center gap-2" aria-label={`${label}: ${value}`}>
-      <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt=""
+          width={32}
+          height={32}
+          className="h-5 w-5 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
+          aria-hidden="true"
+        />
+      ) : (
+        <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
+      )}
       <div className="min-w-0 leading-tight">
         <div className="text-[10px] uppercase tracking-wide text-white/40">{label}</div>
         <div className="truncate text-xs font-medium text-white">{value}</div>

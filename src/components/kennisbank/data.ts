@@ -23,6 +23,8 @@ export type ArticleCardData = {
   /** Pre-formatted nl-BE date for display. */
   date: string;
   author: string;
+  /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
+  authorImage?: string;
   image?: string;
   imageAlt?: string;
   heroComposed: boolean;
@@ -53,7 +55,10 @@ function formatDate(iso: string): string {
   });
 }
 
-export function toArticleCardData(post: BlogPost): ArticleCardData {
+export function toArticleCardData(
+  post: BlogPost,
+  authorImages?: Record<string, string>,
+): ArticleCardData {
   const { title, titleAccent } = splitTitle(post.title);
   return {
     id: post.slug,
@@ -67,6 +72,7 @@ export function toArticleCardData(post: BlogPost): ArticleCardData {
     readingTime: post.readingTime,
     date: formatDate(post.publishedAt),
     author: post.author,
+    authorImage: authorImages?.[post.author],
     image: post.ogImage,
     imageAlt: post.heroImageAlt ?? post.title,
     heroComposed: Boolean(post.heroComposed),

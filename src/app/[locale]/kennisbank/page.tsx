@@ -11,6 +11,7 @@ import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { KennisbankLandingView } from "@/components/kennisbank";
 import { toArticleCardData, type KbCategoryData } from "@/components/kennisbank/data";
+import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 
 // Title: 59 chars incl. " | VisualVibe"; description: 155 chars.
 const title = "Kennisbank: gidsen over webdesign, SEO & media | VisualVibe";
@@ -71,6 +72,8 @@ export default async function KennisbankHubPage({
   const posts = getAllPosts({ locale });
   if (posts.length === 0) notFound();
 
+  const authorImages = await getAuthorPhotoMap();
+
   // All eight registered categories with live counts (Blader per onderwerp);
   // the subset with content drives the filter chips + sidebar.
   const allCategories: KbCategoryData[] = kennisbankCategories.map((category) => ({
@@ -85,7 +88,7 @@ export default async function KennisbankHubPage({
   const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
   const articles = posts
     .filter((post) => post.slug !== featuredPost.slug)
-    .map(toArticleCardData);
+    .map((post) => toArticleCardData(post, authorImages));
 
   return (
     <div className="min-h-screen text-white">
@@ -99,7 +102,7 @@ export default async function KennisbankHubPage({
 
       <KennisbankLandingView
         articles={articles}
-        featured={toArticleCardData(featuredPost)}
+        featured={toArticleCardData(featuredPost, authorImages)}
         activeCategories={activeCategories}
         allCategories={allCategories}
         totalArticles={posts.length}

@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { Mail, LayoutTemplate } from "lucide-react";
+import { Mail, LayoutTemplate, CircleUserRound } from "lucide-react";
 
 const cards = [
+  {
+    href: "/admin/settings/profiel",
+    title: "Profiel",
+    desc: "Je naam en profielfoto. De foto toont als auteursfoto bij kennisbankartikels en blogcards.",
+    icon: CircleUserRound,
+  },
   {
     href: "/admin/settings/contact",
     title: "Contactgegevens",

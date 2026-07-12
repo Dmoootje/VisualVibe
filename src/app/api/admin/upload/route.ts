@@ -13,6 +13,7 @@ const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
 const UPLOAD_DIRS: Record<string, string> = {
   webdesign: "images/portfolio/webdesign",
   fotografie: "images/library/fotografie",
+  profiel: "images/team",
 };
 
 export async function POST(request: NextRequest) {

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CalendarDays, ChevronDown, Clock, User } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,8 @@ export type BlogHeroProps = {
   author?: string;
   authorUrl?: string;
   authorRole?: string;
+  /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
+  authorImage?: string;
   publishedAt?: string;
   readingTime?: string;
   image?: string;
@@ -40,6 +43,7 @@ export function BlogHero({
   author,
   authorUrl,
   authorRole,
+  authorImage,
   publishedAt,
   readingTime,
   image,
@@ -130,8 +134,18 @@ export function BlogHero({
               <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
                 {author && (
                   <div className="flex items-center gap-2.5 border-white/12 pr-4 sm:border-r">
-                    <span className="flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[#ff7500]/40 bg-gradient-to-br from-[#ff7500]/30 to-[#ff7500]/[0.08] text-[#ff9a45]">
-                      <User className="h-5 w-5" aria-hidden="true" />
+                    <span className="relative flex h-[42px] w-[42px] items-center justify-center overflow-hidden rounded-full border border-[#ff7500]/40 bg-gradient-to-br from-[#ff7500]/30 to-[#ff7500]/[0.08] text-[#ff9a45]">
+                      {authorImage ? (
+                        <Image
+                          src={authorImage}
+                          alt={author ?? "Auteur"}
+                          fill
+                          sizes="42px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <User className="h-5 w-5" aria-hidden="true" />
+                      )}
                     </span>
                     <div className="leading-tight">
                       {authorName}

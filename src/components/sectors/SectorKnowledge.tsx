@@ -7,9 +7,18 @@ import type { BlogPost } from "@/types";
 /**
  * "Uit de kennisbank": relevance-scored articles (see scoreSectorPosts) in the
  * homepage BlogPreview card style. Hidden entirely when nothing relevant
- * exists; never padded with random posts.
+ * exists; never padded with random posts. Presentational: de auteursfoto-map
+ * komt via props (dit bestand mag geen firebase-admin in de barrel trekken;
+ * de sectors-barrel wordt ook door client components geïmporteerd).
  */
-export function SectorKnowledge({ posts }: { posts: BlogPost[] }) {
+export function SectorKnowledge({
+  posts,
+  authorImages,
+}: {
+  posts: BlogPost[];
+  /** Auteursnaam -> profielfoto-URL (admin-profielen). */
+  authorImages?: Record<string, string>;
+}) {
   if (posts.length === 0) return null;
   return (
     <Section className="py-10 sm:py-14 md:py-16">
@@ -37,7 +46,12 @@ export function SectorKnowledge({ posts }: { posts: BlogPost[] }) {
             RSC payload (the card only renders meta/excerpt/image). */}
         <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, index) => (
-            <BlogCard key={post.slug} post={{ ...post, content: "" }} index={index} />
+            <BlogCard
+              key={post.slug}
+              post={{ ...post, content: "" }}
+              index={index}
+              authorImage={authorImages?.[post.author]}
+            />
           ))}
         </div>
       </Container>

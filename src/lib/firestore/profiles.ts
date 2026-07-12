@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
 import type { Profile } from "@/types";
 
@@ -12,7 +13,8 @@ export async function getProfile(uid: string): Promise<Profile | null> {
   return {
     uid,
     email: data.email,
-    name: data.name ?? undefined,
+    name: data.name || undefined,
+    photoUrl: data.photoUrl || undefined,
     role: data.role ?? "admin",
     createdAt: data.createdAt?.toDate?.().toISOString() ?? new Date().toISOString(),
   };
@@ -29,3 +31,35 @@ export async function ensureProfile(uid: string, email: string): Promise<Profile
   await adminDb.collection(COLLECTION).doc(uid).set({ email, role: "admin", createdAt: now });
   return { uid, email, role: "admin", createdAt: now.toISOString() };
 }
+
+export type UpdateProfileInput = {
+  name?: string;
+  /** "" wist de foto (persisted zodat leegmaken blijft plakken). */
+  photoUrl?: string;
+};
+
+export async function updateProfile(uid: string, input: UpdateProfileInput): Promise<void> {
+  await adminDb.collection(COLLECTION).doc(uid).set(input, { merge: true });
+}
+
+/**
+ * Auteursnaam -> profielfoto-URL, over alle admin-profielen. Blogposts kennen
+ * hun auteur alleen bij naam (frontmatter), dus de koppeling loopt via de
+ * profielnaam: die moet exact overeenkomen met de auteursnaam van de artikels
+ * (bv. "Jens Hardy"). Faalt stil naar {} zodat builds zonder Firestore werken.
+ */
+export const getAuthorPhotoMap = cache(async (): Promise<Record<string, string>> => {
+  try {
+    const snap = await adminDb.collection(COLLECTION).get();
+    const map: Record<string, string> = {};
+    for (const doc of snap.docs) {
+      const data = doc.data();
+      const name = typeof data.name === "string" ? data.name.trim() : "";
+      const photoUrl = typeof data.photoUrl === "string" ? data.photoUrl.trim() : "";
+      if (name && photoUrl) map[name] = photoUrl;
+    }
+    return map;
+  } catch {
+    return {};
+  }
+});

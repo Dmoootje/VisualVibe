@@ -17,6 +17,7 @@ import { extractToc } from "@/lib/kennisbank/toc";
 import { getCategoryBySlug } from "@/data/kennisbankCategories";
 import { getServiceBySlug, serviceHref } from "@/data/services";
 import { getRegionBySlug } from "@/data/regions";
+import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
 import { Breadcrumbs, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/components/sections";
@@ -273,6 +274,7 @@ export default async function KennisbankPostPage({
   const cta = resolvePostCta(post);
   const canonical = `${businessConfig.url}${localizedPath(post.locale, postHref(post))}`;
   const authorUrl = absoluteAuthorUrl(post);
+  const authorImage = (await getAuthorPhotoMap())[post.author];
   const keywords = [post.focusKeyword, ...(post.secondaryKeywords ?? [])].filter(
     (keyword): keyword is string => Boolean(keyword)
   );
@@ -302,6 +304,7 @@ export default async function KennisbankPostPage({
             name: post.authorProfile.name,
             url: authorUrl,
             jobTitle: post.authorProfile.jobTitle,
+            image: authorImage,
           },
           publishedAt: post.publishedAt,
           updatedAt: post.updatedAt ?? post.publishedAt,
@@ -335,6 +338,7 @@ export default async function KennisbankPostPage({
             author={post.author}
             authorUrl={post.authorProfile.url}
             authorRole={post.authorProfile.jobTitle}
+            authorImage={authorImage}
             publishedAt={post.publishedAt}
             readingTime={post.readingTime}
             image={post.ogImage}

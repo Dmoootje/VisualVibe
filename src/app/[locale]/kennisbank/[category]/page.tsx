@@ -13,6 +13,7 @@ import {
   kennisbankCategories,
 } from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
+import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
 import {
   KbHeroShell,
@@ -119,6 +120,7 @@ export default async function KennisbankCategoryPage({
 
   const pillarPosts = posts.filter((post) => post.pillar);
   const supportingPosts = posts.filter((post) => !post.pillar);
+  const authorImages = await getAuthorPhotoMap();
 
   const otherCategories = kennisbankCategories
     .filter((c) => c.slug !== categoryDef.slug)
@@ -219,7 +221,7 @@ export default async function KennisbankCategoryPage({
                   {pillarPosts.map((post, i) => (
                     <ArticleCard
                       key={post.slug}
-                      article={toArticleCardData(post)}
+                      article={toArticleCardData(post, authorImages)}
                       variant="grid"
                       index={i}
                       ctaLabel="Lees de gids"
@@ -245,7 +247,7 @@ export default async function KennisbankCategoryPage({
                 </h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {supportingPosts.map((post, i) => (
-                    <QuestionCard key={post.slug} article={toArticleCardData(post)} index={i} />
+                    <QuestionCard key={post.slug} article={toArticleCardData(post, authorImages)} index={i} />
                   ))}
                 </div>
               </div>
