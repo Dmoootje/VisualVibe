@@ -1,13 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Section, Container } from "@/components/ui";
-import { BlogGrid } from "@/components/sections";
+import { BlogCard } from "@/features/home/BlogPreview/components/BlogCard";
 import type { BlogPost } from "@/types";
 
 /**
  * "Uit de kennisbank": relevance-scored articles (see scoreSectorPosts) in the
- * existing kennisbank card style. Hidden entirely when nothing relevant exists;
- * never padded with random posts.
+ * homepage BlogPreview card style. Hidden entirely when nothing relevant
+ * exists; never padded with random posts.
  */
 export function SectorKnowledge({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
@@ -32,7 +32,14 @@ export function SectorKnowledge({ posts }: { posts: BlogPost[] }) {
             <ArrowRight className="h-[15px] w-[15px]" />
           </Link>
         </div>
-        <BlogGrid posts={posts} />
+        {/* Same grid + card as the homepage BlogPreview. BlogCard is a client
+            component; strip the full MDX `content` so it never ships in the
+            RSC payload (the card only renders meta/excerpt/image). */}
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, index) => (
+            <BlogCard key={post.slug} post={{ ...post, content: "" }} index={index} />
+          ))}
+        </div>
       </Container>
     </Section>
   );

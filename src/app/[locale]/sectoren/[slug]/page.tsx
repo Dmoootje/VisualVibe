@@ -95,8 +95,9 @@ export default async function SectorDetailPage({
   const featuredGalleries = selectSectorGalleries(sector, galleries);
   const featuredVideos = selectSectorVideos(sector, videoData.videos, droneMedia);
 
-  // Kennisbank: relevantiescore (geen nieuwste-3-fallback meer).
-  const kennisbankPosts = scoreSectorPosts(getAllPosts({ locale: "nl" }), sector, { max: 4 });
+  // Kennisbank: relevantiescore (geen nieuwste-3-fallback meer). Max 3 zodat
+  // de homepage-kaartstijl netjes 1 rij van 3 vult.
+  const kennisbankPosts = scoreSectorPosts(getAllPosts({ locale: "nl" }), sector, { max: 3 });
 
   const localRegions = (sector.localSection?.regionSlugs ?? [])
     .map((regionSlug) => getRegionBySlug(regionSlug))
