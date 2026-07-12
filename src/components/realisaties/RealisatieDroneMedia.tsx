@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { FiIcon } from "@/components/fotografie";
 import type { DroneCategory, DroneMedia } from "@/config/drone.config";
 
@@ -102,8 +103,14 @@ export function RealisatieDroneMedia({
             aria-label={`Open ${featured.title}`}
             className="fg-gcard group relative block aspect-video w-full overflow-hidden rounded-[20px] border border-[rgba(255,122,0,0.22)] bg-[#141210] shadow-[0_40px_90px_-34px_rgba(255,80,0,0.5)]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={thumbOf(featured)} alt={featured.title} />
+            <Image
+              className="fg-gimg object-cover"
+              src={thumbOf(featured)}
+              alt={featured.title}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 780px"
+            />
             <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 100% at 50% 42%,transparent 48%,rgba(6,8,6,.7))" }} />
             <div aria-hidden="true" className="pointer-events-none absolute inset-3.5">
               <span className="absolute left-0 top-0 h-[18px] w-[18px] border-l-2 border-t-2 border-white/75" />
@@ -190,8 +197,13 @@ export function RealisatieDroneMedia({
                   style={{ ["--i" as string]: k } as React.CSSProperties}
                   className="vvw-caseRow fg-gcard group relative aspect-[16/11] overflow-hidden rounded-[18px] border border-white/[0.09] bg-[#141210] text-left"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={thumbOf(x.m)} alt={x.m.title} />
+                  <Image
+                    className="fg-gimg object-cover"
+                    src={thumbOf(x.m)}
+                    alt={x.m.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                   <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.12),transparent 38%,rgba(10,10,10,.78))" }} />
                   <span className="absolute left-3.5 top-3.5 z-[2] inline-flex items-center gap-1.5 rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-[11px] py-1.5 font-mono text-[10px] font-bold tracking-[0.05em] text-[#FF9A45] backdrop-blur">
                     <FiIcon id={x.m.kind} size={12} />{x.m.category}

@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Check } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { ArrowRight, Check } from "lucide-react";
 import { Section, Container } from "@/components/ui";
-import { PageHero, CTASection, ServiceGrid, ProcessSteps, ServiceFaqCombine } from "@/components/sections";
+import {
+  PageHero,
+  CTASection,
+  ServiceGrid,
+  ProcessSteps,
+  ServiceFaqCombine,
+  RegionGrid,
+} from "@/components/sections";
 import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
@@ -14,6 +22,8 @@ import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
 import { allServices, services, getServiceBySlug, serviceHref } from "@/data/services";
+import { regions } from "@/data/regions";
+import { getRealisatieCategoryBySlug, serviceToCategorySlug } from "@/data/realisatieCategories";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { isBlogLocale, localizedPath } from "@/lib/kennisbank/posts";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
@@ -75,6 +85,13 @@ export default async function ServiceDetailPage({
 
   const parentService = service.parentSlug ? getServiceBySlug(service.parentSlug) : undefined;
   const childServices = allServices.filter((s) => s.parentSlug === service.slug);
+
+  // Realisatie-categorie bij deze dienst (indien die bestaat): voedt de
+  // cross-link "Bekijk onze <naam>-realisaties" onder de kennisbank-sectie.
+  const realisatieCategorySlug = serviceToCategorySlug[service.slug];
+  const realisatieCategory = realisatieCategorySlug
+    ? getRealisatieCategoryBySlug(realisatieCategorySlug)
+    : undefined;
 
   // Webdesign and SEO lead with a bespoke animated hero + realisatie showcase
   // (admin-managed images/projects); their regular content follows below.
@@ -238,6 +255,41 @@ export default async function ServiceDetailPage({
 
       {/* Uit de kennisbank: gerelateerde artikels (interne links + GEO). */}
       <ServiceRelatedPosts serviceSlug={service.slug} />
+
+      {/* Cross-link naar de realisaties van deze dienst. */}
+      {realisatieCategory && (
+        <Section orbs="tl-br">
+          <Container>
+            <div className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold">
+                  Bekijk onze {service.title.toLowerCase()}-realisaties
+                </h2>
+                <p className="mt-2 max-w-xl text-white/60">{realisatieCategory.description}</p>
+              </div>
+              <Link
+                href={`/realisaties/${realisatieCategory.slug}/`}
+                className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
+              >
+                Bekijk de realisaties
+                <ArrowRight className="h-[15px] w-[15px]" />
+              </Link>
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {/* Regio-links: dienst naar regio-hubs, conform de interne-link-regels. */}
+      <Section orbs="tr-bl">
+        <Container>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Actief in deze regio&apos;s</h2>
+          <p className="mb-6 max-w-2xl text-white/60">
+            Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
+            en Nederlands-Limburg.
+          </p>
+          <RegionGrid regions={regions} showIntro={false} />
+        </Container>
+      </Section>
 
       {/* Veelgestelde vragen (links) + Combineer <dienst> met (rechts). */}
       <ServiceFaqCombine

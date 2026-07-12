@@ -3,10 +3,16 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { cases } from "@/data/cases";
-import { realisatieCategories, getRealisatieCategoryBySlug } from "@/data/realisatieCategories";
+import {
+  realisatieCategories,
+  getRealisatieCategoryBySlug,
+  categoryToServiceSlug,
+} from "@/data/realisatieCategories";
+import { getServiceBySlug, serviceHref } from "@/data/services";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { CaseGrid } from "@/components/sections";
+import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { Section, Container } from "@/components/ui";
 import { RealisatieCategoryGrid } from "@/components/realisaties/RealisatieCategoryGrid";
 import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
@@ -79,6 +85,12 @@ export default async function RealisatieCategoryPage({
   const isDrone = categoryDef.slug === "drone";
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
+
+  // Dienst achter deze categorie (webdesign, fotografie, ...): voedt de
+  // kennisbank-sectie en de cross-link naar de dienstpagina. Categorieën
+  // zonder eigen dienst (bedrijven, events, ...) slaan beide gewoon over.
+  const mappedServiceSlug = categoryToServiceSlug[categoryDef.slug];
+  const mappedService = mappedServiceSlug ? getServiceBySlug(mappedServiceSlug) : undefined;
 
   // Webdesign leads with the featured "Laatste creatie" + Websites/Webshops
   // grid, built from the admin-managed projects + images.
@@ -166,6 +178,40 @@ export default async function RealisatieCategoryPage({
             )}
           </Container>
         </Section>
+      )}
+
+      {mappedService && (
+        <>
+          {/* Uit de kennisbank: artikels rond deze discipline (interne links + GEO). */}
+          <ServiceRelatedPosts serviceSlug={mappedService.slug} />
+
+          {/* Cross-link naar de dienstpagina achter deze realisaties. */}
+          <section className="relative py-6 sm:py-8">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+                <div>
+                  <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">
+                    <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#FF9A45]" />
+                    Onze dienst
+                  </p>
+                  <h2 className="font-sora text-[24px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white sm:text-[28px]">
+                    Meer weten over onze dienst {mappedService.title}?
+                  </h2>
+                  <p className="mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/60">
+                    Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde vragen.
+                  </p>
+                </div>
+                <Link
+                  href={`${serviceHref(mappedService)}/`}
+                  className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
+                >
+                  Bekijk de dienst
+                  <ArrowRight className="h-[15px] w-[15px]" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        </>
       )}
 
       <Section orbs="tr-bl">

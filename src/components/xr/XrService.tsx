@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
 import { serviceHref } from "@/data/services";
@@ -413,11 +414,12 @@ export function XrService({
               onClick={() => setLbOpen(true)}
               className="dr-mcard group relative block aspect-[21/9] w-full overflow-hidden rounded-[22px] border border-[rgba(255,122,0,0.2)] bg-[#0e0d0c] text-left"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
                 alt="VisualVibe 3D, VR & AR showreel"
-                className="dr-mimg absolute inset-0 h-full w-full object-cover"
+                fill
+                sizes="(max-width: 1400px) 100vw, 1368px"
+                className="dr-mimg object-cover"
               />
               <span
                 aria-hidden="true"

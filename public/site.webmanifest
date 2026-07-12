@@ -1,6 +1,6 @@
 {
-  "name": "Nova",
-  "short_name": "Nova",
+  "name": "VisualVibe",
+  "short_name": "VisualVibe",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,8 +15,8 @@
       "purpose": "any maskable"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
   "display": "standalone",
   "start_url": "/"
 }

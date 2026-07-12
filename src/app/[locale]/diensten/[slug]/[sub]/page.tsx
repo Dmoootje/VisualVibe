@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { Check } from "lucide-react";
+import { Check, MapPin } from "lucide-react";
 import {
   Accordion,
   AccordionItem,
@@ -11,9 +11,11 @@ import {
   Container,
 } from "@/components/ui";
 import { CTASection, ProcessSteps } from "@/components/sections";
+import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { SubdienstHero } from "@/components/subdienst";
 import { subservices, getSubservicesByParent } from "@/data/subservices";
 import { getServiceBySlug, serviceHrefBySlug } from "@/data/services";
+import { regions } from "@/data/regions";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
@@ -155,6 +157,32 @@ export default async function SubServiceDetailPage({
           </Container>
         </Section>
       )}
+
+      {/* Uit de kennisbank: artikels bij de hoofddienst (interne links + GEO). */}
+      <ServiceRelatedPosts serviceSlug={parentService.slug} />
+
+      {/* Regio-links: subdienst naar de regio-hubs, als compacte link-rij. */}
+      <Section orbs="tl-br">
+        <Container>
+          <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Actief in deze regio&apos;s</h2>
+          <p className="mb-6 max-w-2xl text-white/60">
+            Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
+            en Nederlands-Limburg.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {regions.map((region) => (
+              <Link
+                key={region.slug}
+                href={`/regio/${region.slug}`}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <MapPin className="h-3.5 w-3.5 text-amber-400" />
+                {region.title}
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </Section>
 
       <CTASection
         title={`Interesse in ${service.title.toLowerCase()}?`}

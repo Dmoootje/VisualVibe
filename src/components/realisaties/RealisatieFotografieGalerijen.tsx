@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { FotoGallery } from "@/data/fotografieGalleries";
 import { FOTO_GALLERY_ICONS } from "@/data/fotografieGalleries";
 import { FiIcon, Lightbox } from "@/components/fotografie";
@@ -66,8 +67,15 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
             aria-label={`Open galerij ${featured.title}`}
             className="fg-gcard group relative block aspect-[16/10] w-full overflow-hidden rounded-[20px] border border-white/[0.09] bg-[#141210]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={featured.images[0].src} alt={imgMeta(featured, 0).alt} title={imgMeta(featured, 0).title} />
+            <Image
+              className="fg-gimg object-cover"
+              src={featured.images[0].src}
+              alt={imgMeta(featured, 0).alt}
+              title={imgMeta(featured, 0).title}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 780px"
+            />
             <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.1),transparent 34%,rgba(10,10,10,.72))" }} />
             <span className="absolute left-4 top-4 z-[2] inline-flex items-center gap-[7px] rounded-full bg-[rgba(8,7,6,.6)] px-[13px] py-[7px] font-mono text-[11px] font-bold leading-none text-white backdrop-blur">
               <FiIcon id="foto" size={13} strokeWidth={1.9} className="text-[#FF9A45]" />{featured.images.length} beelden
@@ -80,8 +88,14 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
               <div className="absolute inset-x-4 bottom-4 z-[2] grid grid-cols-3 gap-2.5">
                 {featThumbs.map((img, n) => (
                   <span key={img.src} className="relative block aspect-video overflow-hidden rounded-[10px] border border-white/20 bg-[#141210] shadow-lg">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="h-full w-full object-cover" src={img.src} alt={imgMeta(featured, n + 1).alt} title={imgMeta(featured, n + 1).title} />
+                    <Image
+                      className="object-cover"
+                      src={img.src}
+                      alt={imgMeta(featured, n + 1).alt}
+                      title={imgMeta(featured, n + 1).title}
+                      fill
+                      sizes="(max-width: 1024px) 33vw, 250px"
+                    />
                   </span>
                 ))}
               </div>
@@ -184,8 +198,14 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
                   style={{ ["--i" as string]: k } as React.CSSProperties}
                   className="vvw-caseRow fg-gcard group relative aspect-[4/5] overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#141210] text-left"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={gal.images[0].src} alt={imgMeta(gal, 0).alt} title={imgMeta(gal, 0).title} />
+                  <Image
+                    className="fg-gimg object-cover"
+                    src={gal.images[0].src}
+                    alt={imgMeta(gal, 0).alt}
+                    title={imgMeta(gal, 0).title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                   <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.12) 0%,transparent 32%,rgba(10,10,10,.9) 100%)" }} />
                   <span className="absolute left-4 top-4 z-[2] inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-3 py-[7px] font-mono text-[10.5px] font-bold leading-none tracking-[0.05em] text-[#FF9A45] backdrop-blur">
                     <FiIcon id={gal.icon} size={13} />{iconLabel(gal.icon)}

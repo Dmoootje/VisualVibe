@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { Section, Container } from "@/components/ui";
-import { CTASection, ServiceGrid } from "@/components/sections";
+import { BlogGrid, CTASection, ServiceGrid } from "@/components/sections";
 import { sectors, getSectorBySlug } from "@/data/sectors";
 import { getServiceBySlug } from "@/data/services";
+import { getAllPosts, slugFromPath } from "@/lib/kennisbank/posts";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SectorDetailHero, SectorMarquee } from "@/components/sectors";
@@ -48,6 +50,13 @@ export default async function SectorDetailPage({
   const recommendedServices = sector.recommendedServices
     .map((serviceSlug) => getServiceBySlug(serviceSlug))
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
+
+  // Kennisbank-artikels die deze sector vermelden; anders de 3 nieuwste artikels.
+  const posts = getAllPosts({ locale: "nl" });
+  const sectorPosts = posts.filter((post) =>
+    post.relatedSectors?.some((path) => slugFromPath(path) === sector.slug)
+  );
+  const kennisbankPosts = (sectorPosts.length > 0 ? sectorPosts : posts).slice(0, 3);
 
   return (
     <div className="min-h-screen text-white">

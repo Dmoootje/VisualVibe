@@ -124,3 +124,22 @@ export const realisatieCategories: RealisatieCategory[] = [
 export function getRealisatieCategoryBySlug(slug: string): RealisatieCategory | undefined {
   return realisatieCategories.find((category) => category.slug === slug);
 }
+
+/**
+ * Interne-link-brug tussen realisatie-categorieën en diensten. Categorieën
+ * zonder eigen dienst (bedrijven, projecten, events, sport, buitenland) staan
+ * er bewust niet in; die pagina's slaan de dienst-cross-links gewoon over.
+ */
+export const categoryToServiceSlug: Record<string, string> = {
+  webdesign: "webdesign",
+  fotografie: "fotografie",
+  videografie: "videografie",
+  drone: "drone-fpv",
+  "3d-vr": "3d-vr-ar",
+  podcasting: "podcasting",
+};
+
+/** Omgekeerde map: dienst-slug naar realisatie-categorie-slug. */
+export const serviceToCategorySlug: Record<string, string> = Object.fromEntries(
+  Object.entries(categoryToServiceSlug).map(([category, service]) => [service, category]),
+);

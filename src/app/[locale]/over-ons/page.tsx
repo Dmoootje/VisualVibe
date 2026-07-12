@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
@@ -75,11 +75,11 @@ function IconChip({ id, size = 46 }: { id: string; size?: number }) {
   );
 }
 
-function GalTile({ src, alt, className, children }: { src: string; alt: string; className?: string; children: ReactNode }) {
+function GalTile({ src, alt, sizes, className, children }: { src: string; alt: string; sizes: string; className?: string; children: ReactNode }) {
   return (
     <div className={`vvov-gal ${className ?? ""}`} style={{ position: "relative", overflow: "hidden", borderRadius: 20, border: "1px solid rgba(255,255,255,.08)" }}>
       <div className="vvov-gimg" style={{ position: "absolute", inset: 0 }}>
-        <img src={src} alt={alt} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <Image src={src} alt={alt} fill sizes={sizes} style={{ objectFit: "cover" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg,transparent 48%,rgba(10,10,10,.86))" }} />
       {children}
@@ -134,7 +134,7 @@ export default function OverOnsPage() {
               <div style={{ position: "relative", zIndex: 2 }}>
                 {/* Jens card */}
                 <div style={{ position: "relative", width: "min(368px,80vw)", aspectRatio: "368 / 492", borderRadius: 28, overflow: "hidden", border: "1px solid rgba(255,122,0,.28)", boxShadow: "0 46px 100px -32px rgba(255,90,0,.5),inset 0 0 0 1px rgba(255,255,255,.04)" }}>
-                  <img src={IMG.portrait} alt="Jens Hardy, fotograaf en oprichter van VisualVibe" fetchPriority="high" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                  <Image src={IMG.portrait} alt="Jens Hardy, fotograaf en oprichter van VisualVibe" fill priority sizes="(max-width: 640px) 80vw, 368px" style={{ objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg,transparent 46%,rgba(10,10,10,.9))" }} />
                   <div style={{ position: "absolute", left: 15, top: 15, display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 9999, background: "rgba(12,10,14,.8)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em" }}>
                     <span className="vvov-liveDot" style={{ width: 6, height: 6, borderRadius: 9999, background: "#FF7A00" }} />IN BEELD
@@ -229,7 +229,7 @@ export default function OverOnsPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 auto-rows-[220px] sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[230px]">
-          <GalTile src={IMG.g1} alt="Drone nachtfotografie" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:1/span_2]">
+          <GalTile src={IMG.g1} alt="Drone nachtfotografie" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:1/span_2]">
             <div style={{ position: "absolute", left: 20, top: 18, display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 13px", borderRadius: 9999, background: "rgba(12,10,14,.82)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: ".06em" }}>
               <OvIcon id="drone" size={14} strokeWidth={1.8} />DRONE · NACHT
             </div>
@@ -239,7 +239,7 @@ export default function OverOnsPage() {
             </div>
           </GalTile>
 
-          <GalTile src={IMG.g2} alt="De Alpen vanuit de lucht" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:1]">
+          <GalTile src={IMG.g2} alt="De Alpen vanuit de lucht" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:1]">
             <div style={{ position: "absolute", left: 16, top: 14, display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 9999, background: "rgba(12,10,14,.82)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em" }}>
               <OvIcon id="drone" size={13} strokeWidth={1.8} />DRONE &amp; FPV
             </div>
@@ -248,25 +248,25 @@ export default function OverOnsPage() {
             </div>
           </GalTile>
 
-          <GalTile src={IMG.g3} alt="Bedrijfsfotografie met drone" className="lg:[grid-column:3] lg:[grid-row:2]">
+          <GalTile src={IMG.g3} alt="Bedrijfsfotografie met drone" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 342px" className="lg:[grid-column:3] lg:[grid-row:2]">
             <div style={{ position: "absolute", left: 15, bottom: 14, right: 15 }}>
               <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>Bedrijfsfotografie</div>
             </div>
           </GalTile>
 
-          <GalTile src={IMG.g4} alt="Bedrijfsbeeld op locatie met drone" className="lg:[grid-column:4] lg:[grid-row:2]">
+          <GalTile src={IMG.g4} alt="Bedrijfsbeeld op locatie met drone" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 342px" className="lg:[grid-column:4] lg:[grid-row:2]">
             <div style={{ position: "absolute", left: 15, bottom: 14, right: 15 }}>
               <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>Bedrijfsbeeld op locatie</div>
             </div>
           </GalTile>
 
-          <GalTile src={IMG.g5} alt="Luchtfoto van je woonplaats" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:3]">
+          <GalTile src={IMG.g5} alt="Luchtfoto van je woonplaats" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:3]">
             <div style={{ position: "absolute", left: 18, bottom: 16, right: 18 }}>
               <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 18, color: "#fff" }}>Luchtfoto van je woonplaats</div>
             </div>
           </GalTile>
 
-          <GalTile src={IMG.g6} alt="Drone-inspectie van zonnepanelen" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:3]">
+          <GalTile src={IMG.g6} alt="Drone-inspectie van zonnepanelen" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:3]">
             <div style={{ position: "absolute", left: 18, bottom: 16, right: 18 }}>
               <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 18, color: "#fff" }}>Inspectie van zonnepanelen</div>
             </div>

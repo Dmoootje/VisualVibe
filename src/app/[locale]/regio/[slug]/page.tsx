@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui";
-import { CTASection } from "@/components/sections";
+import { BlogGrid, CTASection } from "@/components/sections";
 import { RegionAmbient, RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
 import { SectorMarquee } from "@/components/sectors";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug } from "@/data/services";
+import { getAllPosts, slugFromPath } from "@/lib/kennisbank/posts";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
@@ -50,6 +51,13 @@ export default async function RegionDetailPage({
   const localServices = region.localServices
     .map((serviceSlug) => getServiceBySlug(serviceSlug))
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
+
+  // Kennisbank-artikels die deze regio vermelden; anders de 3 nieuwste artikels.
+  const posts = getAllPosts({ locale: "nl" });
+  const regionPosts = posts.filter((post) =>
+    post.relatedRegions?.some((path) => slugFromPath(path) === region.slug)
+  );
+  const kennisbankPosts = (regionPosts.length > 0 ? regionPosts : posts).slice(0, 3);
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
@@ -118,6 +126,33 @@ export default async function RegionDetailPage({
         </div>
         <SectorMarquee />
       </section>
+
+      {/* 4. Uit de kennisbank - gerelateerde artikels (interne links + GEO). */}
+      {kennisbankPosts.length > 0 && (
+        <section className="relative py-12 sm:py-16">
+          <Container>
+            <div className="mb-9 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
+              <div className="max-w-xl">
+                <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
+                  <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
+                  Kennisbank
+                </p>
+                <h2 className="text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+                  Lees meer over online groeien in {region.title}
+                </h2>
+              </div>
+              <Link
+                href="/kennisbank"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white"
+              >
+                Alle artikels
+                <ArrowRight className="h-[15px] w-[15px]" />
+              </Link>
+            </div>
+            <BlogGrid posts={kennisbankPosts} />
+          </Container>
+        </section>
+      )}
 
       <CTASection className="bg-transparent" title={`Actief in ${region.title}? Laten we kennismaken.`} />
       </div>
