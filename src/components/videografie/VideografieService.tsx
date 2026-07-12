@@ -5,6 +5,7 @@ import { youtubeChannelUrl } from "@/config/videografie.config";
 import type { VideoItem } from "@/lib/youtube";
 import { PageAmbient } from "@/components/ui";
 import { CTASection, ServiceFaqCombine } from "@/components/sections";
+import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
 import { VideografieGallery } from "./VideografieGallery";
 import { ArrowRight, ArrowDown, DienstIcon } from "./icons";
 
@@ -130,6 +131,12 @@ export function VideografieService({
             </div>
           </section>
         )}
+
+        <ServiceRelatedPosts
+          serviceSlug="videografie"
+          heading="Videografie: praktische gidsen voor KMO's"
+          intro="Van videoscript en social content tot testimonials, wervingsvideo's en aftermovies: verdiep je in de keuzes achter een videoproductie die ook echt gebruikt wordt."
+        />
 
         {/* Veelgestelde vragen (links) + Combineer videografie met (rechts). */}
         <ServiceFaqCombine faqs={service.faqs} combineWith="videografie" relatedServices={relatedServices} />

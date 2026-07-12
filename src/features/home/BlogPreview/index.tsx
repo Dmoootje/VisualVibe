@@ -1,6 +1,6 @@
 import { getLocale } from "next-intl/server";
 import { getAllPosts, isBlogLocale } from "@/lib/kennisbank/posts";
-import { BlogBackground, BlogHeader, BlogGrid } from "./components";
+import { BlogHeader, BlogGrid } from "./components";
 
 export default async function BlogPreview() {
   const locale = await getLocale();
@@ -15,7 +15,6 @@ export default async function BlogPreview() {
       className="py-5 sm:py-20 md:py-24 relative overflow-hidden"
       aria-labelledby="blog-heading"
     >
-      <BlogBackground />
       <div className="container mx-auto px-4 relative z-10">
         <BlogHeader />
         <BlogGrid posts={blogPosts} />

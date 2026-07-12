@@ -2,7 +2,7 @@ import { HeroMessage, HeroStage, HeroFalling } from "./components";
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#080808] pb-14 pt-24">
+    <section className="relative flex min-h-[100svh] items-center overflow-hidden pb-14 pt-24">
       {/* Ambient glow, bottom-left behind the headline */}
       <div
         aria-hidden="true"

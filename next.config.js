@@ -34,6 +34,11 @@ const nextConfig = {
         hostname: 'firebasestorage.googleapis.com',
       },
       {
+        // VisualVibe's own YouTube video stills used by videography articles.
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
         // Google review author profile photos (Places API).
         protocol: 'https',
         hostname: '*.googleusercontent.com',

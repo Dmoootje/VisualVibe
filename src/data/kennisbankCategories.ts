@@ -44,10 +44,10 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "videografie",
     name: "Videografie",
     description:
-      "Alles over bedrijfsvideo, promo, social video en aftermovies die je merk versterken.",
-    seoTitle: "Videografie artikels voor KMO's | Kennisbank VisualVibe",
+      "Praktische gidsen die KMO's helpen het juiste videotype te kiezen en script, productie, distributie en resultaat doelgericht te plannen.",
+    seoTitle: "Videografie voor KMO's: praktische gidsen | VisualVibe",
     seoDescription:
-      "Videografie-inzichten voor KMO's: bedrijfsvideo, promovideo, social media video en aftermovies in Limburg.",
+      "Ontdek hoe je als KMO een bedrijfsvideo, social video, aftermovie, wervingsvideo of testimonial doelgericht plant, produceert, publiceert en meet.",
   },
   {
     slug: "drone",

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  TestimonialsBackground,
   TestimonialsHeader,
   TestimonialCard,
   TestimonialsControls,
@@ -33,8 +32,6 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
       className="py-16 sm:py-20 md:py-24 relative overflow-hidden"
       aria-labelledby="testimonials-heading"
     >
-      <TestimonialsBackground />
-
       <div className="container mx-auto px-5 sm:px-6 md:px-8 relative z-10">
         <TestimonialsHeader />
 

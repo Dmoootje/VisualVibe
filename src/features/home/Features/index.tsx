@@ -2,7 +2,6 @@
 
 import { Tabs } from "@/components/ui/tabs";
 import {
-  FeaturesBackground,
   FeaturesHeader,
   FeaturesTabs,
   MobileFeatureTitle,
@@ -20,8 +19,6 @@ export default function Features() {
       id="features"
       className="py-12 px-4 sm:py-16 md:py-24 relative"
     >
-      <FeaturesBackground />
-
       <div className="container mx-auto relative z-10">
         <FeaturesHeader />
 

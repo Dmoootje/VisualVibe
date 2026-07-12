@@ -5,7 +5,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, HeartHandshake } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { HowItWorksBackground } from "./components";
 import { ProcessTabs } from "./components/ProcessTabs";
 import { ProcessCard } from "./components/ProcessCard";
 import { ProcessPathLine } from "./components/ProcessPathLine";
@@ -18,8 +17,6 @@ export default function HowItWorks() {
 
   return (
     <section className="relative overflow-hidden py-12 sm:py-16 md:py-24">
-      <HowItWorksBackground />
-
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}
         <motion.div

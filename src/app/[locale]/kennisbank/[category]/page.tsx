@@ -15,7 +15,19 @@ import {
 import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
 import { PageHero, Breadcrumbs, BlogGrid, CategoryGrid } from "@/components/sections";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
+
+const OPEN_GRAPH_LOCALE: Record<string, string> = {
+  nl: "nl_BE",
+  fr: "fr_BE",
+  en: "en_BE",
+};
+
+const CONTENT_LANGUAGE: Record<string, string> = {
+  nl: "nl-BE",
+  fr: "fr-BE",
+  en: "en-BE",
+};
 
 export function generateStaticParams() {
   // Pre-render only categories that contain live content in at least one locale.
@@ -37,15 +49,33 @@ export async function generateMetadata({
     return {};
   }
 
-  const empty = getPostsByCategory(categoryDef.slug, locale).length === 0;
+  const posts = getPostsByCategory(categoryDef.slug, locale);
+  const empty = posts.length === 0;
+  const canonical = `${businessConfig.url}${localizedPath(
+    locale,
+    categoryHref(categoryDef.slug)
+  )}`;
+  const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
+  const socialImage = featuredPost?.ogImage ?? `${businessConfig.url}/image.png`;
+
   return {
     title: { absolute: categoryDef.seoTitle },
     description: categoryDef.seoDescription,
-    alternates: {
-      canonical: `${businessConfig.url}${localizedPath(
-        locale,
-        categoryHref(categoryDef.slug)
-      )}`,
+    alternates: { canonical },
+    openGraph: {
+      title: categoryDef.seoTitle,
+      description: categoryDef.seoDescription,
+      url: canonical,
+      type: "website",
+      siteName: businessConfig.displayName,
+      locale: OPEN_GRAPH_LOCALE[locale],
+      images: [{ url: socialImage, alt: featuredPost?.heroImageAlt ?? categoryDef.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: categoryDef.seoTitle,
+      description: categoryDef.seoDescription,
+      images: [socialImage],
     },
     // Empty category: reachable + in the menu, but out of the index until posts land.
     robots: empty ? { index: false, follow: true } : undefined,
@@ -98,6 +128,30 @@ export default async function KennisbankCategoryPage({
             path: localizedPath(locale, categoryHref(categoryDef.slug)),
           },
         ]}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: categoryDef.name,
+          headline: categoryDef.seoTitle,
+          description: categoryDef.seoDescription,
+          url: `${businessConfig.url}${localizedPath(
+            locale,
+            categoryHref(categoryDef.slug)
+          )}`,
+          inLanguage: CONTENT_LANGUAGE[locale],
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: posts.length,
+            itemListElement: posts.map((post, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: post.title,
+              url: `${businessConfig.url}${localizedPath(locale, postHref(post))}`,
+            })),
+          },
+        }}
       />
 
       <PageHero title={categoryDef.name} subtitle={categoryDef.description} />

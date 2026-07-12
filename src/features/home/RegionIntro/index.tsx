@@ -7,12 +7,6 @@ import { RegionMapCard } from "./components";
 export default function RegionIntro() {
   return (
     <section className="relative overflow-hidden px-4 py-12 sm:py-16 md:py-24">
-      {/* Subtle ambient glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-0 top-1/4 h-1/2 w-1/3 rounded-full bg-amber-500/[0.07] blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-red-500/[0.06] blur-[120px]" />
-      </div>
-
       <div className="container relative z-10 mx-auto">
         <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-12 md:flex-row md:items-end">
           <div>
