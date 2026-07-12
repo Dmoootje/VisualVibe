@@ -14,6 +14,8 @@ export interface WebdesignProject {
   features: string[];
   /** SEO focus term chips. */
   terms: string[];
+  /** Sector slugs this project is relevant for; feeds /sectoren/[slug]. */
+  sectors?: string[];
 }
 
 export const webdesignProjects: WebdesignProject[] = [

@@ -7,6 +7,7 @@ import { WEBDESIGN_IMAGE_SLOTS, imageKey } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { saveWebdesignProjects } from "@/lib/admin/webdesignActions";
 import { ImageUploadField } from "./ImageUploadField";
+import { SectorPicker } from "./SectorPicker";
 
 const aspectForSlot: Record<string, string> = {
   thumb: "aspect-video",
@@ -45,6 +46,7 @@ function emptyProject(): WebdesignProject {
     text: "",
     features: [],
     terms: [],
+    sectors: [],
   };
 }
 
@@ -332,6 +334,14 @@ function ProjectCard({
           placeholder="Eigen huisstijl & webdesign"
           items={project.features}
           onChange={(next) => set("features", next)}
+        />
+      </div>
+
+      <div className="mt-4">
+        <SectorPicker
+          hint="(toont dit project op de gekozen sectorpagina's)"
+          value={project.sectors ?? []}
+          onChange={(next) => set("sectors", next)}
         />
       </div>
 

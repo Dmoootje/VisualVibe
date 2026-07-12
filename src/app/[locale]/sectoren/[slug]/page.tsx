@@ -1,20 +1,49 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AlertCircle, ArrowRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
-import { Section, Container } from "@/components/ui";
-import { BlogGrid, CTASection, ServiceGrid } from "@/components/sections";
 import { sectors, getSectorBySlug } from "@/data/sectors";
 import { getServiceBySlug, serviceHref } from "@/data/services";
-import { getAllPosts, localizedPath, slugFromPath } from "@/lib/kennisbank/posts";
+import { getRegionBySlug } from "@/data/regions";
+import { droneMedia } from "@/config/drone.config";
+import { getAllPosts, localizedPath } from "@/lib/kennisbank/posts";
+import { scoreSectorPosts } from "@/lib/kennisbank/relatedPosts";
+import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
+import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
+import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
+import { getVideografieVideos } from "@/lib/youtube";
+import {
+  selectSectorWebdesignProjects,
+  selectSectorGalleries,
+  selectSectorVideos,
+} from "@/lib/sectors/selectSectorContent";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
-import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo";
-import { SectorDetailHero, SectorMarquee } from "@/components/sectors";
+import { BreadcrumbJsonLd, ServiceJsonLd, FaqPageJsonLd, JsonLd } from "@/components/seo";
+import { CTASection } from "@/components/sections";
+import {
+  SectorDetailHero,
+  SectorMarquee,
+  SectorAnswerIntro,
+  SectorChallenges,
+  SectorServices,
+  SectorCases,
+  SectorRealisations,
+  SectorMediaProjects,
+  SectorProcess,
+  SectorProof,
+  SectorLocal,
+  SectorFaq,
+  SectorKnowledge,
+} from "@/components/sectors";
+import type { Region } from "@/types";
 
 export function generateStaticParams() {
   return sectors.map((sector) => ({ slug: sector.slug }));
 }
+
+// Cases en galerijen zijn Firestore-content (admin-beheerd): net als op de
+// realisaties-pagina's revalideren we periodiek zodat admin-wijzigingen
+// (sector-tags, nieuwe projecten) zonder rebuild doorstromen.
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -48,16 +77,33 @@ export default async function SectorDetailPage({
     notFound();
   }
 
+  // Echte content: Firestore-projecten/galerijen (met seed-fallback) + YouTube.
+  const [projects, images, galleries, videoData] = await Promise.all([
+    getWebdesignProjects(),
+    getWebdesignImages(),
+    getFotografieGalleries(),
+    getVideografieVideos(),
+  ]);
+
   const recommendedServices = sector.recommendedServices
     .map((serviceSlug) => getServiceBySlug(serviceSlug))
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
-  // Kennisbank-artikels die deze sector vermelden; anders de 3 nieuwste artikels.
-  const posts = getAllPosts({ locale: "nl" });
-  const sectorPosts = posts.filter((post) =>
-    post.relatedSectors?.some((path) => slugFromPath(path) === sector.slug)
-  );
-  const kennisbankPosts = (sectorPosts.length > 0 ? sectorPosts : posts).slice(0, 3);
+  // Selectie: curated featured ids eerst, dan admin-getagde content; niets
+  // wordt aangevuld - lege selecties verbergen hun sectie.
+  const featuredProjects = selectSectorWebdesignProjects(sector, projects, images);
+  const featuredGalleries = selectSectorGalleries(sector, galleries);
+  const featuredVideos = selectSectorVideos(sector, videoData.videos, droneMedia);
+
+  // Kennisbank: relevantiescore (geen nieuwste-3-fallback meer).
+  const kennisbankPosts = scoreSectorPosts(getAllPosts({ locale: "nl" }), sector, { max: 4 });
+
+  const localRegions = (sector.localSection?.regionSlugs ?? [])
+    .map((regionSlug) => getRegionBySlug(regionSlug))
+    .filter((region): region is Region => Boolean(region));
+
+  // ItemList alleen voor zichtbare projecten met een echte live-URL.
+  const listedProjects = featuredProjects.filter((project) => project.url);
 
   return (
     <div className="min-h-screen text-white">
@@ -68,7 +114,7 @@ export default async function SectorDetailPage({
           { name: sector.title, path: `/sectoren/${sector.slug}` },
         ]}
       />
-      {recommendedServices.slice(0, 3).map((service) => (
+      {recommendedServices.map((service) => (
         <ServiceJsonLd
           key={service.slug}
           service={{
@@ -79,6 +125,24 @@ export default async function SectorDetailPage({
           }}
         />
       ))}
+      {/* Zelfde array als de zichtbare SectorFaq, dus schema == pagina. */}
+      <FaqPageJsonLd items={sector.faq ?? []} />
+      {listedProjects.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: sector.casesTitle ?? `Webdesignprojecten - ${sector.title}`,
+            numberOfItems: listedProjects.length,
+            itemListElement: listedProjects.map((project, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: project.name,
+              url: project.url,
+            })),
+          }}
+        />
+      )}
 
       <SectorDetailHero sector={sector} />
 
@@ -94,59 +158,59 @@ export default async function SectorDetailPage({
         <SectorMarquee exclude={sector.slug} />
       </div>
 
-      {sector.painPoints.length > 0 && (
-        <Section orbs="tl-br">
-          <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Herkenbare uitdagingen</h2>
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {sector.painPoints.map((point) => (
-                <li key={point} className="flex items-start gap-2 text-white/80">
-                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </Section>
+      {sector.answerIntro && <SectorAnswerIntro answer={sector.answerIntro} />}
+
+      <SectorChallenges
+        intro={sector.challengesIntro}
+        expanded={sector.painPointsExpanded}
+        simple={sector.painPoints}
+      />
+
+      <SectorServices
+        title={sector.servicesTitle}
+        intro={sector.servicesIntro}
+        services={recommendedServices}
+      />
+
+      <SectorCases
+        title={sector.casesTitle}
+        intro={sector.casesIntro}
+        projects={featuredProjects}
+        images={images}
+      />
+
+      <SectorRealisations
+        title={sector.realisationsTitle}
+        intro={sector.realisationsIntro}
+        galleries={featuredGalleries}
+      />
+
+      <SectorMediaProjects
+        title={sector.mediaTitle}
+        intro={sector.mediaIntro}
+        videos={featuredVideos}
+      />
+
+      {sector.processSteps && sector.processSteps.length > 0 && (
+        <SectorProcess title={sector.processTitle} steps={sector.processSteps} />
       )}
 
-      {recommendedServices.length > 0 && (
-        <Section orbs="tr-bl">
-          <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Aanbevolen diensten</h2>
-            <ServiceGrid services={recommendedServices} />
-          </Container>
-        </Section>
+      {sector.proofPoints && sector.proofPoints.length > 0 && (
+        <SectorProof title={sector.proofTitle} points={sector.proofPoints} />
       )}
 
-      {/* Uit de kennisbank: gerelateerde artikels (interne links + GEO). */}
-      {kennisbankPosts.length > 0 && (
-        <Section orbs="tl-br">
-          <Container>
-            <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-              <div>
-                <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
-                  <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
-                  Kennisbank
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-bold">
-                  Lees meer over online groeien in jouw sector
-                </h2>
-              </div>
-              <Link
-                href="/kennisbank"
-                className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-end"
-              >
-                Alle artikels
-                <ArrowRight className="h-[15px] w-[15px]" />
-              </Link>
-            </div>
-            <BlogGrid posts={kennisbankPosts} />
-          </Container>
-        </Section>
+      {sector.localSection && localRegions.length > 0 && (
+        <SectorLocal local={sector.localSection} regions={localRegions} />
       )}
 
-      <CTASection title={`Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`} />
+      {sector.faq && sector.faq.length > 0 && <SectorFaq items={sector.faq} />}
+
+      <SectorKnowledge posts={kennisbankPosts} />
+
+      <CTASection
+        title={sector.ctaTitle ?? `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`}
+        description={sector.ctaText}
+      />
     </div>
   );
 }

@@ -46,8 +46,16 @@ export function SectorDetailHero({ sector }: { sector: Sector }) {
               </p>
             )}
 
-            <h1 className="text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl md:text-6xl">
-              {sector.title}
+            {/* Longer SEO heroTitle steps the type scale down one notch so it
+                wraps within the same hero composition (no layout changes). */}
+            <h1
+              className={`font-bold leading-[0.98] tracking-tight ${
+                sector.heroTitle
+                  ? "text-3xl sm:text-4xl md:text-5xl"
+                  : "text-4xl sm:text-5xl md:text-6xl"
+              }`}
+            >
+              {sector.heroTitle ?? sector.title}
             </h1>
 
             <p className="mt-5 max-w-[480px] text-lg text-white/65">{sector.intro}</p>
@@ -57,7 +65,7 @@ export function SectorDetailHero({ sector }: { sector: Sector }) {
                 href="/offerte-aanvragen"
                 className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black shadow-[0_10px_30px_-8px_rgba(255,117,0,0.6)] transition-transform hover:-translate-y-0.5"
               >
-                Start je project
+                {sector.heroCtaLabel ?? "Start je project"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link

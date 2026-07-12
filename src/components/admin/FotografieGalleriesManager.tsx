@@ -6,6 +6,7 @@ import type { FotoGallery, FotoGalleryImage } from "@/data/fotografieGalleries";
 import { FOTO_GALLERY_ICONS } from "@/data/fotografieGalleries";
 import { FiIcon } from "@/components/fotografie";
 import { saveFotografieGalleries } from "@/lib/admin/fotografieActions";
+import { SectorPicker } from "./SectorPicker";
 
 const inputCls =
   "w-full rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder:text-white/25 focus:border-amber-400/50 focus:outline-none";
@@ -280,6 +281,14 @@ function GalleryCard({
                 </select>
               </div>
             </label>
+          </div>
+
+          <div className="mt-4">
+            <SectorPicker
+              hint="(toont deze galerij op de gekozen sectorpagina's)"
+              value={gallery.sectors ?? []}
+              onChange={(next) => set("sectors", next)}
+            />
           </div>
 
           <GalleryImages images={gallery.images} onChange={(next) => set("images", next)} />

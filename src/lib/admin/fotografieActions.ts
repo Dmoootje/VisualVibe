@@ -3,11 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { setFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
+import { sectors } from "@/data/sectors";
 import type { FotoGallery, FotoGalleryImage } from "@/data/fotografieGalleries";
 
 export type GalleryActionResult = { ok: boolean; error?: string };
 
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
+const strList = (v: unknown) =>
+  Array.isArray(v) ? v.map((x) => str(x)).filter(Boolean) : [];
+
+const SECTOR_SLUGS = new Set(sectors.map((s) => s.slug));
+const sectorList = (v: unknown) => strList(v).filter((s) => SECTOR_SLUGS.has(s));
 
 function slugify(v: string): string {
   return v.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
@@ -28,6 +34,8 @@ function sanitizeGallery(g: FotoGallery, i: number): FotoGallery {
     title,
     description: str(g.description),
     icon: str(g.icon) || "foto",
+    tags: strList(g.tags),
+    sectors: sectorList(g.sectors),
     images: Array.isArray(g.images)
       ? g.images.map(sanitizeImage).filter((x): x is FotoGalleryImage => x !== null)
       : [],
@@ -57,7 +65,11 @@ export async function saveFotografieGalleries(galleries: FotoGallery[]): Promise
     return { ok: false, error: "Opslaan mislukt." };
   }
 
-  revalidatePath("/realisaties/fotografie");
+  // Locale prefixes (/be, ...) mean literal paths no longer match; revalidate
+  // the dynamic route patterns, which cover every locale at once. Sector pages
+  // surface admin-tagged galleries (sectors field).
+  revalidatePath("/[locale]/realisaties/[category]", "page");
+  revalidatePath("/[locale]/sectoren/[slug]", "page");
   revalidatePath("/admin/settings/realisaties/fotografie");
   return { ok: true };
 }

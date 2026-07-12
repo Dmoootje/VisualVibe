@@ -18,6 +18,8 @@ export type FotoGallery = {
   icon: string;
   /** Short tag chips shown on the featured (uitgelichte) gallery. */
   tags?: string[];
+  /** Sector slugs this gallery is relevant for; feeds /sectoren/[slug]. */
+  sectors?: string[];
   /** images[0] is the cover. */
   images: FotoGalleryImage[];
 };

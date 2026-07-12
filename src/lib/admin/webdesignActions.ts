@@ -4,6 +4,7 @@ import { getCurrentAdmin } from "@/lib/auth/session";
 import { setWebdesignImage } from "@/lib/firestore/webdesignImages";
 import { setWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { revalidateWebdesign } from "@/lib/admin/revalidateWebdesign";
+import { sectors } from "@/data/sectors";
 import type { WebdesignProject } from "@/data/webdesignShowcase";
 
 export type ImageActionResult = { ok: boolean; error?: string };
@@ -28,6 +29,9 @@ const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 const strList = (v: unknown) =>
   Array.isArray(v) ? v.map((x) => str(x)).filter(Boolean) : [];
 
+const SECTOR_SLUGS = new Set(sectors.map((s) => s.slug));
+const sectorList = (v: unknown) => strList(v).filter((s) => SECTOR_SLUGS.has(s));
+
 function sanitizeProject(p: WebdesignProject): WebdesignProject {
   const id = str(p.id);
   return {
@@ -40,6 +44,7 @@ function sanitizeProject(p: WebdesignProject): WebdesignProject {
     text: str(p.text),
     features: strList(p.features),
     terms: strList(p.terms),
+    sectors: sectorList(p.sectors),
   };
 }
 
