@@ -40,11 +40,9 @@ async function uploadOne(file: File, key: string): Promise<string> {
 
 /** The per-gallery photo grid: multi-upload + caption/remove/reorder + cover pick. */
 function GalleryImages({
-  galleryId,
   images,
   onChange,
 }: {
-  galleryId: string;
   images: FotoGalleryImage[];
   onChange: (next: FotoGalleryImage[]) => void;
 }) {
@@ -59,7 +57,10 @@ function GalleryImages({
     try {
       let i = images.length;
       for (const file of Array.from(files)) {
-        const url = await uploadOne(file, `${galleryId}-${i}`);
+        // Keep the uploaded filename (only spaces/special chars become hyphens,
+        // lowercased) - never the random gallery id, so SEO names are preserved.
+        const base = file.name.replace(/\.[^.]+$/, "").trim();
+        const url = await uploadOne(file, base || `foto-${i + 1}`);
         added.push({ src: url });
         i++;
       }
@@ -281,7 +282,7 @@ function GalleryCard({
             </label>
           </div>
 
-          <GalleryImages galleryId={gallery.id} images={gallery.images} onChange={(next) => set("images", next)} />
+          <GalleryImages images={gallery.images} onChange={(next) => set("images", next)} />
         </>
       )}
     </section>

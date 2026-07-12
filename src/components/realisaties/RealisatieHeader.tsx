@@ -49,12 +49,9 @@ export function RealisatieHeader({
   const stats = statsOverride ?? category.stats ?? [];
 
   return (
-    <header className="relative overflow-hidden border-b border-white/[0.06] pb-10 pt-28 sm:pt-32 md:pb-12">
-      {/* Ingewerkte achtergrond: warme gloed rechtsboven + radiaal-gemaskeerd raster. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[-80px] top-[-160px] z-0 h-[620px] w-[720px] max-w-full bg-[radial-gradient(ellipse_52%_52%_at_60%_42%,rgba(255,90,0,0.16),rgba(255,90,0,0.05)_44%,transparent_70%)]"
-      />
+    <header className="relative overflow-hidden pb-10 pt-28 sm:pt-32 md:pb-12">
+      {/* Subtiel radiaal-gemaskeerd raster; de warme gloed komt van de site-brede
+          achtergrond (SiteBackground), zodat de pagina 1 vloeiende bg houdt. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0"

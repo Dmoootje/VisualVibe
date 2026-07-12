@@ -19,14 +19,15 @@ export const IMAGE_EXT_BY_TYPE: Record<string, string> = {
 
 export const DEFAULT_STORAGE_DIR = "images/portfolio/webdesign";
 
-/** Slugify a key into a clean, safe filename stem (no extension). */
-function slugifyKey(key: string): string {
+/** Slugify a key into a clean, safe, lowercase filename stem (no extension). */
+export function slugifyKey(key: string): string {
   return (
     (key || "image")
-      .replace(/[^a-z0-9-]/gi, "-")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-|-$/g, "")
-      .slice(0, 60) || "image"
+      .slice(0, 120) || "image"
   );
 }
 

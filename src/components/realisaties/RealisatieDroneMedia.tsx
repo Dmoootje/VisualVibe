@@ -94,11 +94,7 @@ export function RealisatieDroneMedia({
   return (
     <>
       {/* ===== FEATURED ===== */}
-      <section className="relative overflow-hidden px-4 pb-16 pt-14">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute right-[-120px] top-10 z-0 h-[620px] w-[760px] max-w-full bg-[radial-gradient(circle_at_60%_45%,rgba(255,90,0,0.12),transparent_64%)]"
-        />
+      <section className="relative px-4 pb-16 pt-14">
         <div className="container relative z-[2] mx-auto grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           <button
             type="button"

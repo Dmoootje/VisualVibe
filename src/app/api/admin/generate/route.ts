@@ -64,12 +64,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // SEO-friendly filename stem: prefer the site name, else the domain, never the
+  // random project id. uploadImageBuffer slugifies + lowercases this.
+  const hostStem = parsedUrl.hostname.replace(/^www\./i, "").replace(/\.[a-z.]+$/i, "");
+  const nameStem = siteName.trim() || hostStem || projectId;
+
   // Upload each viewport once, then reuse the URL across the matching slots.
   const images: Record<string, string> = {};
   try {
     const [desktopUrl, mobileUrl] = await Promise.all([
-      uploadImageBuffer(desktop.screenshot, `${projectId}-desktop`),
-      uploadImageBuffer(mobile.screenshot, `${projectId}-mobiel`),
+      uploadImageBuffer(desktop.screenshot, `${nameStem}-desktop`),
+      uploadImageBuffer(mobile.screenshot, `${nameStem}-mobiel`),
     ]);
     // thumb + hoofdscreenshot (1) + desktop (2) share the desktop shot; mobiel (4) is the phone shot.
     const slotUrls: Record<string, string> = {

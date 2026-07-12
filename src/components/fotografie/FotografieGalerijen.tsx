@@ -10,6 +10,12 @@ const ArrowR = ({ size = 13 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
 );
 
+// SEO-friendly title + alt: the branded gallery title as `title`, the gallery
+// description as the descriptive `alt` (this showcase has no per-photo captions).
+function imgMeta(g: { title: string; desc?: string }): { title: string; alt: string } {
+  return { title: `${g.title} | VisualVibe`, alt: g.desc?.trim() || g.title };
+}
+
 /**
  * Galerijen block: a featured bento (1 big + 2 small tiles) + a WeddingVibe card
  * and a "meer projecten" card. Any gallery tile opens the shared <Lightbox>
@@ -18,7 +24,14 @@ const ArrowR = ({ size = 13 }: { size?: number }) => (
 export function FotografieGalerijen() {
   const [openGal, setOpenGal] = useState<number | null>(null);
   const g = openGal !== null ? FG_GALLERIES[openGal] : null;
-  const slides = g ? g.keys.map((k, n) => ({ src: FG_IMG[k], cap: `${g.title} – ${n + 1}` })) : [];
+  const slides = g
+    ? g.keys.map((k, n) => ({
+        src: FG_IMG[k],
+        cap: `${g.title} - ${n + 1}`,
+        alt: imgMeta(g).alt,
+        title: imgMeta(g).title,
+      }))
+    : [];
 
   const featured = [0, 1, 2];
 
@@ -50,7 +63,7 @@ export function FotografieGalerijen() {
               className={`fg-gcard group relative overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#141210] text-left ${big ? "lg:row-span-2" : ""}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={FG_IMG[gg.keys[0]]} alt={gg.title} />
+              <img className="fg-gimg absolute inset-0 h-full w-full object-cover" src={FG_IMG[gg.keys[0]]} alt={imgMeta(gg).alt} title={imgMeta(gg).title} />
               <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.15) 0%,transparent 34%,rgba(10,10,10,.9) 100%)" }} />
               <span className="absolute left-4 top-4 z-[2] inline-flex items-center gap-[7px] rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-3 py-[7px] font-mono text-[10.5px] font-bold tracking-[0.05em] text-[#FF9A45] backdrop-blur">
                 <FiIcon id={gg.icon} size={13} />{gg.badge}

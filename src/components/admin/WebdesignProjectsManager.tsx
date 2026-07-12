@@ -17,6 +17,9 @@ const aspectForSlot: Record<string, string> = {
 };
 
 type GeneratedCopy = {
+  title: string;
+  subtitle: string;
+  tagline: string;
   text: string;
   tags: string[];
   terms: string[];
@@ -161,6 +164,9 @@ function ProjectCard({
       if (copy) {
         onChange({
           ...project,
+          name: copy.title || project.name,
+          client: copy.subtitle || project.client,
+          teaser: copy.tagline || project.teaser,
           text: copy.text,
           tags: copy.tags.slice(0, 3),
           terms: copy.terms,

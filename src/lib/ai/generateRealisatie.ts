@@ -6,6 +6,12 @@ import Anthropic from "@anthropic-ai/sdk";
 // never publishes on its own. Server-only (Node runtime).
 
 export type GeneratedRealisatie = {
+  /** Business name / project title, e.g. "Gordijnen Myriam". */
+  title: string;
+  /** Uppercase client line, e.g. "GORDIJNEN MYRIAM · GORDIJNEN & MEER". */
+  subtitle: string;
+  /** Short tagline under the title. */
+  tagline: string;
   text: string;
   tags: string[];
   terms: string[];
@@ -15,12 +21,15 @@ export type GeneratedRealisatie = {
 const REALISATIE_SCHEMA = {
   type: "object",
   properties: {
+    title: { type: "string" },
+    subtitle: { type: "string" },
+    tagline: { type: "string" },
     text: { type: "string" },
     tags: { type: "array", items: { type: "string" } },
     terms: { type: "array", items: { type: "string" } },
     features: { type: "array", items: { type: "string" } },
   },
-  required: ["text", "tags", "terms", "features"],
+  required: ["title", "subtitle", "tagline", "text", "tags", "terms", "features"],
   additionalProperties: false,
 } as const;
 
@@ -43,6 +52,9 @@ const SYSTEM = `Je bent copywriter voor VisualVibe, een creatief mediabureau uit
 Schrijf in het Nederlands, zakelijk en concreet, in de huisstijl van VisualVibe. Baseer je uitsluitend op de aangeleverde paginatekst; verzin geen cijfers, prijzen of feiten.
 
 Lever exact deze velden:
+- title: de bedrijfsnaam / titel van de realisatie, kort en zonder toevoegingen (bijvoorbeeld "Gordijnen Myriam", "Het Magazijn", "Schrijnwerkerij Aussems").
+- subtitle: een korte klantregel in HOOFDLETTERS in de vorm "BEDRIJFSNAAM · KORTE TYPERING", met een middelpunt (·) als scheidingsteken. Bijvoorbeeld "HET MAGAZIJN · RESTAURANT · BILZEN" of "GORDIJNEN MYRIAM · GORDIJNEN & MEER".
+- tagline: een korte, pakkende zin van maximaal ongeveer 8 woorden die onder de titel komt (bijvoorbeeld "Eigen huisstijl & webdesign met prachtige realisatiepagina's.").
 - text: een vloeiende paragraaf van 2 tot 3 zinnen die beschrijft wat voor website dit is en wat VisualVibe leverde (bijvoorbeeld eigen huisstijl en webdesign, professionele fotografie, een reservatiesysteem, SEO). Voorbeeldstijl: "Website met eigen creatie van huisstijl en webdesign inclusief professionele foto's. Geoptimaliseerd voor zoekmachines, met op maat gemaakte pagina's."
 - tags: maximaal 3 korte badges van 1 of 2 woorden die het project typeren (bijvoorbeeld "Horeca", "Reservatie", "SEO", "Webshop", "Fotografie").
 - terms: 1 tot 3 SEO-zoektermen waarop de site gericht is (bijvoorbeeld "restaurant Bilzen", "zonnepanelen").
@@ -103,6 +115,9 @@ export async function generateRealisatie({
 
   const clean = (s: string) => stripEmDash(s.trim());
   return {
+    title: typeof parsed.title === "string" ? clean(parsed.title) : "",
+    subtitle: typeof parsed.subtitle === "string" ? clean(parsed.subtitle) : "",
+    tagline: typeof parsed.tagline === "string" ? clean(parsed.tagline) : "",
     text: typeof parsed.text === "string" ? clean(parsed.text) : "",
     tags: asStrings(parsed.tags).map(clean).filter(Boolean).slice(0, 3),
     terms: asStrings(parsed.terms).map(clean).filter(Boolean),
