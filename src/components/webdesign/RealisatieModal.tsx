@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "./ShowcaseImage";
@@ -46,9 +47,12 @@ export function RealisatieModal({
     };
   }, [onClose]);
 
-  return (
+  // Portal naar <body>: de showcase-section vormt een eigen stacking context
+  // (relative z-[2]) waardoor de modal anders ONDER de fixed header (z-50)
+  // rendert en de sluitknop onbereikbaar wordt.
+  return createPortal(
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-2.5 backdrop-blur-sm sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label={`${c.name} details`}
@@ -155,7 +159,8 @@ export function RealisatieModal({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

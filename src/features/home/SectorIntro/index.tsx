@@ -7,7 +7,7 @@ export default function SectorIntro() {
   return (
     <section className="py-12 sm:py-16 md:py-24">
       {/* Header row stays in the container; the marquee below runs full-bleed. */}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-11 md:flex-row md:items-end">
           <div>
             <div className="mb-4 flex items-center gap-3">

@@ -10,7 +10,7 @@ import { Link } from "@/i18n/navigation";
 export function SeoHero() {
   return (
     <section className="relative z-[2] overflow-hidden pt-24 text-white">
-      <div className="container relative z-[2] mx-auto grid items-center gap-8 px-4 py-10 lg:grid-cols-[1fr_540px] lg:gap-14">
+      <div className="container relative z-[2] mx-auto grid items-center gap-8 px-2.5 sm:px-4 py-10 lg:grid-cols-[1fr_540px] lg:gap-14">
         {/* copy - centered when stacked (tablet/mobile), left-aligned on desktop */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
@@ -32,10 +32,10 @@ export function SeoHero() {
             zoals ChatGPT, Perplexity en Gemini. Technische SEO, lokale vindbaarheid en content die je
             doelgroep écht bereikt.
           </p>
-          <div className="flex flex-wrap gap-3.5">
+          <div className="flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:flex-wrap">
             <Link
               href="/offerte-aanvragen"
-              className="vvw-btn inline-flex items-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white"
+              className="vvw-btn inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white sm:w-auto"
               style={{ background: "linear-gradient(90deg,#FF3B2E,#FF7A00)", boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)" }}
             >
               Offerte aanvragen
@@ -43,7 +43,7 @@ export function SeoHero() {
             </Link>
             <a
               href="#seo-cases"
-              className="vvw-btn inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white"
+              className="vvw-btn inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white sm:w-auto"
             >
               Bekijk realisaties
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m5 12 7 7 7-7" /></svg>
@@ -52,21 +52,23 @@ export function SeoHero() {
         </div>
 
         {/* live rankings-dashboard */}
-        <div className="vvseo-col lg:justify-end">
+        <div className="vvseo-col w-full lg:justify-end">
           <div className="vvseo-stage">
-            {/* roterende conische gloed */}
+            {/* roterende conische gloed - op mobiel kleiner zodat niets buiten
+                de viewport valt en er geen harde cliplijnen ontstaan */}
             <div
               aria-hidden="true"
-              className="vvseo-spin pointer-events-none absolute left-1/2 top-[46%] z-0 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[50px]"
+              className="vvseo-spin pointer-events-none absolute left-1/2 top-[46%] z-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[34px] sm:h-[520px] sm:w-[520px] sm:blur-[50px]"
               style={{
                 background:
                   "conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,.28) 80deg,transparent 190deg,rgba(255,90,0,.18) 290deg,transparent 360deg)",
               }}
             />
 
-            {/* dashboard-kaart */}
+            {/* dashboard-kaart: mobiel in de flow op volle breedte, vanaf sm het
+                absolute stage-ontwerp */}
             <div
-              className="absolute left-2 top-[34px] z-[1] w-[452px] rounded-[20px] p-[1.5px]"
+              className="relative z-[1] mx-auto w-full max-w-[452px] rounded-[20px] p-[1.5px] sm:absolute sm:left-2 sm:top-[34px] sm:mx-0 sm:w-[452px]"
               style={{
                 background: "linear-gradient(150deg,rgba(255,150,60,.7),rgba(255,90,0,.25) 55%,rgba(255,255,255,.05))",
                 boxShadow: "0 44px 90px -34px rgba(255,80,0,.6)",
@@ -132,8 +134,8 @@ export function SeoHero() {
               </div>
             </div>
 
-            {/* zwevend: positie #1 */}
-            <div className="vvw-bob absolute right-[-4px] top-2 z-[3] flex items-center gap-2.5 rounded-[14px] border border-[rgba(255,122,0,0.24)] bg-[rgba(20,17,14,0.92)] px-4 py-3 backdrop-blur-md shadow-[0_18px_36px_-16px_rgba(0,0,0,0.85)]">
+            {/* zwevend: positie #1 - mobiel binnen de viewport over de kaartrand */}
+            <div className="vvw-bob absolute right-1 top-0 z-[3] flex items-center gap-2.5 rounded-[14px] border border-[rgba(255,122,0,0.24)] bg-[rgba(20,17,14,0.92)] px-4 py-3 backdrop-blur-md shadow-[0_18px_36px_-16px_rgba(0,0,0,0.85)] sm:right-[-4px] sm:top-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[rgba(90,196,125,0.16)]">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#5ac47d" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></svg>
               </span>
@@ -143,8 +145,8 @@ export function SeoHero() {
               </div>
             </div>
 
-            {/* zwevend: GEO / AI */}
-            <div className="vvw-bob2 absolute bottom-2 left-[-14px] z-[3] rounded-[14px] border border-[rgba(255,122,0,0.24)] bg-[rgba(20,17,14,0.92)] px-4 py-[13px] backdrop-blur-md shadow-[0_18px_36px_-16px_rgba(0,0,0,0.85)]">
+            {/* zwevend: GEO / AI - mobiel binnen de viewport over de kaartrand */}
+            <div className="vvw-bob2 absolute bottom-0 left-1 z-[3] rounded-[14px] border border-[rgba(255,122,0,0.24)] bg-[rgba(20,17,14,0.92)] px-4 py-[13px] backdrop-blur-md shadow-[0_18px_36px_-16px_rgba(0,0,0,0.85)] sm:bottom-2 sm:left-[-14px]">
               <div className="mb-[9px] flex items-center gap-2">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" /><circle cx="12" cy="12" r="4" /></svg>
                 <span className="font-sora text-[13.5px] font-bold text-white">Zichtbaar in AI</span>

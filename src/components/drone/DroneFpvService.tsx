@@ -58,7 +58,7 @@ export function DroneFpvService({
       <div className="relative z-10">
         {/* ===== HERO ===== */}
         <section className="relative z-[2] pb-12 pt-24 sm:pb-14">
-          <div className="container mx-auto grid items-center gap-8 px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
+          <div className="container mx-auto grid items-center gap-8 px-2.5 sm:px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
             <div>
               <nav className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
                 <Link href="/diensten" className="transition-colors hover:text-white">
@@ -75,17 +75,17 @@ export function DroneFpvService({
                 Drone &amp; FPV
               </h1>
               <p className="mb-[34px] max-w-[500px] text-[19px] leading-[1.6] text-white/65">{service.intro}</p>
-              <div className="flex flex-wrap gap-3.5">
+              <div className="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/offerte-aanvragen"
-                  className="heroBtn inline-flex items-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5"
+                  className="heroBtn inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5 sm:w-auto"
                   style={{ background: "linear-gradient(90deg,#FF3B2E,#FF7A00)" }}
                 >
                   Offerte aanvragen <ArrowRight size={17} />
                 </Link>
                 <a
                   href="#dr-werk"
-                  className="heroBtn inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+                  className="heroBtn inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
                 >
                   Bekijk realisaties <ArrowDown size={16} />
                 </a>
@@ -180,7 +180,7 @@ export function DroneFpvService({
 
         {/* ===== GEO direct-answer block ===== */}
         <section className="relative py-14 sm:py-16">
-          <div className="container mx-auto grid items-start gap-10 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          <div className="container mx-auto grid items-start gap-10 px-2.5 sm:px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
             <div>
               <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">
                 <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#FF9A45]" />
@@ -233,7 +233,7 @@ export function DroneFpvService({
         {/* ===== DIENSTEN OVERZICHT ===== */}
         {subServices.length > 0 && (
           <section className="relative py-8">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-2.5 sm:px-4">
               <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Drone &amp; FPV diensten overzicht
               </h2>
@@ -265,7 +265,7 @@ export function DroneFpvService({
         {/* ===== HOE WE WERKEN ===== */}
         {service.process.length > 0 && (
           <section className="relative py-8">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-2.5 sm:px-4">
               <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Hoe we werken
               </h2>

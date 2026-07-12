@@ -17,7 +17,7 @@ export default function HowItWorks() {
 
   return (
     <section className="relative overflow-hidden py-12 sm:py-16 md:py-24">
-      <div className="container relative z-10 mx-auto px-4">
+      <div className="container relative z-10 mx-auto px-2.5 sm:px-4">
         {/* Header */}
         <motion.div
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20 }}

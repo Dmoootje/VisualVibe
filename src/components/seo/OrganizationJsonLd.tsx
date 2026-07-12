@@ -11,7 +11,9 @@ export function OrganizationJsonLd() {
         name: businessConfig.displayName,
         legalName: businessConfig.legalName,
         url: businessConfig.url,
-        logo: `${businessConfig.url}/logo.svg`,
+        logo: businessConfig.logo,
+        founder: { "@type": "Person", name: businessConfig.founder },
+        vatID: businessConfig.vatID,
         contactPoint: {
           "@type": "ContactPoint",
           telephone: businessConfig.telephone,

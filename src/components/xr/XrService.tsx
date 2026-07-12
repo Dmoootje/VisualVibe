@@ -123,7 +123,7 @@ export function XrService({
       <div className="relative z-10">
         {/* ===== HERO ===== */}
         <section className="relative z-[2] pb-12 pt-14 sm:pt-16">
-          <div className="container mx-auto grid items-center gap-12 px-4 lg:grid-cols-[1fr_600px]">
+          <div className="container mx-auto grid items-center gap-12 px-2.5 sm:px-4 lg:grid-cols-[1fr_600px]">
             <div>
               <nav className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
                 <Link href="/diensten" className="transition-colors hover:text-white">
@@ -144,10 +144,10 @@ export function XrService({
                 tours en AR-ervaringen die je klant laten rondlopen door een ruimte die er nog niet, of
                 niet meer, is.
               </p>
-              <div className="flex flex-wrap gap-3.5">
+              <div className="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/offerte-aanvragen"
-                  className="group inline-flex items-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5"
+                  className="group inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5 sm:w-auto"
                   style={{ background: "linear-gradient(90deg,#FF3B2E,#FF7A00)" }}
                 >
                   Offerte aanvragen
@@ -155,7 +155,7 @@ export function XrService({
                 </Link>
                 <a
                   href="#xr-tours"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
                 >
                   Bekijk virtual tours <ArrowDown size={16} />
                 </a>
@@ -369,7 +369,7 @@ export function XrService({
 
         {/* ===== DIENSTEN OVERZICHT ===== */}
         <section className="relative py-5">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-2.5 sm:px-4">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               3D, VR &amp; AR diensten overzicht
             </h2>
@@ -398,7 +398,7 @@ export function XrService({
 
         {/* ===== VIDEO SECTION ===== */}
         <section className="relative py-11">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-2.5 sm:px-4">
             <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
               <div>
                 <div className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#FF9A45]">
@@ -455,7 +455,7 @@ export function XrService({
 
         {/* ===== MATTERPORT TOURS (last 2, live) ===== */}
         <section id="xr-tours" className="relative py-9">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-2.5 sm:px-4">
             <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
               <div>
                 <div className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#FF9A45]">
@@ -550,7 +550,7 @@ export function XrService({
 
         {/* ===== HOE WE WERKEN ===== */}
         <section className="relative py-8">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-2.5 sm:px-4">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               Hoe we werken
             </h2>
@@ -586,7 +586,7 @@ export function XrService({
         {/* ===== GERELATEERDE DIENSTEN ===== */}
         {relatedServices.length > 0 && (
           <section className="relative py-8">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-2.5 sm:px-4">
               <h2 className="font-sora mb-5 text-[24px] font-extrabold tracking-[-0.02em] text-white sm:text-[26px]">
                 Gerelateerde diensten
               </h2>

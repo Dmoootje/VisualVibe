@@ -96,7 +96,7 @@ export function RealisatieDroneMedia({
     <>
       {/* ===== FEATURED ===== */}
       <section className="relative pb-16 pt-14">
-        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-2.5 sm:px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           <button
             type="button"
             onClick={() => openAt(0)}
@@ -152,7 +152,7 @@ export function RealisatieDroneMedia({
       </section>
 
       {/* ===== GRID + FILTER ===== */}
-      <section className="container relative z-[2] mx-auto px-4 pb-28">
+      <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-28">
         <div className="mb-7 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">Alle realisaties</p>

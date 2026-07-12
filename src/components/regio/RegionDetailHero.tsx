@@ -24,7 +24,7 @@ export function RegionDetailHero({ region }: { region: Region }) {
         : "Werkgebied · Belgie";
 
   return (
-    <section className="relative overflow-x-clip px-4 pb-8 pt-28 sm:pb-10">
+    <section className="relative overflow-x-clip pb-8 pt-28 sm:pb-10">
       {/* Faint background grid, fading in toward the map (top-right). The big amber
           glow lives in the page-wide RegionAmbient so it never gets cut off here. */}
       <div
@@ -62,17 +62,17 @@ export function RegionDetailHero({ region }: { region: Region }) {
 
             <p className="mt-5 max-w-[480px] text-lg text-white/65">{region.intro}</p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
                 href="/offerte-aanvragen"
-                className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black shadow-[0_10px_30px_-8px_rgba(255,117,0,0.6)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black shadow-[0_10px_30px_-8px_rgba(255,117,0,0.6)] transition-transform hover:-translate-y-0.5"
               >
                 Start je project
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/realisaties"
-                className="inline-flex items-center rounded-full border border-white/[0.16] px-6 py-3 font-medium text-white transition-colors hover:border-[rgba(255,117,0,0.5)]"
+                className="inline-flex items-center justify-center rounded-full border border-white/[0.16] px-6 py-3 font-medium text-white transition-colors hover:border-[rgba(255,117,0,0.5)]"
               >
                 Bekijk realisaties
               </Link>
@@ -102,7 +102,12 @@ export function RegionDetailHero({ region }: { region: Region }) {
             <span className="mb-3.5 block text-[11.5px] font-bold uppercase tracking-[0.15em] text-white/40">
               Actief in o.a.
             </span>
-            <div className="vv-mq-contain" aria-label={`Gemeentes in ${region.title}`}>
+            {/* Full-bleed: de marquee loopt van schermrand tot schermrand; de
+                section clipt met overflow-x-clip. */}
+            <div
+              className="vv-mq-contain relative left-1/2 w-screen -translate-x-1/2"
+              aria-label={`Gemeentes in ${region.title}`}
+            >
               <div className="vv-mq-track vv-mq-l">
                 {runner.map((name, i) => (
                   <span

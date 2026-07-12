@@ -53,7 +53,7 @@ export function KbHeroShell({
         }}
       />
 
-      <div className="container relative z-[2] mx-auto px-4">
+      <div className="container relative z-[2] mx-auto px-2.5 sm:px-4">
         <nav
           aria-label="Kruimelpad"
           className="mb-7 flex items-center gap-2 text-xs font-semibold text-white/40"

@@ -23,7 +23,7 @@ export async function Footer() {
         className="pointer-events-none absolute -top-40 left-[12%] h-[360px] w-[620px] max-w-full bg-[radial-gradient(ellipse_at_center,rgba(255,117,0,0.10),transparent_70%)]"
       />
 
-      <div className="container relative mx-auto px-4 pt-16 sm:pt-[76px]">
+      <div className="container relative mx-auto px-2.5 sm:px-4 pt-16 sm:pt-[76px]">
         {/* Top grid: brand + columns */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-[clamp(28px,4vw,56px)]">
           {/* Brand + contact + socials */}

@@ -64,7 +64,7 @@ export function RealisatieHeader({
         }}
       />
 
-      <div className="container relative z-[2] mx-auto flex flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:items-center lg:gap-10">
+      <div className="container relative z-[2] mx-auto flex flex-col items-start justify-between gap-8 px-2.5 sm:px-4 lg:flex-row lg:items-center lg:gap-10">
         <div className="max-w-[640px]">
           {/* Kruimelpad */}
           <nav className="mb-6 flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.03em] text-white/40">

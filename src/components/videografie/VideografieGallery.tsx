@@ -44,7 +44,7 @@ export function VideografieGallery({
     <>
       {/* ===== HERO ===== */}
       <section className="relative z-[2] pb-12 pt-24 sm:pb-14">
-        <div className="container mx-auto grid items-center gap-8 px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
+        <div className="container mx-auto grid items-center gap-8 px-2.5 sm:px-4 lg:grid-cols-[1fr_560px] lg:gap-14">
           <div>{children}</div>
 
           {/* video-player visual */}
@@ -144,7 +144,7 @@ export function VideografieGallery({
       </section>
 
       {/* ===== VIDEO GALLERY ===== */}
-      <section id="video-gallery" className="container relative z-[2] mx-auto scroll-mt-24 px-4 pb-8 pt-6">
+      <section id="video-gallery" className="container relative z-[2] mx-auto scroll-mt-24 px-2.5 sm:px-4 pb-8 pt-6">
         <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#FF9A45]">Onze video&apos;s</p>

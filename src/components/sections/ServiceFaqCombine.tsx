@@ -125,12 +125,12 @@ export function ServiceFaqCombine({
   return (
     <section className="relative py-14 sm:py-16">
       {hasFaqs && hasRelated ? (
-        <div className="container mx-auto grid items-start gap-10 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="container mx-auto grid items-start gap-10 px-2.5 sm:px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <FaqColumn faqs={faqs} faqHeading={faqHeading} />
           <CombineColumn combineWith={combineWith} relatedServices={relatedServices} />
         </div>
       ) : (
-        <div className="container mx-auto max-w-[720px] px-4">
+        <div className="container mx-auto max-w-[720px] px-2.5 sm:px-4">
           {hasFaqs ? (
             <FaqColumn faqs={faqs} faqHeading={faqHeading} />
           ) : (

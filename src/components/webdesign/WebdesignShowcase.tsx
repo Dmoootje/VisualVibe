@@ -25,7 +25,7 @@ export function WebdesignShowcase({
 
   return (
     <section id="showcase" className="relative z-[2] pb-24 pt-6 text-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <div className="mb-3.5 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">REALISATIES</div>

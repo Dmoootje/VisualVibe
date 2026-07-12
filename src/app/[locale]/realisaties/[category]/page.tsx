@@ -187,7 +187,7 @@ export default async function RealisatieCategoryPage({
 
           {/* Cross-link naar de dienstpagina achter deze realisaties. */}
           <section className="relative py-6 sm:py-8">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-2.5 sm:px-4">
               <div className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
                 <div>
                   <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">

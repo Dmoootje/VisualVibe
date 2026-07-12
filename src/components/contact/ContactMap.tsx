@@ -35,7 +35,9 @@ export function ContactMap({
 
   return (
     <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,117,0,0.22)] shadow-[0_0_60px_-18px_rgba(255,117,0,0.4)]">
-      <div className="relative h-[280px] w-full sm:h-[300px] lg:h-[340px]">
+      {/* Mobiel extra hoog: de route-kaart overlapt onderaan, zo blijft de kaart
+          zelf zichtbaar boven de overlay. */}
+      <div className="relative h-[440px] w-full sm:h-[320px] lg:h-[340px]">
         {safeEmbedUrl ? (
           <iframe
             src={safeEmbedUrl}

@@ -11,7 +11,7 @@ export default function Hero() {
       />
       <HeroFalling />
 
-      <div className="container relative z-[4] mx-auto grid w-full items-center gap-10 px-4 lg:grid-cols-[1fr_540px] lg:gap-12">
+      <div className="container relative z-[4] mx-auto grid w-full items-center gap-10 px-2.5 sm:px-4 lg:grid-cols-[1fr_540px] lg:gap-12">
         <HeroMessage />
         <HeroStage />
       </div>

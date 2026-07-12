@@ -15,10 +15,10 @@ export const metadata = pageMetadata({
 
 export default function RealisatiesHubPage() {
   return (
-    <div className="min-h-screen text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Realisaties", path: "/realisaties" }]} />
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#ff9a45]">
           Ons werk
         </p>

@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 
 export default function SectorenHubPage() {
   return (
-    <div className="min-h-screen px-4 pb-20 pt-28 text-white">
+    <div className="min-h-screen pb-20 pt-28 text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Sectoren", path: "/sectoren" }]} />
 
       <div className="container mx-auto">

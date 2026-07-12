@@ -59,7 +59,7 @@ export function DroneShowcase() {
   }, [open, isVideo, list.length]);
 
   return (
-    <section id="dr-werk" className="container relative z-[2] mx-auto scroll-mt-24 px-4 pb-14 pt-6">
+    <section id="dr-werk" className="container relative z-[2] mx-auto scroll-mt-24 px-2.5 sm:px-4 pb-14 pt-6">
       <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#FF9A45]">Realisaties</p>

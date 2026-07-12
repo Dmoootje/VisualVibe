@@ -16,7 +16,7 @@ export function RegionGeo({ region }: { region: Region }) {
 
   return (
     <section className="relative py-12 sm:py-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         <div className="max-w-3xl">
           <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />

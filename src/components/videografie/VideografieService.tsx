@@ -53,17 +53,17 @@ export function VideografieService({
             Videografie
           </h1>
           <p className="mb-[34px] max-w-[500px] text-[19px] leading-[1.6] text-white/65">{service.intro}</p>
-          <div className="flex flex-wrap gap-3.5">
+          <div className="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
             <Link
               href="/offerte-aanvragen"
-              className="heroBtn inline-flex items-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5"
+              className="heroBtn inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-[15px] text-base font-bold text-white shadow-[0_16px_40px_-14px_rgba(255,90,0,0.85)] transition-transform hover:-translate-y-0.5 sm:w-auto"
               style={{ background: "linear-gradient(90deg,#FF3B2E,#FF7A00)" }}
             >
               Offerte aanvragen <ArrowRight size={17} />
             </Link>
             <a
               href="#video-gallery"
-              className="heroBtn inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="heroBtn inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.05] px-7 py-[15px] text-base font-bold text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
             >
               Bekijk video&apos;s <ArrowDown size={16} />
             </a>
@@ -72,7 +72,7 @@ export function VideografieService({
 
         {/* DIENSTEN OVERZICHT */}
         {subServices.length > 0 && (
-          <section className="container relative z-[2] mx-auto px-4 pb-5 pt-8">
+          <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-5 pt-8">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               Videografie diensten overzicht
             </h2>
@@ -102,7 +102,7 @@ export function VideografieService({
 
         {/* HOE WE WERKEN */}
         {service.process.length > 0 && (
-          <section className="container relative z-[2] mx-auto px-4 pb-5 pt-8">
+          <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-5 pt-8">
             <h2 className="font-sora mb-7 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
               Hoe we werken
             </h2>

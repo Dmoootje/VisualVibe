@@ -93,7 +93,7 @@ export function FotografieHero() {
         }}
       />
 
-      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-4 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
+      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-2.5 sm:px-4 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
         {/* copy */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="mb-[22px] flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
@@ -114,10 +114,10 @@ export function FotografieHero() {
             Sterke beelden maken het verschil tussen een merk dat vertrouwen wekt en één dat eraan
             voorbijgaat. Wij fotograferen bedrijven, producten, events en vastgoed in heel Limburg.
           </p>
-          <div className="flex flex-wrap justify-center gap-3.5 lg:justify-start">
+          <div className="flex flex-col justify-center gap-3.5 sm:flex-row sm:flex-wrap lg:justify-start">
             <Link
               href="/offerte-aanvragen"
-              className="fg-btn inline-flex items-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="fg-btn inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
               style={{ background: "linear-gradient(90deg,#FF3B2E,#FF7A00)", boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)" }}
             >
               Offerte aanvragen
@@ -125,7 +125,7 @@ export function FotografieHero() {
             </Link>
             <a
               href="#galerijen"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
             >
               Bekijk galerijen
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m5 12 7 7 7-7" /></svg>

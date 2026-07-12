@@ -59,7 +59,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
     <>
       {/* ===== FEATURED - uitgelichte galerij ===== */}
       <section className="relative pb-12 pt-10 sm:pb-14">
-        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-2.5 sm:px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* LINKS: galerij-preview (thumbnails ín de hoofdafbeelding) */}
           <button
             type="button"
@@ -144,7 +144,7 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
 
       {/* ===== ALLE GALERIJEN (met sorteren erboven) ===== */}
       {rest.length > 0 && (
-        <section className="container relative z-[2] mx-auto px-4 pb-24">
+        <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-24">
           {/* Sorteer op stijl - onder de hoofdafbeelding, boven de galerijen */}
           {filters.length > 2 && (
             <div className="mb-8">

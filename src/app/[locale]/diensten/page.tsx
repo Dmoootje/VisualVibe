@@ -1,8 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { serviceCategories } from "@/data/serviceCategories";
 import { services } from "@/data/services";
-import { ServiceCard } from "@/components/cards/ServiceCard";
+import { RegionServicesGrid } from "@/components/regio";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
@@ -16,7 +15,7 @@ export const metadata = pageMetadata({
 
 export default function DienstenPage() {
   return (
-    <div className="min-h-screen text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Diensten", path: "/diensten" }]} />
 
       <div className="container mx-auto">
@@ -30,18 +29,7 @@ export default function DienstenPage() {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {serviceCategories.map((category) => {
-            const service = services.find((s) => s.slug === category.slug);
-            return (
-              <ServiceCard
-                key={category.slug}
-                category={category}
-                excerpt={service?.excerpt ?? ""}
-              />
-            );
-          })}
-        </div>
+        <RegionServicesGrid services={services} />
 
         <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
           <h2 className="text-2xl font-bold">Niet zeker welke dienst je nodig hebt?</h2>

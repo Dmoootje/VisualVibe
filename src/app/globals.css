@@ -1180,10 +1180,29 @@ html {
 @media (max-width: 900px) {
     .vvsh-inner { grid-template-columns: 1fr; }
     .vvsh-title { font-size: clamp(36px, 8vw, 60px); }
-    .vvsh-iconSvg { width: min(320px, 80%); }
+    .vvsh-left { position: relative; z-index: 2; }
+    /* Gestapeld: het draaiende embleem wordt een compact accent rechtsboven in
+       de hero in plaats van een groot blok onder de content. */
+    .vvsh-iconWrap {
+        position: absolute;
+        top: -8px;
+        right: -6px;
+        z-index: 1;
+        width: 150px;
+        min-height: 0;
+        opacity: 0.85;
+        pointer-events: none;
+    }
+    .vvsh-iconSvg { width: 150px; }
+    .vvsh-conic { width: 170px; height: 170px; filter: blur(28px); }
 }
 @media (max-width: 640px) {
-    .vvsh-hero { padding: 40px 20px 36px; }
+    /* 88px top: de fixed header (60px) mag de badge niet overlappen. */
+    .vvsh-hero { padding: 88px 10px 36px; }
+    .vvsh-iconWrap { width: 122px; top: -4px; }
+    .vvsh-iconSvg { width: 122px; }
+    .vvsh-btns { flex-direction: column; }
+    .vvsh-btn { width: 100%; justify-content: center; }
 }
 
 /* ── Footer (design handoff, themed orange) ──────────────────────────────
@@ -1507,13 +1526,15 @@ html {
    CSS keyframes (no JS state). */
 .vvseo-col { position: relative; display: flex; justify-content: center; }
 .vvseo-stage { position: relative; width: 540px; height: 452px; flex: none; }
-@media (max-width: 760px) {
+@media (max-width: 760px) and (min-width: 640px) {
     .vvseo-col { height: 452px; overflow: hidden; }
     .vvseo-stage { transform: scale(0.82); transform-origin: top center; }
 }
-@media (max-width: 560px) {
-    .vvseo-col { height: 352px; }
-    .vvseo-stage { transform: scale(0.62); }
+/* Mobiel: de kaart staat in de flow op volle breedte (zie SeoHero.tsx); de
+   vaste stage-maten en scale-trucs zouden badges en randen afkappen. */
+@media (max-width: 639.98px) {
+    .vvseo-col { height: auto; overflow: visible; }
+    .vvseo-stage { width: 100%; height: auto; transform: none; padding: 18px 0 20px; }
 }
 
 @keyframes vvseo-spin { to { transform: rotate(1turn); } }

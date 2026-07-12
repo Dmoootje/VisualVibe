@@ -12,12 +12,12 @@ export const metadata = pageMetadata({
 
 export default function OfferteAanvragenPage() {
   return (
-    <div className="min-h-screen text-white pt-24 pb-16 px-4">
+    <div className="min-h-screen text-white pt-24 pb-16">
       <BreadcrumbJsonLd
         items={[{ name: "Home", path: "/" }, { name: "Offerte aanvragen", path: "/offerte-aanvragen" }]}
       />
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Offerte aanvragen</h1>
         <p className="text-lg text-white/70 mb-10 max-w-2xl">
           Vertel ons kort over je project en we bezorgen je een vrijblijvend voorstel op maat - binnen de 2

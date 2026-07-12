@@ -52,7 +52,10 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         legalName: businessConfig.legalName,
         description: businessConfig.description,
         url: businessConfig.url,
-        image: `${businessConfig.url}/logo.svg`,
+        // Raster brand image for LocalBusiness rich results; the SVG logo rides
+        // along via `logo` so both asset types are represented.
+        image: `${businessConfig.url}/image.jpg`,
+        logo: businessConfig.logo,
         telephone: settings.phone,
         email: settings.mainEmail,
         vatID: settings.vatNumber || undefined,

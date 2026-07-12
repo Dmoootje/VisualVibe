@@ -55,7 +55,7 @@ const values = [
 const regionPills = ["Hasselt", "Tongeren", "Bilzen", "Borgloon", "Genk", "Sint-Truiden", "Antwerpen", "Maastricht", "Vlaanderen", "Nederlands-Limburg"];
 
 // Match the site-wide standard width (home/contact use the same .container).
-const SECTION = "container mx-auto px-4";
+const SECTION = "container mx-auto px-2.5 sm:px-4";
 const eyebrow: CSSProperties = { fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "#FF9A45", margin: 0 };
 const h2: CSSProperties = { fontFamily: SORA, fontWeight: 800, fontSize: "clamp(28px,4.4vw,38px)", letterSpacing: "-.025em", color: "#fff", margin: 0, textWrap: "balance" };
 

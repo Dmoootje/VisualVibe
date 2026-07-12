@@ -37,8 +37,8 @@ export function ProcessCard({ step, index }: { step: ProcessStep; index: number 
           <span className="pointer-events-none absolute -top-3 right-1 text-7xl font-black leading-none text-white/[0.06]">
             {step.number}
           </span>
-          {/* Number badge */}
-          <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-amber-500 text-base font-bold text-white shadow-lg shadow-amber-500/30">
+          {/* Number badge - brand-chip stijl (geen gradient-vierkant) */}
+          <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-[13px] border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.12)] text-base font-bold text-[#FF9A45] backdrop-blur-sm">
             {step.number}
           </span>
           {/* Step icon */}

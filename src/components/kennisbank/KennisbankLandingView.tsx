@@ -117,7 +117,7 @@ export function KennisbankLandingView({
       />
 
       <section className="relative z-[2]">
-        <div className="container mx-auto grid items-start gap-11 px-4 py-14 lg:grid-cols-[1fr_336px]">
+        <div className="container mx-auto grid items-start gap-11 px-2.5 sm:px-4 py-14 lg:grid-cols-[1fr_336px]">
           {/* MAIN COLUMN */}
           <div className="min-w-0">
             {featured && !filtering && (
@@ -263,7 +263,7 @@ export function KennisbankLandingView({
 
       {/* BLADER PER ONDERWERP */}
       <section className="relative z-[2]">
-        <div className="container mx-auto px-4 pb-24 pt-2">
+        <div className="container mx-auto px-2.5 sm:px-4 pb-24 pt-2">
           <div
             className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
             style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}

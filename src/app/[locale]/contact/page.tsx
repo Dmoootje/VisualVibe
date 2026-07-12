@@ -41,7 +41,7 @@ export default async function ContactPage() {
     <div className="min-h-screen pb-16 pt-24 text-white">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2.5 sm:px-4">
         {/* Hero */}
         <header className="mb-8">
           <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">Contact</h1>

@@ -54,7 +54,7 @@ export function ServiceImageCard({
 
       {/* Floating key-benefit info card */}
       <div className="absolute -bottom-4 left-6 right-6 flex items-center gap-3 rounded-xl border border-amber-500/25 bg-neutral-950/90 px-4 py-3 shadow-[0_10px_40px_-12px_rgba(255,117,0,0.5)] backdrop-blur-md">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-amber-500 text-white">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[11px] border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.12)] text-[#FF9A45]">
           <Sparkles className="h-4 w-4" />
         </span>
         <div className="min-w-0">

@@ -8,12 +8,16 @@ export function WebdesignHero({ heroImage }: { heroImage?: string }) {
   return (
     <section className="relative overflow-hidden pt-24 text-white">
       {/* ambient glow */}
+      {/* Geen max-w-full: het gradientvak moet volledig kunnen uitfaden; de
+          section clipt met overflow-hidden, anders ontstaat een harde naad. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-[-160px] top-[-140px] z-0 h-[760px] w-[760px] max-w-full"
+        className="pointer-events-none absolute right-[-160px] top-[-140px] z-0 h-[760px] w-[760px]"
         style={{ background: "radial-gradient(circle at center,rgba(255,90,0,.14),transparent 66%)" }}
       />
-      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-4 py-10 lg:grid-cols-[1fr_560px] lg:gap-14">
+      {/* Extra pb op mobiel: de mockup-gloed (inset -30px + blur) moet volledig
+          binnen de section uitfaden, anders kapt overflow-hidden een harde lijn af. */}
+      <div className="container relative z-[2] mx-auto grid items-center gap-10 px-2.5 sm:px-4 pt-10 pb-20 lg:grid-cols-[1fr_560px] lg:gap-14 lg:pb-12">
         {/* copy */}
         <div>
           <div className="vvw-mono mb-5 flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.04em] text-white/45">
@@ -33,10 +37,10 @@ export function WebdesignHero({ heroImage }: { heroImage?: string }) {
             Van een strakke onepager tot een volledige webshop: elke website wordt opgebouwd rond
             snelheid, vindbaarheid en een duidelijk pad naar contact.
           </p>
-          <div className="flex flex-wrap gap-3.5">
+          <div className="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
             <Link
               href="/offerte-aanvragen"
-              className="vvw-btn inline-flex items-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white"
+              className="vvw-btn inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-7 py-3.5 text-base font-bold text-white sm:w-auto"
               style={{
                 background: "linear-gradient(90deg,#FF3B2E,#FF7A00)",
                 boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)",
@@ -47,7 +51,7 @@ export function WebdesignHero({ heroImage }: { heroImage?: string }) {
             </Link>
             <a
               href="#showcase"
-              className="vvw-btn inline-flex items-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white"
+              className="vvw-btn inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/5 px-7 py-3.5 text-base font-bold text-white sm:w-auto"
             >
               Bekijk realisaties
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m5 12 7 7 7-7" /></svg>

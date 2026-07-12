@@ -43,7 +43,7 @@ export function RealisatieVideografieGalerijen({
           className="pointer-events-none absolute right-[-120px] top-10 z-0 h-[620px] w-[760px] max-w-full bg-[radial-gradient(circle_at_60%_45%,rgba(255,90,0,0.12),transparent_64%)]"
         />
 
-        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+        <div className="container relative z-[2] mx-auto grid items-center gap-9 px-2.5 sm:px-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* LINKS: video-preview */}
           <button
             type="button"
@@ -110,7 +110,7 @@ export function RealisatieVideografieGalerijen({
       </section>
 
       {/* ===== MEER VIDEO'S ===== */}
-      <section className="container relative z-[2] mx-auto px-4 pb-24">
+      <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-24">
         <div className="mb-7">
           <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">Meer video&apos;s</p>
           <h2 className="font-sora text-[28px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:text-[34px]">

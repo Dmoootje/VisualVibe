@@ -123,7 +123,7 @@ export default async function RegionDetailPage({
 
       {/* 3. Voor wie we werken - sectoren als 2 tegengestelde badge-rijen. */}
       <section className="overflow-hidden py-12 sm:py-16">
-        <div className="container mx-auto mb-8 px-4">
+        <div className="container mx-auto mb-8 px-2.5 sm:px-4">
           <p className="mb-3.5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
             Sectoren

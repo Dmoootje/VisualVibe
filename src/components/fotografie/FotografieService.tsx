@@ -30,7 +30,7 @@ export function FotografieService({
         {/* Hoe we werken */}
         {service.process.length > 0 && (
           <section className="relative py-12">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-2.5 sm:px-4">
               <h2 className="font-sora mb-8 text-[28px] font-extrabold tracking-[-0.025em] text-white sm:text-[34px]">
                 Hoe we werken
               </h2>

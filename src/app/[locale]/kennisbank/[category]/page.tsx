@@ -199,7 +199,7 @@ export default async function KennisbankCategoryPage({
       />
 
       <section className="relative z-[2]">
-        <div className="container mx-auto grid items-start gap-11 px-4 py-14 lg:grid-cols-[1fr_336px]">
+        <div className="container mx-auto grid items-start gap-11 px-2.5 sm:px-4 py-14 lg:grid-cols-[1fr_336px]">
           <div className="min-w-0">
             {pillarPosts.length > 0 && (
               <div className="mb-14">
