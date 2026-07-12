@@ -92,6 +92,18 @@ export function RealisatieFotografieGalerijen({ galleries }: { galleries: FotoGa
             {featured.description && (
               <p className="mb-[26px] text-[16.5px] leading-[1.65] text-white/[0.68]">{featured.description}</p>
             )}
+            {featured.tags && featured.tags.length > 0 && (
+              <div className="mb-[30px] flex flex-wrap gap-[7px]">
+                {featured.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/[0.09] bg-white/[0.05] px-3 py-1.5 text-xs font-semibold text-white/60"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             <button
               type="button"
               onClick={() => setOpen(0)}

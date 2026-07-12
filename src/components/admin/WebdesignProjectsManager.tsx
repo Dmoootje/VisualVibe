@@ -114,6 +114,8 @@ function ProjectCard({
   index,
   total,
   images,
+  open,
+  onToggle,
   onChange,
   onMove,
   onDelete,
@@ -123,6 +125,8 @@ function ProjectCard({
   index: number;
   total: number;
   images: WebdesignImages;
+  open: boolean;
+  onToggle: () => void;
   onChange: (next: WebdesignProject) => void;
   onMove: (dir: -1 | 1) => void;
   onDelete: () => void;
@@ -176,14 +180,25 @@ function ProjectCard({
     }
   }
 
+  const thumb = images[imageKey(project.id, "thumb")];
+
   return (
     <section className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <header className="mb-4 flex items-center justify-between gap-3 border-b border-white/10 pb-3">
-        <h2 className="text-lg font-semibold">
-          <span className="mr-2 font-mono text-amber-400">{String(index + 1).padStart(2, "0")}</span>
-          {project.name || <span className="text-white/40">Nieuwe realisatie</span>}
-        </h2>
-        <div className="flex items-center gap-1.5">
+      <header className={`flex items-center justify-between gap-3 ${open ? "mb-4 border-b border-white/10 pb-3" : ""}`}>
+        <button type="button" onClick={onToggle} className="flex min-w-0 flex-1 items-center gap-3 text-left" aria-expanded={open}>
+          <ChevronDown className={`h-4 w-4 flex-none text-white/50 transition-transform ${open ? "" : "-rotate-90"}`} />
+          {thumb ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={thumb} alt="" className="h-8 w-12 flex-none rounded object-cover" />
+          ) : (
+            <span className="h-8 w-12 flex-none rounded border border-white/10 bg-white/[0.03]" />
+          )}
+          <span className="min-w-0 truncate text-lg font-semibold">
+            <span className="mr-2 font-mono text-amber-400">{String(index + 1).padStart(2, "0")}</span>
+            {project.name || <span className="text-white/40">Nieuwe realisatie</span>}
+          </span>
+        </button>
+        <div className="flex flex-none items-center gap-1.5">
           <button
             type="button"
             onClick={() => onMove(-1)}
@@ -213,6 +228,8 @@ function ProjectCard({
         </div>
       </header>
 
+      {open && (
+        <>
       {/* AI auto-generate: screenshots + copy from the site URL. */}
       <div className="mb-5 rounded-lg border border-amber-400/25 bg-amber-400/[0.06] p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -344,6 +361,8 @@ function ProjectCard({
           Afbeeldingen worden meteen opgeslagen. Sla de realisatie op zodat ze publiek verschijnt.
         </p>
       </div>
+        </>
+      )}
     </section>
   );
 }
@@ -357,9 +376,18 @@ export function WebdesignProjectsManager({
 }) {
   const [projects, setProjects] = useState<WebdesignProject[]>(initialProjects);
   const [images, setImages] = useState<WebdesignImages>(initialImages);
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+
+  const toggleOpen = (id: string) =>
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const update = (next: WebdesignProject[]) => {
     setProjects(next);
@@ -376,11 +404,15 @@ export function WebdesignProjectsManager({
   };
 
   const add = () => {
-    update([...projects, emptyProject()]);
+    const project = emptyProject();
+    update([...projects, project]);
+    setOpenIds((prev) => new Set(prev).add(project.id)); // open the new one
     if (typeof window !== "undefined") {
       requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
     }
   };
+
+  const allOpen = projects.length > 0 && projects.every((p) => openIds.has(p.id));
 
   async function save() {
     setBusy(true);
@@ -398,7 +430,18 @@ export function WebdesignProjectsManager({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+      {projects.length > 1 && (
+        <button
+          type="button"
+          onClick={() => setOpenIds(allOpen ? new Set() : new Set(projects.map((p) => p.id)))}
+          className="inline-flex w-fit items-center gap-1.5 text-xs text-white/50 hover:text-white"
+        >
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${allOpen ? "" : "-rotate-90"}`} />
+          {allOpen ? "Alles inklappen" : "Alles uitklappen"}
+        </button>
+      )}
+
       {projects.map((p, i) => (
         <ProjectCard
           key={p.id}
@@ -406,6 +449,8 @@ export function WebdesignProjectsManager({
           index={i}
           total={projects.length}
           images={images}
+          open={openIds.has(p.id)}
+          onToggle={() => toggleOpen(p.id)}
           onChange={(next) => update(projects.map((x, j) => (j === i ? next : x)))}
           onMove={(dir) => move(i, dir)}
           onDelete={() => update(projects.filter((_, j) => j !== i))}

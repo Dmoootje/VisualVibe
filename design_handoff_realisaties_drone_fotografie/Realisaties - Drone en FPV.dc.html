@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  a{text-decoration:none;color:inherit;}
+  a:hover{color:#FF7A00;}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.6);}70%{box-shadow:0 0 0 7px rgba(255,122,0,0);}}
+  .liveDot{animation:livePulse 2.2s ease-out infinite;}
+  @keyframes recB{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .recDot{animation:recB 1.3s ease-in-out infinite;}
+  @keyframes rowIn{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .mCard{opacity:0;animation:rowIn .55s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * .08s + .1s);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .mCard:hover{transform:translateY(-7px);border-color:rgba(255,122,0,.34) !important;box-shadow:0 34px 70px -30px rgba(255,90,0,.5),0 10px 26px -16px rgba(0,0,0,.8);}
+  .mCard .mImg{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s ease;}
+  .mCard:hover .mImg{transform:scale(1.06);filter:saturate(1.1);}
+  .mCard .vgPlay{transition:transform .3s ease,box-shadow .3s ease;}
+  .mCard:hover .vgPlay{transform:scale(1.1);box-shadow:0 18px 40px -12px rgba(255,90,0,1);}
+  .frBig{transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s ease,box-shadow .5s ease;cursor:pointer;}
+  .frBig:hover{transform:translateY(-4px);border-color:rgba(255,122,0,.4) !important;box-shadow:0 40px 84px -30px rgba(255,90,0,.55);}
+  .frBig:hover .mImg{transform:scale(1.05);}
+  .heroBtn,.navBtn{transition:transform .25s ease,box-shadow .25s ease;}
+  .heroBtn:hover,.navBtn:hover{transform:translateY(-2px);}
+  .heroBtn .ar{transition:transform .3s ease;}.heroBtn:hover .ar{transform:translateX(5px);}
+  .visitLink{transition:gap .25s ease,background .25s ease;}
+  .visitLink:hover{gap:12px !important;background:rgba(255,122,0,.2) !important;}
+  .segBtn{transition:color .25s ease,background .25s ease,border-color .25s ease;}
+  @keyframes lbFade{from{opacity:0;}to{opacity:1;}}
+  @keyframes lbPop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+  .lbBg{animation:lbFade .3s ease;}
+  .lbCard{animation:lbPop .42s cubic-bezier(.2,.75,.2,1);}
+  .lbArrow{transition:background .25s ease,border-color .25s ease,transform .25s ease;}
+  .lbArrow:hover{background:rgba(255,122,0,.16);border-color:rgba(255,122,0,.5);}
+  .lbArrow:active{transform:scale(.9);}
+  .lbX{transition:border-color .25s ease,background .25s ease,color .25s ease,transform .3s ease;}
+  .lbX:hover{border-color:rgba(255,122,0,.45);background:rgba(255,122,0,.08);color:#FF9A45;transform:rotate(90deg);}
+  .lbMini{transition:border-color .25s ease,opacity .25s ease,transform .25s ease;opacity:.55;cursor:pointer;}
+  .lbMini:hover{opacity:.9;transform:translateY(-2px);}
+  .lbMini.on{opacity:1;border-color:#FF7A00 !important;}
+  .rwNavLinks{display:flex;align-items:center;gap:28px;}
+  .rwBurger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);cursor:pointer;padding:0;color:#fff;}
+  .rwNavPanel{display:none;flex-basis:100%;flex-direction:column;gap:6px;padding-top:14px;margin-top:4px;border-top:1px solid rgba(255,255,255,.07);}
+  @media (max-width:1080px){
+    .frFeatGrid{grid-template-columns:1fr !important;gap:34px !important;}
+    .rwHeadRow{flex-direction:column !important;align-items:flex-start !important;gap:30px !important;}
+    .rwStatRail{flex-direction:row !important;flex-wrap:wrap;}
+    .rwStatRail > div{min-width:0 !important;flex:1 1 200px;}
+    .rwNavLinks,.rwNavUser{display:none !important;}
+    .rwBurger{display:inline-flex !important;}
+    .rwNavPanel.open{display:flex !important;}
+    .gGrid{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:760px){
+    .rwNav{padding:16px 22px !important;}
+    .rwHead{padding:38px 22px 30px !important;}
+    .rwFeat{padding:40px 22px 46px !important;}
+    .rwGridSec{padding:16px 22px 78px !important;}
+    .rwH1{font-size:clamp(38px,12vw,52px) !important;}
+    .frFeatH2{font-size:clamp(30px,9vw,42px) !important;}
+    .rwGridHead{flex-direction:column;align-items:flex-start !important;}
+    .lbTopWrap{flex-direction:column;align-items:flex-start !important;gap:10px !important;}
+  }
+  @media (max-width:560px){
+    .gGrid{grid-template-columns:1fr !important;}
+    .rwHeadIcon{width:54px !important;height:54px !important;}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}.mCard{opacity:1;}}
+</style>
+</helmet>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"><defs>
+  <g id="dr-home" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path></g>
+  <g id="dr-user" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></g>
+  <g id="dr-drone" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="5" r="2.4"></circle><circle cx="19" cy="5" r="2.4"></circle><circle cx="5" cy="19" r="2.4"></circle><circle cx="19" cy="19" r="2.4"></circle><path d="M6.7 6.7 9.5 9.5M17.3 6.7 14.5 9.5M6.7 17.3 9.5 14.5M17.3 17.3 14.5 14.5"></path><rect x="9.2" y="9.2" width="5.6" height="5.6" rx="1.4"></rect></g>
+  <g id="dr-foto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"></path><circle cx="12" cy="12.5" r="3.4"></circle></g>
+  <g id="dr-video" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"></rect><path d="m16 10 6-3v10l-6-3z"></path></g>
+</defs></svg>
+
+<div style="position:relative;width:100%;max-width:1440px;margin:0 auto;min-height:100%;overflow:hidden;background:#0a0a0a;color:#fff;font-family:'Manrope',sans-serif;">
+
+  <!-- ===== NAV ===== -->
+  <nav class="rwNav" style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:22px 56px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.01em;color:#fff;">Visual<span style="color:#FF7A00;">Vibe</span></div>
+    <div class="rwNavLinks" style="font-weight:600;font-size:15px;color:rgba(255,255,255,.85);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-home"></use></svg>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Regio <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#fff;">Realisaties <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Sectoren <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:5px;">Kennisbank <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+      <span>Over ons</span><span>Contact</span>
+    </div>
+    <div class="rwNavUser" style="display:flex;align-items:center;gap:18px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-user"></use></svg>
+      <a href="#" class="navBtn" style="font-weight:700;font-size:14px;color:#fff;padding:11px 20px;border-radius:10px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);box-shadow:0 12px 30px -12px rgba(255,90,0,.8);">Offerte aanvragen</a>
+    </div>
+    <button class="rwBurger" onClick="{{ onNavToggle }}" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
+    </button>
+    <div class="rwNavPanel {{ navPanelClass }}">
+      <sc-for list="{{ navMobile }}" as="item" hint-placeholder-count="8">
+        <a href="#" style="font-size:16px;font-weight:600;color:rgba(255,255,255,.82);padding:13px 14px;border-radius:11px;" style-hover="background:rgba(255,255,255,.05);color:#fff;">{{ item }}</a>
+      </sc-for>
+      <a href="#" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;color:#fff;padding:14px 20px;border-radius:12px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);margin-top:4px;">Offerte aanvragen</a>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+  <header class="rwHead" style="position:relative;overflow:hidden;padding:52px 56px 40px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="position:absolute;top:-160px;right:-80px;width:720px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 52% 52% at 60% 42%,rgba(255,90,0,.16),rgba(255,90,0,.05) 44%,transparent 70%);"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:52px 52px;-webkit-mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);mask-image:radial-gradient(ellipse 66% 120% at 18% 30%,#000,transparent 72%);"></div>
+
+    <div class="rwHeadRow" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;">
+      <div style="max-width:640px;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:rgba(255,255,255,.42);letter-spacing:.03em;margin-bottom:26px;">
+          <span>Home</span><span style="color:rgba(255,255,255,.22);">/</span><span>Realisaties</span><span style="color:rgba(255,255,255,.22);">/</span><span style="color:#FF9A45;">Drone &amp; FPV</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
+          <span class="rwHeadIcon" style="position:relative;flex:none;width:66px;height:66px;border-radius:17px;background:linear-gradient(150deg,rgba(255,122,0,.18),rgba(255,122,0,.05));border:1px solid rgba(255,122,0,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -20px rgba(255,90,0,.7);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-drone"></use></svg>
+          </span>
+          <div>
+            <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.2em;color:#FF9A45;margin-bottom:8px;">REALISATIES</div>
+            <h1 class="rwH1" style="font-family:'Sora';font-weight:800;font-size:56px;line-height:.98;letter-spacing:-.03em;color:#fff;margin:0;">Drone &amp; FPV</h1>
+          </div>
+        </div>
+        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.62);margin:0;max-width:520px;">Luchtbeelden en FPV-video uit heel Limburg — van bedrijfspand en bouwproject tot event, vanuit een uniek perspectief.</p>
+      </div>
+
+      <div class="rwStatRail" style="flex:none;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#fff;line-height:1;">4K</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">luchtbeelden<br>· HDR</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);min-width:230px;">
+          <span style="font-family:'Sora';font-weight:800;font-size:30px;color:#FF9A45;line-height:1;">EASA</span>
+          <span style="font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.55);">gecertificeerd<br>&amp; verzekerd</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FEATURED ===== -->
+  <section class="rwFeat" style="position:relative;overflow:hidden;padding:56px 56px 60px;">
+    <div style="position:absolute;top:40px;right:-120px;width:760px;height:620px;pointer-events:none;z-index:0;background:radial-gradient(circle at 60% 45%,rgba(255,90,0,.12),transparent 64%);"></div>
+
+    <div class="frFeatGrid" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;">
+      <div style="order:1;">
+        <div class="frBig" onClick="{{ featOpen }}" style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,122,0,.22);background:#141210;aspect-ratio:16/9;box-shadow:0 40px 90px -34px rgba(255,80,0,.5);">
+          {{ featThumbEl }}
+          <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 50% 42%,transparent 48%,rgba(6,8,6,.7));"></div>
+          <div style="position:absolute;inset:14px;pointer-events:none;">
+            <span style="position:absolute;left:0;top:0;width:18px;height:18px;border-left:2px solid rgba(255,255,255,.75);border-top:2px solid rgba(255,255,255,.75);"></span>
+            <span style="position:absolute;right:0;top:0;width:18px;height:18px;border-right:2px solid rgba(255,255,255,.75);border-top:2px solid rgba(255,255,255,.75);"></span>
+            <span style="position:absolute;left:0;bottom:0;width:18px;height:18px;border-left:2px solid rgba(255,255,255,.75);border-bottom:2px solid rgba(255,255,255,.75);"></span>
+            <span style="position:absolute;right:0;bottom:0;width:18px;height:18px;border-right:2px solid rgba(255,255,255,.75);border-bottom:2px solid rgba(255,255,255,.75);"></span>
+          </div>
+          <span style="position:absolute;left:16px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;background:rgba(6,8,6,.6);backdrop-filter:blur(6px);font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#fff;"><span class="recDot" style="width:7px;height:7px;border-radius:9999px;background:#FF3B2E;"></span>UITGELICHT</span>
+          <span class="vgPlay" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:74px;height:74px;border-radius:9999px;background:linear-gradient(135deg,#FF3B2E,#FF7A00);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 42px -14px rgba(255,90,0,.9);"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"></path></svg></span>
+        </div>
+      </div>
+
+      <div style="order:2;">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);font-family:'JetBrains Mono';font-weight:700;font-size:12px;letter-spacing:.1em;color:#FF9A45;margin-bottom:22px;">
+          <span class="liveDot" style="width:7px;height:7px;border-radius:9999px;background:#FF7A00;"></span>UITGELICHTE REALISATIE
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.42);margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-video"></use></svg>{{ featCat }}</div>
+        <h2 class="frFeatH2" style="font-family:'Sora';font-weight:800;font-size:42px;line-height:1.05;letter-spacing:-.025em;color:#fff;margin:0 0 20px;">{{ featTitle }}</h2>
+        <p style="font-size:16.5px;line-height:1.65;color:rgba(255,255,255,.68);margin:0 0 30px;">Vloeiende luchtbeelden die de schaal en context van het project tonen — gedraaid met een gecertificeerde drone in 4K.</p>
+        <a href="#" onClick="{{ featOpen }}" class="visitLink" style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:#fff;padding:14px 26px;border-radius:12px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);">Bekijk realisatie <svg width="17" height="17" viewBox="0 0 24 24" fill="#FF9A45"><path d="M8 5.5v13l11-6.5z"></path></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRID + FILTER ===== -->
+  <section class="rwGridSec" style="position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:24px 56px 110px;">
+    <div class="rwGridHead" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:28px;">
+      <div>
+        <div style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:.18em;color:#FF9A45;margin-bottom:12px;">ALLE REALISATIES</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:34px;line-height:1.08;letter-spacing:-.02em;color:#fff;margin:0;">Foto én video, vanuit de lucht</h2>
+      </div>
+      <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);max-width:340px;margin:0 0 6px;">{{ catDesc }}</p>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="7">
+        <button class="segBtn" onClick="{{ f.onPick }}" style="{{ f.style }}">{{ f.label }} <span style="opacity:.55;font-family:'JetBrains Mono';font-size:11px;font-weight:700;margin-left:2px;">{{ f.count }}</span></button>
+      </sc-for>
+    </div>
+
+    <div class="gGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <sc-for list="{{ grid }}" as="m" hint-placeholder-count="5">
+        <div class="mCard" onClick="{{ m.onOpen }}" style="--i:{{ m.i }};position:relative;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:#141210;aspect-ratio:16/11;">
+          <div class="mImg" style="position:absolute;inset:0;">{{ m.thumbEl }}</div>
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,10,.12),transparent 38%,rgba(10,10,10,.78));"></div>
+          <span style="position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:9999px;background:rgba(8,7,6,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:.05em;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-{{ m.icon }}"></use></svg>{{ m.cat }}</span>
+          <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:56px;height:56px;pointer-events:none;"><span class="vgPlay" style="position:absolute;inset:0;border-radius:9999px;background:{{ m.playBg }};backdrop-filter:blur(6px);border:{{ m.playBorder }};display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 16px 36px -12px rgba(255,90,0,.7);">{{ m.playIcon }}</span></span>
+          <div style="position:absolute;left:16px;right:16px;bottom:14px;z-index:2;"><div style="font-family:'Sora';font-weight:700;font-size:17px;color:#fff;">{{ m.title }}</div></div>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="grid-column:1 / -1;border-radius:18px;border:1px dashed rgba(255,255,255,.14);background:rgba(255,255,255,.02);padding:52px 30px;text-align:center;">
+          <span style="display:inline-flex;width:56px;height:56px;border-radius:15px;background:rgba(255,122,0,.1);border:1px solid rgba(255,122,0,.25);align-items:center;justify-content:center;color:#FF9A45;margin-bottom:18px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#dr-drone"></use></svg></span>
+          <h3 style="font-family:'Sora';font-weight:700;font-size:22px;color:#fff;margin:0 0 10px;">Binnenkort werk in deze categorie</h3>
+          <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);margin:0 auto;max-width:420px;">{{ catDesc }} We voegen hier binnenkort beelden aan toe.</p>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;">
+      <div class="lbBg" onClick="{{ closeLb }}" style="position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(255,90,0,.1),transparent 55%),rgba(4,4,4,.95);backdrop-filter:blur(10px);"></div>
+      <div class="lbCard" onClick="{{ stop }}" style="position:relative;z-index:1;display:flex;flex-direction:column;width:min(1080px,100%);height:100%;margin:0 auto;padding:20px clamp(16px,3vw,40px) 22px;justify-content:center;">
+        <div class="lbTopWrap" style="display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex:none;margin-bottom:14px;">
+          <div style="min-width:0;">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9999px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.3);color:#FF9A45;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;letter-spacing:.06em;margin-bottom:11px;">{{ lbCat }}</span>
+            <h3 style="font-family:'Sora';font-weight:800;font-size:24px;letter-spacing:-.02em;color:#fff;margin:0;">{{ lbTitle }}</h3>
+          </div>
+          <button onClick="{{ closeLb }}" class="lbX" style="width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+        </div>
+
+        <div style="position:relative;flex:none;border-radius:16px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.1);aspect-ratio:16/9;max-height:64vh;box-shadow:0 40px 90px -30px rgba(255,80,0,.4);display:flex;align-items:center;justify-content:center;">
+          {{ mediaEl }}
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex:none;margin-top:16px;">
+          <button onClick="{{ prev }}" class="lbArrow" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-weight:700;font-size:14px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Vorige</button>
+          <span style="font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">{{ lbCounter }}</span>
+          <button onClick="{{ next }}" class="lbArrow" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-weight:700;font-size:14px;">Volgende<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        </div>
+
+        <div style="display:flex;gap:10px;flex:none;margin-top:14px;overflow-x:auto;padding:2px;justify-content:center;">
+          <sc-for list="{{ lbMinis }}" as="mn">
+            <button onClick="{{ mn.onGo }}" class="lbMini {{ mn.cls }}" style="position:relative;width:104px;height:59px;border-radius:9px;overflow:hidden;border:2px solid rgba(255,255,255,.12);background:#0b0a09;padding:0;flex:none;">{{ mn.thumbEl }}<sc-if value="{{ mn.isVideo }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:9999px;background:rgba(255,90,0,.9);display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"></path></svg></span></sc-if></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{ &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1300 } }">
+class Component extends DCLogic {
+  P1 = 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdronefotografie.webp?alt=media&token=8e2e74e6-6c7a-4df2-9e24-2fc254497999';
+  P2 = 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdrone%20fotografie.webp?alt=media&token=1c3d3587-42bb-4e1d-9e3a-e94bbc499a2f';
+  P3 = 'https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023.firebasestorage.app/o/media%2Ffotografieslide%2Fdrone%20fotografie%20Belgi%C3%AB%20en%20Nederland.webp?alt=media&token=69384058-2f29-4213-8d71-bc32ed528931';
+  MEDIA = [
+    { kind:'video', cat:'Dronevideo', icon:'video', yt:'ZXJNLr5W8eA', title:'Drone-reel — luchtbeelden' },
+    { kind:'foto', cat:'Dronefotografie', icon:'foto', src:null, title:'Dronefotografie' },
+    { kind:'foto', cat:'Dronefotografie', icon:'foto', src:null, title:'Drone fotografie' },
+    { kind:'foto', cat:'Vastgoed-dronebeelden', icon:'foto', src:null, title:'België & Nederland' },
+    { kind:'video', cat:'FPV-video', icon:'video', yt:'FdzjPybGWSo', title:'FPV-video — door het project' },
+  ];
+  CATS = [
+    { name:'Dronefotografie', desc:"Luchtfoto's die een uniek perspectief geven op je bedrijf of project." },
+    { name:'Dronevideo', desc:"Vloeiende luchtbeelden voor bedrijfsvideo's en promomateriaal." },
+    { name:'FPV-video', desc:'Dynamische, snelle FPV-beelden die door en rond je project vliegen.' },
+    { name:'Vastgoed-dronebeelden', desc:'Luchtbeelden die een pand en zijn omgeving optimaal tonen.' },
+    { name:'Realisatie-dronebeelden', desc:'De voortgang en omvang van bouw- of renovatieprojecten van bovenaf.' },
+    { name:'Event-dronebeelden', desc:'Luchtbeelden die de schaal en drukte van je event tonen.' },
+  ];
+  navMobile = ['Diensten','Regio','Realisaties','Sectoren','Kennisbank','Over ons','Contact'];
+
+  state = { navOpen:false, lbOpen:false, idx:0, cat:'Alle' };
+
+  componentDidMount(){
+    this.MEDIA[1].src = this.P1; this.MEDIA[2].src = this.P2; this.MEDIA[3].src = this.P3;
+    this.forceUpdate();
+    this._key = (e) => { if (!this.state.lbOpen) return; if (e.key === 'ArrowRight') this.step(1); else if (e.key === 'ArrowLeft') this.step(-1); else if (e.key === 'Escape') this.closeLb(); };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount(){ window.removeEventListener('keydown', this._key); }
+  ytThumb(id){ return 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg'; }
+  thumbOf(m){ return m.kind === 'video' ? this.ytThumb(m.yt) : m.src; }
+  filtered(){ const c = this.state.cat; return this.MEDIA.map((m, gi) => ({ m, gi })).filter(x => c === 'Alle' || x.m.cat === c); }
+  pickCat = (c) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ cat:c }); };
+  openLb = (gi) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:true, idx:gi }); };
+  closeLb = (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ lbOpen:false }); };
+  stop = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
+  step(d){ const len = this.MEDIA.length; this.setState(s => ({ idx: (s.idx + d + len) % len })); }
+  next = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(1); };
+  prev = (e) => { if (e && e.preventDefault) e.preventDefault(); this.step(-1); };
+  go = (k) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ idx:k }); };
+
+  renderVals(){
+    const st = this.state;
+    const h = React.createElement;
+    const img = (src, cls) => h('img', { className:cls, src, alt:'', style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' } });
+    const playSvg = (video) => video
+      ? h('svg', { width:24, height:24, viewBox:'0 0 24 24', fill:'#fff' }, h('path', { d:'M8 5.5v13l11-6.5z' }))
+      : h('svg', { width:22, height:22, viewBox:'0 0 24 24', fill:'none', stroke:'#FF9A45', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round' }, h('path', { d:'M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7' }));
+
+    const feat = this.MEDIA[0];
+    const filtered = this.filtered();
+    const grid = filtered.map((x, k) => {
+      const video = x.m.kind === 'video';
+      return { i:k, cat:x.m.cat, icon:x.m.icon, title:x.m.title, onOpen:this.openLb(x.gi),
+        thumbEl: img(this.thumbOf(x.m), 'mImg'),
+        playBg: video ? 'linear-gradient(135deg,#FF3B2E,#FF7A00)' : 'rgba(8,7,6,.55)',
+        playBorder: video ? 'none' : '1px solid rgba(255,122,0,.5)',
+        playIcon: playSvg(video) };
+    });
+    const filters = ['Alle'].concat(this.CATS.map(c => c.name)).map(name => {
+      const n = name === 'Alle' ? this.MEDIA.length : this.MEDIA.filter(m => m.cat === name).length;
+      const on = name === st.cat;
+      const b = 'display:inline-flex;align-items:center;font-weight:700;font-size:13px;padding:9px 15px;border-radius:10px;cursor:pointer;font-family:inherit;';
+      return { label:name, count:n, onPick:this.pickCat(name), style: b + (on ? 'background:linear-gradient(90deg,#FF3B2E,#FF7A00);color:#fff;border:1px solid transparent;box-shadow:0 10px 24px -12px rgba(255,90,0,.8);' : 'background:rgba(255,255,255,.03);color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.1);') };
+    });
+    const active = this.CATS.find(c => c.name === st.cat);
+    const catDesc = active ? active.desc : 'Filter op categorie of bekijk alle beelden — klik om te openen.';
+
+    const idx = Math.min(st.idx, this.MEDIA.length - 1);
+    const cur = this.MEDIA[idx];
+    const curVideo = cur.kind === 'video';
+    const mediaEl = st.lbOpen ? (curVideo
+      ? h('iframe', { src:'https://www.youtube.com/embed/' + cur.yt + '?autoplay=1&rel=0&modestbranding=1', title:cur.title, allow:'accelerated-sensors; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowFullscreen:true, style:{ position:'absolute', inset:0, width:'100%', height:'100%', border:'0' } })
+      : h('img', { src:cur.src, alt:cur.title, style:{ width:'100%', height:'100%', objectFit:'contain' } })) : null;
+
+    return {
+      navMobile:this.navMobile, navPanelClass: st.navOpen ? 'open' : '', onNavToggle: () => this.setState(s => ({ navOpen: !s.navOpen })),
+      featThumbEl: img(this.thumbOf(feat), 'mImg'), featTitle:feat.title, featCat:feat.cat, featOpen:this.openLb(0),
+      filters, catDesc, grid, showEmpty: grid.length === 0,
+      lbOpen:st.lbOpen, closeLb:this.closeLb, stop:this.stop, next:this.next, prev:this.prev,
+      lbTitle:cur.title, lbCat:cur.cat, lbCounter:(idx + 1) + ' / ' + this.MEDIA.length, mediaEl,
+      lbMinis: this.MEDIA.map((m, k) => ({ cls: k === idx ? 'on' : '', isVideo: m.kind === 'video', onGo:this.go(k), thumbEl: img(this.thumbOf(m), '') })),
+    };
+  }
+}
+</script>
+</body>
+</html>

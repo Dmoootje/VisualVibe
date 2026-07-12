@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Plus, Trash2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save, Upload, X } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save, Star, Upload, X } from "lucide-react";
 import type { FotoGallery, FotoGalleryImage } from "@/data/fotografieGalleries";
 import { FOTO_GALLERY_ICONS } from "@/data/fotografieGalleries";
 import { FiIcon } from "@/components/fotografie";
@@ -9,6 +9,8 @@ import { saveFotografieGalleries } from "@/lib/admin/fotografieActions";
 
 const inputCls =
   "w-full rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder:text-white/25 focus:border-amber-400/50 focus:outline-none";
+const captionCls =
+  "w-full rounded border border-white/10 bg-white/[0.03] px-1.5 py-1 text-[11px] text-white placeholder:text-white/25 focus:border-amber-400/50 focus:outline-none";
 
 function newId() {
   const rand =
@@ -36,7 +38,7 @@ async function uploadOne(file: File, key: string): Promise<string> {
   return data.url as string;
 }
 
-/** The per-gallery photo grid: multi-upload + caption/remove/reorder. */
+/** The per-gallery photo grid: multi-upload + caption/remove/reorder + cover pick. */
 function GalleryImages({
   galleryId,
   images,
@@ -81,6 +83,17 @@ function GalleryImages({
     [next[i], next[t]] = [next[t], next[i]];
     onChange(next);
   };
+  // Cover = images[0]. Selecting a photo as cover moves it to the front.
+  const setCover = (i: number) => {
+    if (i === 0) return;
+    const next = [...images];
+    const [pick] = next.splice(i, 1);
+    next.unshift(pick);
+    onChange(next);
+  };
+
+  const overlayBtn =
+    "flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white/80 backdrop-blur transition-opacity hover:text-white";
 
   return (
     <div className="mt-5">
@@ -97,40 +110,77 @@ function GalleryImages({
         </button>
       </div>
       <p className="mt-1 text-[11px] text-white/30">
-        Meerdere tegelijk mogelijk. Elke foto wordt automatisch naar WebP omgezet. De eerste foto is de cover.
+        Meerdere tegelijk mogelijk. Elke foto wordt automatisch naar WebP omgezet. Klik het sterretje om de cover te kiezen.
       </p>
       {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
 
       {images.length > 0 && (
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((img, i) => (
-            <div key={img.src} className="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-white/[0.02] p-2">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-black/40">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img.src} alt="" className="h-full w-full object-cover" />
-                {i === 0 && (
-                  <span className="absolute left-1.5 top-1.5 rounded bg-amber-500 px-1.5 py-0.5 text-[9px] font-bold text-black">COVER</span>
-                )}
+        <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+          {images.map((img, i) => {
+            const isCover = i === 0;
+            return (
+              <div key={img.src} className="group flex flex-col gap-1">
+                <div className="relative aspect-square overflow-hidden rounded-md border border-white/10 bg-black/40">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img.src} alt="" className="h-full w-full object-cover" />
+
+                  {/* cover star (top-left) */}
+                  <button
+                    type="button"
+                    onClick={() => setCover(i)}
+                    title={isCover ? "Coverfoto" : "Als cover instellen"}
+                    aria-label={isCover ? "Coverfoto" : "Als cover instellen"}
+                    className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full backdrop-blur transition ${
+                      isCover
+                        ? "bg-amber-500 text-black"
+                        : "bg-black/60 text-white/80 opacity-0 hover:text-amber-300 group-hover:opacity-100"
+                    }`}
+                  >
+                    <Star className="h-3.5 w-3.5" fill={isCover ? "currentColor" : "none"} />
+                  </button>
+
+                  {/* remove (top-right) */}
+                  <button
+                    type="button"
+                    onClick={() => remove(i)}
+                    title="Verwijderen"
+                    aria-label="Verwijderen"
+                    className={`${overlayBtn} absolute right-1 top-1 opacity-0 hover:text-red-300 group-hover:opacity-100`}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+
+                  {/* reorder (bottom, on hover) */}
+                  <div className="absolute inset-x-1 bottom-1 flex justify-between opacity-0 group-hover:opacity-100">
+                    <button
+                      type="button"
+                      onClick={() => move(i, -1)}
+                      disabled={i === 0}
+                      className={`${overlayBtn} disabled:opacity-20`}
+                      aria-label="Naar links"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => move(i, 1)}
+                      disabled={i === images.length - 1}
+                      className={`${overlayBtn} disabled:opacity-20`}
+                      aria-label="Naar rechts"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+                <input
+                  className={captionCls}
+                  value={img.caption ?? ""}
+                  placeholder="Caption"
+                  onChange={(e) => setCaption(i, e.target.value)}
+                />
               </div>
-              <input
-                className={`${inputCls} py-1 text-xs`}
-                value={img.caption ?? ""}
-                placeholder="Caption (optioneel)"
-                onChange={(e) => setCaption(i, e.target.value)}
-              />
-              <div className="flex items-center gap-1.5">
-                <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 text-white/60 hover:bg-white/10 disabled:opacity-30" aria-label="Naar links">
-                  <ChevronLeft className="h-3.5 w-3.5" />
-                </button>
-                <button type="button" onClick={() => move(i, 1)} disabled={i === images.length - 1} className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 text-white/60 hover:bg-white/10 disabled:opacity-30" aria-label="Naar rechts">
-                  <ChevronRight className="h-3.5 w-3.5" />
-                </button>
-                <button type="button" onClick={() => remove(i)} className="ml-auto flex h-7 items-center gap-1 rounded-md border border-white/10 px-2 text-[11px] text-red-300 hover:bg-red-500/10" aria-label="Verwijderen">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -152,6 +202,8 @@ function GalleryCard({
   gallery,
   index,
   total,
+  open,
+  onToggle,
   onChange,
   onMove,
   onDelete,
@@ -159,6 +211,8 @@ function GalleryCard({
   gallery: FotoGallery;
   index: number;
   total: number;
+  open: boolean;
+  onToggle: () => void;
   onChange: (next: FotoGallery) => void;
   onMove: (dir: -1 | 1) => void;
   onDelete: () => void;
@@ -166,14 +220,28 @@ function GalleryCard({
   const set = <K extends keyof FotoGallery>(key: K, value: FotoGallery[K]) =>
     onChange({ ...gallery, [key]: value });
 
+  const cover = gallery.images[0]?.src;
+
   return (
     <section className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <header className="mb-4 flex items-center justify-between gap-3 border-b border-white/10 pb-3">
-        <h2 className="text-lg font-semibold">
-          <span className="mr-2 font-mono text-amber-400">{String(index + 1).padStart(2, "0")}</span>
-          {gallery.title || <span className="text-white/40">Nieuwe galerij</span>}
-        </h2>
-        <div className="flex items-center gap-1.5">
+      <header className={`flex items-center justify-between gap-3 ${open ? "mb-4 border-b border-white/10 pb-3" : ""}`}>
+        <button type="button" onClick={onToggle} className="flex min-w-0 flex-1 items-center gap-3 text-left" aria-expanded={open}>
+          <ChevronDown className={`h-4 w-4 flex-none text-white/50 transition-transform ${open ? "" : "-rotate-90"}`} />
+          {cover ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={cover} alt="" className="h-8 w-8 flex-none rounded-md object-cover" />
+          ) : (
+            <span className="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-white/40">
+              <FiIcon id={gallery.icon} size={16} />
+            </span>
+          )}
+          <span className="min-w-0 truncate text-lg font-semibold">
+            <span className="mr-2 font-mono text-amber-400">{String(index + 1).padStart(2, "0")}</span>
+            {gallery.title || <span className="text-white/40">Nieuwe galerij</span>}
+          </span>
+          <span className="flex-none text-xs text-white/40">{gallery.images.length} foto&apos;s</span>
+        </button>
+        <div className="flex flex-none items-center gap-1.5">
           <button type="button" onClick={() => onMove(-1)} disabled={index === 0} className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-white/70 hover:bg-white/10 disabled:opacity-30" aria-label="Omhoog">
             <ChevronUp className="h-4 w-4" />
           </button>
@@ -187,40 +255,53 @@ function GalleryCard({
         </div>
       </header>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_1fr_180px]">
-        <label className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-white/60">Titel</span>
-          <input className={inputCls} value={gallery.title} placeholder="Bijv. Bedrijfsfotografie" onChange={(e) => set("title", e.target.value)} />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-white/60">Omschrijving</span>
-          <input className={inputCls} value={gallery.description} placeholder="Korte zin onder de titel." onChange={(e) => set("description", e.target.value)} />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-white/60">Categorie</span>
-          <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-amber-400/25 bg-amber-400/10 text-amber-300">
-              <FiIcon id={gallery.icon} size={18} />
-            </span>
-            <select className={`${inputCls} flex-1`} value={gallery.icon} onChange={(e) => set("icon", e.target.value)}>
-              {FOTO_GALLERY_ICONS.map((opt) => (
-                <option key={opt.id} value={opt.id}>{opt.label}</option>
-              ))}
-            </select>
+      {open && (
+        <>
+          <div className="grid gap-4 lg:grid-cols-[1fr_1fr_180px]">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-medium text-white/60">Titel</span>
+              <input className={inputCls} value={gallery.title} placeholder="Bijv. Bedrijfsfotografie" onChange={(e) => set("title", e.target.value)} />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-medium text-white/60">Omschrijving</span>
+              <input className={inputCls} value={gallery.description} placeholder="Korte zin onder de titel." onChange={(e) => set("description", e.target.value)} />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-medium text-white/60">Categorie</span>
+              <div className="flex items-center gap-2">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-amber-400/25 bg-amber-400/10 text-amber-300">
+                  <FiIcon id={gallery.icon} size={18} />
+                </span>
+                <select className={`${inputCls} flex-1`} value={gallery.icon} onChange={(e) => set("icon", e.target.value)}>
+                  {FOTO_GALLERY_ICONS.map((opt) => (
+                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+            </label>
           </div>
-        </label>
-      </div>
 
-      <GalleryImages galleryId={gallery.id} images={gallery.images} onChange={(next) => set("images", next)} />
+          <GalleryImages galleryId={gallery.id} images={gallery.images} onChange={(next) => set("images", next)} />
+        </>
+      )}
     </section>
   );
 }
 
 export function FotografieGalleriesManager({ initialGalleries }: { initialGalleries: FotoGallery[] }) {
   const [galleries, setGalleries] = useState<FotoGallery[]>(initialGalleries);
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+
+  const toggleOpen = (id: string) =>
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const update = (next: FotoGallery[]) => {
     setGalleries(next);
@@ -237,7 +318,9 @@ export function FotografieGalleriesManager({ initialGalleries }: { initialGaller
   };
 
   const add = () => {
-    update([...galleries, emptyGallery()]);
+    const gallery = emptyGallery();
+    update([...galleries, gallery]);
+    setOpenIds((prev) => new Set(prev).add(gallery.id)); // open the new one
     if (typeof window !== "undefined") {
       requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
     }
@@ -258,14 +341,29 @@ export function FotografieGalleriesManager({ initialGalleries }: { initialGaller
     }
   }
 
+  const allOpen = galleries.length > 0 && galleries.every((g) => openIds.has(g.id));
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+      {galleries.length > 1 && (
+        <button
+          type="button"
+          onClick={() => setOpenIds(allOpen ? new Set() : new Set(galleries.map((g) => g.id)))}
+          className="inline-flex w-fit items-center gap-1.5 text-xs text-white/50 hover:text-white"
+        >
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${allOpen ? "" : "-rotate-90"}`} />
+          {allOpen ? "Alles inklappen" : "Alles uitklappen"}
+        </button>
+      )}
+
       {galleries.map((g, i) => (
         <GalleryCard
           key={g.id}
           gallery={g}
           index={i}
           total={galleries.length}
+          open={openIds.has(g.id)}
+          onToggle={() => toggleOpen(g.id)}
           onChange={(next) => update(galleries.map((x, j) => (j === i ? next : x)))}
           onMove={(dir) => move(i, dir)}
           onDelete={() => update(galleries.filter((_, j) => j !== i))}

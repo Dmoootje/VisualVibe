@@ -13,6 +13,7 @@ import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
 import { RealisatieWebdesignFeatured } from "@/components/realisaties/RealisatieWebdesignFeatured";
 import { RealisatieWebdesignGrid } from "@/components/realisaties/RealisatieWebdesignGrid";
 import { RealisatieFotografieGalerijen } from "@/components/realisaties/RealisatieFotografieGalerijen";
+import { RealisatieDroneMedia } from "@/components/realisaties/RealisatieDroneMedia";
 import { RealisatieVideografieGalerijen } from "@/components/videografie";
 import { RealisatieXrTours } from "@/components/xr";
 import { matterportTours } from "@/data/matterportTours";
@@ -21,6 +22,7 @@ import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 import { getVideografieVideos } from "@/lib/youtube";
 import { videografieCategories } from "@/config/videografie.config";
+import { droneMedia, droneCategories, droneStats } from "@/config/drone.config";
 
 export function generateStaticParams() {
   return realisatieCategories.map((category) => ({ category: category.slug }));
@@ -49,6 +51,7 @@ export async function generateMetadata({
     categoryDef.slug === "webdesign" ||
     categoryDef.slug === "videografie" ||
     categoryDef.slug === "3d-vr" ||
+    categoryDef.slug === "drone" ||
     fotoGalleryCount > 0 ||
     items.length > 0;
   return pageMetadata({
@@ -73,6 +76,7 @@ export default async function RealisatieCategoryPage({
   const isFotografie = categoryDef.slug === "fotografie";
   const isVideografie = categoryDef.slug === "videografie";
   const is3dVr = categoryDef.slug === "3d-vr";
+  const isDrone = categoryDef.slug === "drone";
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
 
@@ -125,7 +129,7 @@ export default async function RealisatieCategoryPage({
         ]}
       />
 
-      <RealisatieHeader category={categoryDef} stats={fotoStats ?? xrStats} />
+      <RealisatieHeader category={categoryDef} stats={fotoStats ?? xrStats ?? (isDrone ? droneStats : undefined)} />
 
       {isWebdesign && webdesignImages && featured ? (
         <>
@@ -136,6 +140,8 @@ export default async function RealisatieCategoryPage({
         <RealisatieFotografieGalerijen galleries={fotoGalleries} />
       ) : isVideografie && videoData && videoData.videos.length > 0 ? (
         <RealisatieVideografieGalerijen videos={videoData.videos} categories={videografieCategories} />
+      ) : isDrone ? (
+        <RealisatieDroneMedia media={droneMedia} categories={droneCategories} />
       ) : is3dVr ? (
         <RealisatieXrTours tours={matterportTours} />
       ) : (
