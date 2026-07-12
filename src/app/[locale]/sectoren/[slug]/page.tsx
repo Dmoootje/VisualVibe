@@ -107,6 +107,33 @@ export default async function SectorDetailPage({
         </Section>
       )}
 
+      {/* Uit de kennisbank: gerelateerde artikels (interne links + GEO). */}
+      {kennisbankPosts.length > 0 && (
+        <Section orbs="tl-br">
+          <Container>
+            <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
+                  <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
+                  Kennisbank
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-bold">
+                  Lees meer over online groeien in jouw sector
+                </h2>
+              </div>
+              <Link
+                href="/kennisbank"
+                className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-end"
+              >
+                Alle artikels
+                <ArrowRight className="h-[15px] w-[15px]" />
+              </Link>
+            </div>
+            <BlogGrid posts={kennisbankPosts} />
+          </Container>
+        </Section>
+      )}
+
       <CTASection title={`Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`} />
     </div>
   );

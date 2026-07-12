@@ -4,6 +4,7 @@ import { BookOpen } from "lucide-react";
 import {
   getAllPosts,
   getPostBySlug,
+  getPostsByCategory,
   getClusterPosts,
   getPostTranslations,
   isBlogLocale,
@@ -251,6 +252,15 @@ export default async function KennisbankPostPage({
     .map((postPath) => getPostBySlug(slugFromPath(postPath), { locale: post.locale }))
     .filter((related): related is NonNullable<typeof related> => related != null && related.slug !== post.slug);
 
+  // Fallback zonder frontmatter-relaties: andere artikels uit dezelfde categorie,
+  // zodat elk artikel altijd een "Gerelateerde artikels"-blok heeft.
+  const fallbackRelated =
+    clusterPosts.length === 0 && relatedPosts.length === 0
+      ? getPostsByCategory(post.categorySlug, post.locale)
+          .filter((related) => related.slug !== post.slug)
+          .slice(0, 3)
+      : [];
+
   const toc = extractToc(post.content, [2]);
   const { title: heroTitle, titleAccent } = splitTitle(post.title);
   const sidebarService = relatedServices[0];
@@ -395,11 +405,11 @@ export default async function KennisbankPostPage({
         </Section>
       )}
 
-      {clusterPosts.length === 0 && relatedPosts.length > 0 && (
+      {clusterPosts.length === 0 && (relatedPosts.length > 0 || fallbackRelated.length > 0) && (
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
-            <BlogGrid posts={relatedPosts} />
+            <BlogGrid posts={relatedPosts.length > 0 ? relatedPosts : fallbackRelated} />
           </Container>
         </Section>
       )}
