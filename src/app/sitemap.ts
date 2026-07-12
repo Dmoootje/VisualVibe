@@ -30,6 +30,8 @@ const staticPaths = [
   "over-ons",
   "contact",
   "offerte-aanvragen",
+  "privacy",
+  "cookies",
   "sitemap",
 ];
 

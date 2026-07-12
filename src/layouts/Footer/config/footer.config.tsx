@@ -1,5 +1,4 @@
 import { services } from "@/data/services";
-import { regions } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
 
 export interface FooterLinkGroup {
@@ -35,18 +34,13 @@ export const footerConfig = {
         { label: "Contact", href: "/contact" },
       ],
     },
-    {
-      title: "Regio",
-      links: regions.map((region) => ({
-        label: region.title,
-        href: `/regio/${region.slug}`,
-      })),
-    },
   ] as FooterLinkGroup[],
 
-  // Juridische pagina's (privacybeleid, voorwaarden, cookiebeleid) komen hier
-  // pas bij zodra die pagina's echt bestaan - geen placeholder "#"-links.
-  legalLinks: [{ label: "Sitemap", href: "/sitemap" }],
+  legalLinks: [
+    { label: "Privacybeleid", href: "/privacy" },
+    { label: "Cookiebeleid", href: "/cookies" },
+    { label: "Sitemap", href: "/sitemap" },
+  ],
 
   partners: {
     title: "Officieel partner & gecertificeerd",

@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { SocialLinks, FooterNav, FooterPartners } from "./components";
+import { SocialLinks, FooterNav, FooterPartners, FooterRegioMaps } from "./components";
 import { footerConfig } from "./config/footer.config";
 import { businessConfig } from "@/config/business.config";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
@@ -28,8 +28,9 @@ export async function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-[clamp(28px,4vw,56px)]">
           {/* Brand + contact + socials */}
           <div>
-            <Link href="/" className="text-[26px] font-extrabold tracking-tight sm:text-[28px]">
-              Visual<span className="text-[#ff7500]">Vibe</span>
+            <Link href="/" aria-label="VisualVibe home" className="inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.svg" alt="VisualVibe" className="h-7 w-auto sm:h-8" width={165} height={32} />
             </Link>
             <p className="mt-[18px] max-w-[340px] text-[15px] leading-relaxed text-white/55">
               {footerConfig.description}
@@ -69,6 +70,9 @@ export async function Footer() {
 
           {/* Link columns */}
           <FooterNav linkGroups={footerConfig.linkGroups} />
+
+          {/* Regio: mini-kaartjes in plaats van tekstlinks */}
+          <FooterRegioMaps />
         </div>
 
         {/* Partners / certifications */}

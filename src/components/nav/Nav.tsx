@@ -107,11 +107,17 @@ function PinGlyph({ size = 20 }: { size?: number }) {
   );
 }
 
+/* Het echte VisualVibe-wordmark (wit + oranje, /logo.svg); size = hoogte in px. */
 function Logo({ size = 24 }: { size?: number }) {
   return (
-    <span style={{ fontFamily: SORA, fontWeight: 800, fontSize: size, letterSpacing: "-.01em", color: "#fff" }}>
-      Visual<span style={{ color: "#FF7A00" }}>Vibe</span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/logo.svg"
+      alt="VisualVibe"
+      height={size}
+      width={Math.round(size * (498.47 / 96.68))}
+      style={{ height: size, width: "auto", display: "block" }}
+    />
   );
 }
 

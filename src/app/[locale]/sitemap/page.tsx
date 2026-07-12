@@ -89,6 +89,8 @@ export default function SitemapPage() {
         { title: "Over ons", href: "/over-ons" },
         { title: "Contact", href: "/contact" },
         { title: "Offerte aanvragen", href: "/offerte-aanvragen" },
+        { title: "Privacybeleid", href: "/privacy" },
+        { title: "Cookiebeleid", href: "/cookies" },
         { title: "Sitemap", href: "/sitemap" },
       ],
     },
