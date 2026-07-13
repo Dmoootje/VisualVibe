@@ -11,6 +11,21 @@ const nextConfig = {
   // Consistent trailing slashes across the whole site; non-slashed URLs 308 to
   // the slashed form. Aligns with the kennisbank canonical URLs.
   trailingSlash: true,
+  // The Dutch default locale is published under /be. next-intl's middleware
+  // sends the bare root "/" to "/be/" with a 307 (temporary), which Google
+  // treats as a separate, unconsolidated URL and reports as an indexing issue.
+  // Emit an explicit 308 (permanent) instead: next.config redirects run before
+  // middleware, so "/" resolves to the canonical "/be/" in a single hop and
+  // Google consolidates all signals onto it.
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/be/',
+        permanent: true,
+      },
+    ];
+  },
   // Add image optimization configuration
   images: {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],

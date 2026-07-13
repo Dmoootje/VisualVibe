@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ManageCookiesButton } from "@/components/consent";
 
 // ISR: contactgegevens komen uit de admin-instellingen.
 export const revalidate = 60;
@@ -11,12 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   return pageMetadata({
     title: `Cookiebeleid | ${settings.companyName}`,
-    description: `Ontdek welke cookies ${settings.companyName} gebruikt: alleen functionele cookies, geen tracking. Lees ook hoe ingesloten inhoud van derden werkt en hoe je cookies beheert.`,
+    description: `Welke cookies gebruikt ${settings.companyName}? Functionele cookies plus analytische cookies (Google Analytics) die pas na jouw toestemming worden geplaatst. Lees hoe je je voorkeuren beheert.`,
     path: "/cookies/",
   });
 }
 
-const LAST_UPDATED = "12 juli 2026";
+const LAST_UPDATED = "13 juli 2026";
 
 function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-3 mt-10 text-xl font-bold text-white sm:text-2xl">{children}</h2>;
@@ -55,24 +56,44 @@ export default async function CookiesPage() {
 
             <H2>2. Welke cookies gebruikt deze website?</H2>
             <p>
-              Wij houden het bewust minimaal. Deze website gebruikt{" "}
-              <strong className="text-white">geen tracking-, analyse- of marketingcookies</strong> en
-              toont geen advertenties. We plaatsen zelf alleen strikt noodzakelijke, functionele
-              cookies:
+              Wij houden het bewust minimaal. We tonen geen advertenties en verkopen geen gegevens.
+              Er zijn twee soorten cookies:
             </p>
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <strong className="text-white">Beveiligings- en sessiecookies voor het beheer:</strong>{" "}
-                uitsluitend gebruikt wanneer een beheerder van {settings.companyName} inlogt op de
-                afgeschermde beheeromgeving. Gewone bezoekers krijgen deze cookie niet.
+                <strong className="text-white">Strikt noodzakelijke, functionele cookies:</strong>{" "}
+                beveiligings- en sessiecookies die uitsluitend worden gebruikt wanneer een beheerder
+                van {settings.companyName} inlogt op de afgeschermde beheeromgeving. Gewone bezoekers
+                krijgen deze cookie niet. Deze cookies zijn nodig om de site veilig te laten werken en
+                vragen geen toestemming.
+              </li>
+              <li>
+                <strong className="text-white">Analytische cookies (Google Analytics 4):</strong> we
+                gebruiken Google Analytics om anoniem te meten hoe bezoekers onze site gebruiken
+                (bekeken pagina&apos;s, apparaattype, bij benadering de regio) zodat we de site kunnen
+                verbeteren. Analytics plaatst hiervoor cookies zoals <code>_ga</code> en{" "}
+                <code>_ga_&lt;id&gt;</code>. Deze cookies worden{" "}
+                <strong className="text-white">pas geplaatst nadat je ze aanvaardt</strong> in onze
+                cookiebanner. We gebruiken de analysegegevens niet voor advertenties of profilering.
               </li>
             </ul>
-            <p>
-              Omdat we geen niet-noodzakelijke cookies plaatsen bij een gewoon bezoek, tonen we ook geen
-              cookiebanner: er valt niets te weigeren.
-            </p>
 
-            <H2>3. Ingesloten inhoud van derden</H2>
+            <H2>3. Toestemming en je voorkeuren beheren</H2>
+            <p>
+              Bij je eerste bezoek tonen we een cookiebanner. Zolang je niets kiest of op{" "}
+              <em>Weigeren</em> klikt, staan alle analytische cookies uit dankzij Google Consent Mode:
+              er worden dan geen analysecookies op je apparaat geplaatst. Kies je{" "}
+              <em>Accepteren</em>, dan schakelen we Google Analytics in. Je keuze onthouden we, zodat
+              de banner niet bij elk bezoek terugkomt.
+            </p>
+            <p>
+              Je kunt je keuze op elk moment wijzigen of intrekken:
+            </p>
+            <div className="pt-1">
+              <ManageCookiesButton />
+            </div>
+
+            <H2>4. Ingesloten inhoud van derden</H2>
             <p>
               Op sommige pagina&apos;s tonen we inhoud die rechtstreeks van een externe dienst wordt
               geladen. Zodra die inhoud op je scherm verschijnt of je ermee interageert, kan die partij
@@ -97,22 +118,22 @@ export default async function CookiesPage() {
               van derden in je browser.
             </p>
 
-            <H2>4. Cookies beheren of verwijderen</H2>
+            <H2>5. Cookies beheren of verwijderen</H2>
             <p>
-              Via de instellingen van je browser kun je cookies bekijken, blokkeren en verwijderen, ook
-              per website. Hoe dat werkt lees je in de hulp-pagina&apos;s van je browser (Chrome,
-              Safari, Firefox of Edge). Het blokkeren van onze functionele cookies heeft voor gewone
-              bezoekers geen merkbaar effect op de website.
+              Naast de cookiebanner kun je ook via de instellingen van je browser cookies bekijken,
+              blokkeren en verwijderen, ook per website. Hoe dat werkt lees je in de
+              hulp-pagina&apos;s van je browser (Chrome, Safari, Firefox of Edge). Het blokkeren van
+              onze functionele cookies heeft voor gewone bezoekers geen merkbaar effect op de website.
             </p>
 
-            <H2>5. Vragen of wijzigingen</H2>
+            <H2>6. Vragen of wijzigingen</H2>
             <p>
               Vragen over dit cookiebeleid? Mail ons via{" "}
               <a className="text-[#ff9a45] hover:underline" href={`mailto:${settings.mainEmail}`}>
                 {settings.mainEmail}
               </a>
-              . Wijzigt onze werkwijze (bijvoorbeeld als we ooit statistieken zouden toevoegen), dan
-              passen we deze pagina aan en vragen we waar nodig eerst je toestemming. Lees ook ons{" "}
+              . Wijzigt onze werkwijze, dan passen we deze pagina aan en vragen we waar nodig eerst je
+              toestemming. Lees ook ons{" "}
               <Link href="/privacy" className="text-[#ff9a45] hover:underline">
                 privacybeleid
               </Link>{" "}

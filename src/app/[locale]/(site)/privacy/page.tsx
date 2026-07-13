@@ -92,6 +92,20 @@ export default async function PrivacyPage() {
                 browserinformatie in serverlogs, nodig voor de beveiliging en goede werking van de
                 website (rechtsgrond: gerechtvaardigd belang).
               </li>
+              <li>
+                <strong className="text-white">Websitestatistieken (Google Analytics 4):</strong>{" "}
+                enkel wanneer je onze analytische cookies aanvaardt, verwerkt Google Analytics
+                pseudonieme gebruiksgegevens (bekeken pagina&apos;s, klik- en navigatiegedrag,
+                apparaat- en browsertype en je regio bij benadering op basis van een ingekort
+                IP-adres). We gebruiken dit uitsluitend om te begrijpen hoe de site gebruikt wordt en
+                die te verbeteren, niet voor advertenties of profilering (rechtsgrond: toestemming).
+                Zolang je geen toestemming geeft, worden deze cookies niet geplaatst en vindt deze
+                verwerking niet plaats. Je kunt je toestemming op elk moment intrekken via ons{" "}
+                <Link href="/cookies" className="text-[#ff9a45] hover:underline">
+                  cookiebeleid
+                </Link>
+                .
+              </li>
             </ul>
             <p>
               We verzamelen geen gegevens voor advertentiedoeleinden en verkopen je gegevens nooit aan
@@ -129,6 +143,13 @@ export default async function PrivacyPage() {
               <li>
                 <strong className="text-white">Onze hostingpartner:</strong> het technisch draaien van
                 deze website.
+              </li>
+              <li>
+                <strong className="text-white">Google Analytics (Google Ireland Ltd.):</strong>{" "}
+                pseudonieme websitestatistieken, uitsluitend nadat je onze analytische cookies hebt
+                aanvaard. Google verwerkt deze gegevens als verwerker in onze opdracht; er kan daarbij
+                doorgifte buiten de EER plaatsvinden onder de gepaste waarborgen (o.a. het EU-US Data
+                Privacy Framework en standaardcontractbepalingen).
               </li>
             </ul>
             <p>

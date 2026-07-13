@@ -3,6 +3,8 @@ import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond, Great_Vibes, 
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { CookieConsent, CONSENT_STORAGE_KEY } from "@/components/consent";
 import "../globals.css";
 import { ThemeProvider } from "@/providers";
 import { SiteBackground } from "@/components/ui";
@@ -78,10 +80,26 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // GA4 loads only on the public site (admin has its own layout tree) and only
+  // when the id is set - so local dev without it never sends hits. The
+  // @next/third-parties tag defers gtag and fires page_views on client-side
+  // route changes, which the raw gtag snippet does not.
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
+  // Google Consent Mode v2: deny every signal by default, before gtag.js loads,
+  // so no analytics cookies are set until the visitor accepts in the banner. A
+  // previously stored "granted" is re-applied here so the choice sticks across
+  // page loads. Runs as a plain inline <head> script (parsed before the
+  // afterInteractive GA tag), which is the earliest and most reliable point.
+  const consentDefaultScript = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{if(localStorage.getItem('${CONSENT_STORAGE_KEY}')==='granted'){gtag('consent','update',{analytics_storage:'granted'});}}catch(e){}`;
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        {/* Add any other head tags if needed, metadata object handles common ones */}
+        {gaId && (
+          // eslint-disable-next-line react/no-danger
+          <script dangerouslySetInnerHTML={{ __html: consentDefaultScript }} />
+        )}
       </head>
       <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${greatVibes.variable} ${lora.variable} bg-[#0a0a0a] text-white`}>
         <SiteBackground />
@@ -99,6 +117,12 @@ export default async function LocaleLayout({
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>
+        {gaId && (
+          <>
+            <CookieConsent />
+            <GoogleAnalytics gaId={gaId} />
+          </>
+        )}
       </body>
     </html>
   );
