@@ -25,8 +25,8 @@ function ArticleTile({ post }: { post: BlogPost }) {
       className="group flex flex-col overflow-hidden rounded-[16px] border border-white/[0.09] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255,122,0,0.34)] hover:shadow-[0_24px_50px_-24px_rgba(255,90,0,0.5)]"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-[#141210]">
-        {post.ogImage ? (
-          <Image src={post.ogImage} alt={post.heroImageAlt ?? post.title} fill sizes="(max-width:1024px) 45vw, 320px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+        {post.featuredImage ?? post.ogImage ? (
+          <Image src={(post.featuredImage ?? post.ogImage) as string} alt={post.heroImageAlt ?? post.title} fill sizes="(max-width:1024px) 45vw, 320px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
         ) : (
           <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.16),transparent_60%)]" />
         )}
@@ -107,8 +107,8 @@ export function ServiceRelatedPosts({
             }`}
           >
             <div className="relative min-h-[220px] flex-1 overflow-hidden bg-[#141210]">
-              {pillar.ogImage ? (
-                <Image src={pillar.ogImage} alt={pillar.heroImageAlt ?? pillar.title} fill sizes="(max-width:1024px) 100vw, 480px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              {pillar.featuredImage ?? pillar.ogImage ? (
+                <Image src={(pillar.featuredImage ?? pillar.ogImage) as string} alt={pillar.heroImageAlt ?? pillar.title} fill sizes="(max-width:1024px) 100vw, 480px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               ) : (
                 <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.18),transparent_62%)]" />
               )}

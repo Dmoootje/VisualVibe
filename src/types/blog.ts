@@ -62,7 +62,10 @@ export type BlogPost = {
   seoDescription: string;
   ogTitle?: string;
   ogDescription?: string;
+  /** Vierkante deelafbeelding met tekst erop (og:image, alleen voor social). */
   ogImage?: string;
+  /** Uitgelichte afbeelding zonder tekst: getoond in de hero en in alle cards. */
+  featuredImage?: string;
   /** When true, the hero image is a fully composed banner (badge/title/logo baked in),
    * so the preview card renders it as-is instead of overlaying its own chrome. */
   heroComposed?: boolean;

@@ -36,6 +36,8 @@ export function BlogCard({ post, index, authorImage }: BlogCardProps) {
     year: "numeric",
   });
   const { lead, accent } = splitTitle(post.title);
+  // Uitgelichte afbeelding zonder tekst; de kaart legt zelf badge/titel/logo erop.
+  const cardImage = post.featuredImage ?? post.ogImage;
 
   return (
     <motion.div
@@ -52,9 +54,9 @@ export function BlogCard({ post, index, authorImage }: BlogCardProps) {
       >
         {/* Hero image + (optional) overlaid badge, logo and title */}
         <div className="relative aspect-[16/9] w-full overflow-hidden">
-          {post.ogImage ? (
+          {cardImage ? (
             <Image
-              src={post.ogImage}
+              src={cardImage}
               alt={post.heroImageAlt ?? `Uitgelichte afbeelding voor artikel: ${post.title}`}
               fill
               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"

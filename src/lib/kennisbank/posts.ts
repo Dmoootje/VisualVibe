@@ -11,6 +11,7 @@ import type {
   BlogSource,
 } from "@/types/blog";
 import { getCategoryByName } from "@/data/kennisbankCategories";
+import { KENNISBANK_OG, kennisbankFeatured } from "@/data/kennisbankImages";
 import {
   assertValidKennisbankPosts,
   formatKennisbankValidationIssues,
@@ -275,14 +276,23 @@ function readPostFile(filename: string): BlogPost {
     contentError(filename, "clusterType", "expected \"pillar\" or \"sub\"");
   }
 
+  const slug = requiredString(data, "slug", filename);
+  const categorySlug =
+    optionalString(data.categorySlug, "categorySlug", filename) ??
+    getCategoryByName(category)?.slug ??
+    slugifyCategory(category);
+  // OG (vierkant, met tekst) = social; featured (zonder tekst) = hero + cards.
+  // De gegenereerde kennisbankbeelden winnen van de frontmatter-verwijzing.
+  const canonicalPath = `/kennisbank/${categorySlug}/${slug}/`;
+  const ogImage =
+    KENNISBANK_OG[canonicalPath]?.url ?? resolveImage(optionalString(data.ogImage, "ogImage", filename));
+  const featuredImage = kennisbankFeatured(categorySlug, slug);
+
   return {
     title,
-    slug: requiredString(data, "slug", filename),
+    slug,
     category,
-    categorySlug:
-      optionalString(data.categorySlug, "categorySlug", filename) ??
-      getCategoryByName(category)?.slug ??
-      slugifyCategory(category),
+    categorySlug,
     pillar: data.pillar === true,
     status: parseStatus(data, filename),
     locale: parseLocale(data.locale, filename),
@@ -300,7 +310,8 @@ function readPostFile(filename: string): BlogPost {
     seoDescription: requiredString(data, "seoDescription", filename),
     ogTitle: optionalString(data.ogTitle, "ogTitle", filename),
     ogDescription: optionalString(data.ogDescription, "ogDescription", filename),
-    ogImage: resolveImage(optionalString(data.ogImage, "ogImage", filename)),
+    ogImage,
+    featuredImage,
     heroComposed: data.heroComposed === true,
     heroImageAlt: optionalString(data.heroImageAlt, "heroImageAlt", filename),
     heroImageTitle: optionalString(data.heroImageTitle, "heroImageTitle", filename),

@@ -115,6 +115,38 @@ export async function createProjectAction(input: CreateProjectInput): Promise<Tr
   }
 }
 
+/**
+ * AI-invulhulp: haalt uit een (ingesproken of getypte) Nederlandse beschrijving
+ * de gestructureerde velden voor een nieuw trouwproject. Vult nooit zelf een
+ * project aan; de admin controleert en maakt het project aan.
+ */
+export async function parseWeddingProjectAction(
+  transcript: string,
+): Promise<TrouwstudioActionResult<import("@/lib/ai/parseWeddingProject").ParsedWeddingProject>> {
+  const auth = await requireAdmin();
+  if (!auth.ok) return auth;
+
+  const text = str(transcript, 6000);
+  if (text.length < 3) {
+    return { ok: false, error: "Vertel of typ eerst wat gegevens die de AI kan invullen." };
+  }
+
+  const { hasAnthropic, parseWeddingProject } = await import("@/lib/ai/parseWeddingProject");
+  if (!hasAnthropic()) {
+    return {
+      ok: false,
+      error: "De AI-invulhulp is niet beschikbaar: er is geen ANTHROPIC_API_KEY geconfigureerd.",
+    };
+  }
+
+  try {
+    const data = await parseWeddingProject(text);
+    return { ok: true, data };
+  } catch {
+    return { ok: false, error: "De AI kon de gegevens niet verwerken. Probeer het opnieuw of vul handmatig in." };
+  }
+}
+
 export async function updateProjectAction(
   projectId: string,
   patch: Partial<Pick<WeddingProject, "internalName" | "status" | "archived" | "notes" | "coverPhotoUrl" | "editingStyle">>,

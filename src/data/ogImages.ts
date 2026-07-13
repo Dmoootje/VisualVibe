@@ -2,9 +2,11 @@
 // gekoppeld op canonieke path (met echte afmetingen). Kennisbank volgt later en
 // staat hier bewust nog niet in; die pagina's houden hun eigen ogImage/fallback.
 
+import { KENNISBANK_OG } from "./kennisbankImages";
+
 export type OgImage = { url: string; width: number; height: number };
 
-export const OG_IMAGES: Record<string, OgImage> = {
+const PAGE_OG_IMAGES: Record<string, OgImage> = {
   "/contact/": { url: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2Fcontact.webp?alt=media&token=4a363f3a-1e1d-4c04-b862-fe67d6310732", width: 1254, height: 1254 },
   "/cookies/": { url: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2Fcookies.webp?alt=media&token=60a866dc-bc75-4d80-9540-d1774a724e47", width: 1254, height: 1254 },
   "/diensten/": { url: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2FDiensten.webp?alt=media&token=a64e970c-cc48-41d5-84a0-26072c0930ec", width: 1254, height: 1254 },
@@ -95,6 +97,11 @@ export const OG_IMAGES: Record<string, OgImage> = {
   "/sectoren/wellness-beauty/": { url: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2FSectoren%2Fwellness-beauty.webp?alt=media&token=41716454-2f13-492d-bbd1-efcd1259b065", width: 1254, height: 1254 },
   "/sitemap/": { url: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2Fsitemap.png.webp?alt=media&token=6e1a3127-fced-4f8c-8193-555ece994dd4", width: 1254, height: 1254 },
 };
+
+// Kennisbank-OG (per artikel + categorie) wordt apart gegenereerd en hier
+// samengevoegd, zodat pageMetadata/ogImageForPath ook voor kennisbankpagina's
+// de juiste deelafbeelding vindt.
+export const OG_IMAGES: Record<string, OgImage> = { ...PAGE_OG_IMAGES, ...KENNISBANK_OG };
 
 /** OG-afbeelding voor een canonieke path (leidende + sluitende slash), of undefined. */
 export function ogImageForPath(path: string): OgImage | undefined {

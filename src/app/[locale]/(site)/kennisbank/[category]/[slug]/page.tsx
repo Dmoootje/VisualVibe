@@ -341,7 +341,7 @@ export default async function KennisbankPostPage({
             authorImage={authorImage}
             publishedAt={post.publishedAt}
             readingTime={post.readingTime}
-            image={post.ogImage}
+            image={post.featuredImage ?? post.ogImage}
             imageAlt={post.heroImageAlt ?? post.title}
             imageTitle={post.heroImageTitle}
             imageCaption={post.heroImageCaption}

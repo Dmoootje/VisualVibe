@@ -13,6 +13,7 @@ import {
   Pencil,
   Plus,
   Search,
+  Sparkles,
   Trash2,
 } from "lucide-react";
 import {
@@ -31,6 +32,8 @@ import {
   updateProjectAction,
 } from "@/lib/admin/trouwstudioActions";
 import { formatDate, inputClasses } from "./shared";
+import { WeddingProjectAiFill } from "./WeddingProjectAiFill";
+import type { ParsedWeddingProject } from "@/lib/ai/parseWeddingProject";
 
 const PROJECT_STATUS_BADGE: Record<WeddingProjectStatus, string> = {
   concept: "bg-white/10 text-white/60",
@@ -93,6 +96,7 @@ export function ProjectsOverview({ initialProjects }: { initialProjects: Wedding
   const [showArchived, setShowArchived] = useState(false);
 
   const [formOpen, setFormOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   const [form, setForm] = useState<NewProjectForm>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -119,6 +123,24 @@ export function ProjectsOverview({ initialProjects }: { initialProjects: Wedding
     else sorted.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     return sorted;
   }, [projects, search, statusFilter, sort, showArchived]);
+
+  // Merge de AI-extractie in het formulier: overschrijf alleen velden waarvoor
+  // de AI een waarde vond, zodat al ingevulde velden bewaard blijven.
+  const applyAiFields = (data: ParsedWeddingProject) => {
+    setForm((prev) => ({
+      ...prev,
+      partnerOneName: data.partnerOneName || prev.partnerOneName,
+      partnerTwoName: data.partnerTwoName || prev.partnerTwoName,
+      weddingDate: data.weddingDate || prev.weddingDate,
+      ceremonyLocation: data.ceremonyLocation || prev.ceremonyLocation,
+      receptionLocation: data.receptionLocation || prev.receptionLocation,
+      city: data.city || prev.city,
+      photographerName: data.photographerName || prev.photographerName,
+      editingStyle: data.editingStyle || prev.editingStyle,
+      notes: data.notes || prev.notes,
+    }));
+    setFieldErrors({});
+  };
 
   const setField = (key: keyof NewProjectForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -298,9 +320,26 @@ export function ProjectsOverview({ initialProjects }: { initialProjects: Wedding
       {formOpen && (
         <div className="rounded-lg border border-amber-500/25 bg-white/[0.03] p-6">
           <h2 className="text-lg font-semibold">Nieuw trouwproject</h2>
-          <p className="mb-5 text-sm text-white/50">
-            Velden met een * zijn verplicht. De rest kan je later nog aanvullen.
-          </p>
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-white/50">
+              Velden met een * zijn verplicht. De rest kan je later nog aanvullen.
+            </p>
+            {!aiOpen && (
+              <button
+                type="button"
+                onClick={() => setAiOpen(true)}
+                className="inline-flex items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-300 hover:bg-amber-500/20"
+              >
+                <Sparkles className="h-4 w-4" />
+                Vertel AI wat hij moet invullen
+              </button>
+            )}
+          </div>
+          {aiOpen && (
+            <div className="mb-5">
+              <WeddingProjectAiFill onFill={applyAiFields} onClose={() => setAiOpen(false)} />
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm text-white/70">
               Partner 1 *

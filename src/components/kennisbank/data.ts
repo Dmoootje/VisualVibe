@@ -73,7 +73,7 @@ export function toArticleCardData(
     date: formatDate(post.publishedAt),
     author: post.author,
     authorImage: authorImages?.[post.author],
-    image: post.ogImage,
+    image: post.featuredImage ?? post.ogImage,
     imageAlt: post.heroImageAlt ?? post.title,
     heroComposed: Boolean(post.heroComposed),
     pillar: Boolean(post.pillar),
