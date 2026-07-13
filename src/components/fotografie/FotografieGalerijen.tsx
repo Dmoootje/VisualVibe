@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { FG_GALLERIES, FG_IMG } from "@/data/fotografieShowcase";
 import { FiIcon } from "./FiIcon";
 import { WeddingVibeLogo } from "./WeddingVibeLogo";
@@ -88,10 +89,8 @@ export function FotografieGalerijen() {
 
       {/* WeddingVibe + meer projecten */}
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <a
-          href="https://weddingvibe.be/"
-          target="_blank"
-          rel="noopener"
+        <Link
+          href="/trouwfotograaf-limburg"
           className="fg-wed relative flex min-h-[150px] items-center gap-5 overflow-hidden rounded-[20px] bg-white px-[26px] py-[22px] shadow-[0_20px_48px_-22px_rgba(201,162,75,0.55)]"
         >
           <WeddingVibeLogo className="relative z-[1] h-[38px] w-auto flex-none" />
@@ -104,7 +103,7 @@ export function FotografieGalerijen() {
           <span className="war relative z-[1] flex h-11 w-11 flex-none items-center justify-center rounded-full text-white shadow-[0_6px_16px_-6px_rgba(201,162,75,0.8)]" style={{ background: "linear-gradient(135deg,#EED89A,#C9A24B)" }}>
             <ArrowR size={18} />
           </span>
-        </a>
+        </Link>
 
         <a
           href="/realisaties/fotografie"

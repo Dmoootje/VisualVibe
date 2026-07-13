@@ -1,11 +1,12 @@
 "use client";
 
 import { useActionState } from "react";
-import { AlertTriangle, CheckCircle2, FlaskConical, Mail, Send, Server } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FlaskConical, Inbox, Mail, Send, Server } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   saveEmailSettingsAction,
   sendSmtpTestEmailAction,
+  testImapConnectionAction,
   testSmtpConnectionAction,
   type EmailSettingsActionState,
 } from "@/lib/admin/emailSettingsActions";
@@ -22,6 +23,7 @@ const FORM_TYPE_LABELS: Record<(typeof EMAIL_FORM_TYPES)[number], string> = {
   quote_modal_offerte: "Offertemodal",
   quote_modal_kennis: "Kennismakingsmodal",
   website_analysis: "Websiteanalyse",
+  wedding: "WeddingVibe (trouwaanvraag)",
 };
 
 export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminView }) {
@@ -37,18 +39,29 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
     sendSmtpTestEmailAction,
     INITIAL_EMAIL_SETTINGS_ACTION_STATE,
   );
+  const [imapConnectionState, imapConnectionAction, imapConnectionPending] = useActionState(
+    testImapConnectionAction,
+    INITIAL_EMAIL_SETTINGS_ACTION_STATE,
+  );
 
-  const busy = savePending || connectionPending || testMailPending;
+  const busy = savePending || connectionPending || testMailPending || imapConnectionPending;
   return (
     <form action={saveAction} className="flex flex-col gap-6">
       <Tabs defaultValue="smtp" className="w-full">
-        <TabsList className="grid h-auto w-full grid-cols-3 border border-white/10 bg-white/5 p-1 text-white/60 sm:w-fit sm:min-w-[440px]">
+        <TabsList className="grid h-auto w-full grid-cols-2 border border-white/10 bg-white/5 p-1 text-white/60 sm:w-fit sm:min-w-[560px] sm:grid-cols-4">
           <TabsTrigger
             value="smtp"
             className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white"
           >
             <Server className="h-4 w-4" aria-hidden="true" />
             SMTP
+          </TabsTrigger>
+          <TabsTrigger
+            value="imap"
+            className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white"
+          >
+            <Inbox className="h-4 w-4" aria-hidden="true" />
+            IMAP
           </TabsTrigger>
           <TabsTrigger
             value="automation"
@@ -95,12 +108,18 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
                   { value: "starttls", label: "STARTTLS" },
                 ]}
               />
-              <Field label="Gebruikersnaam" name="username" defaultValue={settings.smtp.username} autoComplete="username" />
+              <Field
+                label="Gebruikersnaam"
+                name="username"
+                defaultValue={settings.smtp.username}
+                autoComplete="section-smtp username"
+                hint="Een gebruikersnaam activeert SMTP-authenticatie. Laat alleen leeg wanneer je provider een relay zonder login toestaat."
+              />
               <Field
                 label="Wachtwoord"
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="section-smtp new-password"
                 placeholder={
                   settings.smtp.passwordConfigured
                     ? "Opgeslagen - laat leeg om te behouden"
@@ -150,6 +169,102 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
             </div>
             {connectionState.status !== "idle" && <ActionStatus state={connectionState} />}
             {testMailState.status !== "idle" && <ActionStatus state={testMailState} />}
+          </Panel>
+        </TabsContent>
+
+        <TabsContent value="imap" forceMount className="mt-5 focus-visible:ring-amber-500/70 data-[state=inactive]:hidden">
+          <Panel
+            title="IMAP-inbox"
+            description="Synchroniseer antwoorden van klanten veilig naar hun leadgesprek. Berichten worden alleen gelezen; de app wijzigt geen mailboxstatus."
+          >
+            <CheckboxField
+              name="imapEnabled"
+              label="IMAP-synchronisatie inschakelen"
+              description="Maakt de synchroniseerknop bij leads beschikbaar. Synchronisatie gebeurt handmatig wanneer een admin erom vraagt."
+              defaultChecked={settings.imap.enabled}
+            />
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field
+                label="Host *"
+                name="imapHost"
+                defaultValue={settings.imap.host}
+                placeholder="imap.provider.be"
+              />
+              <Field
+                label="Poort *"
+                name="imapPort"
+                type="number"
+                min={1}
+                max={65535}
+                defaultValue={String(settings.imap.port)}
+              />
+              <SelectField
+                label="Beveiliging *"
+                name="imapSecurity"
+                defaultValue={settings.imap.security}
+                options={[
+                  { value: "ssl", label: "SSL/TLS" },
+                  { value: "starttls", label: "STARTTLS" },
+                ]}
+              />
+              <Field
+                label="Gebruikersnaam *"
+                name="imapUsername"
+                defaultValue={settings.imap.username}
+                autoComplete="section-imap username"
+                hint="Meestal het volledige e-mailadres van de mailbox."
+              />
+              <Field
+                label="Wachtwoord *"
+                name="imapPassword"
+                type="password"
+                autoComplete="section-imap new-password"
+                placeholder={
+                  settings.imap.passwordConfigured
+                    ? "Opgeslagen - laat leeg om te behouden"
+                    : "IMAP- of app-wachtwoord"
+                }
+                hint={
+                  settings.imap.passwordConfigured
+                    ? "Er is een apart versleuteld IMAP-wachtwoord opgeslagen."
+                    : "Gebruik een app-wachtwoord als je mailprovider dat vereist."
+                }
+              />
+              <Field
+                label="Mailbox *"
+                name="imapMailbox"
+                defaultValue={settings.imap.mailbox}
+                placeholder="INBOX"
+                hint="INBOX werkt bij de meeste providers."
+              />
+              <Field
+                label="Zoekvenster (dagen) *"
+                name="imapSyncWindowDays"
+                type="number"
+                min={1}
+                max={365}
+                defaultValue={String(settings.imap.syncWindowDays)}
+                hint="Per synchronisatie worden maximaal 50 recente berichten van het leadadres bekeken."
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-3 border-t border-white/10 pt-5">
+              <button
+                type="submit"
+                formAction={imapConnectionAction}
+                disabled={busy}
+                className="rounded-md border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/85 hover:bg-white/10 disabled:opacity-50"
+              >
+                {imapConnectionPending ? "Verbinding testen..." : "IMAP-verbinding testen"}
+              </button>
+            </div>
+            {imapConnectionState.status !== "idle" && <ActionStatus state={imapConnectionState} />}
+
+            <div className="rounded-lg border border-sky-400/20 bg-sky-400/[0.07] p-4 text-sm leading-6 text-sky-100/80">
+              Na het opslaan kun je in een leadgesprek op &quot;Inbox synchroniseren&quot; klikken.
+              Nieuwe antwoorden verschijnen daar als ontvangen berichten en worden gebruikt voor correcte e-mailthreading.
+            </div>
           </Panel>
         </TabsContent>
 
@@ -274,8 +389,8 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
             </div>
 
             <div className="rounded-lg border border-sky-400/20 bg-sky-400/[0.07] p-4 text-sm leading-6 text-sky-100/80">
-              Antwoorden komen voorlopig binnen in de ingestelde mailbox. Automatische synchronisatie
-              van inkomende antwoorden kan later via IMAP of een mailbox-API worden toegevoegd.
+              Met ingeschakelde IMAP-synchronisatie verschijnen ontvangen antwoorden in het leadgesprek.
+              De admin kan daar meteen een gecontroleerd antwoord in dezelfde e-mailconversatie versturen via SMTP.
             </div>
           </Panel>
         </TabsContent>

@@ -19,6 +19,8 @@ import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
 import { RealisatieWebdesignFeatured } from "@/components/realisaties/RealisatieWebdesignFeatured";
 import { RealisatieWebdesignGrid } from "@/components/realisaties/RealisatieWebdesignGrid";
 import { RealisatieFotografieGalerijen } from "@/components/realisaties/RealisatieFotografieGalerijen";
+import { RealisatieSmugMugGalerijen } from "@/components/realisaties/RealisatieSmugMugGalerijen";
+import { getSmugMugGalleries } from "@/lib/smugmug";
 import { RealisatieDroneMedia } from "@/components/realisaties/RealisatieDroneMedia";
 import { RealisatieVideografieGalerijen } from "@/components/videografie";
 import { RealisatieXrTours } from "@/components/xr";
@@ -106,6 +108,9 @@ export default async function RealisatieCategoryPage({
     ? (await getFotografieGalleries()).filter((g) => g.images.length > 0)
     : [];
 
+  // Livegalerijen uit SmugMug (publieke albums, nieuwste eerst; leeg zonder creds).
+  const smugGalleries = isFotografie ? await getSmugMugGalleries() : [];
+
   // Content-driven stat rail: gallery count + a fixed in-house claim. Only shown
   // once at least one gallery exists (otherwise the header keeps its plain look).
   const fotoStats =
@@ -179,6 +184,9 @@ export default async function RealisatieCategoryPage({
           </Container>
         </Section>
       )}
+
+      {/* SmugMug: automatisch synchroniserende livegalerijen (alleen fotografie). */}
+      {isFotografie && <RealisatieSmugMugGalerijen galleries={smugGalleries} />}
 
       {mappedService && (
         <>

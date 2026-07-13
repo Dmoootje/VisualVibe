@@ -144,7 +144,7 @@ export const webdesignProjects: WebdesignProject[] = [
     id: "weddingvibe",
     name: "WeddingVibe",
     client: "WEDDINGVIBE · TROUWFOTOGRAFIE LIMBURG",
-    url: "https://weddingvibe.be",
+    url: "https://visualvibe.media/be/trouwfotograaf-limburg",
     tags: ["Portfolio", "Fotografie", "SEO"],
     teaser: "Fotografie-portfolio met prijsinfo & contact.",
     text: "Website met webdesign in de huisstijl van WeddingVibe. Geoptimaliseerd voor zoekmachines op “huwelijksfotografie Limburg” en “trouwfotograaf”, met portfolio, prijsinfo en contactmogelijkheid.",

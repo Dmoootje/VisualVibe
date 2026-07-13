@@ -14,7 +14,7 @@ import type {
   RenderedEmail,
 } from "@/types/email";
 
-const SITE_URL = "https://visualvibe.be";
+const SITE_URL = "https://visualvibe.media";
 const LOGO_URL = `${SITE_URL}/logo.svg`;
 
 type CustomerCopy = {

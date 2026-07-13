@@ -1,8 +1,10 @@
+import { randomUUID } from "node:crypto";
 import { notFound } from "next/navigation";
 import { getLeadById } from "@/lib/firestore/leads";
 import { listNotesByLead } from "@/lib/firestore/leadNotes";
 import { listEventsByLead } from "@/lib/firestore/leadEvents";
 import { listMailHistoryByLead } from "@/lib/firestore/mailHistory";
+import { getEmailSettingsForAdmin } from "@/lib/firestore/emailSettings";
 import {
   listAnalysisLeadsByEmail,
   listAnalysisLeadsByLeadId,
@@ -26,11 +28,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     notFound();
   }
 
-  const [notes, events, mailHistory, analysisLeads] = await Promise.all([
+  const [notes, events, mailHistory, analysisLeads, emailSettings] = await Promise.all([
     listNotesByLead(id),
     listEventsByLead(id),
     listMailHistoryByLead(id),
     listAnalysisLeadsByLeadId(id),
+    getEmailSettingsForAdmin(),
   ]);
 
   // Analysepaneel tonen bij een analyselead of wanneer er analyses aan deze
@@ -98,7 +101,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             />
           )}
 
-          <LeadCommunicationPanel leadId={lead.id} history={mailHistory} />
+          <LeadCommunicationPanel
+            leadId={lead.id}
+            history={mailHistory}
+            imapEnabled={emailSettings.imap.enabled}
+            sendNonce={randomUUID()}
+          />
         </div>
 
         <div className="flex flex-col gap-6">
@@ -165,6 +173,12 @@ function describeEvent(event: LeadEvent): string {
       return `E-mail verstuurd (door ${event.createdBy})`;
     case "email_failed":
       return `E-mailverzending mislukt (door ${event.createdBy})`;
+    case "email_received": {
+      const count = Number(event.newValue ?? 1);
+      return count === 1
+        ? `1 nieuw inboxantwoord gesynchroniseerd (door ${event.createdBy})`
+        : `${count} nieuwe inboxantwoorden gesynchroniseerd (door ${event.createdBy})`;
+    }
     case "analysis_requested":
       return "Websiteanalyse aangevraagd";
     case "analysis_verified":

@@ -17,18 +17,20 @@ import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { realisatieCategories } from "@/data/realisatieCategories";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
-import { getPostsByCategory, postHref, categoryHref, localizedPath } from "@/lib/kennisbank/posts";
+import { getPostsByCategory, postHref, categoryHref } from "@/lib/kennisbank/posts";
 import { businessConfig } from "@/config/business.config";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = {
-  title: { absolute: `Sitemap | ${businessConfig.displayName}` },
+// pageMetadata wires canonical, og:url, twitter tags and the mapped OG image
+// for /sitemap/ (src/data/ogImages.ts), which a hand-rolled object left out.
+export const metadata: Metadata = pageMetadata({
+  title: `Sitemap | ${businessConfig.displayName}`,
   description:
     "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
-  // Canonical points at the real published nl URL under /be (locale-less 308s).
-  alternates: { canonical: `${businessConfig.url}${localizedPath("nl", "/sitemap/")}` },
-};
+  path: "/sitemap/",
+});
 
 type SmNode = { title: string; href: string; children?: SmNode[] };
 type SmSection = {
@@ -89,6 +91,7 @@ export default function SitemapPage() {
         { title: "Over ons", href: "/over-ons" },
         { title: "Contact", href: "/contact" },
         { title: "Offerte aanvragen", href: "/offerte-aanvragen" },
+        { title: "Trouwfotograaf Limburg (WeddingVibe)", href: "/trouwfotograaf-limburg" },
         { title: "Privacybeleid", href: "/privacy" },
         { title: "Cookiebeleid", href: "/cookies" },
         { title: "Sitemap", href: "/sitemap" },

@@ -32,6 +32,15 @@ export async function Footer() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.svg" alt="VisualVibe" className="h-7 w-auto sm:h-8" width={165} height={32} />
             </Link>
+            {/* Zusterlabel: klein WeddingVibe-logo onder het VisualVibe-logo. */}
+            <Link
+              href="/trouwfotograaf-limburg"
+              aria-label="WeddingVibe - trouwfotografie en huwelijksvideo"
+              className="mt-3 block w-fit opacity-70 transition-opacity hover:opacity-100"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/weddingvibe-logo-licht.svg" alt="WeddingVibe" className="h-[18px] w-auto" width={79} height={18} />
+            </Link>
             <p className="mt-[18px] max-w-[340px] text-[15px] leading-relaxed text-white/55">
               {footerConfig.description}
             </p>

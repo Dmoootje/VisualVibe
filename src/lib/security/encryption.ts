@@ -7,6 +7,7 @@ const ENVELOPE_VERSION = "v1";
 const IV_BYTES = 12;
 const AUTH_TAG_BYTES = 16;
 export const SMTP_PASSWORD_AAD = "visualvibe:smtp-password:v1";
+export const IMAP_PASSWORD_AAD = "visualvibe:imap-password:v1";
 
 function decodeEncryptionKey(rawValue: string | undefined): Buffer {
   const raw = rawValue?.trim() ?? "";
@@ -41,8 +42,9 @@ function decodePart(value: string, label: string): Buffer {
 }
 
 /** Encrypts a server-side secret into a versioned, authenticated envelope. */
-export function encryptSecret(
+function encryptSecretWithAad(
   plaintext: string,
+  aad: string,
   keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
 ): string {
   if (!plaintext) throw new Error("Een lege geheime waarde kan niet worden versleuteld.");
@@ -50,7 +52,7 @@ export function encryptSecret(
   const key = decodeEncryptionKey(keyValue);
   const iv = randomBytes(IV_BYTES);
   const cipher = createCipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_BYTES });
-  cipher.setAAD(Buffer.from(SMTP_PASSWORD_AAD, "utf8"));
+  cipher.setAAD(Buffer.from(aad, "utf8"));
   const ciphertext = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
   const tag = cipher.getAuthTag();
 
@@ -58,8 +60,9 @@ export function encryptSecret(
 }
 
 /** Decrypts and authenticates a secret. Tampered envelopes fail closed. */
-export function decryptSecret(
+function decryptSecretWithAad(
   envelope: string,
+  aad: string,
   keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
 ): string {
   const [version, ivPart, tagPart, ciphertextPart, ...extra] = envelope.split(":");
@@ -77,7 +80,7 @@ export function decryptSecret(
 
   try {
     const decipher = createDecipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_BYTES });
-    decipher.setAAD(Buffer.from(SMTP_PASSWORD_AAD, "utf8"));
+    decipher.setAAD(Buffer.from(aad, "utf8"));
     decipher.setAuthTag(tag);
     return Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString("utf8");
   } catch {
@@ -85,8 +88,36 @@ export function decryptSecret(
   }
 }
 
+export function encryptSecret(
+  plaintext: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return encryptSecretWithAad(plaintext, SMTP_PASSWORD_AAD, keyValue);
+}
+
+export function decryptSecret(
+  envelope: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return decryptSecretWithAad(envelope, SMTP_PASSWORD_AAD, keyValue);
+}
+
 export const encryptSmtpPassword = encryptSecret;
 export const decryptSmtpPassword = decryptSecret;
+
+export function encryptImapPassword(
+  plaintext: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return encryptSecretWithAad(plaintext, IMAP_PASSWORD_AAD, keyValue);
+}
+
+export function decryptImapPassword(
+  envelope: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return decryptSecretWithAad(envelope, IMAP_PASSWORD_AAD, keyValue);
+}
 
 /**
  * HMAC-SHA256 over `purpose + ":" + value` met de app-sleutel, als base64url.

@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
+import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond, Great_Vibes, Lora } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { ThemeProvider } from "@/providers";
-import { Header, Footer } from "@/layouts";
 import { SiteBackground } from "@/components/ui";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo";
 import { SectorIconSprite } from "@/components/sectors";
-import { QuoteModalProvider } from "@/components/quote";
 import { businessConfig } from "@/config/business.config";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,8 +18,11 @@ const inter = Inter({ subsets: ["latin"] });
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
-// Elegant serif, only used in the WeddingVibe cross-promo card (Over ons).
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
+// Elegant serif: WeddingVibe cross-promo card (Over ons) + de WeddingVibe one-pager.
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
+// WeddingVibe one-pager (/trouwfotograaf-limburg): script-accenten + body-serif.
+const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400", variable: "--font-great-vibes", display: "swap" });
+const lora = Lora({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-lora", display: "swap" });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -82,7 +83,7 @@ export default async function LocaleLayout({
       <head>
         {/* Add any other head tags if needed, metadata object handles common ones */}
       </head>
-      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-[#0a0a0a] text-white`}>
+      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${greatVibes.variable} ${lora.variable} bg-[#0a0a0a] text-white`}>
         <SiteBackground />
         <SectorIconSprite />
         <OrganizationJsonLd />
@@ -95,11 +96,7 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <QuoteModalProvider>
-              <Header />
-              <main>{children}</main>
-              <Footer />
-            </QuoteModalProvider>
+            {children}
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -3,7 +3,12 @@ import "server-only";
 import { createHash } from "node:crypto";
 import type { DocumentSnapshot, QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
-import type { MailHistory, MailHistoryStatus, MailHistoryType } from "@/types/email";
+import type {
+  MailDirection,
+  MailHistory,
+  MailHistoryStatus,
+  MailHistoryType,
+} from "@/types/email";
 
 const MAIL_HISTORY_COLLECTION = "mail_history";
 const MAIL_DISPATCHES_COLLECTION = "mail_dispatches";
@@ -11,6 +16,8 @@ const MAIL_DISPATCHES_COLLECTION = "mail_dispatches";
 export type CreateMailHistoryInput = {
   leadId: string;
   type: MailHistoryType;
+  direction?: MailDirection;
+  from?: string[];
   to: string[];
   cc?: string[];
   bcc?: string[];
@@ -20,6 +27,13 @@ export type CreateMailHistoryInput = {
   textBody: string;
   status?: MailHistoryStatus;
   providerMessageId?: string;
+  inReplyTo?: string;
+  references?: string[];
+  receivedAt?: Date | string;
+  imapUid?: number;
+  imapMailbox?: string;
+  attachmentNames?: string[];
+  contentTruncated?: boolean;
   errorCode?: string;
   errorMessage?: string;
   sentAt?: Date | string;
@@ -32,6 +46,8 @@ export type UpdateMailHistoryInput = Partial<
   Pick<
     MailHistory,
     | "to"
+    | "from"
+    | "direction"
     | "cc"
     | "bcc"
     | "replyTo"
@@ -39,6 +55,13 @@ export type UpdateMailHistoryInput = Partial<
     | "htmlBody"
     | "textBody"
     | "providerMessageId"
+    | "inReplyTo"
+    | "references"
+    | "receivedAt"
+    | "imapUid"
+    | "imapMailbox"
+    | "attachmentNames"
+    | "contentTruncated"
     | "errorCode"
     | "errorMessage"
     | "createdBy"
@@ -89,6 +112,7 @@ const STATUS_TRANSITIONS: Record<MailHistoryStatus, readonly MailHistoryStatus[]
   queued: ["sent", "failed"],
   sent: [],
   failed: ["queued"],
+  received: [],
 };
 
 function toIso(value: unknown): string | undefined {
@@ -148,6 +172,8 @@ function toMailHistory(doc: QueryDocumentSnapshot | DocumentSnapshot): MailHisto
     id: doc.id,
     leadId: String(data.leadId ?? ""),
     type: data.type as MailHistoryType,
+    direction: data.direction === "inbound" || data.type === "incoming_reply" ? "inbound" : "outbound",
+    from: cleanAddresses(data.from),
     to: cleanAddresses(data.to),
     cc: cleanAddresses(data.cc),
     bcc: cleanAddresses(data.bcc),
@@ -157,6 +183,13 @@ function toMailHistory(doc: QueryDocumentSnapshot | DocumentSnapshot): MailHisto
     textBody: String(data.textBody ?? ""),
     status: data.status as MailHistoryStatus,
     providerMessageId: optionalString(data.providerMessageId),
+    inReplyTo: optionalString(data.inReplyTo),
+    references: cleanAddresses(data.references),
+    receivedAt: toIso(data.receivedAt),
+    imapUid: typeof data.imapUid === "number" ? data.imapUid : undefined,
+    imapMailbox: optionalString(data.imapMailbox),
+    attachmentNames: cleanAddresses(data.attachmentNames),
+    contentTruncated: data.contentTruncated === true ? true : undefined,
     errorCode: optionalString(data.errorCode),
     errorMessage: optionalString(data.errorMessage),
     createdAt: toIso(data.createdAt) ?? new Date().toISOString(),
@@ -221,6 +254,8 @@ function createStoredMail(input: CreateMailHistoryInput, now: Date) {
   return {
     leadId: input.leadId,
     type: input.type,
+    direction: input.direction ?? (input.type === "incoming_reply" ? "inbound" : "outbound"),
+    from: cleanAddresses(input.from),
     to: cleanAddresses(input.to),
     cc: cleanAddresses(input.cc),
     bcc: cleanAddresses(input.bcc),
@@ -230,6 +265,13 @@ function createStoredMail(input: CreateMailHistoryInput, now: Date) {
     textBody: input.textBody,
     status,
     providerMessageId: input.providerMessageId?.trim() || null,
+    inReplyTo: input.inReplyTo?.trim() || null,
+    references: cleanAddresses(input.references),
+    receivedAt: toDate(input.receivedAt) ?? null,
+    imapUid: Number.isInteger(input.imapUid) ? input.imapUid : null,
+    imapMailbox: input.imapMailbox?.trim() || null,
+    attachmentNames: cleanAddresses(input.attachmentNames),
+    contentTruncated: input.contentTruncated === true,
     errorCode: sanitizeMailError(input.errorCode) ?? null,
     errorMessage: sanitizeMailError(input.errorMessage) ?? null,
     createdAt: now,
@@ -266,6 +308,32 @@ export async function createMailHistory(input: CreateMailHistoryInput): Promise<
   return ref.id;
 }
 
+/**
+ * Creates an idempotent history record and tells importers whether this call
+ * performed the write. A stable idempotency key is required.
+ */
+export async function createMailHistoryIfAbsent(
+  input: CreateMailHistoryInput & { idempotencyKey: string },
+): Promise<{ id: string; created: boolean }> {
+  const ref = adminDb
+    .collection(MAIL_HISTORY_COLLECTION)
+    .doc(
+      `idem_${createHash("sha256")
+        .update(`${input.leadId}\u0000${input.type}\u0000${input.idempotencyKey}`)
+        .digest("hex")
+        .slice(0, 48)}`,
+    );
+
+  const created = await adminDb.runTransaction(async (transaction) => {
+    const existing = await transaction.get(ref);
+    if (existing.exists) return false;
+    transaction.create(ref, createStoredMail(input, new Date()));
+    return true;
+  });
+
+  return { id: ref.id, created };
+}
+
 export async function getMailHistoryById(id: string): Promise<MailHistory | null> {
   const doc = await adminDb.collection(MAIL_HISTORY_COLLECTION).doc(id).get();
   return doc.exists ? toMailHistory(doc) : null;
@@ -285,6 +353,8 @@ export async function updateMailHistory(id: string, input: UpdateMailHistoryInpu
   const patch: Record<string, unknown> = {};
 
   if (input.to !== undefined) patch.to = cleanAddresses(input.to);
+  if (input.from !== undefined) patch.from = cleanAddresses(input.from);
+  if (input.direction !== undefined) patch.direction = input.direction;
   if (input.cc !== undefined) patch.cc = cleanAddresses(input.cc);
   if (input.bcc !== undefined) patch.bcc = cleanAddresses(input.bcc);
   if (input.replyTo !== undefined) patch.replyTo = input.replyTo.trim() || null;
@@ -294,6 +364,13 @@ export async function updateMailHistory(id: string, input: UpdateMailHistoryInpu
   if (input.providerMessageId !== undefined) {
     patch.providerMessageId = input.providerMessageId.trim() || null;
   }
+  if (input.inReplyTo !== undefined) patch.inReplyTo = input.inReplyTo.trim() || null;
+  if (input.references !== undefined) patch.references = cleanAddresses(input.references);
+  if (input.receivedAt !== undefined) patch.receivedAt = toDate(input.receivedAt);
+  if (input.imapUid !== undefined) patch.imapUid = input.imapUid;
+  if (input.imapMailbox !== undefined) patch.imapMailbox = input.imapMailbox.trim() || null;
+  if (input.attachmentNames !== undefined) patch.attachmentNames = cleanAddresses(input.attachmentNames);
+  if (input.contentTruncated !== undefined) patch.contentTruncated = input.contentTruncated;
   if (input.errorCode !== undefined) patch.errorCode = sanitizeMailError(input.errorCode) ?? null;
   if (input.errorMessage !== undefined) {
     patch.errorMessage = sanitizeMailError(input.errorMessage) ?? null;

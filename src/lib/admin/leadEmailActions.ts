@@ -6,16 +6,20 @@ import { getLeadById } from "@/lib/firestore/leads";
 import { getEmailSettings } from "@/lib/firestore/emailSettings";
 import {
   createMailHistory,
+  createMailHistoryIfAbsent,
   getMailHistoryById,
+  listMailHistoryByLead,
   markMailHistoryFailed,
   markMailHistorySent,
   updateMailHistory,
 } from "@/lib/firestore/mailHistory";
 import { addLeadEvent } from "@/lib/firestore/leadEvents";
+import { businessConfig } from "@/config/business.config";
 import { generateLeadReplyWithFallback } from "@/lib/ai/generateLeadReply";
 import { resolveLeadEmailServiceBlocks } from "@/config/leadEmailServiceBlocks";
 import { renderAiReplyEmail } from "@/lib/email/templates";
 import { sendSmtpMail } from "@/lib/email/smtp";
+import { SafeImapError, syncImapRepliesForLead } from "@/lib/email/imap";
 import type { AiReplyDraft, LeadEmailData, MailHistory } from "@/types/email";
 import type { Lead } from "@/types";
 
@@ -24,7 +28,7 @@ export type LeadEmailActionState = {
   message?: string;
 };
 
-type Intent = "regenerate" | "save" | "test" | "send";
+type Intent = "regenerate" | "save" | "sync" | "test" | "send";
 
 async function requireAdmin() {
   const admin = await getCurrentAdmin();
@@ -51,7 +55,7 @@ function toEmailLead(lead: Lead): LeadEmailData {
     utmMedium: lead.utmMedium,
     utmCampaign: lead.utmCampaign,
     createdAt: lead.createdAt,
-    adminDetailUrl: `https://visualvibe.be/admin/leads/${encodeURIComponent(lead.id)}`,
+    adminDetailUrl: `${businessConfig.url}/admin/leads/${encodeURIComponent(lead.id)}`,
   };
 }
 
@@ -109,8 +113,67 @@ async function getEditableDraft(draftId: string, leadId: string): Promise<MailHi
   return draft;
 }
 
-async function regenerateDraft(lead: Lead, createdBy: string): Promise<LeadEmailActionState> {
+async function getInboundReply(historyId: string, leadId: string): Promise<MailHistory | null> {
+  if (!historyId) return null;
+  const message = await getMailHistoryById(historyId);
+  if (
+    !message ||
+    message.leadId !== leadId ||
+    message.type !== "incoming_reply" ||
+    message.status !== "received"
+  ) {
+    return null;
+  }
+  return message;
+}
+
+async function syncReplies(lead: Lead, createdBy: string): Promise<LeadEmailActionState> {
+  const [settings, history] = await Promise.all([
+    getEmailSettings(),
+    listMailHistoryByLead(lead.id),
+  ]);
+  const result = await syncImapRepliesForLead(settings.imap, {
+    id: lead.id,
+    leadNumber: lead.leadNumber,
+    email: lead.email,
+    locale: lead.locale,
+    createdAt: lead.createdAt,
+    knownMessageIds: history
+      .map((message) => message.providerMessageId)
+      .filter((messageId): messageId is string => Boolean(messageId)),
+  });
+
+  if (result.imported > 0) {
+    await addLeadEvent({
+      leadId: lead.id,
+      type: "email_received",
+      newValue: String(result.imported),
+      createdBy,
+    });
+  }
+  revalidateLead(lead.id);
+
+  if (result.imported > 0) {
+    return {
+      status: "success",
+      message: `${result.imported} nieuw${result.imported === 1 ? "" : "e"} antwoord${result.imported === 1 ? "" : "en"} uit de inbox toegevoegd.`,
+    };
+  }
+  return {
+    status: "success",
+    message: result.examined > 0
+      ? "Inbox gesynchroniseerd. Er waren geen nieuwe antwoorden voor deze lead."
+      : "Inbox gesynchroniseerd. Er zijn geen antwoorden van deze lead gevonden.",
+  };
+}
+
+async function regenerateDraft(
+  lead: Lead,
+  createdBy: string,
+  replyToMailId: string,
+): Promise<LeadEmailActionState> {
   const settings = await getEmailSettings();
+  const inboundReply = await getInboundReply(replyToMailId, lead.id);
   const blocks = resolveLeadEmailServiceBlocks(lead.selectedServices, lead.locale);
   const result = await generateLeadReplyWithFallback({
     locale: lead.locale,
@@ -119,7 +182,9 @@ async function regenerateDraft(lead: Lead, createdBy: string): Promise<LeadEmail
     firstName: lead.name.trim().split(/\s+/)[0] || undefined,
     name: lead.name,
     company: lead.company,
-    message: lead.message,
+    message: inboundReply
+      ? `Nieuw antwoord van de klant:\n${inboundReply.textBody}\n\nOorspronkelijke aanvraag:\n${lead.message}`
+      : lead.message,
     selectedServices: blocks.map((block) => block.id),
     serviceBlocks: blocks.map((block) => ({
       serviceId: block.id,
@@ -153,6 +218,10 @@ async function regenerateDraft(lead: Lead, createdBy: string): Promise<LeadEmail
     subject: rendered.subject,
     htmlBody: rendered.html,
     textBody: editableText,
+    inReplyTo: inboundReply?.providerMessageId,
+    references: inboundReply?.providerMessageId
+      ? [...new Set([...inboundReply.references, inboundReply.providerMessageId])]
+      : [],
     status: "draft",
     createdBy,
     locale: lead.locale,
@@ -180,8 +249,14 @@ async function saveDraft(
   subject: string,
   body: string,
   createdBy: string,
+  replyToMailId: string,
 ): Promise<LeadEmailActionState> {
   const settings = await getEmailSettings();
+  const inboundReply = await getInboundReply(replyToMailId, lead.id);
+  const inReplyTo = inboundReply?.providerMessageId ?? "";
+  const references = inboundReply && inReplyTo
+    ? [...new Set([...inboundReply.references, inReplyTo])]
+    : [];
   const rendered = renderAiReplyEmail(
     { lead: toEmailLead(lead), settings },
     draftFromEditor(subject, body),
@@ -194,6 +269,8 @@ async function saveDraft(
       subject: rendered.subject,
       htmlBody: rendered.html,
       textBody: body,
+      inReplyTo,
+      references,
       createdBy,
     });
     savedId = existing.id;
@@ -206,6 +283,8 @@ async function saveDraft(
       subject: rendered.subject,
       htmlBody: rendered.html,
       textBody: body,
+      inReplyTo,
+      references,
       status: "draft",
       createdBy,
       locale: lead.locale,
@@ -228,12 +307,16 @@ async function sendManualMail({
   body,
   createdBy,
   test,
+  replyToMailId,
+  sendNonce,
 }: {
   lead: Lead;
   subject: string;
   body: string;
   createdBy: string;
   test: boolean;
+  replyToMailId: string;
+  sendNonce: string;
 }): Promise<LeadEmailActionState> {
   const settings = await getEmailSettings();
   const rendered = renderAiReplyEmail(
@@ -241,7 +324,15 @@ async function sendManualMail({
     draftFromEditor(subject, body),
   );
   const recipient = test ? createdBy || settings.smtp.testRecipient : lead.email;
-  const historyId = await createMailHistory({
+  const inboundReply = test ? null : await getInboundReply(replyToMailId, lead.id);
+  const inReplyTo = inboundReply?.providerMessageId;
+  const references = inReplyTo
+    ? [...new Set([...inboundReply.references, inReplyTo])]
+    : [];
+  if (!/^[a-f\d-]{36}$/i.test(sendNonce)) {
+    return { status: "error", message: "De verzendactie is verlopen. Vernieuw de pagina en probeer opnieuw." };
+  }
+  const historyClaim = await createMailHistoryIfAbsent({
     leadId: lead.id,
     type: "manual_reply",
     to: [recipient],
@@ -249,10 +340,23 @@ async function sendManualMail({
     subject: test ? `[TEST] ${rendered.subject}` : rendered.subject,
     htmlBody: rendered.html,
     textBody: rendered.text,
+    inReplyTo,
+    references,
     status: "queued",
     createdBy,
     locale: lead.locale,
+    idempotencyKey: `manual:${test ? "test" : "customer"}:${sendNonce}`,
   });
+  const historyId = historyClaim.id;
+  if (!historyClaim.created) {
+    const existing = await getMailHistoryById(historyId);
+    return {
+      status: existing?.status === "sent" ? "success" : "error",
+      message: existing?.status === "sent"
+        ? "Dit antwoord was al verstuurd; er is geen duplicaat verzonden."
+        : "Deze verzendactie wordt al verwerkt of is al geprobeerd. Vernieuw de pagina voor een nieuwe poging.",
+    };
+  }
 
   let providerMessageId: string;
   try {
@@ -262,6 +366,8 @@ async function sendManualMail({
       subject: test ? `[TEST] ${rendered.subject}` : rendered.subject,
       html: rendered.html,
       text: rendered.text,
+      inReplyTo,
+      references,
     });
     providerMessageId = result.messageId;
   } catch (error) {
@@ -319,14 +425,18 @@ export async function handleLeadEmailAction(
 
   const leadId = String(formData.get("leadId") ?? "").trim();
   const intent = String(formData.get("intent") ?? "") as Intent;
-  if (!leadId || !["regenerate", "save", "test", "send"].includes(intent)) {
+  if (!leadId || !["regenerate", "save", "sync", "test", "send"].includes(intent)) {
     return { status: "error", message: "Ongeldige communicatieactie." };
   }
 
   try {
     const lead = await getLeadById(leadId);
     if (!lead) return { status: "error", message: "Lead niet gevonden." };
-    if (intent === "regenerate") return await regenerateDraft(lead, admin.email);
+    const replyToMailId = String(formData.get("replyToMailId") ?? "").trim();
+    if (intent === "regenerate") {
+      return await regenerateDraft(lead, admin.email, replyToMailId);
+    }
+    if (intent === "sync") return await syncReplies(lead, admin.email);
 
     const editor = readEditor(formData);
     if (!editor.subject || !editor.body) {
@@ -340,6 +450,7 @@ export async function handleLeadEmailAction(
         editor.subject,
         editor.body,
         admin.email,
+        replyToMailId,
       );
     }
     return await sendManualMail({
@@ -348,8 +459,13 @@ export async function handleLeadEmailAction(
       body: editor.body,
       createdBy: admin.email,
       test: intent === "test",
+      replyToMailId,
+      sendNonce: String(formData.get("sendNonce") ?? "").trim(),
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof SafeImapError) {
+      return { status: "error", message: error.message };
+    }
     return {
       status: "error",
       message: "De communicatieactie is mislukt. Probeer opnieuw of controleer de e-mailhistorie.",

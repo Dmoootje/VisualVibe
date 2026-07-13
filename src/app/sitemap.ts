@@ -33,6 +33,7 @@ const staticPaths = [
   "privacy",
   "cookies",
   "sitemap",
+  "trouwfotograaf-limburg",
 ];
 
 // getAllPosts() already excludes draft, scheduled, archived and future-dated

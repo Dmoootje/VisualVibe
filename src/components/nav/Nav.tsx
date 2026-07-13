@@ -8,6 +8,7 @@ import NextLink from "next/link";
 import { regions } from "@/data/regions";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import { SectorIcon } from "@/components/sectors";
+import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { NavIcon } from "./nav-icons";
 import {
   pillars,
@@ -26,8 +27,34 @@ function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav
   );
 }
 
+/**
+ * Witte WeddingVibe-CTA (zusterlabel) voor de Fotografie- en Realisaties-menu's,
+ * in de stijl van de bestaande cross-promo cards op /over-ons en /diensten/fotografie.
+ */
+function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
+  return (
+    <Link
+      href="/trouwfotograaf-limburg"
+      onClick={onClick}
+      className="vvnav-wedCard"
+      style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 13, padding: "13px 15px", borderRadius: 14, background: "#FFFFFF", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6)" }}
+    >
+      <WeddingVibeLogo style={{ height: 20, width: "auto", flex: "none" }} />
+      <span style={{ flex: "none", width: 1, alignSelf: "stretch", background: "linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent)" }} />
+      <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "#B8860B" }}>Ook voor je mooiste dag</span>
+        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320" }}>Trouwfotografie &amp; huwelijksvideo</span>
+      </span>
+      <span style={{ flex: "none", display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", color: "#fff", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
+        <ArrowRight />
+      </span>
+    </Link>
+  );
+}
+
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";
+const CORM = "var(--font-cormorant), Georgia, serif";
 const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
 // Two-line ellipsis for the card sublines in the dropdowns/submenus.
 const CLAMP2: CSSProperties = { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" };
@@ -291,7 +318,7 @@ export function Nav({
     </Link>
   );
 
-  const cardPanel = (name: DrawerView, title: string, allHref: string, items: NavCard[]) => (
+  const cardPanel = (name: DrawerView, title: string, allHref: string, items: NavCard[], footer?: ReactNode) => (
     <div className="vvnav-mvPanel" style={panelStyle(name)}>
       {pushHead(title, allHref)}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -307,6 +334,7 @@ export function Nav({
             <ChevRight color="rgba(255,255,255,.28)" size={14} />
           </Link>
         ))}
+        {footer}
       </div>
     </div>
   );
@@ -422,6 +450,8 @@ export function Nav({
                             Offerte <ArrowRight />
                           </span>
                         </Link>
+
+                        {ap.id === "fotografie" && <WeddingCtaCard onClick={closeMenu} />}
                       </>
                     )}
                   </div>
@@ -432,7 +462,7 @@ export function Nav({
 
           {/* Regio mega-menu with region map cards */}
           <RegioMega open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} />
+          <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
           <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
             <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
@@ -573,6 +603,7 @@ export function Nav({
                         <ArrowRight />
                       </span>
                     </Link>
+                    {curPillar.id === "fotografie" && <WeddingCtaCard onClick={closeDrawer} />}
                   </div>
                 </>
               )}
@@ -620,7 +651,7 @@ export function Nav({
             </div>
 
             {/* REALISATIES / SECTOREN / KENNISBANK (iconed card panels) */}
-            {cardPanel("realisaties", "Realisaties", "/realisaties", realisatieCards)}
+            {cardPanel("realisaties", "Realisaties", "/realisaties", realisatieCards, <WeddingCtaCard onClick={closeDrawer} />)}
             {cardPanel("sectoren", "Sectoren", "/sectoren", sectorCards)}
             {kennisbankItems.length > 0 && cardPanel("kennisbank", "Kennisbank", "/kennisbank", kennisbankItems)}
           </div>
@@ -639,7 +670,7 @@ export function Nav({
   );
 }
 
-function DesktopDropdown({ label, allHref, items, open, onOpen, onClose }: { label: string; allHref: string; items: NavCard[]; open: boolean; onOpen: () => void; onClose: () => void }) {
+function DesktopDropdown({ label, allHref, items, open, onOpen, onClose, cta }: { label: string; allHref: string; items: NavCard[]; open: boolean; onOpen: () => void; onClose: () => void; cta?: ReactNode }) {
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
       <Link href={allHref} style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
@@ -667,6 +698,7 @@ function DesktopDropdown({ label, allHref, items, open, onOpen, onClose }: { lab
               </Link>
             ))}
           </div>
+          {cta}
         </div>
       </div>
     </div>

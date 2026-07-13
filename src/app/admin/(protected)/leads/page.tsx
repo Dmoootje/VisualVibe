@@ -13,7 +13,7 @@ export default async function AdminLeadsPage({
 }) {
   const { status, form } = await searchParams;
   const activeStatus = LEAD_STATUSES.includes(status as LeadStatus) ? (status as LeadStatus) : undefined;
-  const activeForm = form === "website_analysis" ? "website_analysis" : undefined;
+  const activeForm = form === "website_analysis" || form === "wedding" ? form : undefined;
   const leads = await listLeads(activeStatus, activeForm);
 
   return (
@@ -35,6 +35,12 @@ export default async function AdminLeadsPage({
           status={activeStatus}
           active={activeForm === "website_analysis"}
           label="Analyseleads"
+        />
+        <TypeFilterLink
+          form="wedding"
+          status={activeStatus}
+          active={activeForm === "wedding"}
+          label="WeddingVibe"
         />
       </div>
 
@@ -63,7 +69,11 @@ export default async function AdminLeadsPage({
                   </td>
                   <td className="px-4 py-3 text-white/70">{lead.email}</td>
                   <td className="px-4 py-3 hidden sm:table-cell text-white/70">
-                    {lead.formType === "website_analysis" ? "Websiteanalyse" : (lead.serviceInterest ?? "-")}
+                    {lead.formType === "website_analysis"
+                      ? "Websiteanalyse"
+                      : lead.formType === "wedding"
+                        ? "WeddingVibe"
+                        : (lead.serviceInterest ?? "-")}
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell text-white/70">{lead.region ?? "-"}</td>
                   <td className="px-4 py-3">

@@ -1,10 +1,11 @@
 import "server-only";
 
 import { adminDb } from "@/lib/firebase/admin";
-import { encryptSmtpPassword } from "@/lib/security/encryption";
+import { encryptImapPassword, encryptSmtpPassword } from "@/lib/security/encryption";
 import {
   EMAIL_FORM_TYPES,
   EMAIL_LOCALES,
+  IMAP_SECURITY_MODES,
   SMTP_SECURITY_MODES,
   type EmailAutomationSettings,
   type EmailFormType,
@@ -12,6 +13,8 @@ import {
   type EmailSettings,
   type EmailSettingsAdminView,
   type EmailSettingsUpdate,
+  type ImapSecurity,
+  type ImapSettings,
   type SmtpSecurity,
   type SmtpSettings,
 } from "@/types/email";
@@ -32,6 +35,16 @@ export const DEFAULT_SMTP_SETTINGS: SmtpSettings = {
   testRecipient: "jens@visualvibe.be",
 };
 
+export const DEFAULT_IMAP_SETTINGS: ImapSettings = {
+  enabled: false,
+  host: "",
+  port: 993,
+  security: "ssl",
+  username: "",
+  mailbox: "INBOX",
+  syncWindowDays: 90,
+};
+
 export const DEFAULT_EMAIL_AUTOMATION_SETTINGS: EmailAutomationSettings = {
   sendCustomerConfirmation: true,
   sendAdminNotification: true,
@@ -43,7 +56,7 @@ export const DEFAULT_EMAIL_AUTOMATION_SETTINGS: EmailAutomationSettings = {
   signatureRole: "Zaakvoerder",
   signaturePhone: "+32 472 96 45 99",
   signatureEmail: "jens@visualvibe.be",
-  signatureWebsite: "https://visualvibe.be",
+  signatureWebsite: "https://visualvibe.media",
   appointmentUrl: "",
   enabledFormTypes: [...EMAIL_FORM_TYPES],
 };
@@ -68,8 +81,12 @@ function dateValue(value: unknown, fallback: string): string {
   return fallback;
 }
 
-function isSecurity(value: unknown): value is SmtpSecurity {
+function isSmtpSecurity(value: unknown): value is SmtpSecurity {
   return typeof value === "string" && SMTP_SECURITY_MODES.includes(value as SmtpSecurity);
+}
+
+function isImapSecurity(value: unknown): value is ImapSecurity {
+  return typeof value === "string" && IMAP_SECURITY_MODES.includes(value as ImapSecurity);
 }
 
 function isLocale(value: unknown): value is EmailLocale {
@@ -100,7 +117,7 @@ function smtpFromData(value: unknown): SmtpSettings {
     enabled: booleanValue(data.enabled, DEFAULT_SMTP_SETTINGS.enabled),
     host: stringValue(data.host, DEFAULT_SMTP_SETTINGS.host),
     port,
-    security: isSecurity(data.security) ? data.security : DEFAULT_SMTP_SETTINGS.security,
+    security: isSmtpSecurity(data.security) ? data.security : DEFAULT_SMTP_SETTINGS.security,
     username: stringValue(data.username, DEFAULT_SMTP_SETTINGS.username),
     ...(encryptedPassword ? { encryptedPassword } : {}),
     fromName: stringValue(data.fromName, DEFAULT_SMTP_SETTINGS.fromName),
@@ -108,6 +125,28 @@ function smtpFromData(value: unknown): SmtpSettings {
     replyTo: stringValue(data.replyTo, DEFAULT_SMTP_SETTINGS.replyTo),
     adminRecipients: stringArray(data.adminRecipients, DEFAULT_SMTP_SETTINGS.adminRecipients),
     testRecipient: stringValue(data.testRecipient, DEFAULT_SMTP_SETTINGS.testRecipient),
+  };
+}
+
+function imapFromData(value: unknown): ImapSettings {
+  const data = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  const port = typeof data.port === "number" && Number.isInteger(data.port)
+    ? data.port
+    : DEFAULT_IMAP_SETTINGS.port;
+  const syncWindowDays = typeof data.syncWindowDays === "number" && Number.isInteger(data.syncWindowDays)
+    ? data.syncWindowDays
+    : DEFAULT_IMAP_SETTINGS.syncWindowDays;
+  const encryptedPassword = stringValue(data.encryptedPassword);
+
+  return {
+    enabled: booleanValue(data.enabled, DEFAULT_IMAP_SETTINGS.enabled),
+    host: stringValue(data.host, DEFAULT_IMAP_SETTINGS.host),
+    port,
+    security: isImapSecurity(data.security) ? data.security : DEFAULT_IMAP_SETTINGS.security,
+    username: stringValue(data.username, DEFAULT_IMAP_SETTINGS.username),
+    ...(encryptedPassword ? { encryptedPassword } : {}),
+    mailbox: stringValue(data.mailbox, DEFAULT_IMAP_SETTINGS.mailbox),
+    syncWindowDays,
   };
 }
 
@@ -136,6 +175,7 @@ function toEmailSettings(data: Record<string, unknown> | undefined): EmailSettin
   return {
     id: SETTINGS_ID,
     smtp: smtpFromData(data?.smtp),
+    imap: imapFromData(data?.imap),
     automation: automationFromData(data?.automation),
     createdAt: dateValue(data?.createdAt, now),
     updatedAt: dateValue(data?.updatedAt, now),
@@ -144,10 +184,12 @@ function toEmailSettings(data: Record<string, unknown> | undefined): EmailSettin
 }
 
 export function redactEmailSettings(settings: EmailSettings): EmailSettingsAdminView {
-  const { encryptedPassword, ...smtp } = settings.smtp;
+  const { encryptedPassword: smtpPassword, ...smtp } = settings.smtp;
+  const { encryptedPassword: imapPassword, ...imap } = settings.imap;
   return {
     ...settings,
-    smtp: { ...smtp, passwordConfigured: Boolean(encryptedPassword) },
+    smtp: { ...smtp, passwordConfigured: Boolean(smtpPassword) },
+    imap: { ...imap, passwordConfigured: Boolean(imapPassword) },
   };
 }
 
@@ -169,7 +211,7 @@ function applySmtpUpdate(current: SmtpSettings, update: EmailSettingsUpdate["smt
     ...(typeof update.enabled === "boolean" ? { enabled: update.enabled } : {}),
     ...(typeof update.host === "string" ? { host: update.host.trim() } : {}),
     ...(typeof update.port === "number" ? { port: update.port } : {}),
-    ...(isSecurity(update.security) ? { security: update.security } : {}),
+    ...(isSmtpSecurity(update.security) ? { security: update.security } : {}),
     ...(typeof update.username === "string" ? { username: update.username.trim() } : {}),
     ...(typeof update.fromName === "string" ? { fromName: update.fromName.trim() } : {}),
     ...(typeof update.fromEmail === "string" ? { fromEmail: update.fromEmail.trim().toLowerCase() } : {}),
@@ -183,6 +225,20 @@ function applySmtpUpdate(current: SmtpSettings, update: EmailSettingsUpdate["smt
   };
 }
 
+function applyImapUpdate(current: ImapSettings, update: EmailSettingsUpdate["imap"]): ImapSettings {
+  if (!update) return current;
+  return {
+    ...current,
+    ...(typeof update.enabled === "boolean" ? { enabled: update.enabled } : {}),
+    ...(typeof update.host === "string" ? { host: update.host.trim() } : {}),
+    ...(typeof update.port === "number" ? { port: update.port } : {}),
+    ...(isImapSecurity(update.security) ? { security: update.security } : {}),
+    ...(typeof update.username === "string" ? { username: update.username.trim() } : {}),
+    ...(typeof update.mailbox === "string" ? { mailbox: update.mailbox.trim() } : {}),
+    ...(typeof update.syncWindowDays === "number" ? { syncWindowDays: update.syncWindowDays } : {}),
+  };
+}
+
 function applyAutomationUpdate(
   current: EmailAutomationSettings,
   update: EmailSettingsUpdate["automation"],
@@ -192,13 +248,13 @@ function applyAutomationUpdate(
 }
 
 /**
- * Updates the singleton atomically. `newPassword` is encrypted inside this
- * server-only repository and is never returned. undefined/"" preserves the
+ * Updates the singleton atomically. New secrets are encrypted inside this
+ * server-only repository and are never returned. undefined/"" preserves a
  * current secret; null deliberately clears it.
  */
 export async function updateEmailSettings(
   input: EmailSettingsUpdate,
-  newPassword?: string | null,
+  passwords: { smtp?: string | null; imap?: string | null } = {},
   updatedBy?: string,
 ): Promise<EmailSettingsAdminView> {
   const ref = adminDb.collection(COLLECTION).doc(SETTINGS_ID);
@@ -208,16 +264,24 @@ export async function updateEmailSettings(
     const current = toEmailSettings(snapshot.exists ? snapshot.data() : undefined);
     const now = new Date();
     const smtp = applySmtpUpdate(current.smtp, input.smtp);
+    const imap = applyImapUpdate(current.imap, input.imap);
     const automation = applyAutomationUpdate(current.automation, input.automation);
 
-    if (newPassword === null) {
+    if (passwords.smtp === null) {
       delete smtp.encryptedPassword;
-    } else if (typeof newPassword === "string" && newPassword.length > 0) {
-      smtp.encryptedPassword = encryptSmtpPassword(newPassword);
+    } else if (typeof passwords.smtp === "string" && passwords.smtp.length > 0) {
+      smtp.encryptedPassword = encryptSmtpPassword(passwords.smtp);
+    }
+
+    if (passwords.imap === null) {
+      delete imap.encryptedPassword;
+    } else if (typeof passwords.imap === "string" && passwords.imap.length > 0) {
+      imap.encryptedPassword = encryptImapPassword(passwords.imap);
     }
 
     const data = {
       smtp,
+      imap,
       automation,
       createdAt: snapshot.exists ? snapshot.data()?.createdAt ?? now : now,
       updatedAt: now,

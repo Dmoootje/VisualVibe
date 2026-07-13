@@ -1,11 +1,13 @@
 "use client";
 
-import { useActionState, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
   Clipboard,
   History,
+  Inbox,
   Loader2,
   Mail,
   RefreshCw,
@@ -25,6 +27,7 @@ const TYPE_LABELS: Record<MailHistoryType, string> = {
   admin_notification: "Interne melding",
   ai_draft: "AI-antwoordconcept",
   manual_reply: "Handmatig antwoord",
+  incoming_reply: "Ontvangen antwoord",
   automated_reply: "Automatisch antwoord",
   analysis_verification: "Analyse-verificatiecode",
   analysis_report: "Analyserapport",
@@ -36,6 +39,7 @@ const STATUS_LABELS: Record<MailHistoryStatus, string> = {
   queued: "In wachtrij",
   sent: "Verstuurd",
   failed: "Mislukt",
+  received: "Ontvangen",
 };
 
 const STATUS_STYLES: Record<MailHistoryStatus, string> = {
@@ -43,25 +47,76 @@ const STATUS_STYLES: Record<MailHistoryStatus, string> = {
   queued: "border-sky-400/30 bg-sky-400/10 text-sky-300",
   sent: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
   failed: "border-red-500/30 bg-red-500/10 text-red-300",
+  received: "border-violet-400/30 bg-violet-400/10 text-violet-200",
 };
 
 export function LeadCommunicationPanel({
   leadId,
   history,
+  imapEnabled,
+  sendNonce,
 }: {
   leadId: string;
   history: MailHistoryRecord[];
+  imapEnabled: boolean;
+  sendNonce: string;
 }) {
   const [state, formAction, isPending] = useActionState(handleLeadEmailAction, INITIAL_STATE);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const orderedHistory = useMemo(
-    () => [...history].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+    () => [...history].sort(
+      (a, b) => new Date(b.receivedAt ?? b.createdAt).getTime() - new Date(a.receivedAt ?? a.createdAt).getTime(),
+    ),
     [history],
   );
-  const draft = orderedHistory.find(
-    (item) => item.type === "ai_draft" && item.status === "draft",
+  const latestSentReply = orderedHistory.find(
+    (item) => item.type === "manual_reply" && item.status === "sent" && !item.subject.startsWith("[TEST]"),
   );
+  const draft = orderedHistory.find(
+    (item) =>
+      item.type === "ai_draft" &&
+      item.status === "draft" &&
+      (!latestSentReply || new Date(item.createdAt) > new Date(latestSentReply.sentAt ?? latestSentReply.createdAt)),
+  );
+  const latestIncoming = orderedHistory.find(
+    (item) => item.type === "incoming_reply" && item.status === "received",
+  );
+  const draftIncoming = draft?.inReplyTo
+    ? orderedHistory.find(
+        (item) => item.type === "incoming_reply" && item.providerMessageId === draft.inReplyTo,
+      )
+    : undefined;
+  const draftId = draft?.id;
+  const [selectedReplyId, setSelectedReplyId] = useState(
+    draftIncoming?.id ?? latestIncoming?.id ?? "",
+  );
+  const [useDraftContent, setUseDraftContent] = useState(Boolean(draft));
+  const selectedIncoming = orderedHistory.find(
+    (item) => item.id === selectedReplyId && item.type === "incoming_reply",
+  );
+  const replySubject = selectedIncoming?.subject
+    ? /^(?:re|aw|sv):/i.test(selectedIncoming.subject)
+      ? selectedIncoming.subject
+      : `Re: ${selectedIncoming.subject}`
+    : "";
+
+  useEffect(() => {
+    setUseDraftContent(Boolean(draftId));
+  }, [draftId]);
+
+  function selectReplyTarget(historyId: string) {
+    const currentBody = textareaRef.current?.value.trim() ?? "";
+    if (
+      currentBody &&
+      !window.confirm("Je huidige antwoordtekst wordt leeggemaakt wanneer je een ander bericht kiest. Doorgaan?")
+    ) {
+      return;
+    }
+    if (textareaRef.current) textareaRef.current.value = "";
+    setUseDraftContent(false);
+    setSelectedReplyId(historyId);
+  }
 
   async function copyText() {
     const text = textareaRef.current?.value.trim() ?? "";
@@ -100,16 +155,69 @@ export function LeadCommunicationPanel({
       <form action={formAction} className="mt-5 flex flex-col gap-4">
         <input type="hidden" name="leadId" value={leadId} />
         <input type="hidden" name="draftId" value={draft?.id ?? ""} />
+        <input type="hidden" name="replyToMailId" value={selectedReplyId} />
+        <input type="hidden" name="sendNonce" value={sendNonce} />
+
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-violet-400/20 bg-violet-400/[0.06] p-4">
+          <div>
+            <p className="text-sm font-medium text-violet-100">Inkomende antwoorden</p>
+            <p className="mt-1 text-xs leading-5 text-white/45">
+              {imapEnabled ? (
+                "Haal recente berichten van dit leadadres op via de ingestelde IMAP-mailbox."
+              ) : (
+                <>
+                  Schakel eerst IMAP in bij de{" "}
+                  <Link href="/admin/settings/email" className="text-violet-200 underline hover:text-white">
+                    e-mailinstellingen
+                  </Link>
+                  .
+                </>
+              )}
+            </p>
+          </div>
+          <ActionButton
+            name="intent"
+            value="sync"
+            disabled={isPending || !imapEnabled}
+            icon={Inbox}
+            label="Inbox synchroniseren"
+            accent
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-white/10 bg-black/20 p-4 text-sm">
+          <div>
+            <p className="font-medium text-white/80">
+              {selectedIncoming
+                ? `Antwoord op: ${selectedIncoming.subject || "Zonder onderwerp"}`
+                : "Nieuw bericht zonder e-mailthread"}
+            </p>
+            {selectedIncoming && (
+              <p className="mt-1 text-xs text-white/40">
+                Ontvangen {formatDate(selectedIncoming.receivedAt ?? selectedIncoming.createdAt)}
+              </p>
+            )}
+          </div>
+          {selectedIncoming && (
+            <button
+              type="button"
+              onClick={() => selectReplyTarget("")}
+              className="rounded-md border border-white/10 px-3 py-1.5 text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"
+            >
+              Nieuw bericht starten
+            </button>
+          )}
+        </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor={`lead-email-subject-${leadId}`} className="text-sm text-white/70">
             Onderwerp
           </label>
           <input
-            key={`subject-${draft?.id ?? "empty"}`}
+            key={`subject-${useDraftContent ? draft?.id ?? "draft" : selectedReplyId || "new"}`}
             id={`lead-email-subject-${leadId}`}
             name="subject"
-            defaultValue={draft?.subject ?? ""}
+            defaultValue={useDraftContent ? draft?.subject ?? replySubject : replySubject}
             maxLength={200}
             placeholder="Onderwerp van het antwoord"
             className="w-full rounded-md border border-white/10 bg-black/25 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-amber-500/70"
@@ -206,7 +314,14 @@ export function LeadCommunicationPanel({
         ) : (
           <ul className="mt-4 flex flex-col gap-3">
             {orderedHistory.map((item) => (
-              <li key={item.id} className="rounded-lg border border-white/10 bg-black/25 p-4">
+              <li
+                key={item.id}
+                className={`rounded-lg border p-4 ${
+                  item.direction === "inbound"
+                    ? "border-violet-400/20 bg-violet-400/[0.05]"
+                    : "border-white/10 bg-black/25"
+                }`}
+              >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -217,12 +332,28 @@ export function LeadCommunicationPanel({
                     </div>
                     <p className="mt-1 break-words text-sm text-white/70">{item.subject || "Zonder onderwerp"}</p>
                     <p className="mt-1 text-xs text-white/40">
-                      Aan: {item.to.join(", ") || "-"} · {formatDate(item.sentAt ?? item.createdAt)}
+                      {item.direction === "inbound"
+                        ? `Van: ${item.from.join(", ") || "-"}`
+                        : `Aan: ${item.to.join(", ") || "-"}`}
+                      {" · "}
+                      {formatDate(item.receivedAt ?? item.sentAt ?? item.createdAt)}
                     </p>
                   </div>
-                  {item.sentAt && (
-                    <span className="text-xs text-emerald-300/75">Verstuurd {formatDate(item.sentAt)}</span>
-                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {item.sentAt && (
+                      <span className="text-xs text-emerald-300/75">Verstuurd {formatDate(item.sentAt)}</span>
+                    )}
+                    {item.direction === "inbound" && (
+                      <button
+                        type="button"
+                        onClick={() => selectReplyTarget(item.id)}
+                        disabled={isPending || selectedReplyId === item.id}
+                        className="rounded-md border border-violet-400/25 bg-violet-400/10 px-3 py-1.5 text-xs font-medium text-violet-100 hover:bg-violet-400/20 disabled:cursor-default disabled:opacity-60"
+                      >
+                        {selectedReplyId === item.id ? "Geselecteerd" : "Beantwoorden"}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {item.status === "failed" && (
@@ -231,6 +362,21 @@ export function LeadCommunicationPanel({
                     {item.errorMessage && <p className="mt-1 break-words">{item.errorMessage}</p>}
                   </div>
                 )}
+
+                {item.direction === "inbound" &&
+                  (item.attachmentNames.length > 0 || item.contentTruncated) && (
+                    <div className="mt-3 rounded-md border border-amber-500/20 bg-amber-500/[0.07] p-3 text-xs leading-5 text-amber-100/80">
+                      {item.attachmentNames.length > 0 && (
+                        <p>
+                          Bijlage{item.attachmentNames.length === 1 ? "" : "n"}: {item.attachmentNames.join(", ")}
+                        </p>
+                      )}
+                      <p className={item.attachmentNames.length > 0 ? "mt-1" : undefined}>
+                        Bijlagen worden niet in de app opgeslagen. Open de originele mailbox om ze te bekijken
+                        {item.contentTruncated ? " of om het volledige lange bericht te lezen" : ""}.
+                      </p>
+                    </div>
+                  )}
 
                 {item.textBody && (
                   <details className="mt-3">

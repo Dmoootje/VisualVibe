@@ -9,7 +9,7 @@
     "lint": "eslint src"
   },
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.111.0",
@@ -53,8 +53,10 @@
     "firebase-admin": "^14.1.0",
     "framer-motion": "^11.18.0",
     "gray-matter": "^4.0.3",
+    "imapflow": "^1.4.7",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
+    "mailparser": "^3.9.14",
     "next": "^15.5.20",
     "next-intl": "^4.13.1",
     "next-mdx-remote": "^6.0.0",
@@ -77,6 +79,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/mailparser": "^3.4.6",
     "@types/node": "^22",
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",

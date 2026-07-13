@@ -196,7 +196,7 @@ export default function OverOnsPage() {
                 </span>
               ))}
             </div>
-            <a href="https://weddingvibe.be/" rel="dofollow" target="_blank" className="vvov-wed" style={{ marginTop: 26, position: "relative", display: "inline-flex", alignItems: "center", gap: 16, padding: "15px 18px 15px 22px", borderRadius: 16, background: "#FFFFFF", width: "fit-content", maxWidth: "100%", overflow: "hidden", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6),0 4px 14px -8px rgba(0,0,0,.5)" }}>
+            <Link href="/trouwfotograaf-limburg" className="vvov-wed" style={{ marginTop: 26, position: "relative", display: "inline-flex", alignItems: "center", gap: 16, padding: "15px 18px 15px 22px", borderRadius: 16, background: "#FFFFFF", width: "fit-content", maxWidth: "100%", overflow: "hidden", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6),0 4px 14px -8px rgba(0,0,0,.5)" }}>
               <span style={{ position: "relative", zIndex: 1, flex: "none" }}><WeddingVibeLogo height={34} /></span>
               <span style={{ position: "relative", zIndex: 1, width: 1, alignSelf: "stretch", background: "linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent)" }} />
               <span style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
@@ -206,7 +206,7 @@ export default function OverOnsPage() {
               <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", flex: "none", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
                 <svg className="vvov-ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
               </span>
-            </a>
+            </Link>
           </div>
           <div style={{ position: "relative", paddingLeft: 30 }}>
             <span style={{ position: "absolute", left: 0, top: 2, fontFamily: SORA, fontWeight: 800, fontSize: 64, lineHeight: 0.6, color: "rgba(255,122,0,.28)" }}>&#8220;</span>

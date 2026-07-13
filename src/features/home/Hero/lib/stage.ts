@@ -128,7 +128,7 @@ export const STAGE_HTML = `
           <div style="position:relative;width:min(400px,100%);border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#0f0e0d;overflow:hidden;box-shadow:0 20px 50px -20px rgba(0,0,0,.8);">
             <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.08);">
               <span style="width:8px;height:8px;border-radius:9999px;background:#FF3B2E;"></span><span style="width:8px;height:8px;border-radius:9999px;background:#FF7A00;"></span><span style="width:8px;height:8px;border-radius:9999px;background:#FFA23A;"></span>
-              <span style="margin-left:8px;flex:1;height:16px;border-radius:6px;background:rgba(255,255,255,.06);${MONO}font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;padding:0 8px;">visualvibe.be</span>
+              <span style="margin-left:8px;flex:1;height:16px;border-radius:6px;background:rgba(255,255,255,.06);${MONO}font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;padding:0 8px;">visualvibe.media</span>
             </div>
             <div style="position:relative;padding:16px;display:flex;flex-direction:column;gap:11px;height:222px;">
               <div class="vvh-bw" style="height:34px;border-radius:8px;background:linear-gradient(90deg,#FF3B2E,#FF7A00);animation-delay:0s;"></div>

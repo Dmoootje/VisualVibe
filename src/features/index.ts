@@ -9,3 +9,6 @@ export {
     BlogPreview,
     Cta,
 } from './home'
+
+// WeddingVibe one-pager (/trouwfotograaf-limburg)
+export { WeddingVibeOnePager, weddingVibeConfig } from './weddingvibe'

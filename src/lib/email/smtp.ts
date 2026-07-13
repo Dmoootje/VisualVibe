@@ -1,6 +1,7 @@
 import "server-only";
 
-import { isIP } from "node:net";
+import { lookup } from "node:dns/promises";
+import { BlockList, isIP } from "node:net";
 import { domainToASCII } from "node:url";
 import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
@@ -14,29 +15,59 @@ import type {
 const HEADER_INJECTION = /[\r\n\0]/;
 const HOST_LABEL = /^(?!-)[a-z\d-]{1,63}(?<!-)$/i;
 const LOCAL_PART = /^[a-z\d.!#$%&'*+/=?^_`{|}~-]+$/i;
+const DNS_LOOKUP_TIMEOUT_MS = 10_000;
+
+const NON_PUBLIC_IPV4 = new BlockList();
+const NON_PUBLIC_IPV6 = new BlockList();
+for (const [network, prefix] of [
+  ["0.0.0.0", 8],
+  ["10.0.0.0", 8],
+  ["100.64.0.0", 10],
+  ["127.0.0.0", 8],
+  ["169.254.0.0", 16],
+  ["172.16.0.0", 12],
+  ["192.0.0.0", 24],
+  ["192.0.2.0", 24],
+  ["192.168.0.0", 16],
+  ["198.18.0.0", 15],
+  ["198.51.100.0", 24],
+  ["203.0.113.0", 24],
+  ["224.0.0.0", 4],
+  ["240.0.0.0", 4],
+] as const) {
+  NON_PUBLIC_IPV4.addSubnet(network, prefix, "ipv4");
+}
+for (const [network, prefix] of [
+  ["::", 96],
+  ["::1", 128],
+  ["::ffff:0:0", 96],
+  ["64:ff9b::", 96],
+  ["64:ff9b:1::", 48],
+  ["100::", 64],
+  ["2001::", 23],
+  ["2001:2::", 48],
+  ["2001:db8::", 32],
+  ["2002::", 16],
+  ["3fff::", 20],
+  ["fc00::", 7],
+  ["fe80::", 10],
+  ["fec0::", 10],
+  ["ff00::", 8],
+] as const) {
+  NON_PUBLIC_IPV6.addSubnet(network, prefix, "ipv6");
+}
 
 function isPrivateAddress(host: string): boolean {
   const normalized = host.toLowerCase().replace(/^\[|\]$/g, "");
   if (normalized === "localhost" || normalized.endsWith(".localhost") || normalized.endsWith(".local")) {
     return true;
   }
-  if (normalized.includes(":")) {
-    return normalized === "::" || normalized === "::1" || /^(?:fc|fd|fe8|fe9|fea|feb)/i.test(normalized);
-  }
-  const octets = normalized.split(".").map(Number);
-  if (octets.length !== 4 || octets.some((part) => !Number.isInteger(part))) return false;
-  const [a, b] = octets;
-  return (
-    a === 0 ||
-    a === 10 ||
-    a === 127 ||
-    (a === 100 && b >= 64 && b <= 127) ||
-    (a === 169 && b === 254) ||
-    (a === 172 && b >= 16 && b <= 31) ||
-    (a === 192 && b === 168) ||
-    (a === 198 && (b === 18 || b === 19)) ||
-    a >= 224
-  );
+  const version = isIP(normalized);
+  return version === 4
+    ? NON_PUBLIC_IPV4.check(normalized, "ipv4")
+    : version === 6
+      ? NON_PUBLIC_IPV6.check(normalized, "ipv6")
+      : false;
 }
 
 export type SmtpOperationOptions = {
@@ -65,26 +96,75 @@ export function assertSafeHeaderValue(value: string, field: string, maxLength = 
   return clean;
 }
 
-export function validateSmtpHost(value: string): string {
-  const host = assertSafeHeaderValue(value, "SMTP-host", 253);
+export function validateMailHost(value: string, field = "Mailserver-host"): string {
+  const host = assertSafeHeaderValue(value, field, 253);
   if (/[\s/@\\]/.test(host) || host.includes("://")) {
-    throw new SafeSmtpError("SMTP-host is ongeldig.", "INVALID_HOST");
+    throw new SafeSmtpError(`${field} is ongeldig.`, "INVALID_HOST");
   }
   if (isIP(host)) {
     if (isPrivateAddress(host)) {
-      throw new SafeSmtpError("SMTP-host mag geen lokaal of intern adres zijn.", "PRIVATE_HOST");
+      throw new SafeSmtpError(`${field} mag geen lokaal of intern adres zijn.`, "PRIVATE_HOST");
     }
     return host;
   }
 
   const ascii = domainToASCII(host).toLowerCase().replace(/\.$/, "");
   if (!ascii || ascii.length > 253 || !ascii.split(".").every((label) => HOST_LABEL.test(label))) {
-    throw new SafeSmtpError("SMTP-host is ongeldig.", "INVALID_HOST");
+    throw new SafeSmtpError(`${field} is ongeldig.`, "INVALID_HOST");
   }
   if (isPrivateAddress(ascii)) {
-    throw new SafeSmtpError("SMTP-host mag geen lokaal of intern adres zijn.", "PRIVATE_HOST");
+    throw new SafeSmtpError(`${field} mag geen lokaal of intern adres zijn.`, "PRIVATE_HOST");
   }
   return ascii;
+}
+
+export function validateSmtpHost(value: string): string {
+  return validateMailHost(value, "SMTP-host");
+}
+
+export type ResolvedMailHost = {
+  address: string;
+  family: 4 | 6;
+  servername?: string;
+};
+
+/** Resolves once, rejects every non-public answer and returns a pinned address. */
+export async function resolvePublicMailHost(host: string): Promise<ResolvedMailHost> {
+  const version = isIP(host);
+  if (version) {
+    if (isPrivateAddress(host)) {
+      throw new SafeSmtpError("Mailserver-host mag geen lokaal of intern adres zijn.", "PRIVATE_HOST");
+    }
+    return { address: host, family: version === 4 ? 4 : 6 };
+  }
+
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const addresses = await Promise.race([
+    lookup(host, { all: true, verbatim: true }),
+    new Promise<never>((_resolve, reject) => {
+      timeout = setTimeout(
+        () => reject(new SafeSmtpError("Mailserver-host kon niet tijdig worden gevonden.", "ETIMEDOUT")),
+        DNS_LOOKUP_TIMEOUT_MS,
+      );
+    }),
+  ]).finally(() => {
+    if (timeout) clearTimeout(timeout);
+  });
+  if (addresses.length === 0) {
+    throw new SafeSmtpError("Mailserver-host kon niet worden gevonden.", "EDNS");
+  }
+  if (addresses.some(({ address }) => isPrivateAddress(address))) {
+    throw new SafeSmtpError(
+      "Mailserver-host verwijst naar een lokaal of intern adres.",
+      "PRIVATE_HOST",
+    );
+  }
+  const selected = addresses.find(({ family }) => family === 4) ?? addresses[0];
+  return {
+    address: selected.address,
+    family: selected.family === 4 ? 4 : 6,
+    servername: host,
+  };
 }
 
 export function validateEmailAddress(value: string, field = "E-mailadres"): string {
@@ -138,6 +218,12 @@ export function validateSmtpSettings(settings: SmtpSettings, plaintextPasswordOv
   if (username.length > 320 || HEADER_INJECTION.test(username)) {
     throw new SafeSmtpError("SMTP-gebruikersnaam is ongeldig.", "INVALID_USERNAME");
   }
+  if (username && settings.security === "none") {
+    throw new SafeSmtpError(
+      "SMTP-authenticatie vereist SSL/TLS of STARTTLS.",
+      "INSECURE_AUTH",
+    );
+  }
   if (username && !plaintextPasswordOverride && !settings.encryptedPassword) {
     throw new SafeSmtpError("SMTP-wachtwoord ontbreekt.", "MISSING_PASSWORD");
   }
@@ -168,21 +254,23 @@ function safeSmtpError(error: unknown): SafeSmtpError {
     ECONNECTION: "Er kon geen verbinding met de SMTP-server worden gemaakt.",
     ECONNREFUSED: "De SMTP-server heeft de verbinding geweigerd.",
     EDNS: "De SMTP-host kon niet worden gevonden.",
+    ENOTFOUND: "De SMTP-host kon niet worden gevonden.",
     EENVELOPE: "De SMTP-server weigerde een of meer ontvangers.",
     EMESSAGE: "De SMTP-server weigerde de inhoud van het bericht.",
   };
   return new SafeSmtpError(messages[code] ?? "De SMTP-actie is mislukt.", code);
 }
 
-function createTransport(settings: SmtpSettings, plaintextPasswordOverride?: string) {
+async function createTransport(settings: SmtpSettings, plaintextPasswordOverride?: string) {
   const validated = validateSmtpSettings(settings, plaintextPasswordOverride);
+  const resolved = await resolvePublicMailHost(validated.host);
   const password = plaintextPasswordOverride || (
     validated.encryptedPassword ? decryptSmtpPassword(validated.encryptedPassword) : ""
   );
   const auth = validated.username ? { user: validated.username, pass: password } : undefined;
 
   const options: SMTPTransport.Options = {
-    host: validated.host,
+    host: resolved.address,
     port: validated.port,
     secure: validated.security === "ssl",
     requireTLS: validated.security === "starttls",
@@ -191,7 +279,7 @@ function createTransport(settings: SmtpSettings, plaintextPasswordOverride?: str
     tls: {
       minVersion: "TLSv1.2",
       rejectUnauthorized: true,
-      ...(isIP(validated.host) ? {} : { servername: validated.host }),
+      ...(resolved.servername ? { servername: resolved.servername } : {}),
     },
     connectionTimeout: 10_000,
     greetingTimeout: 10_000,
@@ -211,7 +299,7 @@ export async function verifySmtpConnection(
 ): Promise<SmtpVerificationResult> {
   let transporter: ReturnType<typeof nodemailer.createTransport> | undefined;
   try {
-    ({ transporter } = createTransport(smtp, options.plaintextPasswordOverride));
+    ({ transporter } = await createTransport(smtp, options.plaintextPasswordOverride));
     await transporter.verify();
     return { ok: true };
   } catch (error) {
@@ -244,10 +332,16 @@ export async function sendSmtpMail(
     throw new SafeSmtpError("Zowel de HTML- als tekstversie is verplicht.", "INVALID_MESSAGE");
   }
   if (message.messageId) assertSafeHeaderValue(message.messageId, "Message-ID", 250);
+  const inReplyTo = message.inReplyTo
+    ? assertSafeHeaderValue(message.inReplyTo, "In-Reply-To", 998)
+    : undefined;
+  const references = message.references?.map((reference) =>
+    assertSafeHeaderValue(reference, "References", 998),
+  );
 
   let transporter: ReturnType<typeof nodemailer.createTransport> | undefined;
   try {
-    const created = createTransport(smtp, options.plaintextPasswordOverride);
+    const created = await createTransport(smtp, options.plaintextPasswordOverride);
     transporter = created.transporter;
     const info = await transporter.sendMail({
       from: { name: created.settings.fromName, address: created.settings.fromEmail },
@@ -259,6 +353,8 @@ export async function sendSmtpMail(
       html: message.html,
       text: message.text,
       ...(message.messageId ? { messageId: message.messageId } : {}),
+      ...(inReplyTo ? { inReplyTo } : {}),
+      ...(references?.length ? { references } : {}),
     });
 
     return {

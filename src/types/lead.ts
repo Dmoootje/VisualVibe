@@ -12,6 +12,7 @@ export const LEAD_FORM_TYPES = [
   "quote_modal_offerte",
   "quote_modal_kennis",
   "website_analysis",
+  "wedding",
 ] as const;
 
 export type LeadFormType = (typeof LEAD_FORM_TYPES)[number];
@@ -74,6 +75,7 @@ export type LeadEventType =
   | "draft_edited"
   | "email_sent"
   | "email_failed"
+  | "email_received"
   // Websiteanalyse-flow (incl. admin-auditlog voor analyse-acties).
   | "analysis_requested"
   | "analysis_verified"

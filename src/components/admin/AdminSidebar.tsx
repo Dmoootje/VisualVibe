@@ -23,6 +23,7 @@ const navItems: NavItem[] = [
       { href: "/admin/settings/email", label: "E-mailinstellingen" },
       { href: "/admin/settings/webdesign", label: "Webdesign realisaties" },
       { href: "/admin/settings/realisaties/fotografie", label: "Fotografie galerijen" },
+      { href: "/admin/settings/weddingvibe", label: "WeddingVibe" },
     ],
   },
   { href: "/internal/blog-styleguide", label: "Branding", icon: Palette },

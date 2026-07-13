@@ -48,7 +48,7 @@ env:
       - RUNTIME
   # 32 random bytes, base64 encoded. Create with:
   # firebase apphosting:secrets:set APP_ENCRYPTION_KEY
-  # Used only to encrypt SMTP credentials at rest.
+  # Used only to encrypt SMTP and IMAP credentials at rest.
   - variable: APP_ENCRYPTION_KEY
     secret: APP_ENCRYPTION_KEY
     availability:
@@ -60,3 +60,34 @@ env:
       - RUNTIME
   - variable: YOUTUBE_API_KEY
     secret: YOUTUBE_API_KEY
+  # SmugMug livegalerijen (fotografie-realisaties). Accountnaam = het deel voor
+  # .smugmug.com. EERST de secrets aanmaken (anders faalt de deploy):
+  #   firebase apphosting:secrets:set SMUGMUG_USER
+  #   firebase apphosting:secrets:set SMUGMUG_API_KEY   (idem voor de andere drie)
+  # en DAARNA dit blok uncommenten. Alleen SMUGMUG_USER + SMUGMUG_API_KEY zijn
+  # verplicht (publieke albums); secret + tokens erbij voor volledige OAuth.
+  # - variable: SMUGMUG_USER
+  #   secret: SMUGMUG_USER
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+  # - variable: SMUGMUG_API_KEY
+  #   secret: SMUGMUG_API_KEY
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+  # - variable: SMUGMUG_API_SECRET
+  #   secret: SMUGMUG_API_SECRET
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+  # - variable: SMUGMUG_ACCESS_TOKEN
+  #   secret: SMUGMUG_ACCESS_TOKEN
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+  # - variable: SMUGMUG_ACCESS_TOKEN_SECRET
+  #   secret: SMUGMUG_ACCESS_TOKEN_SECRET
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
