@@ -149,7 +149,7 @@ export function SelectionTab(props: ProjectTabProps) {
         <div className="flex items-start gap-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>
-            Demonstratiemodus: er is geen AI-provider geconfigureerd (ANTHROPIC_API_KEY). Analyses zijn placeholders.
+            Demonstratiemodus: de actieve AI-provider heeft geen bruikbare API-sleutel. Analyses zijn placeholders.
           </span>
         </div>
       )}

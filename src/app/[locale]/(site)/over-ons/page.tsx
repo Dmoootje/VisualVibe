@@ -101,7 +101,7 @@ export default function OverOnsPage() {
         <div className={`relative z-[2] ${SECTION}`}>
           <div className="grid items-center gap-10 lg:gap-14 lg:grid-cols-[1.05fr_.95fr]">
             {/* left */}
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "8px 15px", borderRadius: 9999, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.25)", fontFamily: MONO, fontWeight: 700, fontSize: 12, letterSpacing: ".08em", color: "#FF9A45", marginBottom: 24, textTransform: "uppercase" }}>
                 <span className="vvov-liveDot" style={{ width: 7, height: 7, borderRadius: 9999, background: "#FF7A00" }} />
                 Het gezicht achter VisualVibe
@@ -126,7 +126,7 @@ export default function OverOnsPage() {
             </div>
 
             {/* right visual */}
-            <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", minHeight: 480 }}>
+            <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", minHeight: 480, minWidth: 0 }}>
               <div className="vvov-conic" style={{ position: "absolute", width: "min(560px,100%)", aspectRatio: "1", borderRadius: 9999, background: "conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,.30) 80deg,transparent 180deg,rgba(255,90,0,.22) 280deg,transparent 360deg)", filter: "blur(50px)", pointerEvents: "none" }} />
               <svg viewBox="0 0 200 200" style={{ position: "absolute", width: "min(520px,96%)", height: "auto", pointerEvents: "none" }}>
                 <circle className="vvov-ring1" cx="100" cy="100" r="96" fill="none" stroke="rgba(255,122,0,.30)" strokeWidth="1" strokeDasharray="2 9" strokeLinecap="round" />
@@ -173,11 +173,11 @@ export default function OverOnsPage() {
           </div>
 
           {/* fact strip */}
-          <div className="mt-[52px] grid grid-cols-2 gap-6 border-t border-white/[0.08] pt-[30px] lg:grid-cols-4">
+          <div className="mt-[52px] grid grid-cols-2 gap-x-5 gap-y-7 border-t border-white/[0.08] pt-[30px] sm:gap-6 lg:grid-cols-4">
             {facts.map((f) => (
-              <div key={f.big}>
-                <div style={{ fontFamily: SORA, fontWeight: 800, fontSize: 30, letterSpacing: "-.02em", color: "#fff" }}>{f.big}</div>
-                <div style={{ fontSize: 14, color: "rgba(255,255,255,.55)", marginTop: 5 }}>{f.label}</div>
+              <div key={f.big} style={{ minWidth: 0 }}>
+                <div style={{ fontFamily: SORA, fontWeight: 800, fontSize: "clamp(20px,5.4vw,30px)", letterSpacing: "-.02em", color: "#fff", overflowWrap: "break-word" }}>{f.big}</div>
+                <div style={{ fontSize: 14, color: "rgba(255,255,255,.55)", marginTop: 5, overflowWrap: "break-word" }}>{f.label}</div>
               </div>
             ))}
           </div>
@@ -187,7 +187,7 @@ export default function OverOnsPage() {
       {/* ===== FOUNDER STORY ===== */}
       <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 64, paddingBottom: 64 }}>
         <div className="grid items-start gap-10 lg:gap-14 lg:grid-cols-[.42fr_.58fr]">
-          <div>
+          <div style={{ minWidth: 0 }}>
             <p style={{ ...eyebrow, marginBottom: 14 }}>Ontmoet Jens Hardy</p>
             <h2 style={{ ...h2, fontSize: "clamp(30px,4.6vw,40px)", lineHeight: 1.06, marginBottom: 22 }}>Eén gezicht, van eerste idee tot oplevering</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 9 }}>
@@ -209,7 +209,7 @@ export default function OverOnsPage() {
               </span>
             </Link>
           </div>
-          <div style={{ position: "relative", paddingLeft: 30 }}>
+          <div style={{ position: "relative", paddingLeft: 30, minWidth: 0 }}>
             <span style={{ position: "absolute", left: 0, top: 2, fontFamily: SORA, fontWeight: 800, fontSize: 64, lineHeight: 0.6, color: "rgba(255,122,0,.28)" }}>&#8220;</span>
             <p style={{ fontSize: 22, lineHeight: 1.55, fontWeight: 600, color: "#fff", margin: "0 0 22px", textWrap: "pretty" }}>Welkom bij VisualVibe. Ik ben Jens Hardy - gepassioneerd fotograaf, cameraman en ervaren marketeer, en de drijvende kracht achter alles wat we maken.</p>
             <p style={{ fontSize: 16.5, lineHeight: 1.68, color: "rgba(255,255,255,.62)", margin: "0 0 16px", textWrap: "pretty" }}>VisualVibe is gespecialiseerd in foto-, video- en websiteprojecten. Of het nu gaat om een nieuwe website, professionele bedrijfsfotografie, een pakkende bedrijfsvideo of een sterke lokale SEO-strategie: ik denk met je mee vanaf de eerste kennismaking.</p>

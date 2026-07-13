@@ -5,6 +5,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Strip the `X-Powered-By: Next.js` response header (SEO/security hygiene:
+  // don't advertise the stack).
+  poweredByHeader: false,
   // sharp is a native module used server-side (portfolio image -> webp); keep it
   // external so webpack doesn't try to bundle it.
   serverExternalPackages: ['sharp'],

@@ -81,12 +81,14 @@ export function ProjectDetail({
   initialPhotos,
   initialAlbum,
   aiProviderId,
+  aiProviderModel,
   settings,
 }: {
   project: WeddingProject;
   initialPhotos: WeddingPhoto[];
   initialAlbum: WeddingAlbum | null;
   aiProviderId: string;
+  aiProviderModel: string;
   settings: TrouwstudioSettings;
 }) {
   const [photos, setPhotos] = useState(initialPhotos);
@@ -115,6 +117,7 @@ export function ProjectDetail({
     album,
     setAlbum,
     aiProviderId,
+    aiProviderModel,
     openTab,
     editorPhotoId,
   };
@@ -188,7 +191,7 @@ export function ProjectDetail({
         <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>
-            Demonstratiemodus: er is geen AI-provider geconfigureerd (ANTHROPIC_API_KEY). Analyses zijn placeholders.
+            Demonstratiemodus: de actieve AI-provider heeft geen bruikbare API-sleutel. Analyses zijn placeholders. Beheer dit onder Instellingen &gt; AI-providers.
           </span>
         </div>
       )}
@@ -300,7 +303,7 @@ export function ProjectDetail({
           <SelectionTab {...tabProps} />
         </TabsContent>
         <TabsContent value="bewerken" className="mt-6">
-          <EditorTab {...tabProps} settings={settings} />
+          <EditorTab {...tabProps} />
         </TabsContent>
         <TabsContent value="trouwboek" className="mt-6">
           <AlbumTab {...tabProps} />

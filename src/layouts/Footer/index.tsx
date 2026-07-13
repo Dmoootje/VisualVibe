@@ -25,9 +25,9 @@ export async function Footer() {
 
       <div className="container relative mx-auto px-2.5 sm:px-4 pt-16 sm:pt-[76px]">
         {/* Top grid: brand + columns */}
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-[clamp(28px,4vw,56px)]">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-[clamp(28px,4vw,56px)]">
           {/* Brand + contact + socials */}
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <Link href="/" aria-label="VisualVibe home" className="inline-block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.svg" alt="VisualVibe" className="h-7 w-auto sm:h-8" width={165} height={32} />

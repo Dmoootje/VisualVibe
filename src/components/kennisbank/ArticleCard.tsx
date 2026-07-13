@@ -28,7 +28,7 @@ function ImageOverlay({ article, compact }: { article: ArticleCardData; compact?
       </span>
       <Image
         src="/logo.svg"
-        alt=""
+        alt="VisualVibe"
         width={120}
         height={24}
         className="absolute right-4 top-4 z-10 h-4 w-auto opacity-90"

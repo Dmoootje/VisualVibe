@@ -445,9 +445,7 @@ export type TrouwstudioSettings = {
   defaultEditingStyle: WeddingEditingStyle;
   defaultTemplateId: string;
   confirmBulkActions: boolean;
-  /** AI */
-  aiProvider: "claude" | "mock";
-  analysisModel: string;
+  /** AI-analysegedrag. Provider en model worden centraal beheerd. */
   /** 0..1: onder deze confidence komt een foto in "Controle nodig". */
   confidenceThreshold: number;
   autoOptimize: boolean;
@@ -464,8 +462,6 @@ export const DEFAULT_TROUWSTUDIO_SETTINGS: TrouwstudioSettings = {
   defaultEditingStyle: "warm-romantisch",
   defaultTemplateId: "ivoire-portret",
   confirmBulkActions: true,
-  aiProvider: "claude",
-  analysisModel: "claude-opus-4-8",
   confidenceThreshold: 0.75,
   autoOptimize: false,
   generativeEnabled: false,

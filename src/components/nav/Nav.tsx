@@ -37,15 +37,15 @@ function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
       href="/trouwfotograaf-limburg"
       onClick={onClick}
       className="vvnav-wedCard"
-      style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 13, padding: "13px 15px", borderRadius: 14, background: "#FFFFFF", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6)" }}
+      style={{ position: "relative", marginTop: 10, display: "flex", alignItems: "center", gap: 13, padding: "13px 15px", borderRadius: 14, background: "#FFFFFF", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6)" }}
     >
       <WeddingVibeLogo style={{ height: 20, width: "auto", flex: "none" }} />
       <span style={{ flex: "none", width: 1, alignSelf: "stretch", background: "linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent)" }} />
       <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "#B8860B" }}>Ook voor je mooiste dag</span>
-        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320" }}>Trouwfotografie &amp; huwelijksvideo</span>
+        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#B8860B" }}>Ook voor je mooiste dag</span>
+        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320", paddingRight: 44 }}>Trouwfotografie &amp; huwelijksvideo</span>
       </span>
-      <span style={{ flex: "none", display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", color: "#fff", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
+      <span style={{ position: "absolute", right: 15, bottom: 13, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", color: "#fff", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
         <ArrowRight />
       </span>
     </Link>

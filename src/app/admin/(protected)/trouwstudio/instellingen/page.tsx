@@ -1,11 +1,14 @@
 import { getTrouwstudioSettings } from "@/lib/firestore/trouwstudio";
 import { TrouwstudioSettingsForm } from "@/components/admin/trouwstudio/TrouwstudioSettingsForm";
+import { getAiSettingsAdminView } from "@/lib/firestore/aiSettings";
 
 export const dynamic = "force-dynamic";
 
 export default async function TrouwstudioInstellingenPage() {
-  const settings = await getTrouwstudioSettings();
-  const hasAnthropicKey = Boolean(process.env.ANTHROPIC_API_KEY);
+  const [settings, aiSettings] = await Promise.all([
+    getTrouwstudioSettings(),
+    getAiSettingsAdminView(),
+  ]);
 
   return (
     <div>
@@ -14,7 +17,7 @@ export default async function TrouwstudioInstellingenPage() {
         Standaardinstellingen voor projecten, de AI-analyse en de export. API-keys staan nooit in de
         browser; de AI draait volledig server-side.
       </p>
-      <TrouwstudioSettingsForm settings={settings} hasAnthropicKey={hasAnthropicKey} />
+      <TrouwstudioSettingsForm settings={settings} aiSettings={aiSettings} />
     </div>
   );
 }

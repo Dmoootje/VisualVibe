@@ -45,7 +45,7 @@ export function BlogHeroImage({
         </span>
         <Image
           src="/logo.svg"
-          alt=""
+          alt="VisualVibe"
           width={140}
           height={28}
           className="absolute right-4 top-4 z-10 h-[18px] w-auto opacity-90"

@@ -9,9 +9,9 @@ import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMini
  */
 export function FooterRegioMaps() {
   return (
-    <div>
+    <div className="col-span-2 sm:col-span-1">
       <h3 className="mb-5 text-[15px] font-semibold text-white">Regio</h3>
-      <div className="grid max-w-[300px] grid-cols-2 gap-3">
+      <div className="grid max-w-[360px] grid-cols-2 gap-3 sm:max-w-[300px]">
         {regions.map((region) => (
           <Link
             key={region.slug}

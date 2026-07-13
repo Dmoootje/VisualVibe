@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge, Plane } from "lucide-react";
+import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge, Plane, Sparkles } from "lucide-react";
 
 const cards = [
   {
@@ -19,6 +19,12 @@ const cards = [
     title: "E-mailinstellingen",
     desc: "SMTP, automatische leadbevestigingen, interne meldingen, AI-concepten en e-mailvoorbeelden.",
     icon: Send,
+  },
+  {
+    href: "/admin/settings/ai",
+    title: "AI-providers",
+    desc: "Kies Gemini, Claude of OpenAI en beheer modellen en versleutelde API-sleutels.",
+    icon: Sparkles,
   },
   {
     href: "/admin/settings/webdesign",

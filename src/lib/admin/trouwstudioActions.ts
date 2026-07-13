@@ -167,11 +167,11 @@ export async function parseWeddingProjectAction(
     return { ok: false, error: "Vertel of typ eerst wat gegevens die de AI kan invullen." };
   }
 
-  const { hasAnthropic, parseWeddingProject } = await import("@/lib/ai/parseWeddingProject");
-  if (!hasAnthropic()) {
+  const { hasWeddingProjectAi, parseWeddingProject } = await import("@/lib/ai/parseWeddingProject");
+  if (!(await hasWeddingProjectAi())) {
     return {
       ok: false,
-      error: "De AI-invulhulp is niet beschikbaar: er is geen ANTHROPIC_API_KEY geconfigureerd.",
+      error: "De AI-invulhulp is niet beschikbaar. Configureer de actieve provider onder Instellingen > AI-providers.",
     };
   }
 
@@ -345,7 +345,7 @@ export async function analyzePhotosAction(
   const project = await getWeddingProject(projectId);
   if (!project) return { ok: false, error: "Project niet gevonden." };
   const settings = await getTrouwstudioSettings();
-  const provider = resolveAnalysisProvider(settings);
+  const provider = await resolveAnalysisProvider();
 
   const ids = photoIds.slice(0, Math.max(1, settings.batchSize));
   await updateWeddingPhotosBulk(projectId, ids, { status: "wordt_geanalyseerd" });
@@ -584,8 +584,6 @@ export async function saveTrouwstudioSettingsAction(
         : "warm-romantisch",
       defaultTemplateId: str(patch.defaultTemplateId, 60) || "ivory-editorial",
       confirmBulkActions: Boolean(patch.confirmBulkActions),
-      aiProvider: patch.aiProvider === "mock" ? "mock" : "claude",
-      analysisModel: str(patch.analysisModel, 60) || "claude-opus-4-8",
       confidenceThreshold: Math.min(1, Math.max(0, Number(patch.confidenceThreshold) || 0.75)),
       autoOptimize: Boolean(patch.autoOptimize),
       generativeEnabled: false, // nog geen generatief model aangesloten

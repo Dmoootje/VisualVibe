@@ -6,6 +6,7 @@ import {
   listWeddingPhotos,
 } from "@/lib/firestore/trouwstudio";
 import { resolveAnalysisProvider } from "@/features/trouwstudio/services/analysis";
+import { getAiSettingsAdminView } from "@/lib/firestore/aiSettings";
 import { ProjectDetail } from "@/components/admin/trouwstudio/ProjectDetail";
 
 export const dynamic = "force-dynamic";
@@ -19,12 +20,15 @@ export default async function TrouwstudioProjectPage({
   const project = await getWeddingProject(projectId);
   if (!project) notFound();
 
-  const [photos, album, settings] = await Promise.all([
+  const [photos, album, settings, aiSettings, analysisProvider] = await Promise.all([
     listWeddingPhotos(projectId),
     getWeddingAlbum(projectId),
     getTrouwstudioSettings(),
+    getAiSettingsAdminView(),
+    resolveAnalysisProvider(),
   ]);
-  const aiProviderId = resolveAnalysisProvider(settings).id;
+  const aiProviderId = analysisProvider.id;
+  const aiProviderModel = aiSettings.providers[aiSettings.activeProvider].model;
 
   return (
     <ProjectDetail
@@ -32,6 +36,7 @@ export default async function TrouwstudioProjectPage({
       initialPhotos={photos}
       initialAlbum={album}
       aiProviderId={aiProviderId}
+      aiProviderModel={aiProviderModel}
       settings={settings}
     />
   );

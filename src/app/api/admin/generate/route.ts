@@ -5,10 +5,10 @@ import { setWebdesignImage } from "@/lib/firestore/webdesignImages";
 import { revalidateWebdesign } from "@/lib/admin/revalidateWebdesign";
 import { imageKey } from "@/data/webdesignShowcase";
 import { hasFirecrawl, scrapeSite } from "@/lib/firecrawl";
-import { generateRealisatie, hasAnthropic } from "@/lib/ai/generateRealisatie";
+import { generateRealisatie, hasRealisatieAi } from "@/lib/ai/generateRealisatie";
 
 // Admin-only "Auto-genereer uit URL": captures desktop + mobile screenshots via
-// Firecrawl, uploads them to Firebase, and drafts the copy with Claude. Returns
+// Firecrawl, uploads them to Firebase, and drafts the copy with the active AI provider. Returns
 // the new image URLs (already persisted) plus draft text/badges/terms/features
 // for the admin to review before saving. Server-only (Node runtime).
 export const runtime = "nodejs";
@@ -94,14 +94,14 @@ export async function POST(request: NextRequest) {
   // Draft the copy. If this fails, still return the images so the run isn't wasted.
   let copy: Awaited<ReturnType<typeof generateRealisatie>> | null = null;
   let copyError: string | undefined;
-  if (hasAnthropic()) {
+  if (await hasRealisatieAi()) {
     try {
       copy = await generateRealisatie({ siteName, url, markdown: desktop.markdown });
     } catch (e) {
       copyError = e instanceof Error ? e.message : "Tekst genereren mislukt.";
     }
   } else {
-    copyError = "AI-tekst niet geconfigureerd (ANTHROPIC_API_KEY ontbreekt).";
+    copyError = "AI-tekst niet geconfigureerd. Stel de actieve provider in onder Instellingen > AI-providers.";
   }
 
   return NextResponse.json({ images, copy, copyError });

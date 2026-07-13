@@ -8,6 +8,8 @@ const IV_BYTES = 12;
 const AUTH_TAG_BYTES = 16;
 export const SMTP_PASSWORD_AAD = "visualvibe:smtp-password:v1";
 export const IMAP_PASSWORD_AAD = "visualvibe:imap-password:v1";
+const AI_PROVIDER_IDS = ["gemini", "claude", "openai"] as const;
+type EncryptedAiProviderId = (typeof AI_PROVIDER_IDS)[number];
 
 function decodeEncryptionKey(rawValue: string | undefined): Buffer {
   const raw = rawValue?.trim() ?? "";
@@ -28,6 +30,17 @@ function decodeEncryptionKey(rawValue: string | undefined): Buffer {
     throw new Error("APP_ENCRYPTION_KEY moet exact 32 bytes bevatten.");
   }
   return key;
+}
+
+export function hasValidEncryptionKey(
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): boolean {
+  try {
+    decodeEncryptionKey(keyValue);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function encodePart(value: Buffer): string {
@@ -117,6 +130,31 @@ export function decryptImapPassword(
   keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
 ): string {
   return decryptSecretWithAad(envelope, IMAP_PASSWORD_AAD, keyValue);
+}
+
+function aiProviderAad(provider: EncryptedAiProviderId): string {
+  if (!AI_PROVIDER_IDS.includes(provider)) {
+    throw new Error("Onbekende AI-provider voor versleuteling.");
+  }
+  return `visualvibe:ai-provider-key:${provider}:v1`;
+}
+
+/** Encrypts an AI key with provider-specific authenticated context. */
+export function encryptAiProviderKey(
+  provider: EncryptedAiProviderId,
+  plaintext: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return encryptSecretWithAad(plaintext, aiProviderAad(provider), keyValue);
+}
+
+/** Decrypts an AI key and rejects ciphertext copied between providers. */
+export function decryptAiProviderKey(
+  provider: EncryptedAiProviderId,
+  envelope: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return decryptSecretWithAad(envelope, aiProviderAad(provider), keyValue);
 }
 
 /**

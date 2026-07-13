@@ -50,13 +50,9 @@ env:
     secret: FIRECRAWL_API_KEY
     availability:
       - RUNTIME
-  - variable: ANTHROPIC_API_KEY
-    secret: ANTHROPIC_API_KEY
-    availability:
-      - RUNTIME
   # 32 random bytes, base64 encoded. Create with:
   # firebase apphosting:secrets:set APP_ENCRYPTION_KEY
-  # Used only to encrypt SMTP and IMAP credentials at rest.
+  # Used only to encrypt SMTP, IMAP and AI-provider credentials at rest.
   - variable: APP_ENCRYPTION_KEY
     secret: APP_ENCRYPTION_KEY
     availability:

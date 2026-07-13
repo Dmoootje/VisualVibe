@@ -32,7 +32,6 @@ import {
   type CropConfiguration,
   type CropRatioId,
   type PhotoAdjustments,
-  type TrouwstudioSettings,
   type WeddingPhoto,
   type WeddingPhotoStatus,
 } from "@/features/trouwstudio/types";
@@ -273,8 +272,9 @@ export function EditorTab({
   setPhotos,
   openTab,
   editorPhotoId,
-  settings,
-}: ProjectTabProps & { settings: TrouwstudioSettings }) {
+  aiProviderId,
+  aiProviderModel,
+}: ProjectTabProps) {
   const [selectedId, setSelectedId] = useState<string | null>(editorPhotoId);
   const [showRejected, setShowRejected] = useState(false);
   const [adjustments, setAdjustments] = useState<PhotoAdjustments>({ ...NEUTRAL_ADJUSTMENTS });
@@ -1246,9 +1246,9 @@ export function EditorTab({
           </button>
           <p className="text-[11px] text-white/40">
             AI-provider:{" "}
-            {settings.aiProvider === "mock"
+            {aiProviderId === "mock"
               ? "Demonstratiemodus (mock)"
-              : `Claude (${settings.analysisModel})`}
+              : `${aiProviderId === "openai" ? "OpenAI" : aiProviderId === "claude" ? "Claude" : "Gemini"} (${aiProviderModel})`}
           </p>
           <div className="border-t border-white/10 pt-3">
             <p className="text-[11px] leading-relaxed text-amber-300/90">

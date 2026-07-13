@@ -87,7 +87,7 @@ export function BlogCard({ post, index, authorImage }: BlogCardProps) {
 
               <Image
                 src="/logo.svg"
-                alt=""
+                alt="VisualVibe"
                 width={120}
                 height={24}
                 className="absolute right-4 top-4 h-4 w-auto opacity-90 sm:h-[18px]"

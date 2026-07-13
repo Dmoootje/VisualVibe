@@ -9,8 +9,9 @@ export type ProjectTabProps = {
   setPhotos: React.Dispatch<React.SetStateAction<WeddingPhoto[]>>;
   album: WeddingAlbum | null;
   setAlbum: React.Dispatch<React.SetStateAction<WeddingAlbum | null>>;
-  /** "claude" of "mock" (mock = Demonstratiemodus-banner tonen). */
+  /** Globale provider-id of "mock" (mock = Demonstratiemodus-banner tonen). */
   aiProviderId: string;
+  aiProviderModel: string;
   /** Navigeer naar een andere tab (bv. foto openen in de editor). */
   openTab: (tab: string, photoId?: string) => void;
   /** Foto die in de editor geopend moet worden. */

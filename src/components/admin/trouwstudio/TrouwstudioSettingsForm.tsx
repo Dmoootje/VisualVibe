@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   DEFAULT_TROUWSTUDIO_SETTINGS,
   EDITING_STYLE_LABELS,
@@ -10,13 +11,14 @@ import {
 import { WEDDING_ALBUM_TEMPLATES } from "@/features/trouwstudio/templates/ivoryEditorial";
 import { saveTrouwstudioSettingsAction } from "@/lib/admin/trouwstudioActions";
 import { inputClasses } from "./shared";
+import { AI_PROVIDER_LABELS, type AiSettingsAdminView } from "@/types/aiSettings";
 
 export function TrouwstudioSettingsForm({
   settings,
-  hasAnthropicKey,
+  aiSettings,
 }: {
   settings: TrouwstudioSettings;
-  hasAnthropicKey: boolean;
+  aiSettings: AiSettingsAdminView;
 }) {
   const [form, setForm] = useState<TrouwstudioSettings>({ ...DEFAULT_TROUWSTUDIO_SETTINGS, ...settings });
   const [busy, setBusy] = useState(false);
@@ -39,6 +41,7 @@ export function TrouwstudioSettingsForm({
 
   const label = "flex flex-col gap-1.5 text-sm text-white/70";
   const section = "rounded-lg border border-white/10 bg-white/[0.03] p-6";
+  const activeAi = aiSettings.providers[aiSettings.activeProvider];
 
   return (
     <div className="flex max-w-3xl flex-col gap-8">
@@ -94,31 +97,19 @@ export function TrouwstudioSettingsForm({
       <section className={section}>
         <h2 className="mb-1 text-lg font-semibold">AI-analyse</h2>
         <p className="mb-4 text-[13px] text-white/50">
-          De analyse draait volledig server-side; er staan geen API-keys in de browser.{" "}
-          {hasAnthropicKey
-            ? "ANTHROPIC_API_KEY is geconfigureerd: echte analyse is actief."
-            : "Er is geen ANTHROPIC_API_KEY gevonden: de Trouwstudio draait in Demonstratiemodus (placeholderresultaten, duidelijk gelabeld)."}
+          De provider en API-sleutels worden centraal en volledig server-side beheerd. De Trouwstudio
+          gebruikt momenteel {AI_PROVIDER_LABELS[aiSettings.activeProvider]} ({activeAi.model}).{" "}
+          {activeAi.keyConfigured
+            ? "De provider is geconfigureerd voor echte analyses."
+            : "Er is nog geen sleutel ingesteld; analyses draaien in duidelijk gelabelde Demonstratiemodus."}
         </p>
+        <Link
+          href="/admin/settings/ai"
+          className="mb-5 inline-flex rounded-md border border-amber-500/35 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-300 hover:bg-amber-500/15"
+        >
+          AI-provider en sleutels beheren
+        </Link>
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className={label}>
-            AI-provider
-            <select
-              value={form.aiProvider}
-              onChange={(e) => set("aiProvider", e.target.value === "mock" ? "mock" : "claude")}
-              className={inputClasses}
-            >
-              <option value="claude">Claude (Anthropic)</option>
-              <option value="mock">Demonstratiemodus (geen echte analyse)</option>
-            </select>
-          </label>
-          <label className={label}>
-            Analysemodel
-            <select value={form.analysisModel} onChange={(e) => set("analysisModel", e.target.value)} className={inputClasses}>
-              <option value="claude-opus-4-8">claude-opus-4-8 (beste kwaliteit)</option>
-              <option value="claude-sonnet-5">claude-sonnet-5 (sneller)</option>
-              <option value="claude-haiku-4-5">claude-haiku-4-5 (voordeligst)</option>
-            </select>
-          </label>
           <label className={label}>
             Confidence-drempel ({Math.round(form.confidenceThreshold * 100)}%)
             <input
