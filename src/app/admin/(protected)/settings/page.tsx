@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge } from "lucide-react";
+import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge, Plane } from "lucide-react";
 
 const cards = [
   {
@@ -25,6 +25,12 @@ const cards = [
     title: "Webdesign realisaties",
     desc: "Beheer de afbeeldingen van de webdesign-dienstpagina: hero-preview en per project de screenshots.",
     icon: LayoutTemplate,
+  },
+  {
+    href: "/admin/settings/drone",
+    title: "Drone & FPV media",
+    desc: "Beheer de dronefotografie-foto's en dronevideografie-video's in de realisaties-band van de drone-dienstpagina.",
+    icon: Plane,
   },
   {
     href: "/admin/settings/analyse",

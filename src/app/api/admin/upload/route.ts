@@ -15,6 +15,7 @@ const UPLOAD_DIRS: Record<string, string> = {
   fotografie: "images/library/fotografie",
   profiel: "images/team",
   weddingvibe: "images/weddingvibe",
+  drone: "images/library/drone",
 };
 
 export async function POST(request: NextRequest) {

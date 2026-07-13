@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
 import { serviceHref } from "@/data/services";
-import { dronePhotos } from "@/data/droneShowcase";
+import { getDroneShowcase } from "@/lib/firestore/droneShowcase";
 import { PageAmbient } from "@/components/ui";
 import { CTASection, ServiceFaqCombine } from "@/components/sections";
 import { DroneShowcase } from "./DroneShowcase";
@@ -38,7 +38,7 @@ const INCLUDED = [
  * overzicht, werkproces, FAQ, gerelateerde diensten, CTA, and a cursor-following
  * drone over the whole page (desktop only).
  */
-export function DroneFpvService({
+export async function DroneFpvService({
   service,
   subServices,
   relatedServices,
@@ -50,6 +50,10 @@ export function DroneFpvService({
   /** Gedeelde cross-link-secties (kennisbank, realisaties, regio's) vanuit de dienstpagina. */
   crossLinks?: React.ReactNode;
 }) {
+  // Admin-beheerde media (site_content/drone_showcase); valt terug op de seed.
+  const showcase = await getDroneShowcase();
+  const heroPhoto = showcase.photos[2] ?? showcase.photos[0];
+
   return (
     <div className="relative overflow-hidden">
       <PageAmbient />
@@ -115,7 +119,7 @@ export function DroneFpvService({
                 >
                   <div className="relative aspect-[16/10] overflow-hidden rounded-[19px] border border-white/5 bg-[#0e0d0c]">
                     <Image
-                      src={dronePhotos[2].src}
+                      src={heroPhoto.src}
                       alt="Luchtbeeld vanuit de drone, gefilmd door VisualVibe"
                       fill
                       priority
@@ -228,7 +232,7 @@ export function DroneFpvService({
         </section>
 
         {/* ===== REALISATIES SPLIT ===== */}
-        <DroneShowcase />
+        <DroneShowcase photos={showcase.photos} videos={showcase.videos} />
 
         {/* ===== DIENSTEN OVERZICHT ===== */}
         {subServices.length > 0 && (

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { dronePhotos, droneVideos } from "@/data/droneShowcase";
+import { dronePhotos, droneVideos, type DronePhoto, type DroneVideo } from "@/data/droneShowcase";
 import { ChevronLeft, ChevronRight, Close, DrIcon, Expand, PlayGlyph } from "./icons";
 
 const ytThumb = (id: string) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
@@ -28,14 +28,20 @@ type Selection = { grp: "foto" | "video"; idx: number };
  * keyboard). The lightbox mounts the media only while open so videos play on
  * open + each nav and stop on close.
  */
-export function DroneShowcase() {
+export function DroneShowcase({
+  photos = dronePhotos,
+  videos = droneVideos,
+}: {
+  photos?: DronePhoto[];
+  videos?: DroneVideo[];
+} = {}) {
   const [sel, setSel] = useState<Selection | null>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   const open = sel !== null;
   const isVideo = sel?.grp === "video";
-  const list = isVideo ? droneVideos : dronePhotos;
+  const list = isVideo ? videos : photos;
   const safeIdx = sel ? Math.min(sel.idx, list.length - 1) : 0;
 
   const step = (d: number) =>
@@ -92,7 +98,7 @@ export function DroneShowcase() {
           <div className="overflow-hidden rounded-[14px] border border-white/[0.07] bg-[#0b0a09]">
             <div aria-hidden="true" className="h-4" style={sprocket} />
             <div className="grid grid-cols-2 gap-2.5 p-2.5 sm:grid-cols-3 sm:gap-3 sm:p-3">
-              {dronePhotos.map((p, k) => (
+              {photos.map((p, k) => (
                 <button
                   key={p.src}
                   type="button"
@@ -141,7 +147,7 @@ export function DroneShowcase() {
             </span>
           </div>
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-            {droneVideos.map((v, k) => (
+            {videos.map((v, k) => (
               <button
                 key={v.yt}
                 type="button"
@@ -187,10 +193,10 @@ export function DroneShowcase() {
             <div className="mb-3.5 flex flex-none flex-col items-start justify-between gap-2.5 sm:flex-row">
               <div className="min-w-0">
                 <span className="mb-[11px] inline-flex items-center rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.12)] px-3 py-1.5 font-mono text-[10.5px] font-bold tracking-[0.06em] text-[#FF9A45]">
-                  {isVideo ? droneVideos[safeIdx].tag : dronePhotos[safeIdx].label}
+                  {isVideo ? videos[safeIdx].tag : photos[safeIdx].label}
                 </span>
                 <h3 className="font-sora text-[24px] font-extrabold tracking-[-0.02em] text-white">
-                  {isVideo ? droneVideos[safeIdx].title : dronePhotos[safeIdx].title}
+                  {isVideo ? videos[safeIdx].title : photos[safeIdx].title}
                 </h3>
               </div>
               <button type="button" onClick={() => setSel(null)} aria-label="Sluiten" className="vg-lbx flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-white/[0.14] bg-white/[0.04] text-white/75">
@@ -201,16 +207,16 @@ export function DroneShowcase() {
             <div className="relative flex aspect-video max-h-[64vh] flex-none items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_40px_90px_-30px_rgba(255,80,0,0.4)]">
               {isVideo ? (
                 <iframe
-                  key={droneVideos[safeIdx].yt}
-                  src={`https://www.youtube.com/embed/${droneVideos[safeIdx].yt}?autoplay=1&rel=0&modestbranding=1`}
-                  title={droneVideos[safeIdx].title}
+                  key={videos[safeIdx].yt}
+                  src={`https://www.youtube.com/embed/${videos[safeIdx].yt}?autoplay=1&rel=0&modestbranding=1`}
+                  title={videos[safeIdx].title}
                   allow="accelerated-sensors; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   className="absolute inset-0 h-full w-full border-0"
                 />
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={dronePhotos[safeIdx].src} alt={dronePhotos[safeIdx].title} className="h-full w-full object-contain" />
+                <img src={photos[safeIdx].src} alt={photos[safeIdx].title} className="h-full w-full object-contain" />
               )}
             </div>
 
