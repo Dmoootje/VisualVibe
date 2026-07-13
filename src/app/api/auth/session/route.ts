@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuth } from "@/lib/firebase/admin";
 import { ensureProfile } from "@/lib/firestore/profiles";
+import { isAuthorizedAdmin } from "@/lib/auth/session";
 import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS } from "@/lib/auth/constants";
 
 export async function POST(request: NextRequest) {
@@ -13,7 +14,10 @@ export async function POST(request: NextRequest) {
 
   try {
     const decoded = await adminAuth.verifyIdToken(idToken);
-    await ensureProfile(decoded.uid, decoded.email ?? "");
+    if (!(await isAuthorizedAdmin(decoded))) {
+      return NextResponse.json({ error: "Dit account heeft geen adminrechten." }, { status: 403 });
+    }
+    await ensureProfile(decoded.uid, decoded.email ?? "", "admin");
 
     const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn: SESSION_MAX_AGE_MS });
 

@@ -2,11 +2,19 @@ import { notFound } from "next/navigation";
 import { getLeadById } from "@/lib/firestore/leads";
 import { listNotesByLead } from "@/lib/firestore/leadNotes";
 import { listEventsByLead } from "@/lib/firestore/leadEvents";
+import { listMailHistoryByLead } from "@/lib/firestore/mailHistory";
+import {
+  listAnalysisLeadsByEmail,
+  listAnalysisLeadsByLeadId,
+} from "@/lib/firestore/analysisLeads";
 import type { LeadEvent } from "@/types";
+import type { AnalysisLead } from "@/types/analysis";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 import { LeadPrioritySelect } from "@/components/admin/LeadPrioritySelect";
 import { LeadNoteForm } from "@/components/admin/LeadNoteForm";
+import { LeadCommunicationPanel } from "@/components/admin/LeadCommunicationPanel";
+import { LeadAnalysisPanel } from "@/components/admin/LeadAnalysisPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -18,14 +26,29 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     notFound();
   }
 
-  const [notes, events] = await Promise.all([listNotesByLead(id), listEventsByLead(id)]);
+  const [notes, events, mailHistory, analysisLeads] = await Promise.all([
+    listNotesByLead(id),
+    listEventsByLead(id),
+    listMailHistoryByLead(id),
+    listAnalysisLeadsByLeadId(id),
+  ]);
+
+  // Analysepaneel tonen bij een analyselead of wanneer er analyses aan deze
+  // lead hangen. De e-mailhistoriek gebruikt het genormaliseerde adres uit de
+  // analyselead zelf; anders het (lowercase) leadadres.
+  const showAnalysisPanel = lead.formType === "website_analysis" || analysisLeads.length > 0;
+  let analysisEmailHistory: AnalysisLead[] = [];
+  if (showAnalysisPanel) {
+    const emailNormalized = analysisLeads[0]?.emailNormalized ?? lead.email.trim().toLowerCase();
+    analysisEmailHistory = await listAnalysisLeadsByEmail(emailNormalized);
+  }
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-6xl">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold">{lead.name}</h1>
-          <p className="text-white/60">{lead.email}</p>
+          <p className="text-white/60">{lead.leadNumber} · {lead.email}</p>
         </div>
         <StatusBadge status={lead.status} />
       </div>
@@ -38,7 +61,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <Field label="Telefoon" value={lead.phone} />
               <Field label="Bedrijf" value={lead.company} />
               <Field label="Dienst" value={lead.serviceInterest} />
+              <Field label="Gekozen diensten" value={lead.selectedServices.join(", ")} />
               <Field label="Regio" value={lead.region} />
+              <Field label="Formulier" value={lead.formType} />
+              <Field label="Taal" value={lead.locale.toUpperCase()} />
               <Field label="Bron pagina" value={lead.sourcePage} />
               <Field label="UTM bron" value={lead.utmSource} />
             </dl>
@@ -63,6 +89,16 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               {notes.length === 0 && <p className="text-sm text-white/40">Nog geen notities.</p>}
             </ul>
           </section>
+
+          {showAnalysisPanel && (
+            <LeadAnalysisPanel
+              leadId={lead.id}
+              analysisLeads={analysisLeads}
+              emailHistory={analysisEmailHistory}
+            />
+          )}
+
+          <LeadCommunicationPanel leadId={lead.id} history={mailHistory} />
         </div>
 
         <div className="flex flex-col gap-6">
@@ -121,6 +157,38 @@ function describeEvent(event: LeadEvent): string {
       return `Prioriteit gewijzigd: ${event.oldValue} → ${event.newValue} (door ${event.createdBy})`;
     case "note_added":
       return `Notitie toegevoegd (door ${event.createdBy})`;
+    case "draft_generated":
+      return `Antwoordconcept gegenereerd (door ${event.createdBy})`;
+    case "draft_edited":
+      return `Antwoordconcept bewerkt (door ${event.createdBy})`;
+    case "email_sent":
+      return `E-mail verstuurd (door ${event.createdBy})`;
+    case "email_failed":
+      return `E-mailverzending mislukt (door ${event.createdBy})`;
+    case "analysis_requested":
+      return "Websiteanalyse aangevraagd";
+    case "analysis_verified":
+      return "E-mailadres geverifieerd voor websiteanalyse";
+    case "analysis_started":
+      return `Analyse gestart (door ${event.createdBy})`;
+    case "analysis_completed":
+      return event.newValue
+        ? `Analyse afgerond met score ${event.newValue} (door ${event.createdBy})`
+        : `Analyse afgerond (door ${event.createdBy})`;
+    case "analysis_failed":
+      return `Analyse mislukt (door ${event.createdBy})`;
+    case "analysis_limit_reached":
+      return "Analyselimiet bereikt";
+    case "analysis_reused":
+      return "Recent analyserapport hergebruikt";
+    case "analysis_force_requested":
+      return "Bezoeker vroeg een nieuwe analyse binnen de cooldown";
+    case "analysis_report_resent":
+      return `Analyserapport opnieuw gemaild (door ${event.createdBy})`;
+    case "analysis_quota_reset":
+      return `Analysequotum gereset (door ${event.createdBy})`;
+    case "analysis_credit_granted":
+      return `Extra analysetegoed toegekend: ${event.newValue ?? "1"} (door ${event.createdBy})`;
     default:
       return event.type;
   }

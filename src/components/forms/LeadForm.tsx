@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,6 +41,7 @@ const OFFERTE_PLACEHOLDERS: Record<string, string> = {
 export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
   const [state, setState] = useState<SubmitState>({ status: "idle" });
   const [isPending, setIsPending] = useState(false);
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   // Typewriter placeholder state (contact variant only).
   const animate = variant === "contact";
@@ -131,13 +132,21 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
     const formElement = event.currentTarget;
     const formData = new FormData(formElement);
     const searchParams = new URLSearchParams(window.location.search);
+    const serviceInterest = String(formData.get("serviceInterest") ?? "").trim();
+    const localeSegment = window.location.pathname.split("/").filter(Boolean)[0];
+    const locale = localeSegment === "fr" || localeSegment === "en" ? localeSegment : "nl";
+    idempotencyKeyRef.current ??= window.crypto.randomUUID();
 
     const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone") || undefined,
       company: formData.get("company") || undefined,
-      serviceInterest: formData.get("serviceInterest") || undefined,
+      serviceInterest: serviceInterest || undefined,
+      selectedServices: serviceInterest ? [serviceInterest] : [],
+      formType: variant,
+      locale,
+      idempotencyKey: idempotencyKeyRef.current,
       region: formData.get("region") || undefined,
       message: formData.get("message"),
       privacyAccepted: formData.get("privacyAccepted") === "on",
@@ -166,8 +175,9 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       }
 
       formElement.reset();
+      idempotencyKeyRef.current = null;
       setFilled({}); // Empty again -> the animated placeholders reappear.
-      setState({ status: "success", message: "Bedankt! We nemen binnen de 2 werkdagen contact met je op." });
+      setState({ status: "success", message: "Bedankt! Je aanvraag is veilig opgeslagen." });
       setIsPending(false);
     } catch {
       setState({ status: "error", message: "Er ging iets mis. Probeer opnieuw." });

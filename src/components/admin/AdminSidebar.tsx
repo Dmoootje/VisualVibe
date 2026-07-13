@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
     icon: Settings,
     children: [
       { href: "/admin/settings/contact", label: "Contact" },
+      { href: "/admin/settings/email", label: "E-mailinstellingen" },
       { href: "/admin/settings/webdesign", label: "Webdesign realisaties" },
       { href: "/admin/settings/realisaties/fotografie", label: "Fotografie galerijen" },
     ],

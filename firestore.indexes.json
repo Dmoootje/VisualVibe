@@ -32,6 +32,14 @@
         { "fieldPath": "leadId", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "mail_history",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "leadId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

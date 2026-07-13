@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const LAST_UPDATED = "12 juli 2026";
+const LAST_UPDATED = "13 juli 2026";
 
 function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-3 mt-10 text-xl font-bold text-white sm:text-2xl">{children}</h2>;
@@ -78,6 +78,16 @@ export default async function PrivacyPage() {
                 mailen.
               </li>
               <li>
+                <strong className="text-white">Gratis websiteanalyse:</strong> je voornaam,
+                e-mailadres (dat we via een verificatiecode bevestigen), optioneel je bedrijfsnaam en
+                de website-URL die je laat analyseren. We gebruiken deze gegevens om je het
+                analyserapport te bezorgen en je aanvraag op te volgen (rechtsgrond: precontractuele
+                maatregelen op jouw verzoek). Om misbruik van deze gratis dienst te voorkomen bewaren
+                we daarnaast een gehasht toestel-ID via een first-party cookie, een gehasht IP-adres
+                en een analyselogboek; ruwe IP-adressen of toestel-ID&apos;s slaan we nooit op
+                (rechtsgrond: gerechtvaardigd belang).
+              </li>
+              <li>
                 <strong className="text-white">Technische loggegevens:</strong> zoals IP-adres en
                 browserinformatie in serverlogs, nodig voor de beveiliging en goede werking van de
                 website (rechtsgrond: gerechtvaardigd belang).
@@ -96,6 +106,12 @@ export default async function PrivacyPage() {
               </li>
               <li>
                 Je inschrijving op de nieuwsbrief bewaren we tot je je uitschrijft.
+              </li>
+              <li>
+                Analyseleads en analyserapporten bewaren we zolang ze relevant zijn voor de
+                opvolging van je aanvraag. De gehashte anti-misbruikgegevens tellen na 90 dagen
+                automatisch niet meer mee voor de limieten en kunnen op verzoek verwijderd worden.
+                Verificatiecodes vervallen na 15 minuten.
               </li>
               <li>Technische logs worden na een beperkte periode automatisch verwijderd.</li>
             </ul>

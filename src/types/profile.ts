@@ -4,6 +4,6 @@ export type Profile = {
   name?: string;
   /** Firebase Storage URL van de profielfoto; toont als auteursfoto op blog en cards. */
   photoUrl?: string;
-  role: "admin";
+  role: "admin" | "user";
   createdAt: string;
 };

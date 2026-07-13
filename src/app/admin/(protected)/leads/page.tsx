@@ -9,21 +9,33 @@ export const dynamic = "force-dynamic";
 export default async function AdminLeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; form?: string }>;
 }) {
-  const { status } = await searchParams;
+  const { status, form } = await searchParams;
   const activeStatus = LEAD_STATUSES.includes(status as LeadStatus) ? (status as LeadStatus) : undefined;
-  const leads = await listLeads(activeStatus);
+  const activeForm = form === "website_analysis" ? "website_analysis" : undefined;
+  const leads = await listLeads(activeStatus, activeForm);
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Leads</h1>
 
-      <div className="flex flex-wrap gap-2 mb-6">
-        <FilterLink status={undefined} active={!activeStatus} />
+      <div className="flex flex-wrap gap-2 mb-3">
+        <FilterLink status={undefined} form={activeForm} active={!activeStatus} />
         {LEAD_STATUSES.map((value) => (
-          <FilterLink key={value} status={value} active={activeStatus === value} />
+          <FilterLink key={value} status={value} form={activeForm} active={activeStatus === value} />
         ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <span className="text-xs text-white/50 uppercase tracking-wide">Type</span>
+        <TypeFilterLink form={undefined} status={activeStatus} active={!activeForm} label="Alle" />
+        <TypeFilterLink
+          form="website_analysis"
+          status={activeStatus}
+          active={activeForm === "website_analysis"}
+          label="Analyseleads"
+        />
       </div>
 
       {leads.length === 0 ? (
@@ -50,7 +62,9 @@ export default async function AdminLeadsPage({
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-white/70">{lead.email}</td>
-                  <td className="px-4 py-3 hidden sm:table-cell text-white/70">{lead.serviceInterest ?? "-"}</td>
+                  <td className="px-4 py-3 hidden sm:table-cell text-white/70">
+                    {lead.formType === "website_analysis" ? "Websiteanalyse" : (lead.serviceInterest ?? "-")}
+                  </td>
                   <td className="px-4 py-3 hidden md:table-cell text-white/70">{lead.region ?? "-"}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={lead.status} />
@@ -68,13 +82,46 @@ export default async function AdminLeadsPage({
   );
 }
 
-function FilterLink({ status, active }: { status?: LeadStatus; active: boolean }) {
-  const href = status ? `/admin/leads?status=${status}` : "/admin/leads";
+function leadsHref(status?: LeadStatus, form?: string): string {
+  const params = new URLSearchParams();
+  if (status) params.set("status", status);
+  if (form) params.set("form", form);
+  const query = params.toString();
+  return query ? `/admin/leads?${query}` : "/admin/leads";
+}
+
+function FilterLink({ status, form, active }: { status?: LeadStatus; form?: string; active: boolean }) {
   const label = status ? STATUS_LABELS[status] : "Alle";
 
   return (
     <Link
-      href={href}
+      href={leadsHref(status, form)}
+      className={cn(
+        "rounded-full border px-3 py-1.5 text-sm transition-colors",
+        active
+          ? "border-amber-500 bg-amber-500/10 text-amber-400"
+          : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+      )}
+    >
+      {label}
+    </Link>
+  );
+}
+
+function TypeFilterLink({
+  form,
+  status,
+  active,
+  label,
+}: {
+  form?: string;
+  status?: LeadStatus;
+  active: boolean;
+  label: string;
+}) {
+  return (
+    <Link
+      href={leadsHref(status, form)}
       className={cn(
         "rounded-full border px-3 py-1.5 text-sm transition-colors",
         active

@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/providers";
 import { Header, Footer } from "@/layouts";
 import { SiteBackground } from "@/components/ui";
 import { routing } from "@/i18n/routing";
-import { LocalBusinessJsonLd, OrganizationJsonLd } from "@/components/seo";
+import { LocalBusinessJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo";
 import { SectorIconSprite } from "@/components/sectors";
 import { QuoteModalProvider } from "@/components/quote";
 import { businessConfig } from "@/config/business.config";
@@ -87,6 +87,7 @@ export default async function LocaleLayout({
         <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
+        <WebSiteJsonLd />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
             attribute="class"

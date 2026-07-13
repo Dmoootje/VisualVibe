@@ -15,21 +15,25 @@ export async function getProfile(uid: string): Promise<Profile | null> {
     email: data.email,
     name: data.name || undefined,
     photoUrl: data.photoUrl || undefined,
-    role: data.role ?? "admin",
+    role: data.role === "admin" ? "admin" : "user",
     createdAt: data.createdAt?.toDate?.().toISOString() ?? new Date().toISOString(),
   };
 }
 
-/** Creates the profile doc on first login; returns the existing one otherwise. */
-export async function ensureProfile(uid: string, email: string): Promise<Profile> {
+/** Creates a non-privileged profile on first login unless authorization was established separately. */
+export async function ensureProfile(
+  uid: string,
+  email: string,
+  role: Profile["role"] = "user"
+): Promise<Profile> {
   const existing = await getProfile(uid);
   if (existing) {
     return existing;
   }
 
   const now = new Date();
-  await adminDb.collection(COLLECTION).doc(uid).set({ email, role: "admin", createdAt: now });
-  return { uid, email, role: "admin", createdAt: now.toISOString() };
+  await adminDb.collection(COLLECTION).doc(uid).set({ email, role, createdAt: now });
+  return { uid, email, role, createdAt: now.toISOString() };
 }
 
 export type UpdateProfileInput = {

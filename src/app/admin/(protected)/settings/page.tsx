@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, LayoutTemplate, CircleUserRound } from "lucide-react";
+import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge } from "lucide-react";
 
 const cards = [
   {
@@ -15,10 +15,22 @@ const cards = [
     icon: Mail,
   },
   {
+    href: "/admin/settings/email",
+    title: "E-mailinstellingen",
+    desc: "SMTP, automatische leadbevestigingen, interne meldingen, AI-concepten en e-mailvoorbeelden.",
+    icon: Send,
+  },
+  {
     href: "/admin/settings/webdesign",
     title: "Webdesign realisaties",
     desc: "Beheer de afbeeldingen van de webdesign-dienstpagina: hero-preview en per project de screenshots.",
     icon: LayoutTemplate,
+  },
+  {
+    href: "/admin/settings/analyse",
+    title: "Websiteanalyse",
+    desc: "Quota en limieten van de gratis websiteanalyse: aantallen per e-mail, toestel, IP en domein.",
+    icon: Gauge,
   },
 ];
 

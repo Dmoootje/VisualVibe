@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -34,12 +35,14 @@ const MONO = "var(--font-jetbrains-mono), monospace";
 const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
 
 const SERVICES = [
-  { id: "website", icon: "website", name: "Webdesign", desc: "Website of webshop" },
-  { id: "marketing", icon: "seo", name: "SEO & Marketing", desc: "Gevonden worden" },
-  { id: "foto", icon: "foto", name: "Fotografie", desc: "Bedrijfs- & productfoto's" },
-  { id: "video", icon: "video", name: "Bedrijfsvideo", desc: "Video & montage" },
-  { id: "drone", icon: "drone", name: "Drone & FPV", desc: "Lucht- & FPV-beelden" },
-  { id: "podcast", icon: "mic", name: "Podcasting", desc: "Opname tot afgewerkt" },
+  { id: "webdesign", icon: "website", name: "Webdesign", desc: "Website of webshop" },
+  { id: "seo", icon: "seo", name: "SEO & Marketing", desc: "Gevonden worden" },
+  { id: "fotografie", icon: "foto", name: "Fotografie", desc: "Bedrijfs- & productfoto's" },
+  { id: "videografie", icon: "video", name: "Videografie", desc: "Video & montage" },
+  { id: "drone-fpv", icon: "drone", name: "Drone & FPV", desc: "Lucht- & FPV-beelden" },
+  { id: "3d-vr-ar", icon: "cube", name: "3D, VR & AR", desc: "Tours en immersieve media" },
+  { id: "podcasting", icon: "mic", name: "Podcasting", desc: "Opname tot afgewerkt" },
+  { id: "masterclasses", icon: "video", name: "Masterclasses", desc: "Opleiding professioneel vastleggen" },
 ] as const;
 
 function Ar({ size = 17 }: { size?: number }) {
@@ -73,20 +76,28 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
   const [tel, setTel] = useState("");
   const [adres, setAdres] = useState("");
   const [bericht, setBericht] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [sentServices, setSentServices] = useState<string[]>([]);
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   const openOfferte = useCallback(() => {
     setMode("offerte");
+    setSelected([]);
     setStep(1);
     setDone(false);
     setError(null);
+    setPrivacyAccepted(false);
+    idempotencyKeyRef.current = null;
     setOpen(true);
   }, []);
   const openKennis = useCallback(() => {
     setMode("kennis");
+    setSelected([]);
     setStep(1);
     setDone(false);
     setError(null);
+    setPrivacyAccepted(false);
+    idempotencyKeyRef.current = null;
     setOpen(true);
   }, []);
   const close = useCallback(() => setOpen(false), []);
@@ -150,6 +161,10 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
       setError("Vul een geldig e-mailadres in.");
       return;
     }
+    if (!privacyAccepted) {
+      setError("Bevestig dat we je gegevens mogen verwerken voor deze aanvraag.");
+      return;
+    }
 
     const parts = [
       selectedNames.length ? `Aanvraag voor: ${selectedNames.join(", ")}` : "",
@@ -165,6 +180,9 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
     setBusy(true);
     try {
       const searchParams = new URLSearchParams(window.location.search);
+      const localeSegment = window.location.pathname.split("/").filter(Boolean)[0];
+      const locale = localeSegment === "fr" || localeSegment === "en" ? localeSegment : "nl";
+      idempotencyKeyRef.current ??= window.crypto.randomUUID();
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -172,13 +190,19 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
           name: naam.trim(),
           email: email.trim(),
           phone: tel.trim() || undefined,
+          selectedServices: selected,
+          serviceInterest: selected[0] || undefined,
+          formType: isKennis ? "quote_modal_kennis" : "quote_modal_offerte",
+          locale,
+          idempotencyKey: idempotencyKeyRef.current,
           message,
-          privacyAccepted: true,
+          privacyAccepted,
           sourcePage: window.location.pathname,
           sourceUrl: window.location.href,
           utmSource: searchParams.get("utm_source") || undefined,
           utmMedium: searchParams.get("utm_medium") || undefined,
           utmCampaign: searchParams.get("utm_campaign") || undefined,
+          website: "",
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -186,6 +210,7 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
         throw new Error(data.error ?? "Er ging iets mis. Probeer opnieuw.");
       }
       setSentServices(selectedNames);
+      idempotencyKeyRef.current = null;
       setDone(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Er ging iets mis. Probeer opnieuw.");
@@ -343,8 +368,18 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
                     </label>
                   </div>
 
+                  <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginTop: 18, color: "rgba(255,255,255,.62)", fontSize: 13.5, lineHeight: 1.5 }}>
+                    <input
+                      type="checkbox"
+                      checked={privacyAccepted}
+                      onChange={(event) => setPrivacyAccepted(event.target.checked)}
+                      style={{ marginTop: 3, accentColor: "#FF7A00" }}
+                    />
+                    <span>Ik ga akkoord met de verwerking van mijn gegevens voor de opvolging van deze aanvraag.</span>
+                  </label>
+
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 20, marginTop: 20 }}>
-                    {["Antwoord binnen 1 werkdag", "Volledig vrijblijvend", "Rechtstreeks van Jens"].map((t) => (
+                    {["Veilig opgeslagen", "Volledig vrijblijvend", "Rechtstreeks van Jens"].map((t) => (
                       <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "rgba(255,255,255,.5)" }}><Check size={15} stroke="#FF9A45" w={2.4} />{t}</span>
                     ))}
                   </div>
@@ -372,7 +407,7 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
                       ))}
                     </div>
                   )}
-                  {email.trim() && <p style={{ fontSize: 14, color: "rgba(255,255,255,.5)", margin: "0 0 26px" }}>Een bevestiging is onderweg naar <span style={{ color: "#FF9A45", fontWeight: 600 }}>{email.trim()}</span></p>}
+                  {email.trim() && <p style={{ fontSize: 14, color: "rgba(255,255,255,.5)", margin: "0 0 26px" }}>Je aanvraag voor <span style={{ color: "#FF9A45", fontWeight: 600 }}>{email.trim()}</span> is veilig opgeslagen.</p>}
                   <button type="button" onClick={close} style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 16, color: "#fff", padding: "14px 30px", borderRadius: 12, background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.16)", cursor: "pointer" }}>Sluiten</button>
                 </div>
               )}

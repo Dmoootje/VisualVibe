@@ -196,6 +196,12 @@ export function MdxContent({ source }: { source: string }) {
         source={source}
         components={components}
         options={{
+          // Knowledge-base MDX is repository-owned and uses JSX expressions
+          // for structured component props (tables, FAQ arrays, roadmaps).
+          // next-mdx-remote v6 blocks all expressions by default; allow these
+          // while retaining its dangerous-global protection.
+          blockJS: false,
+          blockDangerousJS: true,
           mdxOptions: {
             remarkPlugins: [remarkGfm],
             rehypePlugins: [rehypeSlug],

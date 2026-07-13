@@ -33,5 +33,25 @@ service cloud.firestore {
     match /site_settings/{settingsId} {
       allow read, write: if false;
     }
+
+    match /email_settings/{settingsId} {
+      allow read, write: if false;
+    }
+
+    match /mail_history/{mailId} {
+      allow read, write: if false;
+    }
+
+    match /mail_dispatches/{dispatchId} {
+      allow read, write: if false;
+    }
+
+    match /counters/{counterId} {
+      allow read, write: if false;
+    }
+
+    match /lead_rate_limits/{rateLimitId} {
+      allow read, write: if false;
+    }
   }
 }
