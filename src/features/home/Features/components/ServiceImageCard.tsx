@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
@@ -27,14 +28,12 @@ export function ServiceImageCard({
         <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-60 blur-md" />
         <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={image || "/placeholder.svg"}
               alt={title}
-              width={2070}
-              height={1294}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              sizes="(min-width: 768px) 45vw, 90vw"
+              className="object-cover"
             />
           </div>
           <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
@@ -55,14 +54,12 @@ export function ServiceImageCard({
       <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-70 blur-lg" />
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={image || "/placeholder.svg"}
             alt={title}
-            width={2070}
-            height={1294}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            sizes="(min-width: 768px) 45vw, 90vw"
+            className="object-cover"
           />
         </div>
 

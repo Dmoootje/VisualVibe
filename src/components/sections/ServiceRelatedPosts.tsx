@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { getPostsByCategory } from "@/lib/kennisbank/posts";
+import { getAllPosts, getPostsByCategory } from "@/lib/kennisbank/posts";
 import { postHref } from "@/lib/kennisbank/urls";
+import { getServiceBySlug, serviceHref } from "@/data/services";
 import type { BlogPost } from "@/types/blog";
 
 // Which kennisbank pillar feeds each service's "Uit de kennisbank" section.
@@ -22,6 +23,7 @@ function ArticleTile({ post }: { post: BlogPost }) {
   return (
     <Link
       href={postHref(post)}
+      locale="nl"
       className="group flex flex-col overflow-hidden rounded-[16px] border border-white/[0.09] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255,122,0,0.34)] hover:shadow-[0_24px_50px_-24px_rgba(255,90,0,0.5)]"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-[#141210]">
@@ -42,7 +44,7 @@ function ArticleTile({ post }: { post: BlogPost }) {
           )}
           <span className="inline-flex items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.04em] text-white/60 transition-colors group-hover:text-[#FF9A45]">
             LEES MEER
-            <ArrowRight className="h-3 w-3" />
+            <ArrowRight aria-hidden="true" className="h-3 w-3" />
           </span>
         </div>
       </div>
@@ -58,22 +60,41 @@ function ArticleTile({ post }: { post: BlogPost }) {
  */
 export function ServiceRelatedPosts({
   serviceSlug,
+  fallbackServiceSlug,
   heading = "Uit de kennisbank",
   intro,
 }: {
   serviceSlug: string;
+  fallbackServiceSlug?: string;
   heading?: string;
   intro?: string;
 }) {
-  const categorySlug = SERVICE_TO_CATEGORY[serviceSlug];
+  const service = getServiceBySlug(serviceSlug);
+  const categorySource = fallbackServiceSlug ?? service?.parentSlug ?? serviceSlug;
+  const categorySlug = SERVICE_TO_CATEGORY[categorySource];
   if (!categorySlug) return null;
 
-  const posts = getPostsByCategory(categorySlug, "nl");
-  if (posts.length === 0) return null;
+  const categoryPosts = getPostsByCategory(categorySlug, "nl");
 
-  // The pillar guide leads; up to six other articles fill the grid beside it.
-  const pillar = posts.find((post) => post.pillar) ?? posts[0];
-  const others = posts.filter((post) => post.slug !== pillar.slug).slice(0, 6);
+  const normalizePath = (path: string) => `/${path.split("/").filter(Boolean).join("/")}`;
+  const canonicalServicePath = service ? normalizePath(serviceHref(service)) : undefined;
+  const directlyRelated = canonicalServicePath
+    ? getAllPosts({ locale: "nl" }).filter((post) =>
+        post.relatedServices?.some((path) => normalizePath(path) === canonicalServicePath),
+      )
+    : [];
+  if (directlyRelated.length === 0 && categoryPosts.length === 0) return null;
+
+  // A direct sub-service relation wins. If none exists, the parent category's
+  // pillar is the useful fallback. Remaining direct articles stay ahead of the
+  // broader category articles in the supporting grid.
+  const lead = directlyRelated[0] ?? categoryPosts.find((post) => post.pillar) ?? categoryPosts[0];
+  if (!lead) return null;
+  const directSlugs = new Set(directlyRelated.map((post) => post.slug));
+  const others = [
+    ...directlyRelated.filter((post) => post.slug !== lead.slug),
+    ...categoryPosts.filter((post) => post.slug !== lead.slug && !directSlugs.has(post.slug)),
+  ].slice(0, 6);
 
   return (
     <section className="relative py-14 sm:py-16">
@@ -91,44 +112,46 @@ export function ServiceRelatedPosts({
           </div>
           <Link
             href={`/kennisbank/${categorySlug}`}
+            locale="nl"
             className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white"
           >
             Alle artikels
-            <ArrowRight className="h-[15px] w-[15px]" />
+            <ArrowRight aria-hidden="true" className="h-[15px] w-[15px]" />
           </Link>
         </div>
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
           {/* Pillar: large lead block */}
           <Link
-            href={postHref(pillar)}
+            href={postHref(lead)}
+            locale="nl"
             className={`group relative flex flex-col overflow-hidden rounded-[20px] border border-white/[0.09] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1.5 hover:border-[rgba(255,122,0,0.34)] hover:shadow-[0_34px_70px_-30px_rgba(255,90,0,0.5)] ${
               others.length > 0 ? "lg:w-[38%] lg:flex-none" : "w-full"
             }`}
           >
             <div className="relative min-h-[220px] flex-1 overflow-hidden bg-[#141210]">
-              {pillar.featuredImage ?? pillar.ogImage ? (
-                <Image src={(pillar.featuredImage ?? pillar.ogImage) as string} alt={pillar.heroImageAlt ?? pillar.title} fill sizes="(max-width:1024px) 100vw, 480px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              {lead.featuredImage ?? lead.ogImage ? (
+                <Image src={(lead.featuredImage ?? lead.ogImage) as string} alt={lead.heroImageAlt ?? lead.title} fill sizes="(max-width:1024px) 100vw, 480px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               ) : (
                 <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,rgba(255,90,0,0.18),transparent_62%)]" />
               )}
               <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(10,10,10,.14),transparent 44%,rgba(10,10,10,.72))" }} />
               <span className="absolute left-4 top-4 z-[2] inline-flex items-center rounded-full border border-[rgba(255,122,0,0.3)] bg-[rgba(8,7,6,.62)] px-[11px] py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#FF9A45] backdrop-blur">
-                {pillar.pillar ? "Complete gids" : "Uitgelicht"}
+                {lead.pillar ? "Complete gids" : "Uitgelicht"}
               </span>
             </div>
             <div className="flex flex-col p-6">
               <h3 className="font-sora text-[21px] font-extrabold leading-[1.16] tracking-[-0.01em] text-white transition-colors group-hover:text-[#FF9A45]">
-                {pillar.title}
+                {lead.title}
               </h3>
-              <p className="mt-2.5 line-clamp-3 text-[14px] leading-relaxed text-white/60">{pillar.excerpt}</p>
+              <p className="mt-2.5 line-clamp-3 text-[14px] leading-relaxed text-white/60">{lead.excerpt}</p>
               <div className="mt-4 flex items-center justify-between gap-2 pt-1">
-                {pillar.readingTime && (
-                  <span className="font-mono text-[11px] font-semibold text-white/40">{pillar.readingTime}</span>
+                {lead.readingTime && (
+                  <span className="font-mono text-[11px] font-semibold text-white/40">{lead.readingTime}</span>
                 )}
                 <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.04em] text-white/70 transition-colors group-hover:text-[#FF9A45]">
-                  {pillar.pillar ? "LEES DE GIDS" : "LEES MEER"}
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  {lead.pillar ? "LEES DE GIDS" : "LEES MEER"}
+                  <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
                 </span>
               </div>
             </div>

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { setFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 import { sectors } from "@/data/sectors";
@@ -68,7 +68,9 @@ export async function saveFotografieGalleries(galleries: FotoGallery[]): Promise
   // Locale prefixes (/be, ...) mean literal paths no longer match; revalidate
   // the dynamic route patterns, which cover every locale at once. Sector pages
   // surface admin-tagged galleries (sectors field).
+  revalidateTag("realisaties-hub");
   revalidatePath("/[locale]/realisaties/[category]", "page");
+  revalidatePath("/[locale]/diensten/[slug]/[sub]", "page");
   revalidatePath("/[locale]/sectoren/[slug]", "page");
   revalidatePath("/admin/settings/realisaties/fotografie");
   return { ok: true };

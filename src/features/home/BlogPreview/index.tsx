@@ -3,9 +3,16 @@ import { getAllPosts, isBlogLocale } from "@/lib/kennisbank/posts";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { BlogHeader, BlogGrid } from "./components";
 
+// Keep in sync with MAX_PREVIEW_POSTS in ./components/BlogGrid. We slice here,
+// on the server, so only these few posts (not all ~50) get serialized into the
+// RSC flight payload that ships inline in the HTML - a big page-weight win.
+const PREVIEW_COUNT = 3;
+
 export default async function BlogPreview() {
   const locale = await getLocale();
-  const blogPosts = isBlogLocale(locale) ? getAllPosts({ locale }) : [];
+  const blogPosts = isBlogLocale(locale)
+    ? getAllPosts({ locale }).slice(0, PREVIEW_COUNT)
+    : [];
 
   if (blogPosts.length === 0) {
     return null;

@@ -9,8 +9,10 @@ export const MAP_VIEWBOX = "0 0 120 100";
 export type MapCountry = "BE" | "NL";
 
 // Belgium: 11 province paths (index order is referenced by highlightIndices).
-// 0 Brussels, 1 Vlaams-Brabant, 2 Henegouwen, 3 Oost-Vlaanderen, 4 Luik-noord,
-// 5 Luxemburg, 6 Namen, 7 West-Vlaanderen, 8 Antwerpen, 9 Limburg, 10 Waals-Brabant.
+// 0 Brussels, 1 Vlaams-Brabant, 2 Henegouwen, 3 Oost-Vlaanderen, 4 Limburg,
+// 5 Luxemburg, 6 Namen, 7 West-Vlaanderen, 8 Antwerpen, 9 Luik (Liège), 10 Waals-Brabant.
+// (Indices 4 and 9 were previously swapped: index 4 is the north-east province
+// bordering NL = Limburg; index 9 sits below it = Luik/Liège.)
 const BE_PROVINCES: string[] = [
   "M58.7,33.5L59.1,34.2L59.1,34.7L58.7,35.1L59.8,35.7L60.2,37L59.7,37.1L59.5,37.4L60.3,38.1L58.3,39.2L57.1,39.3L56.4,38.8L55.7,37.4L55.2,37.6L54.2,37.1L54.5,36.4L55.2,36.3L55.3,35.6L55.1,35.2L55.6,34.2L56.5,33.7L57.6,33.9L58.3,33.2L58.7,33.5Z",
   "M50.5,41.9L49.8,41.7L49.5,42.4L49.3,42.1L48.6,42.4L48.2,42.3L47.7,42.7L46,42.7L45.5,42.5L45,41.6L45.2,40.9L45.8,41L46.6,40.9L46.1,39.9L46.5,39.1L46.7,38.9L47.4,39.5L47.9,38.9L48.2,39.2L49.5,38.4L49.8,37.2L49.6,36.6L48.9,36.5L50.1,34.7L50.1,34.2L49.7,34L50.4,33.4L50.1,32.6L51.4,33.1L51.9,32.7L51.9,32.2L51.6,31L51.9,30.2L52.8,30.5L53.4,30.2L53.9,28.2L54.8,27.9L55.4,28L56.8,28.6L56.8,29L57.5,28.4L57.3,29L57.8,29.2L57.9,29.8L59.5,29.4L60.1,29.9L60.5,29.3L61.4,29.9L61.9,29.4L62.7,29.9L63.1,29.9L63.5,29.1L65.3,28.5L66,28.8L65.7,29.5L66.7,28.4L67.3,28.5L68.1,27.8L68.6,28.8L68.9,29L70.3,28.4L70.5,28.6L71.2,27.9L72.2,27.5L72.7,27.4L73.1,27.9L73.7,27.6L74.2,28.4L74.7,28.2L75.2,28.6L75.7,28.3L75.7,27.2L76.4,27.1L76.9,27.3L77.7,28.2L77.1,28.5L76.7,28.3L76.8,29.3L75.8,29.8L75.8,30.6L74.8,31.6L75.1,32.5L75.7,32.4L76.2,32.9L77.2,32.4L77.2,32.7L78.2,32.7L78.6,33L78.3,34.2L77.8,34.2L77.4,35.4L77.2,36.8L77.8,37L76.6,38.2L76.9,39L76.5,39.8L77.1,40.1L76.6,41.2L76.6,41.2L76.6,41.2L75.9,41.3L75,40.6L75,39.9L74.4,39.5L73.4,38.8L72.2,39.8L71.4,39.6L71.5,38.9L69.5,39.1L69.6,38.7L69,38.7L68.4,37.7L67.3,37.4L65.9,38.1L64.5,37.8L64.4,38.9L64.9,39.5L64.4,40.1L63.6,40.2L63.4,39.3L62.8,40L61.7,40.3L61.6,40.7L60.8,40.3L60.7,39.6L59.8,39.8L58.9,40.5L57.6,40.7L57.5,41.4L57,41.3L56.5,40.7L56.6,41.3L56,41.3L56,42L55.4,42.3L54.7,42.1L54.2,42.5L53.3,41.8L52.6,41.8L52,41L51.5,41L51.4,41.5L50.7,41.5L50.5,41.9ZM58.7,33.5L58.3,33.2L57.6,33.9L56.5,33.7L55.6,34.2L55.1,35.2L55.3,35.6L55.2,36.3L54.5,36.4L54.2,37.1L55.2,37.6L55.7,37.4L56.4,38.8L57.1,39.3L58.3,39.2L60.3,38.1L59.5,37.4L59.7,37.1L60.2,37L59.8,35.7L58.7,35.1L59.1,34.7L59.1,34.2L58.7,33.5Z",
@@ -55,8 +57,8 @@ export interface RegionMapGeometry {
 }
 
 export const regionMaps: Record<string, RegionMapGeometry> = {
-  limburg: { country: "BE", highlightIndices: [9], marker: { x: 93.1, y: 48.5 } },
-  vlaanderen: { country: "BE", highlightIndices: [1, 3, 7, 8, 9], marker: { x: 58.4, y: 33.2 } },
+  limburg: { country: "BE", highlightIndices: [4], marker: { x: 84, y: 31.5 } },
+  vlaanderen: { country: "BE", highlightIndices: [1, 3, 7, 8, 4], marker: { x: 58.4, y: 33.2 } },
   antwerpen: { country: "BE", highlightIndices: [8], marker: { x: 66.1, y: 20.2 } },
   "nederlands-limburg": { country: "NL", highlightIndices: [11], marker: { x: 71.6, y: 77.6 } },
 };

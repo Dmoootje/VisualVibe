@@ -40,6 +40,9 @@
     letter-spacing: 0.03em; color: rgba(255, 255, 255, 0.5); margin-bottom: 20px; text-decoration: none;
 }
 .vvsh-crumb:hover { color: rgba(255, 255, 255, 0.8); }
+.vvsh-crumb:focus-visible, .vvsh-btn:focus-visible, .vvsh-pill:focus-visible {
+    outline: 2px solid #ff9a45; outline-offset: 4px;
+}
 .vvsh-tag {
     display: inline-flex; align-items: center; gap: 9px; padding: 8px 15px; border-radius: 9999px;
     white-space: nowrap; background: rgba(255, 122, 0, 0.1); border: 1px solid rgba(255, 122, 0, 0.25);
@@ -101,6 +104,7 @@
 .vvsh-mqL { animation: vvshMqL 40s linear infinite; }
 .vvsh-mqR { animation: vvshMqR 40s linear infinite; }
 .vvsh-mqMask:hover .vvsh-mqTrack { animation-play-state: paused; }
+.vvsh-mq:focus-within .vvsh-mqTrack { animation-play-state: paused; }
 .vvsh-pill {
     flex: none; display: inline-flex; align-items: center; gap: 13px; padding: 13px 24px 13px 15px;
     border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02);

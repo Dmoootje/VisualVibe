@@ -31,10 +31,12 @@ export function ProcessSteps({ steps }: { steps: ServiceProcessStep[] }) {
   }));
 
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((step, index) => (
-        <ProcessCard key={step.number} step={step} index={index} />
+        <li key={step.number}>
+          <ProcessCard step={step} index={index} />
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }

@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Invalidate the public Webdesign showcase after an admin image/text change so
 // the new screenshots and copy appear without waiting for the ISR timer. The
@@ -6,7 +6,9 @@ import { revalidatePath } from "next/cache";
 // means a literal "/diensten/webdesign" no longer matches, so we revalidate the
 // dynamic route pattern, which covers every locale and slug at once.
 export function revalidateWebdesign(): void {
+  revalidateTag("realisaties-hub");
   revalidatePath("/[locale]/diensten/[slug]", "page");
+  revalidatePath("/[locale]/diensten/[slug]/[sub]", "page");
   // Sector pages surface admin-tagged webdesign projects (sectors field).
   revalidatePath("/[locale]/sectoren/[slug]", "page");
   revalidatePath("/admin/settings/webdesign");

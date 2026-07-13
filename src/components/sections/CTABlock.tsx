@@ -40,7 +40,7 @@ function useBubbles(n = 16) {
       dur: r(4.5, 9) + "s",
       delay: r(0, 6) + "s",
     }));
-  }, []);
+  }, [n]);
 }
 
 /**
@@ -63,7 +63,7 @@ export function CTABlock({
 
   const content = (
     <div className="cta-content">
-      <h3 className="cta-h">{heading}</h3>
+      <h2 className="cta-h">{heading}</h2>
       {description && <p className="cta-sub">{description}</p>}
       {v === 0 && (
         <Link className="cta-btn grad pulseGlow" href={href}>

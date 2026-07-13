@@ -58,18 +58,47 @@ function PillIcon({ icon }: { icon: ResolvedIcon }) {
   return <Icon size={19} strokeWidth={1.7} />;
 }
 
-function Pills({ items, cls, pillarSlug }: { items: SubHeroItem[]; cls: string; pillarSlug: string }) {
+function Pills({
+  items,
+  cls,
+  pillarSlug,
+  interactive,
+  uniqueItemCount,
+}: {
+  items: SubHeroItem[];
+  cls: string;
+  pillarSlug: string;
+  interactive: boolean;
+  uniqueItemCount: number;
+}) {
   return (
     <div className="vvsh-mqMask">
       <div className={`vvsh-mqTrack ${cls}`}>
-        {items.map((s, j) => (
-          <Link href={`/diensten/${pillarSlug}/${s.slug}`} key={`${s.slug}-${j}`} className="vvsh-pill">
-            <span className="vvsh-pillIcon">
-              <PillIcon icon={iconForSubdienst(s.slug, s.category)} />
+        {items.map((s, j) => {
+          const isFocusable = interactive && j < uniqueItemCount;
+          const contents = (
+            <>
+              <span className="vvsh-pillIcon">
+                <PillIcon icon={iconForSubdienst(s.slug, s.category)} />
+              </span>
+              <span className="vvsh-pillName">{s.name}</span>
+            </>
+          );
+
+          return isFocusable ? (
+            <Link
+              href={`/diensten/${pillarSlug}/${s.slug}`}
+              key={`${s.slug}-${j}`}
+              className="vvsh-pill"
+            >
+              {contents}
+            </Link>
+          ) : (
+            <span key={`${s.slug}-${j}`} className="vvsh-pill" aria-hidden="true">
+              {contents}
             </span>
-            <span className="vvsh-pillName">{s.name}</span>
-          </Link>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -162,8 +191,20 @@ export function SubdienstHero({
       {siblings.length > 0 && (
         <div className="vvsh-mq">
           <p className="vvsh-mqLabel">Andere diensten binnen {pillar}</p>
-          <Pills items={top} cls="vvsh-mqL" pillarSlug={pillarSlug} />
-          <Pills items={bottom} cls="vvsh-mqR" pillarSlug={pillarSlug} />
+          <Pills
+            items={top}
+            cls="vvsh-mqL"
+            pillarSlug={pillarSlug}
+            interactive
+            uniqueItemCount={siblings.length}
+          />
+          <Pills
+            items={bottom}
+            cls="vvsh-mqR"
+            pillarSlug={pillarSlug}
+            interactive={false}
+            uniqueItemCount={siblings.length}
+          />
         </div>
       )}
     </section>

@@ -1,4 +1,19 @@
-export type { Service, ServiceCategory, ServiceFaq, ServiceProcessStep, ServiceSeo } from "./service";
+export type {
+  Service,
+  ServiceCategory,
+  ServiceFaq,
+  ServiceProcessStep,
+  ServiceSeo,
+  SubserviceCardSectionContent,
+  SubserviceContent,
+  SubserviceContentItem,
+  SubserviceCtaContent,
+  SubserviceEditorial,
+  SubserviceOverviewContent,
+  SubservicePricingContent,
+  SubserviceRegionalContent,
+  SubserviceSearchIntent,
+} from "./service";
 export type { Region } from "./region";
 export type { Sector, SectorHighlight } from "./sector";
 export type { CaseItem } from "./case";

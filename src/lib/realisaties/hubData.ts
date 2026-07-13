@@ -7,6 +7,7 @@
 // expliciete data (galerij-categorie/icoon en admin sector-tags).
 
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
+import { unstable_cache } from "next/cache";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getWebdesignImages, type WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
@@ -29,6 +30,8 @@ export type HubProject = {
   categorySlug: string;
   /** Context-categorie-slugs (bedrijven | projecten | events | sport | buitenland). */
   contexts: string[];
+  /** Subdiensten die expliciet uit de bronvelden van dit project blijken. */
+  serviceSlugs: string[];
 };
 
 export type HubStackImage = { src: string; alt: string };
@@ -73,6 +76,36 @@ const ICON_TO_CONTEXT: Record<string, string> = {
   biz: "bedrijven",
 };
 
+const ICON_TO_SUBSERVICE: Record<string, string> = {
+  biz: "bedrijfsfotografie",
+  user: "zakelijke-portretten",
+  box: "productfotografie",
+  party: "eventfotografie",
+  home: "vastgoedfotografie",
+  layers: "realisatiefotografie",
+  spark: "brandingfotografie",
+};
+
+const VIDEO_CATEGORY_TO_SUBSERVICE: Record<string, string> = {
+  Bedrijfsvideo: "bedrijfsvideo",
+  Promovideo: "promovideo",
+  "Social media video": "social-media-video",
+  "Event-aftermovie": "event-aftermovie",
+  Wervingsvideo: "wervingsvideo",
+  "Testimonial-video": "testimonial-video",
+  Podcastvideo: "podcast-video",
+  Nieuwsreportage: "nieuwsreportage",
+};
+
+const DRONE_CATEGORY_TO_SUBSERVICE: Record<string, string> = {
+  Dronefotografie: "dronefotografie",
+  Dronevideo: "dronevideo",
+  "FPV-video": "fpv-video",
+  "Vastgoed-dronebeelden": "vastgoed-dronebeelden",
+  "Realisatie-dronebeelden": "realisatie-dronebeelden",
+  "Event-dronebeelden": "event-dronebeelden",
+};
+
 function contextsFromSectors(sectors: string[] | undefined): string[] {
   return (sectors ?? []).map((s) => SECTOR_TO_CONTEXT[s]).filter(Boolean);
 }
@@ -82,6 +115,17 @@ function webdesignToHub(project: WebdesignProject, images: WebdesignImages): Hub
   // die moet ook doorvallen naar het hoofdscreenshot.
   const image = images[imageKey(project.id, "thumb")] || images[imageKey(project.id, "1")];
   if (!image) return null;
+  const evidence = [project.text, ...(project.tags ?? []), ...(project.features ?? [])]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const serviceSlugs = ["website-laten-maken"];
+  if (evidence.includes("seo")) serviceSlugs.push("seo-website-laten-maken");
+  if (evidence.includes("lokale seo")) serviceSlugs.push("lokale-seo");
+  if (/\bgeo\b/u.test(evidence) || evidence.includes("ai-zoek")) {
+    serviceSlugs.push("ai-seo-aeo-geo");
+  }
+
   return {
     id: `webdesign:${project.id}`,
     title: project.name,
@@ -91,6 +135,7 @@ function webdesignToHub(project: WebdesignProject, images: WebdesignImages): Hub
     discipline: "Webdesign",
     categorySlug: "webdesign",
     contexts: [...new Set(contextsFromSectors(project.sectors))],
+    serviceSlugs: [...new Set(serviceSlugs)],
   };
 }
 
@@ -108,10 +153,11 @@ function galleryToHub(gallery: FotoGallery): HubProject | null {
     discipline: iconLabel(gallery.icon),
     categorySlug: "fotografie",
     contexts: [...contexts],
+    serviceSlugs: ICON_TO_SUBSERVICE[gallery.icon] ? [ICON_TO_SUBSERVICE[gallery.icon]] : [],
   };
 }
 
-export async function getHubData(): Promise<HubData> {
+async function readHubData(): Promise<HubData> {
   const [projects, images, galleries, videoData] = await Promise.all([
     getWebdesignProjects(),
     getWebdesignImages(),
@@ -136,6 +182,9 @@ export async function getHubData(): Promise<HubData> {
     discipline: "Videografie",
     categorySlug: "videografie",
     contexts: [],
+    serviceSlugs: VIDEO_CATEGORY_TO_SUBSERVICE[video.category]
+      ? [VIDEO_CATEGORY_TO_SUBSERVICE[video.category]]
+      : [],
   }));
 
   const drone: HubProject[] = droneMedia
@@ -154,6 +203,9 @@ export async function getHubData(): Promise<HubData> {
         discipline: "Drone & FPV",
         categorySlug: "drone",
         contexts: [],
+        serviceSlugs: DRONE_CATEGORY_TO_SUBSERVICE[media.category]
+          ? [DRONE_CATEGORY_TO_SUBSERVICE[media.category]]
+          : [],
       };
     })
     .filter((p): p is HubProject => p !== null);
@@ -221,3 +273,12 @@ export async function getHubData(): Promise<HubData> {
 
   return { projects: all, featured, heroStack, countsByCategory, stacksByCategory, traject };
 }
+
+/**
+ * Shared cross-route cache. Sub-service pages reuse the same realisation data
+ * instead of repeating every Firestore and video read during static rendering.
+ */
+export const getHubData = unstable_cache(readHubData, ["realisaties-hub-v2"], {
+  revalidate: 3600,
+  tags: ["realisaties-hub"],
+});
