@@ -25,7 +25,7 @@ const SUBS: Record<string, string[]> = {
   drone: ["Dronefotografie", "Dronevideo", "FPV"],
   "3d-vr": ["3D-tour", "Virtuele rondleiding"],
   podcasting: ["Bedrijfspodcast", "Videopodcast"],
-  masterclasses: ["Video-opleiding", "Workshop"],
+  masterclasses: ["Online cursus", "Masterclass opnemen", "Workshop filmen"],
 };
 
 type CardModel = KbCategoryData & { num: string; wide: boolean; subs: string[] };

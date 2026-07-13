@@ -720,6 +720,7 @@ Linkt naar: `/diensten/drone-fpv/`, `/diensten/3d-vr-ar/`
 - masterclass-opnemen-voor-bedrijven/
 - workshop-professioneel-vastleggen/
 - opleiding-omzetten-naar-video-content/
+- online-cursus-vs-live-opleiding/
 
 Linkt naar: `/diensten/podcasting/`, `/diensten/masterclasses/`
 

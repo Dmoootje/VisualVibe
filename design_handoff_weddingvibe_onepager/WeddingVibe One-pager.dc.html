@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;background:#FFFFFF;}
+  *{box-sizing:border-box;}
+  a{color:#B08A3E;text-decoration:none;}
+  a:hover{color:#8F6E2D;}
+  input,textarea{outline:none;}
+  input::placeholder,textarea::placeholder{color:rgba(107,95,85,.45);font-family:'Lora',serif;}
+  image-slot{--is-bg:#F3EBDD;--is-border:rgba(194,154,75,.35);}
+  @keyframes wvFall{from{transform:translateY(-6vh) rotate(0deg);}to{transform:translateY(112vh) rotate(320deg);}}
+  @keyframes wvSway{from{transform:translateX(-16px) rotate(-28deg);}to{transform:translateX(16px) rotate(24deg);}}
+  @keyframes wvRise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  @keyframes wvPulse{0%{box-shadow:0 0 0 0 rgba(237,220,120,.55);}100%{box-shadow:0 0 0 30px rgba(237,220,120,0);}}
+  .wv-scroll::-webkit-scrollbar{display:none;}
+</style>
+</helmet>
+<x-import component-from-global-scope="image-slot" from="./image-slot.js" id="wv-loader" hint-size="1px,1px" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;"></x-import>
+
+<div ref="{{ rootRef }}" style="position:relative;width:100%;background:#FFFFFF;color:#2A2320;font-family:'Lora',serif;overflow:clip;">
+
+  <!-- ═══════════ NAV ═══════════ -->
+  <nav data-screen-label="Navigatie" style="position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(194,154,75,.22);">
+    <div style="max-width:1240px;margin:0 auto;padding:16px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <a href="#top" style="display:flex;align-items:center;"><img src="assets/weddingvibe-logo.svg" alt="WeddingVibe" style="height:26px;display:block;"></a>
+      <div style="display:flex;align-items:center;gap:clamp(16px,2.4vw,32px);flex-wrap:wrap;font-size:13px;letter-spacing:.12em;text-transform:uppercase;">
+        <a href="#werk" style="color:#2A2320;" style-hover="color:#B08A3E;">Ons werk</a>
+        <a href="#diensten" style="color:#2A2320;" style-hover="color:#B08A3E;">Foto &amp; film</a>
+        <a href="#jens" style="color:#2A2320;" style-hover="color:#B08A3E;">Over Jens</a>
+        <a href="#investering" style="color:#2A2320;" style-hover="color:#B08A3E;">Investering</a>
+        <a href="#faq" style="color:#2A2320;" style-hover="color:#B08A3E;">Vragen</a>
+        <a onClick="{{ openModal }}" style="display:inline-block;padding:12px 24px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-weight:600;font-size:12px;letter-spacing:.16em;transition:all .3s ease;cursor:pointer;" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px rgba(194,154,75,.4);color:#2A2320;">Controleer jullie datum</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════ 1. HERO ═══════════ -->
+  <header id="top" data-screen-label="Hero" style="position:relative;min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+    <div style="position:absolute;inset:0;"><image-slot id="wv-hero" shape="rect" fit="cover" placeholder="Fallback-foto achter de herovideo"></image-slot></div>
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+      <iframe src="https://www.youtube.com/embed/g6-6KvNlbtM?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=g6-6KvNlbtM&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;disablekb=1&amp;iv_load_policy=3" title="WeddingVibe herovideo" frameborder="0" allow="autoplay; encrypted-media" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max(100vw,178vh);height:max(100vh,56.25vw);border:none;pointer-events:none;"></iframe>
+    </div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,24,18,.42) 0%,rgba(30,24,18,.48) 55%,rgba(30,24,18,.7) 100%);pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:6;">
+      <sc-for list="{{ petals }}" as="p" hint-placeholder-count="0">
+        <div style="{{ p.outer }}"><div style="{{ p.inner }}"></div></div>
+      </sc-for>
+    </div>
+    <div style="position:relative;z-index:8;max-width:880px;padding:120px clamp(20px,5vw,48px) 90px;display:flex;flex-direction:column;align-items:center;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:26px;animation:wvRise .9s ease .1s both;">
+        <span style="width:44px;height:1px;background:linear-gradient(90deg,transparent,#EDDC78);"></span>
+        <span style="font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#EDDC78;">Trouwfotografie &amp; huwelijksvideo</span>
+        <span style="width:44px;height:1px;background:linear-gradient(90deg,#EDDC78,transparent);"></span>
+      </div>
+      <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(46px,7.4vw,86px);line-height:1.04;color:#FFFFFF;text-wrap:balance;animation:wvRise .9s ease .25s both;">Jullie dag.<br>Jullie verhaal.</h1>
+      <div style="font-family:'Great Vibes',cursive;font-size:clamp(40px,6vw,72px);line-height:1.15;margin-top:6px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);-webkit-background-clip:text;background-clip:text;color:transparent;animation:wvRise .9s ease .4s both;">Voor altijd voelbaar.</div>
+      <p style="margin:26px 0 0;max-width:600px;font-size:clamp(16px,1.4vw,18px);line-height:1.75;color:rgba(255,255,255,.88);animation:wvRise .9s ease .55s both;">Jullie trouwdag zit vol momenten die je nooit volledig kunt plannen. Een blik, een lach, een traan en alles wat tussendoor gebeurt. WeddingVibe legt jullie dag vast zoals hij echt is: spontaan, stijlvol en vol gevoel.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:38px;animation:wvRise .9s ease .7s both;">
+        <a href="#werk" style="display:inline-block;padding:18px 36px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-weight:600;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,154,75,.45);color:#2A2320;">Bekijk onze huwelijken</a>
+        <a onClick="{{ openModal }}" style="display:inline-block;padding:17px 36px;border:1px solid rgba(255,255,255,.65);color:#FFFFFF;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;cursor:pointer;" style-hover="border-color:#EDDC78;color:#EDDC78;">Controleer jullie datum</a>
+      </div>
+      <div style="margin-top:34px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.72);line-height:2;animation:wvRise .9s ease .85s both;">Fotografie · Film · Dronebeelden · Bruiloftwebsites<br><span style="color:rgba(255,255,255,.55);">Beschikbaar in heel België en voor destination weddings</span></div>
+    </div>
+  </header>
+
+  <!-- ═══════════ 2. INTRODUCTIE ═══════════ -->
+  <section data-screen-label="Introductie" style="background:#FFFFFF;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,90px);">
+      <div data-reveal style="position:relative;flex:1 1 380px;max-width:520px;">
+        <div style="aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-intro-groot" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fweddingvibe%2Ftrouwfotografie%20Limburg.webp?alt=media&amp;token=579ee564-66f9-4b7f-946b-5d5bd605e786" placeholder="Groot verticaal trouwbeeld"></image-slot></div>
+        <div style="position:absolute;right:-28px;bottom:-42px;width:42%;aspect-ratio:4/5;background:#FFFFFF;padding:10px;box-shadow:0 22px 50px rgba(42,35,32,.18);"><div style="width:100%;height:100%;overflow:hidden;"><image-slot id="wv-intro-detail" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fweddingvibe%2Ftrouwfotograaf%20limburg%20-%20detailfoto%20trouwringen.webp?alt=media&amp;token=b77a3bf8-4212-4646-a7a4-cf5c5446a66c" placeholder="Detailbeeld"></image-slot></div></div>
+      </div>
+      <div data-reveal style="flex:1 1 420px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">Echte momenten, echt vastgelegd</span>
+          <span style="flex:0 1 60px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+        <h2 style="margin:0 0 24px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,3.6vw,48px);line-height:1.14;text-wrap:balance;">Geen stijve reportage, maar jullie huwelijk <em style="font-style:italic;color:#B08A3E;">zoals het werkelijk voelde</em></h2>
+        <p style="margin:0 0 18px;font-size:17px;line-height:1.8;color:#6B5F55;">De mooiste beelden ontstaan meestal wanneer jullie even vergeten dat er een camera aanwezig is.</p>
+        <p style="margin:0 0 18px;font-size:17px;line-height:1.8;color:#6B5F55;">Daarom draait onze aanpak niet om voortdurend poseren. We zoeken naar de kleine momenten die jullie dag bijzonder maken: de zenuwen voor de ceremonie, de reactie van familie, die ene blik tijdens de geloften en het feest waarop niemand nog aan de camera denkt.</p>
+        <p style="margin:0 0 30px;font-size:17px;line-height:1.8;color:#6B5F55;">Het resultaat is geen verzameling losse foto’s of videobeelden, maar het volledige verhaal van jullie huwelijk.</p>
+        <a href="#werk" style="display:inline-flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;border-bottom:1px solid rgba(194,154,75,.5);padding-bottom:6px;" style-hover="color:#8F6E2D;">Ontdek onze stijl <span style="font-size:16px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. PORTFOLIO ═══════════ -->
+  <section id="werk" data-screen-label="Portfolio" style="background:#FAF6EE;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal style="text-align:center;max-width:680px;margin:0 auto clamp(48px,6vw,72px);">
+        <svg width="120" height="14" viewBox="0 0 120 14" fill="none" style="display:block;margin:0 auto 20px;"><path d="M2 7 C 20 7, 32 1.5, 46 7" stroke="#C29A4B" stroke-width="1"></path><path d="M118 7 C 100 7, 88 12.5, 74 7" stroke="#C29A4B" stroke-width="1"></path><path d="M60 1.5 L 65.5 7 L 60 12.5 L 54.5 7 Z" fill="#C29A4B"></path></svg>
+        <h2 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4.4vw,54px);line-height:1.1;text-wrap:balance;">Verhalen die we mochten <em style="font-style:italic;color:#B08A3E;">bewaren</em></h2>
+        <p style="margin:0;font-size:17px;line-height:1.8;color:#6B5F55;">Elke trouwdag heeft een eigen sfeer. Intiem en klein, uitbundig en groots of ergens ver weg. Bekijk enkele huwelijken die we al mochten vastleggen.</p>
+      </div>
+      <div data-reveal style="columns:3 260px;column-gap:18px;">
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-g1" shape="rect" fit="cover" src="https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fweddingvibe%2Ftrouwfotos%20voorbereiding.webp?alt=media&amp;token=9ab2ca8b-7c66-4678-8abf-c13b5bb8c54c" placeholder="Voorbereiding"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Voorbereiding</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:1/1;overflow:hidden;"><image-slot id="wv-g2" shape="rect" fit="cover" placeholder="First look"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">First look</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:4/5;overflow:hidden;"><image-slot id="wv-g3" shape="rect" fit="cover" placeholder="Ceremonie"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Ceremonie</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-g4" shape="rect" fit="cover" placeholder="Portret"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Portret</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:4/3;overflow:hidden;"><image-slot id="wv-g5" shape="rect" fit="cover" placeholder="Familie"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Familie</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-g6" shape="rect" fit="cover" placeholder="Openingsdans"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Openingsdans</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:1/1;overflow:hidden;"><image-slot id="wv-g7" shape="rect" fit="cover" placeholder="Avondfeest"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Avondfeest</div></div>
+        <div style="break-inside:avoid;margin-bottom:18px;"><div style="aspect-ratio:4/5;overflow:hidden;"><image-slot id="wv-g8" shape="rect" fit="cover" placeholder="Detailbeeld"></image-slot></div><div style="padding:10px 2px 4px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#A08B6E;">Details</div></div>
+      </div>
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,36px);margin-top:clamp(48px,6vw,72px);">
+        <div style="flex:1 1 280px;background:#FFFFFF;padding:14px 14px 26px;box-shadow:0 16px 44px rgba(42,35,32,.09);transition:transform .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-6px);box-shadow:0 26px 56px rgba(42,35,32,.14);">
+          <div style="aspect-ratio:4/5;overflow:hidden;margin-bottom:20px;"><image-slot id="wv-feat1" shape="rect" fit="cover" placeholder="Sophie &amp; Duco"></image-slot></div>
+          <div style="text-align:center;">
+            <h3 style="margin:0 0 8px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:29px;">Sophie <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:26px;">&amp;</span> Duco</h3>
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#6B5F55;">Een warme trouwdag vol spontane momenten.</p>
+            <a href="#contact" style="font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;">Bekijk hun verhaal →</a>
+          </div>
+        </div>
+        <div style="flex:1 1 280px;background:#FFFFFF;padding:14px 14px 26px;box-shadow:0 16px 44px rgba(42,35,32,.09);transition:transform .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-6px);box-shadow:0 26px 56px rgba(42,35,32,.14);">
+          <div style="aspect-ratio:4/5;overflow:hidden;margin-bottom:20px;"><image-slot id="wv-feat2" shape="rect" fit="cover" placeholder="Tess &amp; Pierre"></image-slot></div>
+          <div style="text-align:center;">
+            <h3 style="margin:0 0 8px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:29px;">Tess <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:26px;">&amp;</span> Pierre</h3>
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#6B5F55;">Romantiek, familie en een onvergetelijk avondfeest.</p>
+            <a href="#contact" style="font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;">Bekijk hun verhaal →</a>
+          </div>
+        </div>
+        <div style="flex:1 1 280px;background:#FFFFFF;padding:14px 14px 26px;box-shadow:0 16px 44px rgba(42,35,32,.09);transition:transform .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-6px);box-shadow:0 26px 56px rgba(42,35,32,.14);">
+          <div style="aspect-ratio:4/5;overflow:hidden;margin-bottom:20px;"><image-slot id="wv-feat3" shape="rect" fit="cover" placeholder="Jolien &amp; Jef"></image-slot></div>
+          <div style="text-align:center;">
+            <h3 style="margin:0 0 8px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:29px;">Jolien <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:26px;">&amp;</span> Jef</h3>
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#6B5F55;">Een dag waarop alles even vanzelf leek te gaan.</p>
+            <a href="#contact" style="font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;">Bekijk hun verhaal →</a>
+          </div>
+        </div>
+      </div>
+      <div data-reveal style="text-align:center;margin-top:clamp(40px,5vw,56px);">
+        <a href="#contact" style="display:inline-block;padding:17px 36px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Bekijk meer huwelijken</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 4. HUWELIJKSVIDEO ═══════════ -->
+  <section id="video" data-screen-label="Huwelijksvideo" style="background:#FFFFFF;padding:clamp(80px,10vw,140px) 0 0;">
+    <div data-reveal style="text-align:center;max-width:720px;margin:0 auto clamp(44px,5vw,64px);padding:0 clamp(20px,5vw,48px);">
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;">
+        <span style="width:44px;height:1px;background:linear-gradient(90deg,transparent,#C29A4B);"></span>
+        <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">Beleef het opnieuw</span>
+        <span style="width:44px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+      </div>
+      <h2 style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.2vw,52px);line-height:1.12;text-wrap:balance;">Sommige momenten wil je niet alleen bekijken.</h2>
+      <div style="font-family:'Great Vibes',cursive;font-size:clamp(30px,3.6vw,46px);color:#B08A3E;margin-bottom:22px;">Je wilt ze opnieuw voelen.</div>
+      <p style="margin:0;font-size:17px;line-height:1.8;color:#6B5F55;">Een huwelijksfilm brengt beweging, stemmen en emoties opnieuw tot leven. Van de geloften en speeches tot de muziek van jullie openingsdans. Druk op play en ontdek hoe een trouwfilm van WeddingVibe aanvoelt.</p>
+    </div>
+    <div data-reveal style="position:relative;max-width:1440px;margin:0 auto;aspect-ratio:21/10;min-height:380px;overflow:hidden;">
+      <div style="position:absolute;inset:0;"><image-slot id="wv-video-poster" shape="rect" fit="cover" placeholder="Posterbeeld uit jullie mooiste trouwfilm"></image-slot></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(30,24,18,.08),rgba(30,24,18,.42));pointer-events:none;"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;">
+        <div style="width:94px;height:94px;border-radius:9999px;border:1px solid rgba(237,220,120,.9);background:rgba(30,24,18,.35);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;cursor:pointer;animation:wvPulse 2.6s ease-out infinite;transition:transform .3s ease;" style-hover="transform:scale(1.08);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#EDDC78"><path d="M8 5.5 L 19 12 L 8 18.5 Z"></path></svg>
+        </div>
+        <a href="#contact" style="font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:5px;" style-hover="color:#EDDC78;">Bekijk een huwelijksfilm</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. DIENSTEN ═══════════ -->
+  <section id="diensten" data-screen-label="Diensten" style="background:#FFFFFF;padding:clamp(80px,10vw,150px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(70px,9vw,120px);">
+
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(36px,5vw,80px);">
+        <div style="flex:1 1 420px;aspect-ratio:4/3;overflow:hidden;"><image-slot id="wv-d-foto" shape="rect" fit="cover" placeholder="Sterke reportagefoto"></image-slot></div>
+        <div style="flex:1 1 400px;">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;margin-bottom:12px;">Trouwfotografie</div>
+          <h3 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1.12;">Momenten die <em style="font-style:italic;color:#B08A3E;">blijven</em></h3>
+          <p style="margin:0 0 14px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Een volledige fotografische reportage van jullie huwelijk, van de eerste voorbereidingen tot het feest.</p>
+          <p style="margin:0 0 22px;font-size:16.5px;line-height:1.75;color:#6B5F55;">We combineren spontane beelden met stijlvolle portretten, details, groepsfoto’s en dronebeelden waar dat mogelijk is.</p>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;margin-bottom:12px;">Inbegrepen afhankelijk van het gekozen pakket</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px 24px;margin-bottom:28px;font-size:15px;color:#4A4038;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eén of twee fotografen</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Volledige dagreportage</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Sneak peek kort na het huwelijk</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Online fotogalerij</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Beelden in kleur en zwart-wit</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Mogelijkheid tot fotoalbum</div>
+          </div>
+          <a href="#investering" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;border-bottom:1px solid rgba(194,154,75,.5);padding-bottom:6px;">Bekijk trouwfotografie →</a>
+        </div>
+      </div>
+
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(36px,5vw,80px);flex-direction:row-reverse;">
+        <div style="flex:1 1 420px;aspect-ratio:4/3;overflow:hidden;"><image-slot id="wv-d-film" shape="rect" fit="cover" placeholder="Filmisch videostill"></image-slot></div>
+        <div style="flex:1 1 400px;">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;margin-bottom:12px;">Huwelijksfilm</div>
+          <h3 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1.12;">Jullie dag <em style="font-style:italic;color:#B08A3E;">in beweging</em></h3>
+          <p style="margin:0 0 14px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Herbeleef de stemmen, reacties, speeches en kleine gebeurtenissen die je op de dag zelf misschien niet eens hebt gezien.</p>
+          <p style="margin:0 0 22px;font-size:16.5px;line-height:1.75;color:#6B5F55;">We maken een filmische teaser en kunnen daarnaast ook een langere huwelijksfilm voorzien met de belangrijkste onderdelen van jullie dag.</p>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;margin-bottom:12px;">Mogelijkheden</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px 24px;margin-bottom:28px;font-size:15px;color:#4A4038;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eén of twee videografen</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Filmische huwelijksteaser</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Uitgebreide huwelijksfilm</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dronebeelden</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Meerdere camerastandpunten</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Levering via persoonlijke online omgeving</div>
+          </div>
+          <a href="#investering" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;border-bottom:1px solid rgba(194,154,75,.5);padding-bottom:6px;">Bekijk huwelijksvideo →</a>
+        </div>
+      </div>
+
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(36px,5vw,80px);">
+        <div style="flex:1 1 420px;aspect-ratio:4/3;overflow:hidden;"><image-slot id="wv-d-combo" shape="rect" fit="cover" placeholder="Foto en film samen aan het werk"></image-slot></div>
+        <div style="flex:1 1 400px;">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;margin-bottom:12px;">Foto &amp; video</div>
+          <h3 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1.12;">Eén verhaal, <em style="font-style:italic;color:#B08A3E;">volledig verteld</em></h3>
+          <p style="margin:0 0 14px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Willen jullie zowel foto’s als een huwelijksfilm? Dan werken fotograaf en videograaf als één team.</p>
+          <p style="margin:0 0 22px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Zo worden de belangrijkste momenten vanuit verschillende invalshoeken vastgelegd, zonder dat jullie dag aanvoelt als een filmproductie.</p>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;margin-bottom:12px;">De complete ervaring</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px 24px;margin-bottom:28px;font-size:15px;color:#4A4038;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Fotograaf en videograaf</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Volledige dag aanwezig</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Foto’s, teaser en uitgebreide film</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dronebeelden</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eén gezamenlijke voorbereiding</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Een consistente visuele stijl</div>
+          </div>
+          <a href="#investering" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;border-bottom:1px solid rgba(194,154,75,.5);padding-bottom:6px;">Bekijk het combopakket →</a>
+        </div>
+      </div>
+
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(36px,5vw,80px);flex-direction:row-reverse;">
+        <div style="flex:1 1 420px;aspect-ratio:4/3;overflow:hidden;"><image-slot id="wv-d-site" shape="rect" fit="cover" placeholder="Bruiloftwebsite op laptop of telefoon"></image-slot></div>
+        <div style="flex:1 1 400px;">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;margin-bottom:12px;">Persoonlijke bruiloftwebsite</div>
+          <h3 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.4vw,42px);line-height:1.12;">Alle informatie voor jullie gasten <em style="font-style:italic;color:#B08A3E;">op één plaats</em></h3>
+          <p style="margin:0 0 14px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Met een persoonlijke trouwwebsite delen jullie de dagindeling, praktische informatie, dresscode, cadeautips en contactgegevens.</p>
+          <p style="margin:0 0 22px;font-size:16.5px;line-height:1.75;color:#6B5F55;">Gasten kunnen bovendien rechtstreeks via de website laten weten of ze aanwezig zijn.</p>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;margin-bottom:12px;">Mogelijke onderdelen</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px 24px;margin-bottom:28px;font-size:15px;color:#4A4038;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eigen domeinnaam</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>RSVP-formulier</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Countdown naar jullie trouwdag</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dagindeling</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dresscode en praktische informatie</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Meerdere talen</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Ontwerp passend bij jullie uitnodiging</div>
+          </div>
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B08A3E;border-bottom:1px solid rgba(194,154,75,.5);padding-bottom:6px;">Ontdek de bruiloftwebsite →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ 6. WAAROM ═══════════ -->
+  <section id="waarom" data-screen-label="Waarom WeddingVibe" style="background:#26201A;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,90px);">
+      <div data-reveal style="flex:1 1 380px;max-width:520px;aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-waarom" shape="rect" fit="cover" placeholder="Genietend bruidspaar of familie"></image-slot></div>
+      <div data-reveal style="flex:1 1 460px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#EDDC78;">Meer dan mooie beelden</span>
+          <span style="flex:0 1 60px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+        <h2 style="margin:0 0 20px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,3.8vw,48px);line-height:1.14;color:#F6EFE3;text-wrap:balance;">Op jullie trouwdag moeten jullie maar één ding doen: <em style="font-style:italic;color:#EDDC78;">genieten</em></h2>
+        <p style="margin:0 0 42px;font-size:17px;line-height:1.8;color:rgba(246,239,227,.72);">Wij zorgen ervoor dat de belangrijke momenten worden vastgelegd zonder voortdurend in de weg te lopen of jullie dag te onderbreken.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:34px 40px;">
+          <div>
+            <div style="width:34px;height:1px;background:#C29A4B;margin-bottom:14px;"></div>
+            <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:#F6EFE3;">Een persoonlijke aanpak</h4>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(246,239,227,.62);">Vooraf bespreken we jullie planning, verwachtingen en de mensen en momenten die belangrijk voor jullie zijn.</p>
+          </div>
+          <div>
+            <div style="width:34px;height:1px;background:#C29A4B;margin-bottom:14px;"></div>
+            <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:#F6EFE3;">Spontaan en ongedwongen</h4>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(246,239,227,.62);">We sturen bij wanneer dat nodig is, maar laten de dag vooral natuurlijk verlopen.</p>
+          </div>
+          <div>
+            <div style="width:34px;height:1px;background:#C29A4B;margin-bottom:14px;"></div>
+            <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:#F6EFE3;">Alles op elkaar afgestemd</h4>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(246,239,227,.62);">Foto, film, dronebeelden en jullie bruiloftwebsite kunnen binnen één stijl en één traject worden verzorgd.</p>
+          </div>
+          <div>
+            <div style="width:34px;height:1px;background:#C29A4B;margin-bottom:14px;"></div>
+            <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:#F6EFE3;">Ervaring van begin tot einde</h4>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(246,239,227,.62);">Van de eerste kennismaking tot de uiteindelijke levering weten jullie duidelijk wat de volgende stap is.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 7. WERKWIJZE ═══════════ -->
+  <section id="werkwijze" data-screen-label="Werkwijze" style="background:#FFFFFF;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal style="text-align:center;max-width:640px;margin:0 auto clamp(52px,6vw,80px);">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;">
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,transparent,#C29A4B);"></span>
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">Van eerste bericht tot blijvende herinnering</span>
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+        <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4.4vw,54px);line-height:1.1;">Zo verloopt <em style="font-style:italic;color:#B08A3E;">jullie traject</em></h2>
+      </div>
+      <div data-reveal style="position:relative;">
+      <div class="wv-scroll" ref="{{ werkRef }}" style="display:flex;gap:clamp(22px,3vw,36px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 2px 12px;">
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">01</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">Kennismaken</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Tijdens een vrijblijvend gesprek luisteren we naar jullie plannen, locatie, timing en verwachtingen.</p>
+        </div>
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">02</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">Jullie datum vastleggen</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Past onze stijl bij jullie en is de datum nog beschikbaar? Dan leggen we alles duidelijk vast.</p>
+        </div>
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">03</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">De voorbereiding</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Voor het huwelijk overlopen we samen de dagplanning, belangrijke personen, locaties en speciale wensen.</p>
+        </div>
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">04</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">Jullie trouwdag</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Wij volgen de dag op een rustige manier en zorgen ervoor dat geen enkel belangrijk moment verloren gaat.</p>
+        </div>
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">05</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">Selectie en montage</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Na het huwelijk worden alle beelden zorgvuldig geselecteerd, bewerkt en gemonteerd.</p>
+        </div>
+        <div style="position:relative;border-top:1px solid rgba(194,154,75,.35);padding-top:30px;flex:0 0 min(290px,76vw);scroll-snap-align:start;">
+          <span style="position:absolute;top:-5px;left:0;width:9px;height:9px;background:#C29A4B;transform:rotate(45deg);"></span>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:40px;color:rgba(194,154,75,.75);line-height:1;margin-bottom:12px;">06</div>
+          <h4 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;">Opnieuw beleven</h4>
+          <p style="margin:0;font-size:14.5px;line-height:1.7;color:#6B5F55;">Jullie ontvangen de foto’s en films digitaal, zodat jullie ze gemakkelijk kunnen bekijken, bewaren en delen.</p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:14px;margin-top:26px;">
+        <div onClick="{{ werkPrev }}" style="width:46px;height:46px;border-radius:9999px;border:1px solid rgba(194,154,75,.55);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B08A3E;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78);color:#2A2320;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L 4 8 L 10 14"></path></svg></div>
+        <div onClick="{{ werkNext }}" style="width:46px;height:46px;border-radius:9999px;border:1px solid rgba(194,154,75,.55);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B08A3E;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78);color:#2A2320;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 L 12 8 L 6 14"></path></svg></div>
+      </div>
+      </div>
+      <div data-reveal style="text-align:center;margin-top:clamp(32px,4vw,44px);">
+        <a href="#contact" style="display:inline-block;padding:18px 36px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-weight:600;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,154,75,.45);color:#2A2320;">Plan een vrijblijvende kennismaking</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 8. OVER JENS ═══════════ -->
+  <section id="jens" data-screen-label="Over Jens" style="background:#FAF6EE;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,90px);">
+      <div data-reveal style="flex:1 1 380px;max-width:500px;">
+        <div style="background:#FFFFFF;padding:16px;box-shadow:0 24px 60px rgba(42,35,32,.15);transform:rotate(-1.6deg);">
+          <div style="aspect-ratio:3/4;overflow:hidden;"><image-slot id="wv-jens" shape="rect" fit="cover" placeholder="Jens aan het werk tijdens een huwelijk"></image-slot></div>
+        </div>
+      </div>
+      <div data-reveal style="flex:1 1 440px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">De persoon achter de camera</span>
+          <span style="flex:0 1 60px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+        <h2 style="margin:0 0 24px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4vw,50px);line-height:1.1;">Hey, ik ben <em style="font-style:italic;color:#B08A3E;">Jens</em></h2>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.8;color:#6B5F55;">Mijn eerste huwelijk fotografeerde ik in 2019. Het was de trouwdag van mijn buurman Cédric, een dag die me tot vandaag is bijgebleven.</p>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.8;color:#6B5F55;">Niet alleen door de mooie beelden, maar vooral door alles wat er rondom gebeurde: de spanning vooraf, de reacties van familie en de momenten die niemand had kunnen plannen. Daar is WeddingVibe uit ontstaan.</p>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.8;color:#6B5F55;">Mijn doel is niet alleen om technisch mooie foto’s en films te maken. Ik wil beelden afleveren die jullie jaren later opnieuw naar die dag terugbrengen.</p>
+        <p style="margin:0 0 26px;font-size:16.5px;line-height:1.8;color:#6B5F55;">Tijdens jullie huwelijk ben ik aanwezig wanneer het moet, maar geef ik jullie vooral de ruimte om de dag echt te beleven.</p>
+        <p style="margin:0 0 6px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:#4A4038;">Hopelijk mag ik binnenkort ook jullie verhaal leren kennen.</p>
+        <div style="font-family:'Great Vibes',cursive;font-size:46px;color:#B08A3E;margin-bottom:28px;">— Jens</div>
+        <a href="#contact" style="display:inline-block;padding:17px 36px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Maak kennis met Jens</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 9. INVESTERING ═══════════ -->
+  <section id="investering" data-screen-label="Investering" style="background:#FFFFFF;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal style="text-align:center;margin-bottom:clamp(52px,6vw,76px);">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,transparent,#C29A4B);"></span>
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">Investering</span>
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+      </div>
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;gap:clamp(20px,3vw,32px);">
+        <div style="flex:1 1 300px;max-width:380px;border:1px solid rgba(194,154,75,.35);padding:clamp(32px,4vw,46px) clamp(26px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#A08B6E;margin-bottom:10px;">Fotografie</div>
+          <h3 style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;line-height:1.15;">Jullie verhaal in beelden</h3>
+          <p style="margin:0 0 22px;font-size:15px;line-height:1.65;color:#6B5F55;">Volledige fotografische reportage van jullie trouwdag.</p>
+          <sc-if value="{{ toonPrijzen }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;">
+              <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#A08B6E;">Vanaf</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:44px;line-height:1;">€2.150</span>
+              <span style="font-size:12px;color:#A08B6E;">excl. btw</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ verbergPrijzen }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;">Prijs op aanvraag</div>
+          </sc-if>
+          <div style="width:100%;height:1px;background:rgba(194,154,75,.3);margin:24px 0;"></div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:15px;color:#4A4038;margin-bottom:32px;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eén fotograaf</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Tot veertien uur aanwezigheid</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Sneak peek</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Online galerij</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dronebeelden indien mogelijk</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Digitale aflevering</div>
+          </div>
+          <a href="#contact" style="margin-top:auto;display:block;text-align:center;padding:15px 20px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Bekijk fotografie →</a>
+        </div>
+
+        <div style="flex:1 1 300px;max-width:380px;border:1px solid rgba(194,154,75,.35);padding:clamp(32px,4vw,46px) clamp(26px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#A08B6E;margin-bottom:10px;">Film</div>
+          <h3 style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;line-height:1.15;">Jullie dag opnieuw beleven</h3>
+          <p style="margin:0 0 22px;font-size:15px;line-height:1.65;color:#6B5F55;">Een filmische registratie van alle belangrijke momenten.</p>
+          <sc-if value="{{ toonPrijzen }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;">
+              <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#A08B6E;">Vanaf</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:44px;line-height:1;">€2.500</span>
+              <span style="font-size:12px;color:#A08B6E;">excl. btw</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ verbergPrijzen }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;">Prijs op aanvraag</div>
+          </sc-if>
+          <div style="width:100%;height:1px;background:rgba(194,154,75,.3);margin:24px 0;"></div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:15px;color:#4A4038;margin-bottom:32px;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Eén videograaf</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Tot veertien uur aanwezigheid</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Huwelijksteaser</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Uitgebreide huwelijksfilm</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dronebeelden indien mogelijk</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Digitale aflevering</div>
+          </div>
+          <a href="#contact" style="margin-top:auto;display:block;text-align:center;padding:15px 20px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Bekijk video →</a>
+        </div>
+
+        <div style="flex:1 1 300px;max-width:380px;position:relative;border:1px solid #C29A4B;background:#FAF6EE;padding:clamp(32px,4vw,46px) clamp(26px,3vw,38px);display:flex;flex-direction:column;box-shadow:0 24px 56px rgba(194,154,75,.18);">
+          <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:7px 18px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#2A2320;white-space:nowrap;">Meest gekozen</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#A08B6E;margin-bottom:10px;">Foto &amp; video</div>
+          <h3 style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;line-height:1.15;">Het volledige verhaal</h3>
+          <p style="margin:0 0 22px;font-size:15px;line-height:1.65;color:#6B5F55;">Fotografie en video gecombineerd in één traject.</p>
+          <sc-if value="{{ toonPrijzen }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;">
+              <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#A08B6E;">Vanaf</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:44px;line-height:1;">€3.800</span>
+              <span style="font-size:12px;color:#A08B6E;">excl. btw</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ verbergPrijzen }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;">Prijs op aanvraag</div>
+          </sc-if>
+          <div style="width:100%;height:1px;background:rgba(194,154,75,.3);margin:24px 0;"></div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:15px;color:#4A4038;margin-bottom:32px;">
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Fotograaf en videograaf</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Volledige dagreportage</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Online fotogalerij</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Huwelijksteaser</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Uitgebreide huwelijksfilm</div>
+            <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:#C29A4B;font-size:11px;">◆</span>Dronebeelden indien mogelijk</div>
+          </div>
+          <a href="#contact" style="margin-top:auto;display:block;text-align:center;padding:16px 20px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="transform:translateY(-2px);box-shadow:0 12px 26px rgba(194,154,75,.45);color:#2A2320;">Bekijk het combopakket →</a>
+        </div>
+      </div>
+      <div data-reveal style="text-align:center;max-width:720px;margin:clamp(44px,5vw,60px) auto 0;">
+        <p style="margin:0 0 12px;font-size:16px;line-height:1.8;color:#6B5F55;">Ieder huwelijk is anders. Tijdens een vrijblijvend gesprek bekijken we welke formule het beste aansluit bij jullie dag en verwachtingen.</p>
+        <p style="margin:0 0 30px;font-size:15px;line-height:1.8;color:#8A7A62;">Mogelijke uitbreidingen zijn onder andere een extra fotograaf of videograaf, extra uren, een fotoalbum, USB-aflevering en een huwelijksvideoboek.</p>
+        <a href="#contact" style="display:inline-block;padding:17px 36px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Vraag de volledige prijsbrochure aan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 10. VIDEOBOEK / FOTOALBUM ═══════════ -->
+  <section data-screen-label="Videoboek en fotoalbum" style="background:#FAF6EE;padding:clamp(80px,10vw,130px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,90px);">
+      <div data-reveal style="flex:1 1 400px;">
+        <h2 style="margin:0 0 22px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,3.8vw,46px);line-height:1.14;text-wrap:balance;">Een herinnering die je ook kunt <em style="font-style:italic;color:#B08A3E;">vasthouden</em></h2>
+        <p style="margin:0 0 16px;font-size:17px;line-height:1.8;color:#6B5F55;">Niet iedere herinnering hoort alleen op een scherm thuis.</p>
+        <p style="margin:0 0 30px;font-size:17px;line-height:1.8;color:#6B5F55;">Laat jullie favoriete beelden bundelen in een stijlvol fotoalbum of kies voor een huwelijksvideoboek met ingebouwd scherm. Zodra jullie het boek openen, begint de trouwfilm automatisch te spelen.</p>
+        <a href="#contact" style="display:inline-block;padding:17px 36px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Ontdek de mogelijkheden</a>
+      </div>
+      <div data-reveal style="flex:1 1 420px;position:relative;min-height:420px;">
+        <div style="position:absolute;top:0;left:0;width:72%;aspect-ratio:4/3;overflow:hidden;box-shadow:0 22px 54px rgba(42,35,32,.16);"><image-slot id="wv-album1" shape="rect" fit="cover" placeholder="Productfoto huwelijksvideoboek"></image-slot></div>
+        <div style="position:absolute;bottom:0;right:0;width:46%;aspect-ratio:3/4;background:#FFFFFF;padding:10px;box-shadow:0 22px 54px rgba(42,35,32,.2);"><div style="width:100%;height:100%;overflow:hidden;"><image-slot id="wv-album2" shape="rect" fit="cover" placeholder="Productfoto fotoalbum"></image-slot></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 11. ERVARINGEN ═══════════ -->
+  <section id="reviews" data-screen-label="Ervaringen" style="background:#FFFFFF;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal style="text-align:center;max-width:640px;margin:0 auto clamp(48px,6vw,68px);">
+        <svg width="120" height="14" viewBox="0 0 120 14" fill="none" style="display:block;margin:0 auto 20px;"><path d="M2 7 C 20 7, 32 1.5, 46 7" stroke="#C29A4B" stroke-width="1"></path><path d="M118 7 C 100 7, 88 12.5, 74 7" stroke="#C29A4B" stroke-width="1"></path><path d="M60 1.5 L 65.5 7 L 60 12.5 L 54.5 7 Z" fill="#C29A4B"></path></svg>
+        <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.2vw,50px);line-height:1.12;text-wrap:balance;">Zij beleefden hun dag met <em style="font-style:italic;color:#B08A3E;">WeddingVibe</em></h2>
+      </div>
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);">
+        <div style="flex:1 1 300px;border:1px solid rgba(194,154,75,.28);padding:38px 34px;display:flex;flex-direction:column;gap:18px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:64px;line-height:.5;color:rgba(194,154,75,.55);">“</div>
+          <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#8A7A62;">Hier komt straks een echte review van dit koppel — geen verzonnen marketingtekst.</p>
+          <div style="margin-top:auto;display:flex;align-items:center;gap:14px;">
+            <div style="width:56px;height:56px;flex:none;"><image-slot id="wv-r1" shape="circle" fit="cover" placeholder="Foto"></image-slot></div>
+            <div><div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;">Voornaam <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:17px;">&amp;</span> Voornaam</div><div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#A08B6E;margin-top:3px;">Trouwdatum · locatie</div></div>
+          </div>
+        </div>
+        <div style="flex:1 1 300px;border:1px solid rgba(194,154,75,.28);padding:38px 34px;display:flex;flex-direction:column;gap:18px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:64px;line-height:.5;color:rgba(194,154,75,.55);">“</div>
+          <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#8A7A62;">Hier komt straks een echte review van dit koppel — geen verzonnen marketingtekst.</p>
+          <div style="margin-top:auto;display:flex;align-items:center;gap:14px;">
+            <div style="width:56px;height:56px;flex:none;"><image-slot id="wv-r2" shape="circle" fit="cover" placeholder="Foto"></image-slot></div>
+            <div><div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;">Voornaam <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:17px;">&amp;</span> Voornaam</div><div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#A08B6E;margin-top:3px;">Trouwdatum · locatie</div></div>
+          </div>
+        </div>
+        <div style="flex:1 1 300px;border:1px solid rgba(194,154,75,.28);padding:38px 34px;display:flex;flex-direction:column;gap:18px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:64px;line-height:.5;color:rgba(194,154,75,.55);">“</div>
+          <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#8A7A62;">Hier komt straks een echte review van dit koppel — geen verzonnen marketingtekst.</p>
+          <div style="margin-top:auto;display:flex;align-items:center;gap:14px;">
+            <div style="width:56px;height:56px;flex:none;"><image-slot id="wv-r3" shape="circle" fit="cover" placeholder="Foto"></image-slot></div>
+            <div><div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;">Voornaam <span style="font-family:'Great Vibes',cursive;color:#B08A3E;font-size:17px;">&amp;</span> Voornaam</div><div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#A08B6E;margin-top:3px;">Trouwdatum · locatie</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 12. FAQ ═══════════ -->
+  <section id="faq" data-screen-label="Veelgestelde vragen" style="background:#FAF6EE;padding:clamp(80px,10vw,140px) clamp(20px,5vw,64px);">
+    <div style="max-width:800px;margin:0 auto;">
+      <div data-reveal style="text-align:center;margin-bottom:clamp(40px,5vw,56px);">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;">
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,transparent,#C29A4B);"></span>
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#B08A3E;">Veelgestelde vragen</span>
+          <span style="width:44px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+        </div>
+        <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.2vw,48px);line-height:1.12;text-wrap:balance;">Misschien vragen jullie je <em style="font-style:italic;color:#B08A3E;">dit nog af</em></h2>
+      </div>
+      <div data-reveal>
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="8">
+          <div style="border-bottom:1px solid rgba(194,154,75,.28);">
+            <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:24px 4px;cursor:pointer;min-height:44px;">
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;line-height:1.3;">{{ f.q }}</div>
+              <div style="{{ f.iconStyle }}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1 V 13"></path><path d="M1 7 H 13"></path></svg></div>
+            </div>
+            <div style="{{ f.wrapStyle }}"><div style="padding:0 4px 28px;max-width:660px;font-size:16px;line-height:1.75;color:#6B5F55;">{{ f.a }}</div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 13. CONTACT ═══════════ -->
+  <section id="contact" data-screen-label="Contact" style="position:relative;padding:clamp(80px,10vw,130px) clamp(20px,5vw,64px);overflow:hidden;">
+    <div style="position:absolute;inset:0;"><image-slot id="wv-contact-bg" shape="rect" fit="cover" placeholder="Emotionele achtergrondfoto"></image-slot></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(38,32,26,.72) 0%,rgba(38,32,26,.42) 60%,rgba(38,32,26,.3) 100%);pointer-events:none;"></div>
+    <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,80px);">
+      <div data-reveal style="flex:1 1 380px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+          <span style="font-size:11.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#EDDC78;">Zullen we jullie verhaal vastleggen?</span>
+        </div>
+        <h2 style="margin:0 0 22px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4.4vw,54px);line-height:1.1;color:#FFFFFF;text-wrap:balance;">Vertel ons over <em style="font-style:italic;color:#EDDC78;">jullie trouwdag</em></h2>
+        <p style="margin:0 0 34px;font-size:17px;line-height:1.8;color:rgba(255,255,255,.85);max-width:480px;">Hebben jullie al een datum, locatie of eerste planning? Laat hieronder enkele gegevens achter. Jens neemt persoonlijk contact met jullie op om kennis te maken en de mogelijkheden te bespreken.</p>
+        <div style="font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75);line-height:2.1;">
+          Liever rechtstreeks contact?<br>
+          <a href="https://wa.me/32472964599" style="color:#EDDC78;">WhatsApp Jens</a><br>
+          <a href="tel:+32472964599" style="color:#FFFFFF;">+32 472 96 45 99</a><br>
+          <a href="mailto:jens@weddingvibe.be" style="color:#FFFFFF;">jens@weddingvibe.be</a>
+        </div>
+      </div>
+      <form data-reveal onSubmit="{{ verzenden }}" style="flex:1 1 460px;max-width:620px;background:#FFFFFF;padding:clamp(30px,4vw,48px);box-shadow:0 34px 80px rgba(20,15,10,.4);display:flex;flex-direction:column;gap:24px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:22px;">
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Jullie namen<input type="text" placeholder="bv. Sophie &amp; Duco" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">E-mailadres<input type="email" placeholder="naam@voorbeeld.be" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Telefoonnummer<input type="tel" placeholder="+32 ..." style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Trouwdatum<input type="text" placeholder="bv. 12 september 2026" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Trouwlocatie<input type="text" placeholder="bv. Kasteel van Hoen, Borgloon" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;margin-bottom:12px;">Waarin hebben jullie interesse?</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <sc-for list="{{ pills }}" as="pil" hint-placeholder-count="5">
+              <div onClick="{{ pil.toggle }}" style="{{ pil.style }}">{{ pil.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Vertel iets over jullie plannen<textarea rows="4" placeholder="Jullie dag, locatie, sfeer, aantal gasten..." style="border:1px solid rgba(194,154,75,.4);padding:14px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;resize:vertical;" style-focus="border:1px solid #C29A4B;"></textarea></label>
+        <button type="submit" style="border:none;cursor:pointer;padding:18px 24px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-family:'Lora',serif;font-weight:600;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,154,75,.45);">{{ verzendLabel }}</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════ 14. FOOTER ═══════════ -->
+  <footer data-screen-label="Footer" style="background:#221C16;padding:clamp(60px,8vw,90px) clamp(20px,5vw,64px) 36px;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:44px clamp(28px,4vw,56px);padding-bottom:clamp(44px,5vw,60px);border-bottom:1px solid rgba(246,239,227,.14);">
+        <div>
+          <img src="assets/weddingvibe-logo-licht.svg" alt="WeddingVibe" style="height:26px;display:block;margin-bottom:20px;">
+          <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(246,239,227,.6);">Spontane trouwfotografie en filmische huwelijksvideo’s voor koppels in België en daarbuiten.</p>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#C29A4B;margin-bottom:18px;">Navigatie</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;">
+            <a href="#werk" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Ons werk</a>
+            <a href="#diensten" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Foto &amp; film</a>
+            <a href="#jens" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Over Jens</a>
+            <a href="#investering" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Investering</a>
+            <a href="#faq" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Veelgestelde vragen</a>
+            <a href="#contact" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#C29A4B;margin-bottom:18px;">Diensten</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;">
+            <a href="#diensten" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Trouwfotografie</a>
+            <a href="#diensten" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Huwelijksvideo</a>
+            <a href="#diensten" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Foto &amp; video</a>
+            <a href="#diensten" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Bruiloftwebsite</a>
+            <a href="#investering" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Fotoalbum</a>
+            <a href="#investering" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">Videoboek</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#C29A4B;margin-bottom:18px;">Contact</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:rgba(246,239,227,.75);">
+            <span>Bilzen – Hoeselt</span>
+            <span>Tongeren – Borgloon</span>
+            <a href="tel:+32472964599" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">+32 472 96 45 99</a>
+            <a href="mailto:jens@weddingvibe.be" style="color:rgba(246,239,227,.75);" style-hover="color:#EDDC78;">jens@weddingvibe.be</a>
+            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C29A4B;">Wereldwijd beschikbaar</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-top:26px;font-size:12.5px;color:rgba(246,239,227,.45);">
+        <span>© 2026 WeddingVibe — een zusje van VisualVibe</span>
+        <div style="display:flex;gap:20px;">
+          <a href="#top" style="color:rgba(246,239,227,.45);" style-hover="color:#EDDC78;">Algemene voorwaarden</a>
+          <a href="#top" style="color:rgba(246,239,227,.45);" style-hover="color:#EDDC78;">Privacybeleid</a>
+          <a href="#top" style="color:rgba(246,239,227,.45);" style-hover="color:#EDDC78;">Cookiebeleid</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════ DATUM-POPUP ═══════════ -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Datum-popup" onClick="{{ modalDicht }}" style="position:fixed;inset:0;z-index:100;background:rgba(24,19,14,.62);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:20px;">
+      <div onClick="{{ stopKlik }}" style="position:relative;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;background:#FFFFFF;padding:clamp(30px,5vw,50px);box-shadow:0 44px 110px rgba(20,15,10,.5);">
+        <div onClick="{{ modalDicht }}" style="position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:9999px;border:1px solid rgba(194,154,75,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B08A3E;transition:all .3s ease;" style-hover="background:rgba(194,154,75,.14);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1 L 13 13"></path><path d="M13 1 L 1 13"></path></svg></div>
+
+        <sc-if value="{{ modalFormZichtbaar }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#B08A3E;">Controleer jullie datum</span>
+            <span style="flex:0 1 50px;height:1px;background:linear-gradient(90deg,#C29A4B,transparent);"></span>
+          </div>
+          <h3 style="margin:0 0 10px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,36px);line-height:1.12;">Is jullie datum <em style="font-style:italic;color:#B08A3E;">nog vrij?</em></h3>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#6B5F55;">Laat jullie gegevens achter en Jens laat zo snel mogelijk weten of jullie trouwdatum nog beschikbaar is.</p>
+          <form onSubmit="{{ verstuurModal }}" style="display:flex;flex-direction:column;gap:22px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;">
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Naam bruid<input type="text" required="required" value="{{ mBruid }}" onChange="{{ zetBruid }}" placeholder="bv. Sophie" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Naam bruidegom<input type="text" required="required" value="{{ mBruidegom }}" onChange="{{ zetBruidegom }}" placeholder="bv. Duco" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">E-mailadres<input type="email" required="required" value="{{ mEmail }}" onChange="{{ zetEmail }}" placeholder="naam@voorbeeld.be" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:10px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Trouwdatum<input type="date" required="required" value="{{ mDatum }}" onChange="{{ zetDatum }}" style="border:none;border-bottom:1px solid rgba(194,154,75,.4);padding:9px 2px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;" style-focus="border-bottom:1px solid #C29A4B;"></label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#A08B6E;">Jullie vragen <span style="letter-spacing:.08em;color:#C4B49B;text-transform:none;font-weight:400;">(optioneel)</span><textarea rows="3" value="{{ mVragen }}" onChange="{{ zetVragen }}" placeholder="Waar trouwen jullie? Waar dromen jullie van?" style="border:1px solid rgba(194,154,75,.4);padding:13px;font-family:'Lora',serif;font-size:15px;color:#2A2320;background:transparent;resize:vertical;" style-focus="border:1px solid #C29A4B;"></textarea></label>
+            <button type="submit" style="border:none;cursor:pointer;padding:17px 24px;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;font-family:'Lora',serif;font-weight:600;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s ease;" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,154,75,.45);">Controleer jullie datum</button>
+            <div style="text-align:center;font-size:12px;color:#A08B6E;">Jullie aanvraag wordt verstuurd naar {{ contactEmail }}</div>
+          </form>
+        </sc-if>
+
+        <sc-if value="{{ modalBedankt }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:18px 0 8px;">
+            <svg width="120" height="14" viewBox="0 0 120 14" fill="none" style="display:block;margin:0 auto 18px;"><path d="M2 7 C 20 7, 32 1.5, 46 7" stroke="#C29A4B" stroke-width="1"></path><path d="M118 7 C 100 7, 88 12.5, 74 7" stroke="#C29A4B" stroke-width="1"></path><path d="M60 1.5 L 65.5 7 L 60 12.5 L 54.5 7 Z" fill="#C29A4B"></path></svg>
+            <div style="font-family:'Great Vibes',cursive;font-size:52px;line-height:1.1;background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;">Proficiat!</div>
+            <p style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.45;color:#2A2320;">{{ felicitatie }}</p>
+            <p style="margin:0 0 30px;font-size:14.5px;line-height:1.7;color:#6B5F55;">Jens neemt zo snel mogelijk persoonlijk contact met jullie op om te laten weten of jullie datum nog beschikbaar is.</p>
+            <a onClick="{{ modalDicht }}" style="display:inline-block;padding:15px 34px;border:1px solid #C29A4B;color:#2A2320;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s ease;" style-hover="background:linear-gradient(100deg,#D2AC47,#EDDC78 55%,#D2AC47);color:#2A2320;">Sluiten</a>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;bloemblaadjes&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sfeer&quot;, &quot;description&quot;: &quot;Dwarrelende bloemblaadjes in de hero&quot; },
+  &quot;scrollAnimaties&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sfeer&quot;, &quot;description&quot;: &quot;Secties zachtjes laten verschijnen bij scrollen&quot; },
+  &quot;prijzenTonen&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Inhoud&quot;, &quot;description&quot;: &quot;Vanaf-prijzen tonen of 'op aanvraag'&quot; },
+  &quot;contactEmail&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;jens@weddingvibe.be&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Inhoud&quot;, &quot;description&quot;: &quot;E-mailadres waar datum-aanvragen naartoe gaan&quot; }
+}">
+class Component extends DCLogic {
+  state = { openFaq: 0, interesses: {}, verzonden: false, modalOpen: false, modalVerzonden: false, mBruid: '', mBruidegom: '', mEmail: '', mDatum: '', mVragen: '' };
+
+  _rootRef = React.createRef();
+  _werkRef = React.createRef();
+
+  _petals = (() => {
+    const kleuren = ['#EDDC78', '#D2AC47', '#F2D8D2', '#E8D5BC', '#FBF3E4', '#DFBE6F'];
+    const arr = [];
+    for (let i = 0; i < 32; i++) {
+      const w = 9 + Math.random() * 10;
+      const dur = 9 + Math.random() * 9;
+      const del = -Math.random() * 18;
+      const sway = 2.2 + Math.random() * 2.4;
+      arr.push({
+        outer: 'position:absolute;top:-40px;left:' + (Math.random() * 100).toFixed(1) + '%;animation:wvFall ' + dur.toFixed(1) + 's linear ' + del.toFixed(1) + 's infinite;',
+        inner: 'width:' + w.toFixed(0) + 'px;height:' + (w * 0.82).toFixed(0) + 'px;background:' + kleuren[i % kleuren.length] + ';border-radius:62% 38% 58% 42%;opacity:.8;animation:wvSway ' + sway.toFixed(1) + 's ease-in-out ' + (-Math.random() * 3).toFixed(1) + 's infinite alternate;'
+      });
+    }
+    return arr;
+  })();
+
+  _faqData = [
+    { q: 'Hoeveel foto\u2019s ontvangen we?', a: 'Het exacte aantal verschilt per huwelijk. Bij een volledige dagreportage kunnen jullie rekenen op een uitgebreide selectie van zorgvuldig bewerkte beelden.' },
+    { q: 'Wanneer ontvangen we onze foto\u2019s en film?', a: 'De huidige maximale aflevertermijn bedraagt twee maanden na de trouwdatum.' },
+    { q: 'Kunnen we een extra fotograaf of videograaf boeken?', a: 'Ja. Voor grotere huwelijken of een uitgebreidere registratie kunnen we met meerdere fotografen of videografen werken.' },
+    { q: 'Maken jullie ook dronebeelden?', a: 'Waar de locatie, weersomstandigheden en geldende regels het toelaten, kunnen dronebeelden deel uitmaken van de reportage.' },
+    { q: 'Zijn jullie ook beschikbaar buiten Limburg?', a: 'Ja. WeddingVibe werkt in heel Belgi\u00eb en is ook beschikbaar voor huwelijken in het buitenland.' },
+    { q: 'Kunnen we een album of videoboek bestellen?', a: 'Ja. Zowel een fotoalbum als een huwelijksvideoboek behoort tot de mogelijkheden.' },
+    { q: 'Hoe leggen we onze trouwdatum vast?', a: 'Na een vrijblijvende kennismaking ontvangen jullie een duidelijk voorstel. Zodra de afspraken zijn bevestigd, wordt jullie datum gereserveerd.' },
+    { q: 'Kunnen we eerst kennismaken?', a: 'Natuurlijk. Een eerste gesprek is volledig vrijblijvend en kan gebruikt worden om jullie plannen en verwachtingen te bespreken.' }
+  ];
+
+  componentDidMount() { this._initReveal(); }
+  componentWillUnmount() { if (this._io) this._io.disconnect(); }
+
+  _initReveal() {
+    if (this._revealInit) return;
+    this._revealInit = true;
+    if ((this.props.scrollAnimaties ?? true) === false) return;
+    const root = this._rootRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') return;
+    const els = root.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    els.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(28px)';
+      el.style.transition = 'opacity .9s ease, transform .9s cubic-bezier(.22,.61,.36,1)';
+      io.observe(el);
+    });
+    this._io = io;
+  }
+
+  _werkEl() {
+    return this._werkRef.current || (this._rootRef.current || document).querySelector('.wv-scroll') || document.querySelector('.wv-scroll');
+  }
+
+  _werkScroll(richting) {
+    // Synchroon: smooth scrollBy en rAF-animaties draaien niet in elke omgeving.
+    // Directe toewijzing werkt overal; scroll-snap zet hem netjes op een kaart.
+    const el = this._werkEl();
+    if (!el) return;
+    el.style.scrollSnapType = 'x mandatory';
+    el.scrollLeft += Math.max(el.clientWidth * 0.7, 300) * richting;
+  }
+
+  _felicitatie() {
+    const paar = [this.state.mBruid, this.state.mBruidegom].filter(Boolean).join(' & ');
+    return 'Van harte gefeliciteerd met jullie aankomende huwelijk' + (paar ? ', ' + paar : '') + '!';
+  }
+
+  _verstuurModal(e) {
+    e.preventDefault();
+    const s = this.state;
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.mEmail.trim());
+    if (!s.mBruid.trim() || !s.mBruidegom.trim() || !emailOk || !s.mDatum) {
+      try { if (e.target && e.target.reportValidity) e.target.reportValidity(); } catch (err) {}
+      return;
+    }
+    const naar = this.props.contactEmail ?? 'jens@weddingvibe.be';
+    const onderwerp = 'Datum-aanvraag: ' + s.mBruid + ' & ' + s.mBruidegom + (s.mDatum ? ' \u2014 ' + s.mDatum : '');
+    const body = 'Bruid: ' + s.mBruid + '\nBruidegom: ' + s.mBruidegom + '\nE-mail: ' + s.mEmail + '\nTrouwdatum: ' + s.mDatum + (s.mVragen ? '\n\nVragen:\n' + s.mVragen : '');
+    try {
+      const a = document.createElement('a');
+      a.href = 'mailto:' + naar + '?subject=' + encodeURIComponent(onderwerp) + '&body=' + encodeURIComponent(body);
+      a.click();
+    } catch (err) { /* mailto geblokkeerd in preview */ }
+    this.setState({ modalVerzonden: true });
+  }
+
+  renderVals() {
+    const open = this.state.openFaq;
+    const faqs = this._faqData.map((f, i) => ({
+      q: f.q,
+      a: f.a,
+      toggle: () => this.setState((s) => ({ openFaq: s.openFaq === i ? -1 : i })),
+      wrapStyle: 'overflow:hidden;transition:max-height .55s ease,opacity .45s ease;max-height:' + (open === i ? '280px' : '0px') + ';opacity:' + (open === i ? '1' : '0') + ';',
+      iconStyle: 'flex:none;width:36px;height:36px;border-radius:9999px;border:1px solid rgba(194,154,75,.5);display:flex;align-items:center;justify-content:center;color:#B08A3E;transition:transform .45s ease,background .3s ease;transform:rotate(' + (open === i ? '45deg' : '0deg') + ');background:' + (open === i ? 'rgba(194,154,75,.14)' : 'transparent') + ';'
+    }));
+    const opties = ['Fotografie', 'Huwelijksfilm', 'Foto & video', 'Bruiloftwebsite', 'Nog niet zeker'];
+    const pills = opties.map((label) => {
+      const aan = !!this.state.interesses[label];
+      return {
+        label: label,
+        toggle: () => this.setState((s) => ({ interesses: { ...s.interesses, [label]: !s.interesses[label] } })),
+        style: 'padding:11px 19px;border-radius:9999px;cursor:pointer;font-size:13.5px;letter-spacing:.03em;user-select:none;transition:all .25s ease;border:1px solid ' + (aan ? '#C29A4B' : 'rgba(42,35,32,.25)') + ';background:' + (aan ? 'linear-gradient(100deg,#D2AC47,#EDDC78)' : 'transparent') + ';color:#2A2320;'
+      };
+    });
+    const toon = this.props.prijzenTonen ?? true;
+    return {
+      rootRef: this._rootRef,
+      petals: (this.props.bloemblaadjes ?? true) ? this._petals : [],
+      faqs: faqs,
+      pills: pills,
+      toonPrijzen: toon,
+      verbergPrijzen: !toon,
+      verzendLabel: this.state.verzonden ? 'Bedankt! Jens neemt snel contact op' : 'Controleer onze beschikbaarheid',
+      verzenden: (e) => { e.preventDefault(); this.setState({ verzonden: true }); },
+      werkRef: this._werkRef,
+      werkPrev: () => this._werkScroll(-1),
+      werkNext: () => this._werkScroll(1),
+      modalOpen: this.state.modalOpen,
+      modalFormZichtbaar: !this.state.modalVerzonden,
+      modalBedankt: this.state.modalVerzonden,
+      openModal: () => this.setState({ modalOpen: true }),
+      modalDicht: () => this.setState({ modalOpen: false, modalVerzonden: false }),
+      stopKlik: (e) => e.stopPropagation(),
+      mBruid: this.state.mBruid,
+      mBruidegom: this.state.mBruidegom,
+      mEmail: this.state.mEmail,
+      mDatum: this.state.mDatum,
+      mVragen: this.state.mVragen,
+      zetBruid: (e) => this.setState({ mBruid: e.target.value }),
+      zetBruidegom: (e) => this.setState({ mBruidegom: e.target.value }),
+      zetEmail: (e) => this.setState({ mEmail: e.target.value }),
+      zetDatum: (e) => this.setState({ mDatum: e.target.value }),
+      zetVragen: (e) => this.setState({ mVragen: e.target.value }),
+      contactEmail: this.props.contactEmail ?? 'jens@weddingvibe.be',
+      felicitatie: this._felicitatie(),
+      verstuurModal: (e) => this._verstuurModal(e)
+    };
+  }
+}
+</script>
+</body>
+</html>

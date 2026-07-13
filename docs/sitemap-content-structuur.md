@@ -320,6 +320,7 @@ URL-vorm: `/be/kennisbank/[categorie]/[slug]/`. Slugs hieronder zijn de voorstel
 - `/be/kennisbank/masterclasses/masterclass-opnemen-voor-bedrijven/`
 - `/be/kennisbank/masterclasses/workshop-professioneel-vastleggen/`
 - `/be/kennisbank/masterclasses/opleiding-omzetten-naar-video-content/`
+- `/be/kennisbank/masterclasses/online-cursus-vs-live-opleiding/`
 
 ---
 

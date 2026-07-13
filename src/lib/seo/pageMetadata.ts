@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { businessConfig } from "@/config/business.config";
 import { localizedPath } from "@/lib/kennisbank/posts";
+import { ogImageForPath } from "@/data/ogImages";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
@@ -8,6 +9,9 @@ import { localizedPath } from "@/lib/kennisbank/posts";
 // same object shape in each generateMetadata.
 
 const DEFAULT_OG_IMAGE = "/image.jpg";
+// Afmetingen voor een expliciet meegegeven `ogImage` of de site-fallback; de
+// per-pagina OG-afbeeldingen uit ogImageForPath dragen hun echte afmetingen.
+const DEFAULT_OG_DIMENSIONS = { width: 1200, height: 630 };
 
 export type PageMetadataInput = {
   /** Absolute title (rendered as-is, not run through the "%s | VisualVibe" template). */
@@ -35,7 +39,15 @@ export function pageMetadata({
   // canonical (and OG url) always points at the real published nl URL under
   // /be, for every locale.
   const url = `${businessConfig.url}${localizedPath("nl", path)}`;
-  const image = ogImage ?? DEFAULT_OG_IMAGE;
+
+  // Voorrang: de per-pagina OG-afbeelding op canonieke path (bron van waarheid
+  // voor diensten/sectoren/regio/realisaties/statische pagina's) > een expliciet
+  // meegegeven ogImage (bv. een kennisbank-artikelbeeld, want die paths staan
+  // niet in de map) > de site-fallback. Zo krijgt elke pagina zijn eigen social
+  // preview zonder per pagina iets door te geven, en houdt kennisbank zijn beeld.
+  const mapped = ogImageForPath(path);
+  const image = mapped?.url ?? ogImage ?? DEFAULT_OG_IMAGE;
+  const { width, height } = mapped ?? DEFAULT_OG_DIMENSIONS;
 
   return {
     title: { absolute: title },
@@ -49,7 +61,7 @@ export function pageMetadata({
       locale: "nl_BE",
       title,
       description,
-      images: [{ url: image, width: 1200, height: 630, alt: title }],
+      images: [{ url: image, width, height, alt: title }],
     },
     twitter: {
       card: "summary_large_image",

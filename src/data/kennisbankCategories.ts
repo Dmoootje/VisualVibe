@@ -80,10 +80,10 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "masterclasses",
     name: "Masterclasses",
     description:
-      "Opleidingen, cursussen en workshops professioneel op video zetten en hergebruiken.",
-    seoTitle: "Masterclasses & opleiding filmen | Kennisbank VisualVibe",
+      "Praktische gidsen over online cursussen, masterclasses en workshops: van leerontwerp en opname tot publicatie, hergebruik en onderhoud.",
+    seoTitle: "Masterclasses en online cursussen filmen | VisualVibe",
     seoDescription:
-      "Opleidingen, online cursussen en workshops professioneel laten filmen en omzetten naar video-content voor bedrijven.",
+      "Leer hoe je een online cursus, opleiding, masterclass of workshop doelgericht ontwerpt, professioneel filmt, toegankelijk publiceert en slim hergebruikt.",
   },
 ];
 
