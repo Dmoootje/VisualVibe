@@ -188,14 +188,21 @@ export function ExportTab({ project, photos, album, setAlbum, openTab }: Project
       const mod = await import("@/features/trouwstudio/pdf/AlbumPdfDocument");
       const template = resolveAlbumTemplate(album.templateId, album.accentColor);
 
-      // Bij de hoge kwaliteit onder 100%: server-side gereduceerde beelden.
-      let photoUrlOverride: Record<string, string> | undefined;
-      if (quality === "hoog" && reduction < 100) {
-        photoUrlOverride = {};
-        for (const id of usedPhotoIds) {
-          photoUrlOverride[id] =
-            `/api/admin/trouwstudio/reduce?projectId=${encodeURIComponent(project.id)}` +
-            `&photoId=${encodeURIComponent(id)}&scale=${scale.toFixed(3)}&q=${REDUCE_JPEG_QUALITY}`;
+      // Alle beelden via het same-origin reduce-endpoint, dat altijd JPEG
+      // teruggeeft: @react-pdf/renderer kan geen webp embedden (preview- en
+      // thumb-URL's zijn webp), en zo hoeft de renderer ook niet cross-origin
+      // naar Storage te fetchen. Preview vraagt een lichte 1600px-JPEG; de hoge
+      // kwaliteit gebruikt het volledige (of via de schuif gereduceerde) beeld.
+      const base = (id: string) =>
+        `/api/admin/trouwstudio/reduce?projectId=${encodeURIComponent(project.id)}&photoId=${encodeURIComponent(id)}`;
+      const photoUrlOverride: Record<string, string> = {};
+      for (const id of usedPhotoIds) {
+        if (quality === "preview") {
+          photoUrlOverride[id] = `${base(id)}&w=1600&q=72`;
+        } else if (reduction < 100) {
+          photoUrlOverride[id] = `${base(id)}&scale=${scale.toFixed(3)}&q=${REDUCE_JPEG_QUALITY}`;
+        } else {
+          photoUrlOverride[id] = `${base(id)}&scale=1&q=92`;
         }
       }
 

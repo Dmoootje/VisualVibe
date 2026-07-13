@@ -29,7 +29,7 @@ import {
   resolveAlbumTemplate,
 } from "@/features/trouwstudio/templates/ivoryEditorial";
 import { DEFAULT_CHAPTERS } from "@/features/trouwstudio/lib/autoLayout";
-import { generateAlbumAction, saveAlbumAction } from "@/lib/admin/trouwstudioActions";
+import { generateAlbumAction, generateAlbumTextsAction, saveAlbumAction } from "@/lib/admin/trouwstudioActions";
 import {
   ALBUM_ACCENT_SWATCHES,
   coupleName,
@@ -228,10 +228,12 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [title, setTitle] = useState(() => coupleName(project));
-  const [subtitle, setSubtitle] = useState("");
-  const [quote, setQuote] = useState("");
-  const [personalMessage, setPersonalMessage] = useState("");
-  const [foreword, setForeword] = useState("");
+  const [subtitle, setSubtitle] = useState(() => project.albumTexts?.subtitle ?? "");
+  const [quote, setQuote] = useState(() => project.albumTexts?.quote ?? "");
+  const [personalMessage, setPersonalMessage] = useState(() => project.albumTexts?.personalMessage ?? "");
+  const [foreword, setForeword] = useState(() => project.albumTexts?.foreword ?? "");
+  const [textBusy, setTextBusy] = useState(false);
+  const [textError, setTextError] = useState<string | null>(null);
   const [presetKey, setPresetKey] = useState(() => DEFAULT_ALBUM_TEMPLATE_ID.split("-")[0]);
   const [orientation, setOrientation] = useState<"landscape" | "portret">("portret");
   const [accentColor, setAccentColor] = useState<string>("");
@@ -279,6 +281,21 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
       [next[index], next[target]] = [next[target], next[index]];
       return next;
     });
+  };
+
+  const regenerateTexts = async () => {
+    setTextBusy(true);
+    setTextError(null);
+    const result = await generateAlbumTextsAction(project.id);
+    setTextBusy(false);
+    if (result.ok && result.data) {
+      setSubtitle(result.data.subtitle);
+      setQuote(result.data.quote);
+      setPersonalMessage(result.data.personalMessage);
+      setForeword(result.data.foreword);
+    } else {
+      setTextError(result.error ?? "Teksten genereren mislukt.");
+    }
   };
 
   const generate = async () => {
@@ -380,6 +397,25 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
       {/* Stap 1: Gegevens */}
       {step === 1 && (
         <div className="grid gap-4 lg:grid-cols-2">
+          <div className="flex flex-col gap-3 rounded-md border border-amber-500/20 bg-amber-500/[0.06] p-3 sm:flex-row sm:items-center sm:justify-between lg:col-span-2">
+            <p className="text-xs leading-relaxed text-white/60">
+              <Sparkles className="mr-1 inline h-3.5 w-3.5 text-amber-300" />
+              Deze teksten schreef de AI automatisch bij het aanmaken van het project. Pas ze vrij aan, of
+              laat een nieuwe set genereren.
+            </p>
+            <div className="flex shrink-0 items-center gap-3">
+              {textError && <span className="text-xs text-red-300">{textError}</span>}
+              <button
+                type="button"
+                onClick={regenerateTexts}
+                disabled={textBusy}
+                className="inline-flex shrink-0 items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {textBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                {textBusy ? "Bezig..." : "Maak andere inhoud"}
+              </button>
+            </div>
+          </div>
           <label className="flex flex-col gap-1.5 text-sm text-white/70">
             Albumtitel *
             <input

@@ -50,6 +50,18 @@ export const EDITING_STYLE_LABELS: Record<WeddingEditingStyle, string> = {
   "eigen-stijl": "Eigen stijl",
 };
 
+/**
+ * AI-gegenereerde starttekst voor het trouwboek. Wordt bij het aanmaken van
+ * het project ingevuld en is in de Trouwboek-wizard vrij bewerkbaar. De
+ * fotograaf kan met een knop een nieuwe set laten genereren.
+ */
+export type WeddingAlbumTexts = {
+  subtitle: string;
+  quote: string;
+  personalMessage: string;
+  foreword: string;
+};
+
 export type WeddingProject = {
   id: string;
   partnerOneName: string;
@@ -64,6 +76,8 @@ export type WeddingProject = {
   editingStyle: WeddingEditingStyle;
   status: WeddingProjectStatus;
   notes?: string;
+  /** AI-starttekst voor het trouwboek (bewerkbaar in de wizard). */
+  albumTexts?: WeddingAlbumTexts;
   coverPhotoUrl?: string;
   photoCount: number;
   optimizedPhotoCount: number;

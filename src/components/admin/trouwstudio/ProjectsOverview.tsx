@@ -514,13 +514,13 @@ export function ProjectsOverview({ initialProjects }: { initialProjects: Wedding
             return (
               <div
                 key={project.id}
-                className={`relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] ${
+                className={`relative flex flex-col rounded-lg border border-white/10 bg-white/[0.03] ${
                   project.archived ? "opacity-60" : ""
                 }`}
               >
                 <Link
                   href={`/admin/trouwstudio/projecten/${project.id}`}
-                  className="relative block aspect-[16/9] w-full overflow-hidden bg-white/5"
+                  className="relative block aspect-[16/9] w-full overflow-hidden rounded-t-lg bg-white/5"
                 >
                   {project.coverPhotoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element

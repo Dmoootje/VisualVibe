@@ -22,6 +22,7 @@ import { resolveAnalysisProvider } from "@/features/trouwstudio/services/analysi
 import { imageProcessingProvider } from "@/features/trouwstudio/services/imageProcessing";
 import { buildAlbumLayout } from "@/features/trouwstudio/lib/autoLayout";
 import { getAlbumTemplate } from "@/features/trouwstudio/templates/ivoryEditorial";
+import { generateAlbumTexts } from "@/lib/ai/generateAlbumTexts";
 import {
   NEUTRAL_ADJUSTMENTS,
   WEDDING_EDITING_STYLES,
@@ -30,6 +31,7 @@ import {
   type TrouwstudioSettings,
   type WeddingAlbum,
   type WeddingAlbumChapter,
+  type WeddingAlbumTexts,
   type WeddingEditingStyle,
   type WeddingPhoto,
   type WeddingProject,
@@ -108,10 +110,44 @@ export async function createProjectAction(input: CreateProjectInput): Promise<Tr
       editingStyle,
       notes: str(input.notes, 2000) || undefined,
     });
+
+    // Starttekst voor het trouwboek meteen laten schrijven. Best-effort: als de
+    // AI niet beschikbaar is, blijft het project gewoon bestaan en kan de
+    // fotograaf later in de wizard op "Maak andere inhoud" klikken.
+    try {
+      const albumTexts = await generateAlbumTexts(project);
+      await updateWeddingProject(project.id, { albumTexts });
+    } catch {
+      // Bewust genegeerd; albumTexts is optioneel.
+    }
+
     revalidateProject(project.id);
     return { ok: true, data: { id: project.id } };
   } catch {
     return { ok: false, error: "Project aanmaken mislukt." };
+  }
+}
+
+/**
+ * Genereert (of hergenereert) de AI-starttekst voor het trouwboek en bewaart ze
+ * op het project. Gebruikt door de "Maak andere inhoud"-knop in de wizard.
+ */
+export async function generateAlbumTextsAction(
+  projectId: string,
+): Promise<TrouwstudioActionResult<WeddingAlbumTexts>> {
+  const auth = await requireAdmin();
+  if (!auth.ok) return auth;
+
+  const project = await getWeddingProject(projectId);
+  if (!project) return { ok: false, error: "Project niet gevonden." };
+
+  try {
+    const albumTexts = await generateAlbumTexts(project);
+    await updateWeddingProject(projectId, { albumTexts });
+    revalidateProject(projectId);
+    return { ok: true, data: albumTexts };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Teksten genereren mislukt." };
   }
 }
 

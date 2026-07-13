@@ -25,6 +25,9 @@ export async function GET(request: NextRequest) {
   const photoId = String(params.get("photoId") ?? "").trim();
   const scale = clamp(Number(params.get("scale")), 0.5, 1, 1);
   const quality = Math.round(clamp(Number(params.get("q")), 40, 100, 90));
+  // Optionele maximumbreedte (preview-PDF vraagt een lichte JPEG); wint van scale.
+  const maxWidthParam = Number(params.get("w"));
+  const maxWidth = Number.isFinite(maxWidthParam) && maxWidthParam > 0 ? Math.round(maxWidthParam) : undefined;
   if (!projectId || !photoId) {
     return NextResponse.json({ error: "Ontbrekende parameters." }, { status: 400 });
   }
@@ -40,9 +43,17 @@ export async function GET(request: NextRequest) {
     }
     const source = Buffer.from(await response.arrayBuffer());
 
+    // Altijd naar JPEG: @react-pdf/renderer kan geen webp embedden (preview- en
+    // origineel-URL's kunnen webp zijn). Dit endpoint is same-origin, dus de
+    // client-side renderer hoeft ook niet cross-origin te fetchen.
     let pipeline = sharp(source, { failOn: "none" }).rotate();
-    if (scale < 1) {
-      const targetWidth = Math.max(200, Math.round((photo.width || 2000) * scale));
+    const sourceWidth = photo.width || 2000;
+    const targetWidth = maxWidth
+      ? Math.min(maxWidth, sourceWidth)
+      : scale < 1
+        ? Math.max(200, Math.round(sourceWidth * scale))
+        : undefined;
+    if (targetWidth) {
       pipeline = pipeline.resize({ width: targetWidth, withoutEnlargement: true });
     }
     const out = await pipeline.jpeg({ quality, mozjpeg: true }).toBuffer();
