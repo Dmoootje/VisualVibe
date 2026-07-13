@@ -201,6 +201,12 @@ export type EmailTemplateInput = {
   settings: EmailSettings | EmailSettingsAdminView;
 };
 
+export type SmtpMailAttachment = {
+  filename: string;
+  contentType?: string;
+  content: Buffer;
+};
+
 export type SmtpMailMessage = {
   to: string | string[];
   cc?: string | string[];
@@ -214,6 +220,8 @@ export type SmtpMailMessage = {
   /** RFC 5322 threading headers for replies sent from the admin conversation. */
   inReplyTo?: string;
   references?: string[];
+  /** Optionele bijlagen (alleen gebruikt door de in-app e-mailclient). */
+  attachments?: SmtpMailAttachment[];
 };
 
 export type SmtpSendResult = {

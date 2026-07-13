@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  html,body{margin:0;padding:0;}
+  *{box-sizing:border-box;}
+  doc-page:not(:defined){visibility:hidden;}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="width:100%;">
+
+  <!-- LANDSCAPE A4 -->
+  <sc-if value="{{ isLandscape }}" hint-placeholder-val="{{ true }}">
+    <x-import component-from-global-scope="doc-page" from="./doc-page.js" size="a4" orientation="landscape" margin="0" hint-size="100%,600px">
+      <dc-import name="WeddingVibe Fotoboek Paginas" root-tokens="{{ rootTokens }}" cover-framed="{{ coverFramed }}" cover-bleed="{{ coverBleed }}" portret="{{ isPortret }}" hint-size="100%,600px"></dc-import>
+    </x-import>
+  </sc-if>
+
+  <!-- PORTRET A4 -->
+  <sc-if value="{{ isPortret }}" hint-placeholder-val="{{ false }}">
+    <x-import component-from-global-scope="doc-page" from="./doc-page.js" size="a4" orientation="portrait" margin="0" hint-size="100%,600px">
+      <dc-import name="WeddingVibe Fotoboek Paginas" root-tokens="{{ rootTokens }}" cover-framed="{{ coverFramed }}" cover-bleed="{{ coverBleed }}" portret="{{ isPortret }}" hint-size="100%,600px"></dc-import>
+    </x-import>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: 640 },
+  &quot;template&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;Blanc (puur wit)&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;Blanc (puur wit)&quot;, &quot;Ivoire (gebroken wit)&quot;, &quot;Editorial&quot;, &quot;Galerie (veel marge)&quot;, &quot;Romance (blush)&quot;], &quot;section&quot;: &quot;Template&quot;, &quot;description&quot;: &quot;Kies één van de vijf fotoboek-stijlen&quot; },
+  &quot;formaat&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;Landscape A4&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;Landscape A4&quot;, &quot;Portret A4&quot;], &quot;section&quot;: &quot;Template&quot;, &quot;description&quot;: &quot;Paginaformaat - beide printen als volle A4&quot; },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#C29A4B&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#C29A4B&quot;, &quot;#A6603C&quot;, &quot;#9A8C6E&quot;, &quot;#C79A6A&quot;, &quot;#8C9A7B&quot;, &quot;#8DA3B0&quot;], &quot;section&quot;: &quot;Template&quot;, &quot;description&quot;: &quot;Accentkleur - stem af op de gemiddelde kleur van de reportage&quot; }
+}">
+class Component extends DCLogic {
+  _rootRef = React.createRef();
+
+  _presets = {
+    'Blanc (puur wit)': {
+      framed: true,
+      accent: '#C0983F',
+      vars: {
+        '--paper': '#FFFFFF', '--ink': '#211C18', '--soft': '#6B6157',
+        '--line': 'rgba(180,150,90,.4)', '--cap-bg': 'rgba(255,255,255,.92)',
+        '--font-display': "'Cormorant Garamond',serif", '--font-body': "'Lora',serif",
+        '--name-font': "'Cormorant Garamond',serif", '--name-weight': '500',
+        '--name-size': '54px', '--name-transform': 'uppercase', '--name-spacing': '.06em',
+        '--pad': '0.7in', '--frame-pad': '0.7in', '--frame-inner': '12px', '--frame-cap': '26px'
+      }
+    },
+    'Ivoire (gebroken wit)': {
+      framed: false,
+      accent: '#C29A4B',
+      vars: {
+        '--paper': '#F7F1E7', '--ink': '#2A2320', '--soft': '#7A6E5E',
+        '--line': 'rgba(194,154,75,.4)', '--cap-bg': 'rgba(247,241,231,.92)',
+        '--font-display': "'Cormorant Garamond',serif", '--font-body': "'Lora',serif",
+        '--name-font': "'Great Vibes',cursive", '--name-weight': '400',
+        '--name-size': '80px', '--name-transform': 'none', '--name-spacing': '0',
+        '--pad': '0.6in', '--frame-inner': '10px',
+        '--cover-justify': 'flex-end', '--cover-align': 'flex-start', '--cover-text-align': 'left'
+      }
+    },
+    'Editorial': {
+      framed: false,
+      accent: '#A6603C',
+      vars: {
+        '--paper': '#FBFAF7', '--ink': '#17140F', '--soft': '#6E655A',
+        '--line': 'rgba(23,20,15,.16)', '--cap-bg': 'rgba(251,250,247,.94)',
+        '--font-display': "'Cormorant',serif", '--font-body': "'Lora',serif",
+        '--name-font': "'Cormorant',serif", '--name-weight': '500',
+        '--name-size': '58px', '--name-transform': 'uppercase', '--name-spacing': '.12em',
+        '--pad': '0.55in', '--frame-inner': '0px',
+        '--cover-justify': 'flex-end', '--cover-align': 'flex-start', '--cover-text-align': 'left'
+      }
+    },
+    'Galerie (veel marge)': {
+      framed: true,
+      accent: '#9A8C6E',
+      vars: {
+        '--paper': '#FFFFFF', '--ink': '#2B2824', '--soft': '#8A8378',
+        '--line': 'rgba(43,40,36,.14)', '--cap-bg': 'rgba(255,255,255,.94)',
+        '--font-display': "'Cormorant Garamond',serif", '--font-body': "'Lora',serif",
+        '--name-font': "'Cormorant Garamond',serif", '--name-weight': '400',
+        '--name-size': '34px', '--name-transform': 'uppercase', '--name-spacing': '.3em',
+        '--pad': '1.15in', '--frame-pad': '1.15in', '--frame-inner': '0px', '--frame-cap': '30px'
+      }
+    },
+    'Romance (blush)': {
+      framed: false,
+      accent: '#C79A6A',
+      vars: {
+        '--paper': '#FBF3F1', '--ink': '#3A2C2A', '--soft': '#8A6F6A',
+        '--line': 'rgba(199,154,106,.42)', '--cap-bg': 'rgba(251,243,241,.92)',
+        '--font-display': "'Cormorant Garamond',serif", '--font-body': "'Lora',serif",
+        '--name-font': "'Great Vibes',cursive", '--name-weight': '400',
+        '--name-size': '84px', '--name-transform': 'none', '--name-spacing': '0',
+        '--pad': '0.7in', '--frame-inner': '10px',
+        '--cover-justify': 'center', '--cover-align': 'center', '--cover-text-align': 'center'
+      }
+    }
+  };
+
+  renderVals() {
+    const naam = this.props.template ?? 'Blanc (puur wit)';
+    const preset = this._presets[naam] || this._presets['Blanc (puur wit)'];
+    const accent = this.props.accent ?? preset.accent;
+    const portret = (this.props.formaat ?? 'Landscape A4') === 'Portret A4';
+    const vars = Object.assign({}, preset.vars, {
+      '--accent': accent,
+      '--page-h': portret ? '297mm' : '210mm'
+    });
+    const rootTokens = Object.keys(vars).map((k) => k + ':' + vars[k]).join(';') + ';';
+    return {
+      rootRef: this._rootRef,
+      rootTokens: rootTokens,
+      coverFramed: preset.framed,
+      coverBleed: !preset.framed,
+      isLandscape: !portret,
+      isPortret: portret
+    };
+  }
+}
+</script>
+</body>
+</html>

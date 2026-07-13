@@ -90,9 +90,18 @@ een where op `contentHash` binnen een subcollectie).
 - Formaten: JPEG/PNG/WebP + HEIC/HEIF (sharp-decodering; faalt de decode dan
   volgt een eerlijke foutmelding). RAW (CR2/CR3/NEF/ARW/...) wordt bewust
   geweigerd met de melding dat RAW-ondersteuning later volgt.
-- Limieten: max 25 MB per foto; bestanden <20 kB worden geweigerd
-  (waarschijnlijk geen volwaardige foto).
-- Duplicaatdetectie: SHA-256 op de originele bytes, server-side (409 +
+- **Kwaliteit en type van de fotograaf blijven behouden.** JPEG blijft JPEG,
+  PNG blijft PNG: het album en de PDF worden uit deze originelen opgebouwd (geen
+  webp-conversie van het werkbeeld). De preview (~1600px) en thumbnail (~480px)
+  zijn webp, uitsluitend voor de interface.
+- Limieten: max **50 MB** per foto; bestanden <20 kB worden geweigerd.
+- **4K-cap bij upload:** beelden tot 4K (langste zijde ≤ 4096px) worden
+  byte-voor-byte bewaard; grotere beelden worden bij het uploaden naar 4K
+  verkleind in hetzelfde formaat en hoge kwaliteit (JPEG q92 / WebP q92 /
+  PNG). HEIC/HEIF wordt naar JPEG omgezet omdat browsers en de PDF-renderer
+  HEIC niet kunnen tonen. `width`/`height`/`sizeBytes`/`mimeType` op het
+  fotodocument weerspiegelen de bewaarde versie.
+- Duplicaatdetectie: SHA-256 op de geüploade bytes, server-side (409 +
   verwijzing naar het bestaande bestand).
 - De client uploadt met beperkte gelijktijdigheid (instelbaar), per bestand
   voortgang/fout/retry/annuleren.
@@ -123,9 +132,28 @@ gekopieerd.
 - Templates zijn datagedreven (`WeddingAlbumTemplate`): kleuren, fonts,
   paginamaat (mm) en lay-outdefinities in procentcoördinaten. Dezelfde data
   voedt de HTML-builderpreview én de PDF-renderer; er is geen hardgecodeerde
-  PDF-layout. Actief: **Ivory Editorial**; Romantic Botanical, Black Tie
-  Luxury, Modern Minimal en Cinematic Dark staan aangekondigd
-  (`available: false`, zichtbaar uitgeschakeld).
+  PDF-layout.
+- **Vijf print-klare A4-stijlen, elk in staand én liggend = tien
+  templates** (`src/features/trouwstudio/templates/ivoryEditorial.ts`, uit de
+  WeddingVibe-handoff): **Blanc** (puur wit, ingekaderde cover), **Ivoire**
+  (gebroken wit, script-namen, full-bleed cover), **Editorial** (strak,
+  terracotta, full-bleed), **Galerie** (zeer ruime marges, ingekaderd) en
+  **Romance** (blush, gecentreerde full-bleed cover). Een parametrische builder
+  genereert de tien templates uit vijf presets (kleuren/fonts/coverstijl) × twee
+  oriëntatie-geometriesets. `getAlbumTemplate` mapt de oude id
+  `ivory-editorial` naar `ivoire-portret` zodat bestaande albums blijven werken.
+- **Accentkleur per album:** `album.accentColor` overschrijft
+  `template.colors.accent`. Kiesbaar in de wizard (curated swatches uit
+  `ALBUM_ACCENT_SWATCHES` + eigen kleur) met live cover-preview, en live
+  aanpasbaar in de builder-topbalk. `resolveAlbumTemplate(id, accentColor)`
+  levert de template met accent-override; die functie voedt zowel de preview
+  als de PDF.
+- **Full-bleed covers** gebruiken een donkere verloop-scrim (`AlbumFrame.scrim`)
+  met witte covertekst (`AlbumTextBlock.color`); ingekaderde covers een dunne
+  haarlijn (`AlbumFrame.framed`) met tekst eronder. Script-namen (Ivoire/Romance)
+  gebruiken Great Vibes via `AlbumTextBlock.font: "accent"`. De PDF registreert
+  Cormorant Garamond, Lora en Great Vibes elk apart (één mislukte registratie
+  schakelt de andere niet uit).
 - Automatische indeling (`lib/autoLayout.ts`): cover, quote, woord vooraf,
   hoofdstukken op scènevolgorde, afwisseling rustig/druk, oriëntatie-matching
   per kader, hero's voor de sterkste beelden, slotpagina.
@@ -135,18 +163,25 @@ gekopieerd.
 
 ## PDF-export
 
-Twee exporttypes in de Export-tab:
+Twee exporttypes in de Export-tab, met een zichtbare **PDF-bestandsgrootte** na
+elke render:
 
 1. **Digitale preview-PDF** - previewbeelden, snel, voor controle en delen.
-2. **Hoge kwaliteit (drukvoorbereiding)** - afgewerkte/originele beelden.
-   Dit is nadrukkelijk GEEN print-ready bestand. Nog nodig voor echt drukwerk:
-   bleed doortrekken in de beeldkaders, CMYK-conversie + ICC-kleurprofielen,
-   drukkersspecificaties (rugbreedte, hardcovermaten), minimale effectieve
-   DPI-controle per kader en eventueel een server-side renderer.
+2. **Hoge kwaliteit (drukvoorbereiding)** - afgewerkte/originele beelden in de
+   kwaliteit en het type van de fotograaf. Met een **reductie-schuiver 50-100%**
+   en een live grootteschatting (geschat uit de som van de bestandsgroottes van
+   de gebruikte foto's × schaal²). Onder 100% worden de beelden server-side
+   herschaald via `GET /api/admin/trouwstudio/reduce` (admin-gated, sharp) en
+   levert `AlbumPdfInput.photoUrlOverride` die gereduceerde bronnen aan de
+   renderer; op 100% worden de originelen rechtstreeks ingesloten. Dit is
+   nadrukkelijk GEEN print-ready bestand. Nog nodig voor echt drukwerk: bleed
+   doortrekken, CMYK-conversie + ICC-kleurprofielen, drukkersspecificaties en
+   eventueel een server-side renderer.
 
-Fonts in de PDF worden geregistreerd vanaf Google Fonts (TTF); bij een
-mislukte registratie valt de renderer terug op ingebouwde fonts zodat de
-export nooit faalt op een ontbrekend lettertype.
+Fonts in de PDF (Cormorant Garamond, Lora, Great Vibes) worden elk apart
+geregistreerd vanaf een CORS-vriendelijke TTF-bron; een mislukte registratie
+van één familie schakelt de andere niet uit en valt terug op een ingebouwd font
+zodat de export nooit faalt op een ontbrekend lettertype.
 
 ## Instellingen
 

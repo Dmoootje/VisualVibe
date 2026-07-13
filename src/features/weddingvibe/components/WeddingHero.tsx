@@ -58,12 +58,16 @@ export function WeddingHero({ fallbackImage }: { fallbackImage: WvImageData }) {
   return (
     <header
       id="top"
-      className="relative flex min-h-[92vh] items-center justify-center overflow-hidden text-center"
+      className="relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-[#1e1812] text-center"
     >
-      {/* Fallback-foto achter de video */}
-      <div className="absolute inset-0">
-        <WvImage image={fallbackImage} />
-      </div>
+      {/* Fallback-foto achter de video. Alleen tonen als er een echte foto is:
+          zonder foto blijft de donkere hero-basis zichtbaar zodat de video op
+          smalle schermen niet in grijze crème-placeholderbanden zweeft. */}
+      {fallbackImage.src && (
+        <div className="absolute inset-0">
+          <WvImage image={fallbackImage} />
+        </div>
+      )}
 
       {/* Fullscreen YouTube-loop, cover-fit */}
       {videoId && (

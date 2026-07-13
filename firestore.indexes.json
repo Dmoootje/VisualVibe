@@ -40,6 +40,81 @@
         { "fieldPath": "leadId", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "folder", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "mailboxId", "order": "ASCENDING" },
+        { "fieldPath": "folder", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isStarred", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "mailboxId", "order": "ASCENDING" },
+        { "fieldPath": "isStarred", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "labelIds", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadId", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadId", "order": "ASCENDING" },
+        { "fieldPath": "dateKey", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "mailboxId", "order": "ASCENDING" },
+        { "fieldPath": "remoteFolderPath", "order": "ASCENDING" },
+        { "fieldPath": "remoteUid", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "email_thread_notes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

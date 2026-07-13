@@ -401,6 +401,8 @@ export async function renderPhotoAction(
 
 /* ========================= Album ========================= */
 
+const HEX_COLOR = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+
 export async function generateAlbumAction(
   projectId: string,
   input: {
@@ -410,6 +412,7 @@ export async function generateAlbumAction(
     foreword?: string;
     personalMessage?: string;
     templateId: string;
+    accentColor?: string;
     chapters?: WeddingAlbumChapter[];
   },
 ): Promise<TrouwstudioActionResult<{ albumId: string }>> {
@@ -419,6 +422,10 @@ export async function generateAlbumAction(
   if (!project) return { ok: false, error: "Project niet gevonden." };
   const template = getAlbumTemplate(input.templateId);
   if (!template.available) return { ok: false, error: "Deze template is nog niet beschikbaar." };
+  const accentColor =
+    typeof input.accentColor === "string" && HEX_COLOR.test(input.accentColor.trim())
+      ? input.accentColor.trim()
+      : undefined;
 
   const photos = await listWeddingPhotos(projectId);
   if (!photos.some((p) => p.selectedForAlbum)) {
@@ -443,6 +450,7 @@ export async function generateAlbumAction(
       title: str(input.title, 120) || `${project.partnerOneName} & ${project.partnerTwoName}`,
       subtitle: str(input.subtitle, 160) || undefined,
       templateId: template.id,
+      accentColor,
       language: project.language,
       quote: str(input.quote, 400) || undefined,
       personalMessage: str(input.personalMessage, 1000) || undefined,

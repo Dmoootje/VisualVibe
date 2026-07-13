@@ -13,12 +13,12 @@ export function WeddingNav() {
       className="sticky top-0 z-40 border-b border-[rgba(194,154,75,0.22)] bg-[rgba(255,255,255,0.92)] backdrop-blur-[14px]"
       aria-label="WeddingVibe"
     >
-      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-[clamp(20px,4vw,48px)] py-4">
+      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-center gap-x-6 gap-y-3 px-[clamp(20px,4vw,48px)] py-4 sm:justify-between">
         <a href="#top" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/weddingvibe-logo.svg" alt="WeddingVibe" className="block h-[26px] w-auto" />
         </a>
-        <div className="flex flex-wrap items-center gap-[clamp(16px,2.4vw,32px)] text-[13px] uppercase tracking-[0.12em]">
+        <div className="flex w-full flex-wrap items-center justify-center gap-[clamp(16px,2.4vw,32px)] text-[13px] uppercase tracking-[0.12em] sm:w-auto sm:justify-start">
           {nav.links.map((link) => (
             <a
               key={link.href}

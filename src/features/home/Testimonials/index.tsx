@@ -32,7 +32,7 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
       className="py-16 sm:py-20 md:py-24 relative overflow-hidden"
       aria-labelledby="testimonials-heading"
     >
-      <div className="container mx-auto px-5 sm:px-6 md:px-8 relative z-10">
+      <div className="container mx-auto px-2.5 sm:px-4 relative z-10">
         <TestimonialsHeader />
 
         <div className="relative max-w-6xl mx-auto">

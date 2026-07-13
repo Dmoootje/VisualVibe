@@ -6,7 +6,7 @@ import { RegionMapCard } from "./components";
 
 export default function RegionIntro() {
   return (
-    <section className="relative overflow-hidden px-4 py-12 sm:py-16 md:py-24">
+    <section className="relative overflow-hidden py-12 sm:py-16 md:py-24">
       <div className="container relative z-10 mx-auto">
         <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-12 md:flex-row md:items-end">
           <div>

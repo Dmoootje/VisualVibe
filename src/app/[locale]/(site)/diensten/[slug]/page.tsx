@@ -9,9 +9,9 @@ import {
   ServiceGrid,
   ProcessSteps,
   ServiceFaqCombine,
-  RegionGrid,
 } from "@/components/sections";
 import { ServiceRelatedPosts } from "@/components/sections/ServiceRelatedPosts";
+import { RegionMapCard } from "@/features/home/RegionIntro/components";
 import { WebdesignHero, WebdesignShowcase } from "@/components/webdesign";
 import { SeoService, type SeoCaseItem } from "@/components/seodienst";
 import { FotografieService } from "@/components/fotografie";
@@ -154,7 +154,11 @@ export default async function ServiceDetailPage({
           Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
           en Nederlands-Limburg.
         </p>
-        <RegionGrid regions={regions} showIntro={false} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {regions.map((region) => (
+            <RegionMapCard key={region.slug} region={region} />
+          ))}
+        </div>
       </Container>
     </Section>
   );

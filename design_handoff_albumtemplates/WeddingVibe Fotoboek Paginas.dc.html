@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  .wv-page{position:relative;width:100%;height:var(--page-h,210mm);overflow:hidden;}
+  .wv-break{break-before:page;}
+  .wv-fill{width:100%;height:100%;object-fit:cover;display:block;}
+</style>
+</helmet>
+
+<div style="{{ rootTokens }}">
+
+  <!-- 1 · COVER (full-bleed) -->
+  <sc-if value="{{ coverBleed }}" hint-placeholder-val="{{ true }}">
+    <section class="wv-page" data-screen-label="Cover">
+      <img class="wv-fill" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=70" alt="">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(20,15,10,.62),rgba(20,15,10,.14) 46%,rgba(20,15,10,.28));"></div>
+      <div style="position:absolute;inset:0;padding:var(--pad);display:flex;flex-direction:column;justify-content:var(--cover-justify,flex-end);align-items:var(--cover-align,flex-start);text-align:var(--cover-text-align,left);">
+        <div style="font-family:var(--font-body);font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:18px;">Ons huwelijk</div>
+        <div style="font-family:var(--name-font);font-weight:var(--name-weight,500);font-size:var(--name-size,64px);line-height:1.02;letter-spacing:var(--name-spacing,0);text-transform:var(--name-transform,none);color:#FFFFFF;">Sophie <span style="font-family:'Great Vibes',cursive;font-weight:400;color:var(--accent);text-transform:none;letter-spacing:0;">&amp;</span> Lucas</div>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:22px;color:rgba(255,255,255,.9);">
+          <span style="width:46px;height:1px;background:var(--accent);"></span>
+          <span style="font-family:var(--font-body);font-size:14px;letter-spacing:.22em;text-transform:uppercase;">14 juni 2025 · Borgloon</span>
+          <span style="width:46px;height:1px;background:var(--accent);"></span>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 1 · COVER (framed) -->
+  <sc-if value="{{ coverFramed }}" hint-placeholder-val="{{ false }}">
+    <section class="wv-page" data-screen-label="Cover" style="background:var(--paper);padding:var(--frame-pad,0.7in);display:flex;flex-direction:column;">
+      <div style="flex:1;min-height:0;position:relative;padding:var(--frame-inner,10px);border:1px solid var(--line);">
+        <img class="wv-fill" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=70" alt="">
+      </div>
+      <div style="text-align:center;padding-top:var(--frame-cap,26px);">
+        <div style="font-family:var(--font-body);font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--soft);margin-bottom:14px;">Ons huwelijk</div>
+        <div style="font-family:var(--name-font);font-weight:var(--name-weight,500);font-size:var(--name-size,52px);line-height:1;letter-spacing:var(--name-spacing,0);text-transform:var(--name-transform,none);color:var(--ink);">Sophie <span style="font-family:'Great Vibes',cursive;font-weight:400;color:var(--accent);text-transform:none;letter-spacing:0;">&amp;</span> Lucas</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;color:var(--soft);">
+          <span style="width:38px;height:1px;background:var(--accent);"></span>
+          <span style="font-family:var(--font-body);font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;">14 juni 2025</span>
+          <span style="width:38px;height:1px;background:var(--accent);"></span>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 2 · VOORWOORD -->
+  <section class="wv-page wv-break" data-screen-label="Voorwoord" style="{{ vwSection }}">
+    <div style="{{ vwImg }}">
+      <img class="wv-fill" src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1100&q=70" alt="">
+    </div>
+    <div style="{{ vwText }}">
+      <div style="font-family:var(--font-body);font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;">Voorwoord</div>
+      <h2 style="margin:0 0 6px;font-family:var(--font-display);font-weight:500;font-size:38px;line-height:1.1;color:var(--ink);">Waar het allemaal <em style="font-style:italic;color:var(--accent);">begon</em></h2>
+      <div style="font-family:'Great Vibes',cursive;font-size:34px;color:var(--accent);margin-bottom:22px;">Sophie &amp; Lucas</div>
+      <p style="margin:0 0 15px;font-family:var(--font-body);font-size:14.5px;line-height:1.85;color:var(--soft);">Op 14 juni 2025 gaven wij elkaar het ja-woord in de <strong style="color:var(--ink);font-weight:600;">Sint-Odulphuskerk</strong> te Borgloon, omringd door de mensen van wie we het meest houden.</p>
+      <p style="margin:0 0 15px;font-family:var(--font-body);font-size:14.5px;line-height:1.85;color:var(--soft);">Het feest ging door op het <strong style="color:var(--ink);font-weight:600;">Kasteel van Hoen</strong>, tussen de fruitbomen van Haspengouw. Een dag vol tranen van geluk, dans tot in de late uurtjes en herinneringen die we voor altijd koesteren.</p>
+      <p style="margin:0;font-family:var(--font-body);font-size:14.5px;line-height:1.85;color:var(--soft);">Dit boek vertelt ons verhaal, zoals het echt was.</p>
+      <div style="margin-top:26px;font-family:var(--font-display);font-style:italic;font-size:17px;color:var(--ink);">Met heel ons hart - Sophie &amp; Lucas</div>
+    </div>
+  </section>
+
+  <!-- 3 · FULL-BLEED BEELD -->
+  <section class="wv-page wv-break" data-screen-label="Fotopagina groot" style="background:var(--paper);">
+    <img class="wv-fill" src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1600&q=70" alt="">
+    <div style="position:absolute;left:var(--pad);bottom:var(--pad);padding:12px 20px;background:var(--cap-bg,rgba(255,255,255,.9));backdrop-filter:blur(2px);">
+      <div style="font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--ink);">Het eerste moment als getrouwd koppel</div>
+      <div style="font-family:var(--font-body);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-top:4px;">Ceremonie · 14.20u</div>
+    </div>
+  </section>
+
+  <!-- 4 · TWEE BEELDEN -->
+  <section class="wv-page wv-break" data-screen-label="Fotopagina duo" style="{{ duoSection }}">
+    <figure style="{{ duoFig }}">
+      <div style="{{ duoWrap }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1100&q=70" alt=""></div>
+      <figcaption style="padding-top:14px;font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink);">Het boeket <span style="font-family:var(--font-body);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);">· pioenrozen</span></figcaption>
+    </figure>
+    <figure style="{{ duoFig }}">
+      <div style="{{ duoWrap }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1100&q=70" alt=""></div>
+      <figcaption style="padding-top:14px;font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink);">De ringen <span style="font-family:var(--font-body);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);">· voor altijd</span></figcaption>
+    </figure>
+  </section>
+
+  <!-- 5 · ASYMMETRISCH -->
+  <section class="wv-page wv-break" data-screen-label="Fotopagina asymmetrisch" style="{{ asymSection }}">
+    <figure style="{{ asymBig }}">
+      <div style="{{ asymBigWrap }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1100&q=70" alt=""></div>
+      <figcaption style="padding-top:12px;font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink);">Klaar voor het grote moment</figcaption>
+    </figure>
+    <div style="{{ asymCol }}">
+      <div style="{{ asymSmallWrap }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=900&q=70" alt=""></div>
+      <div style="{{ asymSmallWrap }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=70" alt=""></div>
+    </div>
+  </section>
+
+  <!-- 6 · PORTRET + TEKST -->
+  <section class="wv-page wv-break" data-screen-label="Fotopagina foto + tekst" style="background:var(--paper);">
+    <div style="{{ ptInner }}">
+      <div style="{{ ptPhoto }}"><img class="wv-fill" src="https://images.unsplash.com/photo-1470217957101-da7150b9b681?auto=format&fit=crop&w=1300&q=70" alt=""></div>
+      <div style="{{ ptText }}">
+        <div style="font-family:var(--font-body);font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Het feest</div>
+        <h3 style="margin:0 0 16px;font-family:var(--font-display);font-weight:500;font-size:30px;line-height:1.12;color:var(--ink);">Dansen tot de zon opkwam</h3>
+        <p style="margin:0;font-family:var(--font-body);font-size:13.5px;line-height:1.8;color:var(--soft);">Toen de eerste tonen van onze openingsdans klonken, verdween de rest van de wereld even. Familie en vrienden vulden de dansvloer tot in de vroege uurtjes.</p>
+        <div style="margin-top:22px;width:40px;height:1px;background:var(--accent);"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · GRID -->
+  <section class="wv-page wv-break" data-screen-label="Fotopagina grid" style="{{ gridSection }}">
+    <div style="position:relative;overflow:hidden;"><img class="wv-fill" src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=900&q=70" alt=""></div>
+    <div style="position:relative;overflow:hidden;"><img class="wv-fill" src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=70" alt=""></div>
+    <div style="position:relative;overflow:hidden;"><img class="wv-fill" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=70" alt=""></div>
+  </section>
+
+  <!-- 8 · AFSLUITBLAD / COLOFON -->
+  <section class="wv-page wv-break" data-screen-label="Afsluitblad" style="background:var(--paper);padding:var(--pad);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+    <svg width="130" height="16" viewBox="0 0 130 16" fill="none" style="display:block;margin:0 auto 26px;"><path d="M4 8 C 24 8, 38 2, 54 8" stroke="var(--accent)" stroke-width="1"></path><path d="M126 8 C 106 8, 92 14, 76 8" stroke="var(--accent)" stroke-width="1"></path><path d="M65 2 L 71 8 L 65 14 L 59 8 Z" fill="var(--accent)"></path></svg>
+    <div style="font-family:'Great Vibes',cursive;font-size:44px;color:var(--accent);line-height:1.1;margin-bottom:8px;">Bedankt</div>
+    <p style="margin:0 0 40px;max-width:4.6in;font-family:var(--font-display);font-style:italic;font-size:20px;line-height:1.5;color:var(--ink);">…om ons deel te laten uitmaken van jullie mooiste dag, Sophie &amp; Lucas.</p>
+    <img src="assets/weddingvibe-logo.svg" alt="WeddingVibe" style="height:26px;display:block;margin-bottom:26px;opacity:.9;">
+    <div style="display:flex;align-items:center;gap:18px;font-family:var(--font-body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;">
+      <span>weddingvibe.be</span>
+      <span style="width:4px;height:4px;background:var(--accent);border-radius:9999px;"></span>
+      <span>visualvibe.media</span>
+    </div>
+    <div style="font-family:var(--font-body);font-size:12.5px;letter-spacing:.06em;color:var(--soft);margin-bottom:34px;">+32 472 96 45 99 · jens@weddingvibe.be</div>
+    <div style="font-family:var(--font-body);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;">Vastgelegd door</div>
+    <div style="font-family:'Great Vibes',cursive;font-size:40px;color:var(--ink);line-height:1;">Jens</div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;rootTokens&quot;: { &quot;editor&quot;: null, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;coverFramed&quot;: { &quot;editor&quot;: null, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;coverBleed&quot;: { &quot;editor&quot;: null, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;portret&quot;: { &quot;editor&quot;: null, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = !!this.props.portret;
+    const frameBorder = 'padding:var(--frame-inner,10px);border:1px solid var(--line);';
+    return {
+      rootTokens: this.props.rootTokens ?? '',
+      coverFramed: !!this.props.coverFramed,
+      coverBleed: !this.props.coverFramed,
+
+      // Voorwoord - portret: tekst boven, foto eronder (flex-fill i.p.v. aspect-ratio)
+      vwSection: 'background:var(--paper);padding:var(--pad);' + (p
+        ? 'display:flex;flex-direction:column-reverse;gap:var(--pad);'
+        : 'display:flex;gap:var(--pad);align-items:stretch;'),
+      vwImg: 'position:relative;' + frameBorder + (p
+        ? 'flex:1;min-height:0;'
+        : 'flex:0 0 42%;'),
+      vwText: 'display:flex;flex-direction:column;' + (p ? 'flex:none;' : 'flex:1;justify-content:center;max-width:5in;'),
+
+      // Duo - beide beelden delen de paginahoogte gelijk (flex:1), ook in portret
+      duoSection: 'background:var(--paper);padding:var(--pad);display:flex;gap:var(--pad);' + (p ? 'flex-direction:column;' : ''),
+      duoFig: 'margin:0;display:flex;flex-direction:column;flex:1;min-height:0;',
+      duoWrap: 'position:relative;' + frameBorder + 'flex:1;min-height:0;',
+
+      // Asymmetrisch - flex-fill in beide formaten
+      asymSection: 'background:var(--paper);padding:var(--pad);display:flex;gap:var(--pad);' + (p ? 'flex-direction:column;' : ''),
+      asymBig: 'margin:0;display:flex;flex-direction:column;min-height:0;' + (p ? 'flex:1;' : 'flex:0 0 58%;'),
+      asymBigWrap: 'position:relative;' + frameBorder + 'flex:1;min-height:0;',
+      asymCol: 'display:flex;gap:var(--pad);flex:1;min-height:0;' + (p ? 'flex-direction:row;' : 'flex-direction:column;'),
+      asymSmallWrap: 'position:relative;overflow:hidden;flex:1;min-height:0;',
+
+      // Foto + tekst
+      ptInner: 'position:absolute;inset:0;display:flex;' + (p ? 'flex-direction:column;' : ''),
+      ptPhoto: 'position:relative;flex:1;min-height:0;',
+      ptText: 'background:var(--paper);padding:var(--pad);display:flex;flex-direction:column;justify-content:center;' + (p ? 'flex:0 0 42%;' : 'flex:0 0 36%;'),
+
+      // Grid
+      gridSection: 'background:var(--paper);padding:var(--pad);display:grid;gap:var(--frame-inner,10px);' + (p ? 'grid-template-columns:1fr;grid-auto-rows:1fr;' : 'grid-template-columns:1fr 1fr 1fr;')
+    };
+  }
+}
+</script>
+</body>
+</html>

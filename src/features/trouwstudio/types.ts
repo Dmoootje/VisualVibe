@@ -300,6 +300,10 @@ export type AlbumFrame = {
   width: number;
   height: number;
   photoId?: string;
+  /** Dunne haarlijn-kader rond het beeld (framed cover-stijl). */
+  framed?: boolean;
+  /** Donkere verloop-scrim over dit kader zodat overlaytekst leesbaar blijft (full-bleed cover). */
+  scrim?: boolean;
 };
 
 export type AlbumTextBlock = {
@@ -309,7 +313,21 @@ export type AlbumTextBlock = {
   y: number;
   width: number;
   align: "left" | "center" | "right";
+  /** Overschrijft de rolkleur (bv. witte covertekst over een full-bleed foto). */
+  color?: string;
+  /** Overschrijft de rol-lettersoort (bv. script-namen op de cover). */
+  font?: "heading" | "body" | "accent";
 };
+
+/** Curated accentkleuren uit de albumtemplate-handoff; los instelbaar per album. */
+export const ALBUM_ACCENT_SWATCHES = [
+  "#C29A4B",
+  "#A6603C",
+  "#9A8C6E",
+  "#C79A6A",
+  "#8C9A7B",
+  "#8DA3B0",
+] as const;
 
 export const ALBUM_LAYOUT_KINDS = [
   "cover",
@@ -391,6 +409,8 @@ export type WeddingAlbum = {
   title: string;
   subtitle?: string;
   templateId: string;
+  /** Overschrijft de accentkleur van de template (hex); leeg = template-standaard. */
+  accentColor?: string;
   language: string;
   quote?: string;
   personalMessage?: string;
@@ -428,7 +448,7 @@ export type TrouwstudioSettings = {
 export const DEFAULT_TROUWSTUDIO_SETTINGS: TrouwstudioSettings = {
   defaultLanguage: "nl",
   defaultEditingStyle: "warm-romantisch",
-  defaultTemplateId: "ivory-editorial",
+  defaultTemplateId: "ivoire-portret",
   confirmBulkActions: true,
   aiProvider: "claude",
   analysisModel: "claude-opus-4-8",

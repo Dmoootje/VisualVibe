@@ -23,14 +23,17 @@ import {
   Trash2,
 } from "lucide-react";
 import {
-  WEDDING_ALBUM_TEMPLATES,
-  getAlbumTemplate,
+  ALBUM_PRESETS,
+  DEFAULT_ALBUM_TEMPLATE_ID,
   getLayoutDefinition,
+  resolveAlbumTemplate,
 } from "@/features/trouwstudio/templates/ivoryEditorial";
 import { DEFAULT_CHAPTERS } from "@/features/trouwstudio/lib/autoLayout";
 import { generateAlbumAction, saveAlbumAction } from "@/lib/admin/trouwstudioActions";
 import {
+  ALBUM_ACCENT_SWATCHES,
   coupleName,
+  type AlbumFrame,
   type AlbumTextBlock,
   type WeddingAlbum,
   type WeddingAlbumChapter,
@@ -39,6 +42,150 @@ import {
   type WeddingPhoto,
 } from "@/features/trouwstudio/types";
 import { inputClasses, type ProjectTabProps } from "./shared";
+
+// Google Fonts voor de builderpreview (Cormorant Garamond, Cormorant, Great
+// Vibes, Lora). Alleen in het admingedeelte; de PDF registreert deze fonts apart.
+function AlbumPreviewFonts() {
+  return (
+    // eslint-disable-next-line @next/next/no-page-custom-font
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant:wght@400;500;600&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap"
+    />
+  );
+}
+
+function fontStack(name: string): string {
+  return name.toLowerCase().includes("vibes") ? `'${name}', cursive` : `'${name}', Georgia, serif`;
+}
+
+function previewFontFamily(block: AlbumTextBlock, template: WeddingAlbumTemplate): string {
+  const which =
+    block.font ??
+    (block.role === "title" || block.role === "quote" ? "heading" : "body");
+  const name =
+    which === "accent"
+      ? template.fonts.accent ?? template.fonts.heading
+      : which === "body"
+        ? template.fonts.body
+        : template.fonts.heading;
+  return fontStack(name);
+}
+
+function previewTextStyle(
+  block: AlbumTextBlock,
+  template: WeddingAlbumTemplate,
+  zoomFactor: number,
+): React.CSSProperties {
+  const fontFamily = previewFontFamily(block, template);
+  const isScript = (block.font ?? "") === "accent";
+  switch (block.role) {
+    case "title":
+      return {
+        fontFamily,
+        fontSize: (isScript ? 30 : 24) * zoomFactor,
+        fontWeight: isScript ? 400 : 600,
+        color: block.color ?? template.colors.text,
+      };
+    case "subtitle":
+      return {
+        fontFamily,
+        fontSize: 9 * zoomFactor,
+        letterSpacing: 2,
+        textTransform: "uppercase",
+        color: block.color ?? template.colors.mutedText,
+      };
+    case "body":
+      return { fontFamily, fontSize: 8 * zoomFactor, lineHeight: 1.6, color: block.color ?? template.colors.text };
+    case "quote":
+      return { fontFamily, fontSize: 14 * zoomFactor, lineHeight: 1.4, color: block.color ?? template.colors.text };
+    case "caption":
+    case "meta":
+      return {
+        fontFamily,
+        fontSize: 7 * zoomFactor,
+        letterSpacing: 1.5,
+        textTransform: "uppercase",
+        color: block.color ?? template.colors.mutedText,
+      };
+  }
+}
+
+/** Statische paginapreview (frames + tekst, met scrim/haarlijn/fonts). */
+function PagePreview({
+  template,
+  frames,
+  textBlocks,
+  photosById,
+  width,
+  zoomFactor = 1,
+}: {
+  template: WeddingAlbumTemplate;
+  frames: AlbumFrame[];
+  textBlocks: AlbumTextBlock[];
+  photosById: Record<string, WeddingPhoto>;
+  width: number;
+  zoomFactor?: number;
+}) {
+  return (
+    <div
+      className="relative shrink-0 overflow-hidden shadow-lg shadow-black/40"
+      style={{
+        width,
+        aspectRatio: `${template.pageWidth} / ${template.pageHeight}`,
+        backgroundColor: template.colors.background,
+      }}
+    >
+      {frames.map((frame, index) => {
+        const photo = frame.photoId ? photosById[frame.photoId] : undefined;
+        return (
+          <div
+            key={index}
+            className="absolute overflow-hidden"
+            style={{
+              left: `${frame.x}%`,
+              top: `${frame.y}%`,
+              width: `${frame.width}%`,
+              height: `${frame.height}%`,
+              border: frame.framed ? `1px solid ${template.colors.hairline}` : undefined,
+              backgroundColor: photo ? undefined : template.colors.surface,
+              padding: frame.framed ? 3 : undefined,
+            }}
+          >
+            {photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={photo.previewUrl} alt="" className="h-full w-full object-cover" />
+            ) : null}
+            {frame.scrim ? (
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(18,13,8,0.62), rgba(18,13,8,0.14) 46%, rgba(18,13,8,0.28))",
+                }}
+              />
+            ) : null}
+          </div>
+        );
+      })}
+      {textBlocks.map((block, index) => (
+        <div
+          key={`t-${index}`}
+          className="pointer-events-none absolute whitespace-pre-wrap"
+          style={{
+            left: `${block.x}%`,
+            top: `${block.y}%`,
+            width: `${block.width}%`,
+            textAlign: block.align,
+            ...previewTextStyle(block, template, zoomFactor),
+          }}
+        >
+          {block.text || " "}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // Trouwboek-tab: zonder album een wizard in vijf stappen die het album laat
 // genereren; met album een volwaardige builder (paginalijst, paginapreview,
@@ -85,7 +232,9 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
   const [quote, setQuote] = useState("");
   const [personalMessage, setPersonalMessage] = useState("");
   const [foreword, setForeword] = useState("");
-  const [templateId, setTemplateId] = useState("ivory-editorial");
+  const [presetKey, setPresetKey] = useState(() => DEFAULT_ALBUM_TEMPLATE_ID.split("-")[0]);
+  const [orientation, setOrientation] = useState<"landscape" | "portret">("portret");
+  const [accentColor, setAccentColor] = useState<string>("");
   const [chapters, setChapters] = useState<WeddingAlbumChapter[]>(() =>
     DEFAULT_CHAPTERS.map((entry) => ({
       id: crypto.randomUUID(),
@@ -99,11 +248,19 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
   const [generated, setGenerated] = useState(false);
 
   const selection = photos.filter((photo) => photo.selectedForAlbum);
-  const selectedTemplate = getAlbumTemplate(templateId);
+  const templateId = `${presetKey}-${orientation}`;
+  const selectedTemplate = resolveAlbumTemplate(templateId, accentColor || undefined);
+  const selectedPreset = ALBUM_PRESETS.find((preset) => preset.key === presetKey) ?? ALBUM_PRESETS[0];
+
+  const photosById = useMemo(() => {
+    const map: Record<string, WeddingPhoto> = {};
+    for (const photo of photos) map[photo.id] = photo;
+    return map;
+  }, [photos]);
 
   const stepValid = (value: number): boolean => {
     if (value === 1) return title.trim().length > 0;
-    if (value === 2) return selectedTemplate.available;
+    if (value === 2) return Boolean(selectedPreset);
     if (value === 3) return chapters.some((chapter) => !chapter.hidden);
     return true;
   };
@@ -134,6 +291,7 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
       foreword: foreword.trim() || undefined,
       personalMessage: personalMessage.trim() || undefined,
       templateId,
+      accentColor: accentColor || undefined,
       chapters,
     });
     setBusy(false);
@@ -144,6 +302,24 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
       setError(result.error ?? "Album genereren mislukt.");
     }
   };
+
+  // Live cover-preview voor stap 2 (gevuld met de eerste selectie + gegevens).
+  const coverLayout = selectedTemplate.coverLayouts[0];
+  const coverFrames: AlbumFrame[] = coverLayout.frames.map((frame) => ({
+    ...frame,
+    photoId: selection[0]?.id,
+  }));
+  const coverText: AlbumTextBlock[] = coverLayout.textBlocks.map((block) => ({
+    ...block,
+    text:
+      block.role === "title"
+        ? title.trim() || coupleName(project)
+        : block.role === "subtitle"
+          ? subtitle.trim() || "Ons trouwalbum"
+          : block.role === "meta"
+            ? project.weddingDate
+            : block.text,
+  }));
 
   if (generated) {
     return (
@@ -267,54 +443,123 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
         </div>
       )}
 
-      {/* Stap 2: Template */}
+      {/* Stap 2: Stijl, formaat en accentkleur */}
       {step === 2 && (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {WEDDING_ALBUM_TEMPLATES.map((template) => {
-            const selected = template.id === templateId;
-            return (
+        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+          <AlbumPreviewFonts />
+          <div>
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-white/40">Stijl</h3>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {ALBUM_PRESETS.map((preset) => {
+                const selected = preset.key === presetKey;
+                return (
+                  <button
+                    key={preset.key}
+                    type="button"
+                    onClick={() => setPresetKey(preset.key)}
+                    className={`relative rounded-lg border p-4 text-left transition ${
+                      selected
+                        ? "border-amber-500/70 bg-amber-500/10"
+                        : "border-white/10 bg-white/[0.03] hover:border-white/25"
+                    }`}
+                  >
+                    {selected && (
+                      <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-black">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                    <div
+                      className="mb-3 flex h-14 items-center justify-center gap-1.5 rounded-md"
+                      style={{ backgroundColor: preset.colors.background }}
+                    >
+                      {[preset.colors.surface, preset.colors.text, preset.colors.mutedText, accentColor || preset.colors.accent].map(
+                        (color, index) => (
+                          <span key={index} className="h-6 w-6 rounded-full border border-black/10" style={{ backgroundColor: color }} />
+                        ),
+                      )}
+                    </div>
+                    <h4 className="text-sm font-semibold text-white">{preset.name}</h4>
+                    <p className="mt-1 text-xs leading-relaxed text-white/50">{preset.description}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <h3 className="mb-2 mt-5 text-xs font-semibold uppercase tracking-wide text-white/40">Formaat</h3>
+            <div className="flex flex-wrap gap-2">
+              {([["portret", "Staand (A4)"], ["landscape", "Liggend (A4)"]] as const).map(([value, lbl]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setOrientation(value)}
+                  className={`rounded-md border px-4 py-2 text-sm transition ${
+                    orientation === value
+                      ? "border-amber-500/70 bg-amber-500/10 text-amber-200"
+                      : "border-white/10 bg-white/[0.03] text-white/60 hover:border-white/25"
+                  }`}
+                >
+                  {lbl}
+                </button>
+              ))}
+            </div>
+
+            <h3 className="mb-2 mt-5 text-xs font-semibold uppercase tracking-wide text-white/40">Accentkleur</h3>
+            <div className="flex flex-wrap items-center gap-2">
               <button
-                key={template.id}
                 type="button"
-                onClick={() => template.available && setTemplateId(template.id)}
-                disabled={!template.available}
-                className={`relative rounded-lg border p-4 text-left transition ${
-                  selected
-                    ? "border-amber-500/70 bg-amber-500/10"
-                    : template.available
-                      ? "border-white/10 bg-white/[0.03] hover:border-white/25"
-                      : "cursor-not-allowed border-white/5 bg-white/[0.02] opacity-60"
+                onClick={() => setAccentColor("")}
+                title="Standaardaccent van de stijl"
+                className={`h-8 rounded-md border px-3 text-xs transition ${
+                  accentColor === "" ? "border-amber-500/70 text-amber-200" : "border-white/10 text-white/60 hover:border-white/25"
                 }`}
               >
-                {!template.available && (
-                  <span className="absolute right-3 top-3 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white/50">
-                    Binnenkort beschikbaar
-                  </span>
-                )}
-                {selected && (
-                  <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-black">
-                    <Check className="h-3 w-3" />
-                  </span>
-                )}
-                <div
-                  className="mb-3 flex h-16 items-center justify-center gap-1.5 rounded-md"
-                  style={{ backgroundColor: template.colors.background }}
-                >
-                  {[template.colors.surface, template.colors.text, template.colors.mutedText, template.colors.accent].map(
-                    (color, index) => (
-                      <span
-                        key={index}
-                        className="h-6 w-6 rounded-full border border-black/10"
-                        style={{ backgroundColor: color }}
-                      />
-                    ),
-                  )}
-                </div>
-                <h3 className="text-sm font-semibold text-white">{template.name}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/50">{template.description}</p>
+                Standaard
               </button>
-            );
-          })}
+              {ALBUM_ACCENT_SWATCHES.map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setAccentColor(color)}
+                  title={color}
+                  aria-label={`Accent ${color}`}
+                  className={`h-8 w-8 rounded-full border-2 transition hover:scale-110 ${
+                    accentColor.toLowerCase() === color.toLowerCase() ? "border-white" : "border-transparent"
+                  }`}
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+              <label className="ml-1 inline-flex items-center gap-1.5 text-xs text-white/50">
+                Eigen
+                <input
+                  type="color"
+                  value={accentColor || selectedPreset.colors.accent}
+                  onChange={(e) => setAccentColor(e.target.value)}
+                  className="h-8 w-10 cursor-pointer rounded border border-white/10 bg-transparent"
+                  aria-label="Eigen accentkleur"
+                />
+              </label>
+            </div>
+            <p className="mt-3 text-[11px] text-white/40">
+              De accentkleur stem je best af op de gemiddelde sfeer van de reportage. Ze is later in de
+              builder nog aanpasbaar.
+            </p>
+          </div>
+
+          {/* Live cover-preview */}
+          <div>
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-white/40">Voorbeeld cover</h3>
+            <div className="flex justify-center rounded-lg border border-white/10 bg-white/[0.03] p-4">
+              <PagePreview
+                template={selectedTemplate}
+                frames={coverFrames}
+                textBlocks={coverText}
+                photosById={photosById}
+                width={orientation === "portret" ? 210 : 300}
+                zoomFactor={orientation === "portret" ? 0.74 : 0.92}
+              />
+            </div>
+            <p className="mt-2 text-center text-[11px] text-white/40">{selectedTemplate.name}</p>
+          </div>
         </div>
       )}
 
@@ -538,38 +783,6 @@ function AlbumWizard({ project, photos, openTab }: ProjectTabProps) {
 
 /* ========================= Builder ========================= */
 
-function previewTextStyle(
-  role: AlbumTextBlock["role"],
-  template: WeddingAlbumTemplate,
-  zoomFactor: number,
-): React.CSSProperties {
-  const serif = "'Cormorant Garamond', Georgia, serif";
-  switch (role) {
-    case "title":
-      return { fontFamily: serif, fontSize: 24 * zoomFactor, fontWeight: 600, color: template.colors.text };
-    case "subtitle":
-      return {
-        fontFamily: serif,
-        fontSize: 10 * zoomFactor,
-        letterSpacing: 2,
-        textTransform: "uppercase",
-        color: template.colors.mutedText,
-      };
-    case "body":
-      return { fontSize: 8 * zoomFactor, lineHeight: 1.6, color: template.colors.text };
-    case "quote":
-      return { fontFamily: serif, fontSize: 14 * zoomFactor, lineHeight: 1.4, color: template.colors.text };
-    case "caption":
-    case "meta":
-      return {
-        fontSize: 7 * zoomFactor,
-        letterSpacing: 1.5,
-        textTransform: "uppercase",
-        color: template.colors.mutedText,
-      };
-  }
-}
-
 function AlbumBuilder({
   project,
   photos,
@@ -577,7 +790,7 @@ function AlbumBuilder({
   setAlbum,
   openTab,
 }: ProjectTabProps & { album: WeddingAlbum }) {
-  const template = getAlbumTemplate(album.templateId);
+  const template = resolveAlbumTemplate(album.templateId, album.accentColor);
   const [selectedPageId, setSelectedPageId] = useState<string | null>(album.pages[0]?.id ?? null);
   const [selectedFrameIndex, setSelectedFrameIndex] = useState<number | null>(null);
   const [showGuides, setShowGuides] = useState(false);
@@ -769,6 +982,7 @@ function AlbumBuilder({
 
   return (
     <div className="flex flex-col gap-4">
+      <AlbumPreviewFonts />
       {/* Topbalk */}
       <div className="flex flex-wrap items-center gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3">
         <input
@@ -795,6 +1009,42 @@ function AlbumBuilder({
             </option>
           )}
         </select>
+
+        {/* Accentkleur (live) */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-white/50">Accent</span>
+          {ALBUM_ACCENT_SWATCHES.map((color) => (
+            <button
+              key={color}
+              type="button"
+              onClick={() => update((a) => ({ ...a, accentColor: color }))}
+              title={color}
+              aria-label={`Accent ${color}`}
+              className={`h-5 w-5 rounded-full border-2 transition ${
+                (album.accentColor ?? "").toLowerCase() === color.toLowerCase() ? "border-white" : "border-transparent"
+              }`}
+              style={{ backgroundColor: color }}
+            />
+          ))}
+          <input
+            type="color"
+            value={album.accentColor || template.colors.accent}
+            onChange={(e) => update((a) => ({ ...a, accentColor: e.target.value }))}
+            className="h-6 w-7 cursor-pointer rounded border border-white/10 bg-transparent"
+            aria-label="Eigen accentkleur"
+          />
+          {album.accentColor && (
+            <button
+              type="button"
+              onClick={() => update((a) => ({ ...a, accentColor: undefined }))}
+              className="text-[11px] text-white/45 hover:text-white/70"
+              title="Terug naar het standaardaccent van de stijl"
+            >
+              reset
+            </button>
+          )}
+        </div>
+
         <div className="ml-auto flex items-center gap-3">
           {dirty && <span className="text-xs text-amber-300">Niet-opgeslagen wijzigingen</span>}
           {saveMessage && (
@@ -985,13 +1235,15 @@ function AlbumBuilder({
                         title={photo ? photo.filename : "Leeg kader: klik om een foto te kiezen"}
                         className={`absolute overflow-hidden transition ${
                           frameSelected ? "ring-2 ring-amber-400 ring-offset-1 ring-offset-black/20" : ""
-                        } ${photo ? "" : "border border-dashed"}`}
+                        } ${photo || frame.framed ? "" : "border border-dashed"}`}
                         style={{
                           left: `${frame.x}%`,
                           top: `${frame.y}%`,
                           width: `${frame.width}%`,
                           height: `${frame.height}%`,
-                          borderColor: photo ? undefined : template.colors.accent,
+                          border: frame.framed ? `1px solid ${template.colors.hairline}` : undefined,
+                          padding: frame.framed ? 3 : undefined,
+                          borderColor: frame.framed ? template.colors.hairline : photo ? undefined : template.colors.accent,
                           backgroundColor: photo ? undefined : template.colors.surface,
                         }}
                       >
@@ -1006,6 +1258,15 @@ function AlbumBuilder({
                             Leeg kader
                           </span>
                         )}
+                        {frame.scrim && photo ? (
+                          <span
+                            className="pointer-events-none absolute inset-0"
+                            style={{
+                              background:
+                                "linear-gradient(to top, rgba(18,13,8,0.62), rgba(18,13,8,0.14) 46%, rgba(18,13,8,0.28))",
+                            }}
+                          />
+                        ) : null}
                       </button>
                     );
                   })}
@@ -1018,7 +1279,7 @@ function AlbumBuilder({
                         top: `${block.y}%`,
                         width: `${block.width}%`,
                         textAlign: block.align,
-                        ...previewTextStyle(block.role, template, zoomFactor),
+                        ...previewTextStyle(block, template, zoomFactor),
                       }}
                     >
                       {block.text || " "}

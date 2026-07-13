@@ -17,7 +17,7 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="py-12 px-4 sm:py-16 md:py-24 relative"
+      className="py-12 sm:py-16 md:py-24 relative"
     >
       <div className="container mx-auto relative z-10">
         <FeaturesHeader />

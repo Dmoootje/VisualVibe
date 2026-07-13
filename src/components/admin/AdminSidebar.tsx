@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Mail, Settings, Palette, ArrowLeft, Camera } from "lucide-react";
+import { LayoutDashboard, Users, Mail, Inbox, Settings, Palette, ArrowLeft, Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
 
@@ -13,6 +13,19 @@ type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; chil
 const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/leads", label: "Leads", icon: Users },
+  {
+    href: "/admin/email",
+    label: "E-mail",
+    icon: Inbox,
+    children: [
+      { href: "/admin/email/inbox", label: "Postvak IN" },
+      { href: "/admin/email/starred", label: "Met ster" },
+      { href: "/admin/email/sent", label: "Verzonden" },
+      { href: "/admin/email/drafts", label: "Concepten" },
+      { href: "/admin/email/outbox", label: "Outbox" },
+      { href: "/admin/email/accounts", label: "Mailboxaccounts" },
+    ],
+  },
   { href: "/admin/nieuwsbrief", label: "Nieuwsbrief", icon: Mail },
   {
     href: "/admin/trouwstudio",

@@ -355,6 +355,15 @@ export async function sendSmtpMail(
       ...(message.messageId ? { messageId: message.messageId } : {}),
       ...(inReplyTo ? { inReplyTo } : {}),
       ...(references?.length ? { references } : {}),
+      ...(message.attachments?.length
+        ? {
+            attachments: message.attachments.map((attachment) => ({
+              filename: attachment.filename,
+              content: attachment.content,
+              ...(attachment.contentType ? { contentType: attachment.contentType } : {}),
+            })),
+          }
+        : {}),
     });
 
     return {
