@@ -12,6 +12,7 @@ import {
   getCategoryBySlug,
   kennisbankCategories,
 } from "@/data/kennisbankCategories";
+import { kennisbankCategoryFeatured } from "@/data/kennisbankImages";
 import { businessConfig } from "@/config/business.config";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
@@ -198,6 +199,7 @@ export default async function KennisbankCategoryPage({
         ]}
         graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
         search={<CategoryHeroSearch />}
+        backgroundImage={kennisbankCategoryFeatured(categoryDef.slug)}
       />
 
       <section className="relative z-[2]">

@@ -1,15 +1,19 @@
 // Uploadt de kennisbank-afbeeldingen naar Firebase Storage en genereert
 // src/data/kennisbankImages.ts met de echte download-URL's.
 //
-// Twee soorten beelden (bron: ./visualvibe-og-images):
-//   - OG (vierkant, met tekst)  -> images/og-images/kennisbank/<cat>/<file>.webp   (social)
-//   - Featured (zonder tekst)   -> images/kennisbank-featured/<blog-cat-slug>.webp (hero + cards)
+// File-driven: uploadt ALLE beelden uit ./visualvibe-og-images (niet enkel wat
+// in manifest.json staat). Twee soorten:
+//   - OG (vierkant, met tekst): per categoriemap <cat>/<file>.webp
+//       * kennisbank-<cat>.webp    -> categorie-OG  -> /kennisbank/<cat>/
+//       * <cat>-<slug>.webp        -> artikel-OG    -> /kennisbank/<cat>/<slug>/
+//     naar images/og-images/kennisbank/<cat>/<file>.webp   (social)
+//   - Featured (zonder tekst): map "Featured blog images/blog-<...>.webp"
+//       * blog-kennisbank-<cat>.webp   -> categorie-featured
+//       * blog-<cat>-<slug>.webp       -> artikel-featured (bij "-vN" wint de hoogste versie)
+//     naar images/kennisbank-featured/<file>.webp          (hero + cards)
 //
-// Draaien (met je Firebase-credentials):
+// Draaien (met je Firebase-credentials in .env.local of de omgeving):
 //   node scripts/upload-kennisbank-images.mjs
-// Credentials: FIREBASE_SERVICE_ACCOUNT_KEY (JSON op één regel) of
-// GOOGLE_APPLICATION_CREDENTIALS (pad naar service-account key), plus optioneel
-// FIREBASE_STORAGE_BUCKET. .env.local wordt automatisch ingelezen.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -26,7 +30,6 @@ const FEATURED_DIR = path.join(SOURCE_DIR, "Featured blog images");
 const OUTPUT_FILE = path.join(ROOT, "src", "data", "kennisbankImages.ts");
 const DEFAULT_BUCKET = "gen-lang-client-0235296023";
 
-/** Minimale .env.local-loader zodat dit los van Next dezelfde config gebruikt. */
 function loadEnvLocal() {
   const envPath = path.join(ROOT, ".env.local");
   if (!fs.existsSync(envPath)) return;
@@ -45,12 +48,8 @@ function initFirebase() {
   const bucket = (process.env.FIREBASE_STORAGE_BUCKET || DEFAULT_BUCKET).trim();
   if (getApps().length === 0) {
     const rawKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY?.trim();
-    if (rawKey) {
-      initializeApp({ credential: cert(JSON.parse(rawKey)), storageBucket: bucket });
-    } else {
-      // Application Default Credentials (GOOGLE_APPLICATION_CREDENTIALS of gcloud auth).
-      initializeApp({ storageBucket: bucket });
-    }
+    if (rawKey) initializeApp({ credential: cert(JSON.parse(rawKey)), storageBucket: bucket });
+    else initializeApp({ storageBucket: bucket });
   }
   return { storage: getStorage().bucket(bucket), bucket };
 }
@@ -61,35 +60,37 @@ async function uploadWebp(storage, bucket, localPath, storagePath) {
   const token = randomUUID();
   await storage.file(storagePath).save(bytes, {
     resumable: false,
-    metadata: {
-      contentType: "image/webp",
-      metadata: { firebaseStorageDownloadTokens: token },
-    },
+    metadata: { contentType: "image/webp", metadata: { firebaseStorageDownloadTokens: token } },
   });
   const url = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(storagePath)}?alt=media&token=${token}`;
   return { url, width: meta.width ?? 0, height: meta.height ?? 0 };
 }
 
-function serialize(ogMap, featuredMap) {
+function serialize(ogMap, featuredMap, categoryFeaturedMap) {
   const ogLines = Object.keys(ogMap)
     .sort()
     .map((key) => {
-      const value = ogMap[key];
-      return `  ${JSON.stringify(key)}: { url: ${JSON.stringify(value.url)}, width: ${value.width}, height: ${value.height} },`;
+      const v = ogMap[key];
+      return `  ${JSON.stringify(key)}: { url: ${JSON.stringify(v.url)}, width: ${v.width}, height: ${v.height} },`;
     })
     .join("\n");
   const featuredLines = Object.keys(featuredMap)
     .sort()
     .map((key) => `  ${JSON.stringify(key)}: ${JSON.stringify(featuredMap[key])},`)
     .join("\n");
+  const categoryLines = Object.keys(categoryFeaturedMap)
+    .sort()
+    .map((key) => `  ${JSON.stringify(key)}: ${JSON.stringify(categoryFeaturedMap[key])},`)
+    .join("\n");
 
   return `// GEGENEREERD door scripts/upload-kennisbank-images.mjs - niet met de hand
 // bewerken. Draai dat script (met Firebase-credentials) om de afbeeldingen naar
 // de bucket te uploaden en dit bestand met de echte download-URL's te vullen.
 //
-// Twee soorten beelden per kennisbankartikel/-categorie:
+// Drie soorten beelden:
 //  - OG: vierkante deelafbeelding met tekst erop -> alleen social (og:image).
-//  - Featured: uitgelichte afbeelding zonder tekst -> hero + alle cards.
+//  - Featured (artikel): uitgelichte afbeelding zonder tekst -> hero + alle cards.
+//  - Featured (categorie): beeld zonder tekst voor de categoriehero.
 
 import type { OgImage } from "./ogImages";
 
@@ -98,73 +99,113 @@ export const KENNISBANK_OG: Record<string, OgImage> = {
 ${ogLines}
 };
 
-/** "categorySlug/slug" -> uitgelichte afbeelding (zonder tekst). */
+/** "categorySlug/slug" -> uitgelichte artikelafbeelding (zonder tekst). */
 export const KENNISBANK_FEATURED: Record<string, string> = {
 ${featuredLines}
+};
+
+/** categorySlug -> uitgelichte categorie-afbeelding (zonder tekst). */
+export const KENNISBANK_CATEGORY_FEATURED: Record<string, string> = {
+${categoryLines}
 };
 
 /** Uitgelichte afbeelding voor een artikel, op categorySlug + slug. */
 export function kennisbankFeatured(categorySlug: string, slug: string): string | undefined {
   return KENNISBANK_FEATURED[\`\${categorySlug}/\${slug}\`];
 }
+
+/** Uitgelichte afbeelding voor een categorie. */
+export function kennisbankCategoryFeatured(categorySlug: string): string | undefined {
+  return KENNISBANK_CATEGORY_FEATURED[categorySlug];
+}
 `;
 }
 
 async function main() {
   loadEnvLocal();
-  if (!fs.existsSync(SOURCE_DIR)) {
-    throw new Error(`Bronmap ontbreekt: ${SOURCE_DIR}`);
-  }
-  const manifest = JSON.parse(fs.readFileSync(path.join(SOURCE_DIR, "manifest.json"), "utf8"));
+  if (!fs.existsSync(SOURCE_DIR)) throw new Error(`Bronmap ontbreekt: ${SOURCE_DIR}`);
+
+  const categories = fs
+    .readdirSync(SOURCE_DIR, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && entry.name !== "Featured blog images")
+    .map((entry) => entry.name)
+    .sort((a, b) => b.length - a.length); // langste eerst voor prefix-matching
+
   const { storage, bucket } = initFirebase();
-  console.log(`Bucket: ${bucket}`);
+  console.log(`Bucket: ${bucket}\nCategorieen: ${categories.join(", ")}\n`);
 
   const ogMap = {};
   const featuredMap = {};
-  const missing = [];
+  const featuredVersion = {}; // key -> hoogste gevonden versie
+  const categoryFeaturedMap = {};
   let ogCount = 0;
-  let featuredCount = 0;
+  let featCount = 0;
 
-  for (const entry of manifest) {
-    // OG-afbeelding: manifest noemt .png, de echte bestanden zijn .webp.
-    const relWebp = entry.filename.replace(/\.png$/i, ".webp");
-    const ogLocal = path.join(SOURCE_DIR, relWebp);
-    if (fs.existsSync(ogLocal)) {
-      const storagePath = `images/og-images/kennisbank/${relWebp}`;
-      const result = await uploadWebp(storage, bucket, ogLocal, storagePath);
-      ogMap[entry.url] = result;
-      ogCount += 1;
-      console.log(`OG  ${entry.url} -> ${storagePath}`);
-    } else {
-      missing.push(ogLocal);
-    }
-
-    // Featured-afbeelding: alleen voor artikels (blog-<cat>-<slug>.webp).
-    if (entry.type === "article") {
-      const parts = entry.url.split("/").filter(Boolean); // ["kennisbank", cat, slug]
-      const categorySlug = parts[1];
-      const slug = parts[2];
-      const featuredName = `blog-${categorySlug}-${slug}.webp`;
-      const featuredLocal = path.join(FEATURED_DIR, featuredName);
-      if (fs.existsSync(featuredLocal)) {
-        const storagePath = `images/kennisbank-featured/${featuredName}`;
-        const result = await uploadWebp(storage, bucket, featuredLocal, storagePath);
-        featuredMap[`${categorySlug}/${slug}`] = result.url;
-        featuredCount += 1;
-        console.log(`FEAT ${categorySlug}/${slug} -> ${storagePath}`);
+  // --- OG-afbeeldingen per categoriemap ---
+  for (const cat of categories) {
+    const dir = path.join(SOURCE_DIR, cat);
+    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".webp"))) {
+      const base = file.replace(/\.webp$/i, "");
+      let canonical;
+      if (base === `kennisbank-${cat}`) {
+        canonical = `/kennisbank/${cat}/`;
+      } else if (base.startsWith(`${cat}-`)) {
+        canonical = `/kennisbank/${cat}/${base.slice(cat.length + 1)}/`;
       } else {
-        missing.push(featuredLocal);
+        console.warn(`OG overgeslagen (onverwachte naam): ${cat}/${file}`);
+        continue;
       }
+      const result = await uploadWebp(storage, bucket, path.join(dir, file), `images/og-images/kennisbank/${cat}/${file}`);
+      ogMap[canonical] = result;
+      ogCount += 1;
+      console.log(`OG   ${canonical}`);
     }
   }
 
-  fs.writeFileSync(OUTPUT_FILE, serialize(ogMap, featuredMap), "utf8");
-  console.log(`\nKlaar. ${ogCount} OG-beelden, ${featuredCount} featured-beelden geupload.`);
-  console.log(`Geschreven: ${path.relative(ROOT, OUTPUT_FILE)}`);
-  if (missing.length > 0) {
-    console.warn(`\nLET OP - ${missing.length} bronbestand(en) niet gevonden:`);
-    for (const file of missing) console.warn(`  - ${path.relative(ROOT, file)}`);
+  // --- Featured-afbeeldingen ---
+  if (fs.existsSync(FEATURED_DIR)) {
+    for (const file of fs.readdirSync(FEATURED_DIR).filter((f) => f.endsWith(".webp"))) {
+      const rest = file.replace(/^blog-/, "").replace(/\.webp$/i, "");
+      const storagePath = `images/kennisbank-featured/${file}`;
+
+      if (rest.startsWith("kennisbank-")) {
+        // Categorie-featured: blog-kennisbank-<cat>.webp
+        const cat = rest.slice("kennisbank-".length);
+        const result = await uploadWebp(storage, bucket, path.join(FEATURED_DIR, file), storagePath);
+        categoryFeaturedMap[cat] = result.url;
+        featCount += 1;
+        console.log(`CAT  ${cat}`);
+        continue;
+      }
+
+      const cat = categories.find((c) => rest.startsWith(`${c}-`));
+      if (!cat) {
+        console.warn(`Featured overgeslagen (geen categorie herkend): ${file}`);
+        continue;
+      }
+      const rawSlug = rest.slice(cat.length + 1);
+      const versionMatch = rawSlug.match(/-v(\d+)$/);
+      const version = versionMatch ? Number(versionMatch[1]) : 0;
+      const slug = versionMatch ? rawSlug.slice(0, -versionMatch[0].length) : rawSlug;
+      const key = `${cat}/${slug}`;
+
+      // Elk bestand wordt geuploaded; de map wijst naar de hoogste versie.
+      const result = await uploadWebp(storage, bucket, path.join(FEATURED_DIR, file), storagePath);
+      featCount += 1;
+      if (featuredVersion[key] === undefined || version >= featuredVersion[key]) {
+        featuredVersion[key] = version;
+        featuredMap[key] = result.url;
+      }
+      console.log(`FEAT ${key}${version ? ` (v${version})` : ""}`);
+    }
   }
+
+  fs.writeFileSync(OUTPUT_FILE, serialize(ogMap, featuredMap, categoryFeaturedMap), "utf8");
+  console.log(
+    `\nKlaar. ${ogCount} OG-beelden, ${featCount} featured-bestanden geupload ` +
+      `(${Object.keys(featuredMap).length} artikels, ${Object.keys(categoryFeaturedMap).length} categorieen).`,
+  );
+  console.log(`Geschreven: ${path.relative(ROOT, OUTPUT_FILE)}`);
 }
 
 main().catch((error) => {

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ export function KbHeroShell({
   stats,
   search,
   graphic,
+  backgroundImage,
 }: {
   breadcrumb: KbBreadcrumb[];
   eyebrow: { icon: React.ReactNode; label: string };
@@ -31,9 +33,17 @@ export function KbHeroShell({
   stats: KbStat[];
   search: React.ReactNode;
   graphic?: React.ReactNode;
+  /** Subtiele volle-breedte herotextuur (bv. categoriebeeld zonder tekst). */
+  backgroundImage?: string;
 }) {
   return (
     <header className="relative overflow-hidden border-b border-white/[0.06] pb-11 pt-28 sm:pt-32 md:pt-36">
+      {backgroundImage && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+          <Image src={backgroundImage} alt="" fill sizes="100vw" className="object-cover opacity-[0.18]" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]/55" />
+        </div>
+      )}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-16 -top-44 z-0 h-[640px] w-[760px]"
