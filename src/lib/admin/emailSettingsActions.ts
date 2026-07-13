@@ -210,6 +210,23 @@ function parseSettings(
     },
   };
 
+  // Header-/footer-HTML (Opmaak-tab). Alleen meesturen wanneer de velden in
+  // het formulier zaten; een lege string is een bewuste "geen header/footer".
+  const headerHtml = formData.get("brandingHeaderHtml");
+  const footerHtml = formData.get("brandingFooterHtml");
+  if (typeof headerHtml === "string" || typeof footerHtml === "string") {
+    const tooLong = [headerHtml, footerHtml].some(
+      (html) => typeof html === "string" && html.length > 100_000,
+    );
+    if (tooLong) {
+      return { error: "De header- of footer-HTML is te groot (max 100.000 tekens)." };
+    }
+    update.branding = {
+      ...(typeof headerHtml === "string" ? { headerHtml } : {}),
+      ...(typeof footerHtml === "string" ? { footerHtml } : {}),
+    };
+  }
+
   return {
     data: {
       update,
@@ -225,6 +242,7 @@ function mergeSettings(current: EmailSettings, update: EmailSettingsUpdate): Ema
     smtp: { ...current.smtp, ...update.smtp },
     imap: { ...current.imap, ...update.imap },
     automation: { ...current.automation, ...update.automation },
+    branding: { ...current.branding, ...update.branding },
   };
 }
 

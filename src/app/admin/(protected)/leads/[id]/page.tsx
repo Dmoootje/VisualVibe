@@ -28,13 +28,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     notFound();
   }
 
-  const [notes, events, mailHistory, analysisLeads, emailSettings] = await Promise.all([
+  // Deelqueries mogen de pagina nooit laten crashen (bv. een nog niet
+  // gedeployde Firestore-index): degradeer naar een lege lijst + waarschuwing.
+  const [notes, events, mailHistoryResult, analysisLeadsResult, emailSettings] = await Promise.all([
     listNotesByLead(id),
     listEventsByLead(id),
-    listMailHistoryByLead(id),
-    listAnalysisLeadsByLeadId(id),
+    listMailHistoryByLead(id).then(
+      (history) => ({ history, error: null as string | null }),
+      (err: unknown) => ({ history: [], error: err instanceof Error ? err.message : "Onbekende fout" }),
+    ),
+    listAnalysisLeadsByLeadId(id).catch(() => []),
     getEmailSettingsForAdmin(),
   ]);
+  const mailHistory = mailHistoryResult.history;
+  const analysisLeads = analysisLeadsResult;
 
   // Analysepaneel tonen bij een analyselead of wanneer er analyses aan deze
   // lead hangen. De e-mailhistoriek gebruikt het genormaliseerde adres uit de
@@ -101,6 +108,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             />
           )}
 
+          {mailHistoryResult.error && (
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+              De e-mailhistoriek kon niet geladen worden. Ontbreekt er een Firestore-index? Voer dan
+              eenmalig <code className="rounded bg-black/40 px-1.5 py-0.5">firebase deploy --only firestore:indexes</code>{" "}
+              uit. Foutmelding: {mailHistoryResult.error.slice(0, 180)}
+            </div>
+          )}
           <LeadCommunicationPanel
             leadId={lead.id}
             history={mailHistory}

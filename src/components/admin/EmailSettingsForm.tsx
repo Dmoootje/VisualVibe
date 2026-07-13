@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { AlertTriangle, CheckCircle2, FlaskConical, Inbox, Mail, Send, Server } from "lucide-react";
+import { useActionState, useState } from "react";
+import { AlertTriangle, CheckCircle2, FlaskConical, Inbox, Mail, Paintbrush, Send, Server } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   saveEmailSettingsAction,
@@ -11,6 +11,11 @@ import {
   type EmailSettingsActionState,
 } from "@/lib/admin/emailSettingsActions";
 import { EMAIL_FORM_TYPES, type EmailSettingsAdminView } from "@/types/email";
+import {
+  DEFAULT_EMAIL_FOOTER_HTML,
+  DEFAULT_EMAIL_HEADER_HTML,
+  renderBrandingHtml,
+} from "@/lib/email/brandingDefaults";
 
 const INITIAL_EMAIL_SETTINGS_ACTION_STATE: EmailSettingsActionState = { status: "idle" };
 
@@ -44,11 +49,14 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
     INITIAL_EMAIL_SETTINGS_ACTION_STATE,
   );
 
+  const [headerHtml, setHeaderHtml] = useState(settings.branding.headerHtml);
+  const [footerHtml, setFooterHtml] = useState(settings.branding.footerHtml);
+
   const busy = savePending || connectionPending || testMailPending || imapConnectionPending;
   return (
     <form action={saveAction} className="flex flex-col gap-6">
       <Tabs defaultValue="smtp" className="w-full">
-        <TabsList className="grid h-auto w-full grid-cols-2 border border-white/10 bg-white/5 p-1 text-white/60 sm:w-fit sm:min-w-[560px] sm:grid-cols-4">
+        <TabsList className="grid h-auto w-full grid-cols-2 border border-white/10 bg-white/5 p-1 text-white/60 sm:w-fit sm:min-w-[680px] sm:grid-cols-5">
           <TabsTrigger
             value="smtp"
             className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white"
@@ -69,6 +77,13 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
           >
             <FlaskConical className="h-4 w-4" aria-hidden="true" />
             Automatisering
+          </TabsTrigger>
+          <TabsTrigger
+            value="branding"
+            className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white"
+          >
+            <Paintbrush className="h-4 w-4" aria-hidden="true" />
+            Opmaak
           </TabsTrigger>
           <TabsTrigger
             value="preview"
@@ -348,6 +363,84 @@ export function EmailSettingsForm({ settings }: { settings: EmailSettingsAdminVi
                 ))}
               </div>
             </fieldset>
+          </Panel>
+        </TabsContent>
+
+        <TabsContent value="branding" forceMount className="mt-5 focus-visible:ring-amber-500/70 data-[state=inactive]:hidden">
+          <Panel
+            title="E-mailheader en -footer"
+            description="Deze HTML wordt boven en onder elke uitgaande mail geplaatst (bevestigingen, meldingen en antwoorden). Plak hier je eigen e-mail-HTML; de placeholder {{currentYear}} wordt automatisch vervangen. Maak beide velden leeg om terug te vallen op de klassieke lay-out."
+          >
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-3">
+                <label htmlFor="brandingHeaderHtml" className="text-sm font-medium text-white/85">
+                  Header-HTML
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setHeaderHtml(DEFAULT_EMAIL_HEADER_HTML)}
+                  className="rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/75 hover:bg-white/10"
+                >
+                  Herstel standaardheader
+                </button>
+              </div>
+              <textarea
+                id="brandingHeaderHtml"
+                name="brandingHeaderHtml"
+                value={headerHtml}
+                onChange={(e) => setHeaderHtml(e.target.value)}
+                rows={12}
+                spellCheck={false}
+                className={`${inputClasses} font-mono text-xs leading-relaxed`}
+                placeholder="<table>...</table>"
+              />
+              <p className="text-xs text-white/45">Voorbeeld:</p>
+              <iframe
+                title="Headervoorbeeld"
+                sandbox=""
+                srcDoc={`<!doctype html><html><body style="margin:0;background:#0a0a0a;">${renderBrandingHtml(headerHtml)}</body></html>`}
+                className="h-40 w-full rounded-lg border border-white/10 bg-[#0a0a0a]"
+              />
+            </div>
+
+            <div className="mt-2 flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-3">
+                <label htmlFor="brandingFooterHtml" className="text-sm font-medium text-white/85">
+                  Footer-HTML
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setFooterHtml(DEFAULT_EMAIL_FOOTER_HTML)}
+                  className="rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/75 hover:bg-white/10"
+                >
+                  Herstel standaardfooter
+                </button>
+              </div>
+              <textarea
+                id="brandingFooterHtml"
+                name="brandingFooterHtml"
+                value={footerHtml}
+                onChange={(e) => setFooterHtml(e.target.value)}
+                rows={14}
+                spellCheck={false}
+                className={`${inputClasses} font-mono text-xs leading-relaxed`}
+                placeholder="<table>...</table>"
+              />
+              <p className="text-xs text-white/45">Voorbeeld:</p>
+              <iframe
+                title="Footervoorbeeld"
+                sandbox=""
+                srcDoc={`<!doctype html><html><body style="margin:0;background:#0a0a0a;">${renderBrandingHtml(footerHtml)}</body></html>`}
+                className="h-[420px] w-full rounded-lg border border-white/10 bg-[#0a0a0a]"
+              />
+            </div>
+
+            <div className="rounded-lg border border-sky-400/20 bg-sky-400/[0.07] p-4 text-sm leading-6 text-sky-100/80">
+              De inhoud van de mail (tekst, tabellen, handtekening) verschijnt als witte kaart tussen
+              header en footer. De header verwijst naar{" "}
+              <code className="rounded bg-black/40 px-1.5 py-0.5">/logo-email.png</code>; dat bestand
+              staat in de public-map van de site.
+            </div>
           </Panel>
         </TabsContent>
 

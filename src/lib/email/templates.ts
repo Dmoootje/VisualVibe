@@ -14,6 +14,8 @@ import type {
   RenderedEmail,
 } from "@/types/email";
 
+import { renderBrandingHtml } from "@/lib/email/brandingDefaults";
+
 const SITE_URL = "https://visualvibe.media";
 const LOGO_URL = `${SITE_URL}/logo.svg`;
 
@@ -162,8 +164,53 @@ type LayoutInput = {
   cta?: { label: string; url: string } | null;
 };
 
+/**
+ * Signatuurblok (naam/rol/telefoon/e-mail/site) dat in beide lay-outvarianten
+ * onder de inhoud staat.
+ */
+function signatureHtml(settings: EmailSettings | EmailSettingsAdminView): string {
+  const signature = settings.automation;
+  const website = absoluteUrl(signature.signatureWebsite);
+  return `<tr><td style="padding:22px 30px;background:#faf8f5;border-top:1px solid #ece7e1;font-family:Arial,sans-serif;color:#4a4641;font-size:12px;line-height:1.6;"><strong style="color:#171717;">${escapeHtml(cleanText(signature.signatureName) || "VisualVibe")}</strong>${signature.signatureRole ? `<br>${escapeHtml(cleanText(signature.signatureRole))}` : ""}${signature.signaturePhone ? `<br>${escapeHtml(cleanText(signature.signaturePhone))}` : ""}${signature.signatureEmail ? `<br><a href="mailto:${escapeHtml(cleanText(signature.signatureEmail))}" style="color:#c95600;text-decoration:none;">${escapeHtml(cleanText(signature.signatureEmail))}</a>` : ""}${website ? `<br><a href="${escapeHtml(website)}" style="color:#c95600;text-decoration:none;">${escapeHtml(website.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a>` : ""}</td></tr>`;
+}
+
+/**
+ * Gebrande lay-out: de admin-beheerde header- en footer-HTML (Opmaak-tab)
+ * sluiten als donkere, afgeronde boven- en onderkant aan op een donkere
+ * connector; de inhoud zelf blijft een witte kaart zodat alle bestaande
+ * bodyHtml (tabellen, teksten) leesbaar blijft.
+ */
+function renderBrandedHtmlLayout(
+  { preheader, title, bodyHtml, settings, locale = "nl", cta }: LayoutInput,
+  headerHtml: string,
+  footerHtml: string,
+): string {
+  return `<!doctype html>
+<html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head>
+<body style="margin:0;padding:0;background:#0a0a0a;color:#171717;font-family:Arial,Helvetica,sans-serif;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">${escapeHtml(preheader)}</div>
+${headerHtml}
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;"><tr><td align="center" style="padding:0 12px;">
+<table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:100%;max-width:600px;border-collapse:separate;background:#050505;border-left:1px solid #242424;border-right:1px solid #242424;">
+<tr><td style="padding:22px 24px;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:separate;background:#ffffff;border-radius:14px;overflow:hidden;">
+<tr><td style="padding:26px 28px 28px;"><h1 style="margin:0 0 18px;font-family:Arial,sans-serif;font-size:24px;line-height:1.22;color:#111111;">${escapeHtml(title)}</h1>${bodyHtml}${cta ? `<div style="margin:26px 0 2px;"><a href="${escapeHtml(cta.url)}" style="display:inline-block;padding:13px 20px;border-radius:9px;background:#ff7500;color:#ffffff;text-decoration:none;font-size:14px;font-weight:bold;">${escapeHtml(cta.label)}</a></div>` : ""}</td></tr>
+${signatureHtml(settings)}
+</table>
+</td></tr></table></td></tr></table>
+${footerHtml}
+</body></html>`;
+}
+
 /** The single VisualVibe HTML layout used by every outgoing email. */
-function renderHtmlLayout({ preheader, title, bodyHtml, settings, locale = "nl", cta }: LayoutInput): string {
+function renderHtmlLayout(input: LayoutInput): string {
+  const { preheader, title, bodyHtml, settings, locale = "nl", cta } = input;
+  const branding = settings.branding;
+  const headerHtml = renderBrandingHtml(branding?.headerHtml?.trim() ?? "");
+  const footerHtml = renderBrandingHtml(branding?.footerHtml?.trim() ?? "");
+  if (headerHtml || footerHtml) {
+    return renderBrandedHtmlLayout(input, headerHtml, footerHtml);
+  }
   const signature = settings.automation;
   const website = absoluteUrl(signature.signatureWebsite);
   return `<!doctype html>

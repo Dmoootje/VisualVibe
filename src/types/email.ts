@@ -70,11 +70,18 @@ export type EmailAutomationSettings = {
   enabledFormTypes: EmailFormType[];
 };
 
+/** Aangepaste HTML-header/footer rond elke uitgaande mail ({{currentYear}} beschikbaar). */
+export type EmailBrandingSettings = {
+  headerHtml: string;
+  footerHtml: string;
+};
+
 export type EmailSettings = {
   id: "default";
   smtp: SmtpSettings;
   imap: ImapSettings;
   automation: EmailAutomationSettings;
+  branding: EmailBrandingSettings;
   createdAt: string;
   updatedAt: string;
   updatedBy?: string;
@@ -89,6 +96,7 @@ export type EmailSettingsUpdate = {
   smtp?: Partial<Omit<SmtpSettings, "encryptedPassword">>;
   imap?: Partial<Omit<ImapSettings, "encryptedPassword">>;
   automation?: Partial<EmailAutomationSettings>;
+  branding?: Partial<EmailBrandingSettings>;
 };
 
 export const MAIL_HISTORY_TYPES = [

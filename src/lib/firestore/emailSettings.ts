@@ -8,6 +8,7 @@ import {
   IMAP_SECURITY_MODES,
   SMTP_SECURITY_MODES,
   type EmailAutomationSettings,
+  type EmailBrandingSettings,
   type EmailFormType,
   type EmailLocale,
   type EmailSettings,
@@ -18,6 +19,12 @@ import {
   type SmtpSecurity,
   type SmtpSettings,
 } from "@/types/email";
+import { DEFAULT_EMAIL_FOOTER_HTML, DEFAULT_EMAIL_HEADER_HTML } from "@/lib/email/brandingDefaults";
+
+export const DEFAULT_EMAIL_BRANDING: EmailBrandingSettings = {
+  headerHtml: DEFAULT_EMAIL_HEADER_HTML,
+  footerHtml: DEFAULT_EMAIL_FOOTER_HTML,
+};
 
 const COLLECTION = "email_settings";
 const SETTINGS_ID = "default" as const;
@@ -170,6 +177,16 @@ function automationFromData(value: unknown): EmailAutomationSettings {
   };
 }
 
+function brandingFromData(value: unknown): EmailBrandingSettings {
+  const data = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  // Een opgeslagen lege string is een bewuste keuze (geen header/footer);
+  // alleen een ontbrekend veld valt terug op de standaard.
+  return {
+    headerHtml: typeof data.headerHtml === "string" ? data.headerHtml : DEFAULT_EMAIL_BRANDING.headerHtml,
+    footerHtml: typeof data.footerHtml === "string" ? data.footerHtml : DEFAULT_EMAIL_BRANDING.footerHtml,
+  };
+}
+
 function toEmailSettings(data: Record<string, unknown> | undefined): EmailSettings {
   const now = new Date().toISOString();
   return {
@@ -177,6 +194,7 @@ function toEmailSettings(data: Record<string, unknown> | undefined): EmailSettin
     smtp: smtpFromData(data?.smtp),
     imap: imapFromData(data?.imap),
     automation: automationFromData(data?.automation),
+    branding: brandingFromData(data?.branding),
     createdAt: dateValue(data?.createdAt, now),
     updatedAt: dateValue(data?.updatedAt, now),
     ...(typeof data?.updatedBy === "string" ? { updatedBy: data.updatedBy } : {}),
@@ -266,6 +284,12 @@ export async function updateEmailSettings(
     const smtp = applySmtpUpdate(current.smtp, input.smtp);
     const imap = applyImapUpdate(current.imap, input.imap);
     const automation = applyAutomationUpdate(current.automation, input.automation);
+    const branding: EmailBrandingSettings = {
+      headerHtml:
+        typeof input.branding?.headerHtml === "string" ? input.branding.headerHtml : current.branding.headerHtml,
+      footerHtml:
+        typeof input.branding?.footerHtml === "string" ? input.branding.footerHtml : current.branding.footerHtml,
+    };
 
     if (passwords.smtp === null) {
       delete smtp.encryptedPassword;
@@ -283,6 +307,7 @@ export async function updateEmailSettings(
       smtp,
       imap,
       automation,
+      branding,
       createdAt: snapshot.exists ? snapshot.data()?.createdAt ?? now : now,
       updatedAt: now,
       ...(updatedBy ? { updatedBy } : {}),
