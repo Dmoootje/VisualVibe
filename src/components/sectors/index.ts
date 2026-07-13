@@ -4,6 +4,7 @@ export { SectorMarquee } from "./SectorMarquee";
 export { SectorTile } from "./SectorTile";
 export { SectorCard } from "./SectorCard";
 export { SectorDetailHero } from "./SectorDetailHero";
+export { SectorSectionHeader } from "./SectorSectionHeader";
 export { SectorAnswerIntro } from "./SectorAnswerIntro";
 export { SectorChallenges } from "./SectorChallenges";
 export { SectorServices } from "./SectorServices";
