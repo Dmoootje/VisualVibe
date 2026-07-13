@@ -116,13 +116,12 @@ export default async function LocaleLayout({
           >
             {children}
           </ThemeProvider>
+          {/* Inside the intl provider: the banner uses next-intl <Link>, which
+              needs the locale context (it opens client-side, after hydration). */}
+          {gaId && <CookieConsent />}
         </NextIntlClientProvider>
-        {gaId && (
-          <>
-            <CookieConsent />
-            <GoogleAnalytics gaId={gaId} />
-          </>
-        )}
+        {/* GA is just script tags - no intl dependency - so it stays outside. */}
+        {gaId && <GoogleAnalytics gaId={gaId} />}
       </body>
     </html>
   );
