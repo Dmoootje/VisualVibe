@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Section, Container } from "@/components/ui";
 import { BlogCard } from "@/features/home/BlogPreview/components/BlogCard";
+import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import type { BlogPost } from "@/types";
 
 /**
@@ -42,13 +43,14 @@ export function SectorKnowledge({
           </Link>
         </div>
         {/* Same grid + card as the homepage BlogPreview. BlogCard is a client
-            component; strip the full MDX `content` so it never ships in the
-            RSC payload (the card only renders meta/excerpt/image). */}
+            component; project to the slim BlogCardPost so the full MDX `content`
+            and frontmatter arrays never ship in the RSC payload (the card only
+            renders meta/excerpt/image). */}
         <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, index) => (
             <BlogCard
               key={post.slug}
-              post={{ ...post, content: "" }}
+              post={toBlogCardPost(post)}
               index={index}
               authorImage={authorImages?.[post.author]}
             />

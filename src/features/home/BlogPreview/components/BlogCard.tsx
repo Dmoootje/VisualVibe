@@ -5,11 +5,11 @@ import { ArrowRight, CalendarDays, Clock, User } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import type { BlogPost } from "@/types";
+import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
 import { postHref } from "@/lib/kennisbank/urls";
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: BlogCardPost;
   index: number;
   /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
   authorImage?: string;

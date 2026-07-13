@@ -9,6 +9,7 @@ import { SectorMarquee } from "@/components/sectors";
 import { regions, getRegionBySlug } from "@/data/regions";
 import { getServiceBySlug, serviceHref } from "@/data/services";
 import { getAllPosts, localizedPath, slugFromPath } from "@/lib/kennisbank/posts";
+import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo";
@@ -161,7 +162,7 @@ export default async function RegionDetailPage({
                 <ArrowRight className="h-[15px] w-[15px]" />
               </Link>
             </div>
-            <BlogGrid posts={kennisbankPosts} />
+            <BlogGrid posts={kennisbankPosts.map(toBlogCardPost)} />
           </Container>
         </section>
       )}

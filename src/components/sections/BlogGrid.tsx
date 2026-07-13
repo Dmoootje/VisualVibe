@@ -1,9 +1,9 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import type { BlogPost } from "@/types";
+import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
 import { postHref } from "@/lib/kennisbank/urls";
 
-export function BlogGrid({ posts }: { posts: BlogPost[] }) {
+export function BlogGrid({ posts }: { posts: BlogCardPost[] }) {
   if (posts.length === 0) {
     return <p className="text-center text-sm text-white/40">De eerste artikels volgen binnenkort.</p>;
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import type { BlogPost } from "@/types";
+import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
 import { BlogCard } from "./BlogCard";
 
 const MAX_PREVIEW_POSTS = 3;
@@ -9,7 +9,7 @@ export function BlogGrid({
   posts,
   authorImages,
 }: {
-  posts: BlogPost[];
+  posts: BlogCardPost[];
   /** Auteursnaam -> profielfoto-URL (admin-profielen). */
   authorImages?: Record<string, string>;
 }) {

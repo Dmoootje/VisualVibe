@@ -1,5 +1,6 @@
 import { getLocale } from "next-intl/server";
 import { getAllPosts, isBlogLocale } from "@/lib/kennisbank/posts";
+import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { BlogHeader, BlogGrid } from "./components";
 
@@ -11,7 +12,7 @@ const PREVIEW_COUNT = 3;
 export default async function BlogPreview() {
   const locale = await getLocale();
   const blogPosts = isBlogLocale(locale)
-    ? getAllPosts({ locale }).slice(0, PREVIEW_COUNT)
+    ? getAllPosts({ locale }).slice(0, PREVIEW_COUNT).map(toBlogCardPost)
     : [];
 
   if (blogPosts.length === 0) {

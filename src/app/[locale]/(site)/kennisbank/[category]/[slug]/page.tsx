@@ -13,6 +13,7 @@ import {
   postHref,
   categoryHref,
 } from "@/lib/kennisbank/posts";
+import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { extractToc } from "@/lib/kennisbank/toc";
 import { getCategoryBySlug } from "@/data/kennisbankCategories";
 import { getServiceBySlug, serviceHref } from "@/data/services";
@@ -411,7 +412,7 @@ export default async function KennisbankPostPage({
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">Artikels in deze reeks</h2>
-            <BlogGrid posts={clusterPosts} />
+            <BlogGrid posts={clusterPosts.map(toBlogCardPost)} />
           </Container>
         </Section>
       )}
@@ -420,7 +421,7 @@ export default async function KennisbankPostPage({
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
-            <BlogGrid posts={relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated} />
+            <BlogGrid posts={(relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated).map(toBlogCardPost)} />
           </Container>
         </Section>
       )}
