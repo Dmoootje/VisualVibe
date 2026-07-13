@@ -7,7 +7,7 @@ import { featuresConfig } from "../config/features.config";
 export function ExtraServiceChips() {
   return (
     <div className="mt-8 flex flex-col items-center gap-3">
-      <p className="text-xs uppercase tracking-wide text-white/40">Ook onder één dak</p>
+      <p className="text-xs uppercase tracking-wide text-white/60">Ook onder één dak</p>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
         {featuresConfig.extraServices.map((service) => (
           <Link

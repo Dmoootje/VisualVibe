@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
 import { serviceHref } from "@/data/services";
 import { SvcIcon } from "@/components/subdiensten/icons";
+import "./region-services-grid.css";
 
 /**
  * Dienstenkaarten voor de regio-pagina als 12-koloms bento (design_handoff_

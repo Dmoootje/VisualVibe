@@ -93,7 +93,7 @@ export async function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 py-7 sm:flex-row">
-          <span className="text-[13.5px] text-white/45">
+          <span className="text-[13.5px] text-white/60">
             © {new Date().getFullYear()} {businessConfig.displayName}. Alle rechten voorbehouden.
           </span>
           <div className="flex flex-wrap gap-6">

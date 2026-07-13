@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { SvcIcon } from "./icons";
+import "./subdiensten-grid.css";
 
 export type Subdienst = { id: string; name: string; desc: string; href: string };
 

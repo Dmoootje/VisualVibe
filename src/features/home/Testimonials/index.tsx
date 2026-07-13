@@ -60,13 +60,13 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
           />
 
           {isGoogle && (
-            <p className="mt-6 text-center text-sm text-white/50">
+            <p className="mt-6 text-center text-sm text-white/65">
               Reviews via{" "}
               <a
                 href={sourceUrl ?? "https://www.google.com/maps"}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="text-amber-400 hover:underline"
+                className="text-amber-400 underline underline-offset-2 hover:text-amber-300"
               >
                 Google
               </a>

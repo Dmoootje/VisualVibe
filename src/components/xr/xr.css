@@ -1,0 +1,63 @@
+/* 3D/VR/AR service + realisatie pages
+   Moved out of globals.css so it only ships on routes that render this
+   component (keeps the render-blocking global stylesheet smaller). */
+/* ── 3D, VR & AR service + realisatie pages (design_handoff_3d_vr_ar) ── */
+@keyframes xr-halo { to { transform: translate(-50%, -50%) rotate(1turn); } }
+@keyframes xr-floatA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes xr-floatB { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes xr-gridflow { from { background-position: 0 0; } to { background-position: 0 52px; } }
+@keyframes xr-spin { to { transform: rotate(1turn); } }
+@keyframes xr-scan { 0% { transform: translateY(-100%); opacity: 0; } 18% { opacity: .7; } 82% { opacity: .7; } 100% { transform: translateY(1100%); opacity: 0; } }
+@keyframes xr-cube { from { transform: rotateX(-22deg) rotateY(0); } to { transform: rotateX(-22deg) rotateY(360deg); } }
+@keyframes xr-rowin { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+.xr-halo { animation: xr-halo 26s linear infinite; }
+.xr-floatA { animation: xr-floatA 5.2s ease-in-out infinite; }
+.xr-floatB { animation: xr-floatB 6s ease-in-out infinite; }
+.xr-grid-scroll { animation: xr-gridflow 3.4s linear infinite; }
+.xr-retspin { animation: xr-spin 9s linear infinite; }
+.xr-scan { animation: xr-scan 4.4s cubic-bezier(.5, 0, .5, 1) infinite; }
+.xr-cube-spin { animation: xr-cube 11s linear infinite; }
+
+/* Hero 3D stage: a perspective world tilted by the cursor (JS sets --rx/--ry).
+   Depth/intensity are driven by the mode class (--xr-persp set inline). */
+.xr-stage { perspective: var(--xr-persp, 1200px); perspective-origin: 50% 42%; }
+.xr-world { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--rx, -4deg)) rotateY(var(--ry, 0deg)); transition: transform .18s ease-out; }
+.xr-hud-extra { opacity: 0; transition: opacity .4s ease; }
+.xr-stage.xr-vol .xr-hud-extra { opacity: 1; }
+.xr-stage.xr-subtle .xr-scan { display: none; }
+
+/* Hero visual: fixed authoring size, scaled down (clipped) on small screens */
+.xr-stagewrap { width: 600px; height: 472px; flex: none; }
+@media (max-width: 760px) {
+    .xr-stagewrap { transform: scale(.8); transform-origin: top center; }
+    .xr-visual-col { height: 400px; overflow: hidden; }
+}
+@media (max-width: 560px) {
+    .xr-stagewrap { transform: scale(.6); }
+    .xr-visual-col { height: 300px; }
+}
+
+/* Live-tour card (diensten): hover lift + start-button pop */
+.xr-tourcard { transition: border-color .4s ease, box-shadow .5s ease; }
+.xr-tourcard:hover { border-color: rgba(255, 122, 0, .4); box-shadow: 0 30px 70px -34px rgba(255, 90, 0, .55); }
+.xr-start { transition: transform .3s ease, box-shadow .3s ease; }
+.xr-tourcard:hover .xr-start { transform: scale(1.05); box-shadow: 0 20px 46px -14px rgba(255, 90, 0, 1); }
+
+/* Realisatie tour cards: staggered entrance (--i) + hover lift + poster zoom */
+.xr-tcard { opacity: 0; animation: xr-rowin .55s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(var(--i) * .09s + .1s); transition: transform .4s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease; cursor: pointer; }
+.xr-tcard:hover { transform: translateY(-7px); border-color: rgba(255, 122, 0, .34); box-shadow: 0 34px 70px -30px rgba(255, 90, 0, .5), 0 10px 26px -16px rgba(0, 0, 0, .8); }
+.xr-tscene { transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.xr-tcard:hover .xr-tscene { transform: scale(1.05); }
+.xr-tplay { transition: transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s ease; }
+.xr-tcard:hover .xr-tplay { transform: scale(1.1); box-shadow: 0 20px 46px -12px rgba(255, 90, 0, 1); }
+
+/* Related-service chips */
+.xr-chip { transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.xr-chip:hover { border-color: rgba(255, 122, 0, .5); background: rgba(255, 122, 0, .1); transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+    .xr-halo, .xr-floatA, .xr-floatB, .xr-grid-scroll, .xr-retspin, .xr-scan, .xr-cube-spin { animation: none !important; }
+    .xr-world { transition: none !important; }
+    .xr-tcard { opacity: 1; animation: none !important; }
+}

@@ -21,7 +21,7 @@ export function FeatureContent({ contentStyle }: FeatureContentProps) {
         <TabsContent
           key={feature.id}
           value={feature.id}
-          id={`${feature.id}-content`}
+          data-feature-content={feature.id}
           className="scroll-mt-20 focus-visible:outline-none focus-visible:ring-0"
         >
           <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-10 lg:gap-12">

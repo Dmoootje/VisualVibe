@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import "./seo-hero.css";
 
 /**
  * Bespoke hero voor de SEO-dienstpagina (design_handoff_seo_service): copy links,

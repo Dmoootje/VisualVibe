@@ -68,14 +68,18 @@ function TestimonialsDots({
         <button
           key={idx}
           onClick={() => onDotClick(idx)}
-          className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mx-1 rounded-full focus:outline-none focus:ring-2 focus:ring-white ${
-            current === idx
-              ? "bg-gradient-to-r from-red-500 to-amber-500"
-              : "bg-white/20"
-          }`}
+          className="group flex h-6 w-6 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label={`Go to testimonial ${idx + 1}`}
           aria-current={current === idx ? "true" : "false"}
-        />
+        >
+          <span
+            className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full transition-colors ${
+              current === idx
+                ? "bg-gradient-to-r from-red-500 to-amber-500"
+                : "bg-white/20 group-hover:bg-white/40"
+            }`}
+          />
+        </button>
       ))}
     </div>
   );

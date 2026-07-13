@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import type { ServiceCategory } from "@/types";
 import { SvcGlyph } from "@/components/subdiensten";
 import { iconForSubdienst, tagForSubdienst, type ResolvedIcon } from "./subdienstMeta";
+import "./subdienst-hero.css";
 
 export type SubHeroItem = {
   slug: string;

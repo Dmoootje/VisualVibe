@@ -173,7 +173,7 @@ function Meta({
         <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
       )}
       <div className="min-w-0 leading-tight">
-        <div className="text-[10px] uppercase tracking-wide text-white/40">{label}</div>
+        <div className="text-[10px] uppercase tracking-wide text-white/60">{label}</div>
         <div className="truncate text-xs font-medium text-white">{value}</div>
       </div>
     </div>

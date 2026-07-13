@@ -26,7 +26,17 @@ export function ServiceImageCard({
       <div className="relative md:hidden">
         <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-60 blur-md" />
         <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
-          <img src={image || "/placeholder.svg"} alt={title} className="h-auto w-full rounded-lg" />
+          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image || "/placeholder.svg"}
+              alt={title}
+              width={2070}
+              height={1294}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
           <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
             {badge}
           </span>
@@ -44,7 +54,17 @@ export function ServiceImageCard({
     >
       <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-70 blur-lg" />
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
-        <img src={image || "/placeholder.svg"} alt={title} className="h-auto w-full rounded-lg" />
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={image || "/placeholder.svg"}
+            alt={title}
+            width={2070}
+            height={1294}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
 
         {/* Overlay badge */}
         <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">

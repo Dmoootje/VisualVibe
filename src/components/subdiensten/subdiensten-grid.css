@@ -1,0 +1,127 @@
+/* Subdiensten cards. Uses shared @keyframes vvSubSpinBorder (in globals.css).
+   Moved out of globals.css so it only ships on routes that render this
+   component (keeps the render-blocking global stylesheet smaller). */
+.vvsub-rows { display: flex; flex-direction: column; gap: 16px; }
+.vvsub-row { display: flex; gap: 16px; }
+
+.vvsub-card {
+    position: relative;
+    overflow: hidden;
+    flex: 1 1 0;
+    min-width: 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 22px 22px 24px;
+    text-decoration: none;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.35s ease,
+        background 0.35s ease, box-shadow 0.45s ease;
+}
+.vvsub-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from var(--vvA),
+        rgba(255, 122, 0, 0) 0deg,
+        #ff7a00 70deg,
+        #ffc489 118deg,
+        rgba(255, 122, 0, 0) 205deg,
+        rgba(255, 122, 0, 0) 360deg
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 3;
+}
+.vvsub-card:hover {
+    transform: translateY(-7px) scale(1.014);
+    border-color: rgba(255, 122, 0, 0.16);
+    background: rgba(255, 122, 0, 0.05);
+    box-shadow: 0 28px 64px -22px rgba(255, 90, 0, 0.6), 0 8px 22px -14px rgba(0, 0, 0, 0.7);
+}
+.vvsub-card:hover::before {
+    opacity: 1;
+    animation: vvSubSpinBorder 3.4s linear infinite;
+}
+
+.vvsub-wm {
+    position: absolute;
+    right: -24px;
+    bottom: -28px;
+    color: rgba(255, 122, 0, 0.055);
+    pointer-events: none;
+    transition: color 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.vvsub-card:hover .vvsub-wm {
+    color: rgba(255, 122, 0, 0.11);
+    transform: translate(-6px, -6px) rotate(-4deg);
+}
+
+.vvsub-inner { position: relative; display: flex; align-items: flex-start; gap: 14px; }
+.vvsub-chip {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff9a45;
+    background: rgba(255, 122, 0, 0.1);
+    border: 1px solid rgba(255, 122, 0, 0.2);
+}
+.vvsub-text { flex: 1; min-width: 0; }
+.vvsub-name {
+    font-family: var(--font-sora), "Sora", sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.vvsub-desc {
+    font-family: var(--font-manrope), "Manrope", sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.5);
+}
+.vvsub-arr {
+    flex: none;
+    width: 33px;
+    height: 33px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff9a45;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+.vvsub-arr svg { transition: transform 0.3s ease; }
+.vvsub-card:hover .vvsub-arr {
+    background: rgba(255, 122, 0, 0.12);
+    border-color: rgba(255, 122, 0, 0.5);
+}
+.vvsub-card:hover .vvsub-arr svg { transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+    .vvsub-card,
+    .vvsub-card::before,
+    .vvsub-wm {
+        transition: none;
+    }
+    .vvsub-card:hover::before { animation: none; }
+}
+@media (max-width: 1024px) {
+    .vvsub-row { flex-wrap: wrap; }
+    .vvsub-card { flex-basis: calc(50% - 8px); }
+}
+@media (max-width: 640px) {
+    .vvsub-card { flex-basis: 100%; }
+}

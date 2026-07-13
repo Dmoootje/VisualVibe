@@ -74,7 +74,7 @@ function TestimonialAuthor({ testimonial }: { testimonial: Testimonial }) {
       </div>
 
       <div className="text-center mt-4">
-        <h4 className="font-bold">{testimonial.author}</h4>
+        <p className="font-bold">{testimonial.author}</p>
         <p className="text-white/70 text-sm">{testimonial.role}</p>
         <StarRating rating={testimonial.rating} />
       </div>
@@ -86,6 +86,7 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div
       className="flex justify-center mt-2"
+      role="img"
       aria-label={`Rated ${rating} out of 5 stars`}
     >
       {[...Array(rating)].map((_, i) => (

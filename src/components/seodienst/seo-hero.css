@@ -1,0 +1,54 @@
+/* SEO service hero (animated rankings dashboard)
+   Moved out of globals.css so it only ships on routes that render this
+   component (keeps the render-blocking global stylesheet smaller). */
+/* ── SEO service hero: animated rankings-dashboard (design_handoff_seo_service)
+   The visual is authored at a fixed 540x452 and scaled at the handoff
+   breakpoints inside a clipped column so it never overflows. All motion is
+   CSS keyframes (no JS state). */
+.vvseo-col { position: relative; display: flex; justify-content: center; }
+.vvseo-stage { position: relative; width: 540px; height: 452px; flex: none; }
+@media (max-width: 760px) and (min-width: 640px) {
+    .vvseo-col { height: 452px; overflow: hidden; }
+    .vvseo-stage { transform: scale(0.82); transform-origin: top center; }
+}
+/* Mobiel: de kaart staat in de flow op volle breedte (zie SeoHero.tsx); de
+   vaste stage-maten en scale-trucs zouden badges en randen afkappen. */
+@media (max-width: 639.98px) {
+    .vvseo-col { height: auto; overflow: visible; }
+    .vvseo-stage { width: 100%; height: auto; transform: none; padding: 18px 0 20px; }
+}
+
+@keyframes vvseo-spin { to { transform: rotate(1turn); } }
+.vvseo-spin { animation: vvseo-spin 20s linear infinite; }
+@keyframes vvseo-draw {
+    0% { stroke-dashoffset: 900; }
+    42% { stroke-dashoffset: 0; }
+    92% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 900; }
+}
+.vvseo-line { stroke-dasharray: 900; animation: vvseo-draw 7s cubic-bezier(0.5, 0, 0.3, 1) infinite; }
+@keyframes vvseo-area {
+    0% { opacity: 0; }
+    30% { opacity: 0; }
+    55% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.vvseo-area { animation: vvseo-area 7s ease-in-out infinite; }
+@keyframes vvseo-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.55; }
+}
+.vvseo-dot { transform-origin: center; animation: vvseo-dot 2s ease-in-out infinite; }
+@keyframes vvseo-grow {
+    0% { transform: scaleX(0); }
+    12% { transform: scaleX(0); }
+    55% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+}
+.vvseo-bar { transform-origin: left center; animation: vvseo-grow 4.5s cubic-bezier(0.3, 0.8, 0.3, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+    .vvseo-spin, .vvseo-area, .vvseo-dot { animation: none !important; }
+    .vvseo-line { animation: none !important; stroke-dashoffset: 0; }
+    .vvseo-bar { animation: none !important; transform: scaleX(1); }
+}

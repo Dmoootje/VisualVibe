@@ -1,0 +1,86 @@
+/* Homepage hero (animated living stage)
+   Moved out of globals.css so it only ships on routes that render this
+   component (keeps the render-blocking global stylesheet smaller). */
+/* ── Homepage hero (animated living stage) ──────────────────────────────
+   Ported from the design handoff. All motion is CSS (server-component
+   friendly). Everything is namespaced `vvh-` so keyframes never collide with
+   Tailwind's `spin` etc. Mono readouts use a system monospace stack. */
+.vvh-mono { font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace; }
+
+@keyframes vvh-fall { 0% { transform: translateY(-60px) rotate(0deg); } 100% { transform: translateY(940px) rotate(80deg); } }
+@keyframes vvh-floaty { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: .6; } 88% { opacity: .5; } 100% { transform: translateY(-380px) rotate(120deg); opacity: 0; } }
+.vvh-blk { position: absolute; border-radius: 5px; background: rgba(255,122,0,.10); border: 1px solid rgba(255,122,0,.18); animation: vvh-fall linear infinite; pointer-events: none; }
+.vvh-fl { position: absolute; bottom: -14px; border-radius: 4px; background: rgba(255,180,110,.14); border: 1px solid rgba(255,180,110,.28); animation: vvh-floaty linear infinite; pointer-events: none; }
+
+@keyframes vvh-spin { to { transform: rotate(1turn); } }
+@keyframes vvh-spinR { to { transform: rotate(-1turn); } }
+.vvh-ring { animation: vvh-spin 60s linear infinite; }
+.vvh-ringR { animation: vvh-spinR 44s linear infinite; }
+
+@keyframes vvh-livePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,122,0,.6); } 70% { box-shadow: 0 0 0 7px rgba(255,122,0,0); } }
+.vvh-liveDot { animation: vvh-livePulse 2.2s ease-out infinite; }
+@keyframes vvh-cardGlow { 0%, 100% { opacity: .5; } 50% { opacity: .92; } }
+.vvh-cardGlow { animation: vvh-cardGlow 5s ease-in-out infinite; }
+
+.vvh-btn { transition: transform .25s ease, box-shadow .25s ease; }
+.vvh-btn:hover { transform: translateY(-2px); }
+.vvh-btn .vvh-ar { transition: transform .3s ease; }
+.vvh-btn:hover .vvh-ar { transform: translateX(5px); }
+
+/* scene cycle */
+@keyframes vvh-sceneCycle { 0% { opacity: 0; transform: scale(.955) translateY(12px); z-index: 1; } 2% { opacity: 1; transform: none; z-index: 3; } 15% { opacity: 1; transform: none; z-index: 3; } 17.5% { opacity: 0; transform: scale(1.03) translateY(-6px); z-index: 1; } 100% { opacity: 0; transform: scale(.955) translateY(12px); z-index: 1; } }
+@keyframes vvh-labelCycle { 0% { opacity: 0; transform: translateY(7px); } 2% { opacity: 1; transform: none; } 15% { opacity: 1; transform: none; } 17.5% { opacity: 0; transform: translateY(-7px); } 100% { opacity: 0; transform: translateY(7px); } }
+@keyframes vvh-dotCycle { 0% { width: 8px; background: rgba(255,255,255,.18); } 2% { width: 26px; background: linear-gradient(90deg,#FF3B2E,#FF7A00); } 15% { width: 26px; background: linear-gradient(90deg,#FF3B2E,#FF7A00); } 17.5% { width: 8px; background: rgba(255,255,255,.18); } 100% { width: 8px; background: rgba(255,255,255,.18); } }
+.vvh-scene { position: absolute; inset: 0; padding: 8px; opacity: 0; animation: vvh-sceneCycle 27s linear infinite; animation-delay: calc(var(--s) * 4.5s); }
+.vvh-hlabel { position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; animation: vvh-labelCycle 27s linear infinite; animation-delay: calc(var(--s) * 4.5s); }
+.vvh-hdot { height: 8px; width: 8px; border-radius: 9999px; background: rgba(255,255,255,.18); animation: vvh-dotCycle 27s linear infinite; animation-delay: calc(var(--s) * 4.5s); }
+
+/* webdesign */
+@keyframes vvh-buildW { 0% { transform: scaleX(0); opacity: 0; } 10% { opacity: 1; } 26% { transform: scaleX(1); } 86% { transform: scaleX(1); opacity: 1; } 95% { opacity: 0; } 100% { transform: scaleX(0); opacity: 0; } }
+.vvh-bw { transform-origin: left center; animation: vvh-buildW 4.5s cubic-bezier(.5,0,.1,1) infinite; }
+@keyframes vvh-cursorW { 0% { transform: translate(30px,96px); } 22% { transform: translate(150px,30px); } 44% { transform: translate(70px,120px); } 66% { transform: translate(250px,54px); } 88% { transform: translate(200px,120px); } 100% { transform: translate(30px,96px); } }
+.vvh-cursorW { animation: vvh-cursorW 5s ease-in-out infinite; }
+@keyframes vvh-shimmer { 0% { transform: translateX(-120%); } 100% { transform: translateX(320%); } }
+.vvh-shimmer { animation: vvh-shimmer 3s ease-in-out infinite; }
+
+/* foto */
+@keyframes vvh-focusMove { 0%, 100% { transform: translate(-64px,-18px) scale(1.15); opacity: .7; } 20% { transform: translate(-64px,-18px) scale(1); opacity: 1; } 45% { transform: translate(70px,26px) scale(1.15); opacity: .7; } 65% { transform: translate(70px,26px) scale(1); opacity: 1; } 85% { transform: translate(-10px,-30px) scale(1.1); opacity: .85; } }
+.vvh-focusBox { animation: vvh-focusMove 5s ease-in-out infinite; }
+@keyframes vvh-apert { 0%, 100% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(55deg) scale(.6); } }
+.vvh-apert { animation: vvh-apert 4.5s ease-in-out infinite; transform-origin: center; }
+@keyframes vvh-flash { 0%, 90%, 100% { opacity: 0; } 93% { opacity: .55; } 96% { opacity: 0; } }
+.vvh-flash { animation: vvh-flash 4.5s linear infinite; }
+
+/* video */
+@keyframes vvh-playhead { 0% { left: 0%; } 100% { left: 100%; } }
+.vvh-playhead { animation: vvh-playhead 4.5s linear infinite; }
+@keyframes vvh-strip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.vvh-strip { animation: vvh-strip 7s linear infinite; }
+@keyframes vvh-eq { 0%, 100% { transform: scaleY(.16); } 50% { transform: scaleY(1); } }
+.vvh-eq { transform-origin: bottom; animation: vvh-eq ease-in-out infinite; }
+@keyframes vvh-pulseP { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.12); opacity: 1; } }
+.vvh-pulseP { animation: vvh-pulseP 1.6s ease-in-out infinite; }
+
+/* drone */
+@keyframes vvh-fly { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.vvh-fly { offset-path: path('M 24 250 C 150 110, 250 300, 380 160 S 540 60, 556 200'); offset-rotate: auto; animation: vvh-fly 6.5s ease-in-out infinite; }
+@keyframes vvh-sweep { to { transform: rotate(1turn); } }
+.vvh-sweep { animation: vvh-sweep 3.4s linear infinite; }
+@keyframes vvh-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.vvh-bob { animation: vvh-bob 2.4s ease-in-out infinite; }
+
+/* 3d */
+@keyframes vvh-cube { from { transform: rotateX(-24deg) rotateY(0deg); } to { transform: rotateX(-24deg) rotateY(360deg); } }
+.vvh-cube { transform-style: preserve-3d; animation: vvh-cube 10s linear infinite; }
+@keyframes vvh-orbit { from { transform: rotate(0deg) translateX(96px) rotate(0deg); } to { transform: rotate(360deg) translateX(96px) rotate(-360deg); } }
+.vvh-orbit { animation: vvh-orbit 6s linear infinite; }
+@keyframes vvh-orbit2 { from { transform: rotate(120deg) translateX(120px) rotate(-120deg); } to { transform: rotate(480deg) translateX(120px) rotate(-480deg); } }
+.vvh-orbit2 { animation: vvh-orbit2 8s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vvh-blk, .vvh-fl, .vvh-ring, .vvh-ringR, .vvh-liveDot, .vvh-cardGlow, .vvh-scene, .vvh-hlabel, .vvh-hdot,
+    .vvh-bw, .vvh-cursorW, .vvh-shimmer, .vvh-focusBox, .vvh-apert, .vvh-flash, .vvh-playhead, .vvh-strip,
+    .vvh-eq, .vvh-pulseP, .vvh-fly, .vvh-sweep, .vvh-bob, .vvh-cube, .vvh-orbit, .vvh-orbit2 { animation: none !important; }
+    .vvh-scene { opacity: 0; }
+    .vvh-scene[style*="--s:0"] { opacity: 1; }
+}

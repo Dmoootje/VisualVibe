@@ -1,5 +1,6 @@
 "use client";
 
+import "./xr.css";
 import { useCallback, useEffect, useState } from "react";
 import { Section, Container } from "@/components/ui";
 import { matterportEmbedSrc, MATTERPORT_IFRAME_ALLOW, type MatterportTour } from "@/data/matterportTours";

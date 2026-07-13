@@ -1,0 +1,148 @@
+/* Subdienst hero (revolving icon + marquee)
+   Moved out of globals.css so it only ships on routes that render this
+   component (keeps the render-blocking global stylesheet smaller). */
+/* ── Subdienst hero (design handoff: revolving icon + marquee) ────────────
+   Exact tokens from design_handoff_subdienst_hero. All motion is CSS. */
+@keyframes vvshSpin { to { transform: rotate(360deg); } }
+@keyframes vvshBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+@keyframes vvshGlow {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 122, 0, 0.45)); }
+    50% { filter: drop-shadow(0 0 22px rgba(255, 122, 0, 0.85)); }
+}
+@keyframes vvshLivePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.6); }
+    70% { box-shadow: 0 0 0 7px rgba(255, 122, 0, 0); }
+}
+@keyframes vvshMqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes vvshMqR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.vvsh-hero { position: relative; overflow: hidden; padding: 66px 56px 48px; background: #0a0a0a; color: #fff; }
+.vvsh-glow {
+    position: absolute; top: -160px; right: -120px; width: 760px; height: 760px; pointer-events: none;
+    background: radial-gradient(circle at center, rgba(255, 90, 0, 0.16), transparent 64%);
+}
+.vvsh-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    background-size: 54px 54px;
+    -webkit-mask-image: radial-gradient(ellipse at 72% 34%, #000, transparent 70%);
+    mask-image: radial-gradient(ellipse at 72% 34%, #000, transparent 70%);
+}
+.vvsh-inner {
+    position: relative; z-index: 2; max-width: 1300px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 44px; align-items: center;
+}
+
+.vvsh-crumb {
+    display: flex; width: fit-content; align-items: center; gap: 8px;
+    font-family: var(--font-jetbrains-mono), monospace; font-size: 12.5px; font-weight: 600;
+    letter-spacing: 0.03em; color: rgba(255, 255, 255, 0.5); margin-bottom: 20px; text-decoration: none;
+}
+.vvsh-crumb:hover { color: rgba(255, 255, 255, 0.8); }
+.vvsh-tag {
+    display: inline-flex; align-items: center; gap: 9px; padding: 8px 15px; border-radius: 9999px;
+    white-space: nowrap; background: rgba(255, 122, 0, 0.1); border: 1px solid rgba(255, 122, 0, 0.25);
+    font-family: var(--font-jetbrains-mono), monospace; font-weight: 700; font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #ff9a45; margin-bottom: 22px;
+}
+.vvsh-dot { width: 7px; height: 7px; border-radius: 9999px; background: #ff7a00; animation: vvshLivePulse 2.2s ease-out infinite; }
+.vvsh-title {
+    font-family: var(--font-sora), "Sora", sans-serif; font-weight: 800; font-size: 60px; line-height: 1.02;
+    letter-spacing: -0.03em; margin: 0 0 22px; text-wrap: balance;
+}
+.vvsh-desc {
+    font-family: var(--font-manrope), "Manrope", sans-serif; font-size: 18.5px; line-height: 1.6;
+    color: rgba(255, 255, 255, 0.64); max-width: 500px; margin: 0 0 34px; text-wrap: pretty;
+}
+.vvsh-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+.vvsh-btn {
+    display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-manrope), "Manrope", sans-serif;
+    font-weight: 700; font-size: 16px; color: #fff; padding: 15px 28px; border-radius: 12px;
+    white-space: nowrap; text-decoration: none; transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.vvsh-btn:hover { transform: translateY(-2px); }
+.vvsh-btnPrimary { background: linear-gradient(90deg, #ff3b2e, #ff7a00); box-shadow: 0 16px 40px -14px rgba(255, 90, 0, 0.85); }
+.vvsh-btnGhost { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.14); }
+.vvsh-ar { transition: transform 0.3s ease; }
+.vvsh-btnPrimary:hover .vvsh-ar { transform: translateX(5px); }
+
+.vvsh-iconWrap { position: relative; display: flex; justify-content: center; align-items: center; min-height: 440px; }
+.vvsh-conic {
+    position: absolute; width: 500px; height: 500px; border-radius: 9999px; pointer-events: none; filter: blur(46px);
+    background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 122, 0, 0.3) 80deg, transparent 180deg, rgba(255, 90, 0, 0.2) 280deg, transparent 360deg);
+    animation: vvshSpin 16s linear infinite;
+}
+.vvsh-iconSvg { position: relative; width: min(440px, 88%); height: auto; }
+.vvsh-ring1 { transform-box: fill-box; transform-origin: center; animation: vvshSpin 32s linear infinite; }
+.vvsh-ring2 { transform-box: fill-box; transform-origin: center; animation: vvshSpin 44s linear infinite reverse; }
+.vvsh-hicon {
+    transform-box: fill-box; transform-origin: center;
+    animation: vvshBreathe 6s ease-in-out infinite, vvshGlow 4.2s ease-in-out infinite;
+}
+
+.vvsh-mq { position: relative; z-index: 2; max-width: 1300px; margin: 44px auto 0; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.vvsh-mqLabel {
+    font-family: var(--font-jetbrains-mono), monospace; font-size: 11.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.42); margin: 0 0 18px;
+}
+.vvsh-mqMask {
+    /* Full-bleed: the pills travel from the left screen edge to the right,
+       breaking out of the hero padding + 1300px content width. The label and
+       hairline above stay aligned with the content. */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-bottom: 14px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.vvsh-mqTrack { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.vvsh-mqL { animation: vvshMqL 40s linear infinite; }
+.vvsh-mqR { animation: vvshMqR 40s linear infinite; }
+.vvsh-mqMask:hover .vvsh-mqTrack { animation-play-state: paused; }
+.vvsh-pill {
+    flex: none; display: inline-flex; align-items: center; gap: 13px; padding: 13px 24px 13px 15px;
+    border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02);
+    text-decoration: none; transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.vvsh-pill:hover { border-color: rgba(255, 122, 0, 0.45); background: rgba(255, 122, 0, 0.06); transform: translateY(-2px); }
+.vvsh-pillIcon {
+    flex: none; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    color: #ff9a45; background: rgba(255, 122, 0, 0.1); border: 1px solid rgba(255, 122, 0, 0.2);
+}
+.vvsh-pillName {
+    font-family: var(--font-manrope), "Manrope", sans-serif; font-size: 15.5px; font-weight: 600;
+    color: rgba(255, 255, 255, 0.85); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vvsh-conic, .vvsh-ring1, .vvsh-ring2, .vvsh-hicon, .vvsh-dot, .vvsh-mqL, .vvsh-mqR { animation: none !important; }
+}
+@media (max-width: 900px) {
+    .vvsh-inner { grid-template-columns: 1fr; }
+    .vvsh-title { font-size: clamp(36px, 8vw, 60px); }
+    .vvsh-left { position: relative; z-index: 2; }
+    /* Gestapeld: het draaiende embleem wordt een compact accent rechtsboven in
+       de hero in plaats van een groot blok onder de content. */
+    .vvsh-iconWrap {
+        position: absolute;
+        top: -8px;
+        right: -6px;
+        z-index: 1;
+        width: 150px;
+        min-height: 0;
+        opacity: 0.85;
+        pointer-events: none;
+    }
+    .vvsh-iconSvg { width: 150px; }
+    .vvsh-conic { width: 170px; height: 170px; filter: blur(28px); }
+}
+@media (max-width: 640px) {
+    /* 88px top: de fixed header (60px) mag de badge niet overlappen. */
+    .vvsh-hero { padding: 88px 10px 36px; }
+    .vvsh-iconWrap { width: 122px; top: -4px; }
+    .vvsh-iconSvg { width: 122px; }
+    .vvsh-btns { flex-direction: column; }
+    .vvsh-btn { width: 100%; justify-content: center; }
+}

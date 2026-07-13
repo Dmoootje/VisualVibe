@@ -15,7 +15,9 @@ export function useFeaturesTabs() {
 
         if (isMobile && mounted) {
             setTimeout(() => {
-                const element = document.getElementById(`${value}-content`);
+                const element = document.querySelector(
+                    `[data-feature-content="${value}"]`
+                );
                 if (element) {
                     const yOffset = -80;
                     const y =

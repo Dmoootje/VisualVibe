@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { heroConfig } from "../config/hero.config";
+import "./home-hero.css";
 
 const Spark = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF7A00" aria-hidden="true">
