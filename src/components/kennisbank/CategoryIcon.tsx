@@ -1,13 +1,14 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Single-colour stroke icons for the eight kennisbank categories, matching the
+ * Single-colour stroke icons for the kennisbank categories, matching the
  * design handoff's `cat-*` symbol set. Pure SVG so it renders on the server and
  * inherits `currentColor`. Keyed by category slug (from kennisbankCategories).
  */
 export type KbCategoryIconSlug =
   | "seo-geo"
   | "webdesign"
+  | "software-op-maat"
   | "fotografie"
   | "videografie"
   | "drone"
@@ -28,6 +29,12 @@ const PATHS: Record<KbCategoryIconSlug, React.ReactNode> = {
     <>
       <rect x="3" y="4" width="18" height="16" rx="2" />
       <path d="M3 9h18M6.4 6.5h.01M8.9 6.5h.01M11.4 6.5h.01" />
+    </>
+  ),
+  "software-op-maat": (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="m9 9-3 3 3 3M15 9l3 3-3 3M13.5 7l-3 10" />
     </>
   ),
   fotografie: (
