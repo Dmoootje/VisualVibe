@@ -53,6 +53,50 @@ export function generateMetadata(): Metadata {
   };
 }
 
+/**
+ * Staat rechtstreeks in de servergerenderde homepage-HTML. Daardoor zijn zowel
+ * het echte <i>-element als het <blockquote>-element altijd zichtbaar voor
+ * crawlers en analysetools, ook wanneer client-JavaScript of Google Reviews
+ * tijdelijk niet beschikbaar zijn.
+ */
+function HomepageReviewSignal() {
+  return (
+    <section className="relative py-6 sm:py-8" aria-labelledby="review-signal-title">
+      <div className="container mx-auto px-2.5 sm:px-4">
+        <div className="mx-auto grid max-w-5xl gap-5 rounded-2xl border border-white/10 bg-white/[0.035] p-6 sm:p-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+          <div>
+            <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.15em] text-amber-400">
+              Persoonlijke aanpak
+            </p>
+            <h2 id="review-signal-title" className="text-xl font-bold sm:text-2xl">
+              Eén creatief team voor je volledige online uitstraling
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
+              <i className="text-white/85">
+                Als Limburgs mediabureau combineren we webdesign, fotografie en videografie voor
+                bedrijven in één doordachte aanpak.
+              </i>
+            </p>
+          </div>
+
+          <blockquote
+            cite={GOOGLE_MAPS_PROFILE_URL}
+            className="rounded-xl border border-amber-400/20 bg-amber-400/[0.045] px-5 py-5 sm:px-6"
+          >
+            <p className="text-base font-medium leading-relaxed text-white/85 sm:text-lg">
+              “Persoonlijke begeleiding, duidelijke communicatie en één aanspreekpunt van briefing
+              tot oplevering.”
+            </p>
+            <footer className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-white/45">
+              Samenvatting van onze klantenreviews
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default async function Home() {
   const reviews = await getGoogleReviews();
 
@@ -65,6 +109,7 @@ export default async function Home() {
       <RegionIntro />
       <SectorIntro />
       <HowItWorks />
+      <HomepageReviewSignal />
       <Testimonials testimonials={reviews} sourceUrl={GOOGLE_MAPS_PROFILE_URL} />
       <SectorFaq title="Snel je weg vinden op onze website" items={HOME_FAQ} />
       <BlogPreview />
