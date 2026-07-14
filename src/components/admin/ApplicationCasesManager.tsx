@@ -48,6 +48,13 @@ function emptyCase(): ApplicationCase {
   };
 }
 
+function cleanLines(raw: string): string[] {
+  return raw
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 function LinesField({
   label,
   value,
@@ -67,14 +74,17 @@ function LinesField({
       <textarea
         className={`${inputClass} min-h-[112px] resize-y`}
         value={value.join("\n")}
-        onChange={(event) =>
-          onChange(
-            event.target.value
-              .split("\n")
-              .map((item) => item.trim())
-              .filter(Boolean),
-          )
-        }
+        onChange={(event) => {
+          // Tijdens het typen bewaren we ook lege regels en spaties. Daardoor
+          // blijft de textarea exact gelijk aan wat de gebruiker invoert en
+          // verliest de cursor zijn positie niet na iedere React-render.
+          onChange(event.currentTarget.value.split("\n"));
+        }}
+        onBlur={(event) => {
+          // Pas na het verlaten van het veld ruimen we lege regels en
+          // overbodige spaties op voor de opgeslagen lijst.
+          onChange(cleanLines(event.currentTarget.value));
+        }}
       />
     </label>
   );
