@@ -15,7 +15,7 @@ import { getGoogleReviews, GOOGLE_MAPS_PROFILE_URL } from "@/lib/reviews/google"
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 
-const HOME_TITLE = "Creatief mediabureau Limburg | Webdesign, foto & video";
+const HOME_TITLE = "Mediabureau Limburg: webdesign, foto & video | VisualVibe";
 const HOME_DESCRIPTION =
   "VisualVibe is het creatieve mediabureau in Limburg voor webdesign, SEO, fotografie, video, drone en apps. Eén team voor strategie, productie en groei.";
 const HOME_URL = `${businessConfig.url}/be/`;
