@@ -80,11 +80,7 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
           latitude: settings.latitude,
           longitude: settings.longitude,
         }
-      : {
-          "@type": "GeoCoordinates",
-          latitude: businessConfig.geo.latitude,
-          longitude: businessConfig.geo.longitude,
-        };
+      : undefined;
 
   const areaServed = businessConfig.serviceArea.map((name) => ({
     "@type": "AdministrativeArea",
