@@ -3,6 +3,7 @@ import "@/components/media-patterns.css";
 import { ArrowRight } from "lucide-react";
 import { realisatieCategories, categoryToServiceSlug } from "@/data/realisatieCategories";
 import { subservices } from "@/data/subservices";
+import { softwareServices } from "@/data/softwareServices";
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { localizedPath } from "@/lib/kennisbank/urls";
@@ -12,15 +13,21 @@ import { SectorFaq } from "@/components/sectors";
 import { RealisatiesHero } from "@/components/realisaties/RealisatiesHero";
 import { RealisatiesAnswerBlock } from "@/components/realisaties/RealisatiesAnswerBlock";
 import { FeaturedRealisaties } from "@/components/realisaties/FeaturedRealisaties";
-import { RealisatieHubCategoryGrid, type HubCategoryItem } from "@/components/realisaties/RealisatieHubCategoryGrid";
+import {
+  RealisatieHubCategoryGrid,
+  type HubCategoryItem,
+} from "@/components/realisaties/RealisatieHubCategoryGrid";
 import { RealisatieFilterGrid } from "@/components/realisaties/RealisatieFilterGrid";
 import { CompleteTrajectSection } from "@/components/realisaties/CompleteTrajectSection";
-import { RealisatieContextGrid, type HubContextItem } from "@/components/realisaties/RealisatieContextGrid";
+import {
+  RealisatieContextGrid,
+  type HubContextItem,
+} from "@/components/realisaties/RealisatieContextGrid";
 
 export const metadata = pageMetadata({
-  title: "Realisaties in webdesign, fotografie, video & drone | VisualVibe",
+  title: "Realisaties in applicaties, webdesign, foto & video | VisualVibe",
   description:
-    "Bekijk realisaties van VisualVibe in webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting voor bedrijven in Limburg en daarbuiten.",
+    "Bekijk realisaties van VisualVibe in applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.",
   path: "/realisaties/",
 });
 
@@ -28,9 +35,16 @@ export const metadata = pageMetadata({
 // periodiek revalideren zodat nieuwe projecten zonder rebuild verschijnen.
 export const revalidate = 60;
 
-// Primaire disciplines (volgorde) en context-categorieën (bestaande slugs;
-// "projecten" krijgt de duidelijkere zichtbare titel, de slug blijft).
-const PRIMARY_SLUGS = ["webdesign", "fotografie", "videografie", "drone", "3d-vr", "podcasting"];
+// Primaire disciplines (volgorde) en context-categorieën.
+const PRIMARY_SLUGS = [
+  "webdesign",
+  "applicaties",
+  "fotografie",
+  "videografie",
+  "drone",
+  "3d-vr",
+  "podcasting",
+];
 const CONTEXTS: { slug: string; title: string }[] = [
   { slug: "bedrijven", title: "Bedrijven" },
   { slug: "projecten", title: "Bouw & interieur" },
@@ -39,17 +53,21 @@ const CONTEXTS: { slug: string; title: string }[] = [
   { slug: "buitenland", title: "Buitenland" },
 ];
 
-// Zichtbare FAQ = exact dezelfde items als de FAQPage JSON-LD.
 const FAQ_ITEMS = [
   {
     question: "Welke soorten realisaties toont VisualVibe?",
     answer:
-      "Je vindt hier projecten in webdesign, SEO, fotografie, videografie, drone en FPV, 3D, VR en AR, podcasting en creatieve content.",
+      "Je vindt hier projecten in applicaties en software op maat, webdesign, SEO, fotografie, videografie, drone en FPV, 3D, VR en AR, podcasting en creatieve content.",
+  },
+  {
+    question: "Tonen jullie bij applicaties ook de backend?",
+    answer:
+      "Ja. Applicatiecases tonen waar mogelijk zowel de publieke gebruikersflow als dashboards, beheer, automatisering, integraties en server-side architectuur.",
   },
   {
     question: "Kan één project meerdere diensten combineren?",
     answer:
-      "Ja. Veel projecten combineren bijvoorbeeld webdesign met fotografie, video, dronebeelden of brandingcontent.",
+      "Ja. Veel projecten combineren bijvoorbeeld een webapp of website met fotografie, video, SEO, automatisering of backendkoppelingen.",
   },
   {
     question: "Werkt VisualVibe alleen in Limburg?",
@@ -59,7 +77,7 @@ const FAQ_ITEMS = [
   {
     question: "Kan ik een gelijkaardig project aanvragen?",
     answer:
-      "Ja. Via de offertepagina kun je jouw plannen toelichten. Daarna bekijken we welke disciplines en aanpak het beste bij jouw project passen.",
+      "Ja. Via de offertepagina kun je jouw plannen toelichten. Daarna bekijken we welke disciplines, functies en technische aanpak het beste bij jouw project passen.",
   },
 ];
 
@@ -67,26 +85,29 @@ export default async function RealisatiesHubPage() {
   const hub = await getHubData();
   const baseUrl = `${businessConfig.url}${localizedPath("nl", "/realisaties/")}`;
 
-  // Disciplinekaarten: echte beelden, echte aantallen, echte subdienst-namen.
   const categoryItems: HubCategoryItem[] = PRIMARY_SLUGS.map((slug) => {
-    const category = realisatieCategories.find((c) => c.slug === slug);
+    const category = realisatieCategories.find((candidate) => candidate.slug === slug);
     if (!category) return null;
     const serviceSlug = categoryToServiceSlug[slug];
+    const subdisciplines =
+      slug === "applicaties"
+        ? softwareServices.slice(0, 3).map((service) => service.title)
+        : subservices
+            .filter((service) => service.parentSlug === serviceSlug)
+            .slice(0, 3)
+            .map((service) => service.title);
+
     return {
       category,
       images: hub.stacksByCategory[slug] ?? [],
       count: hub.countsByCategory[slug] ?? 0,
-      subdisciplines: subservices
-        .filter((s) => s.parentSlug === serviceSlug)
-        .slice(0, 3)
-        .map((s) => s.title),
+      subdisciplines,
     };
   }).filter((item): item is HubCategoryItem => item !== null);
 
-  // Contexttegels: aantal + beeld uitsluitend uit echt gekoppelde projecten.
   const contextItems: HubContextItem[] = CONTEXTS.map(({ slug, title }) => {
-    const category = realisatieCategories.find((c) => c.slug === slug);
-    const matches = hub.projects.filter((p) => p.contexts.includes(slug));
+    const category = realisatieCategories.find((candidate) => candidate.slug === slug);
+    const matches = hub.projects.filter((project) => project.contexts.includes(slug));
     return {
       slug,
       title,
@@ -96,19 +117,18 @@ export default async function RealisatiesHubPage() {
     };
   });
 
-  const disciplineOptions = PRIMARY_SLUGS.filter((slug) => (hub.countsByCategory[slug] ?? 0) > 0)
-    .filter((slug) => hub.projects.some((p) => p.categorySlug === slug))
+  const disciplineOptions = PRIMARY_SLUGS.filter(
+    (slug) => (hub.countsByCategory[slug] ?? 0) > 0,
+  )
+    .filter((slug) => hub.projects.some((project) => project.categorySlug === slug))
     .map((slug) => ({
       slug,
-      label: realisatieCategories.find((c) => c.slug === slug)?.name ?? slug,
+      label: realisatieCategories.find((category) => category.slug === slug)?.name ?? slug,
     }));
   const contextOptions = CONTEXTS.filter(({ slug }) =>
-    hub.projects.some((p) => p.contexts.includes(slug)),
+    hub.projects.some((project) => project.contexts.includes(slug)),
   ).map(({ slug, title }) => ({ slug, label: title }));
 
-  // ItemList: de discipline-collecties (unieke, echt bestaande URL's). Losse
-  // projecten hebben geen eigen route, dus per project een ListItem zou enkel
-  // duplicaat-URL's naar dezelfde categoriepagina opleveren.
   const listedCollections = categoryItems
     .filter((item) => item.count > 0)
     .map((item) => ({
@@ -118,8 +138,13 @@ export default async function RealisatiesHubPage() {
     }));
 
   return (
-    <div className="min-h-screen text-white pb-16">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Realisaties", path: "/realisaties" }]} />
+    <div className="min-h-screen pb-16 text-white">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Realisaties", path: "/realisaties" },
+        ]}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -128,10 +153,13 @@ export default async function RealisatiesHubPage() {
           url: baseUrl,
           name: "Realisaties van VisualVibe",
           description:
-            "Portfolio van VisualVibe: realisaties in webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting voor bedrijven in Limburg en daarbuiten.",
+            "Portfolio van VisualVibe: applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.",
           inLanguage: "nl-BE",
           isPartOf: { "@id": `${businessConfig.url}/#website` },
           about: [
+            "Applicaties",
+            "Software op maat",
+            "SaaS",
             "Webdesign",
             "Fotografie",
             "Videografie",
@@ -166,7 +194,6 @@ export default async function RealisatiesHubPage() {
       <FeaturedRealisaties featured={hub.featured} />
       <RealisatieHubCategoryGrid items={categoryItems} />
 
-      {/* Recent werk: filters + grid (enkel dit eiland is client-side). */}
       <section id="recent-werk" className="relative scroll-mt-24 py-10 sm:py-14">
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="mb-8">
@@ -190,21 +217,19 @@ export default async function RealisatiesHubPage() {
 
       <CompleteTrajectSection
         traject={hub.traject}
-        // "Complete trajecten" = context Bedrijven wanneer die projecten heeft.
-        ctaHref={contextOptions.some((c) => c.slug === "bedrijven") ? "#werk-bedrijven" : "#recent-werk"}
+        ctaHref={contextOptions.some((context) => context.slug === "bedrijven") ? "#werk-bedrijven" : "#recent-werk"}
       />
       <RealisatieContextGrid items={contextItems} />
 
       <SectorFaq title="Veelgestelde vragen over onze realisaties" items={FAQ_ITEMS} />
 
-      {/* Afsluitende CTA */}
       <section className="relative py-10 sm:py-14">
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="flex flex-col items-center gap-5 rounded-[24px] border border-[rgba(255,122,0,0.22)] bg-white/[0.02] px-6 py-12 text-center sm:px-10">
             <h2 className="text-2xl font-bold sm:text-3xl">Een project in gedachten?</h2>
             <p className="max-w-xl text-[15.5px] leading-relaxed text-white/65">
-              Vertel ons wat je wilt realiseren. We bekijken welke combinatie van webdesign,
-              fotografie, video of digitale media jouw verhaal het sterkst overbrengt.
+              Vertel ons wat je wilt realiseren. We bekijken welke combinatie van software,
+              webdesign, fotografie, video of digitale media jouw project vooruithelpt.
             </p>
             <div className="flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
               <Link
