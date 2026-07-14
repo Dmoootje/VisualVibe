@@ -27,6 +27,17 @@ const nextConfig = {
         destination: '/be/',
         permanent: true,
       },
+      // fr/en stonden als locales aangekondigd terwijl alleen Nederlandse
+      // content bestaat; crawlers vonden daardoor honderden /fr- en /en-URL's
+      // (grotendeels 404). Vouw ze permanent op de gepubliceerde Nederlandse
+      // pagina's tot er echte vertalingen zijn (zie src/i18n/routing.ts).
+      // De kale prefix staat bewust vóór de :path*-regel (vangt het lege pad),
+      // en de :path*-bestemming eindigt op een slash zodat de redirect in één
+      // hop op de canonieke slashed URL landt (trailingSlash: true).
+      { source: '/en', destination: '/be/', permanent: true },
+      { source: '/en/:path+', destination: '/be/:path+/', permanent: true },
+      { source: '/fr', destination: '/be/', permanent: true },
+      { source: '/fr/:path+', destination: '/be/:path+/', permanent: true },
     ];
   },
   // Add image optimization configuration

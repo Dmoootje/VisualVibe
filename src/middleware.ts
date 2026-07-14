@@ -55,12 +55,9 @@ export default function middleware(request: NextRequest) {
     requestHeaders.set(INTERNAL_LOCALE_REWRITE_HEADER, "nl");
     requestHeaders.set("x-next-intl-locale", "nl");
 
-    const response = NextResponse.rewrite(rewriteUrl, {
+    return NextResponse.rewrite(rewriteUrl, {
       request: { headers: requestHeaders },
     });
-    const alternateLinks = intlMiddleware(request).headers.get("link");
-    if (alternateLinks) response.headers.set("link", alternateLinks);
-    return response;
   }
 
   return intlMiddleware(request);
