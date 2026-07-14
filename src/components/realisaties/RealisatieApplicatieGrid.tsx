@@ -6,6 +6,7 @@ import {
   type ApplicationCase,
 } from "@/data/applicationCases";
 import type { ApplicationCaseImages } from "@/lib/firestore/applicationCases";
+import { ApplicationPhoneMockup } from "./ApplicationPhoneMockup";
 
 export function RealisatieApplicatieGrid({
   projects,
@@ -34,46 +35,61 @@ export function RealisatieApplicatieGrid({
         <div className="grid gap-5 md:grid-cols-2">
           {projects.map((project) => {
             const cover = images[applicationCaseImageKey(project.id, "cover")];
+            const mobile = images[applicationCaseImageKey(project.id, "mobile-cover")];
             return (
               <Link
                 key={project.id}
                 href={`/realisaties/applicaties/${project.slug}`}
-                className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-white/[0.025] transition-all hover:-translate-y-1 hover:border-[rgba(255,122,0,0.42)] hover:bg-white/[0.04] motion-reduce:transform-none"
+                className="group relative overflow-hidden rounded-[22px] border border-white/[0.09] bg-white/[0.025] transition-all hover:-translate-y-1 hover:border-[rgba(255,122,0,0.42)] hover:bg-white/[0.04] motion-reduce:transform-none"
               >
-                <div className="relative aspect-[16/9] overflow-hidden border-b border-white/[0.07] bg-[#100e0d]">
-                  {cover ? (
-                    <Image
-                      src={cover}
-                      alt={`${project.title} applicatiecase`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.025] motion-reduce:transition-none"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,122,0,0.16),transparent_52%)]"
+                {/* Cover. De binnenlaag clipt de desktopschermafbeelding binnen de
+                    16:9-box (ook bij de hover-zoom); de telefoon-mockup valt buiten
+                    die laag zodat hij rechtsonder mag uitsteken. */}
+                <div className="relative aspect-[16/9] border-b border-white/[0.07] bg-[#100e0d]">
+                  <div className="absolute inset-0 overflow-hidden">
+                    {cover ? (
+                      <Image
+                        src={cover}
+                        alt={`${project.title} applicatiecase`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.025] motion-reduce:transition-none"
                       />
-                      <span className="relative flex h-20 w-20 items-center justify-center rounded-[24px] border border-[rgba(255,122,0,0.28)] bg-[rgba(255,122,0,0.08)] text-[#ff9a45]">
-                        <MonitorSmartphone className="h-9 w-9" strokeWidth={1.5} />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,122,0,0.16),transparent_52%)]"
+                        />
+                        <span className="relative flex h-20 w-20 items-center justify-center rounded-[24px] border border-[rgba(255,122,0,0.28)] bg-[rgba(255,122,0,0.08)] text-[#ff9a45]">
+                          <MonitorSmartphone className="h-9 w-9" strokeWidth={1.5} />
+                        </span>
+                      </div>
+                    )}
+                    <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                      <span
+                        className={`rounded-full border px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em] backdrop-blur ${
+                          project.status === "live"
+                            ? "border-emerald-400/30 bg-emerald-950/70 text-emerald-300"
+                            : "border-amber-400/30 bg-amber-950/70 text-amber-300"
+                        }`}
+                      >
+                        {project.status === "live" ? "Live" : "In ontwikkeling"}
                       </span>
                     </div>
-                  )}
-                  <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-                    <span
-                      className={`rounded-full border px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em] backdrop-blur ${
-                        project.status === "live"
-                          ? "border-emerald-400/30 bg-emerald-950/70 text-emerald-300"
-                          : "border-amber-400/30 bg-amber-950/70 text-amber-300"
-                      }`}
-                    >
-                      {project.status === "live" ? "Live" : "In ontwikkeling"}
-                    </span>
                   </div>
+
+                  {/* Mobiele weergave in een iPhone-mockup, rechtsonder over de cover */}
+                  {mobile && (
+                    <ApplicationPhoneMockup
+                      src={mobile}
+                      alt={`${project.title} mobiele weergave`}
+                      className="absolute bottom-[-9%] right-4 z-20 aspect-[9/19] h-[86%] w-auto transition-transform duration-500 group-hover:-translate-y-1.5 motion-reduce:transform-none sm:right-6"
+                    />
+                  )}
                 </div>
 
-                <div className="p-6 sm:p-7">
+                <div className={mobile ? "px-6 pb-6 pt-9 sm:px-7 sm:pb-7 sm:pt-11" : "p-6 sm:p-7"}>
                   <div className="mb-4 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span
