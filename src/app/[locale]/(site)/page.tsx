@@ -90,8 +90,8 @@ function HomepageReviewSignal() {
             <h2 id="review-signal-title" className="text-xl font-bold sm:text-2xl">
               Wat is VisualVibe?
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
-              <strong className="font-semibold text-white/90">
+            <p className="mt-3 text-sm leading-relaxed text-white/75 sm:text-base">
+              <strong className="font-semibold text-white/95">
                 VisualVibe is een creatief mediabureau in Tongeren-Borgloon, Limburg.
               </strong>{" "}
               We combineren webdesign, SEO en GEO, fotografie, videografie en digitale toepassingen
@@ -103,11 +103,11 @@ function HomepageReviewSignal() {
             cite={GOOGLE_MAPS_PROFILE_URL}
             className="rounded-xl border border-amber-400/20 bg-amber-400/[0.045] px-5 py-5 sm:px-6"
           >
-            <p className="text-base font-medium leading-relaxed text-white/85 sm:text-lg">
+            <p className="text-base font-medium leading-relaxed text-white/90 sm:text-lg">
               “Persoonlijke begeleiding, duidelijke communicatie en één aanspreekpunt van briefing
               tot oplevering.”
             </p>
-            <footer className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-white/45">
+            <footer className="mt-3 text-xs font-semibold uppercase tracking-[0.1em] text-white/75">
               Samenvatting van onze klantenreviews
             </footer>
           </blockquote>

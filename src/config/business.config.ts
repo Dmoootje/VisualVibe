@@ -36,7 +36,9 @@ export const businessConfig = {
     "https://www.instagram.com/visualvibe.be/",
     "https://www.youtube.com/@visualvibe.",
     "https://www.tiktok.com/@visualvibe_",
-    "https://www.linkedin.com/company/visualvibee",
+    // LinkedIn is intentionally omitted until that profile uses the current
+    // visualvibe.media domain and Tongeren-Borgloon location. Publishing it as
+    // sameAs while it still states the old data would create entity/NAP drift.
   ],
 } as const;
 
