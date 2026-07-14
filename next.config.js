@@ -42,6 +42,11 @@ const nextConfig = {
   },
   // Add image optimization configuration
   images: {
+    // Use a selective loader: application-portfolio screenshots are already
+    // optimized WebP files and load directly from Firebase CDN; every other
+    // image keeps using Next's responsive image optimizer.
+    loader: 'custom',
+    loaderFile: './src/lib/nextImageLoader.js',
     // Firebase App Hosting can opt out of Next's image pipeline unless this is
     // explicit. Keep remote content images responsive and cached by Next.
     unoptimized: false,
