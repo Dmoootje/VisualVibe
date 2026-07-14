@@ -10,7 +10,6 @@ import { scoreSectorPosts } from "@/lib/kennisbank/relatedPosts";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
-import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { getVideografieVideos } from "@/lib/youtube";
 import {
   selectSectorWebdesignProjects,
@@ -80,12 +79,11 @@ export default async function SectorDetailPage({
   }
 
   // Echte content: Firestore-projecten/galerijen (met seed-fallback) + YouTube.
-  const [projects, images, galleries, videoData, authorImages] = await Promise.all([
+  const [projects, images, galleries, videoData] = await Promise.all([
     getWebdesignProjects(),
     getWebdesignImages(),
     getFotografieGalleries(),
     getVideografieVideos(),
-    getAuthorPhotoMap(),
   ]);
 
   const recommendedServices = sector.recommendedServices
@@ -209,7 +207,7 @@ export default async function SectorDetailPage({
 
       {sector.faq && sector.faq.length > 0 && <SectorFaq items={sector.faq} />}
 
-      <SectorKnowledge posts={kennisbankPosts} authorImages={authorImages} />
+      <SectorKnowledge posts={kennisbankPosts} />
 
       <CTASection
         title={sector.ctaTitle ?? `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`}
