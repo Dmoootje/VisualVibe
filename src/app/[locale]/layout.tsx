@@ -28,14 +28,38 @@ export function generateStaticParams() {
 }
 
 const homeTitle = "Webdesign, foto, video & SEO in Limburg | VisualVibe";
+const defaultOgImage = "/api/og";
+const dutchHomeUrl = `${businessConfig.url}/be/`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(businessConfig.url),
+  applicationName: businessConfig.displayName,
   title: {
     default: homeTitle,
     template: `%s | ${businessConfig.displayName}`,
   },
   description: businessConfig.description,
+  authors: [{ name: businessConfig.founder, url: businessConfig.url }],
+  creator: businessConfig.founder,
+  publisher: businessConfig.displayName,
+  category: "business",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -49,15 +73,24 @@ export const metadata: Metadata = {
   openGraph: {
     title: homeTitle,
     description: businessConfig.description,
+    url: dutchHomeUrl,
+    siteName: businessConfig.displayName,
+    locale: "nl_BE",
     images: [
       {
-        url: "/image.jpg",
+        url: defaultOgImage,
         width: 1200,
         height: 630,
-        alt: businessConfig.displayName,
+        alt: `${businessConfig.displayName} — creatief mediabureau in Limburg`,
       },
     ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: homeTitle,
+    description: businessConfig.description,
+    images: [defaultOgImage],
   },
 };
 

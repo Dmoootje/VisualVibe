@@ -7,3 +7,4 @@ export { BlogPostingJsonLd, type BlogPostingData } from "./BlogPostingJsonLd";
 export { ServiceJsonLd, type ServiceJsonLdData } from "./ServiceJsonLd";
 export { BreadcrumbJsonLd, type BreadcrumbItem } from "./BreadcrumbJsonLd";
 export { WebSiteJsonLd } from "./WebSiteJsonLd";
+export { WebPageJsonLd, type WebPageJsonLdProps } from "./WebPageJsonLd";

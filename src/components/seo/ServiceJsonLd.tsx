@@ -9,20 +9,27 @@ export type ServiceJsonLdData = {
 };
 
 export function ServiceJsonLd({ service }: { service: ServiceJsonLdData }) {
+  const areaServed = (service.areaServed ?? businessConfig.serviceArea).map((name) => ({
+    "@type": "AdministrativeArea",
+    name,
+  }));
+
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "Service",
+        "@id": `${service.url}#service`,
         name: service.name,
+        serviceType: service.name,
         description: service.description,
         url: service.url,
-        areaServed: service.areaServed ?? businessConfig.serviceArea,
-        provider: {
-          "@type": "Organization",
-          name: businessConfig.displayName,
-          url: businessConfig.url,
+        areaServed,
+        audience: {
+          "@type": "BusinessAudience",
+          audienceType: "Bedrijven, kmo's en zelfstandigen",
         },
+        provider: { "@id": `${businessConfig.url}/#localbusiness` },
       }}
     />
   );

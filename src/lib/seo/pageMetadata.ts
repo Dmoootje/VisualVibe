@@ -6,10 +6,10 @@ import { MANUAL_PAGE_OG_IMAGES } from "@/data/manualOgImages";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
-// the inherited homepage OG), and an optional noindex - without repeating the
-// same object shape in each generateMetadata.
+// the inherited homepage OG), and explicit crawler/snippet directives - without
+// repeating the same object shape in each generateMetadata.
 
-const DEFAULT_OG_IMAGE = "/image.jpg";
+const DEFAULT_OG_IMAGE = "/api/og";
 // Afmetingen voor een expliciet meegegeven `ogImage` of de site-fallback; de
 // per-pagina OG-afbeeldingen uit ogImageForPath dragen hun echte afmetingen.
 const DEFAULT_OG_DIMENSIONS = { width: 1200, height: 630 };
@@ -21,8 +21,10 @@ export type PageMetadataInput = {
   keywords?: string[];
   /** Canonical path with a leading and trailing slash, e.g. "/diensten/webdesign/". */
   path: string;
-  /** OG/Twitter image URL (absolute or root-relative); defaults to the site image. */
+  /** OG/Twitter image URL (absolute or root-relative); defaults to the branded site image. */
   ogImage?: string;
+  /** Descriptive alt text for the social image. Defaults to the page title. */
+  ogImageAlt?: string;
   /** Keep the page reachable but out of the index (e.g. an empty realisatie category). */
   noindex?: boolean;
 };
@@ -33,6 +35,7 @@ export function pageMetadata({
   keywords,
   path,
   ogImage,
+  ogImageAlt,
   noindex,
 }: PageMetadataInput): Metadata {
   // Marketing pages exist in Dutch only: the /fr and /en routes render the
@@ -42,17 +45,43 @@ export function pageMetadata({
   const url = `${businessConfig.url}${localizedPath("nl", path)}`;
 
   // Voorrang: een reeds handmatig geüploade pagina-OG > de gegenereerde map >
-  // een expliciet meegegeven ogImage > de site-fallback. De handmatige laag is
-  // klein en voorkomt dat een generatorrun nodig is voor één nieuw dienstbeeld.
+  // een expliciet meegegeven ogImage > de branded site-fallback. De handmatige
+  // laag voorkomt dat een generatorrun nodig is voor één nieuw dienstbeeld.
   const mapped = MANUAL_PAGE_OG_IMAGES[path] ?? ogImageForPath(path);
   const image = mapped?.url ?? ogImage ?? DEFAULT_OG_IMAGE;
   const { width, height } = mapped ?? DEFAULT_OG_DIMENSIONS;
+  const imageAlt = ogImageAlt ?? title;
+
+  const robots: Metadata["robots"] = noindex
+    ? {
+        index: false,
+        follow: true,
+        googleBot: {
+          index: false,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      };
 
   return {
     title: { absolute: title },
     description,
     keywords,
     alternates: { canonical: url },
+    robots,
     openGraph: {
       type: "website",
       url,
@@ -60,7 +89,7 @@ export function pageMetadata({
       locale: "nl_BE",
       title,
       description,
-      images: [{ url: image, width, height, alt: title }],
+      images: [{ url: image, width, height, alt: imageAlt }],
     },
     twitter: {
       card: "summary_large_image",
@@ -68,6 +97,5 @@ export function pageMetadata({
       description,
       images: [image],
     },
-    ...(noindex ? { robots: { index: false, follow: true } } : {}),
   };
 }
