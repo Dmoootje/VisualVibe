@@ -10,6 +10,12 @@ import {
 
 const COLLECTION = "site_settings";
 const SETTINGS_ID = "default";
+const CANONICAL_EMAIL = "info@visualvibe.media";
+const CANONICAL_PHONE = "+32472964599";
+const LEGACY_EMAILS = new Set([
+  "hello@visualvibe.be",
+  "podcasting.info@visualvibe.media",
+]);
 
 function toOpeningHours(value: unknown): OpeningHoursDay[] {
   if (!Array.isArray(value) || value.length === 0) return DEFAULT_OPENING_HOURS;
@@ -26,6 +32,27 @@ function toOpeningHours(value: unknown): OpeningHoursDay[] {
       note: String(day.note ?? ""),
     };
   });
+}
+
+function normalizeEmail(value: string): string {
+  return LEGACY_EMAILS.has(value.trim().toLowerCase()) ? CANONICAL_EMAIL : value;
+}
+
+function normalizePhone(value: string | undefined): string | undefined {
+  if (!value) return value;
+  const compact = value.replace(/[\s().-]/g, "");
+  return compact === "0235296023" ? CANONICAL_PHONE : value;
+}
+
+function normalizeLegacyContactSettings(settings: SiteSettings): SiteSettings {
+  return {
+    ...settings,
+    mainEmail: normalizeEmail(settings.mainEmail),
+    leadNotificationEmail: normalizeEmail(settings.leadNotificationEmail),
+    phone: normalizePhone(settings.phone),
+    mobilePhone: normalizePhone(settings.mobilePhone),
+    whatsapp: normalizePhone(settings.whatsapp),
+  };
 }
 
 /**
@@ -62,7 +89,9 @@ async function readSiteSettings(): Promise<SiteSettings> {
     if (typeof merged.latitude !== "number") merged.latitude = undefined;
     if (typeof merged.longitude !== "number") merged.longitude = undefined;
 
-    return merged;
+    // Older admin values are normalised immediately for the public site and the
+    // contact settings form. Saving the form afterwards persists the new values.
+    return normalizeLegacyContactSettings(merged);
   } catch {
     return base;
   }
