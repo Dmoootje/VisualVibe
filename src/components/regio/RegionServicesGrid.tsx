@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
 import { serviceHref } from "@/data/services";
@@ -11,7 +12,22 @@ import "./region-services-grid.css";
  * omschrijving, tag-pills en een pijl, plus een grote vage ghost-glyph
  * watermark. Alle interactie is pure CSS (zie .rbento-* in globals.css), dus
  * server-safe. Onder 860px stapelen de kaarten full-width.
+ *
+ * Optioneel toont elke kaart een "uitgelicht werk"-strook (thumbnail + naam
+ * van een echte realisatie), gebruikt op de /diensten-hub. De strook is puur
+ * informatief (geen geneste link); de hele kaart linkt naar de dienstpagina.
  */
+
+export type FeaturedWork = {
+  /** Naam van de realisatie, bv. "Gordijnen Myriam". */
+  name: string;
+  /** Korte omschrijving onder de naam. */
+  sub?: string;
+  /** Eyebrow-label; default "Uitgelicht werk". */
+  label?: string;
+  /** Thumbnail-URL (Firebase/YouTube); zonder valt de strook terug op het diensticoon. */
+  image?: string;
+};
 
 // Spans wisselen per paar af (7/5 dan 5/7); een losse laatste kaart span 12.
 function bentoSpans(n: number): number[] {
@@ -29,7 +45,14 @@ function bentoSpans(n: number): number[] {
   return spans;
 }
 
-export function RegionServicesGrid({ services }: { services: Service[] }) {
+export function RegionServicesGrid({
+  services,
+  featuredWork,
+}: {
+  services: Service[];
+  /** Per dienst-slug een uitgelichte realisatie; alleen de /diensten-hub geeft dit mee. */
+  featuredWork?: Record<string, FeaturedWork>;
+}) {
   if (services.length === 0) return null;
 
   const spans = bentoSpans(services.length);
@@ -41,6 +64,7 @@ export function RegionServicesGrid({ services }: { services: Service[] }) {
         const accent = span >= 7;
         const tags = service.benefits.slice(0, accent ? 3 : 2);
         const num = String(i + 1).padStart(2, "0");
+        const work = featuredWork?.[service.slug];
 
         return (
           <Link
@@ -66,6 +90,29 @@ export function RegionServicesGrid({ services }: { services: Service[] }) {
 
             <h3 className="rbento-title">{service.title}</h3>
             <p className="rbento-desc">{service.excerpt}</p>
+
+            {work && (
+              <div className="rbento-work">
+                {work.image ? (
+                  <Image
+                    src={work.image}
+                    alt={`Realisatie ${work.name}`}
+                    width={112}
+                    height={112}
+                    className="rbento-work-thumb"
+                  />
+                ) : (
+                  <span className="rbento-work-fallback" aria-hidden="true">
+                    <SvcIcon id={service.category} size={22} strokeWidth={1.6} />
+                  </span>
+                )}
+                <span className="rbento-work-copy">
+                  <span className="rbento-work-label">{work.label ?? "Uitgelicht werk"}</span>
+                  <span className="rbento-work-name">{work.name}</span>
+                  {work.sub && <span className="rbento-work-sub">{work.sub}</span>}
+                </span>
+              </div>
+            )}
 
             <div className="rbento-foot">
               <div className="rbento-tags">
