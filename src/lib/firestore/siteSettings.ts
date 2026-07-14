@@ -1,5 +1,4 @@
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
 import {
   DEFAULT_OPENING_HOURS,
@@ -68,14 +67,8 @@ async function readSiteSettings(): Promise<SiteSettings> {
   }
 }
 
-const readSiteSettingsCached = unstable_cache(
-  readSiteSettings,
-  ["site-settings-v1"],
-  { revalidate: 3600, tags: ["site-settings"] },
-);
-
-/** Shared across requests and deduplicated within a render. */
-export const getSiteSettings = cache(readSiteSettingsCached);
+/** Cached per request so the footer, schema and page share a single read. */
+export const getSiteSettings = cache(readSiteSettings);
 
 // null is allowed so a cleared numeric field can be written to Firestore (a
 // present value that overrides the default) instead of being dropped.

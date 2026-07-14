@@ -1,5 +1,4 @@
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
 import type { Profile } from "@/types";
 
@@ -69,10 +68,4 @@ async function readAuthorPhotoMap(): Promise<Record<string, string>> {
   }
 }
 
-const readAuthorPhotoMapCached = unstable_cache(
-  readAuthorPhotoMap,
-  ["author-photo-map-v1"],
-  { revalidate: 3600, tags: ["author-profiles"] },
-);
-
-export const getAuthorPhotoMap = cache(readAuthorPhotoMapCached);
+export const getAuthorPhotoMap = cache(readAuthorPhotoMap);

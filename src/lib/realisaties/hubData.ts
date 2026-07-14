@@ -7,7 +7,7 @@
 // expliciete data (galerij-categorie/icoon en admin sector-tags).
 
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getWebdesignImages, type WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
@@ -278,7 +278,4 @@ async function readHubData(): Promise<HubData> {
  * Shared cross-route cache. Sub-service pages reuse the same realisation data
  * instead of repeating every Firestore and video read during static rendering.
  */
-export const getHubData = unstable_cache(readHubData, ["realisaties-hub-v2"], {
-  revalidate: 3600,
-  tags: ["realisaties-hub"],
-});
+export const getHubData = cache(readHubData);
