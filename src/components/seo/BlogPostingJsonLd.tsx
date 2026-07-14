@@ -43,7 +43,20 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
         headline: post.title,
         description: post.description,
         url: post.url,
-        mainEntityOfPage: { "@id": `${post.url}#webpage` },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": `${post.url}#webpage`,
+          url: post.url,
+          name: post.title,
+          description: post.description,
+          inLanguage: post.inLanguage,
+          isPartOf: { "@id": `${businessConfig.url}/#website` },
+          publisher: { "@id": organizationId },
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: imageUrl,
+          },
+        },
         isPartOf: { "@id": `${businessConfig.url}/#website` },
         image: {
           "@type": "ImageObject",
