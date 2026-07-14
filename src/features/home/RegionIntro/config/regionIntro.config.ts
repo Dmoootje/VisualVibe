@@ -1,7 +1,7 @@
 export const regionIntroConfig = {
-  title: "Actief in heel Limburg en daarbuiten",
+  title: "Vanuit Limburg, actief in meerdere regio's",
   subtitle:
-    "Limburg is onze thuisregio - we werken ook in Vlaanderen, Antwerpen en Nederlands-Limburg.",
+    "VisualVibe is gevestigd in Limburg. Kies je regio voor lokale informatie, diensten en realisaties uit jouw omgeving.",
   ctaLabel: "Bekijk alle regio's",
   ctaHref: "/regio",
 };
@@ -14,14 +14,14 @@ export const regionCards: Record<string, { label: string; description: string }>
   },
   vlaanderen: {
     label: "Regio",
-    description: "Voor bedrijven die hun online uitstraling willen versterken.",
+    description: "Lokale informatie, diensten en realisaties voor jouw omgeving.",
   },
   antwerpen: {
     label: "Regio",
-    description: "Actief voor websites, branding en visuele content.",
+    description: "Ontdek onze aanpak en projecten in de provincie Antwerpen.",
   },
   "nederlands-limburg": {
     label: "Regio",
-    description: "Ook net over de grens helpen we bedrijven groeien.",
+    description: "Ook net over de grens helpen we bedrijven vooruit.",
   },
 };
