@@ -64,8 +64,6 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Skip APIs, Next internals, metadata-image routes and any path with a file
-  // extension. opengraph-image has no extension, so it must be named explicitly
-  // or next-intl would rewrite the generated PNG route into a locale segment.
-  matcher: ["/((?!api|_next|_vercel|opengraph-image|twitter-image|.*\\..*).*)"],
+  // Skip API routes, Next internals, and any path with a file extension (static assets)
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
