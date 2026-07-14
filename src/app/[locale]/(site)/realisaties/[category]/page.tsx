@@ -34,7 +34,11 @@ import { videografieCategories } from "@/config/videografie.config";
 import { droneMedia, droneCategories, droneStats } from "@/config/drone.config";
 
 export function generateStaticParams() {
-  return realisatieCategories.map((category) => ({ category: category.slug }));
+  // Applicaties heeft een eigen statische route met Firestore-cases en mag niet
+  // nogmaals via het generieke [category]-segment worden gegenereerd.
+  return realisatieCategories
+    .filter((category) => category.slug !== "applicaties")
+    .map((category) => ({ category: category.slug }));
 }
 
 // ISR so admin-managed Webdesign showcase images/projects propagate without a rebuild.
@@ -47,15 +51,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category } = await params;
   const categoryDef = getRealisatieCategoryBySlug(category);
-  if (!categoryDef) return {};
+  if (!categoryDef || categoryDef.slug === "applicaties") return {};
 
   const items = cases.filter((item) => item.category === categoryDef.slug);
-  // Fotografie is indexable once it has at least one non-empty gallery.
   const fotoGalleryCount =
     categoryDef.slug === "fotografie"
-      ? (await getFotografieGalleries()).filter((g) => g.images.length > 0).length
+      ? (await getFotografieGalleries()).filter((gallery) => gallery.images.length > 0).length
       : 0;
-  // Webdesign + videografie are always indexable: seeded defaults / the YouTube fallback guarantee content.
   const hasContent =
     categoryDef.slug === "webdesign" ||
     categoryDef.slug === "videografie" ||
@@ -67,7 +69,6 @@ export async function generateMetadata({
     title: categoryDef.seoTitle,
     description: categoryDef.seoDescription,
     path: `/realisaties/${categoryDef.slug}/`,
-    // Empty category: keep it reachable but out of the index until content lands.
     noindex: !hasContent,
   });
 }
@@ -79,7 +80,7 @@ export default async function RealisatieCategoryPage({
 }) {
   const { category } = await params;
   const categoryDef = getRealisatieCategoryBySlug(category);
-  if (!categoryDef) notFound();
+  if (!categoryDef || categoryDef.slug === "applicaties") notFound();
 
   const isWebdesign = categoryDef.slug === "webdesign";
   const isFotografie = categoryDef.slug === "fotografie";
@@ -87,33 +88,27 @@ export default async function RealisatieCategoryPage({
   const is3dVr = categoryDef.slug === "3d-vr";
   const isDrone = categoryDef.slug === "drone";
   const items = cases.filter((item) => item.category === categoryDef.slug);
-  const otherCategories = realisatieCategories.filter((c) => c.slug !== categoryDef.slug);
+  const otherCategories = realisatieCategories.filter(
+    (candidate) => candidate.slug !== categoryDef.slug,
+  );
 
-  // Dienst achter deze categorie (webdesign, fotografie, ...): voedt de
-  // kennisbank-sectie en de cross-link naar de dienstpagina. Categorieën
-  // zonder eigen dienst (bedrijven, events, ...) slaan beide gewoon over.
   const mappedServiceSlug = categoryToServiceSlug[categoryDef.slug];
   const mappedService = mappedServiceSlug ? getServiceBySlug(mappedServiceSlug) : undefined;
 
-  // Webdesign leads with the featured "Laatste creatie" + Websites/Webshops
-  // grid, built from the admin-managed projects + images.
   const [webdesignImages, webdesignProjects] = isWebdesign
     ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
     : [null, null];
   const featured =
-    webdesignProjects?.find((p) => p.id === "gordijnenmyriam") ?? webdesignProjects?.[0] ?? null;
-  const gridProjects = webdesignProjects?.filter((p) => p.id !== featured?.id) ?? [];
+    webdesignProjects?.find((project) => project.id === "gordijnenmyriam") ??
+    webdesignProjects?.[0] ??
+    null;
+  const gridProjects =
+    webdesignProjects?.filter((project) => project.id !== featured?.id) ?? [];
 
-  // Fotografie shows admin-managed galleries; empty galleries are skipped.
   const fotoGalleries = isFotografie
-    ? (await getFotografieGalleries()).filter((g) => g.images.length > 0)
+    ? (await getFotografieGalleries()).filter((gallery) => gallery.images.length > 0)
     : [];
-
-  // Livegalerijen uit SmugMug (publieke albums, nieuwste eerst; leeg zonder creds).
   const smugGalleries = isFotografie ? await getSmugMugGalleries() : [];
-
-  // Content-driven stat rail: gallery count + a fixed in-house claim. Only shown
-  // once at least one gallery exists (otherwise the header keeps its plain look).
   const fotoStats =
     isFotografie && fotoGalleries.length > 0
       ? [
@@ -125,11 +120,7 @@ export default async function RealisatieCategoryPage({
         ]
       : undefined;
 
-  // Videografie shows the YouTube-fed realisaties gallery (featured + filter grid).
   const videoData = isVideografie ? await getVideografieVideos() : null;
-
-  // 3D/VR/AR shows all Matterport tours as a grid + lightbox; the header carries
-  // a tour-count + Matterport stat rail.
   const xrStats = is3dVr
     ? [
         { value: String(matterportTours.length), label: "virtuele\ntours" },
@@ -147,7 +138,10 @@ export default async function RealisatieCategoryPage({
         ]}
       />
 
-      <RealisatieHeader category={categoryDef} stats={fotoStats ?? xrStats ?? (isDrone ? droneStats : undefined)} />
+      <RealisatieHeader
+        category={categoryDef}
+        stats={fotoStats ?? xrStats ?? (isDrone ? droneStats : undefined)}
+      />
 
       {isWebdesign && webdesignImages && featured ? (
         <>
@@ -157,7 +151,10 @@ export default async function RealisatieCategoryPage({
       ) : isFotografie && fotoGalleries.length > 0 ? (
         <RealisatieFotografieGalerijen galleries={fotoGalleries} />
       ) : isVideografie && videoData && videoData.videos.length > 0 ? (
-        <RealisatieVideografieGalerijen videos={videoData.videos} categories={videografieCategories} />
+        <RealisatieVideografieGalerijen
+          videos={videoData.videos}
+          categories={videografieCategories}
+        />
       ) : isDrone ? (
         <RealisatieDroneMedia media={droneMedia} categories={droneCategories} />
       ) : is3dVr ? (
@@ -169,9 +166,12 @@ export default async function RealisatieCategoryPage({
               <CaseGrid cases={items} />
             ) : (
               <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-                <h2 className="text-2xl font-bold">Binnenkort realisaties in {categoryDef.name}</h2>
+                <h2 className="text-2xl font-bold">
+                  Binnenkort realisaties in {categoryDef.name}
+                </h2>
                 <p className="max-w-xl text-white/60">
-                  We voegen hier binnenkort projecten toe. Zin om zelf zo&apos;n realisatie te laten maken?
+                  We voegen hier binnenkort projecten toe. Zin om zelf zo&apos;n realisatie te
+                  laten maken?
                 </p>
                 <Link
                   href="/offerte-aanvragen"
@@ -186,15 +186,11 @@ export default async function RealisatieCategoryPage({
         </Section>
       )}
 
-      {/* SmugMug: automatisch synchroniserende livegalerijen (alleen fotografie). */}
       {isFotografie && <RealisatieSmugMugGalerijen galleries={smugGalleries} />}
 
       {mappedService && (
         <>
-          {/* Uit de kennisbank: artikels rond deze discipline (interne links + GEO). */}
           <ServiceRelatedPosts serviceSlug={mappedService.slug} />
-
-          {/* Cross-link naar de dienstpagina achter deze realisaties. */}
           <section className="relative py-6 sm:py-8">
             <div className="container mx-auto px-2.5 sm:px-4">
               <div className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
@@ -207,7 +203,8 @@ export default async function RealisatieCategoryPage({
                     Meer weten over onze dienst {mappedService.title}?
                   </h2>
                   <p className="mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/60">
-                    Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde vragen.
+                    Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde
+                    vragen.
                   </p>
                 </div>
                 <Link

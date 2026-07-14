@@ -10,6 +10,7 @@ import { realisatieCategories } from "@/data/realisatieCategories";
 import { matterportTours } from "@/data/matterportTours";
 import { droneMedia } from "@/config/drone.config";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
+import { getApplicationCases } from "@/lib/firestore/applicationCases";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import {
   assertValidKennisbankContent,
@@ -20,8 +21,6 @@ import {
 } from "@/lib/kennisbank/posts";
 import type { BlogLocale } from "@/types/blog";
 
-// Static + data-driven routes today. Case (realisaties) slugs are added
-// once that dataset is populated in Fase 4.
 const staticPaths = [
   "",
   "diensten",
@@ -38,12 +37,7 @@ const staticPaths = [
   "diensten/webdesign/website-met-ai-functionaliteiten",
 ];
 
-// getAllPosts() already excludes draft, scheduled, archived and future-dated
-// content; noindex posts are excluded here as a separate indexing decision.
 const indexablePosts = blogPosts.filter((post) => !post.robots?.includes("noindex"));
-// A category only enters the sitemap once it has an indexable post. Apps &
-// software is a curated topic hub over existing canonical article URLs and is
-// therefore explicitly active even though the frontmatter stays Webdesign.
 const activeCategorySlugs = new Set(
   indexablePosts.filter((post) => post.locale === "nl").map((post) => post.categorySlug)
 );
@@ -73,23 +67,22 @@ function withSlash(path: string): string {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Publishing must stop when a live article points to a missing or
-  // non-canonical pillar, post, service, region, sector, case or source.
   assertValidKennisbankContent();
 
   const { url } = businessConfig;
+  const [fotoGalleries, applicationProjects] = await Promise.all([
+    getFotografieGalleries(),
+    getApplicationCases(),
+  ]);
+  const fotoGalleryCount = fotoGalleries.filter((gallery) => gallery.images.length > 0).length;
+  const publishedApplicationProjects = applicationProjects.filter((project) => project.published);
 
-  // Realisatie-categorieën spiegelen de hasContent/noindex-logica van
-  // realisaties/[category]/page.tsx: alleen categorieën met echte content
-  // (indexeerbaar, self-referencing canonical) horen in de sitemap.
-  const fotoGalleryCount = (await getFotografieGalleries()).filter(
-    (gallery) => gallery.images.length > 0
-  ).length;
   const realisatiePaths = realisatieCategories
     .filter(
       (category) =>
         category.slug === "webdesign" ||
         category.slug === "videografie" ||
+        (category.slug === "applicaties" && publishedApplicationProjects.length > 0) ||
         (category.slug === "3d-vr" && matterportTours.length > 0) ||
         (category.slug === "drone" && droneMedia.length > 0) ||
         (category.slug === "fotografie" && fotoGalleryCount > 0) ||
@@ -97,24 +90,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     )
     .map((category) => `realisaties/${category.slug}`);
 
-  // Marketing routes exist in Dutch only, published under /be (the locale-less
-  // URL 308-redirects). Each entry lists that real nl URL and no language
-  // alternates: the /fr and /en routes render untranslated Dutch content and
-  // must not be advertised as variants. Kennisbank entries below use their
-  // real `/be`, `/fr` or `/en` URL and only advertise language alternates
-  // backed by an explicit translationKey relationship.
+  const applicationCasePaths = publishedApplicationProjects.map(
+    (project) => `realisaties/applicaties/${project.slug}`,
+  );
+
+  // Marketing routes bestaan alleen inhoudelijk in het Nederlands en worden
+  // daarom uitsluitend onder /be gepubliceerd.
   const nonKennisbankEntries: MetadataRoute.Sitemap = [
     ...staticPaths,
     ...dataPaths,
     ...realisatiePaths,
+    ...applicationCasePaths,
   ].map((path) => ({
     url: `${url}${localizedPath("nl", withSlash(path))}`,
     lastModified: new Date(),
   }));
 
   const kennisbankEntries: MetadataRoute.Sitemap = [
-    // Category copy currently exists only in Dutch, so hub/category URLs are
-    // deliberately published only under /be and carry no invented alternates.
     {
       url: `${url}${localizedPath("nl", "/kennisbank/")}`,
       lastModified: new Date(),
@@ -129,8 +121,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const translations = getPostTranslations(post).filter(
         (translation) => !translation.robots?.includes("noindex")
       );
-      // hreflang keys are region-qualified (nl-BE/fr-BE/en-BE); x-default
-      // points to the Dutch (/be) URL as the fallback for unmatched languages.
       const nlTranslation = translations.find((translation) => translation.locale === "nl");
       const languageAlternates =
         translations.length > 1

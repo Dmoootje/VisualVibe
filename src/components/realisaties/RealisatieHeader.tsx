@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import {
   Monitor,
+  AppWindow,
   Camera,
   Video,
   Radar,
@@ -19,6 +20,7 @@ import type { RealisatieCategory, RealisatieStat } from "@/data/realisatieCatego
 // Per-category glyph for the header icon badge. Falls back to a monitor.
 const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
   webdesign: Monitor,
+  applicaties: AppWindow,
   fotografie: Camera,
   videografie: Video,
   drone: Radar,
@@ -32,10 +34,8 @@ const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
 };
 
 /**
- * Herbruikbare realisatie-header (design_handoff_realisaties_webdesign): kruimel-
- * pad, icoon-badge, eyebrow "REALISATIES", H1, subtitel en een optionele stat-
- * rail. Identiek voor elke realisatie-categorie; alleen icoon, titel, subtitel
- * en stats wisselen. Puur server-side; ambient-lagen zijn decoratief.
+ * Herbruikbare realisatie-header: kruimelpad, icoon-badge, eyebrow
+ * "REALISATIES", H1, subtitel en een optionele stat-rail.
  */
 export function RealisatieHeader({
   category,
@@ -50,8 +50,6 @@ export function RealisatieHeader({
 
   return (
     <header className="relative overflow-hidden pb-10 pt-28 sm:pt-32 md:pb-12">
-      {/* Subtiel radiaal-gemaskeerd raster; de warme gloed komt van de site-brede
-          achtergrond (SiteBackground), zodat de pagina 1 vloeiende bg houdt. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0"
@@ -59,14 +57,15 @@ export function RealisatieHeader({
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
           backgroundSize: "52px 52px",
-          WebkitMaskImage: "radial-gradient(ellipse 66% 120% at 18% 30%, #000, transparent 72%)",
-          maskImage: "radial-gradient(ellipse 66% 120% at 18% 30%, #000, transparent 72%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 66% 120% at 18% 30%, #000, transparent 72%)",
+          maskImage:
+            "radial-gradient(ellipse 66% 120% at 18% 30%, #000, transparent 72%)",
         }}
       />
 
       <div className="container relative z-[2] mx-auto flex flex-col items-start justify-between gap-8 px-2.5 sm:px-4 lg:flex-row lg:items-center lg:gap-10">
         <div className="max-w-[640px]">
-          {/* Kruimelpad */}
           <nav className="mb-6 flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.03em] text-white/40">
             <Link href="/" className="transition-colors hover:text-white">
               Home
@@ -79,7 +78,6 @@ export function RealisatieHeader({
             <span className="text-[#FF9A45]">{category.name}</span>
           </nav>
 
-          {/* Icoon + eyebrow + H1 */}
           <div className="mb-5 flex items-center gap-[18px]">
             <span className="relative flex h-[54px] w-[54px] flex-none items-center justify-center rounded-[17px] border border-[rgba(255,122,0,0.3)] bg-[linear-gradient(150deg,rgba(255,122,0,0.18),rgba(255,122,0,0.05))] shadow-[0_18px_40px_-20px_rgba(255,90,0,0.7)] sm:h-[66px] sm:w-[66px]">
               <Icon className="h-7 w-7 text-[#FF9A45] sm:h-8 sm:w-8" strokeWidth={1.8} />
@@ -99,7 +97,6 @@ export function RealisatieHeader({
           </p>
         </div>
 
-        {/* Stat-rail */}
         {stats.length > 0 && (
           <div className="flex flex-none flex-row flex-wrap gap-3.5 lg:flex-col">
             {stats.map((stat) => (
@@ -108,15 +105,17 @@ export function RealisatieHeader({
                 className="flex min-w-[200px] flex-1 items-center gap-3.5 rounded-[15px] border border-white/[0.08] bg-white/[0.03] px-[22px] py-4 lg:min-w-[230px]"
               >
                 <span
-                  className={`font-sora text-[30px] font-extrabold leading-none ${stat.accent ? "text-[#FF9A45]" : "text-white"}`}
+                  className={`font-sora text-[30px] font-extrabold leading-none ${
+                    stat.accent ? "text-[#FF9A45]" : "text-white"
+                  }`}
                 >
                   {stat.value}
                 </span>
                 <span className="text-[13.5px] leading-[1.4] text-white/55">
-                  {stat.label.split("\n").map((line, i, arr) => (
-                    <span key={line}>
+                  {stat.label.split("\n").map((line, index, lines) => (
+                    <span key={`${line}-${index}`}>
                       {line}
-                      {i < arr.length - 1 && <br />}
+                      {index < lines.length - 1 && <br />}
                     </span>
                   ))}
                 </span>

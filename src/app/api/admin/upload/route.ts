@@ -12,6 +12,7 @@ const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
 // Allowlisted upload scopes -> storage directory. Prevents arbitrary paths.
 const UPLOAD_DIRS: Record<string, string> = {
   webdesign: "images/portfolio/webdesign",
+  applicaties: "images/portfolio/applicaties",
   fotografie: "images/library/fotografie",
   profiel: "images/team",
   weddingvibe: "images/weddingvibe",

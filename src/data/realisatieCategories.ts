@@ -35,6 +35,19 @@ export const realisatieCategories: RealisatieCategory[] = [
     ],
   },
   {
+    slug: "applicaties",
+    name: "Applicaties",
+    description:
+      "Webapps, SaaS-platformen en digitale bedrijfstoepassingen waarin gebruiksvriendelijke schermen en krachtige backendlogica samenkomen.",
+    seoTitle: "Applicaties en software op maat: realisaties | VisualVibe",
+    seoDescription:
+      "Bekijk applicaties en softwareplatformen van VisualVibe: SaaS, reservaties, multi-site commerce, beheeromgevingen, automatisering en server-side rendering.",
+    stats: [
+      { value: "4", label: "uitgebreide\nplatformcases" },
+      { value: "SSR", label: "indexeerbare\ntechnische basis", accent: true },
+    ],
+  },
+  {
     slug: "fotografie",
     name: "Fotografie",
     description: "Bedrijfs-, product-, event- en vastgoedfotografie uit onze praktijk.",
@@ -127,8 +140,8 @@ export function getRealisatieCategoryBySlug(slug: string): RealisatieCategory | 
 
 /**
  * Interne-link-brug tussen realisatie-categorieën en diensten. Categorieën
- * zonder eigen dienst (bedrijven, projecten, events, sport, buitenland) staan
- * er bewust niet in; die pagina's slaan de dienst-cross-links gewoon over.
+ * zonder eigen legacy-dienst (applicaties, bedrijven, projecten, events, sport,
+ * buitenland) staan er bewust niet in; hun eigen pagina verzorgt de cross-link.
  */
 export const categoryToServiceSlug: Record<string, string> = {
   webdesign: "webdesign",
