@@ -3,11 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { updateAnalysisQuotaConfig } from "@/lib/analyse/config";
-import type { AnalysisQuotaConfig } from "@/types/analysis";
+import { updateAnalysisIntegration } from "@/lib/analyse/integration";
+import { isAnalysisMode, type AnalysisQuotaConfig } from "@/types/analysis";
 
 export type AnalysisSettingsActionState = {
   status: "idle" | "success" | "error";
   message?: string;
+};
+
+export type AnalysisIntegrationActionResult = {
+  ok: boolean;
+  message: string;
 };
 
 // Nederlandse labels voor foutmeldingen per numeriek veld.
@@ -77,4 +83,44 @@ export async function saveAnalysisSettingsAction(
   } catch {
     return { status: "error", message: "Opslaan mislukt. Controleer de waarden en probeer opnieuw." };
   }
+}
+
+/**
+ * Slaat de SEO Supercharged-integratie op: modus (widget of directe API), de
+ * versleutelde public/private key en de endpoint-URLs. Wordt rechtstreeks met
+ * FormData aangeroepen vanuit de client (zelfde stijl als de AI-instellingen).
+ */
+export async function saveAnalysisIntegrationAction(
+  formData: FormData,
+): Promise<AnalysisIntegrationActionResult> {
+  const admin = await getCurrentAdmin();
+  if (!admin) return { ok: false, message: "Niet ingelogd." };
+
+  const mode = String(formData.get("mode") ?? "").trim();
+  if (!isAnalysisMode(mode)) {
+    return { ok: false, message: "Kies een geldige analysemodus." };
+  }
+
+  try {
+    await updateAnalysisIntegration(
+      {
+        mode,
+        publicKey: String(formData.get("publicKey") ?? "").trim(),
+        removePublicKey: formData.get("removePublicKey") === "on",
+        privateKey: String(formData.get("privateKey") ?? "").trim(),
+        removePrivateKey: formData.get("removePrivateKey") === "on",
+        widgetScriptUrl: String(formData.get("widgetScriptUrl") ?? "").trim(),
+        apiBaseUrl: String(formData.get("apiBaseUrl") ?? "").trim(),
+      },
+      admin.email,
+    );
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "Integratie opslaan mislukt.",
+    };
+  }
+
+  revalidatePath("/admin/settings/analyse");
+  return { ok: true, message: "Analyse-integratie veilig opgeslagen." };
 }

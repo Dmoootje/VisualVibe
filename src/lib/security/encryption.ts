@@ -157,6 +157,34 @@ export function decryptAiProviderKey(
   return decryptSecretWithAad(envelope, aiProviderAad(provider), keyValue);
 }
 
+const ANALYSE_KEY_KINDS = ["public", "private"] as const;
+type AnalyseKeyKind = (typeof ANALYSE_KEY_KINDS)[number];
+
+function analyseKeyAad(kind: AnalyseKeyKind): string {
+  if (!ANALYSE_KEY_KINDS.includes(kind)) {
+    throw new Error("Onbekend analysesleuteltype voor versleuteling.");
+  }
+  return `visualvibe:seo-analyse-key:${kind}:v1`;
+}
+
+/** Encrypts a SEO Supercharged widget/partner key with kind-specific context. */
+export function encryptAnalyseKey(
+  kind: AnalyseKeyKind,
+  plaintext: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return encryptSecretWithAad(plaintext, analyseKeyAad(kind), keyValue);
+}
+
+/** Decrypts an analyse key and rejects ciphertext copied between public/private. */
+export function decryptAnalyseKey(
+  kind: AnalyseKeyKind,
+  envelope: string,
+  keyValue: string | undefined = process.env.APP_ENCRYPTION_KEY,
+): string {
+  return decryptSecretWithAad(envelope, analyseKeyAad(kind), keyValue);
+}
+
 /**
  * HMAC-SHA256 over `purpose + ":" + value` met de app-sleutel, als base64url.
  * Dit is de ENIGE hashfunctie voor device-, IP- en verificatiecode-hashes:

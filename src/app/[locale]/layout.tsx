@@ -81,7 +81,7 @@ export const metadata: Metadata = {
         url: defaultOgImage,
         width: 1200,
         height: 630,
-        alt: `${businessConfig.displayName} — creatief mediabureau in Limburg`,
+        alt: `${businessConfig.displayName}, creatief mediabureau in Limburg`,
       },
     ],
     type: "website",

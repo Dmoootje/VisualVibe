@@ -1,11 +1,8 @@
 import "server-only";
 
 import { businessConfig } from "@/config/business.config";
+import { getAnalysisIntegrationRuntime } from "@/lib/analyse/integration";
 import type { AnalysisRunResult } from "@/types/analysis";
-
-const DEFAULT_API_URL =
-  "https://ea419e43-59c9-4427-a03b-b1c41c8dde97-00-36ujlt5w28br5.worf.replit.dev/api/partner/v1/widget/analyses";
-const DEFAULT_SITE_KEY = "pk_live_45d448a7ef76b67d1e8d82d4_8fxi7Cmi5Lf2lxwO_a_sBQ0Rs3SeaYLB";
 
 const REQUEST_TIMEOUT_MS = 45_000;
 
@@ -53,8 +50,12 @@ export async function runWebsiteAnalysis(input: {
   safeUrl: string;
   normalizedDomain: string;
 }): Promise<AnalysisRunResult> {
-  const apiUrl = process.env.WEBSITE_ANALYSE_API_URL ?? DEFAULT_API_URL;
-  const siteKey = process.env.WEBSITE_ANALYSE_SITE_KEY ?? DEFAULT_SITE_KEY;
+  const integration = await getAnalysisIntegrationRuntime();
+  // Admin-config heeft voorrang; env-overrides blijven als noodklep bestaan.
+  const apiUrl =
+    process.env.WEBSITE_ANALYSE_API_URL?.trim() || `${integration.apiBaseUrl}/widget/analyses`;
+  const siteKey = process.env.WEBSITE_ANALYSE_SITE_KEY?.trim() || integration.publicKey;
+  const secretKey = integration.privateKey;
 
   let response: Response;
   try {
@@ -64,6 +65,9 @@ export async function runWebsiteAnalysis(input: {
         "Content-Type": "application/json",
         Origin: businessConfig.url,
         "X-Partner-Site-Key": siteKey,
+        // De directe partner-API authenticeert met de private key als Bearer;
+        // de site-key blijft meegestuurd zodat de bestaande koppeling blijft werken.
+        ...(secretKey ? { Authorization: `Bearer ${secretKey}` } : {}),
       },
       body: JSON.stringify({ url: input.safeUrl, locale: "nl" }),
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),

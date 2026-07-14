@@ -118,6 +118,81 @@ export type AnalysisRunResult =
   | { status: "unavailable"; errorCode: string };
 
 // ---------------------------------------------------------------------------
+// SEO Supercharged integratie (widget-embed of directe partner-API)
+// Beheerbaar in /admin/settings/analyse. Sleutels worden versleuteld opgeslagen
+// (AES-256-GCM, zelfde patroon als de AI-providersleutels).
+// ---------------------------------------------------------------------------
+
+/**
+ * "api"    = eigen flow (e-mailcode + quota) die de partner-API server-side
+ *            aanroept met de private key.
+ * "widget" = de externe widget van SEO Supercharged (client-side script) met de
+ *            public key.
+ */
+export const ANALYSIS_MODES = ["api", "widget"] as const;
+export type AnalysisMode = (typeof ANALYSIS_MODES)[number];
+
+export const DEFAULT_ANALYSIS_MODE: AnalysisMode = "api";
+
+/**
+ * Huidige (tijdelijke) Replit-endpoints. Overschrijfbaar in de admin zodra de
+ * partner-omgeving een definitieve URL krijgt; de public key hieronder is de
+ * bestaande live testsleutel en blijft de fallback tot er een key is ingesteld.
+ */
+export const DEFAULT_ANALYSIS_WIDGET_SCRIPT_URL =
+  "https://ea419e43-59c9-4427-a03b-b1c41c8dde97-00-36ujlt5w28br5.worf.replit.dev/widgets/website-analyse.v1.js";
+export const DEFAULT_ANALYSIS_API_BASE_URL =
+  "https://ea419e43-59c9-4427-a03b-b1c41c8dde97-00-36ujlt5w28br5.worf.replit.dev/api/partner/v1";
+export const DEFAULT_ANALYSIS_PUBLIC_KEY =
+  "pk_live_45d448a7ef76b67d1e8d82d4_8fxi7Cmi5Lf2lxwO_a_sBQ0Rs3SeaYLB";
+
+export function isAnalysisMode(value: unknown): value is AnalysisMode {
+  return typeof value === "string" && ANALYSIS_MODES.includes(value as AnalysisMode);
+}
+
+/** Veilige adminweergave: bevat nooit plaintext of ciphertext van de sleutels. */
+export type AnalysisIntegrationAdminView = {
+  mode: AnalysisMode;
+  encryptionConfigured: boolean;
+  publicKeyConfigured: boolean;
+  publicKeyHint: string;
+  privateKeyConfigured: boolean;
+  privateKeyHint: string;
+  widgetScriptUrl: string;
+  apiBaseUrl: string;
+};
+
+export type AnalysisIntegrationUpdate = {
+  mode: AnalysisMode;
+  /** Leeg of weggelaten = de huidige sleutel behouden. */
+  publicKey?: string;
+  removePublicKey?: boolean;
+  privateKey?: string;
+  removePrivateKey?: boolean;
+  widgetScriptUrl?: string;
+  apiBaseUrl?: string;
+};
+
+/**
+ * Volledige server-side runtime met ontsleutelde sleutels. Verlaat de server
+ * nooit ongefilterd; de publieke pagina krijgt enkel AnalysisIntegrationPublic.
+ */
+export type AnalysisIntegrationRuntime = {
+  mode: AnalysisMode;
+  publicKey: string;
+  privateKey: string;
+  widgetScriptUrl: string;
+  apiBaseUrl: string;
+};
+
+/** Client-veilige subset voor de publieke /website-analyse pagina (geen private key). */
+export type AnalysisIntegrationPublic = {
+  mode: AnalysisMode;
+  publicKey: string;
+  widgetScriptUrl: string;
+};
+
+// ---------------------------------------------------------------------------
 // API-contracten (client <-> /api/analyse/*)
 // ---------------------------------------------------------------------------
 
