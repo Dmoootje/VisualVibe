@@ -32,7 +32,7 @@ function absoluteUrl(url: string): string {
 export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
   const organizationId = `${businessConfig.url}/#organization`;
   const isFounder = post.author.name === businessConfig.founder;
-  const imageUrl = absoluteUrl(post.coverImageUrl ?? "/opengraph-image");
+  const imageUrl = absoluteUrl(post.coverImageUrl ?? "/api/og");
 
   return (
     <JsonLd
