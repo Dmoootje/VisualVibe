@@ -31,6 +31,8 @@ function absoluteUrl(url: string): string {
 
 export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
   const organizationId = `${businessConfig.url}/#organization`;
+  const isFounder = post.author.name === businessConfig.founder;
+  const imageUrl = absoluteUrl(post.coverImageUrl ?? "/opengraph-image");
 
   return (
     <JsonLd
@@ -41,11 +43,12 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
         headline: post.title,
         description: post.description,
         url: post.url,
-        mainEntityOfPage: {
-          "@type": "WebPage",
-          "@id": post.url,
+        mainEntityOfPage: { "@id": `${post.url}#webpage` },
+        isPartOf: { "@id": `${businessConfig.url}/#website` },
+        image: {
+          "@type": "ImageObject",
+          url: imageUrl,
         },
-        image: post.coverImageUrl ? absoluteUrl(post.coverImageUrl) : undefined,
         datePublished: post.publishedAt,
         dateModified: post.updatedAt,
         inLanguage: post.inLanguage,
@@ -64,10 +67,16 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
         })),
         author: {
           "@type": "Person",
+          ...(isFounder ? { "@id": `${businessConfig.url}/#founder` } : {}),
           name: post.author.name,
           url: post.author.url ? absoluteUrl(post.author.url) : undefined,
           jobTitle: post.author.jobTitle,
-          image: post.author.image ? absoluteUrl(post.author.image) : undefined,
+          image: post.author.image
+            ? {
+                "@type": "ImageObject",
+                url: absoluteUrl(post.author.image),
+              }
+            : undefined,
         },
         publisher: {
           "@type": "Organization",
@@ -76,9 +85,11 @@ export function BlogPostingJsonLd({ post }: { post: BlogPostingData }) {
           url: businessConfig.url,
           logo: {
             "@type": "ImageObject",
-            url: `${businessConfig.url}/logo.svg`,
+            url: businessConfig.logo,
           },
         },
+        copyrightHolder: { "@id": organizationId },
+        copyrightYear: new Date(post.publishedAt).getUTCFullYear(),
       }}
     />
   );
