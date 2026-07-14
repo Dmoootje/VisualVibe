@@ -42,14 +42,17 @@ const nextConfig = {
   },
   // Add image optimization configuration
   images: {
-    // Use a selective loader: application-portfolio screenshots are already
-    // optimized WebP files and load directly from Firebase CDN; every other
-    // image keeps using Next's responsive image optimizer.
-    loader: 'custom',
-    loaderFile: './src/lib/nextImageLoader.js',
-    // Firebase App Hosting can opt out of Next's image pipeline unless this is
-    // explicit. Keep remote content images responsive and cached by Next.
-    unoptimized: false,
+    // Serve every image straight from its source, skipping Next's built-in
+    // optimizer (/_next/image). All content images are admin uploads that
+    // uploadImageBuffer() already normalizes to WebP, caps at 2200px and stores
+    // with a 1-year immutable Cache-Control on Firebase's CDN. Re-optimizing
+    // them yields ~0 byte savings but, on Firebase App Hosting, routes every
+    // image through a Cloud Run optimizer whose cold starts + per-container
+    // concurrency limits made gallery pages wait 8-15s for their images. Going
+    // straight to the Firebase CDN serves them in well under a second. The
+    // trade-off is no responsive downscaling (mobile also gets the 2200px WebP),
+    // which is a few hundred KB per photo - acceptable for the CDN + hard cache.
+    unoptimized: true,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp', 'image/avif'],
