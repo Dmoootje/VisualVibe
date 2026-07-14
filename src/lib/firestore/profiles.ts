@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
+import { withTimeout } from "@/lib/firestore/withTimeout";
 import type { Profile } from "@/types";
 
 const COLLECTION = "profiles";
@@ -54,7 +55,7 @@ export async function updateProfile(uid: string, input: UpdateProfileInput): Pro
  */
 async function readAuthorPhotoMap(): Promise<Record<string, string>> {
   try {
-    const snap = await adminDb.collection(COLLECTION).get();
+    const snap = await withTimeout(adminDb.collection(COLLECTION).get());
     const map: Record<string, string> = {};
     for (const doc of snap.docs) {
       const data = doc.data();

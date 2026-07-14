@@ -10,7 +10,7 @@ export const AI_PROVIDER_LABELS: Record<AiProviderId, string> = {
 
 /** Stable, editable defaults. Gemini is the platform-wide default provider. */
 export const DEFAULT_AI_MODELS: Record<AiProviderId, string> = {
-  gemini: "gemini-3.5-flash",
+  gemini: "gemini-2.5-flash",
   claude: "claude-sonnet-5",
   openai: "gpt-5.4-mini",
 };

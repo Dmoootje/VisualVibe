@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
+import { withTimeout } from "@/lib/firestore/withTimeout";
 import { DEFAULT_FOTO_GALLERIES, type FotoGallery } from "@/data/fotografieGalleries";
 
 // Admin-managed fotografie galleries, stored as a `galleries` array in the
@@ -12,7 +13,7 @@ const DOC_ID = "fotografie_galleries";
 
 async function readFotografieGalleries(): Promise<FotoGallery[]> {
   try {
-    const doc = await adminDb.collection(COLLECTION).doc(DOC_ID).get();
+    const doc = await withTimeout(adminDb.collection(COLLECTION).doc(DOC_ID).get());
     const stored = doc.exists ? (doc.data()?.galleries as FotoGallery[] | undefined) : undefined;
     if (Array.isArray(stored)) return stored;
     return DEFAULT_FOTO_GALLERIES;

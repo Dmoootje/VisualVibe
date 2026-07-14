@@ -41,6 +41,7 @@ async function resolvePlaceId(apiKey: string): Promise<string | null> {
     },
     body: JSON.stringify({ textQuery: PLACE_TEXT_QUERY, languageCode: "nl", regionCode: "BE" }),
     next: { revalidate: DAY * 30 },
+    signal: AbortSignal.timeout(6000),
   });
   if (!res.ok) return null;
   const data = (await res.json()) as { places?: { id: string }[] };
@@ -69,6 +70,7 @@ export async function getGoogleReviews(): Promise<GoogleReview[]> {
             "reviews.rating,reviews.text,reviews.originalText,reviews.authorAttribution,reviews.relativePublishTimeDescription",
         },
         next: { revalidate: DAY },
+        signal: AbortSignal.timeout(6000),
       }
     );
     if (!res.ok) return [];

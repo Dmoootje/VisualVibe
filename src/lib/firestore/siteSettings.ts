@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
+import { withTimeout } from "@/lib/firestore/withTimeout";
 import {
   DEFAULT_OPENING_HOURS,
   DEFAULT_SITE_SETTINGS,
@@ -42,7 +43,7 @@ async function readSiteSettings(): Promise<SiteSettings> {
   };
 
   try {
-    const doc = await adminDb.collection(COLLECTION).doc(SETTINGS_ID).get();
+    const doc = await withTimeout(adminDb.collection(COLLECTION).doc(SETTINGS_ID).get());
     if (!doc.exists) return base;
 
     const data = doc.data()!;

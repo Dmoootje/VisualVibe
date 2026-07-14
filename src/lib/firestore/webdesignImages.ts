@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
+import { withTimeout } from "@/lib/firestore/withTimeout";
 
 // Admin-managed images for the Webdesign service showcase. Stored as a single
 // map { imageKey: url } in one Firestore doc. Keys are "hero" and, per project,
@@ -28,7 +29,7 @@ export const DEFAULT_WEBDESIGN_IMAGES: WebdesignImages = {
 
 async function readWebdesignImages(): Promise<WebdesignImages> {
   try {
-    const doc = await adminDb.collection(COLLECTION).doc(DOC_ID).get();
+    const doc = await withTimeout(adminDb.collection(COLLECTION).doc(DOC_ID).get());
     const stored = (doc.exists ? (doc.data()?.images as WebdesignImages) : undefined) ?? {};
     // Stored values win; defaults fill the rest. An empty string in Firestore
     // (a deliberately-removed image) overrides the default so it stays cleared.

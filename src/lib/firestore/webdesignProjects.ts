@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { adminDb } from "@/lib/firebase/admin";
+import { withTimeout } from "@/lib/firestore/withTimeout";
 import {
   webdesignProjects as defaultWebdesignProjects,
   type WebdesignProject,
@@ -16,7 +17,7 @@ const DOC_ID = "webdesign_showcase";
 
 async function readWebdesignProjects(): Promise<WebdesignProject[]> {
   try {
-    const doc = await adminDb.collection(COLLECTION).doc(DOC_ID).get();
+    const doc = await withTimeout(adminDb.collection(COLLECTION).doc(DOC_ID).get());
     const stored = doc.exists ? (doc.data()?.projects as WebdesignProject[] | undefined) : undefined;
     if (Array.isArray(stored) && stored.length > 0) return stored;
     return defaultWebdesignProjects;
