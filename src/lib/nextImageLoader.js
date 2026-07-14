@@ -1,5 +1,3 @@
-'use strict';
-
 const APP_PORTFOLIO_MARKERS = [
   'images%2Fportfolio%2Fapplicaties%2F',
   'images/portfolio/applicaties/',
@@ -10,7 +8,7 @@ const APP_PORTFOLIO_MARKERS = [
  * extra proxy/transform hop for application-portfolio screenshots. Those files
  * are already resized WebP uploads and Firebase serves them from its CDN.
  */
-module.exports = function visualVibeImageLoader({ src, width, quality }) {
+export default function visualVibeImageLoader({ src, width, quality }) {
   const isApplicationPortfolioImage =
     typeof src === 'string' && APP_PORTFOLIO_MARKERS.some((marker) => src.includes(marker));
 
@@ -21,4 +19,4 @@ module.exports = function visualVibeImageLoader({ src, width, quality }) {
   }
 
   return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality || 75}`;
-};
+}
