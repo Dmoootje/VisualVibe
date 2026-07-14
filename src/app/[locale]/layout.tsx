@@ -28,7 +28,7 @@ export function generateStaticParams() {
 }
 
 const homeTitle = "Webdesign, foto, video & SEO in Limburg | VisualVibe";
-const defaultOgImage = "/opengraph-image";
+const defaultOgImage = "/api/og";
 const dutchHomeUrl = `${businessConfig.url}/be/`;
 
 export const metadata: Metadata = {
