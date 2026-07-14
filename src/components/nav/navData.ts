@@ -1,5 +1,6 @@
 import { services } from "@/data/services";
 import { getSubservicesByParent } from "@/data/subservices";
+import { softwareServices } from "@/data/softwareServices";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
@@ -60,24 +61,63 @@ const WEBDESIGN_SUB_ICON: Record<string, string> = {
   "seo-website-laten-maken": "seo",
 };
 
-export const pillars: NavPillar[] = services.map((service) => {
+const SOFTWARE_SUB_ICON: Record<string, string> = {
+  "app-laten-maken": "app",
+  "webapplicatie-laten-maken": "webapp",
+  "ai-applicatie-laten-maken": "ai",
+  "api-koppelingen-en-automatisering": "workflow",
+  "app-design-ux-ui": "ux",
+};
+
+const servicePillars: NavPillar[] = services.map((service) => {
   const pillarIcon = PILLAR_ICON[service.slug] ?? "website";
+  const catalogSubs = getSubservicesByParent(service.slug).map((sub) => ({
+    name: sub.title,
+    href: `/diensten/${service.slug}/${sub.slug}`,
+    icon:
+      service.slug === "webdesign"
+        ? WEBDESIGN_SUB_ICON[sub.slug] ?? "website"
+        : pillarIcon,
+  }));
+
   return {
     id: service.slug,
     name: service.title,
     tag: PILLAR_TAG[service.slug] ?? "",
     icon: pillarIcon,
     href: `/diensten/${service.slug}`,
-    subs: getSubservicesByParent(service.slug).map((sub) => ({
-      name: sub.title,
-      href: `/diensten/${service.slug}/${sub.slug}`,
-      icon:
-        service.slug === "webdesign"
-          ? WEBDESIGN_SUB_ICON[sub.slug] ?? "website"
-          : pillarIcon,
-    })),
+    subs:
+      service.slug === "webdesign"
+        ? [
+            ...catalogSubs,
+            {
+              name: "Website met AI-functionaliteiten",
+              href: "/diensten/webdesign/website-met-ai-functionaliteiten",
+              icon: "ai-website",
+            },
+          ]
+        : catalogSubs,
   };
 });
+
+const softwarePillar: NavPillar = {
+  id: "software-op-maat",
+  name: "Apps & software",
+  tag: "Webapps, AI & automatisering",
+  icon: "software",
+  href: "/diensten/software-op-maat",
+  subs: softwareServices.map((service) => ({
+    name: service.title,
+    href: `/diensten/software-op-maat/${service.slug}`,
+    icon: SOFTWARE_SUB_ICON[service.slug] ?? "software",
+  })),
+};
+
+// Apps & software staat bewust direct na Webdesign. Dezelfde bron voedt het
+// desktop-megamenu en de mobiele pushnavigatie, zodat beide altijd gelijk lopen.
+export const pillars: NavPillar[] = servicePillars.flatMap((pillar) =>
+  pillar.id === "webdesign" ? [pillar, softwarePillar] : [pillar]
+);
 
 // Regio dropdown (hub + the 4 regiohubs).
 export const regioItems: NavLink[] = [
@@ -105,6 +145,7 @@ const REALISATIE_ICON: Record<string, string> = {
 export const KENNISBANK_ICON: Record<string, string> = {
   "seo-geo": "seo",
   webdesign: "website",
+  "software-op-maat": "software",
   fotografie: "camera",
   videografie: "film",
   drone: "drone",

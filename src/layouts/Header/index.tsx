@@ -12,14 +12,18 @@ import {
 
 // Server component: builds the Kennisbank dropdown (only the categories that
 // actually have posts - never article links, with an icon + description per
-// card) and hands it to the client Nav. Pillars/regio/sectoren/realisaties are
-// pure data the client Nav imports itself.
+// card) and hands it to the client Nav. Apps & software is a Dutch curated topic
+// hub: its articles keep their existing canonical URLs while the hub groups them.
 export function Header({ locale }: { locale: string }) {
   const blogLocale = isBlogLocale(locale) ? locale : null;
   const localizedPosts = blogLocale ? getAllPosts({ locale: blogLocale }) : [];
   const kennisbankItems: NavCard[] = blogLocale
     ? kennisbankCategories
-        .filter((category) => getPostsByCategory(category.slug, blogLocale).length > 0)
+        .filter((category) =>
+          category.slug === "software-op-maat"
+            ? blogLocale === "nl"
+            : getPostsByCategory(category.slug, blogLocale).length > 0
+        )
         .map(kennisbankCard)
     : [];
 

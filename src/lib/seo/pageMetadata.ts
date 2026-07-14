@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { businessConfig } from "@/config/business.config";
 import { localizedPath } from "@/lib/kennisbank/posts";
 import { ogImageForPath } from "@/data/ogImages";
+import { MANUAL_PAGE_OG_IMAGES } from "@/data/manualOgImages";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
@@ -40,12 +41,10 @@ export function pageMetadata({
   // /be, for every locale.
   const url = `${businessConfig.url}${localizedPath("nl", path)}`;
 
-  // Voorrang: de per-pagina OG-afbeelding op canonieke path (bron van waarheid
-  // voor diensten/sectoren/regio/realisaties/statische pagina's) > een expliciet
-  // meegegeven ogImage (bv. een kennisbank-artikelbeeld, want die paths staan
-  // niet in de map) > de site-fallback. Zo krijgt elke pagina zijn eigen social
-  // preview zonder per pagina iets door te geven, en houdt kennisbank zijn beeld.
-  const mapped = ogImageForPath(path);
+  // Voorrang: een reeds handmatig geüploade pagina-OG > de gegenereerde map >
+  // een expliciet meegegeven ogImage > de site-fallback. De handmatige laag is
+  // klein en voorkomt dat een generatorrun nodig is voor één nieuw dienstbeeld.
+  const mapped = MANUAL_PAGE_OG_IMAGES[path] ?? ogImageForPath(path);
   const image = mapped?.url ?? ogImage ?? DEFAULT_OG_IMAGE;
   const { width, height } = mapped ?? DEFAULT_OG_DIMENSIONS;
 

@@ -50,6 +50,53 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M8.6 12.5v-1.5M11 12.5V9M13.4 12.5V8" />
     </>
   ),
+  "ai-website": (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 8.5h18" />
+      <path d="m12 11 .7 1.8 1.8.7-1.8.7L12 16l-.7-1.8-1.8-.7 1.8-.7z" />
+    </>
+  ),
+  software: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="m9 9-3 3 3 3M15 9l3 3-3 3M13.5 7l-3 10" />
+    </>
+  ),
+  app: (
+    <>
+      <rect x="7" y="2.5" width="10" height="19" rx="2.2" />
+      <path d="M10 5h4M11 18.5h2" />
+    </>
+  ),
+  webapp: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 8.5h18M7 12h4M7 15h7" />
+      <circle cx="17" cy="13" r="1.5" />
+    </>
+  ),
+  ai: (
+    <>
+      <path d="M8 7.5A3.5 3.5 0 0 1 14 5a3 3 0 0 1 3.5 3A3.5 3.5 0 0 1 17 15H8a3.5 3.5 0 0 1 0-7.5z" />
+      <path d="m12 8 .7 1.8 1.8.7-1.8.7L12 13l-.7-1.8-1.8-.7 1.8-.7zM12 15v4" />
+    </>
+  ),
+  workflow: (
+    <>
+      <rect x="3" y="4" width="5" height="5" rx="1" />
+      <rect x="16" y="4" width="5" height="5" rx="1" />
+      <rect x="9.5" y="15" width="5" height="5" rx="1" />
+      <path d="M8 6.5h8M5.5 9v3.5h6.5V15M18.5 9v3.5H12V15" />
+    </>
+  ),
+  ux: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 9h18M8 13h3M8 16h7" />
+      <path d="m17 11 2 2-4 4-2.5.5.5-2.5z" />
+    </>
+  ),
   camera: (
     <>
       <path d="M4 7.5h3l1.8-2h6.4L17 7.5h3a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.5a1 1 0 0 1 1-1z" />
