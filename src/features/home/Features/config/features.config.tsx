@@ -52,19 +52,19 @@ export interface ExtraService {
 }
 
 export const featuresConfig = {
-  title: "Alles onder één dak",
+  title: "Webdesign, fotografie en videografie voor bedrijven",
   subtitle:
-    "Van website tot beeldmateriaal: één aanspreekpunt, één vast team en persoonlijke begeleiding voor je volledige online uitstraling.",
+    "Van webdesign in Limburg tot professionele foto, video en digitale toepassingen: één aanspreekpunt en één vast team voor je volledige uitstraling.",
 
   features: [
     {
       id: "webdesign",
       icon: <Monitor className="h-5 w-5" />,
       title: "Webdesign",
-      eyebrow: "Webdesign",
+      eyebrow: "Webdesign voor bedrijven",
       headline: "Websites en webshops die klanten opleveren",
       description:
-        "Snelle, gebruiksvriendelijke websites en webshops met SEO als fundament. WordPress of maatwerk, van strategie tot oplevering.",
+        "We bouwen snelle, gebruiksvriendelijke websites en webshops met SEO als fundament. WordPress of maatwerk, van strategie tot oplevering.",
       benefits: [
         "Website & webshop die converteert",
         "Snelheid en SEO als basisprincipe",
@@ -109,10 +109,10 @@ export const featuresConfig = {
       id: "fotografie",
       icon: <Camera className="h-5 w-5" />,
       title: "Fotografie",
-      eyebrow: "Fotografie",
+      eyebrow: "Fotografie voor bedrijven",
       headline: "Beelden die je merk geloofwaardig maken",
       description:
-        "Bedrijfs-, product-, portret- en eventfotografie die vertrouwen wekt en je merk professioneel in beeld brengt.",
+        "Bedrijfs-, product-, portret- en eventfotografie die vertrouwen wekt en je onderneming professioneel in beeld brengt.",
       benefits: [
         "Bedrijfs- en productfotografie",
         "Zakelijke portretten",
@@ -133,10 +133,10 @@ export const featuresConfig = {
       id: "videografie",
       icon: <Video className="h-5 w-5" />,
       title: "Videografie",
-      eyebrow: "Videografie",
+      eyebrow: "Videografie voor bedrijven",
       headline: "Video die je verhaal vertelt",
       description:
-        "Bedrijfsvideo's, promovideo's, social content en event-aftermovies die opvallen en blijven hangen.",
+        "Bedrijfsvideo's, promovideo's, social content en event-aftermovies die je onderneming zichtbaar en herkenbaar maken.",
       benefits: [
         "Bedrijfs- en promovideo",
         "Social media content",
