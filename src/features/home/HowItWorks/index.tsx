@@ -50,8 +50,8 @@ export default function HowItWorks() {
 
           <p className="max-w-2xl text-center text-sm leading-relaxed text-white/65 sm:text-base">
             <em className="text-white/85">
-              Een professionele website laten maken is de basis voor meer online zichtbaarheid,
-              vertrouwen en gerichte aanvragen.
+              Als Limburgs mediabureau combineren we webdesign, foto en video voor bedrijven in één
+              heldere aanpak.
             </em>
           </p>
 
