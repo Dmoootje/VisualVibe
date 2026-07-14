@@ -142,6 +142,15 @@ const REALISATIE_ICON: Record<string, string> = {
   buitenland: "globe",
 };
 
+// Menu-copy mag iets directer zijn dan de paginatitel. De categoriepagina blijft
+// "Applicaties" heten, maar in desktop en mobiel staat ze herkenbaar als softwaretak.
+const REALISATIE_MENU_COPY: Record<string, { name: string; desc: string }> = {
+  applicaties: {
+    name: "Applicaties & software",
+    desc: "SaaS-platformen, webapps, krachtige backends en automatisering. Bekijk onze technische cases.",
+  },
+};
+
 // Kennisbank-categorie glyph per slug (maps onto the matching service glyph).
 export const KENNISBANK_ICON: Record<string, string> = {
   "seo-geo": "seo",
@@ -164,12 +173,13 @@ export const sectorCards: NavCard[] = sectors.map((sector) => ({
   desc: sector.tag ?? sector.cardDescription ?? "",
 }));
 
-// Realisaties cards (all realisatie categories, iconed + short description).
+// De categorievolgorde komt uit realisatieCategories. Applicaties staat daar
+// direct na Webdesign, en verschijnt dus op exact die plek in desktop én mobiel.
 export const realisatieCards: NavCard[] = realisatieCategories.map((category) => ({
-  name: category.name,
+  name: REALISATIE_MENU_COPY[category.slug]?.name ?? category.name,
   href: `/realisaties/${category.slug}`,
   icon: REALISATIE_ICON[category.slug] ?? "layers",
-  desc: category.description,
+  desc: REALISATIE_MENU_COPY[category.slug]?.desc ?? category.description,
 }));
 
 /** Build a kennisbank card for a category (the Header filters to non-empty ones). */
