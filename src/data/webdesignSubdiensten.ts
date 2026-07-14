@@ -45,4 +45,16 @@ export const webdesignSubdiensten: Subdienst[] = [
     desc: "Een website die vanaf de eerste lijn code gebouwd is om te ranken.",
     href: "/diensten/webdesign/seo-website-laten-maken",
   },
+  {
+    id: "ai-website",
+    name: "Website met AI-functionaliteiten",
+    desc: "Slim zoeken, adviseren of vragen beantwoorden op basis van je eigen content.",
+    href: "/diensten/webdesign/website-met-ai-functionaliteiten",
+  },
+  {
+    id: "software",
+    name: "Apps & software op maat",
+    desc: "Webapps, AI-toepassingen en koppelingen die je bedrijfsprocessen vereenvoudigen.",
+    href: "/diensten/software-op-maat",
+  },
 ];
