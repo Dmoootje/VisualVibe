@@ -1,0 +1,70 @@
+/* Service-tabs affordance (homepage Features section).
+   A soft orange sheen glides across the tab row so visitors notice the whole
+   row is interactive, then eases back to the start. It sits behind the triggers
+   (z-0); the active tab's solid gradient covers it where it passes. The sweep
+   pauses on hover (the visitor is already engaging) and is fully disabled for
+   users who prefer reduced motion. Co-located so it only ships with this
+   section. */
+.ftabs-list {
+  position: relative;
+  overflow: hidden;
+}
+
+.ftabs-runner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 0;
+  height: 74%;
+  width: 24%;
+  transform: translate(-40%, -50%);
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 122, 0, 0.24),
+    rgba(255, 80, 0, 0.15),
+    transparent
+  );
+  filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  animation: ftabsRunner 6.5s ease-in-out infinite;
+}
+
+.ftabs-list:hover .ftabs-runner {
+  animation-play-state: paused;
+  opacity: 0;
+}
+
+@keyframes ftabsRunner {
+  0% {
+    transform: translate(-40%, -50%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  46% {
+    transform: translate(360%, -50%);
+    opacity: 1;
+  }
+  54% {
+    transform: translate(360%, -50%);
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-40%, -50%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ftabs-runner {
+    animation: none;
+    opacity: 0;
+  }
+}

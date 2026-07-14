@@ -5,7 +5,7 @@ import { featuresConfig } from "../config/features.config";
 /** Shared trust badges shown once, under the active tab content. */
 export function ServiceTrustRow() {
   return (
-    <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+    <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 sm:mt-14">
       {featuresConfig.trustItems.map((item, index) => (
         <div
           key={index}

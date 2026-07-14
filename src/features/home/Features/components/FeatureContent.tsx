@@ -9,7 +9,7 @@ import { ServiceImageCard } from "./ServiceImageCard";
 
 export function FeatureContent() {
   return (
-    <div className="relative min-h-[860px] md:min-h-[500px]">
+    <div className="relative min-h-[900px] md:min-h-[520px]">
       {featuresConfig.features.map((feature) => (
         <TabsContent
           key={feature.id}
@@ -17,7 +17,7 @@ export function FeatureContent() {
           data-feature-content={feature.id}
           className="scroll-mt-20 focus-visible:outline-none focus-visible:ring-0"
         >
-          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-10 lg:gap-12">
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
             <FeatureDescription feature={feature} />
             <ServiceImageCard
               image={feature.image}
@@ -51,15 +51,15 @@ function FeatureDescription({ feature }: { feature: Feature }) {
         {feature.eyebrow}
       </span>
 
-      <h3 className="mt-3 text-xl font-bold text-white sm:text-2xl">{feature.headline}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-white/70 sm:text-base">{feature.description}</p>
+      <h3 className="mt-4 text-xl font-bold text-white sm:text-2xl">{feature.headline}</h3>
+      <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-base">{feature.description}</p>
 
-      <div className="mt-5">
+      <div className="mt-6">
         <ServiceFeatureList items={feature.benefits} />
       </div>
 
       {/* Approach + human-touch mini blocks */}
-      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <ServiceMiniBlock
           icon={<Route className="h-3.5 w-3.5" />}
           label="Onze aanpak"
@@ -74,7 +74,7 @@ function FeatureDescription({ feature }: { feature: Feature }) {
       </div>
 
       {/* CTAs */}
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <Button
           asChild
           className="gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600"
