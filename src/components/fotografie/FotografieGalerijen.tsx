@@ -105,8 +105,8 @@ export function FotografieGalerijen() {
           </span>
         </Link>
 
-        <a
-          href="/realisaties/fotografie"
+        <Link
+          href="/realisaties/fotografie/"
           className="fg-more relative flex min-h-[150px] items-center justify-between gap-5 overflow-hidden rounded-[20px] border border-[rgba(255,122,0,0.28)] px-7 py-6"
           style={{ background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 60%),rgba(255,255,255,.02)" }}
         >
@@ -118,7 +118,7 @@ export function FotografieGalerijen() {
           <span className="war relative flex h-[52px] w-[52px] flex-none items-center justify-center rounded-full text-white shadow-[0_14px_34px_-12px_rgba(255,90,0,0.9)]" style={{ background: "linear-gradient(135deg,#FF3B2E,#FF7A00)" }}>
             <ArrowR size={22} />
           </span>
-        </a>
+        </Link>
       </div>
 
       <Lightbox
