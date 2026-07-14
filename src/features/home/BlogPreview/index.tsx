@@ -1,7 +1,6 @@
 import { getLocale } from "next-intl/server";
 import { getAllPosts, isBlogLocale } from "@/lib/kennisbank/posts";
 import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
-import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { BlogHeader, BlogGrid } from "./components";
 
 // Keep in sync with MAX_PREVIEW_POSTS in ./components/BlogGrid. We slice here,
@@ -19,8 +18,6 @@ export default async function BlogPreview() {
     return null;
   }
 
-  const authorImages = await getAuthorPhotoMap();
-
   return (
     <section
       className="home-deferred-section relative overflow-hidden py-5 sm:py-20 md:py-24"
@@ -28,7 +25,7 @@ export default async function BlogPreview() {
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">
         <BlogHeader />
-        <BlogGrid posts={blogPosts} authorImages={authorImages} />
+        <BlogGrid posts={blogPosts} />
       </div>
     </section>
   );
