@@ -129,6 +129,7 @@ export const regioItems: NavLink[] = [
 // cross-service categories bedrijven/projecten/events/sport/buitenland).
 const REALISATIE_ICON: Record<string, string> = {
   webdesign: "website",
+  applicaties: "software",
   fotografie: "camera",
   videografie: "film",
   drone: "drone",
