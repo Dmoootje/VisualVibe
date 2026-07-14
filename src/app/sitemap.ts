@@ -41,11 +41,13 @@ const staticPaths = [
 // getAllPosts() already excludes draft, scheduled, archived and future-dated
 // content; noindex posts are excluded here as a separate indexing decision.
 const indexablePosts = blogPosts.filter((post) => !post.robots?.includes("noindex"));
-// A category only enters the sitemap once it has an indexable post, so
-// registered-but-empty pillars (fotografie, videografie, ...) emit no URL.
+// A category only enters the sitemap once it has an indexable post. Apps &
+// software is a curated topic hub over existing canonical article URLs and is
+// therefore explicitly active even though the frontmatter stays Webdesign.
 const activeCategorySlugs = new Set(
   indexablePosts.filter((post) => post.locale === "nl").map((post) => post.categorySlug)
 );
+activeCategorySlugs.add("software-op-maat");
 
 const softwarePaths = [
   "diensten/software-op-maat",
