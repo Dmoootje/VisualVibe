@@ -47,6 +47,27 @@ export default function HowItWorks() {
             Bij elk traject houden we het persoonlijk: één aanspreekpunt, duidelijke communicatie en
             begeleiding van begin tot eind.
           </p>
+
+          <p className="max-w-2xl text-center text-sm leading-relaxed text-white/65 sm:text-base">
+            <em className="text-white/85">
+              Een professionele website laten maken is de basis voor meer online zichtbaarheid,
+              vertrouwen en gerichte aanvragen.
+            </em>
+          </p>
+
+          <p className="max-w-2xl text-center text-sm leading-relaxed text-white/60">
+            Wil je eerst ontdekken waar jouw huidige site kansen laat liggen? Gebruik dan de gratis{" "}
+            <a
+              href="https://seowebsites.be/nl/seo-website-analyse"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-amber-400 underline underline-offset-4 transition-colors hover:text-amber-300"
+            >
+              website analyse tool
+            </a>
+            .
+          </p>
+
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button
               asChild
