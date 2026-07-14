@@ -19,20 +19,21 @@ import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { realisatieCategories } from "@/data/realisatieCategories";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
+import { getApplicationCases } from "@/lib/firestore/applicationCases";
 import { getPostsByCategory, postHref, categoryHref } from "@/lib/kennisbank/posts";
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-// pageMetadata wires canonical, og:url, twitter tags and the mapped OG image
-// for /sitemap/ (src/data/ogImages.ts), which a hand-rolled object left out.
 export const metadata: Metadata = pageMetadata({
   title: `Sitemap | ${businessConfig.displayName}`,
   description:
     "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
   path: "/sitemap/",
 });
+
+export const revalidate = 60;
 
 type SmNode = { title: string; href: string; children?: SmNode[] };
 type SmSection = {
@@ -43,7 +44,6 @@ type SmSection = {
   nodes: SmNode[];
 };
 
-// A branch of the tree: nested <ul> with guide lines, each node clickable.
 function TreeList({ nodes }: { nodes: SmNode[] }) {
   return (
     <ul className="vvsm-branch">
@@ -60,10 +60,9 @@ function TreeList({ nodes }: { nodes: SmNode[] }) {
   );
 }
 
-export default function SitemapPage() {
-  // Build the tree from the same data the site + XML sitemap use. The standalone
-  // software branch has its own catalogue because it is not one of the legacy
-  // eight media service categories.
+export default async function SitemapPage() {
+  const applicationProjects = (await getApplicationCases()).filter((project) => project.published);
+
   const dienstenNodes: SmNode[] = [
     ...services.map((service) => ({
       title: service.title,
@@ -92,6 +91,18 @@ export default function SitemapPage() {
       })),
     },
   ];
+
+  const realisatieNodes: SmNode[] = realisatieCategories.map((category) => ({
+    title: category.name,
+    href: `/realisaties/${category.slug}`,
+    children:
+      category.slug === "applicaties"
+        ? applicationProjects.map((project) => ({
+            title: project.title,
+            href: `/realisaties/applicaties/${project.slug}`,
+          }))
+        : undefined,
+  }));
 
   const kennisbankNodes: SmNode[] = kennisbankCategories
     .map((category): SmNode | null => {
@@ -139,11 +150,8 @@ export default function SitemapPage() {
       icon: Images,
       title: "Realisaties",
       href: "/realisaties",
-      intro: "Ons portfolio, opgedeeld per categorie.",
-      nodes: realisatieCategories.map((category) => ({
-        title: category.name,
-        href: `/realisaties/${category.slug}`,
-      })),
+      intro: "Ons portfolio, opgedeeld per categorie en applicatiecase.",
+      nodes: realisatieNodes,
     },
     {
       icon: Building2,
@@ -176,7 +184,6 @@ export default function SitemapPage() {
       <PageAmbient />
 
       <div className="relative z-10 mx-auto max-w-[980px] px-4 pb-24 pt-28 sm:px-8 sm:pt-32">
-        {/* Header */}
         <header className="mb-12 max-w-2xl">
           <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#FF9A45]" />
@@ -192,7 +199,6 @@ export default function SitemapPage() {
           </p>
         </header>
 
-        {/* Home (top of the tree) */}
         <Link
           href="/"
           className="group mb-3 flex items-center gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-4 transition-colors hover:border-[rgba(255,122,0,0.28)] hover:bg-[rgba(255,122,0,0.05)]"
@@ -208,7 +214,6 @@ export default function SitemapPage() {
           </span>
         </Link>
 
-        {/* Sections */}
         <div className="flex flex-col">
           {sections.map((section) => {
             const Icon = section.icon;
