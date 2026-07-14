@@ -42,11 +42,13 @@ const HOME_FAQ = [
 // Rebuild public homepage data in the background at most once per hour.
 export const revalidate = 3600;
 
-// Canonical only: every locale canonicalizes to the real Dutch homepage under
-// /be (fr/en render the same Dutch content). Title, description and OG stay
-// inherited from the locale layout defaults.
+// Alleen de homepage target de bedrijfspositionering. Diensten- en regiopagina's
+// behouden hun eigen commerciële zoekrichting en metadata.
 export function generateMetadata(): Metadata {
   return {
+    title: "Creatief mediabureau Limburg | Webdesign, foto & video",
+    description:
+      "VisualVibe is een creatief mediabureau in Limburg voor webdesign, fotografie, videografie en digitale toepassingen voor bedrijven.",
     alternates: { canonical: `${businessConfig.url}${localizedPath("nl", "/")}` },
   };
 }
