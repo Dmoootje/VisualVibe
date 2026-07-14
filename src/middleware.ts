@@ -43,12 +43,13 @@ export default function middleware(request: NextRequest) {
 
   if (pathname === "/be" || pathname.startsWith("/be/")) {
     const suffix = pathname.slice(3) || "/";
+    // Keep the origin exactly as request.nextUrl: overriding the host (e.g.
+    // with the Host header) makes the rewrite cross-origin, so Next proxies it
+    // over the network to <host>:8080 and every /be page 500s with ETIMEDOUT
+    // behind Firebase App Hosting (site-down incident 2026-07-14).
     const rewriteUrl = request.nextUrl.clone();
     rewriteUrl.pathname = `/nl${suffix}`;
     if (!rewriteUrl.pathname.endsWith("/")) rewriteUrl.pathname += "/";
-
-    const requestHost = request.headers.get("host");
-    if (requestHost) rewriteUrl.host = requestHost;
 
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set(INTERNAL_LOCALE_REWRITE_HEADER, "nl");
