@@ -42,11 +42,6 @@ export function OrganizationJsonLd() {
             "@type": "PostalAddress",
             ...businessConfig.address,
           },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: businessConfig.geo.latitude,
-            longitude: businessConfig.geo.longitude,
-          },
         },
         founder: {
           "@type": "Person",
