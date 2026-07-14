@@ -14,7 +14,7 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "//browserslist": "Modern baseline: these browsers natively support Array.at, Object.hasOwn/fromEntries, Array.flat/flatMap and String.trimStart/End, so Next/SWC stops injecting those legacy polyfills (smaller JS, less main-thread parse). Covers ~all real visitors of a 2026 marketing site.",
+  "//browserslist": "Modern baseline die SWC de syntaxverlaging (optional chaining, nullish, class fields, ...) laat overslaan voor ~alle echte bezoekers van een 2026-marketingsite. LET OP: dit verwijdert NIET Next's ingebouwde polyfill-module (Array.at/flat/flatMap, Object.fromEntries/hasOwn, String.trimStart/End) - die zit browserslist-onafhankelijk hardcoded in next/dist/client/app-globals.js. De grote polyfills-*.js chunk is @next/polyfill-nomodule en laadt met nomodule, dus moderne browsers voeren die niet uit. Lighthouse's 'legacy JS' is hier dus niet via browserslist te verlagen.",
   "browserslist": [
     "chrome >= 100",
     "edge >= 100",

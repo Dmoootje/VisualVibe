@@ -62,6 +62,11 @@ const nextConfig = {
     // trade-off is no responsive downscaling (mobile also gets the 2200px WebP),
     // which is a few hundred KB per photo - acceptable for the CDN + hard cache.
     unoptimized: true,
+    // Elke quality die een next/image component gebruikt moet hier staan; Next
+    // 16 gaat dit vereisen (nu nog een waarschuwing). Alleen ServiceImageCard
+    // zet quality={70}; de 74/80/82/92-waarden elders zijn sharp-compressie bij
+    // upload, geen next/image, en horen hier dus niet.
+    qualities: [70],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp', 'image/avif'],
@@ -93,6 +98,29 @@ const nextConfig = {
         hostname: '*.googleusercontent.com',
       },
     ],
+  },
+  // Inline de globale CSS als <style> in de <head> i.p.v. een los, render-blocking
+  // <link rel=stylesheet>. Op mobiel 4G moest de browser dat losse bestand eerst
+  // ontdekken en in een aparte round-trip (extra RTT + edge/Cloud-Run-hop) ophalen
+  // voordat er iets rendert; inline reist de CSS mee met de HTML-stream en verdwijnt
+  // de render-blocking-request. De CSP staat inline styles al toe (style-src
+  // 'unsafe-inline'), zoals next/font/google ook al inline <style> injecteert.
+  experimental: {
+    inlineCss: true,
+  },
+  // Merk- en icoonassets in /public hebben vaste (niet-gehashte) namen en wijzigen
+  // zelden; geef ze een lange browsercache i.p.v. de korte default. Werkt pas
+  // volledig wanneer Cloudflare's "Browser Cache TTL" op "Respect Existing Headers"
+  // staat (nu 4u, die override op de origin). /_next/static blijft ongemoeid (Next
+  // zet daar zelf al immutable + 1 jaar op).
+  async headers() {
+    return [
+      {
+        source:
+          '/:asset(logo\\.svg|logo-email\\.png|weddingvibe-logo\\.svg|weddingvibe-logo-licht\\.svg|favicon\\.svg|favicon-96x96\\.png|apple-touch-icon\\.png|web-app-manifest-192x192\\.png|web-app-manifest-512x512\\.png)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000' }],
+      },
+    ];
   },
   // Add compiler options for production
   compiler: {

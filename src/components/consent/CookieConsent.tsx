@@ -34,8 +34,10 @@ export function CookieConsent() {
   }, []);
 
   // Move focus to the banner when it appears so keyboard users land on it.
+  // preventScroll voorkomt dat het focussen van deze fixed bottom-banner op de
+  // eerste paint een scroll-into-view forced reflow triggert (Lighthouse mobiel).
   useEffect(() => {
-    if (open) acceptRef.current?.focus();
+    if (open) acceptRef.current?.focus({ preventScroll: true });
   }, [open]);
 
   const choose = useCallback((choice: ConsentChoice) => {
