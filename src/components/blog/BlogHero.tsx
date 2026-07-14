@@ -55,11 +55,14 @@ export function BlogHero({
   readMoreHref = "#artikel",
   className,
 }: BlogHeroProps) {
+  // Vaste tijdzone zodat server en client dezelfde datum tonen; anders schuift de
+  // dag voor bezoekers/audits in een andere zone en mislukt de hydration (#418).
   const date = publishedAt
     ? new Date(publishedAt).toLocaleDateString("nl-BE", {
         day: "numeric",
         month: "long",
         year: "numeric",
+        timeZone: "Europe/Brussels",
       })
     : undefined;
 

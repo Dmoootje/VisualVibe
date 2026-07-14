@@ -28,10 +28,16 @@ function splitTitle(title: string): { lead: string; accent: string } {
 }
 
 export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps) {
+  // Vaste tijdzone: zonder timeZone formatteert de server in zijn eigen zone en
+  // de browser in de zijne. Staat de bezoeker (of een Lighthouse/PageSpeed-audit)
+  // in een zone achter de renderzone, dan verschuift de datum een dag en mislukt
+  // de hydration (React #418). Altijd in de bedrijfszone formatteren houdt server
+  // en client identiek.
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("nl-BE", {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "Europe/Brussels",
   });
   const { lead, accent } = splitTitle(post.title);
   // Uitgelichte afbeelding zonder tekst; de kaart legt zelf badge/titel/logo erop.

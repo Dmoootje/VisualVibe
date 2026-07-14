@@ -1,28 +1,22 @@
-import { Link } from "@/i18n/navigation";
-import { ArrowRight } from "lucide-react";
+import { BlogCard } from "@/features/home/BlogPreview/components/BlogCard";
 import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
-import { postHref } from "@/lib/kennisbank/urls";
 
+/**
+ * Gerelateerde-artikels grid voor regio-, diensten-, sector- en realisatiepagina's.
+ * Gebruikt exact dezelfde uitgelichte kaart als de homepage-BlogPreview en de
+ * SectorKnowledge-sectie (beeld, categoriebadge, meta en CTA), zodat elke
+ * "Lees meer"-sectie op de site identiek oogt. BlogCard is presentational en
+ * server-compatibel; de auteur valt zonder profielfoto terug op het User-icoon.
+ */
 export function BlogGrid({ posts }: { posts: BlogCardPost[] }) {
   if (posts.length === 0) {
     return <p className="text-center text-sm text-white/40">De eerste artikels volgen binnenkort.</p>;
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
-        <Link
-          key={post.slug}
-          href={postHref(post)}
-          className="group flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
-        >
-          <span className="text-xs uppercase tracking-wide text-white/50">{post.category}</span>
-          <span className="font-semibold group-hover:text-amber-400 transition-colors flex items-center justify-between">
-            {post.title}
-            <ArrowRight className="h-4 w-4 text-white/50" />
-          </span>
-          <span className="text-sm text-white/70">{post.excerpt}</span>
-        </Link>
+    <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post, index) => (
+        <BlogCard key={post.slug} post={post} index={index} />
       ))}
     </div>
   );
