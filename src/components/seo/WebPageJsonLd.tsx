@@ -38,8 +38,6 @@ export function WebPageJsonLd({
         primaryImageOfPage: {
           "@type": "ImageObject",
           url: primaryImage,
-          width: 1200,
-          height: 630,
         },
       }}
     />
