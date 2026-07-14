@@ -27,7 +27,7 @@ export function OrganizationJsonLd() {
           "@type": "ImageObject",
           url: businessConfig.logo,
         },
-        image: `${businessConfig.url}/opengraph-image`,
+        image: `${businessConfig.url}/api/og`,
         description: businessConfig.description,
         telephone: businessConfig.telephone,
         email: businessConfig.email,
