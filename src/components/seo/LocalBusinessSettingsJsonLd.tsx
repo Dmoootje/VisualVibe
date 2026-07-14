@@ -101,7 +101,7 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         legalName: businessConfig.legalName,
         description: businessConfig.description,
         url: businessConfig.url,
-        image: `${businessConfig.url}/opengraph-image`,
+        image: `${businessConfig.url}/api/og`,
         logo: {
           "@type": "ImageObject",
           url: businessConfig.logo,
