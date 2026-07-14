@@ -40,6 +40,15 @@ const nextConfig = {
       { source: '/fr/:path+', destination: '/be/:path+/', permanent: true },
     ];
   },
+  async rewrites() {
+    return {
+      // A few legacy metadata paths still mention /image.jpg. Resolve that path
+      // to the branded fallback before the old public template asset can win.
+      beforeFiles: [{ source: '/image.jpg', destination: '/api/og' }],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
   // Add image optimization configuration
   images: {
     // Serve every image straight from its source, skipping Next's built-in

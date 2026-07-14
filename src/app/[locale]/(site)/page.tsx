@@ -10,32 +10,42 @@ import {
   Cta,
 } from "@/features/home";
 import { SectorFaq } from "@/components/sectors";
-import { FaqPageJsonLd } from "@/components/seo";
+import { FaqPageJsonLd, WebPageJsonLd } from "@/components/seo";
 import { getGoogleReviews, GOOGLE_MAPS_PROFILE_URL } from "@/lib/reviews/google";
 import { businessConfig } from "@/config/business.config";
-import { localizedPath } from "@/lib/kennisbank/posts";
+import { pageMetadata } from "@/lib/seo/pageMetadata";
 
-// Zichtbare FAQ en FAQ-schema gebruiken exact dezelfde inhoud.
+const HOME_TITLE = "Mediabureau Limburg: webdesign, foto & video | VisualVibe";
+const HOME_DESCRIPTION =
+  "VisualVibe is het creatieve mediabureau in Limburg voor webdesign, SEO, fotografie, video, drone en apps. Eén team voor strategie, productie en groei.";
+const HOME_URL = `${businessConfig.url}/be/`;
+
+// Zichtbare FAQ en FAQ-schema gebruiken exact dezelfde, antwoordgerichte inhoud.
 const HOME_FAQ = [
   {
-    question: "Hoe vind ik snel de juiste dienst op de website?",
+    question: "Wat doet VisualVibe?",
     answer:
-      "Open het menu Diensten en kies de categorie die bij je project past, zoals webdesign, apps en software, SEO, fotografie of videografie. Op elke dienstenpagina vind je de aanpak, mogelijkheden en een duidelijke volgende stap.",
+      "VisualVibe is een creatief mediabureau in Tongeren-Borgloon, Limburg. We helpen bedrijven met webdesign, SEO en GEO, fotografie, videografie, drone en FPV, 3D/VR/AR, podcastproductie en applicaties op maat.",
   },
   {
-    question: "Waar kan ik voorbeelden van eerdere projecten bekijken?",
+    question: "Waar is VisualVibe gevestigd en in welke regio werken jullie?",
     answer:
-      "Via Realisaties navigeer je naar voorbeelden per discipline. Je vindt er websites, applicaties, fotografie, video, drone en andere projecten met uitleg over de gekozen oplossing.",
+      "VisualVibe is gevestigd aan Ziegelsmeer 14 in 3700 Tongeren-Borgloon. We werken vooral voor bedrijven in Limburg, heel Vlaanderen, de provincie Antwerpen en Nederlands-Limburg, en verplaatsen ons ook voor grotere projecten.",
   },
   {
-    question: "Hoe kan ik contact opnemen met VisualVibe?",
+    question: "Voor welke bedrijven werkt VisualVibe?",
     answer:
-      "Gebruik de pagina Contact voor een rechtstreekse vraag. Daar vind je de beschikbare contactmogelijkheden en kun je eenvoudig toelichten waarmee we je kunnen helpen.",
+      "We werken voor kmo's, zelfstandigen en organisaties in onder meer bouw en renovatie, horeca, vastgoed, retail, events, sport, opleidingen, wellness en industrie. De aanpak wordt afgestemd op de sector, doelgroep en commerciële doelen.",
   },
   {
-    question: "Hoe vraag ik een offerte aan?",
+    question: "Kan VisualVibe webdesign, foto, video en SEO combineren?",
     answer:
-      "Klik op Offerte aanvragen in het hoofdmenu of bij een dienst. Vul kort je wensen, planning en contactgegevens in. Daarna nemen we contact op om het project en een passende aanpak te bespreken.",
+      "Ja. VisualVibe combineert strategie, webdesign, contentproductie en vindbaarheid binnen één team. Daardoor sluiten website, fotografie, video, campagnes en SEO inhoudelijk en visueel op elkaar aan.",
+  },
+  {
+    question: "Hoe vraag ik een offerte aan bij VisualVibe?",
+    answer:
+      "Gebruik de pagina Offerte aanvragen en beschrijf kort je project, timing en gewenste diensten. VisualVibe neemt daarna contact op om de doelen te bespreken en een concreet voorstel op maat op te stellen.",
   },
 ];
 
@@ -45,19 +55,28 @@ export const revalidate = 3600;
 // Alleen de homepage target de bedrijfspositionering. Diensten- en regiopagina's
 // behouden hun eigen commerciële zoekrichting en metadata.
 export function generateMetadata(): Metadata {
-  return {
-    title: "Creatief mediabureau Limburg | Webdesign, foto & video",
-    description:
-      "VisualVibe is een creatief mediabureau in Limburg voor webdesign, fotografie, videografie en digitale toepassingen voor bedrijven.",
-    alternates: { canonical: `${businessConfig.url}${localizedPath("nl", "/")}` },
-  };
+  return pageMetadata({
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    keywords: [
+      "creatief mediabureau Limburg",
+      "mediabureau Limburg",
+      "webdesign Limburg",
+      "SEO Limburg",
+      "bedrijfsfotografie Limburg",
+      "videografie Limburg",
+      "applicaties op maat Limburg",
+    ],
+    path: "/",
+    ogImageAlt:
+      "VisualVibe, creatief mediabureau in Limburg voor webdesign, SEO, fotografie en video",
+  });
 }
 
 /**
- * Staat rechtstreeks in de servergerenderde homepage-HTML. Daardoor zijn zowel
- * het echte <i>-element als het <blockquote>-element altijd zichtbaar voor
- * crawlers en analysetools, ook wanneer client-JavaScript of Google Reviews
- * tijdelijk niet beschikbaar zijn.
+ * Staat rechtstreeks in de servergerenderde homepage-HTML. De eerste zin geeft
+ * zoekmachines en antwoordmodellen een ondubbelzinnige entiteitsomschrijving;
+ * de reviewcontext blijft ook zonder client-JavaScript beschikbaar.
  */
 function HomepageReviewSignal() {
   return (
@@ -66,16 +85,17 @@ function HomepageReviewSignal() {
         <div className="mx-auto grid max-w-5xl gap-5 rounded-2xl border border-white/10 bg-white/[0.035] p-6 sm:p-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div>
             <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.15em] text-amber-400">
-              Persoonlijke aanpak
+              Creatief mediabureau in Limburg
             </p>
             <h2 id="review-signal-title" className="text-xl font-bold sm:text-2xl">
-              Eén creatief team voor je volledige online uitstraling
+              Wat is VisualVibe?
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
-              <i className="text-white/85">
-                Als Limburgs mediabureau combineren we webdesign, fotografie en videografie voor
-                bedrijven in één doordachte aanpak.
-              </i>
+            <p className="mt-3 text-sm leading-relaxed text-white/75 sm:text-base">
+              <strong className="font-semibold text-white/95">
+                VisualVibe is een creatief mediabureau in Tongeren-Borgloon, Limburg.
+              </strong>{" "}
+              We combineren webdesign, SEO en GEO, fotografie, videografie en digitale toepassingen
+              voor bedrijven die herkenbaar willen groeien.
             </p>
           </div>
 
@@ -83,11 +103,11 @@ function HomepageReviewSignal() {
             cite={GOOGLE_MAPS_PROFILE_URL}
             className="rounded-xl border border-amber-400/20 bg-amber-400/[0.045] px-5 py-5 sm:px-6"
           >
-            <p className="text-base font-medium leading-relaxed text-white/85 sm:text-lg">
+            <p className="text-base font-medium leading-relaxed text-white/90 sm:text-lg">
               “Persoonlijke begeleiding, duidelijke communicatie en één aanspreekpunt van briefing
               tot oplevering.”
             </p>
-            <footer className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-white/45">
+            <footer className="mt-3 text-xs font-semibold uppercase tracking-[0.1em] text-white/75">
               Samenvatting van onze klantenreviews
             </footer>
           </blockquote>
@@ -102,6 +122,11 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen text-white">
+      <WebPageJsonLd
+        url={HOME_URL}
+        name={HOME_TITLE}
+        description={HOME_DESCRIPTION}
+      />
       <FaqPageJsonLd items={HOME_FAQ} />
       {/* Background comes from the site-wide SiteBackground in the layout. */}
       <Hero />
@@ -111,7 +136,7 @@ export default async function Home() {
       <HowItWorks />
       <HomepageReviewSignal />
       <Testimonials testimonials={reviews} sourceUrl={GOOGLE_MAPS_PROFILE_URL} />
-      <SectorFaq title="Snel je weg vinden op onze website" items={HOME_FAQ} />
+      <SectorFaq title="Veelgestelde vragen over VisualVibe" items={HOME_FAQ} />
       <BlogPreview />
       <Cta />
     </div>
