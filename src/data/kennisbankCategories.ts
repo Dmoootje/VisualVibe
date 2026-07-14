@@ -26,10 +26,19 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "webdesign",
     name: "Webdesign",
     description:
-      "Alles over professionele websites, WordPress, webapps, AI-functionaliteit, snelheid, conversie en techniek voor KMO's.",
-    seoTitle: "Webdesign, WordPress en apps voor KMO's | VisualVibe",
+      "Alles over professionele websites, WordPress, webshops, snelheid, conversie en techniek voor KMO's.",
+    seoTitle: "Webdesign en WordPress voor KMO's | VisualVibe",
     seoDescription:
-      "Praktische gidsen over websites, WordPress, onderhoud, webapps, AI-applicaties, snelheid en conversie voor KMO's die digitaal willen groeien.",
+      "Praktische gidsen over websites, WordPress, onderhoud, webshops, snelheid en conversie voor KMO's die digitaal willen groeien.",
+  },
+  {
+    slug: "software-op-maat",
+    name: "Apps & software",
+    description:
+      "Praktische gidsen over apps, webapplicaties, AI-software en automatisering op maat voor KMO's.",
+    seoTitle: "Apps en software op maat voor KMO's | VisualVibe",
+    seoDescription:
+      "Ontdek hoe je een app, webapplicatie, AI-oplossing of automatisering op maat plant, bouwt, lanceert en veilig laat doorgroeien.",
   },
   {
     slug: "fotografie",
