@@ -12,13 +12,24 @@ const DAY_SCHEMA: Record<string, string> = {
   sunday: "Sunday",
 };
 
+const SERVICE_CATALOG = [
+  "Webdesign",
+  "SEO en GEO",
+  "Fotografie",
+  "Videografie",
+  "Drone en FPV",
+  "3D, VR en AR",
+  "Podcastproductie",
+  "Applicaties en software op maat",
+];
+
 /**
- * LocalBusiness (ProfessionalService) schema built from the live site_settings,
- * falling back to business.config for fields that aren't managed in the CRM
- * (description, legal name, service area).
+ * LocalBusiness (ProfessionalService) schema built from the live site_settings.
+ * Every critical NAP field falls back to business.config, so a temporarily empty
+ * Firestore setting can never publish incomplete or contradictory local schema.
  */
 export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettings }) {
-  const openingHoursSpecification = settings.openingHours
+  const liveOpeningHours = (settings.openingHours ?? [])
     .filter((day) => day.isOpen && day.openTime && day.closeTime && DAY_SCHEMA[day.day])
     .flatMap((day) => {
       const dayOfWeek = DAY_SCHEMA[day.day];
@@ -31,7 +42,16 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
       return [{ "@type": "OpeningHoursSpecification", dayOfWeek, opens: day.openTime, closes: day.closeTime }];
     });
 
-  const sameAs = [
+  const fallbackOpeningHours = businessConfig.openingHours.flatMap((opening) =>
+    opening.dayOfWeek.map((dayOfWeek) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek,
+      opens: opening.opens,
+      closes: opening.closes,
+    })),
+  );
+
+  const liveSameAs = [
     settings.facebookUrl,
     settings.instagramUrl,
     settings.linkedinUrl,
@@ -40,7 +60,36 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
   ].filter((url): url is string => Boolean(url));
 
   const streetAddress =
-    [settings.street, settings.houseNumber].filter(Boolean).join(" ") || settings.fullAddress || "";
+    [settings.street, settings.houseNumber].filter(Boolean).join(" ") ||
+    settings.fullAddress ||
+    businessConfig.address.streetAddress;
+
+  const address = {
+    "@type": "PostalAddress",
+    streetAddress,
+    postalCode: settings.postalCode || businessConfig.address.postalCode,
+    addressLocality: settings.city || businessConfig.address.addressLocality,
+    addressRegion: settings.province || businessConfig.address.addressRegion,
+    addressCountry: settings.country || businessConfig.address.addressCountry,
+  };
+
+  const geo =
+    settings.latitude != null && settings.longitude != null
+      ? {
+          "@type": "GeoCoordinates",
+          latitude: settings.latitude,
+          longitude: settings.longitude,
+        }
+      : {
+          "@type": "GeoCoordinates",
+          latitude: businessConfig.geo.latitude,
+          longitude: businessConfig.geo.longitude,
+        };
+
+  const areaServed = businessConfig.serviceArea.map((name) => ({
+    "@type": "AdministrativeArea",
+    name,
+  }));
 
   return (
     <JsonLd
@@ -48,32 +97,38 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         "@id": `${businessConfig.url}/#localbusiness`,
-        name: settings.companyName,
+        name: settings.companyName || businessConfig.displayName,
         legalName: businessConfig.legalName,
         description: businessConfig.description,
         url: businessConfig.url,
-        // Raster brand image for LocalBusiness rich results; the SVG logo rides
-        // along via `logo` so both asset types are represented.
-        image: `${businessConfig.url}/image.jpg`,
-        logo: businessConfig.logo,
-        telephone: settings.phone,
-        email: settings.mainEmail,
-        vatID: settings.vatNumber || undefined,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress,
-          postalCode: settings.postalCode,
-          addressLocality: settings.city,
-          addressRegion: settings.province,
-          addressCountry: settings.country,
+        image: `${businessConfig.url}/opengraph-image`,
+        logo: {
+          "@type": "ImageObject",
+          url: businessConfig.logo,
         },
-        geo:
-          settings.latitude != null && settings.longitude != null
-            ? { "@type": "GeoCoordinates", latitude: settings.latitude, longitude: settings.longitude }
-            : undefined,
-        openingHoursSpecification,
-        areaServed: businessConfig.serviceArea,
-        sameAs: sameAs.length > 0 ? sameAs : undefined,
+        telephone: settings.phone || businessConfig.telephone,
+        email: settings.mainEmail || businessConfig.email,
+        vatID: settings.vatNumber || businessConfig.vatID,
+        address,
+        geo,
+        openingHoursSpecification:
+          liveOpeningHours.length > 0 ? liveOpeningHours : fallbackOpeningHours,
+        areaServed,
+        parentOrganization: { "@id": `${businessConfig.url}/#organization` },
+        founder: { "@id": `${businessConfig.url}/#founder` },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Creatieve en digitale diensten",
+          itemListElement: SERVICE_CATALOG.map((name) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name,
+              provider: { "@id": `${businessConfig.url}/#localbusiness` },
+            },
+          })),
+        },
+        sameAs: liveSameAs.length > 0 ? liveSameAs : businessConfig.sameAs,
       }}
     />
   );
