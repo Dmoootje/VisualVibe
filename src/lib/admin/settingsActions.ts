@@ -8,11 +8,32 @@ import { resolveMapEmbedUrl } from "@/lib/maps/embedUrl";
 
 export type SettingsFormState = { status: "idle" | "success" | "error"; message?: string };
 
+const CANONICAL_EMAIL = "info@visualvibe.media";
+const CANONICAL_PHONE = "+32472964599";
+const LEGACY_EMAILS = new Set([
+  "hello@visualvibe.be",
+  "podcasting.info@visualvibe.media",
+]);
+
 // Return the trimmed value, or "" when the admin clears a field. We persist the
 // empty string (rather than dropping it) so blanking a field actually sticks
 // instead of the old value / default refilling on the next read.
 function optional(formData: FormData, key: string): string {
   return String(formData.get(key) ?? "").trim();
+}
+
+function canonicalEmail(value: string): string {
+  return LEGACY_EMAILS.has(value.trim().toLowerCase()) ? CANONICAL_EMAIL : value.trim();
+}
+
+function canonicalPhone(value: string): string {
+  const trimmed = value.trim();
+  const compact = trimmed.replace(/[\s().-]/g, "");
+  return compact === "0235296023" ? CANONICAL_PHONE : trimmed;
+}
+
+function contactPhone(formData: FormData, key: string): string {
+  return canonicalPhone(optional(formData, key));
 }
 
 // Parsed number, or null when cleared/invalid. null is written to Firestore (a
@@ -57,8 +78,10 @@ export async function saveContactSettings(
   }
 
   const companyName = String(formData.get("companyName") ?? "").trim();
-  const mainEmail = String(formData.get("mainEmail") ?? "").trim();
-  const leadNotificationEmail = String(formData.get("leadNotificationEmail") ?? "").trim();
+  const mainEmail = canonicalEmail(String(formData.get("mainEmail") ?? ""));
+  const leadNotificationEmail = canonicalEmail(
+    String(formData.get("leadNotificationEmail") ?? "")
+  );
 
   if (!companyName || !mainEmail || !leadNotificationEmail) {
     return { status: "error", message: "Bedrijfsnaam, contact-e-mail en notificatie-e-mail zijn verplicht." };
@@ -74,9 +97,9 @@ export async function saveContactSettings(
     companyName,
     mainEmail,
     leadNotificationEmail,
-    phone: optional(formData, "phone"),
-    mobilePhone: optional(formData, "mobilePhone"),
-    whatsapp: optional(formData, "whatsapp"),
+    phone: contactPhone(formData, "phone"),
+    mobilePhone: contactPhone(formData, "mobilePhone"),
+    whatsapp: contactPhone(formData, "whatsapp"),
     vatNumber: optional(formData, "vatNumber"),
     contactPerson: optional(formData, "contactPerson"),
     responseTimeText: optional(formData, "responseTimeText"),

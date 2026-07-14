@@ -104,9 +104,11 @@ function truncateSentences(text: string, max = 3): string {
 function TestimonialQuote({ quote }: { quote: string }) {
   return (
     <div className="md:w-2/3 w-full">
-      <p className="text-base sm:text-lg md:text-xl italic mb-4 sm:mb-6 text-center md:text-left">
-        "{truncateSentences(quote)}"
-      </p>
+      <blockquote className="mb-4 sm:mb-6">
+        <p className="text-base sm:text-lg md:text-xl italic text-center md:text-left">
+          “{truncateSentences(quote)}”
+        </p>
+      </blockquote>
       <div
         className="h-px w-16 bg-gradient-to-r from-red-500 to-amber-500 mx-auto md:mx-0"
         aria-hidden="true"

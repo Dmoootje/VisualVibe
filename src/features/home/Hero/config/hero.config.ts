@@ -1,11 +1,11 @@
 export const heroConfig = {
-  eyebrow: "Creatief mediabureau in Limburg",
-  titleLine1: "Webdesign, foto & video",
-  titleLine2: "voor bedrijven in Limburg",
+  eyebrow: "Webdesign, fotografie & videografie",
+  titleLine1: "Creatief mediabureau",
+  titleLine2: "in Limburg",
   description:
-    "VisualVibe is het creatief mediabureau voor KMO's in Limburg, Vlaanderen, Antwerpen en Nederlands-Limburg: websites, fotografie, videografie, drone, 3D/VR/AR en podcasting onder één dak.",
+    "VisualVibe is een Limburgs mediabureau voor bedrijven die webdesign, fotografie, videografie en digitale toepassingen willen combineren. Eén creatief en technisch team voor een sterke online uitstraling.",
   primaryCta: { label: "Offerte aanvragen", href: "/offerte-aanvragen" },
   secondaryCta: { label: "Bekijk diensten", href: "/diensten" },
   trustedBy: "50+",
-  trustLabel: "projecten in Limburg",
+  trustLabel: "projecten voor bedrijven",
 };

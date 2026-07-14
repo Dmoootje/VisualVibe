@@ -9,8 +9,8 @@ export const businessConfig = {
   url: "https://visualvibe.media",
   /** Brand logo (Firebase-hosted SVG), used in Organization/LocalBusiness schema. */
   logo: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Flogo-visualvibe.svg?alt=media&token=b5e6b375-443b-40dd-b720-89b3f78ab34d",
-  telephone: "+32 472 96 45 99",
-  email: "hello@visualvibe.be",
+  telephone: "+32472964599",
+  email: "info@visualvibe.media",
   /** Zaakvoerder / founder, used in Organization structured data. */
   founder: "Jens Hardy",
   /** Ondernemings-/btw-nummer (KBO). */

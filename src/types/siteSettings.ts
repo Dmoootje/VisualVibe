@@ -87,10 +87,10 @@ export const DEFAULT_OPENING_HOURS: OpeningHoursDay[] = [
  */
 export const DEFAULT_SITE_SETTINGS: Omit<SiteSettings, "id" | "createdAt" | "updatedAt"> = {
   companyName: "VisualVibe",
-  mainEmail: "hello@visualvibe.be",
-  leadNotificationEmail: "hello@visualvibe.be",
-  phone: "+32 472 96 45 99",
-  mobilePhone: "+32 472 96 45 99",
+  mainEmail: "info@visualvibe.media",
+  leadNotificationEmail: "info@visualvibe.media",
+  phone: "+32472964599",
+  mobilePhone: "+32472964599",
   whatsapp: "",
   vatNumber: "BE1014.755.897",
   contactPerson: "Jens Hardy",
