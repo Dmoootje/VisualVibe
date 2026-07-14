@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { businessConfig } from "@/config/business.config";
 import { allServices, serviceHref } from "@/data/services";
+import { softwareServices } from "@/data/softwareServices";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
@@ -34,6 +35,7 @@ const staticPaths = [
   "cookies",
   "sitemap",
   "trouwfotograaf-limburg",
+  "diensten/webdesign/website-met-ai-functionaliteiten",
 ];
 
 // getAllPosts() already excludes draft, scheduled, archived and future-dated
@@ -45,8 +47,14 @@ const activeCategorySlugs = new Set(
   indexablePosts.filter((post) => post.locale === "nl").map((post) => post.categorySlug)
 );
 
+const softwarePaths = [
+  "diensten/software-op-maat",
+  ...softwareServices.map((service) => `diensten/software-op-maat/${service.slug}`),
+];
+
 const dataPaths = [
   ...allServices.map((service) => serviceHref(service).slice(1)),
+  ...softwarePaths,
   ...regions.map((region) => `regio/${region.slug}`),
   ...sectors.map((sector) => `sectoren/${sector.slug}`),
 ];

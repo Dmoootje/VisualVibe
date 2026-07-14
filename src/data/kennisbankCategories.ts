@@ -26,10 +26,10 @@ export const kennisbankCategories: KennisbankCategory[] = [
     slug: "webdesign",
     name: "Webdesign",
     description:
-      "Alles over een professionele website laten maken: design, snelheid, conversie en techniek voor KMO's.",
-    seoTitle: "Webdesign artikels voor KMO's | Kennisbank VisualVibe",
+      "Alles over professionele websites, WordPress, webapps, AI-functionaliteit, snelheid, conversie en techniek voor KMO's.",
+    seoTitle: "Webdesign, WordPress en apps voor KMO's | VisualVibe",
     seoDescription:
-      "Praktische gidsen over websites laten maken in Limburg: webdesign, kosten, onepagers, webshops, snelheid en conversie voor KMO's die online willen groeien.",
+      "Praktische gidsen over websites, WordPress, onderhoud, webapps, AI-applicaties, snelheid en conversie voor KMO's die digitaal willen groeien.",
   },
   {
     slug: "fotografie",

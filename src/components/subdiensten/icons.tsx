@@ -1,7 +1,7 @@
 import type { ReactNode, SVGProps } from "react";
 
-// The 7 custom 24x24 line icons from the Subdiensten handoff. `id` maps to the
-// service; each is drawn with fill:none, stroke:currentColor, round caps/joins.
+// Custom 24x24 line icons for the service cards. `id` maps to the service;
+// each is drawn with fill:none, stroke:currentColor, round caps/joins.
 const PATHS: Record<string, ReactNode> = {
   website: (
     <>
@@ -47,6 +47,22 @@ const PATHS: Record<string, ReactNode> = {
       <circle cx="11" cy="11" r="7" />
       <path d="m21 21-4.3-4.3" />
       <path d="M8.6 12.5v-1.5M11 12.5V9M13.4 12.5V8" />
+    </>
+  ),
+  "ai-website": (
+    <>
+      <rect x="3" y="4.5" width="18" height="15" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M6 6.75h.01M8.5 6.75h.01" />
+      <path d="m13 11.2.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z" />
+    </>
+  ),
+  software: (
+    <>
+      <path d="m8 8-4 4 4 4" />
+      <path d="m16 8 4 4-4 4" />
+      <path d="m14 4-4 16" />
+      <circle cx="12" cy="12" r="9" opacity=".35" />
     </>
   ),
   // SEO-subdienst glyphs (SEO-dienstenpagina).

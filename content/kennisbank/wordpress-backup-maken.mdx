@@ -1,0 +1,165 @@
+---
+title: "WordPress backup maken: zo bouw je een herstelbare back-upstrategie"
+slug: "wordpress-backup-maken"
+category: "Webdesign"
+categorySlug: "webdesign"
+pillar: false
+clusterType: "sub"
+parentPillar: "/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/"
+status: "published"
+locale: "nl"
+translationKey: "wordpress-backup-maken"
+author:
+  type: "Person"
+  name: "Jens Hardy"
+  url: "/over-ons/"
+  jobTitle: "Oprichter en creative lead bij VisualVibe"
+publishedAt: "2026-07-14"
+updatedAt: "2026-07-14T11:50:00+02:00"
+readingTime: "7 min"
+excerpt: "Een WordPress-back-up is pas waardevol wanneer bestanden én databank veilig worden bewaard en je weet hoe je de website werkelijk herstelt."
+focusKeyword: "WordPress backup maken"
+secondaryKeywords:
+  - "WordPress back-up"
+  - "WordPress website herstellen"
+  - "WordPress backup plugin"
+  - "website backup maken"
+searchIntent:
+  primary: "Uitleggen hoe een KMO een volledige en herstelbare WordPress-back-upstrategie opzet"
+  type: "informational"
+  audience: "Website-eigenaars en KMO's die gegevensverlies en lange downtime willen vermijden"
+  funnelStage: "awareness"
+seoTitle: "WordPress backup maken: veilige aanpak | VisualVibe"
+seoDescription: "WordPress backup maken? Leer welke bestanden en databank je nodig hebt, waar je kopieën bewaart, hoe vaak je back-ups maakt en waarom een hersteltest onmisbaar is."
+robots: "index,follow"
+cta:
+  title: "Geen tijd om back-ups en herstel zelf op te volgen?"
+  description: "Met website-onderhoud combineren we updates, back-ups, controles en technische opvolging in één duidelijke werkwijze."
+  label: "Vraag website-onderhoud aan"
+  href: "/offerte-aanvragen/"
+relatedServices:
+  - "/diensten/webdesign/website-onderhoud/"
+  - "/diensten/webdesign/wordpress-website-laten-maken/"
+relatedRegions:
+  - "/regio/limburg/"
+  - "/regio/vlaanderen/"
+relatedPosts:
+  - "/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/"
+  - "/kennisbank/webdesign/wordpress-onderhoud-checklist/"
+  - "/kennisbank/webdesign/wordpress-website-beveiligen/"
+---
+
+Een **WordPress backup maken** lijkt eenvoudig: je installeert een plugin, kiest dagelijks en gaat ervan uit dat je veilig bent. In de praktijk blijkt pas tijdens een storing of hack of de back-up werkelijk volledig, bereikbaar en herstelbaar is.
+
+Een WordPress-website bestaat uit twee hoofdonderdelen. De bestanden bevatten WordPress zelf, het thema, plugins en uploads. De databank bevat pagina's, instellingen, gebruikers, bestellingen, formuliergegevens en andere dynamische inhoud. Wie maar één van beide bewaart, heeft vaak geen volledige herstelkopie.
+
+## Wat moet een volledige WordPress-back-up bevatten?
+
+Minstens deze onderdelen horen in de back-up:
+
+- de volledige databank;
+- de map met uploads en mediabestanden;
+- het actieve thema en eventuele child theme;
+- plugins en hun configuratiebestanden;
+- belangrijke serverconfiguratie, zoals redirects;
+- informatie over WordPress-, PHP- en pluginversies.
+
+WordPress-kernbestanden kunnen opnieuw worden gedownload, maar een volledige kopie maakt herstel meestal sneller en voorkomt onzekerheid over aangepaste bestanden.
+
+## Bewaar niet alle kopieën op dezelfde server
+
+Een veelgemaakte fout is dat back-ups alleen in een map op dezelfde hosting staan. Bij een defecte server, een foutieve migratie, ransomware of een afgesloten hostingaccount kan je dan tegelijk de website en de herstelkopieën verliezen.
+
+Gebruik daarom minstens één externe opslaglocatie. Dat kan cloudopslag, een afzonderlijke back-updienst of een tweede serveromgeving zijn. Geef de back-upopslag een eigen account en sterke beveiliging. Wanneer dezelfde gestolen login toegang geeft tot website én back-ups, is de scheiding weinig waard.
+
+## Hoe vaak moet je een back-up maken?
+
+De juiste frequentie hangt af van hoeveel gegevens veranderen.
+
+Een eenvoudige dienstenwebsite die maar enkele keren per maand wordt aangepast, kan vaak volstaan met een dagelijkse databankback-up en een wekelijkse volledige back-up. Een webshop, ledenomgeving of website met veel aanvragen heeft vaker herstelpunten nodig. Daar kan elk uur nieuwe informatie ontstaan die je niet wilt verliezen.
+
+Stel jezelf deze vraag: hoeveel werk of klantgegevens mag maximaal verloren gaan? Het antwoord bepaalt de frequentie.
+
+### Praktische richtlijn
+
+- **Statische bedrijfswebsite:** dagelijks of om de paar dagen, plus vóór updates.
+- **Actieve kennisbank:** dagelijks en extra vóór grote contentwijzigingen.
+- **Webshop of boekingssysteem:** meerdere databankback-ups per dag.
+- **Grote update of migratie:** handmatige volledige back-up vlak vóór de wijziging.
+
+## Werk met meerdere bewaartermijnen
+
+Alleen de laatste back-up bewaren is riskant. Een fout of besmetting kan dagen onopgemerkt blijven en daardoor ook in recente kopieën zitten.
+
+Een rotatieschema kan bijvoorbeeld bestaan uit:
+
+- dagelijkse kopieën van de laatste zeven dagen;
+- wekelijkse kopieën van de laatste vier weken;
+- maandelijkse kopieën van de laatste drie tot twaalf maanden.
+
+De juiste termijn hangt af van opslagkosten, wettelijke verplichtingen en de waarde van historische gegevens.
+
+## Een back-upplugin is een hulpmiddel, geen garantie
+
+Een betrouwbare plugin kan planning, compressie, externe opslag en meldingen regelen. Controleer wel of de taak werkelijk succesvol is. Een melding dat een proces gestart is, betekent niet automatisch dat bestanden volledig zijn overgezet.
+
+Let onder meer op:
+
+- fouten door beperkte serverruimte of uitvoeringstijd;
+- verlopen toegang tot externe opslag;
+- uitgesloten mappen of te grote uploads;
+- versleuteling en toegang tot back-upbestanden;
+- waarschuwingen die naar een ongecontroleerd e-mailadres gaan.
+
+Hostingback-ups en pluginback-ups kunnen elkaar aanvullen. Twee onafhankelijke systemen zijn sterker dan twee kopieën binnen dezelfde omgeving.
+
+## Test regelmatig of herstel werkt
+
+De enige manier om te weten of een back-up bruikbaar is, is een hersteltest. Dat hoeft niet op de live website. Herstel een kopie in een staging- of testomgeving en controleer:
+
+1. of de website opent;
+2. of je kan inloggen;
+3. of afbeeldingen zichtbaar zijn;
+4. of formulieren en belangrijke functies werken;
+5. of de databank recent genoeg is;
+6. hoe lang het herstelproces werkelijk duurt.
+
+Noteer de stappen. Tijdens een incident wil je geen wachtwoorden, opslaglocaties of procedures moeten zoeken.
+
+## Bescherm persoonsgegevens in back-ups
+
+Een WordPress-databank kan persoonsgegevens bevatten. Beveilig back-ups daarom net zo zorgvuldig als de productieomgeving. Beperk toegang, gebruik waar mogelijk versleuteling en verwijder oude kopieën volgens je bewaarbeleid.
+
+Voor een testomgeving kan het nodig zijn persoonsgegevens te anonimiseren. Gebruik geen volledige klantendatabank op een publiek toegankelijke testsite.
+
+## Maak altijd een back-up vóór risicovolle wijzigingen
+
+Maak een extra herstelpunt vóór:
+
+- WordPress-, thema- of pluginupdates;
+- grote contentimports;
+- wijzigingen aan redirects of domeininstellingen;
+- een hostingmigratie;
+- installatie van een nieuwe pagebuilder of grote plugin;
+- maatwerkaanpassingen in thema of code.
+
+Combineer dit met de [WordPress onderhoud checklist](/kennisbank/webdesign/wordpress-onderhoud-checklist/), zodat back-ups geen losse noodmaatregel zijn maar onderdeel van regulier beheer.
+
+## Wat moet je vastleggen voor noodherstel?
+
+Bewaar een korte herstelprocedure met:
+
+- hosting- en domeingegevens;
+- locatie van externe back-ups;
+- toegang tot DNS en e-mail;
+- contactgegevens van technische ondersteuning;
+- volgorde van herstelstappen;
+- controlelijst na herstel.
+
+Test ook wie de beslissing neemt om een back-up terug te zetten. Ongecoördineerde wijzigingen tijdens een incident kunnen gegevens overschrijven.
+
+## Samenvatting
+
+Een goede WordPress-back-up bevat bestanden en databank, staat ook buiten de webserver, heeft meerdere herstelpunten en wordt regelmatig getest. De vraag is niet alleen of er een back-up bestaat, maar of je er binnen een aanvaardbare tijd een werkende website mee kunt terugzetten.
+
+Lees de overkoepelende gids [WordPress voor KMO's](/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/) voor de samenhang tussen hosting, updates, beveiliging, snelheid en beheer.
