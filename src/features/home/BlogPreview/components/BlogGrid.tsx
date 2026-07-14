@@ -11,7 +11,7 @@ export function BlogGrid({ posts }: { posts: BlogCardPost[] }) {
   return (
     <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {preview.map((post, index) => (
-        <BlogCard key={post.slug} post={post} index={index} />
+        <BlogCard key={post.slug} post={post} index={index} hideAuthor />
       ))}
     </div>
   );

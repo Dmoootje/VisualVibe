@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { User } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { ArticleCardData } from "./data";
 
@@ -41,6 +42,24 @@ export function QuestionCard({ article, index = 0 }: { article: ArticleCardData;
           {article.titleAccent && <span className="text-[#ff9a45]"> {article.titleAccent}</span>}
         </div>
         <p className="mt-2 text-[12.5px] leading-relaxed text-white/55 line-clamp-2">{article.excerpt}</p>
+        <div
+          className="mt-2 flex items-center gap-1.5 text-[11px] text-white/50"
+          aria-label={`Auteur: ${article.author}`}
+        >
+          {article.authorImage ? (
+            <Image
+              src={article.authorImage}
+              alt=""
+              width={28}
+              height={28}
+              className="h-4 w-4 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
+              aria-hidden="true"
+            />
+          ) : (
+            <User className="h-3 w-3 shrink-0 text-[#ff7500]" aria-hidden="true" />
+          )}
+          <span className="truncate">{article.author}</span>
+        </div>
       </div>
     </Link>
   );

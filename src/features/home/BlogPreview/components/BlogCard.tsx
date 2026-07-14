@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarDays, Clock } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock, User } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
@@ -7,6 +7,10 @@ import { postHref } from "@/lib/kennisbank/urls";
 interface BlogCardProps {
   post: BlogCardPost;
   index: number;
+  /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
+  authorImage?: string;
+  /** Alleen de homepage verbergt de auteur; overal elders hoort die zichtbaar. */
+  hideAuthor?: boolean;
 }
 
 // The overlaid title mirrors the mockup: the part up to (and including) the
@@ -23,7 +27,7 @@ function splitTitle(title: string): { lead: string; accent: string } {
   return { lead, accent };
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
+export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps) {
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("nl-BE", {
     day: "numeric",
     month: "long",
@@ -103,7 +107,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
           )}
         </div>
 
-        {/* Compact homepage footer: article pages retain the full author metadata. */}
+        {/* Footer: meta row (auteur overal behalve op de homepage), excerpt en CTA. */}
         <div className="flex flex-1 flex-col p-5">
           {post.heroComposed && <h3 className="sr-only">{post.title}</h3>}
 
@@ -118,6 +122,23 @@ export function BlogCard({ post, index }: BlogCardProps) {
               <CalendarDays className="h-3.5 w-3.5 text-[#ff7500]" aria-hidden="true" />
               {formattedDate}
             </span>
+            {!hideAuthor && post.author && (
+              <span className="inline-flex items-center gap-1.5" aria-label={`Auteur: ${post.author}`}>
+                {authorImage ? (
+                  <Image
+                    src={authorImage}
+                    alt=""
+                    width={28}
+                    height={28}
+                    className="h-[18px] w-[18px] shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <User className="h-3.5 w-3.5 text-[#ff7500]" aria-hidden="true" />
+                )}
+                {post.author}
+              </span>
+            )}
           </div>
 
           <div className="my-4 h-px bg-white/10" />

@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, User } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getAllPosts, getPostsByCategory } from "@/lib/kennisbank/posts";
 import { postHref } from "@/lib/kennisbank/urls";
+import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { getServiceBySlug, serviceHref } from "@/data/services";
 import type { BlogPost } from "@/types/blog";
 
@@ -18,8 +19,47 @@ const SERVICE_TO_CATEGORY: Record<string, string> = {
   masterclasses: "masterclasses",
 };
 
+/** Auteursvermelding (foto uit admin-profiel, anders User-icoon) + leestijd. */
+function AuthorMeta({
+  author,
+  authorImage,
+  readingTime,
+  className = "",
+}: {
+  author?: string;
+  authorImage?: string;
+  readingTime?: string;
+  className?: string;
+}) {
+  if (!author && !readingTime) return null;
+  return (
+    <span className={`flex min-w-0 items-center gap-1.5 font-mono font-semibold text-white/40 ${className}`}>
+      {author && (
+        <>
+          {authorImage ? (
+            <Image
+              src={authorImage}
+              alt=""
+              width={28}
+              height={28}
+              className="h-4 w-4 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
+              aria-hidden="true"
+            />
+          ) : (
+            <User className="h-3 w-3 shrink-0 text-[#ff7500]" aria-hidden="true" />
+          )}
+          <span className="truncate" aria-label={`Auteur: ${author}`}>
+            {author}
+          </span>
+        </>
+      )}
+      {readingTime && <span className="shrink-0">{author ? `· ${readingTime}` : readingTime}</span>}
+    </span>
+  );
+}
+
 /** Compact article card for the 6-up grid beside the pillar. */
-function ArticleTile({ post }: { post: BlogPost }) {
+function ArticleTile({ post, authorImage }: { post: BlogPost; authorImage?: string }) {
   return (
     <Link
       href={postHref(post)}
@@ -39,10 +79,13 @@ function ArticleTile({ post }: { post: BlogPost }) {
           {post.title}
         </h3>
         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-          {post.readingTime && (
-            <span className="font-mono text-[10.5px] font-semibold text-white/40">{post.readingTime}</span>
-          )}
-          <span className="inline-flex items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.04em] text-white/60 transition-colors group-hover:text-[#FF9A45]">
+          <AuthorMeta
+            author={post.author}
+            authorImage={authorImage}
+            readingTime={post.readingTime}
+            className="text-[10.5px]"
+          />
+          <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.04em] text-white/60 transition-colors group-hover:text-[#FF9A45]">
             LEES MEER
             <ArrowRight aria-hidden="true" className="h-3 w-3" />
           </span>
@@ -58,7 +101,7 @@ function ArticleTile({ post }: { post: BlogPost }) {
  * service to its cluster content, and extra GEO surface. Renders on every
  * service page; returns nothing when the pillar has no live posts yet.
  */
-export function ServiceRelatedPosts({
+export async function ServiceRelatedPosts({
   serviceSlug,
   fallbackServiceSlug,
   heading = "Uit de kennisbank",
@@ -95,6 +138,9 @@ export function ServiceRelatedPosts({
     ...directlyRelated.filter((post) => post.slug !== lead.slug),
     ...categoryPosts.filter((post) => post.slug !== lead.slug && !directSlugs.has(post.slug)),
   ].slice(0, 6);
+
+  // Na de early-returns, zodat pagina's zonder sectie geen Firestore-read doen.
+  const authorImages = await getAuthorPhotoMap();
 
   return (
     <section className="relative py-14 sm:py-16">
@@ -146,10 +192,13 @@ export function ServiceRelatedPosts({
               </h3>
               <p className="mt-2.5 line-clamp-3 text-[14px] leading-relaxed text-white/60">{lead.excerpt}</p>
               <div className="mt-4 flex items-center justify-between gap-2 pt-1">
-                {lead.readingTime && (
-                  <span className="font-mono text-[11px] font-semibold text-white/40">{lead.readingTime}</span>
-                )}
-                <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.04em] text-white/70 transition-colors group-hover:text-[#FF9A45]">
+                <AuthorMeta
+                  author={lead.author}
+                  authorImage={authorImages[lead.author]}
+                  readingTime={lead.readingTime}
+                  className="text-[11px]"
+                />
+                <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.04em] text-white/70 transition-colors group-hover:text-[#FF9A45]">
                   {lead.pillar ? "LEES DE GIDS" : "LEES MEER"}
                   <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
                 </span>
@@ -161,7 +210,7 @@ export function ServiceRelatedPosts({
           {others.length > 0 && (
             <div className="grid flex-1 gap-4 sm:grid-cols-2">
               {others.map((post) => (
-                <ArticleTile key={post.slug} post={post} />
+                <ArticleTile key={post.slug} post={post} authorImage={authorImages[post.author]} />
               ))}
             </div>
           )}
