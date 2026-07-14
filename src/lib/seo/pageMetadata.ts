@@ -9,7 +9,7 @@ import { MANUAL_PAGE_OG_IMAGES } from "@/data/manualOgImages";
 // the inherited homepage OG), and explicit crawler/snippet directives - without
 // repeating the same object shape in each generateMetadata.
 
-const DEFAULT_OG_IMAGE = "/opengraph-image";
+const DEFAULT_OG_IMAGE = "/api/og";
 // Afmetingen voor een expliciet meegegeven `ogImage` of de site-fallback; de
 // per-pagina OG-afbeeldingen uit ogImageForPath dragen hun echte afmetingen.
 const DEFAULT_OG_DIMENSIONS = { width: 1200, height: 630 };
