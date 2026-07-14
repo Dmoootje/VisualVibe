@@ -1,0 +1,53 @@
+.home-sector-marquee:not(.is-running) .vv-mq-track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 767px) {
+  .home-sector-marquee > div {
+    gap: 0;
+  }
+
+  .home-sector-marquee .vv-mq {
+    width: 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    scrollbar-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .home-sector-marquee .vv-mq::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-sector-marquee .vv-mq:nth-child(2) {
+    display: none;
+  }
+
+  .home-sector-marquee .vv-mq-track {
+    gap: 12px;
+    padding: 0 10px 8px;
+    transform: none !important;
+    animation: none !important;
+    will-change: auto;
+  }
+
+  .home-sector-marquee .vv-mq:first-child .vv-pill:nth-child(n + 11) {
+    display: none;
+  }
+
+  .home-sector-marquee .vv-pill {
+    scroll-snap-align: start;
+  }
+
+  .home-sector-marquee .vv-base,
+  .home-sector-marquee .vv-shim {
+    animation: none !important;
+  }
+
+  .home-sector-marquee .vv-shim {
+    opacity: 0;
+  }
+}

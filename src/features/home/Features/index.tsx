@@ -12,12 +12,12 @@ import {
 import { useFeaturesTabs } from "./hooks/useFeaturesTabs";
 
 export default function Features() {
-  const { activeTab, handleTabChange, contentStyle } = useFeaturesTabs();
+  const { activeTab, handleTabChange } = useFeaturesTabs();
 
   return (
     <section
       id="features"
-      className="py-12 sm:py-16 md:py-24 relative"
+      className="home-deferred-section relative py-12 sm:py-16 md:py-24"
     >
       <div className="container mx-auto relative z-10">
         <FeaturesHeader />
@@ -30,7 +30,7 @@ export default function Features() {
         >
           <FeaturesTabs />
           <MobileFeatureTitle activeTab={activeTab} />
-          <FeatureContent contentStyle={contentStyle} />
+          <FeatureContent />
         </Tabs>
 
         {/* Shared trust badges + supporting-service chips (under active content) */}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@/components/media-patterns.css";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond, Great_Vibes, Lora } from "next/font/google";
+import { Inter, Sora, Manrope, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { CookieConsent, CONSENT_STORAGE_KEY } from "@/components/consent";
+import { ConsentAnalytics, CookieConsent } from "@/components/consent";
 import "../globals.css";
 import { ThemeProvider } from "@/providers";
 import { SiteBackground } from "@/components/ui";
@@ -13,18 +12,16 @@ import { LocalBusinessJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/compon
 import { SectorIconSprite } from "@/components/sectors";
 import { businessConfig } from "@/config/business.config";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 // Handoff typography for the Subdiensten cards: Sora (titles) + Manrope (body),
 // exposed as CSS variables so scoped components can opt in without changing the
-// site-wide Inter default.
-const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
+// site-wide Inter default. Only Inter is globally preloaded. The optional
+// families still load on demand when a component actually uses their variable.
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap", preload: false });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap", preload: false });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap", preload: false });
 // Elegant serif: WeddingVibe cross-promo card (Over ons) + de WeddingVibe one-pager.
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
-// WeddingVibe one-pager (/trouwfotograaf-limburg): script-accenten + body-serif.
-const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400", variable: "--font-great-vibes", display: "swap" });
-const lora = Lora({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-lora", display: "swap" });
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap", preload: false });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -80,28 +77,13 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  // GA4 loads only on the public site (admin has its own layout tree) and only
-  // when the id is set - so local dev without it never sends hits. The
-  // @next/third-parties tag defers gtag and fires page_views on client-side
-  // route changes, which the raw gtag snippet does not.
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-
-  // Google Consent Mode v2: deny every signal by default, before gtag.js loads,
-  // so no analytics cookies are set until the visitor accepts in the banner. A
-  // previously stored "granted" is re-applied here so the choice sticks across
-  // page loads. Runs as a plain inline <head> script (parsed before the
-  // afterInteractive GA tag), which is the earliest and most reliable point.
-  const consentDefaultScript = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{if(localStorage.getItem('${CONSENT_STORAGE_KEY}')==='granted'){gtag('consent','update',{analytics_storage:'granted'});}}catch(e){}`;
+  // The client consent controller never requests gtag.js before an explicit
+  // analytics choice is stored. Without an id, local development stays inert.
+  const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        {gaId && (
-          // eslint-disable-next-line react/no-danger
-          <script dangerouslySetInnerHTML={{ __html: consentDefaultScript }} />
-        )}
-      </head>
-      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${greatVibes.variable} ${lora.variable} bg-[#0a0a0a] text-white`}>
+      <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-[#0a0a0a] text-white`}>
         <SiteBackground />
         <SectorIconSprite />
         <OrganizationJsonLd />
@@ -120,8 +102,7 @@ export default async function LocaleLayout({
               needs the locale context (it opens client-side, after hydration). */}
           {gaId && <CookieConsent />}
         </NextIntlClientProvider>
-        {/* GA is just script tags - no intl dependency - so it stays outside. */}
-        {gaId && <GoogleAnalytics gaId={gaId} />}
+        {gaId && <ConsentAnalytics gaId={gaId} />}
       </body>
     </html>
   );

@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function useFeaturesTabs() {
     const [activeTab, setActiveTab] = useState("webdesign");
     const isMobile = useIsMobile();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     const handleTabChange = (value: string) => {
         setActiveTab(value);
 
-        if (isMobile && mounted) {
-            setTimeout(() => {
+        if (isMobile) {
+            window.requestAnimationFrame(() => {
                 const element = document.querySelector(
                     `[data-feature-content="${value}"]`
                 );
@@ -22,20 +17,15 @@ export function useFeaturesTabs() {
                     const yOffset = -80;
                     const y =
                         element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                    window.scrollTo({ top: y, behavior: "smooth" });
+                    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                    window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
                 }
-            }, 100);
+            });
         }
-    };
-
-    const contentStyle = {
-        minHeight: mounted ? "400px" : "auto",
     };
 
     return {
         activeTab,
         handleTabChange,
-        contentStyle,
-        mounted,
     };
 }

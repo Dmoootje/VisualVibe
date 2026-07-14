@@ -23,7 +23,7 @@ export default async function BlogPreview() {
 
   return (
     <section
-      className="py-5 sm:py-20 md:py-24 relative overflow-hidden"
+      className="home-deferred-section relative overflow-hidden py-5 sm:py-20 md:py-24"
       aria-labelledby="blog-heading"
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">

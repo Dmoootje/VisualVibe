@@ -79,7 +79,7 @@ export const featuresConfig = {
       imageBadge: "Snel & vindbaar",
       href: "/diensten/webdesign",
       image:
-        "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2070&auto=format&fit=crop",
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FWebdesign.webp?alt=media&token=48c49584-8a14-4c0b-b647-a6e542c37f1d",
     },
     {
       id: "seo",
@@ -103,7 +103,7 @@ export const featuresConfig = {
       imageBadge: "Lokaal sterk",
       href: "/diensten/seo",
       image:
-        "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=2070&auto=format&fit=crop",
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FSEO.webp?alt=media&token=e9fcc978-0c92-4671-9f94-d098b232140f",
     },
     {
       id: "fotografie",
@@ -127,7 +127,7 @@ export const featuresConfig = {
       imageBadge: "Op locatie",
       href: "/diensten/fotografie",
       image:
-        "https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=2070&auto=format&fit=crop",
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FFotografie.webp?alt=media&token=a84cc388-4024-40a9-aca7-044091e58d14",
     },
     {
       id: "videografie",
@@ -151,7 +151,7 @@ export const featuresConfig = {
       imageBadge: "Verhaal eerst",
       href: "/diensten/videografie",
       image:
-        "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop",
+        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FVideografie.webp?alt=media&token=125d76b2-f1aa-4e22-b336-b5aab4d25955",
     },
   ] as Feature[],
 

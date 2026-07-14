@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowRight, CalendarDays, Clock, User } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
@@ -40,12 +37,9 @@ export function BlogCard({ post, index, authorImage }: BlogCardProps) {
   const cardImage = post.featuredImage ?? post.ogImage;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group h-full"
+    <div
+      className="home-reveal-up group h-full"
+      style={{ animationDelay: `${index * 100}ms` }}
     >
       <Link
         href={postHref(post)}
@@ -138,7 +132,7 @@ export function BlogCard({ post, index, authorImage }: BlogCardProps) {
           </span>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 

@@ -10,8 +10,12 @@ export type CurrentAdmin = {
 };
 
 function adminEmailAllowlist(): Set<string> {
+  // Production access must always be configured explicitly. Keep the existing
+  // local developer account only as a development convenience.
+  const configuredEmails =
+    process.env.ADMIN_EMAILS ?? (process.env.NODE_ENV === "development" ? "jens@visualvibe.be" : "");
   return new Set(
-    (process.env.ADMIN_EMAILS ?? "jens@visualvibe.be")
+    configuredEmails
       .split(",")
       .map((email) => email.trim().toLowerCase())
       .filter(Boolean)

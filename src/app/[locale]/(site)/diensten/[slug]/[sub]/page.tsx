@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@/components/media-patterns.css";
 import { notFound } from "next/navigation";
 import { Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -118,11 +119,16 @@ export default async function SubServiceDetailPage({
     .map((relatedSlug) => getServiceBySlug(relatedSlug))
     .filter((related): related is NonNullable<typeof related> => Boolean(related));
 
-  const relatedRegions = content
-    ? content.regional.regionSlugs
+  const regionalSlugs = content?.regional?.regionSlugs;
+  const relatedRegions = regionalSlugs?.length
+    ? regionalSlugs
         .map((regionSlug) => regions.find((region) => region.slug === regionSlug))
         .filter((region): region is NonNullable<typeof region> => Boolean(region))
     : regions;
+
+  const hasPrimaryContent = Boolean(
+    content?.overview || content?.outcomes || content?.idealFor || content?.deliverables,
+  );
 
   const realisationProjects = REALISATION_ELIGIBLE_SLUGS.has(service.slug)
     ? (await getHubData()).projects.filter((project) => project.serviceSlugs.includes(service.slug)).slice(0, 3)
@@ -168,12 +174,12 @@ export default async function SubServiceDetailPage({
           }))}
       />
 
-      {content ? (
+      {hasPrimaryContent ? (
         <>
-          <SubserviceOverview content={content.overview} />
-          <SubserviceOutcomeCards content={content.outcomes} />
-          <SubserviceIdealFor content={content.idealFor} />
-          <SubserviceDeliverables content={content.deliverables} />
+          {content?.overview && <SubserviceOverview content={content.overview} />}
+          {content?.outcomes && <SubserviceOutcomeCards content={content.outcomes} />}
+          {content?.idealFor && <SubserviceIdealFor content={content.idealFor} />}
+          {content?.deliverables && <SubserviceDeliverables content={content.deliverables} />}
         </>
       ) : (
         service.benefits.length > 0 && (
@@ -202,12 +208,8 @@ export default async function SubServiceDetailPage({
         </Section>
       )}
 
-      {content && (
-        <>
-          <SubservicePricing content={content.pricing} />
-          <SubserviceWhyVisualVibe content={content.whyVisualVibe} />
-        </>
-      )}
+      {content?.pricing && <SubservicePricing content={content.pricing} />}
+      {content?.whyVisualVibe && <SubserviceWhyVisualVibe content={content.whyVisualVibe} />}
 
       <SubserviceRealisations projects={realisationProjects} serviceTitle={service.title} />
 
@@ -253,7 +255,7 @@ export default async function SubServiceDetailPage({
         intro="Praktische artikels met keuzes en voorbereiding die rechtstreeks bij deze dienst aansluiten."
       />
 
-      {content ? (
+      {content?.regional ? (
         <SubserviceRegions content={content.regional} regions={relatedRegions} />
       ) : (
         <SubserviceRegions
@@ -268,13 +270,13 @@ export default async function SubServiceDetailPage({
       )}
 
       <CTASection
-        title={content?.cta.title ?? `Interesse in ${service.title}?`}
+        title={content?.cta?.title ?? `Interesse in ${service.title}?`}
         description={
-          content?.cta.description ??
+          content?.cta?.description ??
           "Vertel ons wat je nodig hebt. Na een inhoudelijke analyse ontvang je een voorstel dat bij je project past."
         }
-        primaryLabel={content?.cta.label}
-        primaryHref={content?.cta.href}
+        primaryLabel={content?.cta?.label}
+        primaryHref={content?.cta?.href}
         variant={0}
         className="px-0"
       />

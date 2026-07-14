@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import "@/components/media-patterns.css";
 import { ArrowRight } from "lucide-react";
 import { realisatieCategories, categoryToServiceSlug } from "@/data/realisatieCategories";
 import { subservices } from "@/data/subservices";

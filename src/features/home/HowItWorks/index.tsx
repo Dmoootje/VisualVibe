@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, HeartHandshake } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,25 +11,18 @@ import { processConfig, processTracks } from "./config/process.config";
 
 export default function HowItWorks() {
   const [activeId, setActiveId] = useState(processTracks[0].id);
-  const reduce = useReducedMotion();
   const activeTrack = processTracks.find((t) => t.id === activeId) ?? processTracks[0];
 
   return (
-    <section className="relative overflow-hidden py-12 sm:py-16 md:py-24">
+    <section className="home-deferred-section relative overflow-hidden py-12 sm:py-16 md:py-24">
       <div className="container relative z-10 mx-auto px-2.5 sm:px-4">
         {/* Header */}
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-8 text-center sm:mb-10"
-        >
+        <div className="home-reveal-up mb-8 text-center sm:mb-10">
           <h2 className="mb-3 text-2xl font-bold sm:text-3xl md:text-4xl">{processConfig.title}</h2>
           <p className="mx-auto max-w-2xl text-sm text-white/70 sm:text-base md:text-lg">
             {processConfig.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* Track tabs */}
         <ProcessTabs activeId={activeId} onSelect={setActiveId} />
@@ -38,20 +30,14 @@ export default function HowItWorks() {
         {/* Animated step cards */}
         <div className="relative">
           <ProcessPathLine />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId}
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
-            >
-              {activeTrack.steps.map((step, index) => (
-                <ProcessCard key={step.number} step={step} index={index} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <div
+            key={activeId}
+            className="home-content-swap relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {activeTrack.steps.map((step, index) => (
+              <ProcessCard key={step.number} step={step} index={index} />
+            ))}
+          </div>
         </div>
 
         {/* Human-approach reassurance + CTAs */}

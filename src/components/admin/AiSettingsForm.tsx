@@ -36,7 +36,6 @@ function credentialText(settings: AiSettingsAdminView["providers"][AiProviderId]
       ? `Versleuteld opgeslagen, eindigt op ${settings.keyHint}`
       : "Versleuteld opgeslagen";
   }
-  if (settings.credentialSource === "environment") return "Tijdelijke omgevingsfallback actief";
   return "Nog geen API-sleutel ingesteld";
 }
 

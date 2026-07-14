@@ -34,7 +34,6 @@ export async function saveAiSettingsAction(formData: FormData): Promise<AiSettin
     return { ok: false, message: "Kies een geldige actieve AI-provider." };
   }
 
-  const current = await getAiSettingsAdminView();
   const input = {
     activeProvider: activeValue,
     providers: Object.fromEntries(
@@ -49,19 +48,19 @@ export async function saveAiSettingsAction(formData: FormData): Promise<AiSettin
     ),
   } as AiSettingsUpdate;
 
-  const activeUpdate = input.providers[input.activeProvider];
-  const activeCurrent = current.providers[input.activeProvider];
-  const activeKeepsDatabaseKey =
-    activeCurrent.credentialSource === "database" && !activeUpdate.removeApiKey;
-  const activeKeepsEnvironmentKey = activeCurrent.credentialSource === "environment";
-  if (!activeUpdate.apiKey && !activeKeepsDatabaseKey && !activeKeepsEnvironmentKey) {
-    return {
-      ok: false,
-      message: `Vul eerst een API-sleutel in voor ${AI_PROVIDER_LABELS[input.activeProvider]}.`,
-    };
-  }
-
   try {
+    const current = await getAiSettingsAdminView();
+    const activeUpdate = input.providers[input.activeProvider];
+    const activeCurrent = current.providers[input.activeProvider];
+    const activeKeepsDatabaseKey =
+      activeCurrent.credentialSource === "database" && !activeUpdate.removeApiKey;
+    if (!activeUpdate.apiKey && !activeKeepsDatabaseKey) {
+      return {
+        ok: false,
+        message: `Vul eerst een API-sleutel in voor ${AI_PROVIDER_LABELS[input.activeProvider]}.`,
+      };
+    }
+
     await updateAiSettings(input);
   } catch (error) {
     return {
@@ -88,7 +87,7 @@ export async function testAiProviderAction(provider: AiProviderId): Promise<AiSe
     await testAiProviderConnection(runtime);
     return {
       ok: true,
-      message: `${AI_PROVIDER_LABELS[provider]} (${runtime.model}) is bereikbaar en geeft geldige structured output.`,
+      message: `${AI_PROVIDER_LABELS[provider]} (${runtime.model}) is bereikbaar en verwerkt beeld met geldige structured output.`,
     };
   } catch (error) {
     return {

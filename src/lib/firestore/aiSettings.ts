@@ -69,37 +69,30 @@ function providerFromData(value: unknown, provider: AiProviderId): StoredProvide
   };
 }
 
-async function readStoredAiSettings(): Promise<StoredAiSettings> {
+function storedAiSettingsFromData(
+  rawData: FirebaseFirestore.DocumentData | undefined,
+): StoredAiSettings {
   const defaults = defaultStoredSettings();
-  try {
-    const snapshot = await adminDb.collection(COLLECTION).doc(SETTINGS_ID).get();
-    if (!snapshot.exists) return defaults;
-    const data = snapshot.data() ?? {};
-    const rawProviders = data.providers && typeof data.providers === "object"
-      ? (data.providers as Record<string, unknown>)
-      : {};
-    const activeProvider = AI_PROVIDER_IDS.includes(data.activeProvider as AiProviderId)
-      ? (data.activeProvider as AiProviderId)
-      : defaults.activeProvider;
-    return {
-      activeProvider,
-      providers: {
-        gemini: providerFromData(rawProviders.gemini, "gemini"),
-        claude: providerFromData(rawProviders.claude, "claude"),
-        openai: providerFromData(rawProviders.openai, "openai"),
-      },
-    };
-  } catch {
-    return defaults;
-  }
+  const data = rawData ?? {};
+  const rawProviders = data.providers && typeof data.providers === "object"
+    ? (data.providers as Record<string, unknown>)
+    : {};
+  const activeProvider = AI_PROVIDER_IDS.includes(data.activeProvider as AiProviderId)
+    ? (data.activeProvider as AiProviderId)
+    : defaults.activeProvider;
+  return {
+    activeProvider,
+    providers: {
+      gemini: providerFromData(rawProviders.gemini, "gemini"),
+      claude: providerFromData(rawProviders.claude, "claude"),
+      openai: providerFromData(rawProviders.openai, "openai"),
+    },
+  };
 }
 
-function environmentKey(provider: AiProviderId): string {
-  if (provider === "gemini") {
-    return (process.env.GEMINI_API_KEY ?? process.env.GOOGLE_AI_API_KEY ?? "").trim();
-  }
-  if (provider === "claude") return (process.env.ANTHROPIC_API_KEY ?? "").trim();
-  return (process.env.OPENAI_API_KEY ?? "").trim();
+async function readStoredAiSettings(): Promise<StoredAiSettings> {
+  const snapshot = await adminDb.collection(COLLECTION).doc(SETTINGS_ID).get();
+  return storedAiSettingsFromData(snapshot.data());
 }
 
 /** Returns only masked/configured state; ciphertext never leaves this module. */
@@ -109,18 +102,13 @@ export async function getAiSettingsAdminView(): Promise<AiSettingsAdminView> {
     AI_PROVIDER_IDS.map((provider) => {
       const settings = stored.providers[provider];
       const hasDatabaseKey = Boolean(settings.encryptedApiKey);
-      const hasEnvironmentKey = Boolean(environmentKey(provider));
       return [
         provider,
         {
           model: settings.model,
-          keyConfigured: hasDatabaseKey || hasEnvironmentKey,
+          keyConfigured: hasDatabaseKey,
           keyHint: hasDatabaseKey ? settings.keyHint ?? "" : "",
-          credentialSource: hasDatabaseKey
-            ? "database"
-            : hasEnvironmentKey
-              ? "environment"
-              : "none",
+          credentialSource: hasDatabaseKey ? "database" : "none",
         },
       ];
     }),
@@ -138,7 +126,7 @@ export async function getAiRuntimeConfig(providerOverride?: AiProviderId): Promi
   const stored = await readStoredAiSettings();
   const provider = providerOverride ?? stored.activeProvider;
   const providerSettings = stored.providers[provider];
-  let apiKey = environmentKey(provider);
+  let apiKey = "";
 
   if (providerSettings.encryptedApiKey) {
     try {
@@ -191,37 +179,57 @@ export async function updateAiSettings(input: AiSettingsUpdate): Promise<void> {
     throw new Error("Kies een geldige actieve AI-provider.");
   }
 
-  const current = await readStoredAiSettings();
-  const providers = {} as Record<AiProviderId, StoredProviderSettings>;
+  const ref = adminDb.collection(COLLECTION).doc(SETTINGS_ID);
+  const normalizedUpdates = Object.fromEntries(
+    AI_PROVIDER_IDS.map((provider) => [
+      provider,
+      {
+        model: validateModel(provider, input.providers[provider].model),
+        apiKey: validateApiKey(provider, input.providers[provider].apiKey ?? ""),
+        removeApiKey: Boolean(input.providers[provider].removeApiKey),
+      },
+    ]),
+  ) as Record<AiProviderId, { model: string; apiKey: string; removeApiKey: boolean }>;
 
   for (const provider of AI_PROVIDER_IDS) {
-    const update = input.providers[provider];
-    const next: StoredProviderSettings = {
-      ...current.providers[provider],
-      model: validateModel(provider, update.model),
-    };
-    const apiKey = validateApiKey(provider, update.apiKey ?? "");
-
-    if (update.removeApiKey) {
-      delete next.encryptedApiKey;
-      delete next.keyHint;
-    } else if (apiKey) {
-      next.encryptedApiKey = encryptAiProviderKey(provider, apiKey);
-      next.keyHint = apiKey.slice(-4);
+    const update = normalizedUpdates[provider];
+    if (update.apiKey && update.removeApiKey) {
+      throw new Error(
+        `Kies voor ${AI_PROVIDER_LABELS[provider]} tussen de sleutel vervangen of verwijderen.`,
+      );
     }
-    providers[provider] = next;
   }
 
-  const now = new Date();
-  const ref = adminDb.collection(COLLECTION).doc(SETTINGS_ID);
-  const snapshot = await ref.get();
-  await ref.set(
-    {
+  await adminDb.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(ref);
+    const current = storedAiSettingsFromData(snapshot.data());
+    const providers = {} as Record<AiProviderId, StoredProviderSettings>;
+
+    for (const provider of AI_PROVIDER_IDS) {
+      const update = normalizedUpdates[provider];
+      const next: StoredProviderSettings = {
+        ...current.providers[provider],
+        model: update.model,
+      };
+
+      if (update.removeApiKey) {
+        delete next.encryptedApiKey;
+        delete next.keyHint;
+      } else if (update.apiKey) {
+        next.encryptedApiKey = encryptAiProviderKey(provider, update.apiKey);
+        next.keyHint = update.apiKey.slice(-4);
+      }
+      providers[provider] = next;
+    }
+
+    const now = new Date();
+    // This singleton contains only AI settings. Replace it atomically so a key
+    // removed in the admin UI is also removed from Firestore, including its hint.
+    transaction.set(ref, {
       activeProvider: input.activeProvider,
       providers,
       updatedAt: now,
-      ...(!snapshot.exists ? { createdAt: now } : {}),
-    },
-    { merge: true },
-  );
+      createdAt: snapshot.data()?.createdAt ?? now,
+    });
+  });
 }

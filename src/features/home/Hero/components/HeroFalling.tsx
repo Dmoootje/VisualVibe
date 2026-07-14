@@ -5,7 +5,7 @@ export function HeroFalling() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
+      className="vvh-hero-falling pointer-events-none absolute inset-0 z-[1] overflow-hidden"
       dangerouslySetInnerHTML={{ __html: FALLING_HTML }}
     />
   );

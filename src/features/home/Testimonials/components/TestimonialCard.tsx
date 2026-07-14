@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface Testimonial {
   quote: string;
@@ -23,25 +20,19 @@ export function TestimonialCard({
   total,
 }: TestimonialCardProps) {
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={current}
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -100 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 sm:p-8 md:p-12"
-        aria-live="polite"
-        role="group"
-        aria-roledescription="slide"
-        aria-label={`Testimonial ${current + 1} of ${total}`}
-      >
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
-          <TestimonialAuthor testimonial={testimonial} />
-          <TestimonialQuote quote={testimonial.quote} />
-        </div>
-      </motion.div>
-    </AnimatePresence>
+    <div
+      key={current}
+      className="home-testimonial-swap rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm max-sm:backdrop-blur-none sm:p-8 md:p-12"
+      aria-live="polite"
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`Testimonial ${current + 1} of ${total}`}
+    >
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
+        <TestimonialAuthor testimonial={testimonial} />
+        <TestimonialQuote quote={testimonial.quote} />
+      </div>
+    </div>
   );
 }
 
@@ -50,7 +41,7 @@ function TestimonialAuthor({ testimonial }: { testimonial: Testimonial }) {
     <div className="md:w-1/3 w-full">
       <div className="relative max-w-[160px] mx-auto">
         <div
-          className="absolute -inset-1 bg-gradient-to-r from-red-500 to-amber-500 rounded-full blur-sm"
+          className="home-mobile-glow absolute -inset-1 rounded-full bg-gradient-to-r from-red-500 to-amber-500 blur-sm"
           aria-hidden="true"
         ></div>
         <div className="relative h-20 w-20 sm:h-24 sm:w-24 mx-auto">

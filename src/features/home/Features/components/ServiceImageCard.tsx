@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
 /**
@@ -25,14 +22,16 @@ export function ServiceImageCard({
   if (mobile) {
     return (
       <div className="relative md:hidden">
-        <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-60 blur-md" />
-        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
+        <div className="home-mobile-glow absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-60 blur-md" />
+        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm max-sm:backdrop-blur-none">
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
             <Image
               src={image || "/placeholder.svg"}
               alt={title}
               fill
-              sizes="(min-width: 768px) 45vw, 90vw"
+              sizes="(min-width: 1400px) 650px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 20px)"
+              quality={70}
+              loading="lazy"
               className="object-cover"
             />
           </div>
@@ -45,12 +44,7 @@ export function ServiceImageCard({
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative hidden md:block"
-    >
+    <div className="home-fade-in relative hidden md:block">
       <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-70 blur-lg" />
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/80 p-1 backdrop-blur-sm">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
@@ -58,7 +52,9 @@ export function ServiceImageCard({
             src={image || "/placeholder.svg"}
             alt={title}
             fill
-            sizes="(min-width: 768px) 45vw, 90vw"
+            sizes="(min-width: 1400px) 650px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 20px)"
+            quality={70}
+            loading="lazy"
             className="object-cover"
           />
         </div>
@@ -79,6 +75,6 @@ export function ServiceImageCard({
           <p className="truncate text-sm font-semibold text-white">{highlight}</p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

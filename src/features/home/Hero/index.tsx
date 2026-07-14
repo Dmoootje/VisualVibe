@@ -1,4 +1,5 @@
 import { HeroMessage, HeroStage, HeroFalling } from "./components";
+import "../home-performance.css";
 
 export default function Hero() {
   return (

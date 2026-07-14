@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowRight, Route, HeartHandshake } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,13 +7,9 @@ import { ServiceFeatureList } from "./ServiceFeatureList";
 import { ServiceMiniBlock } from "./ServiceMiniBlock";
 import { ServiceImageCard } from "./ServiceImageCard";
 
-interface FeatureContentProps {
-  contentStyle: React.CSSProperties;
-}
-
-export function FeatureContent({ contentStyle }: FeatureContentProps) {
+export function FeatureContent() {
   return (
-    <div style={contentStyle} className="relative">
+    <div className="relative min-h-[860px] md:min-h-[500px]">
       {featuresConfig.features.map((feature) => (
         <TabsContent
           key={feature.id}
@@ -41,11 +34,7 @@ export function FeatureContent({ contentStyle }: FeatureContentProps) {
 
 function FeatureDescription({ feature }: { feature: Feature }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -24 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="home-reveal-left">
       {/* Image first on mobile */}
       <div className="mb-6 md:hidden">
         <ServiceImageCard
@@ -103,6 +92,6 @@ function FeatureDescription({ feature }: { feature: Feature }) {
           <Link href={feature.href}>Bekijk dienst</Link>
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 }

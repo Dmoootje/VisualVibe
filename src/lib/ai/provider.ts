@@ -266,15 +266,19 @@ const CONNECTION_TEST_SCHEMA = {
   additionalProperties: false,
 } as const;
 
-/** Tests authentication, the configured model and structured output in one cheap call. */
+const CONNECTION_TEST_IMAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FWebdesign.webp?alt=media&token=48c49584-8a14-4c0b-b647-a6e542c37f1d";
+
+/** Tests authentication, vision and structured output in one small call. */
 export async function testAiProviderConnection(runtime: AiRuntimeConfig): Promise<void> {
   const result = await generateAiJson<{ status?: unknown }>({
     runtime,
     system: "Je voert een technische verbindingstest uit.",
-    prompt: 'Geef exact het gevraagde resultaat met status "ok".',
+    prompt: 'Bekijk de afbeelding en geef exact het gevraagde resultaat met status "ok".',
     schemaName: "connection_test",
     schema: CONNECTION_TEST_SCHEMA,
-    maxOutputTokens: 256,
+    maxOutputTokens: 1024,
+    image: { url: CONNECTION_TEST_IMAGE_URL, mimeType: "image/webp" },
   });
   if (result.status !== "ok") {
     throw new AiProviderError(`${AI_PROVIDER_LABELS[runtime.provider]} gaf een onverwacht testresultaat.`);

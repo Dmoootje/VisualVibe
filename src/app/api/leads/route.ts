@@ -43,10 +43,9 @@ const leadSchema = z.object({
   website: z.string().max(200).optional(),
 });
 
-function requestIdentity(request: NextRequest, email: string): string {
+function requestIp(request: NextRequest): string {
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const ip = forwarded || request.headers.get("x-real-ip") || "unknown";
-  return `${ip}|${email}`;
+  return forwarded || request.headers.get("x-real-ip") || "unknown";
 }
 export async function POST(request: NextRequest) {
   const contentLength = Number(request.headers.get("content-length") ?? 0);
@@ -71,11 +70,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "ok" });
   }
 
-  const rateLimit = await checkLeadRateLimit(requestIdentity(request, parsed.data.email));
-  if (!rateLimit.allowed) {
+  // An IP bucket prevents attackers from bypassing the limiter by rotating
+  // e-mail addresses. The separate address bucket also limits distributed
+  // attempts against one identity without storing either value in plaintext.
+  const [ipRateLimit, emailRateLimit] = await Promise.all([
+    checkLeadRateLimit(`ip:${requestIp(request)}`, { limit: 10 }),
+    checkLeadRateLimit(`email:${parsed.data.email}`, { limit: 5 }),
+  ]);
+  const blockedRateLimit = [ipRateLimit, emailRateLimit].find((result) => !result.allowed);
+  if (blockedRateLimit) {
     return NextResponse.json(
       { error: "Te veel aanvragen. Probeer het later opnieuw." },
-      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } }
+      { status: 429, headers: { "Retry-After": String(blockedRateLimit.retryAfterSeconds) } }
     );
   }
 

@@ -6,6 +6,7 @@ import { SESSION_COOKIE_NAME } from "./lib/auth/constants";
 const intlMiddleware = createMiddleware(routing);
 
 const PUBLIC_ADMIN_PATHS = ["/admin/login"];
+const INTERNAL_LOCALE_REWRITE_HEADER = "x-visualvibe-internal-locale-rewrite";
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -30,6 +31,35 @@ export default function middleware(request: NextRequest) {
     }
 
     return NextResponse.next();
+  }
+
+  // /be is the public prefix for the internal nl locale. Handle this alias
+  // directly so Next never exposes /nl while normalizing trailing slashes.
+  // The marker also prevents locale middleware from processing the internal
+  // rewrite a second time in runtimes that re-enter middleware on rewrites.
+  if (request.headers.get(INTERNAL_LOCALE_REWRITE_HEADER) === "nl") {
+    return NextResponse.next();
+  }
+
+  if (pathname === "/be" || pathname.startsWith("/be/")) {
+    const suffix = pathname.slice(3) || "/";
+    const rewriteUrl = request.nextUrl.clone();
+    rewriteUrl.pathname = `/nl${suffix}`;
+    if (!rewriteUrl.pathname.endsWith("/")) rewriteUrl.pathname += "/";
+
+    const requestHost = request.headers.get("host");
+    if (requestHost) rewriteUrl.host = requestHost;
+
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set(INTERNAL_LOCALE_REWRITE_HEADER, "nl");
+    requestHeaders.set("x-next-intl-locale", "nl");
+
+    const response = NextResponse.rewrite(rewriteUrl, {
+      request: { headers: requestHeaders },
+    });
+    const alternateLinks = intlMiddleware(request).headers.get("link");
+    if (alternateLinks) response.headers.set("link", alternateLinks);
+    return response;
   }
 
   return intlMiddleware(request);

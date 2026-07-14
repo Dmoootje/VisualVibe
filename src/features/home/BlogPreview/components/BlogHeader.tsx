@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -8,13 +5,7 @@ import { blogConfig } from "../config/articles.config";
 
 export function BlogHeader() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12"
-    >
+    <div className="home-reveal-up flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
       <div>
         <h2
           id="blog-heading"
@@ -38,6 +29,6 @@ export function BlogHeader() {
           </Link>
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 }

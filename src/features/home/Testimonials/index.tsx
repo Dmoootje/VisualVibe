@@ -23,13 +23,14 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
   const isGoogle = Boolean(testimonials && testimonials.length > 0);
   const items = isGoogle ? testimonials! : testimonialsConfig.testimonials;
 
-  const { current, total, testimonial, next, prev, goTo } =
+  const { current, total, testimonial, next, prev, goTo, rootRef } =
     useTestimonialsCarousel(items);
 
   return (
     <section
+      ref={rootRef}
       id="testimonials"
-      className="py-16 sm:py-20 md:py-24 relative overflow-hidden"
+      className="home-deferred-section relative overflow-hidden py-16 sm:py-20 md:py-24"
       aria-labelledby="testimonials-heading"
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { updateProfile } from "@/lib/firestore/profiles";
 import type { SettingsFormState } from "@/lib/admin/settingsActions";
@@ -37,6 +37,7 @@ export async function saveProfileSettings(
   }
 
   revalidatePath("/admin/settings/profiel");
+  revalidateTag("author-profiles");
   // Auteursavatar staat op home (blogpreview), kennisbank en sectorpagina's.
   revalidatePath("/[locale]", "page");
   revalidatePath("/[locale]/kennisbank", "page");

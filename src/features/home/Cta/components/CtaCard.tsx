@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
@@ -9,20 +6,14 @@ import { siteConfig } from "@/config";
 
 export function CtaCard() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto"
-    >
+    <div className="home-reveal-up max-w-4xl mx-auto">
       <div className="relative">
-        <div className="absolute -inset-1 bg-gradient-to-r from-red-500 to-amber-500 rounded-2xl blur-lg opacity-70"></div>
-        <div className="relative bg-black/80 backdrop-blur-sm border border-white/10 rounded-xl p-5 sm:p-8 md:p-12 text-center">
+        <div className="home-mobile-glow absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 to-amber-500 opacity-70 blur-lg"></div>
+        <div className="relative rounded-xl border border-white/10 bg-black/80 p-5 text-center backdrop-blur-sm max-sm:backdrop-blur-none sm:p-8 md:p-12">
           <CtaContent />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

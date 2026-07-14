@@ -31,6 +31,9 @@ const nextConfig = {
   },
   // Add image optimization configuration
   images: {
+    // Firebase App Hosting can opt out of Next's image pipeline unless this is
+    // explicit. Keep remote content images responsive and cached by Next.
+    unoptimized: false,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp', 'image/avif'],

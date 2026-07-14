@@ -2,15 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { CONSENT_STORAGE_KEY, OPEN_CONSENT_EVENT, type ConsentChoice } from "./consent";
+import {
+  CONSENT_CHANGE_EVENT,
+  CONSENT_STORAGE_KEY,
+  OPEN_CONSENT_EVENT,
+  type ConsentChoice,
+} from "./consent";
 
 /**
- * EU cookie-consent banner wired to Google Consent Mode v2. The <head> script
- * in the layout sets every consent signal to "denied" by default (and re-applies
- * a stored "granted" before GA loads), so Analytics only writes cookies once the
- * visitor accepts here. Reject keeps the denied default. The choice is stored so
- * the banner stays hidden on later visits; the /cookies page can re-open it
- * through the OPEN_CONSENT_EVENT so consent can be withdrawn as easily as given.
+ * EU cookie-consent banner. Analytics listens to the explicit choice event and
+ * only loads its remote script after a grant. The choice is stored so the banner
+ * stays hidden on later visits; the /cookies page can re-open it through the
+ * OPEN_CONSENT_EVENT so consent can be withdrawn as easily as given.
  */
 export function CookieConsent() {
   const [open, setOpen] = useState(false);
@@ -41,10 +44,7 @@ export function CookieConsent() {
     } catch {
       // Ignore storage failures; the update below still applies for this page.
     }
-    const w = window as unknown as { gtag?: (...args: unknown[]) => void };
-    w.gtag?.("consent", "update", {
-      analytics_storage: choice === "granted" ? "granted" : "denied",
-    });
+    window.dispatchEvent(new CustomEvent<ConsentChoice>(CONSENT_CHANGE_EVENT, { detail: choice }));
     setOpen(false);
   }, []);
 

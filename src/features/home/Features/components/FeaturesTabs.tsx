@@ -11,6 +11,7 @@ export function FeaturesTabs() {
           <TabsTrigger
             key={feature.id}
             value={feature.id}
+            aria-label={feature.title}
             className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-amber-500 data-[state=active]:text-white rounded-lg p-2 sm:px-3 sm:py-1.5 whitespace-nowrap"
           >
             <div className="flex items-center gap-1.5 sm:gap-2">

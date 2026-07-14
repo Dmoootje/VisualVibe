@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@/components/kennisbank/kennisbank.css";
 import { notFound } from "next/navigation";
 import {
   getAllPosts,

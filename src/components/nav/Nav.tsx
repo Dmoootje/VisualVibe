@@ -5,18 +5,22 @@ import { Link, usePathname } from "@/i18n/navigation";
 // Admin lives outside the [locale] tree, so its links must NOT get the locale
 // prefix (the intl Link would turn "/admin/login" into "/be/admin/login" -> 404).
 import NextLink from "next/link";
-import { regions } from "@/data/regions";
-import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
+import dynamic from "next/dynamic";
 import { SectorIcon } from "@/components/sectors";
 import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { NavIcon } from "./nav-icons";
-import {
-  pillars,
-  sectorCards,
-  realisatieCards,
-  kennisbankCards as defaultKennisbankCards,
-  type NavCard,
-} from "./navData";
+import type { NavCard, NavPillar } from "./navData";
+
+const RegionMiniMap = dynamic(
+  () => import("@/features/home/RegionIntro/components/RegionMiniMap").then((module) => module.RegionMiniMap),
+  { ssr: false },
+);
+
+export type NavRegion = {
+  slug: string;
+  title: string;
+  type: string;
+};
 
 // Renders a nav glyph from either the nav-icon set or the sector sprite.
 function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav" | "sector"; size?: number }) {
@@ -149,10 +153,18 @@ function Logo({ size = 24 }: { size?: number }) {
 }
 
 export function Nav({
-  kennisbankItems = defaultKennisbankCards,
+  pillars,
+  regions,
+  sectorCards,
+  realisatieCards,
+  kennisbankItems,
   kennisbankPostCount = 0,
 }: {
-  kennisbankItems?: NavCard[];
+  pillars: NavPillar[];
+  regions: NavRegion[];
+  sectorCards: NavCard[];
+  realisatieCards: NavCard[];
+  kennisbankItems: NavCard[];
   kennisbankPostCount?: number;
 }) {
   const pathname = usePathname();
@@ -377,7 +389,8 @@ export function Nav({
               Diensten <ChevDown className="vvnav-navChev" />
             </Link>
 
-            <div className={`vvnav-mega ${menu === "diensten" ? "is-open" : ""}`}>
+            {menu === "diensten" && (
+            <div className="vvnav-mega is-open">
               <div style={{ display: "flex", borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)", overflow: "hidden" }}>
                 {/* left rail */}
                 <div style={{ width: 322, flex: "none", padding: 16, borderRight: "1px solid rgba(255,255,255,.07)" }}>
@@ -458,10 +471,11 @@ export function Nav({
                 </div>
               </div>
             </div>
+            )}
           </div>
 
           {/* Regio mega-menu with region map cards */}
-          <RegioMega open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
+          <RegioMega regions={regions} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
           <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
           <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
@@ -473,7 +487,7 @@ export function Nav({
 
         {/* ===== desktop right ===== */}
         <div className="vvnav-right" style={{ alignItems: "center", gap: 18 }}>
-          <NextLink href="/admin/login" aria-label="Inloggen" style={{ display: "inline-flex" }}>
+          <NextLink href="/admin/login" prefetch={false} aria-label="Inloggen" style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>
           <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
@@ -496,7 +510,8 @@ export function Nav({
       </nav>
 
       {/* ===== mobile drawer (app-first push navigation) ===== */}
-      <div className={`vvnav-drawerRoot ${drawer ? "is-open" : ""}`}>
+      {drawer && (
+      <div className="vvnav-drawerRoot is-open">
         <div className="vvnav-backdrop" onClick={closeDrawer} />
         <aside className="vvnav-drawerPanel" aria-hidden={!drawer}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", borderBottom: "1px solid rgba(255,255,255,.07)", flex: "none" }}>
@@ -660,12 +675,13 @@ export function Nav({
             <Link href="/offerte-aanvragen" onClick={closeDrawer} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 15, borderRadius: 12, background: GRADIENT, boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)" }}>
               Offerte aanvragen <ArrowRight size={16} />
             </Link>
-            <NextLink href="/admin/login" onClick={closeDrawer} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
+            <NextLink href="/admin/login" prefetch={false} onClick={closeDrawer} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, fontWeight: 700, fontSize: 15, color: "#fff", padding: 14, borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)" }}>
               <UserIcon size={17} color="currentColor" /> Inloggen
             </NextLink>
           </div>
         </aside>
       </div>
+      )}
     </header>
   );
 }
@@ -676,7 +692,8 @@ function DesktopDropdown({ label, allHref, items, open, onOpen, onClose, cta }: 
       <Link href={allHref} style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
         {label} <ChevDown className="vvnav-navChev" color="currentColor" />
       </Link>
-      <div className={`vvnav-dd ${open ? "is-open" : ""}`}>
+      {open && (
+      <div className="vvnav-dd is-open">
         <div style={{ width: 360, maxWidth: "calc(100vw - 32px)", padding: 8, borderRadius: 16, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "6px 10px 10px" }}>
             <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>{label}</span>
@@ -701,17 +718,29 @@ function DesktopDropdown({ label, allHref, items, open, onOpen, onClose, cta }: 
           {cta}
         </div>
       </div>
+      )}
     </div>
   );
 }
 
-function RegioMega({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; onClose: () => void }) {
+function RegioMega({
+  regions,
+  open,
+  onOpen,
+  onClose,
+}: {
+  regions: NavRegion[];
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}) {
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
       <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
         Regio <ChevDown className="vvnav-navChev" color="currentColor" />
       </Link>
-      <div className={`vvnav-mega vvnav-megaC ${open ? "is-open" : ""}`}>
+      {open && (
+      <div className="vvnav-mega vvnav-megaC is-open">
         <div style={{ width: "min(760px, calc(100vw - 32px))", padding: 16, borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "2px 6px 12px" }}>
             <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>
@@ -754,7 +783,7 @@ function RegioMega({ open, onOpen, onClose }: { open: boolean; onOpen: () => voi
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
-

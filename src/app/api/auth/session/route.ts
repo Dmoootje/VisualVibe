@@ -17,7 +17,10 @@ export async function POST(request: NextRequest) {
     if (!(await isAuthorizedAdmin(decoded))) {
       return NextResponse.json({ error: "Dit account heeft geen adminrechten." }, { status: 403 });
     }
-    await ensureProfile(decoded.uid, decoded.email ?? "", "admin");
+    // Authorization remains controlled by the explicit allowlist or a custom
+    // claim. Logging in through the allowlist must not create a permanent,
+    // independently revocable admin role in Firestore.
+    await ensureProfile(decoded.uid, decoded.email ?? "");
 
     const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn: SESSION_MAX_AGE_MS });
 

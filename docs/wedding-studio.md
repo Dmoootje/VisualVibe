@@ -38,10 +38,11 @@ src/components/admin/trouwstudio/  UI (client components)
 ### Provider-interfaces (verwisselbaar)
 
 - `PhotoAnalysisProvider` (`services/analysis.ts`):
-  `ClaudeVisionAnalysisProvider` (echte analyse, vision + structured outputs,
-  model instelbaar; default `claude-opus-4-8`) en `MockAnalysisProvider`.
-  Resolutie via `resolveAnalysisProvider(settings)`: zonder
-  `ANTHROPIC_API_KEY` valt alles terug op de mock, en elk mockresultaat is in
+  `ConfiguredVisionAnalysisProvider` gebruikt de centraal gekozen Gemini-,
+  Claude- of OpenAI-provider voor vision en structured output. Het model is
+  per provider instelbaar in de backend. Zonder bruikbare sleutel valt
+  `resolveAnalysisProvider()` terug op `MockAnalysisProvider`, en elk
+  mockresultaat is in
   de UI expliciet gelabeld als **Demonstratiemodus** (`provider: "mock"`,
   `reviewRequired: true`). Er worden nooit nepresultaten als echte analyse
   gepresenteerd.
@@ -189,14 +190,16 @@ zodat de export nooit faalt op een ontbrekend lettertype.
 bij bulkacties, AI-provider + model + confidence-drempel + batchgrootte +
 max gelijktijdigheid + automatisch optimaliseren, JPEG-kwaliteit en
 bestandsnaamtemplate voor export. Generatieve functies staan vast uit tot er
-een beeldmodel is aangesloten. API-keys staan uitsluitend server-side
-(`ANTHROPIC_API_KEY` uit de bestaande env/Secret Manager-structuur).
+een beeldmodel is aangesloten. Providerkeys worden uitsluitend server-side en
+versleuteld opgeslagen via `/admin/settings/ai`; de browser ontvangt alleen
+status, model en de laatste vier tekens.
 
 ## Environmentvariabelen
 
-Geen nieuwe verplichte variabelen. Gebruikt bestaande:
+Gebruikt bestaande serverinfrastructuur:
 
-- `ANTHROPIC_API_KEY` - zonder deze key draait de analyse in Demonstratiemodus.
+- `APP_ENCRYPTION_KEY` - hoofdsleutel voor AES-256-GCM-encryptie van de in
+  Firestore opgeslagen providerkeys. Providerkeys zelf zijn geen env-variabelen.
 - `FIREBASE_SERVICE_ACCOUNT_KEY` / ADC + `FIREBASE_STORAGE_BUCKET` - bestaande
   Firebase-admininfrastructuur.
 

@@ -69,15 +69,15 @@ export type SubserviceCtaContent = {
 };
 
 export type SubserviceContent = {
-  searchIntent: SubserviceSearchIntent;
-  overview: SubserviceOverviewContent;
-  outcomes: SubserviceCardSectionContent;
-  idealFor: SubserviceCardSectionContent;
-  deliverables: SubserviceCardSectionContent;
-  pricing: SubservicePricingContent;
-  whyVisualVibe: SubserviceCardSectionContent;
-  regional: SubserviceRegionalContent;
-  cta: SubserviceCtaContent;
+  searchIntent?: SubserviceSearchIntent;
+  overview?: SubserviceOverviewContent;
+  outcomes?: SubserviceCardSectionContent;
+  idealFor?: SubserviceCardSectionContent;
+  deliverables?: SubserviceCardSectionContent;
+  pricing?: SubservicePricingContent;
+  whyVisualVibe?: SubserviceCardSectionContent;
+  regional?: SubserviceRegionalContent;
+  cta?: SubserviceCtaContent;
 };
 
 /**
@@ -91,7 +91,7 @@ export type SubserviceEditorial = {
   faqs: ServiceFaq[];
   relatedServices: string[];
   seo: ServiceSeo;
-  content: SubserviceContent;
+  content?: SubserviceContent;
 };
 
 export type Service = {

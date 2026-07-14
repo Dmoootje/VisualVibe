@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import type { ProcessStep } from "../config/process.config";
 
 /**
@@ -9,14 +6,9 @@ import type { ProcessStep } from "../config/process.config";
  * a small icon, with the title + text below. Cards stretch to equal height.
  */
 export function ProcessCard({ step, index }: { step: ProcessStep; index: number }) {
-  const reduce = useReducedMotion();
-
   return (
-    <motion.div
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-      animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-      exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
-      transition={{ duration: 0.4, delay: reduce ? 0 : index * 0.08, ease: "easeOut" }}
+    <div
+      style={{ animationDelay: `${index * 80}ms` }}
       className="group relative h-full"
     >
       <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-950/70 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/40 hover:shadow-[0_18px_50px_-18px_rgba(255,117,0,0.55)]">
@@ -53,6 +45,6 @@ export function ProcessCard({ step, index }: { step: ProcessStep; index: number 
           <p className="mt-2 text-sm leading-relaxed text-white/65">{step.description}</p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

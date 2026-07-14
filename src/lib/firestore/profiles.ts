@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
 import type { Profile } from "@/types";
 
@@ -52,7 +53,7 @@ export async function updateProfile(uid: string, input: UpdateProfileInput): Pro
  * profielnaam: die moet exact overeenkomen met de auteursnaam van de artikels
  * (bv. "Jens Hardy"). Faalt stil naar {} zodat builds zonder Firestore werken.
  */
-export const getAuthorPhotoMap = cache(async (): Promise<Record<string, string>> => {
+async function readAuthorPhotoMap(): Promise<Record<string, string>> {
   try {
     const snap = await adminDb.collection(COLLECTION).get();
     const map: Record<string, string> = {};
@@ -66,4 +67,12 @@ export const getAuthorPhotoMap = cache(async (): Promise<Record<string, string>>
   } catch {
     return {};
   }
-});
+}
+
+const readAuthorPhotoMapCached = unstable_cache(
+  readAuthorPhotoMap,
+  ["author-photo-map-v1"],
+  { revalidate: 3600, tags: ["author-profiles"] },
+);
+
+export const getAuthorPhotoMap = cache(readAuthorPhotoMapCached);

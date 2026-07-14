@@ -15,7 +15,7 @@ export const DEFAULT_AI_MODELS: Record<AiProviderId, string> = {
   openai: "gpt-5.4-mini",
 };
 
-export type AiCredentialSource = "database" | "environment" | "none";
+export type AiCredentialSource = "database" | "none";
 
 /** Safe provider state that may cross the server/client boundary. */
 export type AiProviderAdminSettings = {
@@ -36,7 +36,7 @@ export type AiProviderSettingsUpdate = {
   model: string;
   /** Empty or omitted means: retain the currently stored key. */
   apiKey?: string;
-  /** Removes only the database key. An environment fallback may remain active. */
+  /** Removes the encrypted database key. */
   removeApiKey?: boolean;
 };
 

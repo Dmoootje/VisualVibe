@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@/components/media-patterns.css";
 import { notFound } from "next/navigation";
 import { sectors, getSectorBySlug } from "@/data/sectors";
 import { getServiceBySlug, serviceHref } from "@/data/services";

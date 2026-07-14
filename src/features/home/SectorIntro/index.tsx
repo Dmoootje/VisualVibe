@@ -1,11 +1,12 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { SectorMarquee } from "@/components/sectors";
 import { sectorIntroConfig } from "./config/sectorIntro.config";
+import { HomeSectorMarquee } from "./components/HomeSectorMarquee";
+import "./sector-intro.css";
 
 export default function SectorIntro() {
   return (
-    <section className="py-12 sm:py-16 md:py-24">
+    <section className="home-deferred-section py-12 sm:py-16 md:py-24">
       {/* Header row stays in the container; the marquee below runs full-bleed. */}
       <div className="container mx-auto px-2.5 sm:px-4">
         <div className="mb-8 flex flex-col justify-between gap-5 sm:mb-11 md:flex-row md:items-end">
@@ -34,7 +35,7 @@ export default function SectorIntro() {
       </div>
 
       {/* Two-row marquee scrolling in opposite directions, full page width. */}
-      <SectorMarquee />
+      <HomeSectorMarquee />
     </section>
   );
 }

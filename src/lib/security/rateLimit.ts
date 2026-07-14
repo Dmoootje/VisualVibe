@@ -9,8 +9,9 @@ const COLLECTION = "lead_rate_limits";
 
 /**
  * Firestore-backed fixed-window limiter. It is shared by all App Hosting
- * instances, unlike an in-memory map. The limiter fails open if Firestore is
- * unavailable so a protection outage can never discard an otherwise valid lead.
+ * instances, unlike an in-memory map. It fails closed when the backing store is
+ * unavailable: lead persistence uses the same store, while accepting unchecked
+ * requests could consume mail and AI-provider quota.
  */
 export async function checkLeadRateLimit(
   identity: string,
@@ -41,7 +42,6 @@ export async function checkLeadRateLimit(
       return { allowed: true, retryAfterSeconds: 0 };
     });
   } catch {
-    return { allowed: true, retryAfterSeconds: 0 };
+    return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil(windowMs / 1000)) };
   }
 }
-

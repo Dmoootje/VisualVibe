@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { updateSiteSettings, type UpdateSiteSettingsInput } from "@/lib/firestore/siteSettings";
 import type { OpeningHoursDay } from "@/types/siteSettings";
@@ -124,6 +124,7 @@ export async function saveContactSettings(
 
   revalidatePath("/admin/settings/contact");
   revalidatePath("/contact");
+  revalidateTag("site-settings");
 
   return { status: "success", message: "Contactgegevens opgeslagen." };
 }

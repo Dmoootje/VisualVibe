@@ -32,8 +32,8 @@ env:
       - BUILD
       - RUNTIME
   # Google Analytics 4 measurement id (public - it ships in the client bundle
-  # regardless). Its presence is the on-switch: the <GoogleAnalytics> tag only
-  # renders when this is set, so local dev without it never pollutes the property.
+  # regardless). Its presence enables the consent-aware loader; the Google
+  # script is requested only after the visitor grants analytics consent.
   - variable: NEXT_PUBLIC_GA_ID
     value: G-5LSDJXF4FY
     availability:
@@ -52,7 +52,9 @@ env:
       - RUNTIME
   # 32 random bytes, base64 encoded. Create with:
   # firebase apphosting:secrets:set APP_ENCRYPTION_KEY
-  # Used only to encrypt SMTP, IMAP and AI-provider credentials at rest.
+  # Used only to encrypt SMTP, IMAP and AI-provider credentials at rest. The
+  # provider API keys themselves are managed in the backend and never declared
+  # as App Hosting secrets.
   - variable: APP_ENCRYPTION_KEY
     secret: APP_ENCRYPTION_KEY
     availability:
