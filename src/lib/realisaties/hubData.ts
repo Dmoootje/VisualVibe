@@ -1,21 +1,29 @@
 // Server-side data-adapter voor de realisatieshub (/realisaties/). Bundelt de
-// echte, bestaande bronnen (Firestore webdesign-projecten + fotogalerijen,
-// videografie, statische dronemedia, Matterport-tours) tot één serialiseerbare
-// dataset voor de hub-secties en de client-side filter. Er wordt niets
-// verzonnen: alleen items met een echt beeld komen in het projectgrid, en
-// contexten (bedrijven/projecten/events/sport) worden enkel afgeleid uit
-// expliciete data (galerij-categorie/icoon en admin sector-tags).
+// echte, bestaande bronnen (Firestore webdesign-projecten, applicatiecases,
+// fotogalerijen, videografie, dronemedia en Matterport-tours) tot één dataset.
+// Alleen items met een echt beeld komen in het recente-projectgrid; de categorie-
+// aantallen tellen wel alle gepubliceerde cases, zodat nieuwe cases al vindbaar zijn.
 
-import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import { cache } from "react";
+import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
+import { applicationCaseImageKey, type ApplicationCase } from "@/data/applicationCases";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getWebdesignImages, type WebdesignImages } from "@/lib/firestore/webdesignImages";
+import {
+  getApplicationCaseImages,
+  getApplicationCases,
+  type ApplicationCaseImages,
+} from "@/lib/firestore/applicationCases";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 import { FOTO_GALLERY_ICONS, type FotoGallery } from "@/data/fotografieGalleries";
 import { getVideografieVideos } from "@/lib/youtube";
 import { droneMedia } from "@/config/drone.config";
 import { matterportTours } from "@/data/matterportTours";
-import { featuredHubRefs, trajectGalleryId, trajectProjectId } from "@/config/realisatiesHub.config";
+import {
+  featuredHubRefs,
+  trajectGalleryId,
+  trajectProjectId,
+} from "@/config/realisatiesHub.config";
 
 export type HubProject = {
   /** Uniek over alle bronnen (source-prefix + bron-id). */
@@ -43,7 +51,7 @@ export type HubData = {
   featured: HubProject[];
   /** 4-5 beelden uit verschillende disciplines voor de hero-stack. */
   heroStack: HubProject[];
-  /** Echte aantallen per categorie-slug (incl. 3d-vr en podcasting). */
+  /** Echte aantallen per categorie-slug. */
   countsByCategory: Record<string, number>;
   /** Tot 3 echte beelden per discipline voor de categorie-stackkaarten. */
   stacksByCategory: Record<string, HubStackImage[]>;
@@ -51,7 +59,8 @@ export type HubData = {
   traject: { project: HubProject; screenshots: HubStackImage[]; galleryCover?: HubStackImage } | null;
 };
 
-const iconLabel = (id: string) => FOTO_GALLERY_ICONS.find((o) => o.id === id)?.label ?? "Fotografie";
+const iconLabel = (id: string) =>
+  FOTO_GALLERY_ICONS.find((option) => option.id === id)?.label ?? "Fotografie";
 
 /** Zelfde alt-conventie als de realisaties-fotografiepagina. */
 function galleryAlt(gallery: FotoGallery): string {
@@ -107,14 +116,13 @@ const DRONE_CATEGORY_TO_SUBSERVICE: Record<string, string> = {
 };
 
 function contextsFromSectors(sectors: string[] | undefined): string[] {
-  return (sectors ?? []).map((s) => SECTOR_TO_CONTEXT[s]).filter(Boolean);
+  return (sectors ?? []).map((sector) => SECTOR_TO_CONTEXT[sector]).filter(Boolean);
 }
 
 function webdesignToHub(project: WebdesignProject, images: WebdesignImages): HubProject | null {
-  // || i.p.v. ??: een door de admin gewiste slot is een lege string (sentinel),
-  // die moet ook doorvallen naar het hoofdscreenshot.
   const image = images[imageKey(project.id, "thumb")] || images[imageKey(project.id, "1")];
   if (!image) return null;
+
   const evidence = [project.text, ...(project.tags ?? []), ...(project.features ?? [])]
     .filter(Boolean)
     .join(" ")
@@ -139,11 +147,35 @@ function webdesignToHub(project: WebdesignProject, images: WebdesignImages): Hub
   };
 }
 
+function applicationToHub(
+  project: ApplicationCase,
+  images: ApplicationCaseImages,
+): HubProject | null {
+  if (!project.published) return null;
+  const image = images[applicationCaseImageKey(project.id, "cover")];
+  if (!image) return null;
+
+  return {
+    id: `applicaties:${project.id}`,
+    title: project.title,
+    description: project.excerpt || project.tagline || undefined,
+    image,
+    imageAlt: `${project.title} - applicatie en software op maat door VisualVibe`,
+    discipline: "Applicaties",
+    categorySlug: "applicaties",
+    contexts: ["bedrijven"],
+    serviceSlugs: ["app-laten-maken", "webapplicatie-laten-maken"],
+  };
+}
+
 function galleryToHub(gallery: FotoGallery): HubProject | null {
   const image = gallery.images[0]?.src;
   if (!image) return null;
   const iconContext = ICON_TO_CONTEXT[gallery.icon];
-  const contexts = new Set([...(iconContext ? [iconContext] : []), ...contextsFromSectors(gallery.sectors)]);
+  const contexts = new Set([
+    ...(iconContext ? [iconContext] : []),
+    ...contextsFromSectors(gallery.sectors),
+  ]);
   return {
     id: `fotografie:${gallery.id}`,
     title: gallery.title,
@@ -158,20 +190,34 @@ function galleryToHub(gallery: FotoGallery): HubProject | null {
 }
 
 async function readHubData(): Promise<HubData> {
-  const [projects, images, galleries, videoData] = await Promise.all([
+  const [
+    projects,
+    images,
+    applicationProjects,
+    applicationImages,
+    galleries,
+    videoData,
+  ] = await Promise.all([
     getWebdesignProjects(),
     getWebdesignImages(),
+    getApplicationCases(),
+    getApplicationCaseImages(),
     getFotografieGalleries(),
     getVideografieVideos(),
   ]);
 
   const webdesign = projects
-    .map((p) => webdesignToHub(p, images))
-    .filter((p): p is HubProject => p !== null);
+    .map((project) => webdesignToHub(project, images))
+    .filter((project): project is HubProject => project !== null);
+
+  const publishedApplicationProjects = applicationProjects.filter((project) => project.published);
+  const applications = publishedApplicationProjects
+    .map((project) => applicationToHub(project, applicationImages))
+    .filter((project): project is HubProject => project !== null);
 
   const fotografie = galleries
     .map(galleryToHub)
-    .filter((p): p is HubProject => p !== null);
+    .filter((project): project is HubProject => project !== null);
 
   const videografie: HubProject[] = videoData.videos.map((video) => ({
     id: `videografie:${video.id}`,
@@ -189,17 +235,20 @@ async function readHubData(): Promise<HubData> {
 
   const drone: HubProject[] = droneMedia
     .map((media, index): HubProject | null => {
-      const image = media.kind === "video" && media.youtubeId ? ytThumb(media.youtubeId) : media.src;
+      const image =
+        media.kind === "video" && media.youtubeId ? ytThumb(media.youtubeId) : media.src;
       if (!image) return null;
-      // Vermijd dubbelop-alts zoals "Dronefotografie - Dronefotografie".
       const sameAsCategory =
-        media.title.toLowerCase().replace(/\s+/g, "") === media.category.toLowerCase().replace(/\s+/g, "");
+        media.title.toLowerCase().replace(/\s+/g, "") ===
+        media.category.toLowerCase().replace(/\s+/g, "");
       return {
         id: `drone:${media.youtubeId ?? index}`,
         title: media.title,
         description: undefined,
         image,
-        imageAlt: sameAsCategory ? `${media.title} door VisualVibe` : `${media.title} - ${media.category}`,
+        imageAlt: sameAsCategory
+          ? `${media.title} door VisualVibe`
+          : `${media.title} - ${media.category}`,
         discipline: "Drone & FPV",
         categorySlug: "drone",
         contexts: [],
@@ -208,32 +257,42 @@ async function readHubData(): Promise<HubData> {
           : [],
       };
     })
-    .filter((p): p is HubProject => p !== null);
+    .filter((project): project is HubProject => project !== null);
 
-  const all = [...webdesign, ...fotografie, ...videografie, ...drone];
-  const byId = new Map(all.map((p) => [p.id, p]));
+  const all = [...webdesign, ...applications, ...fotografie, ...videografie, ...drone];
+  const byId = new Map(all.map((project) => [project.id, project]));
 
-  // Uitgelicht: config-volgorde; onbekende ids worden geskipt.
-  const featured = featuredHubRefs
-    .map((ref) => byId.get(`${ref.source}:${ref.id}`))
-    .filter((p): p is HubProject => Boolean(p));
+  const configuredFeatured = featuredHubRefs
+    .map((reference) => byId.get(`${reference.source}:${reference.id}`))
+    .filter((project): project is HubProject => Boolean(project));
+  const featuredApplications = applications.filter((project) =>
+    publishedApplicationProjects.find(
+      (source) => source.featured && `applicaties:${source.id}` === project.id,
+    ),
+  );
+  const featured = [...featuredApplications, ...configuredFeatured].filter(
+    (project, index, collection) =>
+      collection.findIndex((candidate) => candidate.id === project.id) === index,
+  );
 
-  // Hero-stack: één beeld per discipline (webdesign, fotografie, videografie,
-  // drone) + een tweede webdesignbeeld, zodat de stack de breedte van het werk
-  // toont. Alles komt uit de echte lijsten hierboven.
   const heroStack = [
+    applications[0],
     webdesign[0],
     fotografie[0],
-    videografie.find((v) => v.id === "videografie:8zGBwfcbX9A") ?? videografie[0],
-    drone.find((d) => !d.image.includes("img.youtube.com")) ?? drone[0],
+    videografie.find((video) => video.id === "videografie:8zGBwfcbX9A") ?? videografie[0],
+    drone.find((project) => !project.image.includes("img.youtube.com")) ?? drone[0],
     webdesign[1],
   ]
-    .filter((p): p is HubProject => Boolean(p))
-    .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+    .filter((project): project is HubProject => Boolean(project))
+    .filter(
+      (project, index, collection) =>
+        collection.findIndex((candidate) => candidate.id === project.id) === index,
+    )
     .slice(0, 5);
 
   const countsByCategory: Record<string, number> = {
     webdesign: webdesign.length,
+    applicaties: publishedApplicationProjects.length,
     fotografie: fotografie.length,
     videografie: videografie.length,
     drone: drone.length,
@@ -242,21 +301,33 @@ async function readHubData(): Promise<HubData> {
   };
 
   const stacksByCategory: Record<string, HubStackImage[]> = {
-    webdesign: webdesign.slice(0, 3).map((p) => ({ src: p.image, alt: p.imageAlt })),
-    fotografie: fotografie.slice(0, 3).map((p) => ({ src: p.image, alt: p.imageAlt })),
-    videografie: videografie.slice(0, 3).map((p) => ({ src: p.image, alt: p.imageAlt })),
-    drone: drone.slice(0, 3).map((p) => ({ src: p.image, alt: p.imageAlt })),
-    // Matterport-tours en podcasts hebben geen eigen thumbnails; die kaarten
-    // vallen terug op de bestaande cover-stijl (geen beelden dupliceren).
+    webdesign: webdesign.slice(0, 3).map((project) => ({
+      src: project.image,
+      alt: project.imageAlt,
+    })),
+    applicaties: applications.slice(0, 3).map((project) => ({
+      src: project.image,
+      alt: project.imageAlt,
+    })),
+    fotografie: fotografie.slice(0, 3).map((project) => ({
+      src: project.image,
+      alt: project.imageAlt,
+    })),
+    videografie: videografie.slice(0, 3).map((project) => ({
+      src: project.image,
+      alt: project.imageAlt,
+    })),
+    drone: drone.slice(0, 3).map((project) => ({
+      src: project.image,
+      alt: project.imageAlt,
+    })),
     "3d-vr": [],
     podcasting: [],
   };
 
-  // Complete traject: website-screenshots + de bedrijfsfotografie-galerij van
-  // dezelfde klant (beide echt aanwezig in de data).
   const trajectHub = byId.get(`webdesign:${trajectProjectId}`) ?? null;
-  const trajectSource = projects.find((p) => p.id === trajectProjectId);
-  const trajectGallery = galleries.find((g) => g.id === trajectGalleryId);
+  const trajectSource = projects.find((project) => project.id === trajectProjectId);
+  const trajectGallery = galleries.find((gallery) => gallery.id === trajectGalleryId);
   const traject =
     trajectHub && trajectSource
       ? {
@@ -264,7 +335,10 @@ async function readHubData(): Promise<HubData> {
           screenshots: (["1", "2", "4"] as const)
             .map((slot) => images[imageKey(trajectSource.id, slot)])
             .filter((src): src is string => Boolean(src))
-            .map((src, i) => ({ src, alt: `Website voor ${trajectSource.name} - weergave ${i + 1}` })),
+            .map((src, index) => ({
+              src,
+              alt: `Website voor ${trajectSource.name} - weergave ${index + 1}`,
+            })),
           galleryCover: trajectGallery?.images[0]
             ? { src: trajectGallery.images[0].src, alt: galleryAlt(trajectGallery) }
             : undefined,
@@ -274,8 +348,5 @@ async function readHubData(): Promise<HubData> {
   return { projects: all, featured, heroStack, countsByCategory, stacksByCategory, traject };
 }
 
-/**
- * Shared cross-route cache. Sub-service pages reuse the same realisation data
- * instead of repeating every Firestore and video read during static rendering.
- */
+/** Shared cross-route cache: one read per request/render pass. */
 export const getHubData = cache(readHubData);
