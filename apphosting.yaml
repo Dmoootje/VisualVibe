@@ -7,6 +7,10 @@
 runConfig:
   minInstances: 0
   maxInstances: 2
+  # 1 GiB in plaats van de default 512 MiB: Next SSR + sharp-beeldoptimalisatie
+  # met 80 gelijktijdige verzoeken liep tegen OOM-kills aan, zichtbaar als
+  # sporadische 503 "upstream connect error / connection termination".
+  memoryMiB: 1024
 
 env:
   # The actual key lives in Secret Manager, not in this file. Create/update it
