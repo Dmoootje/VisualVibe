@@ -126,13 +126,22 @@ function geminiText(payload: unknown): string {
 }
 
 async function generateWithGemini<T>(runtime: AiRuntimeConfig, input: GenerateAiJsonInput): Promise<T> {
+  // Multimodale input moet als user_input-STAP met content-parts; losse parts
+  // op topniveau wijst de interactions-API af (400: 'image' not supported).
   const promptInput: unknown = input.image
     ? [
-        { type: "text", text: input.prompt },
-        { type: "image", uri: input.image.url, mime_type: input.image.mimeType ?? "image/webp" },
+        {
+          type: "user_input",
+          content: [
+            { type: "text", text: input.prompt },
+            { type: "image", uri: input.image.url, mime_type: input.image.mimeType ?? "image/webp" },
+          ],
+        },
       ]
     : input.prompt;
-  const payload = await providerFetch(runtime, "https://generativelanguage.googleapis.com/v1/interactions", {
+  // v1beta: het v1-endpoint kent de preview-modellen (bv. gemini-3.1-pro-preview)
+  // niet en geeft daarop 404 "model not found"; v1beta bedient beide.
+  const payload = await providerFetch(runtime, "https://generativelanguage.googleapis.com/v1beta/interactions", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -277,7 +286,9 @@ export async function testAiProviderConnection(runtime: AiRuntimeConfig): Promis
     prompt: 'Bekijk de afbeelding en geef exact het gevraagde resultaat met status "ok".',
     schemaName: "connection_test",
     schema: CONNECTION_TEST_SCHEMA,
-    maxOutputTokens: 1024,
+    // Redenerende modellen (Gemini 3.x, o.a.) verbruiken thought-tokens uit dit
+    // budget; 1024 was soms al op voor er output kwam ("incomplete").
+    maxOutputTokens: 2048,
     image: { url: CONNECTION_TEST_IMAGE_URL, mimeType: "image/webp" },
   });
   if (result.status !== "ok") {
