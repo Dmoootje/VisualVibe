@@ -64,7 +64,19 @@ export async function uploadImageBuffer(
   key: string,
   dir: string = DEFAULT_STORAGE_DIR,
 ): Promise<string> {
-  const webp = await sharp(bytes).webp({ quality: 82 }).toBuffer();
+  // Screenshots are often exported at 4K or larger. Keeping those dimensions
+  // made the browser download megabytes before anything appeared. Rotate from
+  // EXIF, cap the longest side at 2200 px and encode once as a compact WebP.
+  const webp = await sharp(bytes, { limitInputPixels: 80_000_000 })
+    .rotate()
+    .resize({
+      width: 2200,
+      height: 2200,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({ quality: 80, effort: 4 })
+    .toBuffer();
 
   const safeKey = slugifyKey(key);
   const token = randomUUID();
@@ -76,6 +88,7 @@ export async function uploadImageBuffer(
     metadata: {
       contentType: "image/webp",
       contentDisposition: `inline; filename="${stem}.webp"`,
+      cacheControl: "public, max-age=31536000, immutable",
       metadata: { firebaseStorageDownloadTokens: token },
     },
   });
