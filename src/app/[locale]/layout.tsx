@@ -84,6 +84,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${inter.className} ${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${cormorant.variable} bg-[#0a0a0a] text-white`}>
+        {/* Ahrefs Web Analytics (cookieloos, geen persoonsgegevens; staat daarom
+            niet achter de consent-banner). Als plain async script gerenderd:
+            React 19 hoist plaatst hem server-side in de <head>, zichtbaar voor
+            de Ahrefs-verificatie, zonder render-blocking. */}
+        <script
+          async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="JFU/1WVq2PehJ+OTBgN9kg"
+        />
         <SiteBackground />
         <SectorIconSprite />
         <OrganizationJsonLd />
