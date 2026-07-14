@@ -19,7 +19,7 @@ export function WebPageJsonLd({
   name,
   description,
   inLanguage = "nl-BE",
-  primaryImage = `${businessConfig.url}/opengraph-image`,
+  primaryImage = `${businessConfig.url}/api/og`,
   aboutId = `${businessConfig.url}/#localbusiness`,
 }: WebPageJsonLdProps) {
   return (
