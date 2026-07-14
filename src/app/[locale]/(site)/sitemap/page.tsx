@@ -14,6 +14,7 @@ import {
 import type { ComponentType } from "react";
 import { services, serviceHref } from "@/data/services";
 import { getSubservicesByParent } from "@/data/subservices";
+import { softwareServices } from "@/data/softwareServices";
 import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { realisatieCategories } from "@/data/realisatieCategories";
@@ -60,15 +61,37 @@ function TreeList({ nodes }: { nodes: SmNode[] }) {
 }
 
 export default function SitemapPage() {
-  // Build the tree from the same data the site + XML sitemap use.
-  const dienstenNodes: SmNode[] = services.map((service) => ({
-    title: service.title,
-    href: serviceHref(service),
-    children: getSubservicesByParent(service.slug).map((sub) => ({
-      title: sub.title,
-      href: serviceHref(sub),
+  // Build the tree from the same data the site + XML sitemap use. The standalone
+  // software branch has its own catalogue because it is not one of the legacy
+  // eight media service categories.
+  const dienstenNodes: SmNode[] = [
+    ...services.map((service) => ({
+      title: service.title,
+      href: serviceHref(service),
+      children: [
+        ...getSubservicesByParent(service.slug).map((sub) => ({
+          title: sub.title,
+          href: serviceHref(sub),
+        })),
+        ...(service.slug === "webdesign"
+          ? [
+              {
+                title: "Website met AI-functionaliteiten",
+                href: "/diensten/webdesign/website-met-ai-functionaliteiten",
+              },
+            ]
+          : []),
+      ],
     })),
-  }));
+    {
+      title: "Apps & software op maat",
+      href: "/diensten/software-op-maat",
+      children: softwareServices.map((service) => ({
+        title: service.title,
+        href: `/diensten/software-op-maat/${service.slug}`,
+      })),
+    },
+  ];
 
   const kennisbankNodes: SmNode[] = kennisbankCategories
     .map((category): SmNode | null => {
