@@ -2,7 +2,7 @@
 
 Date: 2026-07-15
 Status: approved through the requested values
-Repository branch: `feat/full-website-analysis-report`
+Repository branch: `fix/localbusiness-country-price-range`
 
 ## Goal
 

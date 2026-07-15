@@ -23,6 +23,14 @@ const SERVICE_CATALOG = [
   "Applicaties en software op maat",
 ];
 
+function normalizeAddressCountry(value?: string): string {
+  const country = value?.trim();
+
+  return country && /^[a-z]{2}$/i.test(country)
+    ? country.toUpperCase()
+    : businessConfig.address.addressCountry;
+}
+
 /**
  * LocalBusiness (ProfessionalService) schema built from the live site_settings.
  * Every critical NAP field falls back to business.config, so a temporarily empty
@@ -70,7 +78,7 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
     postalCode: settings.postalCode || businessConfig.address.postalCode,
     addressLocality: settings.city || businessConfig.address.addressLocality,
     addressRegion: settings.province || businessConfig.address.addressRegion,
-    addressCountry: settings.country || businessConfig.address.addressCountry,
+    addressCountry: normalizeAddressCountry(settings.country),
   };
 
   const geo =
@@ -105,6 +113,7 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         telephone: settings.phone || businessConfig.telephone,
         email: settings.mainEmail || businessConfig.email,
         vatID: settings.vatNumber || businessConfig.vatID,
+        priceRange: businessConfig.priceRange,
         address,
         geo,
         openingHoursSpecification:

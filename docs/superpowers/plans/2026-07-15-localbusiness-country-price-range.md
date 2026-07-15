@@ -22,9 +22,10 @@
 ### Task 1: Correct LocalBusiness structured data
 
 **Files:**
-- Create: `src/components/seo/LocalBusinessSettingsJsonLd.test.tsx`
+- Create: `src/components/seo/LocalBusinessSettingsJsonLd.test.ts`
 - Modify: `src/config/business.config.ts`
 - Modify: `src/components/seo/LocalBusinessSettingsJsonLd.tsx`
+- Modify: `vitest.config.ts`
 
 **Interfaces:**
 - Consumes: `businessConfig.address.addressCountry` and a free-form `SiteSettings.country`
@@ -33,6 +34,7 @@
 - [ ] **Step 1: Write the failing rendered-schema test**
 
 ```tsx
+import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { DEFAULT_SITE_SETTINGS, type SiteSettings } from "@/types/siteSettings";
@@ -46,8 +48,10 @@ function renderSchema(country: string): Record<string, unknown> {
     createdAt: "2026-07-15T00:00:00.000Z",
     updatedAt: "2026-07-15T00:00:00.000Z",
   };
-  const html = renderToStaticMarkup(<LocalBusinessSettingsJsonLd settings={settings} />);
-  const json = html.match(/<script[^>]*>(.*)<\/script>/s)?.[1];
+  const html = renderToStaticMarkup(
+    createElement(LocalBusinessSettingsJsonLd, { settings }),
+  );
+  const json = html.match(/<script[^>]*>([\s\S]*)<\/script>/)?.[1];
   if (!json) throw new Error("JSON-LD script ontbreekt");
   return JSON.parse(json) as Record<string, unknown>;
 }
@@ -65,7 +69,7 @@ describe("LocalBusinessSettingsJsonLd", () => {
 
 - [ ] **Step 2: Run the test and confirm the expected failure**
 
-Run: `npm test -- --run src/components/seo/LocalBusinessSettingsJsonLd.test.tsx`
+Run: `npm test -- --run src/components/seo/LocalBusinessSettingsJsonLd.test.ts`
 
 Expected: FAIL because `priceRange` is absent and `addressCountry` is `be`.
 
@@ -90,12 +94,14 @@ function normalizeAddressCountry(value?: string): string {
 
 Use `normalizeAddressCountry(settings.country)` for `addressCountry` and add `priceRange: businessConfig.priceRange` to the LocalBusiness object.
 
+Enable Vitest's OXC JSX transform so the rendered component can be imported by the regression test.
+
 - [ ] **Step 4: Run focused and full verification**
 
 Run:
 
 ```text
-npm test -- --run src/components/seo/LocalBusinessSettingsJsonLd.test.tsx
+npm test -- --run src/components/seo/LocalBusinessSettingsJsonLd.test.ts
 npm test
 npm run typecheck
 npm run lint
@@ -104,10 +110,10 @@ npm run build
 
 Expected: the focused test passes, all test files pass, typecheck has no errors, lint has no new errors, and the production build succeeds.
 
-- [ ] **Step 5: Commit and update the existing PR branch**
+- [ ] **Step 5: Commit, push and open a focused PR**
 
 ```text
-git add src/components/seo/LocalBusinessSettingsJsonLd.test.tsx src/components/seo/LocalBusinessSettingsJsonLd.tsx src/config/business.config.ts
+git add src/components/seo/LocalBusinessSettingsJsonLd.test.ts src/components/seo/LocalBusinessSettingsJsonLd.tsx src/config/business.config.ts vitest.config.ts
 git commit -m "fix(seo): complete local business schema"
-git push origin feat/full-website-analysis-report
+git push origin fix/localbusiness-country-price-range
 ```
