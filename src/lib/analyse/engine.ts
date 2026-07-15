@@ -86,7 +86,11 @@ export async function runWebsiteAnalysis(input: {
         // de site-key blijft meegestuurd zodat de bestaande koppeling blijft werken.
         ...(secretKey ? { Authorization: `Bearer ${secretKey}` } : {}),
       },
-      body: JSON.stringify({ url: input.safeUrl, locale: "nl" }),
+      // De partner-API leest de site-key uit de BODY (het `X-Partner-Site-Key`
+      // header dekt de authenticatie, maar de body-validatie eist `siteKey`) en
+      // verwacht `language`, niet `locale`. Zonder `siteKey` in de body weigert
+      // hij met VALIDATION_ERROR.
+      body: JSON.stringify({ siteKey, url: input.safeUrl, language: "nl" }),
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       cache: "no-store",
     });
@@ -119,6 +123,7 @@ export async function runWebsiteAnalysis(input: {
   try {
     data = await response.json();
   } catch {
+    logEngineDiagnostic("2xx maar respons is geen geldige JSON");
     return { status: "failed", errorCode: "unexpected_response" };
   }
 
@@ -129,6 +134,11 @@ export async function runWebsiteAnalysis(input: {
   const record = data as Record<string, unknown>;
   const score = pickScore(record);
   if (score === undefined) {
+    // 2xx maar geen herkend score-veld: log de (secret-vrije) responsvorm zodat de
+    // mapping in pickScore/toIssueStrings op de echte veldnamen kan worden vastgeklikt.
+    logEngineDiagnostic(
+      `2xx zonder herkend score-veld; respons: ${JSON.stringify(record).replace(/\s+/g, " ").slice(0, 400)}`,
+    );
     return { status: "failed", errorCode: "unexpected_response" };
   }
 
