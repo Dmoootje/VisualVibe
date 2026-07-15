@@ -265,25 +265,23 @@ export function AnalysisIntegrationForm({
           leeg om de ingebouwde standaard te gebruiken.
         </p>
         <div className="grid gap-4">
-          {mode === "api" && (
-            <label className="block text-sm text-white/70">
-              Partner site-ID
-              <input
-                type="number"
-                name="partnerSiteId"
-                min={1}
-                step={1}
-                required
-                defaultValue={integration.partnerSiteId ?? ""}
-                className={`${inputClasses} mt-1.5`}
-                placeholder="123"
-                inputMode="numeric"
-              />
-              <span className="mt-1 block text-xs text-white/35">
-                De numerieke site-ID uit het SEO Supercharged-partnerplatform.
-              </span>
-            </label>
-          )}
+          <label className="block text-sm text-white/70">
+            Partner site-ID
+            <input
+              type="number"
+              name="partnerSiteId"
+              min={1}
+              step={1}
+              required={mode === "api"}
+              defaultValue={integration.partnerSiteId ?? ""}
+              className={`${inputClasses} mt-1.5`}
+              placeholder="123"
+              inputMode="numeric"
+            />
+            <span className="mt-1 block text-xs text-white/35">
+              Vereist voor directe API-modus en bewaard wanneer je tijdelijk naar widgetmodus schakelt.
+            </span>
+          </label>
           <label className="block text-sm text-white/70">
             Widget-script-URL
             <input
