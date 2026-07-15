@@ -115,6 +115,46 @@ function UserIcon({ size = 20, color = "rgba(255,255,255,.8)" }: { size?: number
     </svg>
   );
 }
+function StarIcon({ size = 10 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.5l2.9 6.06 6.6.79-4.86 4.55 1.29 6.6L12 17.9l-5.93 3.6 1.29-6.6L2.5 9.35l6.6-.79L12 2.5z" />
+    </svg>
+  );
+}
+
+export type NavGoogleRating = { rating: number; count: number; url: string };
+
+/** Small, real (never fabricated) Google-rating pill for the desktop nav bar. */
+function GoogleRatingBadge({ rating, count, url }: NavGoogleRating) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      aria-label={`VisualVibe op Google: ${rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} van 5 sterren, ${count} reviews`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "5px 10px",
+        borderRadius: 9999,
+        border: "1px solid rgba(255,122,0,.28)",
+        background: "rgba(255,122,0,.08)",
+        fontSize: 12,
+        fontWeight: 700,
+        color: "rgba(255,255,255,.85)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <span style={{ display: "inline-flex", gap: 1, color: "#FF9A45" }}>
+        {Array.from({ length: 5 }, (_, i) => <StarIcon key={i} />)}
+      </span>
+      {rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+      <span style={{ color: "rgba(255,255,255,.45)", fontWeight: 600 }}>({count})</span>
+    </a>
+  );
+}
 
 function ChevLeft({ size = 18 }: { size?: number }) {
   return (
@@ -159,6 +199,7 @@ export function Nav({
   realisatieCards,
   kennisbankItems,
   kennisbankPostCount = 0,
+  googleRating = null,
 }: {
   pillars: NavPillar[];
   regions: NavRegion[];
@@ -166,6 +207,7 @@ export function Nav({
   realisatieCards: NavCard[];
   kennisbankItems: NavCard[];
   kennisbankPostCount?: number;
+  googleRating?: NavGoogleRating | null;
 }) {
   const pathname = usePathname();
 
@@ -487,6 +529,7 @@ export function Nav({
 
         {/* ===== desktop right ===== */}
         <div className="vvnav-right" style={{ alignItems: "center", gap: 18 }}>
+          {googleRating && <GoogleRatingBadge {...googleRating} />}
           <NextLink href="/admin/login" prefetch={false} aria-label="Inloggen" style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>

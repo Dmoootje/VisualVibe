@@ -48,6 +48,48 @@ async function resolvePlaceId(apiKey: string): Promise<string | null> {
   return data.places?.[0]?.id ?? null;
 }
 
+type PlaceDetailsResponse = {
+  rating?: number;
+  userRatingCount?: number;
+  reviews?: {
+    rating?: number;
+    text?: { text?: string };
+    originalText?: { text?: string };
+    relativePublishTimeDescription?: string;
+    authorAttribution?: { displayName?: string; photoUri?: string };
+  }[];
+};
+
+/**
+ * Fetches the Place Details payload (reviews + aggregate rating) once; both
+ * getGoogleReviews and getGoogleRatingSummary read from this same request/URL,
+ * so Next's Data Cache serves the second call without another network hit.
+ * Returns null when no key is configured or on any error.
+ */
+async function fetchPlaceDetails(apiKey: string): Promise<PlaceDetailsResponse | null> {
+  try {
+    const placeId = await resolvePlaceId(apiKey);
+    if (!placeId) return null;
+
+    const res = await fetch(
+      `https://places.googleapis.com/v1/places/${placeId}?languageCode=nl&regionCode=BE`,
+      {
+        headers: {
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask":
+            "rating,userRatingCount,reviews.rating,reviews.text,reviews.originalText,reviews.authorAttribution,reviews.relativePublishTimeDescription",
+        },
+        next: { revalidate: DAY },
+        signal: AbortSignal.timeout(6000),
+      }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as PlaceDetailsResponse;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Fetches up to 5 Google reviews mapped to the testimonial slider shape.
  * Returns [] when no key is configured or on any error, so callers can fall
@@ -57,44 +99,38 @@ export async function getGoogleReviews(): Promise<GoogleReview[]> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) return [];
 
-  try {
-    const placeId = await resolvePlaceId(apiKey);
-    if (!placeId) return [];
+  const data = await fetchPlaceDetails(apiKey);
+  if (!data) return [];
 
-    const res = await fetch(
-      `https://places.googleapis.com/v1/places/${placeId}?languageCode=nl&regionCode=BE`,
-      {
-        headers: {
-          "X-Goog-Api-Key": apiKey,
-          "X-Goog-FieldMask":
-            "reviews.rating,reviews.text,reviews.originalText,reviews.authorAttribution,reviews.relativePublishTimeDescription",
-        },
-        next: { revalidate: DAY },
-        signal: AbortSignal.timeout(6000),
-      }
-    );
-    if (!res.ok) return [];
+  return (data.reviews ?? [])
+    .map((review) => ({
+      quote: stripDashes(review.text?.text ?? review.originalText?.text ?? ""),
+      author: stripDashes(review.authorAttribution?.displayName ?? "Google-gebruiker"),
+      role: stripDashes(review.relativePublishTimeDescription ?? "Google review"),
+      avatar: review.authorAttribution?.photoUri ?? "",
+      rating: Math.round(review.rating ?? 5),
+    }))
+    .filter((review) => review.quote.trim().length > 0);
+}
 
-    const data = (await res.json()) as {
-      reviews?: {
-        rating?: number;
-        text?: { text?: string };
-        originalText?: { text?: string };
-        relativePublishTimeDescription?: string;
-        authorAttribution?: { displayName?: string; photoUri?: string };
-      }[];
-    };
+export type GoogleRatingSummary = {
+  rating: number;
+  count: number;
+};
 
-    return (data.reviews ?? [])
-      .map((review) => ({
-        quote: stripDashes(review.text?.text ?? review.originalText?.text ?? ""),
-        author: stripDashes(review.authorAttribution?.displayName ?? "Google-gebruiker"),
-        role: stripDashes(review.relativePublishTimeDescription ?? "Google review"),
-        avatar: review.authorAttribution?.photoUri ?? "",
-        rating: Math.round(review.rating ?? 5),
-      }))
-      .filter((review) => review.quote.trim().length > 0);
-  } catch {
-    return [];
+/**
+ * VisualVibe's live aggregate Google Business rating and review count.
+ * Returns null when unconfigured or unavailable, so callers omit the badge or
+ * schema field rather than ever show a fabricated number.
+ */
+export async function getGoogleRatingSummary(): Promise<GoogleRatingSummary | null> {
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  if (!apiKey) return null;
+
+  const data = await fetchPlaceDetails(apiKey);
+  if (!data || typeof data.rating !== "number" || typeof data.userRatingCount !== "number") {
+    return null;
   }
+
+  return { rating: Math.round(data.rating * 10) / 10, count: data.userRatingCount };
 }

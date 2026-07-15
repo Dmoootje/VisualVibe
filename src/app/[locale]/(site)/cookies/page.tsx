@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   return pageMetadata({
     title: `Cookiebeleid | ${settings.companyName}`,
-    description: `Welke cookies gebruikt ${settings.companyName}? Functionele cookies plus analytische cookies (Google Analytics) die pas na jouw toestemming worden geplaatst. Lees hoe je je voorkeuren beheert.`,
+    description: `Welke cookies gebruikt ${settings.companyName}? Functionele cookies en analytische cookies (Google Analytics), pas actief na jouw toestemming. Beheer hier je voorkeuren.`,
     path: "/cookies/",
   });
 }

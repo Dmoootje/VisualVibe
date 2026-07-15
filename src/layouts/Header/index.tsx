@@ -9,12 +9,13 @@ import {
   sectorCards,
   type NavCard,
 } from "@/components/nav/navData";
+import { GOOGLE_MAPS_PROFILE_URL, getGoogleRatingSummary } from "@/lib/reviews/google";
 
 // Server component: builds the Kennisbank dropdown (only the categories that
 // actually have posts - never article links, with an icon + description per
 // card) and hands it to the client Nav. Apps & software is a Dutch curated topic
 // hub: its articles keep their existing canonical URLs while the hub groups them.
-export function Header({ locale }: { locale: string }) {
+export async function Header({ locale }: { locale: string }) {
   const blogLocale = isBlogLocale(locale) ? locale : null;
   const localizedPosts = blogLocale ? getAllPosts({ locale: blogLocale }) : [];
   const kennisbankItems: NavCard[] = blogLocale
@@ -28,6 +29,8 @@ export function Header({ locale }: { locale: string }) {
     : [];
 
   const navRegions = regions.map(({ slug, title, type }) => ({ slug, title, type }));
+  const ratingSummary = await getGoogleRatingSummary();
+  const googleRating = ratingSummary ? { ...ratingSummary, url: GOOGLE_MAPS_PROFILE_URL } : null;
 
   return (
     <Nav
@@ -37,6 +40,7 @@ export function Header({ locale }: { locale: string }) {
       realisatieCards={realisatieCards}
       kennisbankItems={kennisbankItems}
       kennisbankPostCount={localizedPosts.length}
+      googleRating={googleRating}
     />
   );
 }

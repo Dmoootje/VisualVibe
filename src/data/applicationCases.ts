@@ -120,7 +120,7 @@ export const applicationCases: ApplicationCase[] = [
     },
     seoTitle: "BM Jumpfun verhuurplatform met reservatiebackend | VisualVibe",
     seoDescription:
-      "Bekijk hoe VisualVibe voor BM Jumpfun een meertalig springkastelenplatform bouwde met reservaties, beschikbaarheid, Google Calendar, routeberekening, facturen en React SSR.",
+      "Hoe VisualVibe voor BM Jumpfun een meertalig verhuurplatform bouwde met reservaties, beschikbaarheid, Google Calendar-koppeling, routeberekening en facturatie.",
   },
   {
     id: "seo-websites",
