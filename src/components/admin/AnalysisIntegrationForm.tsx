@@ -217,7 +217,7 @@ export function AnalysisIntegrationForm({
             </span>
           </div>
           <p className="mt-1 text-xs leading-5 text-white/45">
-            Alleen server-side voor de directe API (Authorization: Bearer). Begint doorgaans met{" "}
+            Alleen server-side voor HMAC-ondertekening van de directe API. Begint doorgaans met{" "}
             <code>sk_</code>.
           </p>
 
@@ -266,6 +266,23 @@ export function AnalysisIntegrationForm({
         </p>
         <div className="grid gap-4">
           <label className="block text-sm text-white/70">
+            Partner site-ID
+            <input
+              type="number"
+              name="partnerSiteId"
+              min={1}
+              step={1}
+              required={mode === "api"}
+              defaultValue={integration.partnerSiteId ?? ""}
+              className={`${inputClasses} mt-1.5`}
+              placeholder="123"
+              inputMode="numeric"
+            />
+            <span className="mt-1 block text-xs text-white/35">
+              Vereist voor directe API-modus en bewaard wanneer je tijdelijk naar widgetmodus schakelt.
+            </span>
+          </label>
+          <label className="block text-sm text-white/70">
             Widget-script-URL
             <input
               type="url"
@@ -289,7 +306,7 @@ export function AnalysisIntegrationForm({
               spellCheck={false}
             />
             <span className="mt-1 block text-xs text-white/35">
-              De analyse-aanroep gebruikt deze basis plus <code>/widget/analyses</code>.
+              De directe API gebruikt deze basis plus <code>/analyses</code>.
             </span>
           </label>
         </div>

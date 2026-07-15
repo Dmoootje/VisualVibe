@@ -102,6 +102,7 @@ export async function saveAnalysisIntegrationAction(
   }
 
   try {
+    const rawPartnerSiteId = String(formData.get("partnerSiteId") ?? "").trim();
     await updateAnalysisIntegration(
       {
         mode,
@@ -109,6 +110,7 @@ export async function saveAnalysisIntegrationAction(
         removePublicKey: formData.get("removePublicKey") === "on",
         privateKey: String(formData.get("privateKey") ?? "").trim(),
         removePrivateKey: formData.get("removePrivateKey") === "on",
+        partnerSiteId: rawPartnerSiteId ? Number(rawPartnerSiteId) : null,
         widgetScriptUrl: String(formData.get("widgetScriptUrl") ?? "").trim(),
         apiBaseUrl: String(formData.get("apiBaseUrl") ?? "").trim(),
       },

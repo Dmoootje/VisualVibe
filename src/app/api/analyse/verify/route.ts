@@ -4,6 +4,7 @@ import { businessConfig } from "@/config/business.config";
 import { getAnalysisQuotaConfig } from "@/lib/analyse/config";
 import { normalizeAndValidateUrl } from "@/lib/analyse/domain";
 import { runWebsiteAnalysis } from "@/lib/analyse/engine";
+import { buildReusedReportPatch } from "@/lib/analyse/reportLinking";
 import {
   checkAndReserveQuota,
   consumeReservation,
@@ -19,6 +20,7 @@ import {
   newReportToken,
   updateAnalysisLead,
 } from "@/lib/firestore/analysisLeads";
+import { createAnalysisReport } from "@/lib/firestore/analysisReports";
 import { addLeadEvent } from "@/lib/firestore/leadEvents";
 import { createSubscriber } from "@/lib/firestore/newsletter";
 import type { LeadEventType } from "@/types";
@@ -251,15 +253,15 @@ export async function POST(request: NextRequest) {
     const nowIso = new Date().toISOString();
     const score = source?.analysisScore ?? outcome.reuseFrom.analysisScore ?? 0;
     const criticalIssues = source?.criticalIssues ?? outcome.reuseFrom.criticalIssues ?? [];
+    const reusedReportPatch = buildReusedReportPatch(source ?? {}, token);
 
     await updateAnalysisLead(analysisLead.id, {
       status: "completed",
       analysisStatus: "reused",
       reusedFromId: outcome.reuseFrom.analysisLeadId,
-      reportToken: token,
       analysisScore: score,
       criticalIssues,
-      ...(source?.analysisSummary ? { analysisSummary: source.analysisSummary } : {}),
+      ...reusedReportPatch,
       quotaDecision: "reused_recent",
       completedAt: nowIso,
     });
@@ -269,10 +271,9 @@ export async function POST(request: NextRequest) {
       status: "completed",
       analysisStatus: "reused",
       reusedFromId: outcome.reuseFrom.analysisLeadId,
-      reportToken: token,
       analysisScore: score,
       criticalIssues,
-      ...(source?.analysisSummary ? { analysisSummary: source.analysisSummary } : {}),
+      ...reusedReportPatch,
       quotaDecision: "reused_recent",
       completedAt: nowIso,
     };
@@ -371,6 +372,18 @@ export async function POST(request: NextRequest) {
     return failAnalysis(result.errorCode);
   }
 
+  let analysisReport;
+  try {
+    analysisReport = await createAnalysisReport({
+      partnerAnalysisId: result.partnerAnalysisId,
+      normalizedDomain: analysisLead.normalizedDomain,
+      sourceUrl: result.report.url,
+      report: result.report,
+    });
+  } catch {
+    return failAnalysis("report_storage_failed");
+  }
+
   const token = newReportToken();
   const completedAt = new Date().toISOString();
   await updateAnalysisLead(analysisLead.id, {
@@ -380,6 +393,8 @@ export async function POST(request: NextRequest) {
     criticalIssues: result.criticalIssues,
     ...(result.summary ? { analysisSummary: result.summary } : {}),
     reportToken: token,
+    reportId: analysisReport.id,
+    reportSchemaVersion: analysisReport.schemaVersion,
     completedAt,
   });
 
@@ -399,6 +414,8 @@ export async function POST(request: NextRequest) {
     criticalIssues: result.criticalIssues,
     ...(result.summary ? { analysisSummary: result.summary } : {}),
     reportToken: token,
+    reportId: analysisReport.id,
+    reportSchemaVersion: analysisReport.schemaVersion,
     ...(reservationId ? { analysisId: reservationId } : {}),
     quotaDecision: outcome.decision,
     startedAt,
