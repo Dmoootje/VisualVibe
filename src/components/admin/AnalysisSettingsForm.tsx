@@ -21,14 +21,14 @@ type NumericFieldDef = {
 
 const QUOTA_FIELDS: NumericFieldDef[] = [
   {
-    key: "maxPerEmail90d",
-    label: "Analyses per e-mailadres (90 dagen)",
-    hint: "Aantal succesvol afgeronde analyses dat een geverifieerd e-mailadres in 90 dagen mag aanvragen.",
+    key: "maxPerEmail24h",
+    label: "Analyses per e-mailadres (24 uur)",
+    hint: "Aantal succesvol afgeronde analyses dat een geverifieerd e-mailadres in 24 uur mag aanvragen.",
   },
   {
-    key: "maxPerDevice90d",
-    label: "Analyses per toestel (90 dagen)",
-    hint: "Aantal succesvol afgeronde analyses per toestel (gehashte first-party cookie) in 90 dagen.",
+    key: "maxPerDevice24h",
+    label: "Analyses per toestel (24 uur)",
+    hint: "Aantal succesvol afgeronde analyses per toestel (gehashte first-party cookie) in 24 uur.",
   },
   {
     key: "maxPerIp24h",

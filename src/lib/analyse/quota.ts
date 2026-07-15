@@ -195,18 +195,18 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
     // tegoed niet 90 dagen vasthoudt.
     const ninetyDaysAgo = now - 90 * DAY_MS;
     const emailCount = countForLimit(emailScope.entries, ninetyDaysAgo, now);
-    if (emailCount >= config.maxPerEmail90d + emailScope.extraCredits) {
+    if (emailCount >= config.maxPerEmail24h + emailScope.extraCredits) {
       return {
         decision: "limit_email",
         reason: "Het maximum aantal gratis analyses voor dit e-mailadres is bereikt.",
       };
     }
-    const usesExtraCredit = emailCount >= config.maxPerEmail90d && emailScope.extraCredits > 0;
+    const usesExtraCredit = emailCount >= config.maxPerEmail24h && emailScope.extraCredits > 0;
 
     // 4. Devicequotum (90 dagen), zelfde lease-behandeling.
     if (deviceScope) {
       const deviceCount = countForLimit(deviceScope.entries, ninetyDaysAgo, now);
-      if (deviceCount >= config.maxPerDevice90d) {
+      if (deviceCount >= config.maxPerDevice24h) {
         return {
           decision: "limit_device",
           reason: "Het maximum aantal gratis analyses voor dit apparaat is bereikt.",

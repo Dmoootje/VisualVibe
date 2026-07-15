@@ -169,10 +169,10 @@ export type AnalysisReportDocument = {
 /** Firestore: analysis_settings/default. Beheerbaar in /admin/settings/analyse. */
 export type AnalysisQuotaConfig = {
   enabled: boolean;
-  /** Succesvol afgeronde analyses per geverifieerd e-mailadres per 90 dagen. */
-  maxPerEmail90d: number;
-  /** Succesvol afgeronde analyses per device per 90 dagen. */
-  maxPerDevice90d: number;
+  /** Succesvol afgeronde analyses per geverifieerd e-mailadres per 24 uur. */
+  maxPerEmail24h: number;
+  /** Succesvol afgeronde analyses per device per 24 uur. */
+  maxPerDevice24h: number;
   /** Analyseaanvragen per IP per 24 uur. */
   maxPerIp24h: number;
   /** Analyses per IP per 30 dagen. */
@@ -189,10 +189,10 @@ export type AnalysisQuotaConfig = {
 
 export const DEFAULT_ANALYSIS_QUOTA_CONFIG: AnalysisQuotaConfig = {
   enabled: true,
-  maxPerEmail90d: 3,
-  maxPerDevice90d: 3,
-  maxPerIp24h: 10,
-  maxPerIp30d: 25,
+  maxPerEmail24h: 3,
+  maxPerDevice24h: 3,
+  maxPerIp24h: 12,
+  maxPerIp30d: 180,
   maxCodesPerEmailPerHour: 5,
   duplicateWindowMinutes: 2,
   codeTtlMinutes: 15,

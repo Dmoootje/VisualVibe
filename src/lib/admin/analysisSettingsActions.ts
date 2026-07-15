@@ -18,8 +18,8 @@ export type AnalysisIntegrationActionResult = {
 
 // Nederlandse labels voor foutmeldingen per numeriek veld.
 const NUMERIC_FIELDS = [
-  { key: "maxPerEmail90d", label: "Analyses per e-mailadres (90 dagen)" },
-  { key: "maxPerDevice90d", label: "Analyses per toestel (90 dagen)" },
+  { key: "maxPerEmail24h", label: "Analyses per e-mailadres (24 uur)" },
+  { key: "maxPerDevice24h", label: "Analyses per toestel (24 uur)" },
   { key: "maxPerIp24h", label: "Aanvragen per IP (24 uur)" },
   { key: "maxPerIp30d", label: "Analyses per IP (30 dagen)" },
   { key: "maxCodesPerEmailPerHour", label: "Verificatiecodes per e-mailadres per uur" },
