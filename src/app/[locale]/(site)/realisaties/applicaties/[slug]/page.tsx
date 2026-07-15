@@ -22,9 +22,9 @@ import {
   getApplicationCaseImages,
 } from "@/lib/firestore/applicationCases";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import { buildApplicationCaseJsonLd } from "@/lib/seo/applicationCaseJsonLd";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
-import { getGoogleRatingSummary } from "@/lib/reviews/google";
 
 export const revalidate = 60;
 
@@ -119,10 +119,9 @@ export default async function ApplicationCasePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [project, images, googleRating] = await Promise.all([
+  const [project, images] = await Promise.all([
     getApplicationCaseBySlug(slug),
     getApplicationCaseImages(),
-    getGoogleRatingSummary(),
   ]);
   if (!project) notFound();
 
@@ -143,42 +142,11 @@ export default async function ApplicationCasePage({
         ]}
       />
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: project.title,
-          description: project.seoDescription,
-          url: canonical,
-          applicationCategory: "BusinessApplication",
-          operatingSystem: "Web",
-          creator: {
-            "@type": "Organization",
-            name: businessConfig.displayName,
-            url: businessConfig.url,
-          },
-          ...(cover ? { image: cover } : {}),
-          featureList: project.capabilities,
-          // Bespoke client platforms, not a product VisualVibe sells: offers is a
-          // formal "op aanvraag" placeholder (no public price) required for the
-          // Software App rich-result eligibility check. aggregateRating reflects
-          // VisualVibe's own live Google Business rating (fetched, never
-          // fabricated) since these projects have no separate public reviews.
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-          },
-          ...(googleRating
-            ? {
-                aggregateRating: {
-                  "@type": "AggregateRating",
-                  ratingValue: googleRating.rating,
-                  reviewCount: googleRating.count,
-                },
-              }
-            : {}),
-        }}
+        data={buildApplicationCaseJsonLd({
+          project,
+          canonical,
+          cover,
+        })}
       />
 
       <header className="relative overflow-hidden pb-12 pt-28 sm:pt-32 lg:pb-16">
