@@ -45,7 +45,18 @@ const nextConfig = {
       // A few legacy metadata paths still mention /image.jpg. Resolve that path
       // to the branded fallback before the old public template asset can win.
       beforeFiles: [{ source: '/image.jpg', destination: '/api/og' }],
-      afterFiles: [],
+      // IndexNow verifieert de eigenaar via een sleutelbestand op /{sleutel}.txt.
+      // De sleutel is dynamisch (beheerbaar in de admin), dus we kunnen geen
+      // statisch bestand plaatsen: schrijf /{sleutel}.txt door naar de route die
+      // de opgeslagen sleutel teruggeeft (en elke andere .txt naar 404). Dit
+      // staat in `afterFiles` zodat echte statische bestanden in /public
+      // (bv. een toekomstige BingSiteAuth.txt) altijd voorgaan.
+      afterFiles: [
+        {
+          source: '/:key([a-zA-Z0-9-]{8,128}).txt',
+          destination: '/api/indexnow/keyfile?key=:key',
+        },
+      ],
       fallback: [],
     };
   },

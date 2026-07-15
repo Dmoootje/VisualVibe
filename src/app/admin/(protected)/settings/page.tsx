@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge, Plane, Sparkles } from "lucide-react";
+import { Mail, LayoutTemplate, CircleUserRound, Send, Gauge, Plane, Sparkles, Radar } from "lucide-react";
 
 const cards = [
   {
@@ -43,6 +43,12 @@ const cards = [
     title: "Websiteanalyse",
     desc: "Quota en limieten van de gratis websiteanalyse: aantallen per e-mail, toestel, IP en domein.",
     icon: Gauge,
+  },
+  {
+    href: "/admin/settings/indexnow",
+    title: "IndexNow",
+    desc: "Sleutel beheren (automatisch genereren of vernieuwen) en alle pagina's aanmelden bij Bing, Yandex en co.",
+    icon: Radar,
   },
 ];
 

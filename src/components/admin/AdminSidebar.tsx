@@ -45,6 +45,7 @@ const navItems: NavItem[] = [
       { href: "/admin/settings/contact", label: "Contact" },
       { href: "/admin/settings/email", label: "E-mailinstellingen" },
       { href: "/admin/settings/ai", label: "AI-providers" },
+      { href: "/admin/settings/indexnow", label: "IndexNow" },
       { href: "/admin/settings/webdesign", label: "Webdesign realisaties" },
       { href: "/admin/settings/applicaties", label: "Applicatie realisaties" },
       { href: "/admin/settings/realisaties/fotografie", label: "Fotografie galerijen" },
