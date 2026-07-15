@@ -23,38 +23,12 @@
 **Files:**
 - Create: `src/components/sections/ServiceRelatedPosts.test.ts`
 - Modify: `src/components/sections/ServiceRelatedPosts.tsx:23-55`
-- Modify: `vitest.config.ts:4-12`
 
 **Interfaces:**
 - Consumes: `AuthorMetaProps` with optional `author`, `authorImage`, `readingTime` and `className` strings.
 - Produces: named component `AuthorMeta(props: AuthorMetaProps)` whose wrapper uses `text-white/65`.
 
-- [ ] **Step 1: Enable rendered TSX imports in Vitest**
-
-Update `vitest.config.ts` to:
-
-```ts
-import { fileURLToPath, URL } from "node:url";
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  oxc: {
-    jsx: {
-      runtime: "automatic",
-    },
-  },
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
-  test: {
-    environment: "node",
-  },
-});
-```
-
-- [ ] **Step 2: Write the failing rendered-component regression**
+- [ ] **Step 1: Write the failing rendered-component regression**
 
 Create `src/components/sections/ServiceRelatedPosts.test.ts`:
 
@@ -94,7 +68,7 @@ describe("AuthorMeta", () => {
 });
 ```
 
-- [ ] **Step 3: Run the regression and confirm red**
+- [ ] **Step 2: Run the regression and confirm red**
 
 Run:
 
@@ -104,7 +78,7 @@ npm test -- --run src/components/sections/ServiceRelatedPosts.test.ts
 
 Expected: FAIL because `AuthorMeta` is not exported yet.
 
-- [ ] **Step 4: Export the component and apply the approved foreground**
+- [ ] **Step 3: Export the component and apply the approved foreground**
 
 Replace the local inline props type and function declaration with:
 
@@ -150,7 +124,7 @@ export function AuthorMeta({
 }
 ```
 
-- [ ] **Step 5: Run focused and full tests**
+- [ ] **Step 4: Run focused and full tests**
 
 Run:
 
@@ -161,9 +135,9 @@ npm test
 
 Expected: the focused test passes and all test files pass.
 
-- [ ] **Step 6: Commit the accessible metadata change**
+- [ ] **Step 5: Commit the accessible metadata change**
 
 ```text
-git add vitest.config.ts src/components/sections/ServiceRelatedPosts.test.ts src/components/sections/ServiceRelatedPosts.tsx
+git add src/components/sections/ServiceRelatedPosts.test.ts src/components/sections/ServiceRelatedPosts.tsx
 git commit -m "fix(a11y): increase article author contrast"
 ```
