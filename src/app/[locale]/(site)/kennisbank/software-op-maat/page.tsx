@@ -171,6 +171,7 @@ export default async function SoftwareKennisbankPage({
         graphic={<CategoryRingGraphic slug={category.slug} />}
         search={<CategoryHeroSearch />}
         backgroundImage={pillarPosts[0]?.featuredImage ?? posts[0]?.featuredImage}
+        backgroundImageAlt={`${category.name}: apps, AI en software op maat laten maken`}
       />
 
       <section className="relative z-[2]">

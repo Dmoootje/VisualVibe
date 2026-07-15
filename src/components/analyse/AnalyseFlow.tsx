@@ -36,6 +36,15 @@ const LIMIT_REACHED_TEXT = "Je hebt je drie gratis analyses voor deze periode ge
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
+/** Na 1 minuut melden we dat een diepere (JS/SSR) crawl langer kan duren. */
+const BUSY_SLOW_AFTER_MS = 60_000;
+/**
+ * De client kapt zijn eigen verify-verzoek net onder Cloudflare's ~100s
+ * edge-timeout af. De server loopt dan gewoon door en mailt het rapport; de
+ * bezoeker krijgt een nette "volgt per e-mail"-melding i.p.v. een 524-fout.
+ */
+const CLIENT_VERIFY_TIMEOUT_MS = 90_000;
+
 /** Voortgangsteksten tijdens de analyse (kan tot ~45 seconden duren). */
 const BUSY_MESSAGES = [
   "We halen je website op en scannen de belangrijkste pagina's...",
@@ -57,7 +66,8 @@ type FlowState =
       criticalIssues: string[];
     }
   | { step: "limit" }
-  | { step: "failed"; message: string };
+  | { step: "failed"; message: string }
+  | { step: "pending_email" };
 
 function scoreColorClass(score: number): string {
   if (score >= 80) return "text-green-400";
@@ -91,6 +101,7 @@ export function AnalyseFlow() {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [isPending, setIsPending] = useState(false);
   const [busyIndex, setBusyIndex] = useState(0);
+  const [busySlow, setBusySlow] = useState(false);
 
   // Cooldown-teller voor "Code opnieuw versturen".
   useEffect(() => {
@@ -110,6 +121,16 @@ export function AnalyseFlow() {
       9000,
     );
     return () => clearInterval(timer);
+  }, [flow.step]);
+
+  // Na 1 minuut melden dat een diepere crawl (JS/SSR) langer kan duren.
+  useEffect(() => {
+    if (flow.step !== "bezig") {
+      setBusySlow(false);
+      return;
+    }
+    const timer = setTimeout(() => setBusySlow(true), BUSY_SLOW_AFTER_MS);
+    return () => clearTimeout(timer);
   }, [flow.step]);
 
   function handleUrlSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -176,12 +197,15 @@ export function AnalyseFlow() {
     setFlow({ step: "bezig" });
 
     const payload: AnalysisVerifyRequest = { analysisLeadId, code: codeValue };
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), CLIENT_VERIFY_TIMEOUT_MS);
 
     try {
       const response = await fetch("/api/analyse/verify/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
       const data = (await response.json()) as AnalysisVerifyResponse;
 
@@ -226,11 +250,19 @@ export function AnalyseFlow() {
           setFlow({ step: "code" });
           return;
       }
-    } catch {
-      setFlow({
-        step: "failed",
-        message: "De verbinding viel weg tijdens de analyse. Probeer het opnieuw.",
-      });
+    } catch (error) {
+      // Client-abort na de time-out: de analyse loopt server-side gewoon door en
+      // het rapport wordt gemaild. Andere fouten = een echte verbindingsfout.
+      if (error instanceof DOMException && error.name === "AbortError") {
+        setFlow({ step: "pending_email" });
+      } else {
+        setFlow({
+          step: "failed",
+          message: "De verbinding viel weg tijdens de analyse. Probeer het opnieuw.",
+        });
+      }
+    } finally {
+      clearTimeout(abortTimer);
     }
   }
 
@@ -548,9 +580,18 @@ export function AnalyseFlow() {
           </span>
           <h2 className="text-xl font-bold">We analyseren je website</h2>
           <p className="text-sm text-white/70">{BUSY_MESSAGES[busyIndex]}</p>
-          <p className="text-xs text-white/40">
-            Dit duurt meestal 30 tot 45 seconden. Laat deze pagina open staan.
-          </p>
+          {busySlow ? (
+            <p className="max-w-md text-xs leading-relaxed text-amber-300/80">
+              Dit duurt iets langer dan gewoonlijk. Sommige moderne sites (met veel JavaScript
+              of server-side rendering) vragen een diepere crawl, wat tot enkele minuten kan
+              oplopen. Laat dit venster open - lukt het niet meteen, dan sturen we het rapport
+              naar je e-mailadres.
+            </p>
+          ) : (
+            <p className="text-xs text-white/40">
+              Dit duurt meestal 30 tot 45 seconden. Laat deze pagina open staan.
+            </p>
+          )}
         </div>
       )}
 
@@ -663,6 +704,29 @@ export function AnalyseFlow() {
             {isPending ? "Nieuwe code versturen..." : "Analyse opnieuw proberen"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
+        </div>
+      )}
+
+      {/* Eindstate: analyse duurt langer dan de client wacht; het rapport volgt per
+          e-mail. De server rondt de analyse af nadat de client zijn eigen verzoek
+          net onder Cloudflare's edge-timeout heeft afgekapt. */}
+      {flow.step === "pending_email" && (
+        <div className="flex flex-col gap-4">
+          <div className="flex items-start gap-3">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.12)] text-[#FF9A45]">
+              <MailCheck className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-xl font-bold">Je analyse loopt nog even door</h2>
+              <p className="mt-1 text-sm leading-relaxed text-white/60">
+                Deze website vraagt een wat diepere crawl (bijvoorbeeld door JavaScript of
+                server-side rendering), dus de analyse duurt langer dan gewoonlijk. Ze loopt op
+                de achtergrond af en je ontvangt het volledige rapport op{" "}
+                <strong className="text-white/85">{email}</strong> zodra het klaar is. Je kunt
+                dit venster sluiten.
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>

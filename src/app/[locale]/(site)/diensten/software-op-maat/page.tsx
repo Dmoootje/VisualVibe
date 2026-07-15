@@ -182,6 +182,13 @@ export default function SoftwareOpMaatPage() {
                 Maatwerksoftware ondersteunt de dagelijkse werking achter of naast je website: planning, dossiers,
                 dashboards, offertes, klantenportalen, automatisering en rollen met verschillende toegangsrechten.
               </p>
+              <Link
+                href="/kennisbank/software-op-maat/"
+                className="mt-6 inline-flex items-center gap-2 font-bold text-[#FF9A45]"
+              >
+                Alles over apps en software op maat
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </Container>

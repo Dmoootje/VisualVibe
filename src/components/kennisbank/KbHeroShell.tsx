@@ -24,6 +24,7 @@ export function KbHeroShell({
   search,
   graphic,
   backgroundImage,
+  backgroundImageAlt,
 }: {
   breadcrumb: KbBreadcrumb[];
   eyebrow: { icon: React.ReactNode; label: string };
@@ -35,12 +36,25 @@ export function KbHeroShell({
   graphic?: React.ReactNode;
   /** Subtiele volle-breedte herotextuur (bv. categoriebeeld zonder tekst). */
   backgroundImage?: string;
+  /**
+   * Beschrijvende alt voor de herotextuur. De container blijft aria-hidden
+   * (decoratief voor screenreaders), maar een niet-lege alt geeft crawlers/SEO
+   * wel context. Leeg = geen alt (puur decoratief).
+   */
+  backgroundImageAlt?: string;
 }) {
   return (
     <header className="relative overflow-hidden border-b border-white/[0.06] pb-11 pt-28 sm:pt-32 md:pt-36">
       {backgroundImage && (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-          <Image src={backgroundImage} alt="" fill sizes="100vw" className="object-cover opacity-[0.18]" priority />
+          <Image
+            src={backgroundImage}
+            alt={backgroundImageAlt ?? ""}
+            fill
+            sizes="100vw"
+            className="object-cover opacity-[0.18]"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]/55" />
         </div>
       )}

@@ -25,14 +25,20 @@ import type { LeadEventType } from "@/types";
 import type { AnalysisLead, AnalysisVerifyResponse } from "@/types/analysis";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+// Tot 5 minuten: een diepere JS/SSR-crawl aan de partnerkant kan langer duren dan
+// de gebruikelijke ~35s. De client kapt zijn eigen request eerder af (net onder
+// Cloudflare's ~100s) en meldt dat het rapport gemaild wordt; deze functie loopt
+// server-side gewoon door tot de analyse klaar is en verstuurt de rapportmail.
+export const maxDuration = 300;
 
 /**
  * Na deze tijd geldt een lead die in "analysing" blijft hangen als gestrand
- * (proces gecrasht of platform-timeout tussen statuswrite en afronding). Ruim
- * boven de echte runtijd (~45s) en de function-budget (maxDuration 60s).
+ * (proces gecrasht of platform-timeout tussen statuswrite en afronding). Bewust
+ * boven de function-budget (maxDuration 300s) zodat een legitieme, nog lopende
+ * lange analyse niet ten onrechte wordt teruggevorderd; een echt gestrande run
+ * wordt daarna alsnog vrijgegeven.
  */
-const ANALYSING_LEASE_MS = 3 * 60_000;
+const ANALYSING_LEASE_MS = 7 * 60_000;
 
 const LIMIT_MESSAGE = "Je hebt je drie gratis analyses voor deze periode gebruikt.";
 const FAILED_MESSAGE =
@@ -356,6 +362,9 @@ export async function POST(request: NextRequest) {
   const result = await runWebsiteAnalysis({
     safeUrl: validatedUrl.safeUrl,
     normalizedDomain: analysisLead.normalizedDomain,
+    // Stabiel per lead: een retry hergebruikt bij de partner dezelfde analyse
+    // (idempotency) i.p.v. opnieuw af te rekenen.
+    idempotencyKey: analysisLead.id,
   });
 
   if (result.status !== "completed") {
