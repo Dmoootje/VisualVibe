@@ -33,6 +33,7 @@ type StoredIntegration = {
   publicKeyHint?: string;
   encryptedPrivateKey?: string;
   privateKeyHint?: string;
+  partnerSiteId?: number;
   widgetScriptUrl?: string;
   apiBaseUrl?: string;
 };
@@ -54,12 +55,16 @@ function integrationFromData(
   const privateKeyHint = stringValue(data.privateKeyHint).slice(-4);
   const widgetScriptUrl = stringValue(data.widgetScriptUrl);
   const apiBaseUrl = stringValue(data.apiBaseUrl);
+  const rawPartnerSiteId = Number(data.partnerSiteId);
+  const partnerSiteId =
+    Number.isInteger(rawPartnerSiteId) && rawPartnerSiteId > 0 ? rawPartnerSiteId : undefined;
   return {
     mode: isAnalysisMode(data.mode) ? data.mode : DEFAULT_ANALYSIS_MODE,
     ...(encryptedPublicKey ? { encryptedPublicKey } : {}),
     ...(publicKeyHint ? { publicKeyHint } : {}),
     ...(encryptedPrivateKey ? { encryptedPrivateKey } : {}),
     ...(privateKeyHint ? { privateKeyHint } : {}),
+    ...(partnerSiteId ? { partnerSiteId } : {}),
     ...(widgetScriptUrl ? { widgetScriptUrl } : {}),
     ...(apiBaseUrl ? { apiBaseUrl } : {}),
   };
@@ -88,6 +93,7 @@ export async function getAnalysisIntegrationAdminView(): Promise<AnalysisIntegra
     publicKeyHint: hasPublic ? stored.publicKeyHint ?? "" : "",
     privateKeyConfigured: hasPrivate,
     privateKeyHint: hasPrivate ? stored.privateKeyHint ?? "" : "",
+    partnerSiteId: stored.partnerSiteId ?? null,
     widgetScriptUrl: stored.widgetScriptUrl || DEFAULT_ANALYSIS_WIDGET_SCRIPT_URL,
     apiBaseUrl: stored.apiBaseUrl || DEFAULT_ANALYSIS_API_BASE_URL,
   };
@@ -123,6 +129,7 @@ export async function getAnalysisIntegrationRuntime(): Promise<AnalysisIntegrati
     mode: stored.mode,
     publicKey: publicKey || DEFAULT_ANALYSIS_PUBLIC_KEY,
     privateKey,
+    partnerSiteId: stored.partnerSiteId ?? null,
     widgetScriptUrl: stored.widgetScriptUrl || DEFAULT_ANALYSIS_WIDGET_SCRIPT_URL,
     apiBaseUrl: stored.apiBaseUrl || DEFAULT_ANALYSIS_API_BASE_URL,
   };
@@ -177,6 +184,13 @@ export async function updateAnalysisIntegration(
 
   const publicKey = validateKey("public key", input.publicKey ?? "");
   const privateKey = validateKey("private key", input.privateKey ?? "");
+  const partnerSiteId = input.partnerSiteId ?? null;
+  if (
+    input.mode === "api" &&
+    (!Number.isInteger(partnerSiteId) || partnerSiteId === null || partnerSiteId <= 0)
+  ) {
+    throw new Error("Vul een geldig Partner site-ID in voor de directe API.");
+  }
   if (publicKey && input.removePublicKey) {
     throw new Error("Kies voor de public key tussen vervangen of verwijderen.");
   }
@@ -195,6 +209,7 @@ export async function updateAnalysisIntegration(
     mode: input.mode,
     widgetScriptUrl,
     apiBaseUrl,
+    partnerSiteId,
     updatedAt: new Date().toISOString(),
     ...(updatedBy ? { updatedBy } : {}),
   };

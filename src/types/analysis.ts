@@ -195,11 +195,8 @@ export type AnalysisRunResult =
       score: number;
       criticalIssues: string[];
       summary?: string;
-      /** Verplicht zodra de geheime partnerclient in de volgende implementatiestap is gekoppeld. */
-      report?: NormalizedPartnerAuditReport;
-      partnerAnalysisId?: string;
-      /** Tijdelijke compatibiliteit met de bestaande widgetengine tijdens de gekoppelde migratie. */
-      raw?: unknown;
+      report: NormalizedPartnerAuditReport;
+      partnerAnalysisId: string;
     }
   | { status: "failed"; errorCode: string }
   | { status: "unavailable"; errorCode: string };
@@ -245,6 +242,7 @@ export type AnalysisIntegrationAdminView = {
   publicKeyHint: string;
   privateKeyConfigured: boolean;
   privateKeyHint: string;
+  partnerSiteId: number | null;
   widgetScriptUrl: string;
   apiBaseUrl: string;
 };
@@ -256,6 +254,7 @@ export type AnalysisIntegrationUpdate = {
   removePublicKey?: boolean;
   privateKey?: string;
   removePrivateKey?: boolean;
+  partnerSiteId?: number | null;
   widgetScriptUrl?: string;
   apiBaseUrl?: string;
 };
@@ -268,6 +267,7 @@ export type AnalysisIntegrationRuntime = {
   mode: AnalysisMode;
   publicKey: string;
   privateKey: string;
+  partnerSiteId: number | null;
   widgetScriptUrl: string;
   apiBaseUrl: string;
 };
