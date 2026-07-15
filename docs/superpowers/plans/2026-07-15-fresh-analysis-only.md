@@ -197,7 +197,50 @@ git add src/types/analysis.ts src/lib/analyse/config.ts src/lib/admin/analysisSe
 git commit -m "fix(analysis): allow retesting after two minutes"
 ```
 
-### Task 4: Verifieer, publiceer en bereid productie-uitrol voor
+### Task 4: Maak de nieuwe analyseknop klantgericht
+
+**Files:**
+- Create: `src/components/analyse/RequestNewAnalysisButton.test.tsx`
+- Modify: `src/components/analyse/RequestNewAnalysisButton.tsx`
+- Modify: `src/components/analyse/AnalyseFlow.tsx`
+- Modify: `src/app/[locale]/(site)/website-analyse/rapport/[token]/page.tsx`
+
+**Interfaces:**
+- Consumes: De bestaande publieke route `/website-analyse`.
+- Produces: `RequestNewAnalysisButton()` als directe link naar een nieuwe klantflow.
+
+- [ ] **Step 1: Schrijf een falende componenttest**
+
+Render de component met een gemockte lokale `Link` en controleer dat de markup naar `/website-analyse` verwijst in plaats van een knop met een API-aanroep te tonen.
+
+- [ ] **Step 2: Draai de test en bevestig de juiste fout**
+
+Run: `npx vitest run src/components/analyse/RequestNewAnalysisButton.test.tsx`
+
+Expected: FAIL omdat de huidige component een knop rendert zonder `href`.
+
+- [ ] **Step 3: Maak de knop een directe link**
+
+Verwijder lokale state en de POST naar `/api/analyse/request-new/`. Render dezelfde visuele knop als `Link href="/website-analyse"` en verwijder `analysisLeadId` uit beide aanroepen.
+
+- [ ] **Step 4: Draai de componenttest en volledige tests**
+
+Run: `npx vitest run src/components/analyse/RequestNewAnalysisButton.test.tsx`
+
+Expected: PASS.
+
+Run: `npm test`
+
+Expected: Alle tests slagen.
+
+- [ ] **Step 5: Commit**
+
+```text
+git add docs/superpowers/specs/2026-07-15-fresh-analysis-only-design.md docs/superpowers/plans/2026-07-15-fresh-analysis-only.md src/components/analyse/RequestNewAnalysisButton.tsx src/components/analyse/RequestNewAnalysisButton.test.tsx src/components/analyse/AnalyseFlow.tsx src/app/[locale]/(site)/website-analyse/rapport/[token]/page.tsx
+git commit -m "fix(analysis): let customers start a fresh scan"
+```
+
+### Task 5: Verifieer, publiceer en bereid productie-uitrol voor
 
 **Files:**
 - Modify only if verification finds an in-scope defect.

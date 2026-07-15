@@ -35,6 +35,10 @@ De standaardwaarde van `duplicateWindowMinutes` wordt 2. De productie-instelling
 
 Het duplicaatvenster voorkomt dubbelklikken en gelijktijdige dubbele betalende scans. Het is geen rapportcache en levert nooit een oud rapport terug.
 
+### Nieuwe analyseknop
+
+De knop `Nieuwe analyse aanvragen` op een rapport registreert niet langer alleen een intern beheerverzoek. Hij brengt de klant rechtstreeks terug naar de publieke analyseflow. Daar doorloopt de klant opnieuw de normale gegevens-, verificatie- en quotacontroles.
+
 ## Nieuwe gegevensstroom
 
 1. De klant dient een URL en contactgegevens in.
@@ -74,6 +78,7 @@ Aanvullend worden gecontroleerd:
 - Een recente oude teaser verhindert geen nieuwe uitgebreide analyse.
 - Een recente volledige analyse wordt evenmin hergebruikt.
 - Twee minuten na een eerdere aanvraag kan een nieuwe scan starten wanneer de overige quota dit toelaten.
+- De klant kan vanuit het rapport rechtstreeks terug naar de publieke analyseflow.
 - Iedere succesvolle nieuwe scan maakt een nieuw rapportdocument en koppelt dat via `reportId`.
 - Historische rapportlinks blijven openen.
 - De uitgebreide VisualVibe-layout blijft ongewijzigd en verschijnt zodra het nieuwe rapport is opgeslagen.
