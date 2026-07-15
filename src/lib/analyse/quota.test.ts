@@ -35,6 +35,8 @@ vi.mock("@/lib/firebase/admin", () => ({
 import {
   checkAndRegisterIpAttempt,
   checkAndReserveQuota,
+  consumeReservation,
+  grantExtraCredits,
   releaseReservation,
 } from "./quota";
 import { DEFAULT_ANALYSIS_QUOTA_CONFIG } from "@/types/analysis";
@@ -57,6 +59,10 @@ function readScopeEntries(id: string): TestEntry[] {
   return scopeData.get(id)?.entries ?? [];
 }
 
+function readExtraCredits(id: string): number {
+  return scopeData.get(id)?.extraCredits ?? 0;
+}
+
 type TestReservation = {
   status: "reserved" | "consumed" | "released";
   scopes: string[];
@@ -65,6 +71,7 @@ type TestReservation = {
 };
 
 const reservationData = new Map<string, TestReservation>();
+let maintenanceMode = false;
 
 function seedReservation(id: string, reservation: TestReservation): void {
   reservationData.set(id, reservation);
@@ -81,6 +88,7 @@ describe("checkAndReserveQuota", () => {
     vi.clearAllMocks();
     scopeData.clear();
     reservationData.clear();
+    maintenanceMode = false;
 
     firestore.collection.mockImplementation((collection: string) => ({
       doc: (id?: string) => documentReference(collection, id ?? "reservation-1"),
@@ -113,6 +121,13 @@ describe("checkAndReserveQuota", () => {
         return {
           exists: Boolean(reservation),
           data: () => reservation,
+        };
+      }
+
+      if (target.collection === "analysis_settings") {
+        return {
+          exists: true,
+          data: () => ({ maintenanceMode }),
         };
       }
 
@@ -231,6 +246,88 @@ describe("checkAndReserveQuota", () => {
     });
   });
 
+  it("returns the email reset when duplicate and email limits both block", async () => {
+    seedScope("combo-quota:klant@example.com|device-1|voorbeeld.be", [
+      { t: "2026-07-15T18:29:00.000Z", kind: "success" },
+    ]);
+    seedScope("email-quota:klant@example.com", [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ]);
+
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      deviceHash: "device-1",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+
+    expect(result).toMatchObject({
+      decision: "limit_email",
+      resetsAt: "2026-07-16T10:00:00.000Z",
+    });
+  });
+
+  it("adds the reached IP daily reset when the device limit already blocks", async () => {
+    seedScope("device-1", [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ]);
+    seedScope(
+      "ip-daily",
+      Array.from({ length: 12 }, (_, index) => ({
+        t: new Date(Date.parse("2026-07-15T18:00:00.000Z") + index * 60_000).toISOString(),
+        kind: "attempt" as const,
+      })),
+    );
+
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      deviceHash: "device-1",
+      ipHash: "ip-daily",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+
+    expect(result).toMatchObject({
+      decision: "limit_ip_daily",
+      resetsAt: "2026-07-16T18:00:00.000Z",
+    });
+    expect(readScopeEntries("ip-daily")).toHaveLength(12);
+  });
+
+  it("adds the reached IP monthly reset when the email limit already blocks", async () => {
+    seedScope("email-quota:klant@example.com", [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ]);
+    const older = Array.from({ length: 168 }, (_, index) => ({
+      t: new Date(Date.parse("2026-06-20T10:00:00.000Z") + index * 60 * 60_000).toISOString(),
+      kind: "attempt" as const,
+    }));
+    const recent = Array.from({ length: 12 }, (_, index) => ({
+      t: new Date(Date.parse("2026-07-15T10:00:00.000Z") + index * 60_000).toISOString(),
+      kind: "attempt" as const,
+    }));
+    seedScope("ip-monthly-blocked", [...older, ...recent]);
+
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      ipHash: "ip-monthly-blocked",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+
+    expect(result).toMatchObject({
+      decision: "limit_ip_monthly",
+      resetsAt: "2026-07-20T10:00:00.000Z",
+    });
+    expect(readScopeEntries("ip-monthly-blocked")).toHaveLength(180);
+  });
+
   it("returns the duplicate window reset", async () => {
     seedScope("combo-quota:klant@example.com||voorbeeld.be", [
       { t: "2026-07-15T18:29:00.000Z", kind: "success" },
@@ -298,6 +395,33 @@ describe("checkAndReserveQuota", () => {
     expect(readScopeEntries("ip-1").filter((entry) => entry.kind === "attempt")).toHaveLength(12);
   });
 
+  it("rejects an IP write when live maintenance started after config was cached", async () => {
+    maintenanceMode = true;
+
+    await expect(checkAndRegisterIpAttempt({
+      emailNormalized: "klant@example.com",
+      ipHash: "ip-maintenance",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG, maintenanceMode: false },
+    })).rejects.toThrow("onderhoudsmodus");
+
+    expect(readScopeEntries("ip-maintenance")).toEqual([]);
+    expect(firestore.set).not.toHaveBeenCalled();
+  });
+
+  it("rejects a reservation when live maintenance started after config was cached", async () => {
+    maintenanceMode = true;
+
+    await expect(checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG, maintenanceMode: false },
+    })).rejects.toThrow("onderhoudsmodus");
+
+    expect(firestore.create).not.toHaveBeenCalled();
+    expect(firestore.set).not.toHaveBeenCalled();
+  });
+
   it("allows a new analysis when the oldest success is exactly 24 hours old", async () => {
     seedScope("email-quota:klant@example.com", [
       { t: "2026-07-14T18:30:00.000Z", kind: "success" },
@@ -332,6 +456,169 @@ describe("checkAndReserveQuota", () => {
       normalizedDomain: "voorbeeld.be",
       config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
     })).resolves.toMatchObject({ decision: "allowed" });
+  });
+
+  it("keeps a reservation active for the full eight-minute route allowance", async () => {
+    vi.setSystemTime(Date.parse("2026-07-15T18:35:00.000Z"));
+    seedScope("email-quota:klant@example.com", [
+      {
+        t: "2026-07-15T18:29:00.000Z",
+        kind: "reserved",
+        reservationId: "long-run",
+      },
+    ]);
+
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG, maxPerEmail24h: 1 },
+    });
+
+    expect(result).toMatchObject({
+      decision: "limit_email",
+      resetsAt: "2026-07-16T18:37:00.000Z",
+    });
+  });
+
+  it("never consumes a supported reservation later than its displayed reset", async () => {
+    vi.setSystemTime(Date.parse("2026-07-15T18:35:00.000Z"));
+    seedScope("email-quota:klant@example.com", [
+      {
+        t: "2026-07-15T18:29:00.000Z",
+        kind: "reserved",
+        reservationId: "long-run",
+      },
+    ]);
+    seedReservation("long-run", {
+      status: "reserved",
+      scopes: ["email-quota:klant@example.com"],
+      usedExtraCredit: false,
+      emailScopeId: "email-quota:klant@example.com",
+    });
+    const input = {
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG, maxPerEmail24h: 1 },
+    };
+
+    const beforeConsume = await checkAndReserveQuota(input);
+    expect(beforeConsume).toMatchObject({
+      decision: "limit_email",
+      resetsAt: "2026-07-16T18:37:00.000Z",
+    });
+
+    vi.setSystemTime(Date.parse("2026-07-15T18:36:00.000Z"));
+    await consumeReservation("long-run");
+    const afterConsume = await checkAndReserveQuota(input);
+
+    expect(afterConsume).toMatchObject({
+      decision: "limit_email",
+      resetsAt: "2026-07-16T18:36:00.000Z",
+    });
+    expect(Date.parse("resetsAt" in afterConsume ? afterConsume.resetsAt : "")).toBeLessThanOrEqual(
+      Date.parse("resetsAt" in beforeConsume ? beforeConsume.resetsAt : ""),
+    );
+  });
+
+  it("uses two granted credits for two additional successful analyses", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ]);
+    await grantExtraCredits("klant@example.com", 2);
+
+    const first = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "eerste.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    expect(first).toMatchObject({ decision: "allowed_extra_credit" });
+    expect(readExtraCredits(emailScopeId)).toBe(1);
+    if (!("reservationId" in first)) throw new Error("Eerste reservering ontbreekt.");
+    seedReservation(first.reservationId, {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: true,
+      emailScopeId,
+    });
+    await consumeReservation(first.reservationId);
+
+    const second = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "tweede.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    expect(second).toMatchObject({ decision: "allowed_extra_credit" });
+    expect(readExtraCredits(emailScopeId)).toBe(0);
+    if (!("reservationId" in second)) throw new Error("Tweede reservering ontbreekt.");
+    seedReservation(second.reservationId, {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: true,
+      emailScopeId,
+    });
+    await consumeReservation(second.reservationId);
+
+    const blocked = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "derde.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    expect(blocked).toMatchObject({
+      decision: "limit_email",
+      resetsAt: "2026-07-16T12:00:00.000Z",
+    });
+  });
+
+  it("does not use an extra credit below the base email limit", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+    ]);
+    await grantExtraCredits("klant@example.com", 1);
+
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+
+    expect(result).toMatchObject({ decision: "allowed" });
+    expect(readExtraCredits(emailScopeId)).toBe(1);
+    expect(firestore.create).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ usedExtraCredit: false }),
+    );
+  });
+
+  it("restores exactly one credit when an extra-credit reservation is released", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ]);
+    await grantExtraCredits("klant@example.com", 1);
+    const result = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "voorbeeld.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    if (!("reservationId" in result)) throw new Error("Reservering ontbreekt.");
+    seedReservation(result.reservationId, {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: true,
+      emailScopeId,
+    });
+
+    await releaseReservation(result.reservationId);
+    await releaseReservation(result.reservationId);
+
+    expect(readExtraCredits(emailScopeId)).toBe(1);
   });
 
   it("allows IP attempt 180 and blocks attempt 181 in 30 days", async () => {

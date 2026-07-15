@@ -14,6 +14,8 @@ import type { AnalysisQuotaConfig } from "@/types/analysis";
 
 const QUOTA_COLLECTION = "analysis_quota";
 const RESERVATIONS_COLLECTION = "analysis_reservations";
+const SETTINGS_COLLECTION = "analysis_settings";
+const SETTINGS_ID = "default";
 
 /** 91 dagen technische retentie, ruim boven het maximale quotavenster van 30 dagen. */
 const RETENTION_MS = 91 * 24 * 60 * 60_000;
@@ -23,9 +25,9 @@ const DAY_MS = 24 * 60 * 60_000;
  * mee voor de e-mail-/device-limieten; blijft een reservering langer open
  * (proces gecrasht of platform-timeout tussen reserve en consume/release),
  * dan valt ze vanzelf weg en komt het tegoed vrij, zonder cron. Ruim boven de
- * echte runtijd (~45s) en de function-budget (maxDuration 60s).
+ * gebruikelijke runtijd en boven het verify-routebudget (maxDuration 300s).
  */
-const RESERVATION_LEASE_MS = 5 * 60_000;
+const RESERVATION_LEASE_MS = 8 * 60_000;
 
 type QuotaEntry = WindowQuotaEntry;
 
@@ -67,8 +69,25 @@ export type IpLimitOutcome = {
 
 export type IpAttemptOutcome = { decision: "allowed" } | IpLimitOutcome;
 
+export class AnalysisMaintenanceError extends Error {
+  constructor() {
+    super("Nieuwe analyses zijn tijdelijk geblokkeerd door de onderhoudsmodus.");
+    this.name = "AnalysisMaintenanceError";
+  }
+}
+
 function scopeRef(docId: string): DocumentReference {
   return adminDb.collection(QUOTA_COLLECTION).doc(docId);
+}
+
+function settingsRef(): DocumentReference {
+  return adminDb.collection(SETTINGS_COLLECTION).doc(SETTINGS_ID);
+}
+
+function assertMaintenanceDisabled(settingsData: Record<string, unknown> | undefined): void {
+  if (settingsData?.maintenanceMode === true) {
+    throw new AnalysisMaintenanceError();
+  }
 }
 
 function emailScopeId(emailNormalized: string): string {
@@ -132,12 +151,15 @@ function writeScope(transaction: Transaction, scope: ScopeState, nowIso: string)
 export async function checkAndRegisterIpAttempt(
   input: QuotaCheckInput,
 ): Promise<IpAttemptOutcome> {
-  if (!input.ipHash) return { decision: "allowed" };
-  const ipRef = scopeRef(input.ipHash);
+  const ipRef = input.ipHash ? scopeRef(input.ipHash) : undefined;
 
   return adminDb.runTransaction(async (transaction): Promise<IpAttemptOutcome> => {
     const now = Date.now();
     const nowIso = new Date(now).toISOString();
+    const settingsDocument = await transaction.get(settingsRef());
+    assertMaintenanceDisabled(settingsDocument.data());
+    if (!input.config.enabled || !ipRef) return { decision: "allowed" };
+
     const ipScope = await readScope(transaction, ipRef, now);
     const dailyEntries = entriesInWindow(ipScope.entries, ["attempt"], now - DAY_MS);
     const monthlyEntries = entriesInWindow(ipScope.entries, ["attempt"], now - 30 * DAY_MS);
@@ -181,6 +203,11 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
   return adminDb.runTransaction(async (transaction): Promise<QuotaOutcome> => {
     const now = Date.now();
     const nowIso = new Date(now).toISOString();
+    const blocks: QuotaLimitOutcome[] = [];
+
+    const settingsDocument = await transaction.get(settingsRef());
+    assertMaintenanceDisabled(settingsDocument.data());
+    if (!config.enabled) return { decision: "allowed", reservationId: "" };
 
     const [emailScope, domainScope, comboScope, deviceScope] = await Promise.all([
       readScope(transaction, emailRef, now),
@@ -199,11 +226,11 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       now - duplicateWindowMs,
     );
     if (duplicateEntries.length > 0) {
-      return {
+      blocks.push({
         decision: "duplicate_request",
         reason: "Deze aanvraag is zonet al ingediend. Probeer het later opnieuw.",
         resetsAt: resetAtForWindow(duplicateEntries, duplicateWindowMs, 1),
-      };
+      });
     }
 
     // 2. E-mail- en devicequota over de afgelopen 24 uur. Bereken alle
@@ -216,18 +243,22 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       now,
       RESERVATION_LEASE_MS,
     );
-    const emailLimit = config.maxPerEmail24h + emailScope.extraCredits;
-    const blocks: QuotaLimitOutcome[] = [];
+    const emailLimitReached =
+      config.maxPerEmail24h > 0 && emailEntries.length >= config.maxPerEmail24h;
+    const usesExtraCredit = emailLimitReached && emailScope.extraCredits > 0;
 
-    if (emailLimit > 0 && emailEntries.length >= emailLimit) {
+    if (emailLimitReached && !usesExtraCredit) {
       blocks.push({
         decision: "limit_email",
         reason: "Het maximum aantal gratis analyses voor dit e-mailadres is bereikt.",
-        resetsAt: resetAtForWindow(emailEntries, DAY_MS, emailLimit),
+        resetsAt: resetAtForWindow(
+          emailEntries,
+          DAY_MS,
+          config.maxPerEmail24h,
+          RESERVATION_LEASE_MS,
+        ),
       });
     }
-    const usesExtraCredit =
-      emailEntries.length >= config.maxPerEmail24h && emailScope.extraCredits > 0;
 
     if (deviceScope && config.maxPerDevice24h > 0) {
       const deviceEntries = activeAnalysisEntries(
@@ -240,7 +271,33 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
         blocks.push({
           decision: "limit_device",
           reason: "Het maximum aantal gratis analyses voor dit apparaat is bereikt.",
-          resetsAt: resetAtForWindow(deviceEntries, DAY_MS, config.maxPerDevice24h),
+          resetsAt: resetAtForWindow(
+            deviceEntries,
+            DAY_MS,
+            config.maxPerDevice24h,
+            RESERVATION_LEASE_MS,
+          ),
+        });
+      }
+    }
+
+    if (blocks.length > 0 && input.ipHash) {
+      const ipScope = await readScope(transaction, scopeRef(input.ipHash), now);
+      const dailyEntries = entriesInWindow(ipScope.entries, ["attempt"], now - DAY_MS);
+      const monthlyEntries = entriesInWindow(ipScope.entries, ["attempt"], now - 30 * DAY_MS);
+
+      if (config.maxPerIp24h > 0 && dailyEntries.length >= config.maxPerIp24h) {
+        blocks.push({
+          decision: "limit_ip_daily",
+          reason: "Te veel aanvragen vanaf dit netwerk in de afgelopen 24 uur.",
+          resetsAt: resetAtForWindow(dailyEntries, DAY_MS, config.maxPerIp24h),
+        });
+      }
+      if (config.maxPerIp30d > 0 && monthlyEntries.length >= config.maxPerIp30d) {
+        blocks.push({
+          decision: "limit_ip_monthly",
+          reason: "Het maandelijkse maximum aan aanvragen vanaf dit netwerk is bereikt.",
+          resetsAt: resetAtForWindow(monthlyEntries, 30 * DAY_MS, config.maxPerIp30d),
         });
       }
     }

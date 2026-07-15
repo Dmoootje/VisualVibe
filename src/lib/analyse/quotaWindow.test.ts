@@ -29,6 +29,16 @@ describe("rolling quota windows", () => {
     expect(activeAnalysisEntries(entries, NOW - DAY_MS, NOW, 5 * 60_000)).toHaveLength(2);
   });
 
+  it("adds the completion allowance to a reserved entry reset", () => {
+    const entries = [
+      { t: "2026-07-15T18:29:00.000Z", kind: "reserved" as const },
+    ];
+
+    expect(resetAtForWindow(entries, DAY_MS, 1, 8 * 60_000)).toBe(
+      "2026-07-16T18:37:00.000Z",
+    );
+  });
+
   it("returns the expiry that actually creates one free slot", () => {
     const entries = [
       { t: "2026-07-15T10:00:00.000Z", kind: "attempt" as const },

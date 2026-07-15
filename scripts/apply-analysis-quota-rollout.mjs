@@ -1,12 +1,25 @@
 import { deleteApp, initializeApp } from "firebase-admin/app";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import {
+  OPEN_RESERVATION_POLL_INTERVAL_MS,
+  OPEN_RESERVATION_TIMEOUT_MS,
   QUOTA_SETTINGS,
   parseRolloutArgs,
+  runQuotaResetUnderMaintenance,
+  waitForNoOpenReservations,
 } from "./lib/analysis-quota-rollout.mjs";
 
 async function collectionCount(db, collectionName) {
   const snapshot = await db.collection(collectionName).count().get();
+  return snapshot.data().count;
+}
+
+async function openReservationCount(db) {
+  const snapshot = await db
+    .collection("analysis_reservations")
+    .where("status", "==", "reserved")
+    .count()
+    .get();
   return snapshot.data().count;
 }
 
@@ -23,16 +36,19 @@ async function deleteCollection(db, collectionName) {
 }
 
 async function readSafeState(db) {
-  const [quotaCount, reservationCount, settingsDocument] = await Promise.all([
+  const [quotaCount, reservationCount, openReservations, settingsDocument] = await Promise.all([
     collectionCount(db, "analysis_quota"),
     collectionCount(db, "analysis_reservations"),
+    openReservationCount(db),
     db.collection("analysis_settings").doc("default").get(),
   ]);
   const settings = settingsDocument.data() ?? {};
   return {
     quotaCount,
     reservationCount,
+    openReservations,
     settings: {
+      maintenanceMode: settings.maintenanceMode === true,
       maxPerEmail24h: settings.maxPerEmail24h,
       maxPerDevice24h: settings.maxPerDevice24h,
       maxPerIp24h: settings.maxPerIp24h,
@@ -53,20 +69,31 @@ async function main() {
     console.log(JSON.stringify({ mode: args.apply ? "apply" : "dry-run", before }, null, 2));
     if (!args.apply) return;
 
-    await db.collection("analysis_settings").doc("default").set({
-      ...QUOTA_SETTINGS,
-      maxPerEmail90d: FieldValue.delete(),
-      maxPerDevice90d: FieldValue.delete(),
-      updatedAt: new Date().toISOString(),
-      updatedBy: "analysis-quota-24h-rollout",
-    }, { merge: true });
-
-    const deletedReservations = await deleteCollection(db, "analysis_reservations");
-    const deletedQuotaDocuments = await deleteCollection(db, "analysis_quota");
+    const settingsRef = db.collection("analysis_settings").doc("default");
+    const resetResult = await runQuotaResetUnderMaintenance({
+      setMaintenanceMode: (maintenanceMode) => settingsRef.set({
+        maintenanceMode,
+        updatedAt: new Date().toISOString(),
+        updatedBy: "analysis-quota-24h-rollout",
+      }, { merge: true }),
+      waitForReservations: () => waitForNoOpenReservations({
+        countOpenReservations: () => openReservationCount(db),
+        pollIntervalMs: OPEN_RESERVATION_POLL_INTERVAL_MS,
+        timeoutMs: OPEN_RESERVATION_TIMEOUT_MS,
+      }),
+      applyQuotaSettings: () => settingsRef.set({
+        ...QUOTA_SETTINGS,
+        maxPerEmail90d: FieldValue.delete(),
+        maxPerDevice90d: FieldValue.delete(),
+        updatedAt: new Date().toISOString(),
+        updatedBy: "analysis-quota-24h-rollout",
+      }, { merge: true }),
+      deleteReservations: () => deleteCollection(db, "analysis_reservations"),
+      deleteQuotaDocuments: () => deleteCollection(db, "analysis_quota"),
+    });
     const after = await readSafeState(db);
     console.log(JSON.stringify({
-      deletedReservations,
-      deletedQuotaDocuments,
+      ...resetResult,
       after,
     }, null, 2));
   } finally {

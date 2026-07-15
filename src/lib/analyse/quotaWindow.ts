@@ -37,13 +37,19 @@ export function resetAtForWindow(
   entries: WindowQuotaEntry[],
   windowMs: number,
   limit: number,
+  reservedCompletionAllowanceMs = 0,
 ): string {
   if (!Number.isInteger(limit) || limit < 1 || entries.length < limit) {
     throw new Error("Resetmoment vereist een bereikt positief quotum.");
   }
-  const sorted = [...entries].sort((a, b) => Date.parse(a.t) - Date.parse(b.t));
-  const firstEntryThatMustExpire = sorted[sorted.length - limit];
-  return new Date(Date.parse(firstEntryThatMustExpire.t) + windowMs).toISOString();
+  const sortedResetTimes = entries
+    .map((entry) =>
+      Date.parse(entry.t) +
+      windowMs +
+      (entry.kind === "reserved" ? reservedCompletionAllowanceMs : 0),
+    )
+    .sort((a, b) => a - b);
+  return new Date(sortedResetTimes[sortedResetTimes.length - limit]).toISOString();
 }
 
 export function latestBlockingLimit<T extends { resetsAt: string }>(limits: T[]): T {

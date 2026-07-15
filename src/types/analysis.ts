@@ -170,6 +170,8 @@ export type AnalysisReportDocument = {
 /** Firestore: analysis_settings/default. Beheerbaar in /admin/settings/analyse. */
 export type AnalysisQuotaConfig = {
   enabled: boolean;
+  /** Tijdelijke operationele blokkade voor nieuwe analysestarts. */
+  maintenanceMode: boolean;
   /** Succesvol afgeronde analyses per geverifieerd e-mailadres per 24 uur. */
   maxPerEmail24h: number;
   /** Succesvol afgeronde analyses per device per 24 uur. */
@@ -190,6 +192,7 @@ export type AnalysisQuotaConfig = {
 
 export const DEFAULT_ANALYSIS_QUOTA_CONFIG: AnalysisQuotaConfig = {
   enabled: true,
+  maintenanceMode: false,
   maxPerEmail24h: 3,
   maxPerDevice24h: 3,
   maxPerIp24h: 12,

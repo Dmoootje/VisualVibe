@@ -11,7 +11,11 @@ import {
   parseOrCreateDeviceId,
 } from "@/lib/analyse/identity";
 import { toAnalysisLimitResponse } from "@/lib/analyse/limitResponse";
-import { checkAndRegisterIpAttempt, type IpAttemptOutcome } from "@/lib/analyse/quota";
+import {
+  AnalysisMaintenanceError,
+  checkAndRegisterIpAttempt,
+  type IpAttemptOutcome,
+} from "@/lib/analyse/quota";
 import { issueVerificationCode } from "@/lib/analyse/verification";
 import { sendAnalysisVerificationMail } from "@/lib/email/analysisMails";
 import { createAnalysisLead, listAnalysisLeadsByLeadId } from "@/lib/firestore/analysisLeads";
@@ -141,33 +145,44 @@ export async function POST(request: NextRequest) {
   const hashedDevice = deviceHash(deviceId);
   const hashedIp = ipHashFromRequest(request);
 
+  if (config.maintenanceMode) {
+    return withDeviceCookie(
+      jsonError("De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw.", 503),
+      newCookieValue,
+    );
+  }
+
   // Poging atomisch controleren en registreren voor de IP-tellers. Wanneer de
-  // quotabewaking uitstaat, slaan we ook het tellen over.
-  if (config.enabled) {
-    let attemptOutcome: IpAttemptOutcome;
-    try {
-      attemptOutcome = await checkAndRegisterIpAttempt({
-        emailNormalized: normalizedEmail.emailNormalized,
-        deviceHash: hashedDevice,
-        ipHash: hashedIp,
-        normalizedDomain: normalizedUrl.normalizedDomain,
-        config,
-      });
-    } catch {
+  // quotabewaking uitstaat, controleert de transactie alleen onderhoudsmodus.
+  let attemptOutcome: IpAttemptOutcome;
+  try {
+    attemptOutcome = await checkAndRegisterIpAttempt({
+      emailNormalized: normalizedEmail.emailNormalized,
+      deviceHash: hashedDevice,
+      ipHash: hashedIp,
+      normalizedDomain: normalizedUrl.normalizedDomain,
+      config,
+    });
+  } catch (error) {
+    if (error instanceof AnalysisMaintenanceError) {
       return withDeviceCookie(
-        jsonError(
-          "De aanvraaglimiet kon niet veilig worden gecontroleerd. Probeer het zo opnieuw.",
-          503,
-        ),
+        jsonError("De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw.", 503),
         newCookieValue,
       );
     }
-    if (attemptOutcome.decision !== "allowed") {
-      return withDeviceCookie(
-        NextResponse.json(toAnalysisLimitResponse(attemptOutcome), { status: 429 }),
-        newCookieValue,
-      );
-    }
+    return withDeviceCookie(
+      jsonError(
+        "De aanvraaglimiet kon niet veilig worden gecontroleerd. Probeer het zo opnieuw.",
+        503,
+      ),
+      newCookieValue,
+    );
+  }
+  if (attemptOutcome.decision !== "allowed") {
+    return withDeviceCookie(
+      NextResponse.json(toAnalysisLimitResponse(attemptOutcome), { status: 429 }),
+      newCookieValue,
+    );
   }
 
   try {

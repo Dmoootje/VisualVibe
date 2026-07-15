@@ -48,6 +48,9 @@ export async function POST(request: NextRequest) {
   }
 
   const config = await getAnalysisQuotaConfig();
+  if (config.maintenanceMode) {
+    return jsonError("De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw.", 503);
+  }
   const issued = await issueVerificationCode(
     analysisLead.id,
     analysisLead.emailNormalized,

@@ -42,6 +42,7 @@ function parseQuotaSettings(formData: FormData): {
 } {
   const patch: Partial<AnalysisQuotaConfig> = {
     enabled: formData.get("enabled") === "on",
+    maintenanceMode: formData.get("maintenanceMode") === "on",
   };
 
   for (const field of NUMERIC_FIELDS) {

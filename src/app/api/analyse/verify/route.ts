@@ -6,6 +6,7 @@ import { normalizeAndValidateUrl } from "@/lib/analyse/domain";
 import { runWebsiteAnalysis } from "@/lib/analyse/engine";
 import { toAnalysisLimitResponse } from "@/lib/analyse/limitResponse";
 import {
+  AnalysisMaintenanceError,
   checkAndReserveQuota,
   consumeReservation,
   releaseReservation,
@@ -187,6 +188,13 @@ export async function POST(request: NextRequest) {
 
   const config = await getAnalysisQuotaConfig();
 
+  if (config.maintenanceMode) {
+    return json(
+      { status: "error", error: "De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw." },
+      503,
+    );
+  }
+
   // De dure analyse mag ALLEEN draaien direct na een geldige e-mailverificatie.
   // Een lead die niet (meer) op verificatie wacht - bv. na een mislukte run of
   // een gestrand "verified" - heeft geen actieve code en moet er via
@@ -232,23 +240,28 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Quotacontrole en reservering. Staat de bewaking uit, dan is alles
-  // toegestaan zonder reservering (lege reservationId).
+  // Quotacontrole en reservering. Staat de bewaking uit, dan controleert de
+  // transactie alleen onderhoudsmodus en geeft ze een lege reservationId terug.
   let outcome: QuotaOutcome;
-  if (config.enabled) {
-    try {
-      outcome = await checkAndReserveQuota({
-        emailNormalized: analysisLead.emailNormalized,
-        deviceHash: analysisLead.deviceHash,
-        ipHash: analysisLead.ipHash,
-        normalizedDomain: analysisLead.normalizedDomain,
-        config,
-      });
-    } catch {
-      return json({ status: "failed", message: FAILED_MESSAGE });
+  try {
+    outcome = await checkAndReserveQuota({
+      emailNormalized: analysisLead.emailNormalized,
+      deviceHash: analysisLead.deviceHash,
+      ipHash: analysisLead.ipHash,
+      normalizedDomain: analysisLead.normalizedDomain,
+      config,
+    });
+  } catch (error) {
+    if (error instanceof AnalysisMaintenanceError) {
+      return json(
+        {
+          status: "error",
+          error: "De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw.",
+        },
+        503,
+      );
     }
-  } else {
-    outcome = { decision: "allowed", reservationId: "" };
+    return json({ status: "failed", message: FAILED_MESSAGE });
   }
 
   // Limiet of duplicaat: registreren, gededupeerd melden en netjes afwijzen.

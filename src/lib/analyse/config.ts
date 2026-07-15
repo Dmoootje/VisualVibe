@@ -30,6 +30,9 @@ export function mergeWithDefaults(
   if (!data) return merged;
 
   if (typeof data.enabled === "boolean") merged.enabled = data.enabled;
+  if (typeof data.maintenanceMode === "boolean") {
+    merged.maintenanceMode = data.maintenanceMode;
+  }
   for (const key of NUMERIC_KEYS) {
     const value = data[key];
     if (typeof value === "number" && Number.isInteger(value) && value >= 0) {
@@ -68,6 +71,12 @@ export async function updateAnalysisQuotaConfig(
       throw new Error("De instelling 'enabled' moet een boolean zijn.");
     }
     patch.enabled = input.enabled;
+  }
+  if (input.maintenanceMode !== undefined) {
+    if (typeof input.maintenanceMode !== "boolean") {
+      throw new Error("De instelling 'maintenanceMode' moet een boolean zijn.");
+    }
+    patch.maintenanceMode = input.maintenanceMode;
   }
   for (const key of NUMERIC_KEYS) {
     const value = input[key];
