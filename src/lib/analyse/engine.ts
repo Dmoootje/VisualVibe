@@ -6,6 +6,20 @@ import type { AnalysisRunResult } from "@/types/analysis";
 
 const REQUEST_TIMEOUT_MS = 45_000;
 
+/**
+ * Schrijft een begrensde diagnostische regel naar stderr. Bewust
+ * process.stderr.write i.p.v. console.error: next.config's
+ * compiler.removeConsole verwijdert console.* in productie, deze schrijfwijze
+ * overleeft dat. Bevat nooit de site-key of de Authorization-header.
+ */
+function logEngineDiagnostic(message: string): void {
+  try {
+    process.stderr.write(`[analyse-engine] ${message}\n`);
+  } catch {
+    // Diagnostiek mag de analyseflow nooit breken.
+  }
+}
+
 function pickScore(data: Record<string, unknown>): number | undefined {
   const nested =
     data.result && typeof data.result === "object" ? (data.result as Record<string, unknown>) : undefined;
@@ -37,9 +51,12 @@ function toIssueStrings(raw: unknown): string[] {
 }
 
 /**
- * Roept de externe analyse-engine (Replit partner-API) aan. Gooit NOOIT een
- * fout en logt nooit response-bodies: elke storing wordt een net
- * AnalysisRunResult zodat de aanroepende route de lead correct kan afronden.
+ * Roept de externe analyse-engine (partner-API van SEO Supercharged) aan. Gooit
+ * NOOIT een fout: elke storing wordt een net AnalysisRunResult zodat de
+ * aanroepende route de lead correct kan afronden. Bij een fout logt hij wel een
+ * begrensde, secret-vrije diagnostische regel (status + korte body-snippet met
+ * de error-code van de partner-API) zodat de weigergrond zichtbaar is in de
+ * serverlogs; de site-key en de Authorization-header worden NOOIT gelogd.
  *
  * TODO: de responsemapping hieronder is bewust defensief (score uit meerdere
  * kandidaatvelden, issues uit criticalIssues/issues). Zodra het definitieve
@@ -73,12 +90,28 @@ export async function runWebsiteAnalysis(input: {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       cache: "no-store",
     });
-  } catch {
-    // Netwerkfout of timeout: tijdelijk onbeschikbaar, geen details loggen.
+  } catch (error) {
+    // Netwerkfout of timeout: tijdelijk onbeschikbaar. Enkel de fout-naam en de
+    // aangeroepen URL loggen (geen keys/headers).
+    logEngineDiagnostic(
+      `fetch mislukt naar ${apiUrl} (${error instanceof Error ? error.name : "onbekend"})`,
+    );
     return { status: "unavailable", errorCode: "network_error" };
   }
 
   if (!response.ok) {
+    // Maak de weigergrond van de partner-API zichtbaar: status + een begrensde,
+    // secret-vrije snippet van de response-body (bevat doorgaans de error-code,
+    // bv. domain_not_verified / partner_not_approved / insufficient_credit).
+    let bodySnippet = "";
+    try {
+      bodySnippet = (await response.text()).replace(/\s+/g, " ").trim().slice(0, 300);
+    } catch {
+      // Body niet leesbaar; de status alleen is al bruikbaar.
+    }
+    logEngineDiagnostic(
+      `partner-API ${response.status} van ${apiUrl}${bodySnippet ? ` - ${bodySnippet}` : ""}`,
+    );
     return { status: "unavailable", errorCode: `http_${response.status}` };
   }
 
