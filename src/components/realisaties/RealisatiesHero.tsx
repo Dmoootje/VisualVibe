@@ -73,8 +73,13 @@ export function RealisatiesHero({ stack }: { stack: HubProject[] }) {
                     className={`absolute overflow-hidden rounded-[16px] border border-white/[0.12] shadow-[0_18px_50px_-18px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-0 motion-reduce:transition-none ${layout}`}
                   >
                     <div className="relative aspect-[16/11]">
-                      {/* Decoratief: dezelfde info staat op de voorste kaart/pagina. */}
-                      <Image src={project.image} alt="" fill sizes="(max-width: 640px) 60vw, 340px" className="object-cover" />
+                      <Image
+                        src={project.image}
+                        alt={project.imageAlt}
+                        fill
+                        sizes="(max-width: 640px) 60vw, 340px"
+                        className="object-cover"
+                      />
                       <div aria-hidden="true" className="absolute inset-0 bg-[rgba(10,10,10,0.25)]" />
                     </div>
                   </div>
