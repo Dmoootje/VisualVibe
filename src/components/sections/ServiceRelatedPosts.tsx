@@ -20,20 +20,22 @@ const SERVICE_TO_CATEGORY: Record<string, string> = {
 };
 
 /** Auteursvermelding (foto uit admin-profiel, anders User-icoon) + leestijd. */
-function AuthorMeta({
-  author,
-  authorImage,
-  readingTime,
-  className = "",
-}: {
+export type AuthorMetaProps = {
   author?: string;
   authorImage?: string;
   readingTime?: string;
   className?: string;
-}) {
+};
+
+export function AuthorMeta({
+  author,
+  authorImage,
+  readingTime,
+  className = "",
+}: AuthorMetaProps) {
   if (!author && !readingTime) return null;
   return (
-    <span className={`flex min-w-0 items-center gap-1.5 font-mono font-semibold text-white/40 ${className}`}>
+    <span className={`flex min-w-0 items-center gap-1.5 font-mono font-semibold text-white/65 ${className}`}>
       {author && (
         <>
           {authorImage ? (
