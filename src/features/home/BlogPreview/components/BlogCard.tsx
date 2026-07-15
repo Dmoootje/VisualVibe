@@ -133,7 +133,7 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
                 {authorImage ? (
                   <Image
                     src={authorImage}
-                    alt=""
+                    alt={`Profielfoto van ${post.author}`}
                     width={28}
                     height={28}
                     className="h-[18px] w-[18px] shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
