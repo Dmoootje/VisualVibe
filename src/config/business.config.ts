@@ -15,6 +15,8 @@ export const businessConfig = {
   founder: "Jens Hardy",
   /** Ondernemings-/btw-nummer (KBO). */
   vatID: "BE1014.755.897",
+  /** Indicative price level for LocalBusiness structured data. */
+  priceRange: "$$",
   address: {
     streetAddress: "Ziegelsmeer 14",
     postalCode: "3700",
