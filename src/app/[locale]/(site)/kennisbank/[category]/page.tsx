@@ -201,6 +201,7 @@ export default async function KennisbankCategoryPage({
         graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
         search={<CategoryHeroSearch />}
         backgroundImage={kennisbankCategoryFeatured(categoryDef.slug)}
+        backgroundImageAlt={`Kennisbank ${categoryDef.name} van VisualVibe`}
       />
 
       <section className="relative z-[2]">
