@@ -41,7 +41,7 @@ export function AuthorMeta({
           {authorImage ? (
             <Image
               src={authorImage}
-              alt=""
+              alt={`Profielfoto van ${author}`}
               width={28}
               height={28}
               className="h-4 w-4 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
