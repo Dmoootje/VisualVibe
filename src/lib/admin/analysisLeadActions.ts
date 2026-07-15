@@ -13,6 +13,7 @@ import {
   newReportToken,
   updateAnalysisLead,
 } from "@/lib/firestore/analysisLeads";
+import { createAnalysisReport } from "@/lib/firestore/analysisReports";
 import { addLeadEvent } from "@/lib/firestore/leadEvents";
 import { changeLeadStatus, createLeadNote } from "@/lib/admin/leadActions";
 import type { AnalysisLead, AnalysisRunResult } from "@/types/analysis";
@@ -70,14 +71,28 @@ export async function rerunAnalysisAction(analysisLeadId: string): Promise<void>
 
   // De opgegeven URL opnieuw valideren (SSRF-checks) voor de engine-aanroep.
   const normalized = await normalizeAndValidateUrl(analysisLead.submittedUrl);
-  const result: AnalysisRunResult = normalized.ok
+  let result: AnalysisRunResult = normalized.ok
     ? await runWebsiteAnalysis({
         safeUrl: normalized.safeUrl,
         normalizedDomain: analysisLead.normalizedDomain,
+        idempotencyKey: runId,
       })
     : { status: "failed", errorCode: "invalid_url" };
 
-  if (result.status === "completed") {
+  const analysisReport =
+    result.status === "completed"
+      ? await createAnalysisReport({
+          partnerAnalysisId: result.partnerAnalysisId,
+          normalizedDomain: analysisLead.normalizedDomain,
+          sourceUrl: result.report.url,
+          report: result.report,
+        }).catch(() => null)
+      : null;
+  if (result.status === "completed" && !analysisReport) {
+    result = { status: "failed", errorCode: "report_storage_failed" };
+  }
+
+  if (result.status === "completed" && analysisReport) {
     const reportToken = analysisLead.reportToken ?? newReportToken();
     await updateAnalysisLead(analysisLeadId, {
       status: "completed",
@@ -86,6 +101,8 @@ export async function rerunAnalysisAction(analysisLeadId: string): Promise<void>
       criticalIssues: result.criticalIssues,
       ...(result.summary ? { analysisSummary: result.summary } : {}),
       reportToken,
+      reportId: analysisReport.id,
+      reportSchemaVersion: analysisReport.schemaVersion,
       completedAt: new Date().toISOString(),
     });
 
@@ -104,7 +121,7 @@ export async function rerunAnalysisAction(analysisLeadId: string): Promise<void>
         createdBy: admin.email,
       });
     }
-  } else {
+  } else if (result.status !== "completed") {
     await updateAnalysisLead(analysisLeadId, {
       status: "failed",
       analysisStatus: "failed",

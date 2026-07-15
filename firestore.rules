@@ -57,5 +57,25 @@ service cloud.firestore {
     match /lead_rate_limits/{rateLimitId} {
       allow read, write: if false;
     }
+
+    match /analysis_leads/{analysisLeadId} {
+      allow read, write: if false;
+    }
+
+    match /analysis_reports/{analysisReportId} {
+      allow read, write: if false;
+    }
+
+    match /analysis_settings/{analysisSettingsId} {
+      allow read, write: if false;
+    }
+
+    match /analysis_quota/{analysisQuotaId} {
+      allow read, write: if false;
+    }
+
+    match /analysis_reservations/{analysisReservationId} {
+      allow read, write: if false;
+    }
   }
 }

@@ -137,6 +137,9 @@ export type AnalysisLead = {
   analysisSummary?: string;
   /** Niet-voorspelbaar toegangstoken voor het rapport (base64url, 32 bytes). */
   reportToken?: string;
+  /** Verwijzing naar het volledige genormaliseerde rapport. */
+  reportId?: string;
+  reportSchemaVersion?: number;
   /** Bij hergebruik: de analysis_lead waarvan het rapport komt. */
   reusedFromId?: string;
   /** Bezoeker vroeg expliciet een nieuwe analyse aan binnen de cooldown; admin kan forceren. */
@@ -150,6 +153,17 @@ export type AnalysisLead = {
   completedAt?: string;
   failedAt?: string;
   expiredAt?: string;
+};
+
+export type AnalysisReportDocument = {
+  id: string;
+  partnerAnalysisId: string;
+  schemaVersion: number;
+  normalizedDomain: string;
+  sourceUrl: string;
+  report: NormalizedPartnerAuditReport;
+  createdAt: string;
+  updatedAt: string;
 };
 
 /** Firestore: analysis_settings/default. Beheerbaar in /admin/settings/analyse. */
