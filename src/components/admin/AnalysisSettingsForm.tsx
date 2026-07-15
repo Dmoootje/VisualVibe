@@ -31,11 +31,6 @@ const QUOTA_FIELDS: NumericFieldDef[] = [
     hint: "Aantal succesvol afgeronde analyses per toestel (gehashte first-party cookie) in 90 dagen.",
   },
   {
-    key: "domainCooldownDays",
-    label: "Cooldown per domein (dagen)",
-    hint: "Aantal dagen waarin hetzelfde domein niet opnieuw wordt geanalyseerd; het bestaande rapport wordt hergebruikt.",
-  },
-  {
     key: "maxPerIp24h",
     label: "Aanvragen per IP (24 uur)",
     hint: "Maximaal aantal analyseaanvragen per gehasht IP-adres per 24 uur.",
@@ -53,7 +48,7 @@ const QUOTA_FIELDS: NumericFieldDef[] = [
   {
     key: "duplicateWindowMinutes",
     label: "Duplicaatvenster (minuten)",
-    hint: "Minuten waarbinnen dezelfde combinatie van e-mail, toestel en domein niet opnieuw mag starten.",
+    hint: "Beschermt kort tegen dubbelklikken voor dezelfde combinatie van e-mail, toestel en domein. Een toegestane aanvraag start altijd een nieuwe analyse.",
   },
   {
     key: "codeTtlMinutes",

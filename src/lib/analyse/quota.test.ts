@@ -103,3 +103,10 @@ describe("checkAndReserveQuota", () => {
     expect(firestore.create).toHaveBeenCalledOnce();
   });
 });
+
+describe("fresh analysis quota defaults", () => {
+  it("uses a two minute duplicate window without a domain cooldown", () => {
+    expect(DEFAULT_ANALYSIS_QUOTA_CONFIG.duplicateWindowMinutes).toBe(2);
+    expect(DEFAULT_ANALYSIS_QUOTA_CONFIG).not.toHaveProperty("domainCooldownDays");
+  });
+});
