@@ -4,7 +4,6 @@ import { businessConfig } from "@/config/business.config";
 import { getAnalysisQuotaConfig } from "@/lib/analyse/config";
 import { normalizeAndValidateUrl } from "@/lib/analyse/domain";
 import { runWebsiteAnalysis } from "@/lib/analyse/engine";
-import { buildReusedReportPatch } from "@/lib/analyse/reportLinking";
 import {
   checkAndReserveQuota,
   consumeReservation,
@@ -244,50 +243,6 @@ export async function POST(request: NextRequest) {
     }
   } else {
     outcome = { decision: "allowed", reservationId: "" };
-  }
-
-  // Recent rapport voor dit domein: hergebruiken in plaats van opnieuw draaien.
-  if (outcome.decision === "reused_recent") {
-    const source = await getAnalysisLead(outcome.reuseFrom.analysisLeadId).catch(() => null);
-    const token = newReportToken();
-    const nowIso = new Date().toISOString();
-    const score = source?.analysisScore ?? outcome.reuseFrom.analysisScore ?? 0;
-    const criticalIssues = source?.criticalIssues ?? outcome.reuseFrom.criticalIssues ?? [];
-    const reusedReportPatch = buildReusedReportPatch(source ?? {}, token);
-
-    await updateAnalysisLead(analysisLead.id, {
-      status: "completed",
-      analysisStatus: "reused",
-      reusedFromId: outcome.reuseFrom.analysisLeadId,
-      analysisScore: score,
-      criticalIssues,
-      ...reusedReportPatch,
-      quotaDecision: "reused_recent",
-      completedAt: nowIso,
-    });
-
-    const completedLead: AnalysisLead = {
-      ...analysisLead,
-      status: "completed",
-      analysisStatus: "reused",
-      reusedFromId: outcome.reuseFrom.analysisLeadId,
-      analysisScore: score,
-      criticalIssues,
-      ...reusedReportPatch,
-      quotaDecision: "reused_recent",
-      completedAt: nowIso,
-    };
-
-    await sendAnalysisReportMail({ analysisLead: completedLead, reportUrl: reportUrlAbsolute(token) });
-    await sendAnalysisAdminNotification({ analysisLead: completedLead, kind: "completed" });
-    await safeLeadEvent(analysisLead, "analysis_reused");
-
-    return json({
-      status: "reused",
-      reportUrl: reportPath(token),
-      score,
-      criticalIssues,
-    });
   }
 
   // Limiet of duplicaat: registreren, gededupeerd melden en netjes afwijzen.
