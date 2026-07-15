@@ -38,11 +38,10 @@ export function RealisatieContextGrid({ items }: { items: HubContextItem[] }) {
               <>
                 {item.image && (
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    {/* Illustratief voorbeeldbeeld: leeg alt, anders vervuilt
-                        een projectnaam de accessible name van de tegel-link. */}
+                    {/* Inhoudelijk projectvoorbeeld met de bestaande projectspecifieke alttekst. */}
                     <Image
                       src={item.image.src}
-                      alt=""
+                      alt={item.image.alt}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 260px"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
