@@ -27,6 +27,83 @@ export type AnalysisQuotaDecision =
   | "limit_ip_monthly"
   | "duplicate_request";
 
+export type PartnerAuditCheckStatus = "pass" | "warning" | "error";
+export type PartnerAuditIssueSeverity = "high" | "medium" | "low";
+
+export type NormalizedPartnerAuditCheck = {
+  id: string;
+  title: string;
+  status: PartnerAuditCheckStatus;
+  description: string;
+  advice?: string;
+};
+
+export type NormalizedPartnerAuditCategory = {
+  id: string;
+  title: string;
+  score: number;
+  checks: NormalizedPartnerAuditCheck[];
+};
+
+export type NormalizedPartnerAuditIssue = {
+  id: string;
+  severity: PartnerAuditIssueSeverity;
+  title: string;
+  explanation: string;
+  recommendation: string;
+};
+
+export type NormalizedPartnerAuditStrength = {
+  id: string;
+  title: string;
+  explanation: string;
+};
+
+export type NormalizedPartnerKeywordStat = {
+  phrase: string;
+  count: number;
+  density: number;
+  locations: string[];
+};
+
+export type NormalizedPartnerKeywordDensity = {
+  totalWords: number;
+  stopWordCount: number;
+  single: NormalizedPartnerKeywordStat[];
+  double: NormalizedPartnerKeywordStat[];
+  triple: NormalizedPartnerKeywordStat[];
+};
+
+export type NormalizedPartnerAuditReport = {
+  schemaVersion: 1;
+  url: string;
+  overallScore: number;
+  summary: string;
+  categories: NormalizedPartnerAuditCategory[];
+  page: {
+    metaTitle?: string;
+    metaDescription?: string;
+    canonical?: string;
+    h1?: string;
+    wordCount?: number;
+    language?: string;
+    indexable?: boolean;
+  };
+  topIssues: NormalizedPartnerAuditIssue[];
+  strengths: NormalizedPartnerAuditStrength[];
+  technical: {
+    csrDetected?: boolean;
+    renderedAvailable?: boolean;
+  };
+  keywordDensity?: NormalizedPartnerKeywordDensity;
+  stats?: {
+    totalChecks: number;
+    passed: number;
+    warnings: number;
+    errors: number;
+  };
+};
+
 /** Firestore: analysis_leads. Ruwe IP's en device-ID's worden NOOIT opgeslagen, alleen HMAC-hashes. */
 export type AnalysisLead = {
   id: string;
@@ -113,7 +190,17 @@ export const DEFAULT_ANALYSIS_QUOTA_CONFIG: AnalysisQuotaConfig = {
 
 /** Resultaat van de externe analyse-engine (Replit partner-API). */
 export type AnalysisRunResult =
-  | { status: "completed"; score: number; criticalIssues: string[]; summary?: string; raw?: unknown }
+  | {
+      status: "completed";
+      score: number;
+      criticalIssues: string[];
+      summary?: string;
+      /** Verplicht zodra de geheime partnerclient in de volgende implementatiestap is gekoppeld. */
+      report?: NormalizedPartnerAuditReport;
+      partnerAnalysisId?: string;
+      /** Tijdelijke compatibiliteit met de bestaande widgetengine tijdens de gekoppelde migratie. */
+      raw?: unknown;
+    }
   | { status: "failed"; errorCode: string }
   | { status: "unavailable"; errorCode: string };
 
