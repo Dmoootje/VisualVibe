@@ -34,7 +34,7 @@ function HubCategoryCard({ item }: { item: HubCategoryItem }) {
           {images[2] && (
             <div className="absolute left-1/2 top-0 w-[82%] -translate-x-1/2 rotate-[2.5deg] overflow-hidden rounded-[12px] border border-white/[0.12] transition-transform duration-500 group-hover:rotate-[5deg] group-hover:translate-x-[-44%] motion-reduce:transition-none motion-reduce:group-hover:rotate-[2.5deg] motion-reduce:group-hover:-translate-x-1/2">
               <div className="relative aspect-[16/10]">
-                <Image src={images[2].src} alt="" fill sizes="330px" className="object-cover" />
+                <Image src={images[2].src} alt={images[2].alt} fill sizes="330px" className="object-cover" />
                 <div aria-hidden="true" className="absolute inset-0 bg-[rgba(10,10,10,0.35)]" />
               </div>
             </div>
@@ -42,7 +42,7 @@ function HubCategoryCard({ item }: { item: HubCategoryItem }) {
           {images[1] && (
             <div className="absolute left-1/2 top-2 w-[86%] -translate-x-1/2 -rotate-[2deg] overflow-hidden rounded-[12px] border border-white/[0.14] transition-transform duration-500 group-hover:-rotate-[4deg] group-hover:translate-x-[-56%] motion-reduce:transition-none motion-reduce:group-hover:-rotate-[2deg] motion-reduce:group-hover:-translate-x-1/2">
               <div className="relative aspect-[16/10]">
-                <Image src={images[1].src} alt="" fill sizes="340px" className="object-cover" />
+                <Image src={images[1].src} alt={images[1].alt} fill sizes="340px" className="object-cover" />
                 <div aria-hidden="true" className="absolute inset-0 bg-[rgba(10,10,10,0.25)]" />
               </div>
             </div>
