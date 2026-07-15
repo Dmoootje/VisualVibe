@@ -250,8 +250,10 @@ git commit -m "fix(a11y): describe related article authors"
 ```ts
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { RealisatieContextGrid } from "./RealisatieContextGrid";
+
+vi.mock("@/i18n/navigation", () => ({ Link: () => null }));
 
 describe("RealisatieContextGrid", () => {
   it("uses the existing project description for the context image", () => {
