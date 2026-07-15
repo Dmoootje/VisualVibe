@@ -4,6 +4,7 @@ import { businessConfig } from "@/config/business.config";
 import { getAnalysisQuotaConfig } from "@/lib/analyse/config";
 import { normalizeAndValidateUrl } from "@/lib/analyse/domain";
 import { runWebsiteAnalysis } from "@/lib/analyse/engine";
+import { toAnalysisLimitResponse } from "@/lib/analyse/limitResponse";
 import {
   checkAndReserveQuota,
   consumeReservation,
@@ -149,7 +150,12 @@ export async function POST(request: NextRequest) {
     });
   }
   if (analysisLead.status === "limit_reached") {
-    return json({ status: "limit_reached", message: LIMIT_MESSAGE });
+    return json({
+      status: "limit_reached",
+      message: analysisLead.quotaReason ?? LIMIT_MESSAGE,
+      ...(analysisLead.quotaDecision ? { quotaDecision: analysisLead.quotaDecision } : {}),
+      ...(analysisLead.quotaResetAt ? { resetsAt: analysisLead.quotaResetAt } : {}),
+    });
   }
   if (analysisLead.status === "expired") {
     return json(
@@ -251,21 +257,20 @@ export async function POST(request: NextRequest) {
       status: "limit_reached",
       quotaDecision: outcome.decision,
       quotaReason: outcome.reason,
+      quotaResetAt: outcome.resetsAt,
     });
     const limitedLead: AnalysisLead = {
       ...analysisLead,
       status: "limit_reached",
       quotaDecision: outcome.decision,
       quotaReason: outcome.reason,
+      quotaResetAt: outcome.resetsAt,
     };
     await safeLeadEvent(analysisLead, "analysis_limit_reached");
     if (await shouldNotifyLimit(analysisLead)) {
       await sendAnalysisAdminNotification({ analysisLead: limitedLead, kind: "limit_reached" });
     }
-    return json({
-      status: "limit_reached",
-      message: outcome.decision === "duplicate_request" ? outcome.reason : LIMIT_MESSAGE,
-    });
+    return json(toAnalysisLimitResponse(outcome));
   }
 
   // Toegestaan: analyse starten met een actieve reservering.

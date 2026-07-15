@@ -15,7 +15,7 @@ import type { AnalysisQuotaConfig } from "@/types/analysis";
 const QUOTA_COLLECTION = "analysis_quota";
 const RESERVATIONS_COLLECTION = "analysis_reservations";
 
-/** Entries ouder dan 91 dagen (net boven het 90d-venster) worden gepruned. */
+/** 91 dagen technische retentie, ruim boven het maximale quotavenster van 30 dagen. */
 const RETENTION_MS = 91 * 24 * 60 * 60_000;
 const DAY_MS = 24 * 60 * 60_000;
 /**
@@ -335,11 +335,6 @@ async function finalizeReservation(
       writeScope(transaction, scope, nowIso);
     }
   });
-}
-
-/** @deprecated Tijdelijke compatibiliteit tot de /start-route de uitkomst verwerkt. */
-export async function registerAttempt(input: QuotaCheckInput): Promise<void> {
-  await checkAndRegisterIpAttempt(input);
 }
 
 /** Admin: maakt het e-mailquotum leeg (entries weg, extra credits blijven). */

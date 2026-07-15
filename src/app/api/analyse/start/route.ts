@@ -10,7 +10,8 @@ import {
   ipHashFromRequest,
   parseOrCreateDeviceId,
 } from "@/lib/analyse/identity";
-import { registerAttempt } from "@/lib/analyse/quota";
+import { toAnalysisLimitResponse } from "@/lib/analyse/limitResponse";
+import { checkAndRegisterIpAttempt, type IpAttemptOutcome } from "@/lib/analyse/quota";
 import { issueVerificationCode } from "@/lib/analyse/verification";
 import { sendAnalysisVerificationMail } from "@/lib/email/analysisMails";
 import { createAnalysisLead, listAnalysisLeadsByLeadId } from "@/lib/firestore/analysisLeads";
@@ -140,11 +141,12 @@ export async function POST(request: NextRequest) {
   const hashedDevice = deviceHash(deviceId);
   const hashedIp = ipHashFromRequest(request);
 
-  // Poging registreren voor de ip- en combotellers. Wanneer de quotabewaking
-  // uitstaat, slaan we ook het tellen over; de flow zelf loopt gewoon door.
+  // Poging atomisch controleren en registreren voor de IP-tellers. Wanneer de
+  // quotabewaking uitstaat, slaan we ook het tellen over.
   if (config.enabled) {
+    let attemptOutcome: IpAttemptOutcome;
     try {
-      await registerAttempt({
+      attemptOutcome = await checkAndRegisterIpAttempt({
         emailNormalized: normalizedEmail.emailNormalized,
         deviceHash: hashedDevice,
         ipHash: hashedIp,
@@ -152,7 +154,19 @@ export async function POST(request: NextRequest) {
         config,
       });
     } catch {
-      // De teller mag een geldige aanvraag nooit blokkeren.
+      return withDeviceCookie(
+        jsonError(
+          "De aanvraaglimiet kon niet veilig worden gecontroleerd. Probeer het zo opnieuw.",
+          503,
+        ),
+        newCookieValue,
+      );
+    }
+    if (attemptOutcome.decision !== "allowed") {
+      return withDeviceCookie(
+        NextResponse.json(toAnalysisLimitResponse(attemptOutcome), { status: 429 }),
+        newCookieValue,
+      );
     }
   }
 

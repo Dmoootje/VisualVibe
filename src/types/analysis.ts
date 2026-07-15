@@ -146,6 +146,7 @@ export type AnalysisLead = {
   forceRequested?: boolean;
   quotaDecision?: AnalysisQuotaDecision;
   quotaReason?: string;
+  quotaResetAt?: string;
   createdAt: string;
   updatedAt: string;
   verifiedAt?: string;
@@ -310,8 +311,16 @@ export type AnalysisStartRequest = {
   website?: string;
 };
 
+export type AnalysisLimitResponse = {
+  status: "limit_reached";
+  message: string;
+  quotaDecision?: AnalysisQuotaDecision;
+  resetsAt?: string;
+};
+
 export type AnalysisStartResponse =
   | { status: "code_sent"; analysisLeadId: string }
+  | AnalysisLimitResponse
   | { status: "error"; error: string };
 
 export type AnalysisVerifyRequest = {
@@ -322,7 +331,7 @@ export type AnalysisVerifyRequest = {
 export type AnalysisVerifyResponse =
   | { status: "completed"; reportUrl: string; score: number; criticalIssues: string[] }
   | { status: "reused"; reportUrl: string; score: number; criticalIssues: string[] }
-  | { status: "limit_reached"; message: string }
+  | AnalysisLimitResponse
   | { status: "failed"; message: string }
   | { status: "invalid_code"; attemptsLeft: number }
   | { status: "code_expired" }
