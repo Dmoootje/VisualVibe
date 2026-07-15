@@ -49,11 +49,10 @@ export function QuestionCard({ article, index = 0 }: { article: ArticleCardData;
           {article.authorImage ? (
             <Image
               src={article.authorImage}
-              alt=""
+              alt={`Profielfoto van ${article.author}`}
               width={28}
               height={28}
               className="h-4 w-4 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
-              aria-hidden="true"
             />
           ) : (
             <User className="h-3 w-3 shrink-0 text-[#ff7500]" aria-hidden="true" />
