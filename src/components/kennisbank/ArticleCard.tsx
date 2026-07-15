@@ -73,11 +73,10 @@ function Meta({
       {imageUrl ? (
         <Image
           src={imageUrl}
-          alt=""
+          alt={`Profielfoto van ${value}`}
           width={32}
           height={32}
           className="h-5 w-5 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
-          aria-hidden="true"
         />
       ) : (
         <Icon className="h-4 w-4 shrink-0 text-[#ff7500]" aria-hidden="true" />
