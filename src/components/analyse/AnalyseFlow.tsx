@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, ArrowRight, CheckCircle2, Loader2, MailCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { AnalysisLimitState } from "@/components/analyse/AnalysisLimitState";
 import { RequestNewAnalysisButton } from "@/components/analyse/RequestNewAnalysisButton";
 import type {
+  AnalysisQuotaDecision,
   AnalysisResendRequest,
   AnalysisResendResponse,
   AnalysisStartRequest,
@@ -20,9 +22,6 @@ const inputClasses =
 const gradientButtonClasses =
   "h-11 w-full shrink-0 gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600 sm:w-auto";
 
-const secondaryButtonClasses =
-  "inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:w-auto";
-
 /** Letterlijke nieuwsbrief-consenttekst; gaat mee als newsletterConsentTextVersion. */
 const NEWSLETTER_CONSENT_TEXT =
   "Ja, ik ontvang graag de VisualVibe-nieuwsbrief met praktische tips over websites, SEO en online zichtbaarheid. Uitschrijven kan op elk moment.";
@@ -30,9 +29,6 @@ const NEWSLETTER_CONSENT_TEXT =
 /** Letterlijke privacytekst direct onder het gegevensformulier (vereist). */
 const PRIVACY_USAGE_TEXT =
   "We gebruiken je gegevens om de analyse uit te voeren, het rapport te bezorgen, misbruik te voorkomen en contact over je aanvraag mogelijk te maken.";
-
-/** Exacte melding bij een bereikt quotum (vereiste letterlijke zin). */
-const LIMIT_REACHED_TEXT = "Je hebt je drie gratis analyses voor deze periode gebruikt.";
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
@@ -65,7 +61,12 @@ type FlowState =
       score: number;
       criticalIssues: string[];
     }
-  | { step: "limit" }
+  | {
+      step: "limit";
+      message: string;
+      quotaDecision?: AnalysisQuotaDecision;
+      resetsAt?: string;
+    }
   | { step: "failed"; message: string }
   | { step: "pending_email" };
 
@@ -171,6 +172,17 @@ export function AnalyseFlow() {
       });
       const data = (await response.json()) as AnalysisStartResponse;
 
+      if (data.status === "limit_reached") {
+        setFlow({
+          step: "limit",
+          message: data.message,
+          quotaDecision: data.quotaDecision,
+          resetsAt: data.resetsAt,
+        });
+        setIsPending(false);
+        return;
+      }
+
       if (!response.ok || data.status !== "code_sent") {
         setStartError(
           data.status === "error" ? data.error : "Er ging iets mis. Probeer het opnieuw.",
@@ -221,7 +233,13 @@ export function AnalyseFlow() {
           });
           return;
         case "limit_reached":
-          setFlow({ step: "limit" });
+          setFlow({
+            step: "limit",
+            message: data.message,
+            quotaDecision: data.quotaDecision,
+            resetsAt: data.resetsAt,
+          });
+          setIsPending(false);
           return;
         case "failed":
           setFlow({
@@ -659,24 +677,11 @@ export function AnalyseFlow() {
 
       {/* Eindstate: quotum bereikt */}
       {flow.step === "limit" && (
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-bold">{LIMIT_REACHED_TEXT}</h2>
-          <p className="text-sm leading-relaxed text-white/60">
-            Goed nieuws: je hebt duidelijk al inzicht in je website. Wil je verder? Dan kijken we
-            graag persoonlijk met je mee naar de resultaten en wat de snelste verbeterpunten zijn.
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button asChild className={gradientButtonClasses}>
-              <Link href="/contact">
-                Resultaten bespreken
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </Button>
-            <Link href="/offerte-aanvragen" className={secondaryButtonClasses}>
-              Offerte aanvragen
-            </Link>
-          </div>
-        </div>
+        <AnalysisLimitState
+          message={flow.message}
+          decision={flow.quotaDecision}
+          resetsAt={flow.resetsAt}
+        />
       )}
 
       {/* Eindstate: analyse mislukt. Het tegoed is gereleased; een nieuwe poging
