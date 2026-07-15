@@ -7,7 +7,6 @@ import type { AnalysisQuotaConfig } from "@/types/analysis";
 
 const QUOTA_COLLECTION = "analysis_quota";
 const RESERVATIONS_COLLECTION = "analysis_reservations";
-const LEADS_COLLECTION = "analysis_leads";
 
 /** Entries ouder dan 91 dagen (net boven het 90d-venster) worden gepruned. */
 const RETENTION_MS = 91 * 24 * 60 * 60_000;
@@ -45,15 +44,6 @@ export type QuotaCheckInput = {
 
 export type QuotaOutcome =
   | { decision: "allowed" | "allowed_extra_credit"; reservationId: string }
-  | {
-      decision: "reused_recent";
-      reuseFrom: {
-        analysisLeadId: string;
-        reportToken?: string;
-        analysisScore?: number;
-        criticalIssues?: string[];
-      };
-    }
   | {
       decision:
         | "limit_email"
@@ -187,55 +177,7 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       }
     }
 
-    // 2. Domein-cooldown: recent succesvol geanalyseerd = rapport hergebruiken.
-    // De query-read gebeurt VOOR alle writes (Firestore-transactieregel).
-    const domainSince = now - config.domainCooldownDays * DAY_MS;
-    const hasRecentDomainSuccess = countSince(domainScope.entries, ["success"], domainSince) > 0;
-    if (hasRecentDomainSuccess) {
-      const leadsSnapshot = await transaction.get(
-        adminDb.collection(LEADS_COLLECTION).where("normalizedDomain", "==", input.normalizedDomain),
-      );
-      // Hergebruik-venster kijkt naar de afronding (completedAt), consistent met
-      // de success-entry die op consume-tijd wordt geschreven; createdAt is de
-      // aanmaaktijd bij /start en zou een trage flow te vroeg laten vervallen.
-      const completionStamp = (data: Record<string, unknown>): string | undefined =>
-        typeof data.completedAt === "string"
-          ? data.completedAt
-          : typeof data.createdAt === "string"
-            ? data.createdAt
-            : undefined;
-      const recentCompleted = leadsSnapshot.docs
-        .map((doc) => ({ id: doc.id, data: doc.data(), stamp: completionStamp(doc.data()) }))
-        .filter(
-          (lead) =>
-            lead.data.status === "completed" &&
-            typeof lead.stamp === "string" &&
-            Date.parse(lead.stamp) >= domainSince,
-        )
-        .sort((a, b) => String(b.stamp).localeCompare(String(a.stamp)))[0];
-
-      if (recentCompleted) {
-        return {
-          decision: "reused_recent",
-          reuseFrom: {
-            analysisLeadId: recentCompleted.id,
-            ...(typeof recentCompleted.data.reportToken === "string"
-              ? { reportToken: recentCompleted.data.reportToken }
-              : {}),
-            ...(typeof recentCompleted.data.analysisScore === "number"
-              ? { analysisScore: recentCompleted.data.analysisScore }
-              : {}),
-            ...(Array.isArray(recentCompleted.data.criticalIssues)
-              ? { criticalIssues: recentCompleted.data.criticalIssues.map(String) }
-              : {}),
-          },
-        };
-      }
-      // Wel een success-entry maar geen bruikbare completed lead: val door
-      // naar de normale quotacontrole en sta een nieuwe analyse toe.
-    }
-
-    // 3. Duplicaat: dezelfde e-mail+device+domein-combinatie die binnen het
+    // 2. Duplicaat: dezelfde e-mail+device+domein-combinatie die binnen het
     // venster al een reservering of succes had. "attempt"-entries tellen hier
     // bewust NIET mee: /start registreert een attempt en zou anders zijn eigen
     // /verify-stap blokkeren.
@@ -247,7 +189,7 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       };
     }
 
-    // 4. E-mailquotum (90 dagen), met eventueel door de admin toegekende
+    // 3. E-mailquotum (90 dagen), met eventueel door de admin toegekende
     // extra credits bovenop het standaardmaximum. Gestrande reserveringen
     // (ouder dan de lease) tellen niet mee, zodat een gecrashte run het
     // tegoed niet 90 dagen vasthoudt.
@@ -261,7 +203,7 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
     }
     const usesExtraCredit = emailCount >= config.maxPerEmail90d && emailScope.extraCredits > 0;
 
-    // 5. Devicequotum (90 dagen), zelfde lease-behandeling.
+    // 4. Devicequotum (90 dagen), zelfde lease-behandeling.
     if (deviceScope) {
       const deviceCount = countForLimit(deviceScope.entries, ninetyDaysAgo, now);
       if (deviceCount >= config.maxPerDevice90d) {
@@ -272,7 +214,7 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       }
     }
 
-    // 6. Toegestaan: reservering aanmaken en in alle aanwezige scopes een
+    // 5. Toegestaan: reservering aanmaken en in alle aanwezige scopes een
     // "reserved"-entry wegschrijven (telt mee tot consume/release).
     const reservationRef = adminDb.collection(RESERVATIONS_COLLECTION).doc();
     const scopes = [emailScope, domainScope, comboScope, deviceScope, ipScope].filter(

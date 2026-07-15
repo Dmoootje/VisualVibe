@@ -20,7 +20,6 @@ export type AnalysisIntegrationActionResult = {
 const NUMERIC_FIELDS = [
   { key: "maxPerEmail90d", label: "Analyses per e-mailadres (90 dagen)" },
   { key: "maxPerDevice90d", label: "Analyses per toestel (90 dagen)" },
-  { key: "domainCooldownDays", label: "Cooldown per domein (dagen)" },
   { key: "maxPerIp24h", label: "Aanvragen per IP (24 uur)" },
   { key: "maxPerIp30d", label: "Analyses per IP (30 dagen)" },
   { key: "maxCodesPerEmailPerHour", label: "Verificatiecodes per e-mailadres per uur" },

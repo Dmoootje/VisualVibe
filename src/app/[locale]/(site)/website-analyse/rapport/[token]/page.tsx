@@ -117,7 +117,7 @@ export default async function AnalyseRapportPage({
         </div>
 
         <div className="mt-4 max-w-2xl">
-          <RequestNewAnalysisButton analysisLeadId={lead.id} />
+          <RequestNewAnalysisButton />
         </div>
       </div>
     </div>

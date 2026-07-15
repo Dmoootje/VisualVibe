@@ -13,7 +13,6 @@ const SETTINGS_ID = "default";
 const NUMERIC_KEYS = [
   "maxPerEmail90d",
   "maxPerDevice90d",
-  "domainCooldownDays",
   "maxPerIp24h",
   "maxPerIp30d",
   "maxCodesPerEmailPerHour",

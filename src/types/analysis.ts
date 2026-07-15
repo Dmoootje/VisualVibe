@@ -173,8 +173,6 @@ export type AnalysisQuotaConfig = {
   maxPerEmail90d: number;
   /** Succesvol afgeronde analyses per device per 90 dagen. */
   maxPerDevice90d: number;
-  /** Dagen waarin hetzelfde domein niet opnieuw wordt geanalyseerd. */
-  domainCooldownDays: number;
   /** Analyseaanvragen per IP per 24 uur. */
   maxPerIp24h: number;
   /** Analyses per IP per 30 dagen. */
@@ -193,11 +191,10 @@ export const DEFAULT_ANALYSIS_QUOTA_CONFIG: AnalysisQuotaConfig = {
   enabled: true,
   maxPerEmail90d: 3,
   maxPerDevice90d: 3,
-  domainCooldownDays: 7,
   maxPerIp24h: 10,
   maxPerIp30d: 25,
   maxCodesPerEmailPerHour: 5,
-  duplicateWindowMinutes: 10,
+  duplicateWindowMinutes: 2,
   codeTtlMinutes: 15,
   maxCodeAttempts: 5,
 };

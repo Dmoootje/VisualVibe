@@ -651,7 +651,7 @@ export function AnalyseFlow() {
               </a>
             </Button>
             {flow.kind === "reused" && analysisLeadId && (
-              <RequestNewAnalysisButton analysisLeadId={analysisLeadId} />
+              <RequestNewAnalysisButton />
             )}
           </div>
         </div>
