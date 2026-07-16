@@ -8,6 +8,7 @@ import {
   realisatieCategories,
   getRealisatieCategoryBySlug,
   categoryToServiceSlug,
+  shouldIndexRealisatieCategoryWithoutCases,
 } from "@/data/realisatieCategories";
 import { getServiceBySlug, serviceHref } from "@/data/services";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
@@ -64,7 +65,8 @@ export async function generateMetadata({
     (categoryDef.slug === "3d-vr" && matterportTours.length > 0) ||
     (categoryDef.slug === "drone" && droneMedia.length > 0) ||
     fotoGalleryCount > 0 ||
-    items.length > 0;
+    items.length > 0 ||
+    shouldIndexRealisatieCategoryWithoutCases(categoryDef);
   return pageMetadata({
     title: categoryDef.seoTitle,
     description: categoryDef.seoDescription,
@@ -166,12 +168,10 @@ export default async function RealisatieCategoryPage({
               <CaseGrid cases={items} />
             ) : (
               <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-                <h2 className="text-2xl font-bold">
-                  Binnenkort realisaties in {categoryDef.name}
-                </h2>
+                <h2 className="text-2xl font-bold">Realisaties rond {categoryDef.name}</h2>
                 <p className="max-w-xl text-white/60">
-                  We voegen hier binnenkort projecten toe. Zin om zelf zo&apos;n realisatie te
-                  laten maken?
+                  {categoryDef.description} We vullen deze pagina verder aan met concrete cases,
+                  beelden en resultaten. Zin om zelf zo&apos;n realisatie te laten maken?
                 </p>
                 <Link
                   href="/offerte-aanvragen"

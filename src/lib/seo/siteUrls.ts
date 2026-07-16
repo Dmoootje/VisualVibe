@@ -8,7 +8,10 @@ import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
 import { cases } from "@/data/cases";
-import { realisatieCategories } from "@/data/realisatieCategories";
+import {
+  realisatieCategories,
+  shouldIndexRealisatieCategoryWithoutCases,
+} from "@/data/realisatieCategories";
 import { matterportTours } from "@/data/matterportTours";
 import { droneMedia } from "@/config/drone.config";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
@@ -94,7 +97,8 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         (category.slug === "3d-vr" && matterportTours.length > 0) ||
         (category.slug === "drone" && droneMedia.length > 0) ||
         (category.slug === "fotografie" && fotoGalleryCount > 0) ||
-        cases.some((item) => item.category === category.slug)
+        cases.some((item) => item.category === category.slug) ||
+        shouldIndexRealisatieCategoryWithoutCases(category)
     )
     .map((category) => `realisaties/${category.slug}`);
 
