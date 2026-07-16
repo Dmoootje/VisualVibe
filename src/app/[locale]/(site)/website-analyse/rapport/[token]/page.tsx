@@ -87,7 +87,7 @@ export default async function AnalyseRapportPage({
 
         {report && model ? (
           <main className="space-y-10">
-            <ReportScoreHero report={report} quickWins={model.quickWins} />
+            <ReportScoreHero report={report} quickWins={model.quickWins} topKeyword={model.topKeyword} />
             <ReportQuickWins model={model} />
             <ReportAioGeo category={model.aioGeo} />
             <ReportKeywordDensity density={model.keywordDensity} />

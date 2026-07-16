@@ -1,13 +1,20 @@
+import Image from "next/image";
+import { Search } from "lucide-react";
 import type { NormalizedPartnerAuditReport } from "@/types/analysis";
 import type { ReportViewModel } from "@/components/analyse/report/reportViewModel";
 import { reportCopy } from "@/components/analyse/report/reportCopy";
 
+const SEO_SUPERCHARGED_LOGO_URL =
+  "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fseo%20supercharged%20logo%20seowebsites.png?alt=media&token=1deb25f5-c1ef-4648-a705-04ae804352f0";
+
 export function ReportScoreHero({
   report,
   quickWins,
+  topKeyword,
 }: {
   report: NormalizedPartnerAuditReport;
   quickWins: ReportViewModel["quickWins"];
+  topKeyword?: ReportViewModel["topKeyword"];
 }) {
   const radius = 52;
   const circumference = 2 * Math.PI * radius;
@@ -44,10 +51,12 @@ export function ReportScoreHero({
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-400">{reportCopy.summary}</p>
           <p className="mt-3 max-w-3xl text-base leading-7 text-white/75 sm:text-lg">{report.summary}</p>
-          <div className="mt-6 grid grid-cols-3 gap-2.5 sm:max-w-xl sm:gap-4">
+          <div className="mt-6 grid gap-2.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
             <StatusCount label={reportCopy.passed} value={quickWins.passed} tone="success" />
             <StatusCount label={reportCopy.warnings} value={quickWins.warnings} tone="warning" />
             <StatusCount label={reportCopy.errors} value={quickWins.errors} tone="error" />
+            <TopKeywordCard topKeyword={topKeyword} />
+            <SeoSuperchargedCard />
           </div>
         </div>
       </div>
@@ -70,5 +79,42 @@ function StatusCount({
       <p className={`text-2xl font-black ${color}`}>{value}</p>
       <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-white/45 sm:text-xs">{label}</p>
     </div>
+  );
+}
+
+function TopKeywordCard({ topKeyword }: { topKeyword?: ReportViewModel["topKeyword"] }) {
+  const value = topKeyword ? `${topKeyword.phrase} · ${topKeyword.density.toFixed(2)}%` : "Niet beschikbaar";
+
+  return (
+    <article className="rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-3 sm:px-4">
+      <Search className="h-5 w-5 text-emerald-300" aria-hidden="true" />
+      <p className="mt-3 text-[10px] font-semibold uppercase tracking-wide text-white/45 sm:text-xs">{reportCopy.topKeyword}</p>
+      <p className="mt-1 break-words text-xl font-black leading-tight text-emerald-300">{value}</p>
+    </article>
+  );
+}
+
+function SeoSuperchargedCard() {
+  return (
+    <a
+      href="https://seowebsites.be/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex min-h-[116px] flex-col justify-between rounded-xl border border-emerald-400/20 bg-[radial-gradient(circle_at_20%_20%,rgba(52,211,153,0.16),transparent_48%),rgba(0,0,0,0.22)] px-3 py-3 transition hover:border-emerald-300/45 hover:bg-emerald-400/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 sm:px-4"
+      aria-label="Deze widget ook op je website? Bekijk SEO Supercharged"
+    >
+      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">Aangeboden door</span>
+      <Image
+        src={SEO_SUPERCHARGED_LOGO_URL}
+        alt="SEO Supercharged"
+        width={220}
+        height={72}
+        className="mt-3 h-auto w-full max-w-[180px] object-contain"
+        unoptimized
+      />
+      <span className="mt-3 text-sm font-medium text-white/75 transition group-hover:text-emerald-100">
+        Deze widget ook op je website? →
+      </span>
+    </a>
   );
 }
