@@ -33,12 +33,6 @@ export const metadata = pageMetadata({
 // renderen zodat een wijziging in /admin/settings/analyse meteen zichtbaar is.
 export const dynamic = "force-dynamic";
 
-const HOW_IT_WORKS = [
-  "Vul je website-URL en je gegevens in.",
-  "Bevestig je e-mailadres met de 6-cijferige code die je van ons ontvangt.",
-  "Ontvang meteen je score en een rapport met concrete verbeterpunten.",
-];
-
 const CHECKS = [
   {
     title: "Technische SEO",
@@ -175,72 +169,35 @@ export default async function WebsiteAnalysePage() {
       <main className="relative z-10">
         <section className="pb-12 pt-28 sm:pt-32 md:pb-16 md:pt-36">
           <div className="container mx-auto px-2.5 sm:px-4">
-            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div>
-                <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#ff7500]">
-                  <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
+            <header className="mx-auto max-w-3xl text-center">
+                <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#ff8a2a]">
+                  <span aria-hidden="true" className="h-[1.5px] w-[26px] rounded-full bg-[#ff8a2a]" />
                   Website analyse
+                  <span aria-hidden="true" className="h-[1.5px] w-[26px] rounded-full bg-[#ff8a2a]" />
                 </p>
-                <h1 className="max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-[58px]">
+                <h1 className="text-4xl font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-5xl md:text-[62px]">
                   Gratis website analyse
                 </h1>
-                <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/68">
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/68 sm:text-lg">
                   Vul je website in en ontdek meteen hoe je scoort op SEO, snelheid, techniek,
                   content en AI-vindbaarheid. Je krijgt geen vaag rapport, maar concrete
                   verbeterpunten waarmee je website sterker kan worden in Google én in moderne
                   AI-zoekresultaten.
                 </p>
 
-                <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
-                  {[
-                    { value: "100", label: "score op basis van kernsignalen" },
-                    { value: "3", label: "gratis analyses per 24 uur" },
-                    { value: "SEO", label: "techniek, content en snelheid" },
-                  ].map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="rounded-2xl border border-white/[0.09] bg-white/[0.025] p-4"
-                    >
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <p className="mt-1 text-xs leading-snug text-white/55">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            </header>
 
-              <div className="lg:pt-10">
-                {useWidget ? (
-                  <WebsiteAnalyseWidget
-                    scriptSrc={integration.widgetScriptUrl}
-                    siteKey={integration.publicKey}
-                  />
-                ) : (
-                  <AnalyseFlow />
-                )}
-              </div>
+            <div className="mx-auto mt-11 max-w-[1120px]">
+              {useWidget ? (
+                <WebsiteAnalyseWidget
+                  scriptSrc={integration.widgetScriptUrl}
+                  siteKey={integration.publicKey}
+                />
+              ) : (
+                <AnalyseFlow />
+              )}
             </div>
 
-            <section className="mt-12 max-w-3xl" aria-labelledby="hoe-werkt-het">
-              <h2 id="hoe-werkt-het" className="mb-5 text-xl font-bold">
-                Hoe werkt het?
-              </h2>
-              <ol className="grid gap-4 md:grid-cols-3">
-                {HOW_IT_WORKS.map((step, index) => (
-                  <li
-                    key={step}
-                    className="rounded-2xl border border-white/[0.09] bg-white/[0.025] p-5"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(255,122,0,0.3)] bg-[rgba(255,122,0,0.12)] text-sm font-bold text-[#FF9A45]"
-                    >
-                      {index + 1}
-                    </span>
-                    <p className="text-sm leading-relaxed text-white/70">{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
           </div>
         </section>
 
