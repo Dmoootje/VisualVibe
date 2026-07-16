@@ -16,6 +16,8 @@ export default defineConfig({
     environment: "node",
     exclude: [
       ...configDefaults.exclude,
+      ".worktrees/**",
+      "**/.worktrees/**",
       "scripts/lib/analysis-quota-rollout.test.mjs",
     ],
   },
