@@ -276,7 +276,7 @@ const CONNECTION_TEST_SCHEMA = {
 } as const;
 
 const CONNECTION_TEST_IMAGE_URL =
-  "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FWebdesign.webp?alt=media&token=48c49584-8a14-4c0b-b647-a6e542c37f1d";
+  "https://visualvibe.media/api/home-feature-image/Webdesign.webp/";
 
 /** Tests authentication, vision and structured output in one small call. */
 export async function testAiProviderConnection(runtime: AiRuntimeConfig): Promise<void> {

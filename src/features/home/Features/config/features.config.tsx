@@ -78,8 +78,7 @@ export const featuresConfig = {
       highlight: "Van strategie tot oplevering",
       imageBadge: "Snel & vindbaar",
       href: "/diensten/webdesign",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FWebdesign.webp?alt=media&token=48c49584-8a14-4c0b-b647-a6e542c37f1d",
+      image: "/api/home-feature-image/Webdesign.webp/",
     },
     {
       id: "seo",
@@ -102,8 +101,7 @@ export const featuresConfig = {
       highlight: "Google én AI-zoekresultaten",
       imageBadge: "Lokaal sterk",
       href: "/diensten/seo",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FSEO.webp?alt=media&token=e9fcc978-0c92-4671-9f94-d098b232140f",
+      image: "/api/home-feature-image/SEO.webp/",
     },
     {
       id: "fotografie",
@@ -126,8 +124,7 @@ export const featuresConfig = {
       highlight: "Persoonlijke aanpak op locatie",
       imageBadge: "Op locatie",
       href: "/diensten/fotografie",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FFotografie.webp?alt=media&token=a84cc388-4024-40a9-aca7-044091e58d14",
+      image: "/api/home-feature-image/Fotografie.webp/",
     },
     {
       id: "videografie",
@@ -150,8 +147,7 @@ export const featuresConfig = {
       highlight: "Begeleiding voor en tijdens opnames",
       imageBadge: "Verhaal eerst",
       href: "/diensten/videografie",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2FVideografie.webp?alt=media&token=125d76b2-f1aa-4e22-b336-b5aab4d25955",
+      image: "/api/home-feature-image/Videografie.webp/",
     },
   ] as Feature[],
 
