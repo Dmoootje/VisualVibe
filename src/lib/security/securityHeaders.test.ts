@@ -35,6 +35,15 @@ describe("VisualVibe security headers", () => {
     expect(headers.get("referrer-policy")).toBe("strict-origin-when-cross-origin");
     expect(headers.get("permissions-policy")).toContain("camera=()");
     expect(headers.get("permissions-policy")).toContain("microphone=()");
+    expect(headers.get("permissions-policy")).toContain(
+      'autoplay=(self "https://www.youtube.com" "https://www.youtube-nocookie.com" "https://my.matterport.com")',
+    );
+    expect(headers.get("permissions-policy")).toContain(
+      'fullscreen=(self "https://www.youtube.com" "https://www.youtube-nocookie.com" "https://my.matterport.com" "https://www.google.com" "https://maps.google.com")',
+    );
+    expect(headers.get("permissions-policy")).toContain(
+      'gyroscope=(self "https://www.youtube.com" "https://www.youtube-nocookie.com" "https://my.matterport.com")',
+    );
     expect(headers.get("content-security-policy")).toContain("default-src 'self'");
   });
 
@@ -64,5 +73,6 @@ describe("VisualVibe security headers", () => {
     expect(csp).toContain("frame-src");
     expect(csp).toContain("https://www.youtube.com");
     expect(csp).toContain("https://my.matterport.com");
+    expect(csp).toContain("https://*.google.be");
   });
 });
