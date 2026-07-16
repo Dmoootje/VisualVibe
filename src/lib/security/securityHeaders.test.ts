@@ -75,4 +75,16 @@ describe("VisualVibe security headers", () => {
     expect(csp).toContain("https://my.matterport.com");
     expect(csp).toContain("https://*.google.be");
   });
+
+  it("sets a long browser cache lifetime for stable brand assets", async () => {
+    const rules = await nextConfig.headers();
+    const brandAssetsRule = rules.find((rule) =>
+      rule.source.includes("logo\\.svg|logo-email\\.png|weddingvibe-logo\\.svg"),
+    );
+
+    expect(brandAssetsRule).toBeDefined();
+    expect(headerMap(brandAssetsRule?.headers ?? []).get("cache-control")).toBe(
+      "public, max-age=31536000",
+    );
+  });
 });

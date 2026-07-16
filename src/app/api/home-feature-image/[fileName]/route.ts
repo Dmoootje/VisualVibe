@@ -4,6 +4,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const ALLOWED_FILES = new Set(["Webdesign.webp", "SEO.webp", "Fotografie.webp", "Videografie.webp"]);
+const HOME_FEATURE_IMAGE_CACHE_CONTROL = "public, max-age=31536000, s-maxage=31536000";
 
 type RouteContext = {
   params: Promise<{ fileName: string }>;
@@ -30,7 +31,11 @@ export async function GET(_request: Request, { params }: RouteContext) {
     return new Response(new Uint8Array(bytes), {
       headers: {
         "content-type": metadata.contentType || "image/webp",
-        "cache-control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
+        // These four branded homepage visuals live behind stable first-party
+        // URLs and are small static WebP files. Give repeat visitors a long
+        // browser cache lifetime; when replacing one, bump the URL or purge the
+        // CDN/browser cache so visitors don't keep an old copy.
+        "cache-control": HOME_FEATURE_IMAGE_CACHE_CONTROL,
         "x-content-type-options": "nosniff",
       },
     });
