@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { resolveRequestedIndexNowKey } from "@/lib/seo/indexnowKeyfile";
 import { getIndexNowKey } from "@/lib/seo/indexnow";
 
 // Serveert het IndexNow-sleutelbestand. next.config schrijft /{sleutel}.txt door
@@ -8,7 +9,7 @@ import { getIndexNowKey } from "@/lib/seo/indexnow";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  const requested = request.nextUrl.searchParams.get("key")?.trim() ?? "";
+  const requested = resolveRequestedIndexNowKey(request.nextUrl);
   const key = await getIndexNowKey();
 
   // Alleen het pad dat exact overeenkomt met de actieve sleutel geeft het
