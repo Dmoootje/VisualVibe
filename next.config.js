@@ -1,4 +1,5 @@
 const createNextIntlPlugin = require('next-intl/plugin');
+const { securityHeaders } = require('./security-headers.config.cjs');
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
@@ -126,6 +127,10 @@ const nextConfig = {
   // zet daar zelf al immutable + 1 jaar op).
   async headers() {
     return [
+      {
+        source: '/:path*',
+        headers: securityHeaders,
+      },
       {
         source:
           '/:asset(logo\\.svg|logo-email\\.png|weddingvibe-logo\\.svg|weddingvibe-logo-licht\\.svg|favicon\\.svg|favicon-96x96\\.png|apple-touch-icon\\.png|web-app-manifest-192x192\\.png|web-app-manifest-512x512\\.png)',
