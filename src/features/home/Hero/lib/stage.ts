@@ -92,7 +92,7 @@ export const STAGE_HTML = `
 <svg class="vvh-ringR" width="440" height="440" viewBox="0 0 440 440" style="position:absolute;top:50%;right:-30px;translate:0 -50%;opacity:.4;z-index:0;pointer-events:none;"><circle cx="220" cy="220" r="206" fill="none" stroke="rgba(255,122,0,.3)" stroke-width="1.2" stroke-dasharray="2 16"></circle></svg>
 <div class="vvh-cardGlow" style="position:absolute;inset:-6px;border-radius:30px;background:radial-gradient(120% 120% at 60% 55%,rgba(255,100,0,.6),rgba(255,60,0,.15) 60%,transparent 78%);filter:blur(28px);z-index:0;pointer-events:none;"></div>
 
-<div style="position:relative;z-index:1;border-radius:26px;padding:2px;background:linear-gradient(150deg,rgba(255,150,60,.9),rgba(255,90,0,.5) 45%,rgba(255,80,0,.15) 100%);box-shadow:0 40px 90px -30px rgba(255,80,0,.7);">
+<div class="vvh-stagecard" style="position:relative;z-index:1;border-radius:26px;padding:2px;background:linear-gradient(150deg,rgba(255,150,60,.9),rgba(255,90,0,.5) 45%,rgba(255,80,0,.15) 100%);box-shadow:0 40px 90px -30px rgba(255,80,0,.7);">
   <div style="position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(130% 120% at 50% 0%,#1a1109,#0b0a09 62%);padding:22px 22px 20px;">
     <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;">${cblocksHtml}</div>
 

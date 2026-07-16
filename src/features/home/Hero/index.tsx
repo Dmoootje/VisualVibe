@@ -3,7 +3,7 @@ import "../home-performance.css";
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden pb-14 pt-24">
+    <section className="relative flex min-h-[100svh] items-center overflow-x-hidden pb-14 pt-24">
       {/* Ambient glow, bottom-left behind the headline */}
       <div
         aria-hidden="true"
