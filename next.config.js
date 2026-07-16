@@ -55,7 +55,7 @@ const nextConfig = {
       afterFiles: [
         {
           source: '/:key([a-zA-Z0-9-]{8,128}).txt',
-          destination: '/api/indexnow/keyfile/?key=:key',
+          destination: '/api/indexnow/keyfile/:key/',
         },
       ],
       fallback: [],
