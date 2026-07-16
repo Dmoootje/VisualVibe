@@ -1,11 +1,14 @@
-import { deleteApp, initializeApp } from "firebase-admin/app";
+import { cert, deleteApp, initializeApp } from "firebase-admin/app";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import {
   OPEN_RESERVATION_POLL_INTERVAL_MS,
   OPEN_RESERVATION_TIMEOUT_MS,
   QUOTA_SETTINGS,
+  assertQuotaResetPostconditions,
+  countActiveReservations,
   parseRolloutArgs,
   runQuotaResetUnderMaintenance,
+  selectFirebaseCredential,
   waitForNoOpenReservations,
 } from "./lib/analysis-quota-rollout.mjs";
 
@@ -18,9 +21,8 @@ async function openReservationCount(db) {
   const snapshot = await db
     .collection("analysis_reservations")
     .where("status", "==", "reserved")
-    .count()
     .get();
-  return snapshot.data().count;
+  return countActiveReservations(snapshot.docs.map((document) => document.data()));
 }
 
 async function deleteCollection(db, collectionName) {
@@ -61,7 +63,14 @@ async function readSafeState(db) {
 
 async function main() {
   const args = parseRolloutArgs(process.argv.slice(2));
-  const app = initializeApp({ projectId: args.projectId }, "analysis-quota-rollout");
+  const credential = selectFirebaseCredential(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY,
+    cert,
+  );
+  const app = initializeApp({
+    projectId: args.projectId,
+    ...(credential ? { credential } : {}),
+  }, "analysis-quota-rollout");
   const db = getFirestore(app);
 
   try {
@@ -90,6 +99,9 @@ async function main() {
       }, { merge: true }),
       deleteReservations: () => deleteCollection(db, "analysis_reservations"),
       deleteQuotaDocuments: () => deleteCollection(db, "analysis_quota"),
+      verifyPostconditions: async () => {
+        assertQuotaResetPostconditions(await readSafeState(db));
+      },
     });
     const after = await readSafeState(db);
     console.log(JSON.stringify({

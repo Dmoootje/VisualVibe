@@ -8,8 +8,9 @@ const mocks = vi.hoisted(() => ({
   normalizeAnalysisEmail: vi.fn(),
   checkAndRegisterIpAttempt: vi.fn(),
   checkAndReserveQuota: vi.fn(),
-  consumeReservation: vi.fn(),
-  releaseReservation: vi.fn(),
+  finalizeAnalysisSuccess: vi.fn(),
+  finalizeAnalysisFailure: vi.fn(),
+  runWebsiteAnalysis: vi.fn(),
   issueVerificationCode: vi.fn(),
   verifyVerificationCode: vi.fn(),
   sendAnalysisVerificationMail: vi.fn(),
@@ -20,6 +21,8 @@ const mocks = vi.hoisted(() => ({
   listAnalysisLeadsByEmail: vi.fn(),
   listAnalysisLeadsByLeadId: vi.fn(),
   updateAnalysisLead: vi.fn(),
+  createAnalysisReport: vi.fn(),
+  createSubscriber: vi.fn(),
   createLead: vi.fn(),
   addLeadEvent: vi.fn(),
 }));
@@ -48,14 +51,14 @@ vi.mock("@/lib/analyse/quota", () => ({
   AnalysisMaintenanceError: class AnalysisMaintenanceError extends Error {},
   checkAndRegisterIpAttempt: mocks.checkAndRegisterIpAttempt,
   checkAndReserveQuota: mocks.checkAndReserveQuota,
-  consumeReservation: mocks.consumeReservation,
-  releaseReservation: mocks.releaseReservation,
+  finalizeAnalysisSuccess: mocks.finalizeAnalysisSuccess,
+  finalizeAnalysisFailure: mocks.finalizeAnalysisFailure,
 }));
 vi.mock("@/lib/analyse/verification", () => ({
   issueVerificationCode: mocks.issueVerificationCode,
   verifyVerificationCode: mocks.verifyVerificationCode,
 }));
-vi.mock("@/lib/analyse/engine", () => ({ runWebsiteAnalysis: vi.fn() }));
+vi.mock("@/lib/analyse/engine", () => ({ runWebsiteAnalysis: mocks.runWebsiteAnalysis }));
 vi.mock("@/lib/email/analysisMails", () => ({
   sendAnalysisVerificationMail: mocks.sendAnalysisVerificationMail,
   sendAnalysisAdminNotification: mocks.sendAnalysisAdminNotification,
@@ -71,8 +74,10 @@ vi.mock("@/lib/firestore/analysisLeads", () => ({
 }));
 vi.mock("@/lib/firestore/leads", () => ({ createLead: mocks.createLead }));
 vi.mock("@/lib/firestore/leadEvents", () => ({ addLeadEvent: mocks.addLeadEvent }));
-vi.mock("@/lib/firestore/analysisReports", () => ({ createAnalysisReport: vi.fn() }));
-vi.mock("@/lib/firestore/newsletter", () => ({ createSubscriber: vi.fn() }));
+vi.mock("@/lib/firestore/analysisReports", () => ({
+  createAnalysisReport: mocks.createAnalysisReport,
+}));
+vi.mock("@/lib/firestore/newsletter", () => ({ createSubscriber: mocks.createSubscriber }));
 vi.mock("@/lib/firebase/admin", () => ({ adminDb: { collection: vi.fn() } }));
 vi.mock("@/lib/security/encryption", () => ({ hmacIdentifier: () => "lead-key" }));
 vi.mock("@/config/business.config", () => ({
@@ -136,11 +141,35 @@ describe("analysis maintenance route gates", () => {
       lead: { id: "lead-1", leadNumber: "L-1" },
       created: true,
     });
-    mocks.createAnalysisLead.mockResolvedValue(pendingLead);
+    mocks.createAnalysisLead.mockResolvedValue({ ...pendingLead });
     mocks.issueVerificationCode.mockResolvedValue({ ok: true, code: "123456" });
-    mocks.getAnalysisLead.mockResolvedValue(pendingLead);
+    mocks.getAnalysisLead.mockResolvedValue({
+      ...pendingLead,
+      status: "pending_verification",
+    });
     mocks.verifyVerificationCode.mockResolvedValue("expired");
     mocks.listAnalysisLeadsByEmail.mockResolvedValue([]);
+    mocks.updateAnalysisLead.mockResolvedValue(undefined);
+    mocks.finalizeAnalysisSuccess.mockResolvedValue(undefined);
+    mocks.finalizeAnalysisFailure.mockResolvedValue(undefined);
+    mocks.createAnalysisReport.mockResolvedValue({ id: "report-id", schemaVersion: 1 });
+    mocks.runWebsiteAnalysis.mockResolvedValue({
+      status: "completed",
+      score: 88,
+      criticalIssues: [],
+      partnerAnalysisId: "partner-id",
+      report: {
+        schemaVersion: 1,
+        url: "https://example.com/",
+        overallScore: 88,
+        summary: "Sterk rapport",
+        categories: [],
+        page: {},
+        topIssues: [],
+        strengths: [],
+        technical: {},
+      },
+    });
   });
 
   it("refuses start before registering an attempt or creating a lead", async () => {
@@ -242,5 +271,131 @@ describe("analysis maintenance route gates", () => {
       status: "error",
       error: expect.stringContaining("onderhoud"),
     });
+  });
+
+  it("surfaces a retryable error without reporting success when completion finalization fails", async () => {
+    mocks.getAnalysisQuotaConfig.mockResolvedValue({
+      ...DEFAULT_ANALYSIS_QUOTA_CONFIG,
+      maintenanceMode: false,
+    });
+    mocks.verifyVerificationCode.mockResolvedValue("valid");
+    mocks.finalizeAnalysisSuccess.mockRejectedValue(new Error("transaction unavailable"));
+
+    const response = await verifyAnalysis(request("/api/analyse/verify", {
+      analysisLeadId: pendingLead.id,
+      code: "123456",
+    }));
+
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({
+      status: "error",
+      error: expect.stringContaining("opnieuw"),
+    });
+    expect(mocks.updateAnalysisLead).toHaveBeenCalledWith(
+      pendingLead.id,
+      expect.objectContaining({
+        status: "analysing",
+        completionPending: expect.objectContaining({
+          reportId: "report-id",
+          reportToken: "report-token",
+        }),
+      }),
+    );
+    expect(mocks.finalizeAnalysisSuccess).toHaveBeenCalledWith(pendingLead.id);
+    expect(mocks.sendAnalysisReportMail).not.toHaveBeenCalled();
+  });
+
+  it("retries a staged completion instead of starting or reclaiming the analysis", async () => {
+    const completionPending = {
+      analysisScore: 88,
+      criticalIssues: [],
+      reportToken: "report-token",
+      reportId: "report-id",
+      reportSchemaVersion: 1,
+      completedAt: "2026-07-15T18:10:00.000Z",
+    };
+    mocks.getAnalysisLead.mockResolvedValue({
+      ...pendingLead,
+      status: "analysing",
+      analysisStatus: "running",
+      analysisId: "reservation-1",
+      startedAt: new Date().toISOString(),
+      completionPending,
+    });
+    mocks.finalizeAnalysisSuccess.mockResolvedValue(completionPending);
+
+    const response = await verifyAnalysis(request("/api/analyse/verify", {
+      analysisLeadId: pendingLead.id,
+      code: "123456",
+    }));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      status: "completed",
+      reportUrl: "/website-analyse/rapport/report-token",
+      score: 88,
+    });
+    expect(mocks.finalizeAnalysisSuccess).toHaveBeenCalledWith(pendingLead.id);
+    expect(mocks.verifyVerificationCode).not.toHaveBeenCalled();
+    expect(mocks.runWebsiteAnalysis).not.toHaveBeenCalled();
+  });
+
+  it("leaves a failed analysis retryable when atomic failure finalization fails", async () => {
+    mocks.getAnalysisQuotaConfig.mockResolvedValue({
+      ...DEFAULT_ANALYSIS_QUOTA_CONFIG,
+      maintenanceMode: false,
+    });
+    mocks.verifyVerificationCode.mockResolvedValue("valid");
+    mocks.runWebsiteAnalysis.mockResolvedValue({
+      status: "failed",
+      errorCode: "partner_failed",
+    });
+    mocks.finalizeAnalysisFailure.mockRejectedValue(new Error("transaction unavailable"));
+
+    const response = await verifyAnalysis(request("/api/analyse/verify", {
+      analysisLeadId: pendingLead.id,
+      code: "123456",
+    }));
+
+    expect(response.status).toBe(503);
+    expect(mocks.updateAnalysisLead).toHaveBeenCalledWith(
+      pendingLead.id,
+      expect.objectContaining({
+        status: "analysing",
+        failurePending: expect.objectContaining({ reason: "partner_failed" }),
+      }),
+    );
+    expect(mocks.finalizeAnalysisFailure).toHaveBeenCalledWith(
+      pendingLead.id,
+      expect.objectContaining({ reason: "partner_failed" }),
+    );
+    expect(mocks.sendAnalysisAdminNotification).not.toHaveBeenCalledWith(
+      expect.objectContaining({ kind: "failed" }),
+    );
+  });
+
+  it("uses atomic failure finalization when reclaiming a stale analysing lead", async () => {
+    mocks.getAnalysisLead.mockResolvedValue({
+      ...pendingLead,
+      status: "analysing",
+      analysisId: "reservation-1",
+      startedAt: "2026-07-15T17:00:00.000Z",
+    });
+    mocks.finalizeAnalysisFailure.mockRejectedValue(new Error("transaction unavailable"));
+
+    const response = await verifyAnalysis(request("/api/analyse/verify", {
+      analysisLeadId: pendingLead.id,
+      code: "123456",
+    }));
+
+    expect(response.status).toBe(503);
+    expect(mocks.finalizeAnalysisFailure).toHaveBeenCalledWith(
+      pendingLead.id,
+      expect.objectContaining({ reason: "stale_analysing_reclaimed" }),
+    );
+    expect(mocks.updateAnalysisLead).not.toHaveBeenCalledWith(
+      pendingLead.id,
+      expect.objectContaining({ status: "failed" }),
+    );
   });
 });

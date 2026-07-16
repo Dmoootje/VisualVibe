@@ -4,6 +4,7 @@ export type WindowQuotaEntry = {
   t: string;
   kind: WindowQuotaEntryKind;
   reservationId?: string;
+  extraCredit?: boolean;
 };
 
 export function entriesInWindow(

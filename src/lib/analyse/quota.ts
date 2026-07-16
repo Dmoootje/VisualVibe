@@ -9,13 +9,19 @@ import {
   resetAtForWindow,
   type WindowQuotaEntry,
 } from "@/lib/analyse/quotaWindow";
+import { ANALYSIS_RESERVATION_LEASE_MS } from "@/lib/analyse/quotaConstants.mjs";
 import { hmacIdentifier } from "@/lib/security/encryption";
-import type { AnalysisQuotaConfig } from "@/types/analysis";
+import type {
+  AnalysisCompletionPending,
+  AnalysisFailurePending,
+  AnalysisQuotaConfig,
+} from "@/types/analysis";
 
 const QUOTA_COLLECTION = "analysis_quota";
 const RESERVATIONS_COLLECTION = "analysis_reservations";
 const SETTINGS_COLLECTION = "analysis_settings";
 const SETTINGS_ID = "default";
+const LEADS_COLLECTION = "analysis_leads";
 
 /** 91 dagen technische retentie, ruim boven het maximale quotavenster van 30 dagen. */
 const RETENTION_MS = 91 * 24 * 60 * 60_000;
@@ -27,7 +33,7 @@ const DAY_MS = 24 * 60 * 60_000;
  * dan valt ze vanzelf weg en komt het tegoed vrij, zonder cron. Ruim boven de
  * gebruikelijke runtijd en boven het verify-routebudget (maxDuration 300s).
  */
-const RESERVATION_LEASE_MS = 8 * 60_000;
+const RESERVATION_LEASE_MS = ANALYSIS_RESERVATION_LEASE_MS;
 
 type QuotaEntry = WindowQuotaEntry;
 
@@ -119,6 +125,7 @@ function parseEntries(raw: unknown, now: number): QuotaEntry[] {
       t: candidate.t,
       kind: candidate.kind,
       ...(typeof candidate.reservationId === "string" ? { reservationId: candidate.reservationId } : {}),
+      ...(candidate.extraCredit === true ? { extraCredit: true } : {}),
     });
   }
   return entries;
@@ -190,8 +197,8 @@ export async function checkAndRegisterIpAttempt(
 /**
  * Controleert alle quota EN reserveert atomisch in EEN transactie, zodat twee
  * gelijktijdige aanvragen samen nooit boven een limiet uit kunnen komen. Bij
- * "allowed" hoort altijd een reservering die later met consumeReservation
- * (succes) of releaseReservation (mislukt, telt niet mee) wordt afgesloten.
+ * "allowed" hoort altijd een reservering die later samen met de lead atomisch
+ * naar succes of mislukking wordt afgerond.
  */
 export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<QuotaOutcome> {
   const { config } = input;
@@ -245,7 +252,11 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
     );
     const emailLimitReached =
       config.maxPerEmail24h > 0 && emailEntries.length >= config.maxPerEmail24h;
-    const usesExtraCredit = emailLimitReached && emailScope.extraCredits > 0;
+    const heldExtraCredits = emailEntries.filter(
+      (entry) => entry.kind === "reserved" && entry.extraCredit === true,
+    ).length;
+    const usesExtraCredit =
+      emailLimitReached && emailScope.extraCredits - heldExtraCredits > 0;
 
     if (emailLimitReached && !usesExtraCredit) {
       blocks.push({
@@ -322,11 +333,15 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
       updatedAt: nowIso,
     });
 
-    if (usesExtraCredit) {
-      emailScope.extraCredits -= 1;
-    }
     for (const scope of scopes) {
-      scope.entries.push({ t: nowIso, kind: "reserved", reservationId: reservationRef.id });
+      scope.entries.push({
+        t: nowIso,
+        kind: "reserved",
+        reservationId: reservationRef.id,
+        ...(usesExtraCredit && scope.ref.id === emailScope.ref.id
+          ? { extraCredit: true }
+          : {}),
+      });
       writeScope(transaction, scope, nowIso);
     }
 
@@ -337,61 +352,211 @@ export async function checkAndReserveQuota(input: QuotaCheckInput): Promise<Quot
   });
 }
 
-/** Zet een reservering om in een definitief succes (analyse afgerond). */
-export async function consumeReservation(reservationId: string): Promise<void> {
-  await finalizeReservation(reservationId, "consumed");
+type ReservationOutcome = "consumed" | "released";
+
+type ReservationSnapshotData = {
+  status?: unknown;
+  scopes?: unknown;
+  usedExtraCredit?: unknown;
+  emailScopeId?: unknown;
+};
+
+function leadRef(leadId: string): DocumentReference {
+  return adminDb.collection(LEADS_COLLECTION).doc(leadId);
 }
 
-/** Geeft een reservering vrij (analyse mislukt/afgebroken); telt niet meer mee. */
-export async function releaseReservation(reservationId: string): Promise<void> {
-  await finalizeReservation(reservationId, "released");
+function completionFromLead(data: Record<string, unknown>): AnalysisCompletionPending | null {
+  const pending = data.completionPending;
+  if (!pending || typeof pending !== "object") return null;
+  const value = pending as Partial<AnalysisCompletionPending>;
+  if (
+    typeof value.analysisScore !== "number" ||
+    !Array.isArray(value.criticalIssues) ||
+    !value.criticalIssues.every((issue) => typeof issue === "string") ||
+    typeof value.reportToken !== "string" ||
+    typeof value.reportId !== "string" ||
+    typeof value.reportSchemaVersion !== "number" ||
+    typeof value.completedAt !== "string"
+  ) {
+    return null;
+  }
+  return {
+    analysisScore: value.analysisScore,
+    criticalIssues: value.criticalIssues,
+    ...(typeof value.analysisSummary === "string"
+      ? { analysisSummary: value.analysisSummary }
+      : {}),
+    reportToken: value.reportToken,
+    reportId: value.reportId,
+    reportSchemaVersion: value.reportSchemaVersion,
+    completedAt: value.completedAt,
+  };
 }
 
-async function finalizeReservation(
-  reservationId: string,
-  outcome: "consumed" | "released",
-): Promise<void> {
-  const reservationRef = adminDb.collection(RESERVATIONS_COLLECTION).doc(reservationId);
+function assertCompatibleTerminalState(
+  leadStatus: unknown,
+  desiredLeadStatus: "completed" | "failed",
+  reservationStatus: unknown,
+  desiredReservationStatus: ReservationOutcome,
+): void {
+  const oppositeLeadStatus = desiredLeadStatus === "completed" ? "failed" : "completed";
+  const oppositeReservationStatus = desiredReservationStatus === "consumed" ? "released" : "consumed";
+  if (leadStatus === oppositeLeadStatus || reservationStatus === oppositeReservationStatus) {
+    throw new Error("Lead en analysereservering hebben een conflicterende terminale status.");
+  }
+}
 
-  await adminDb.runTransaction(async (transaction) => {
+async function finalizeAnalysis(
+  leadId: string,
+  outcome: ReservationOutcome,
+  failure?: AnalysisFailurePending,
+): Promise<AnalysisCompletionPending | undefined> {
+  const analysisLeadRef = leadRef(leadId);
+
+  return adminDb.runTransaction(async (transaction) => {
     const now = Date.now();
     const nowIso = new Date(now).toISOString();
-
-    const reservation = await transaction.get(reservationRef);
-    const data = reservation.data();
-    // Idempotent: alleen een openstaande reservering kan worden afgesloten.
-    if (!reservation.exists || data?.status !== "reserved") return;
-
-    const scopeIds: string[] = Array.isArray(data.scopes)
-      ? data.scopes.filter((id): id is string => typeof id === "string")
-      : [];
-    const scopes = await Promise.all(scopeIds.map((id) => readScope(transaction, scopeRef(id), now)));
-
-    // Bij een release (mislukte analyse) een verbruikt extra credit teruggeven
-    // op de e-mailscope; op consume (succes) blijft het verbruikt.
-    const restoreCredit = outcome === "released" && data.usedExtraCredit === true;
-    const emailScopeId = typeof data.emailScopeId === "string" ? data.emailScopeId : undefined;
-
-    transaction.update(reservationRef, { status: outcome, updatedAt: nowIso });
-
-    for (const scope of scopes) {
-      if (outcome === "consumed") {
-        scope.entries = scope.entries.map((entry) =>
-          entry.reservationId === reservationId && entry.kind === "reserved"
-            ? { ...entry, kind: "success" as const, t: nowIso }
-            : entry,
-        );
-      } else {
-        scope.entries = scope.entries.filter(
-          (entry) => !(entry.reservationId === reservationId && entry.kind === "reserved"),
-        );
-      }
-      if (restoreCredit && scope.ref.id === emailScopeId) {
-        scope.extraCredits += 1;
-      }
-      writeScope(transaction, scope, nowIso);
+    const leadDocument = await transaction.get(analysisLeadRef);
+    if (!leadDocument.exists) {
+      throw new Error("Analyselead voor terminale afronding bestaat niet.");
     }
+    const lead = (leadDocument.data() ?? {}) as Record<string, unknown>;
+    const desiredLeadStatus = outcome === "consumed" ? "completed" : "failed";
+    const reservationId = typeof lead.analysisId === "string" && lead.analysisId
+      ? lead.analysisId
+      : undefined;
+    const reservationRef = reservationId
+      ? adminDb.collection(RESERVATIONS_COLLECTION).doc(reservationId)
+      : undefined;
+    const reservationDocument = reservationRef
+      ? await transaction.get(reservationRef)
+      : undefined;
+    const reservationExists = reservationDocument?.exists === true;
+    if (reservationRef && !reservationExists && outcome === "consumed") {
+      throw new Error("Analysereservering voor terminale afronding bestaat niet.");
+    }
+    const reservation = (reservationDocument?.data() ?? {}) as ReservationSnapshotData;
+    if (
+      reservationExists &&
+      reservation.status !== "reserved" &&
+      reservation.status !== "consumed" &&
+      reservation.status !== "released"
+    ) {
+      throw new Error("Analysereservering heeft een ongeldige status.");
+    }
+    assertCompatibleTerminalState(
+      lead.status,
+      desiredLeadStatus,
+      reservation.status,
+      outcome,
+    );
+
+    const completion = outcome === "consumed" ? completionFromLead(lead) : undefined;
+    if (outcome === "consumed" && lead.status !== "completed" && !completion) {
+      throw new Error("De duurzame voltooiingspayload ontbreekt.");
+    }
+    if (outcome === "released" && lead.status !== "failed" && !failure) {
+      throw new Error("De duurzame foutpayload ontbreekt.");
+    }
+
+    const reservationIsOpen = reservationRef && reservation.status === "reserved";
+    const scopeIds: string[] = reservationIsOpen && Array.isArray(reservation.scopes)
+      ? reservation.scopes.filter((id): id is string => typeof id === "string")
+      : [];
+    const scopes = await Promise.all(
+      scopeIds.map((id) => readScope(transaction, scopeRef(id), now)),
+    );
+
+    if (reservationIsOpen && reservationRef && reservationId) {
+      if (outcome === "consumed" && reservation.usedExtraCredit === true) {
+        const emailScopeId = typeof reservation.emailScopeId === "string"
+          ? reservation.emailScopeId
+          : undefined;
+        const emailScope = scopes.find((scope) => scope.ref.id === emailScopeId);
+        const activeOtherHolds = emailScope
+          ? activeAnalysisEntries(
+              emailScope.entries,
+              Number.NEGATIVE_INFINITY,
+              now,
+              RESERVATION_LEASE_MS,
+            ).filter(
+              (entry) =>
+                entry.kind === "reserved" &&
+                entry.extraCredit === true &&
+                entry.reservationId !== reservationId,
+            ).length
+          : 0;
+        if (!emailScope || emailScope.extraCredits - activeOtherHolds < 1) {
+          throw new Error("Het gereserveerde extra analysetegoed is niet meer beschikbaar.");
+        }
+        emailScope.extraCredits -= 1;
+      }
+
+      transaction.update(reservationRef, { status: outcome, updatedAt: nowIso });
+      for (const scope of scopes) {
+        if (outcome === "consumed") {
+          scope.entries = scope.entries.map((entry) =>
+            entry.reservationId === reservationId && entry.kind === "reserved"
+              ? { t: nowIso, kind: "success" as const, reservationId }
+              : entry,
+          );
+        } else {
+          scope.entries = scope.entries.filter(
+            (entry) => !(entry.reservationId === reservationId && entry.kind === "reserved"),
+          );
+        }
+        writeScope(transaction, scope, nowIso);
+      }
+    }
+
+    if (lead.status !== desiredLeadStatus) {
+      if (outcome === "consumed" && completion) {
+        transaction.update(analysisLeadRef, {
+          status: "completed",
+          analysisStatus: "completed",
+          analysisScore: completion.analysisScore,
+          criticalIssues: completion.criticalIssues,
+          ...(completion.analysisSummary
+            ? { analysisSummary: completion.analysisSummary }
+            : {}),
+          reportToken: completion.reportToken,
+          reportId: completion.reportId,
+          reportSchemaVersion: completion.reportSchemaVersion,
+          completedAt: completion.completedAt,
+          completionPending: null,
+          failurePending: null,
+          updatedAt: nowIso,
+        });
+      } else if (outcome === "released" && failure) {
+        transaction.update(analysisLeadRef, {
+          status: "failed",
+          analysisStatus: "failed",
+          failedAt: failure.failedAt,
+          quotaReason: failure.reason,
+          completionPending: null,
+          failurePending: null,
+          updatedAt: nowIso,
+        });
+      }
+    }
+
+    return completion ?? undefined;
   });
+}
+
+/** Zet lead en reservering in een transactie om naar een definitief succes. */
+export async function finalizeAnalysisSuccess(
+  leadId: string,
+): Promise<AnalysisCompletionPending | undefined> {
+  return finalizeAnalysis(leadId, "consumed");
+}
+
+/** Zet lead en reservering in een transactie om naar een definitieve fout. */
+export async function finalizeAnalysisFailure(
+  leadId: string,
+  failure: AnalysisFailurePending,
+): Promise<void> {
+  await finalizeAnalysis(leadId, "released", failure);
 }
 
 /** Admin: maakt het e-mailquotum leeg (entries weg, extra credits blijven). */

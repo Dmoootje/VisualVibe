@@ -35,9 +35,9 @@ vi.mock("@/lib/firebase/admin", () => ({
 import {
   checkAndRegisterIpAttempt,
   checkAndReserveQuota,
-  consumeReservation,
+  finalizeAnalysisFailure,
+  finalizeAnalysisSuccess,
   grantExtraCredits,
-  releaseReservation,
 } from "./quota";
 import { DEFAULT_ANALYSIS_QUOTA_CONFIG } from "@/types/analysis";
 
@@ -47,12 +47,13 @@ type TestEntry = {
   t: string;
   kind: "attempt" | "reserved" | "success";
   reservationId?: string;
+  extraCredit?: boolean;
 };
 
 const scopeData = new Map<string, { entries: TestEntry[]; extraCredits: number }>();
 
-function seedScope(id: string, entries: TestEntry[]): void {
-  scopeData.set(id, { entries, extraCredits: 0 });
+function seedScope(id: string, entries: TestEntry[], extraCredits = 0): void {
+  scopeData.set(id, { entries, extraCredits });
 }
 
 function readScopeEntries(id: string): TestEntry[] {
@@ -68,13 +69,21 @@ type TestReservation = {
   scopes: string[];
   usedExtraCredit: boolean;
   emailScopeId: string;
+  createdAt?: string;
 };
 
 const reservationData = new Map<string, TestReservation>();
+const leadData = new Map<string, Record<string, unknown>>();
 let maintenanceMode = false;
+let transactionQueue = Promise.resolve<unknown>(undefined);
+let nextReservationId = 1;
 
 function seedReservation(id: string, reservation: TestReservation): void {
   reservationData.set(id, reservation);
+}
+
+function seedLead(id: string, lead: Record<string, unknown>): void {
+  leadData.set(id, lead);
 }
 
 function documentReference(collection: string, id: string): FakeDocumentReference {
@@ -88,10 +97,16 @@ describe("checkAndReserveQuota", () => {
     vi.clearAllMocks();
     scopeData.clear();
     reservationData.clear();
+    leadData.clear();
     maintenanceMode = false;
+    transactionQueue = Promise.resolve(undefined);
+    nextReservationId = 1;
 
     firestore.collection.mockImplementation((collection: string) => ({
-      doc: (id?: string) => documentReference(collection, id ?? "reservation-1"),
+      doc: (id?: string) => documentReference(
+        collection,
+        id ?? `reservation-${nextReservationId++}`,
+      ),
       where: (_field: string, _operator: string, value: string): FakeQuery => ({
         kind: "query",
         collection,
@@ -131,6 +146,15 @@ describe("checkAndReserveQuota", () => {
         };
       }
 
+
+      if (target.collection === "analysis_leads") {
+        const lead = leadData.get(target.id);
+        return {
+          exists: Boolean(lead),
+          data: () => lead,
+        };
+      }
+
       const scope = scopeData.get(target.id);
       return {
         exists: Boolean(scope),
@@ -148,17 +172,32 @@ describe("checkAndReserveQuota", () => {
       });
     });
 
-    firestore.update.mockImplementation((ref: FakeDocumentReference, patch: Partial<TestReservation>) => {
-      const current = reservationData.get(ref.id);
-      if (current) reservationData.set(ref.id, { ...current, ...patch });
+    firestore.create.mockImplementation((ref: FakeDocumentReference, data: TestReservation) => {
+      reservationData.set(ref.id, data);
     });
 
-    firestore.runTransaction.mockImplementation(async (callback) => callback({
-      get: firestore.get,
-      create: firestore.create,
-      set: firestore.set,
-      update: firestore.update,
-    }));
+    firestore.update.mockImplementation((ref: FakeDocumentReference, patch: Record<string, unknown>) => {
+      if (ref.collection === "analysis_reservations") {
+        const current = reservationData.get(ref.id);
+        if (current) reservationData.set(ref.id, { ...current, ...patch } as TestReservation);
+        return;
+      }
+      if (ref.collection === "analysis_leads") {
+        const current = leadData.get(ref.id);
+        if (current) leadData.set(ref.id, { ...current, ...patch });
+      }
+    });
+
+    firestore.runTransaction.mockImplementation((callback) => {
+      const result = transactionQueue.then(() => callback({
+        get: firestore.get,
+        create: firestore.create,
+        set: firestore.set,
+        update: firestore.update,
+      }));
+      transactionQueue = result.then(() => undefined, () => undefined);
+      return result;
+    });
   });
 
   afterEach(() => {
@@ -448,14 +487,203 @@ describe("checkAndReserveQuota", () => {
       usedExtraCredit: false,
       emailScopeId: "email-quota:klant@example.com",
     });
+    seedLead("failed-lead", {
+      status: "analysing",
+      analysisId: "failed-run",
+    });
 
-    await releaseReservation("failed-run");
+    await finalizeAnalysisFailure("failed-lead", {
+      reason: "partner_failed",
+      failedAt: "2026-07-15T18:30:00.000Z",
+    });
 
     await expect(checkAndReserveQuota({
       emailNormalized: "klant@example.com",
       normalizedDomain: "voorbeeld.be",
       config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
     })).resolves.toMatchObject({ decision: "allowed" });
+  });
+
+  it("atomically completes a lead and consumes its reservation idempotently", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      {
+        t: "2026-07-15T18:29:00.000Z",
+        kind: "reserved",
+        reservationId: "successful-run",
+      },
+    ]);
+    seedReservation("successful-run", {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: false,
+      emailScopeId,
+    });
+    seedLead("successful-lead", {
+      status: "analysing",
+      analysisId: "successful-run",
+      completionPending: {
+        analysisScore: 91,
+        criticalIssues: ["issue"],
+        analysisSummary: "summary",
+        reportToken: "report-token",
+        reportId: "report-id",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
+    });
+
+    await finalizeAnalysisSuccess("successful-lead");
+    await finalizeAnalysisSuccess("successful-lead");
+
+    expect(leadData.get("successful-lead")).toMatchObject({
+      status: "completed",
+      analysisStatus: "completed",
+      analysisScore: 91,
+      reportToken: "report-token",
+    });
+    expect(reservationData.get("successful-run")?.status).toBe("consumed");
+    expect(readScopeEntries(emailScopeId)).toEqual([
+      expect.objectContaining({ kind: "success", reservationId: "successful-run" }),
+    ]);
+  });
+
+  it("atomically fails a lead and releases its reservation idempotently", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      {
+        t: "2026-07-15T18:29:00.000Z",
+        kind: "reserved",
+        reservationId: "failed-run",
+      },
+    ]);
+    seedReservation("failed-run", {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: false,
+      emailScopeId,
+    });
+    seedLead("atomic-failed-lead", {
+      status: "analysing",
+      analysisId: "failed-run",
+    });
+    const failure = {
+      reason: "partner_failed",
+      failedAt: "2026-07-15T18:30:00.000Z",
+    };
+
+    await finalizeAnalysisFailure("atomic-failed-lead", failure);
+    await finalizeAnalysisFailure("atomic-failed-lead", failure);
+
+    expect(leadData.get("atomic-failed-lead")).toMatchObject({
+      status: "failed",
+      analysisStatus: "failed",
+      failedAt: failure.failedAt,
+      quotaReason: failure.reason,
+    });
+    expect(reservationData.get("failed-run")?.status).toBe("released");
+    expect(readScopeEntries(emailScopeId)).toEqual([]);
+  });
+
+  it("cannot expose a completed lead when the finalization transaction fails", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      {
+        t: "2026-07-15T18:29:00.000Z",
+        kind: "reserved",
+        reservationId: "retry-run",
+      },
+    ]);
+    seedReservation("retry-run", {
+      status: "reserved",
+      scopes: [emailScopeId],
+      usedExtraCredit: false,
+      emailScopeId,
+    });
+    seedLead("retry-lead", {
+      status: "analysing",
+      analysisId: "retry-run",
+      completionPending: {
+        analysisScore: 91,
+        criticalIssues: [],
+        reportToken: "retry-token",
+        reportId: "retry-report",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
+    });
+    firestore.runTransaction.mockRejectedValueOnce(new Error("transaction unavailable"));
+
+    await expect(finalizeAnalysisSuccess("retry-lead")).rejects.toThrow("transaction unavailable");
+
+    expect(leadData.get("retry-lead")?.status).toBe("analysing");
+    expect(reservationData.get("retry-run")?.status).toBe("reserved");
+    expect(readScopeEntries(emailScopeId)).toContainEqual(expect.objectContaining({
+      kind: "reserved",
+      reservationId: "retry-run",
+    }));
+  });
+
+  it("refuses to complete a lead with an unknown reservation state", async () => {
+    seedReservation("corrupt-run", {
+      status: "corrupt" as TestReservation["status"],
+      scopes: [],
+      usedExtraCredit: false,
+      emailScopeId: "email-quota:klant@example.com",
+    });
+    seedLead("corrupt-lead", {
+      status: "analysing",
+      analysisId: "corrupt-run",
+      completionPending: {
+        analysisScore: 91,
+        criticalIssues: [],
+        reportToken: "retry-token",
+        reportId: "retry-report",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
+    });
+
+    await expect(finalizeAnalysisSuccess("corrupt-lead")).rejects.toThrow("ongeldige status");
+    expect(leadData.get("corrupt-lead")?.status).toBe("analysing");
+  });
+
+  it("completes without a reservation when quota enforcement is disabled", async () => {
+    seedLead("unmetered-lead", {
+      status: "analysing",
+      completionPending: {
+        analysisScore: 91,
+        criticalIssues: [],
+        reportToken: "unmetered-token",
+        reportId: "unmetered-report",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
+    });
+
+    await finalizeAnalysisSuccess("unmetered-lead");
+
+    expect(leadData.get("unmetered-lead")).toMatchObject({
+      status: "completed",
+      reportToken: "unmetered-token",
+    });
+  });
+
+  it("fails safely when a stale reservation was already removed by quota rollout", async () => {
+    seedLead("reset-stale-lead", {
+      status: "analysing",
+      analysisId: "removed-reservation",
+    });
+    const failure = {
+      reason: "stale_analysing_reclaimed",
+      failedAt: "2026-07-15T18:30:00.000Z",
+    };
+
+    await expect(finalizeAnalysisFailure("reset-stale-lead", failure)).resolves.toBeUndefined();
+    expect(leadData.get("reset-stale-lead")).toMatchObject({
+      status: "failed",
+      quotaReason: "stale_analysing_reclaimed",
+    });
   });
 
   it("keeps a reservation active for the full eight-minute route allowance", async () => {
@@ -508,7 +736,19 @@ describe("checkAndReserveQuota", () => {
     });
 
     vi.setSystemTime(Date.parse("2026-07-15T18:36:00.000Z"));
-    await consumeReservation("long-run");
+    seedLead("long-lead", {
+      status: "analysing",
+      analysisId: "long-run",
+      completionPending: {
+        analysisScore: 90,
+        criticalIssues: [],
+        reportToken: "report-token",
+        reportId: "report-id",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:36:00.000Z",
+      },
+    });
+    await finalizeAnalysisSuccess("long-lead");
     const afterConsume = await checkAndReserveQuota(input);
 
     expect(afterConsume).toMatchObject({
@@ -535,15 +775,22 @@ describe("checkAndReserveQuota", () => {
       config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
     });
     expect(first).toMatchObject({ decision: "allowed_extra_credit" });
-    expect(readExtraCredits(emailScopeId)).toBe(1);
+    expect(readExtraCredits(emailScopeId)).toBe(2);
     if (!("reservationId" in first)) throw new Error("Eerste reservering ontbreekt.");
-    seedReservation(first.reservationId, {
-      status: "reserved",
-      scopes: [emailScopeId],
-      usedExtraCredit: true,
-      emailScopeId,
+    seedLead("first-lead", {
+      status: "analysing",
+      analysisId: first.reservationId,
+      completionPending: {
+        analysisScore: 90,
+        criticalIssues: [],
+        reportToken: "first-token",
+        reportId: "first-report",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
     });
-    await consumeReservation(first.reservationId);
+    await finalizeAnalysisSuccess("first-lead");
+    expect(readExtraCredits(emailScopeId)).toBe(1);
 
     const second = await checkAndReserveQuota({
       emailNormalized: "klant@example.com",
@@ -551,15 +798,22 @@ describe("checkAndReserveQuota", () => {
       config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
     });
     expect(second).toMatchObject({ decision: "allowed_extra_credit" });
-    expect(readExtraCredits(emailScopeId)).toBe(0);
+    expect(readExtraCredits(emailScopeId)).toBe(1);
     if (!("reservationId" in second)) throw new Error("Tweede reservering ontbreekt.");
-    seedReservation(second.reservationId, {
-      status: "reserved",
-      scopes: [emailScopeId],
-      usedExtraCredit: true,
-      emailScopeId,
+    seedLead("second-lead", {
+      status: "analysing",
+      analysisId: second.reservationId,
+      completionPending: {
+        analysisScore: 90,
+        criticalIssues: [],
+        reportToken: "second-token",
+        reportId: "second-report",
+        reportSchemaVersion: 1,
+        completedAt: "2026-07-15T18:30:00.000Z",
+      },
     });
-    await consumeReservation(second.reservationId);
+    await finalizeAnalysisSuccess("second-lead");
+    expect(readExtraCredits(emailScopeId)).toBe(0);
 
     const blocked = await checkAndReserveQuota({
       emailNormalized: "klant@example.com",
@@ -594,7 +848,7 @@ describe("checkAndReserveQuota", () => {
     );
   });
 
-  it("restores exactly one credit when an extra-credit reservation is released", async () => {
+  it("holds an extra credit until consume and does not lose it on release", async () => {
     const emailScopeId = "email-quota:klant@example.com";
     seedScope(emailScopeId, [
       { t: "2026-07-15T10:00:00.000Z", kind: "success" },
@@ -608,17 +862,122 @@ describe("checkAndReserveQuota", () => {
       config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
     });
     if (!("reservationId" in result)) throw new Error("Reservering ontbreekt.");
-    seedReservation(result.reservationId, {
-      status: "reserved",
-      scopes: [emailScopeId],
-      usedExtraCredit: true,
-      emailScopeId,
+    expect(readExtraCredits(emailScopeId)).toBe(1);
+    expect(readScopeEntries(emailScopeId)).toContainEqual(expect.objectContaining({
+      kind: "reserved",
+      reservationId: result.reservationId,
+      extraCredit: true,
+    }));
+    seedLead("released-lead", {
+      status: "analysing",
+      analysisId: result.reservationId,
     });
 
-    await releaseReservation(result.reservationId);
-    await releaseReservation(result.reservationId);
+    await finalizeAnalysisFailure("released-lead", {
+      reason: "partner_failed",
+      failedAt: "2026-07-15T18:30:00.000Z",
+    });
+    await finalizeAnalysisFailure("released-lead", {
+      reason: "partner_failed",
+      failedAt: "2026-07-15T18:30:00.000Z",
+    });
 
     expect(readExtraCredits(emailScopeId)).toBe(1);
+  });
+
+  it("allows an expired extra-credit hold to be reused without restoring credits", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ], 1);
+
+    const first = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "eerste.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    expect(first).toMatchObject({ decision: "allowed_extra_credit" });
+
+    vi.setSystemTime(NOW + 8 * 60_000 + 1);
+    const second = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "tweede.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+
+    expect(second).toMatchObject({ decision: "allowed_extra_credit" });
+    expect(readExtraCredits(emailScopeId)).toBe(1);
+  });
+
+  it("does not let an expired reservation spend a credit held by an active reservation", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ], 1);
+
+    const first = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "eerste.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    if (!("reservationId" in first)) throw new Error("Eerste reservering ontbreekt.");
+
+    vi.setSystemTime(NOW + 8 * 60_000 + 1);
+    const second = await checkAndReserveQuota({
+      emailNormalized: "klant@example.com",
+      normalizedDomain: "tweede.be",
+      config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+    });
+    if (!("reservationId" in second)) throw new Error("Tweede reservering ontbreekt.");
+
+    const completionPending = {
+      analysisScore: 90,
+      criticalIssues: [],
+      reportToken: "report-token",
+      reportId: "report-id",
+      reportSchemaVersion: 1,
+      completedAt: new Date().toISOString(),
+    };
+    seedLead("expired-lead", {
+      status: "analysing",
+      analysisId: first.reservationId,
+      completionPending,
+    });
+    seedLead("active-lead", {
+      status: "analysing",
+      analysisId: second.reservationId,
+      completionPending,
+    });
+
+    await expect(finalizeAnalysisSuccess("expired-lead")).rejects.toThrow("niet meer beschikbaar");
+    await expect(finalizeAnalysisSuccess("active-lead")).resolves.toEqual(completionPending);
+    expect(readExtraCredits(emailScopeId)).toBe(0);
+    expect(reservationData.get(first.reservationId)?.status).toBe("reserved");
+    expect(reservationData.get(second.reservationId)?.status).toBe("consumed");
+  });
+
+  it("does not overspend extra credits across serialized concurrent reservations", async () => {
+    const emailScopeId = "email-quota:klant@example.com";
+    seedScope(emailScopeId, [
+      { t: "2026-07-15T10:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T11:00:00.000Z", kind: "success" },
+      { t: "2026-07-15T12:00:00.000Z", kind: "success" },
+    ], 2);
+
+    const outcomes = await Promise.all(["een.be", "twee.be", "drie.be"].map((normalizedDomain) =>
+      checkAndReserveQuota({
+        emailNormalized: "klant@example.com",
+        normalizedDomain,
+        config: { ...DEFAULT_ANALYSIS_QUOTA_CONFIG },
+      })));
+
+    expect(outcomes.filter((outcome) => outcome.decision === "allowed_extra_credit")).toHaveLength(2);
+    expect(outcomes.filter((outcome) => outcome.decision === "limit_email")).toHaveLength(1);
+    expect(readExtraCredits(emailScopeId)).toBe(2);
   });
 
   it("allows IP attempt 180 and blocks attempt 181 in 30 days", async () => {

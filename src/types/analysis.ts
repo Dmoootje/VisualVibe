@@ -154,6 +154,10 @@ export type AnalysisLead = {
   completedAt?: string;
   failedAt?: string;
   expiredAt?: string;
+  /** Niet-terminale payload waarmee een mislukte afronding veilig kan worden hervat. */
+  completionPending?: AnalysisCompletionPending | null;
+  /** Niet-terminale foutpayload waarmee een mislukte vrijgave veilig kan worden hervat. */
+  failurePending?: AnalysisFailurePending | null;
 };
 
 export type AnalysisReportDocument = {
@@ -319,6 +323,21 @@ export type AnalysisLimitResponse = {
   message: string;
   quotaDecision?: AnalysisQuotaDecision;
   resetsAt?: string;
+};
+
+export type AnalysisCompletionPending = {
+  analysisScore: number;
+  criticalIssues: string[];
+  analysisSummary?: string;
+  reportToken: string;
+  reportId: string;
+  reportSchemaVersion: number;
+  completedAt: string;
+};
+
+export type AnalysisFailurePending = {
+  reason: string;
+  failedAt: string;
 };
 
 export type AnalysisStartResponse =

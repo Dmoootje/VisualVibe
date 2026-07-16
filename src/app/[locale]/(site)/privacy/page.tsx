@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ANALYSIS_RETENTION_COPY } from "./privacyCopy";
 
 // ISR: adres- en contactgegevens komen uit de admin-instellingen.
 export const revalidate = 60;
@@ -16,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const LAST_UPDATED = "13 juli 2026";
+const LAST_UPDATED = "15 juli 2026";
 
 function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-3 mt-10 text-xl font-bold text-white sm:text-2xl">{children}</h2>;
@@ -123,9 +124,7 @@ export default async function PrivacyPage() {
               </li>
               <li>
                 Analyseleads en analyserapporten bewaren we zolang ze relevant zijn voor de
-                opvolging van je aanvraag. De gehashte anti-misbruikgegevens tellen na 90 dagen
-                automatisch niet meer mee voor de limieten en kunnen op verzoek verwijderd worden.
-                Verificatiecodes vervallen na 15 minuten.
+                opvolging van je aanvraag. {ANALYSIS_RETENTION_COPY}
               </li>
               <li>Technische logs worden na een beperkte periode automatisch verwijderd.</li>
             </ul>
