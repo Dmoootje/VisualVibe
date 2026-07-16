@@ -276,7 +276,7 @@ const CONNECTION_TEST_SCHEMA = {
 } as const;
 
 const CONNECTION_TEST_IMAGE_URL =
-  "https://visualvibe.media/api/home-feature-image/Webdesign.webp/";
+  "https://visualvibe.media/api/home-feature-image/Webdesign.webp";
 
 /** Tests authentication, vision and structured output in one small call. */
 export async function testAiProviderConnection(runtime: AiRuntimeConfig): Promise<void> {

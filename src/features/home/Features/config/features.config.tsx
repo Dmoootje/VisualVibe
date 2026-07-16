@@ -78,7 +78,7 @@ export const featuresConfig = {
       highlight: "Van strategie tot oplevering",
       imageBadge: "Snel & vindbaar",
       href: "/diensten/webdesign",
-      image: "/api/home-feature-image/Webdesign.webp/",
+      image: "/api/home-feature-image/Webdesign.webp",
     },
     {
       id: "seo",
@@ -101,7 +101,7 @@ export const featuresConfig = {
       highlight: "Google én AI-zoekresultaten",
       imageBadge: "Lokaal sterk",
       href: "/diensten/seo",
-      image: "/api/home-feature-image/SEO.webp/",
+      image: "/api/home-feature-image/SEO.webp",
     },
     {
       id: "fotografie",
@@ -124,7 +124,7 @@ export const featuresConfig = {
       highlight: "Persoonlijke aanpak op locatie",
       imageBadge: "Op locatie",
       href: "/diensten/fotografie",
-      image: "/api/home-feature-image/Fotografie.webp/",
+      image: "/api/home-feature-image/Fotografie.webp",
     },
     {
       id: "videografie",
@@ -147,7 +147,7 @@ export const featuresConfig = {
       highlight: "Begeleiding voor en tijdens opnames",
       imageBadge: "Verhaal eerst",
       href: "/diensten/videografie",
-      image: "/api/home-feature-image/Videografie.webp/",
+      image: "/api/home-feature-image/Videografie.webp",
     },
   ] as Feature[],
 

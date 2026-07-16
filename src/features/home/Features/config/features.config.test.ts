@@ -9,7 +9,7 @@ describe("featuresConfig homepage images", () => {
       const feature = featuresConfig.features.find((item) => item.image.includes(imageName));
 
       expect(feature, `${imageName} is configured`).toBeDefined();
-      expect(feature?.image).toBe(`/api/home-feature-image/${imageName}/`);
+      expect(feature?.image).toBe(`/api/home-feature-image/${imageName}`);
       expect(feature?.image).not.toContain("firebasestorage.googleapis.com");
       expect(feature?.image).not.toContain("token=");
     }
