@@ -111,15 +111,9 @@ const nextConfig = {
       },
     ],
   },
-  // Inline de globale CSS als <style> in de <head> i.p.v. een los, render-blocking
-  // <link rel=stylesheet>. Op mobiel 4G moest de browser dat losse bestand eerst
-  // ontdekken en in een aparte round-trip (extra RTT + edge/Cloud-Run-hop) ophalen
-  // voordat er iets rendert; inline reist de CSS mee met de HTML-stream en verdwijnt
-  // de render-blocking-request. De CSP staat inline styles al toe (style-src
-  // 'unsafe-inline'), zoals next/font/google ook al inline <style> injecteert.
-  experimental: {
-    inlineCss: true,
-  },
+  // Houd globale CSS uit de eerste HTML-response. `experimental.inlineCss` maakte
+  // de homepage-HTML te groot en dupliceerde CSS in de Next flight-data, waardoor
+  // GTmetrix lang bleef wachten/ontvangen op het document zelf.
   // Merk- en icoonassets in /public hebben vaste (niet-gehashte) namen en wijzigen
   // zelden; geef ze een lange browsercache i.p.v. de korte default. Werkt pas
   // volledig wanneer Cloudflare's "Browser Cache TTL" op "Respect Existing Headers"
