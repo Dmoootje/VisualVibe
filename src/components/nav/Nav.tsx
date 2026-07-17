@@ -40,6 +40,7 @@ function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav
  * in de stijl van de bestaande cross-promo cards op /over-ons en /diensten/fotografie.
  */
 function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
+  const t = useTranslations("nav");
   return (
     <Link
       href="/trouwfotograaf-limburg"
@@ -50,8 +51,8 @@ function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
       <WeddingVibeLogo style={{ height: 20, width: "auto", flex: "none" }} />
       <span style={{ flex: "none", width: 1, alignSelf: "stretch", background: "linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent)" }} />
       <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#B8860B" }}>Ook voor je mooiste dag</span>
-        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320", paddingRight: 44 }}>Trouwfotografie &amp; huwelijksvideo</span>
+        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#B8860B" }}>{t("weddingEyebrow")}</span>
+        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320", paddingRight: 44 }}>{t("weddingTitle")}</span>
       </span>
       <span style={{ position: "absolute", right: 15, bottom: 13, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", color: "#fff", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
         <ArrowRight />
@@ -109,12 +110,14 @@ export type NavGoogleRating = { rating: number; count: number; url: string };
 
 /** Small, real (never fabricated) Google-rating pill for the desktop nav bar. */
 function GoogleRatingBadge({ rating, count, url }: NavGoogleRating) {
+  const t = useTranslations("nav");
+  const formattedRating = rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer nofollow"
-      aria-label={`VisualVibe op Google: ${rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} van 5 sterren, ${count} reviews`}
+      aria-label={t("googleRating", { rating: formattedRating, count })}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -333,8 +336,8 @@ export function Nav({
                             <NavIcon id={ap.icon} size={26} strokeWidth={1.6} />
                           </span>
                           <span style={{ flex: 1, minWidth: 0 }}>
-                            <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15 }}>Klaar voor {ap.name.toLowerCase()}?</span>
-                            <span style={{ display: "block", fontSize: 12.5, color: "rgba(255,255,255,.55)", marginTop: 2 }}>Vraag vrijblijvend een voorstel en vaste prijs aan.</span>
+                            <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15 }}>{t("readyFor", { service: ap.name.toLowerCase() })}</span>
+                            <span style={{ display: "block", fontSize: 12.5, color: "rgba(255,255,255,.55)", marginTop: 2 }}>{t("fixedPrice")}</span>
                           </span>
                           <span style={{ flex: "none", display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, fontSize: 13, color: "#fff", padding: "10px 16px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 28px -12px rgba(255,90,0,.8)", whiteSpace: "nowrap" }}>
                             Offerte <ArrowRight />
@@ -353,11 +356,11 @@ export function Nav({
 
           {/* Regio mega-menu with region map cards */}
           <RegioMega regions={regions} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
-          <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
+          <DesktopDropdown label={t("caseStudies")} allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
+          <DesktopDropdown label={t("sectors")} allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           <ToolsMega items={toolsCards} open={menu === "tools"} onOpen={() => setMenu("tools")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
-            <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
+            <DesktopDropdown label={t("knowledgeBase")} allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
           <Link href="/over-ons" className="vvnav-link">{t("about")}</Link>
           <Link href="/contact" className="vvnav-link">{t("contact")}</Link>
@@ -379,7 +382,7 @@ export function Nav({
           type="button"
           className="vvnav-mbBtn"
           onClick={openDrawer}
-          aria-label="Menu openen"
+          aria-label={t("openMenu")}
           style={{ alignItems: "center", justifyContent: "center", width: 46, height: 46, borderRadius: 12, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)", cursor: "pointer", padding: 0 }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

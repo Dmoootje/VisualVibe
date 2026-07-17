@@ -30,3 +30,21 @@ Observed failure: Vitest could not import `messages/de.json`. This was the expec
 - Service, region and card names supplied by the existing Dutch data modules remain Dutch until their structured content is localised by the relevant content tasks.
 - Several deeply nested legacy navigation and quotation-card labels remain source-data literals. The primary interface labels and state messages are localised, but a final repository-wide literal audit should be run after the structured service and navigation data are translated to avoid duplicating work or introducing a second source of truth.
 - The root `not-found.tsx` cannot use request locale context because it handles paths outside `[locale]`; it now reads the Dutch fallback text from the shared message file instead of duplicating literals.
+
+## Review fixes
+
+- Replaced the reviewed hard-coded navigation, mobile drawer, form, footer and quotation-modal strings with consumed message keys.
+- Connected every previously unused quotation key, including introductory copy, field labels, placeholders, trust signals and stored confirmation.
+- API error bodies are no longer read or displayed by the quotation modal. Visitors only receive the safe localized failure message.
+- Restored the original Dutch footer description, form prompts, contact button and quotation picker wording.
+- Corrected the English partner heading and named thank-you punctuation.
+- Added source-level component wiring and hard-coded Dutch regression tests alongside recursive key parity.
+
+Exact verification:
+
+- `npm test -- src/i18n/sharedMessages.test.ts`: 5 passed.
+- `npm run typecheck`: passed.
+- `npm run audit:locales`: completed with the same 59 content findings, including the pre-existing blocking Dutch hero alt issue outside Task 5.
+- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
+
+Self-review confirmed the cited literals now consume locale messages, the message path schema remains identical across all four locale files, English remains disabled, and no API-provided error reaches the quotation interface.

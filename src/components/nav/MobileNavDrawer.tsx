@@ -217,6 +217,7 @@ function Logo({ size = 20 }: { size?: number }) {
 }
 
 function WeddingCtaCard({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("nav");
   return (
     <Link
       href="/trouwfotograaf-limburg"
@@ -263,7 +264,7 @@ function WeddingCtaCard({ onClick }: { onClick: () => void }) {
             color: "#B8860B",
           }}
         >
-          Ook voor je mooiste dag
+          {t("weddingEyebrow")}
         </span>
         <span
           style={{
@@ -594,7 +595,7 @@ export function MobileNavDrawer({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Sluiten"
+            aria-label={t("closeMenu")}
             style={{
               width: 42,
               height: 42,
@@ -734,7 +735,7 @@ export function MobileNavDrawer({
                         setServiceIndex(index);
                         setView("service");
                       }}
-                      aria-label={`Toon onderdelen van ${pillar.name}`}
+                      aria-label={t("showServiceParts", { service: pillar.name })}
                       className="vvnav-mSubBtn"
                       style={{
                         flex: "none",
@@ -880,7 +881,7 @@ export function MobileNavDrawer({
 
           <div className="vvnav-mvPanel" style={panelStyle("regio")}>
             {pushHead("Regio", "/regio")}
-            <div style={eyebrowStyle}>Onze regio&apos;s</div>
+            <div style={eyebrowStyle}>{t("ourRegions")}</div>
             <div
               style={{
                 display: "grid",

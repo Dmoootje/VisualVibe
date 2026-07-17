@@ -3,6 +3,7 @@ import nl from "../../messages/nl.json";
 import en from "../../messages/en.json";
 import fr from "../../messages/fr.json";
 import de from "../../messages/de.json";
+import { readFileSync } from "node:fs";
 
 function paths(value: unknown, prefix = ""): string[] {
   if (!value || typeof value !== "object" || Array.isArray(value)) return [prefix];
@@ -16,5 +17,29 @@ describe("shared locale messages", () => {
     ["de", de],
   ])("keeps %s key paths in parity with Dutch", (_locale, messages) => {
     expect(paths(messages).sort()).toEqual(paths(nl).sort());
+  });
+
+  it("keeps shared components wired to locale messages", () => {
+    const quote = readFileSync("src/components/quote/QuoteModal.tsx", "utf8");
+    const lead = readFileSync("src/components/forms/LeadForm.tsx", "utf8");
+    const nav = readFileSync("src/components/nav/Nav.tsx", "utf8");
+    expect(quote).toContain('t("detailsIntro")');
+    expect(quote).toContain('t("trustStored")');
+    expect(quote).toContain('t("stored", { email: email.trim() })');
+    expect(quote).not.toContain("data.error");
+    expect(lead).toContain('aria-label={t("service")}');
+    expect(nav).toContain('label={t("caseStudies")}');
+  });
+
+  it("does not reintroduce reviewed Dutch literals in shared components", () => {
+    const files = [
+      "src/components/quote/QuoteModal.tsx",
+      "src/components/forms/LeadForm.tsx",
+      "src/components/nav/Nav.tsx",
+      "src/components/nav/MobileNavDrawer.tsx",
+    ].map((file) => readFileSync(file, "utf8")).join("\n");
+    for (const literal of [">Vrijblijvend gesprek<", 'aria-label="Menu openen"', ">Onze regio&apos;s<", 'aria-label="Regio / doelgroep"']) {
+      expect(files).not.toContain(literal);
+    }
   });
 });

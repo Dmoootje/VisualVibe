@@ -263,11 +263,11 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         <select
           name="serviceInterest"
           defaultValue=""
-          aria-label="Waar ben je in geïnteresseerd?"
+          aria-label={t("service")}
           className={inputClasses}
         >
           <option value="" disabled className="bg-neutral-900 text-white">
-            Waar ben je in geïnteresseerd?
+            {t("service")}
           </option>
           {services.map((service) => (
             <option key={service.slug} value={service.slug} className="bg-neutral-900 text-white">
@@ -279,11 +279,11 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         <select
           name="region"
           defaultValue=""
-          aria-label="Regio / doelgroep"
+          aria-label={t("region")}
           className={inputClasses}
         >
           <option value="" disabled className="bg-neutral-900 text-white">
-            Regio / doelgroep
+            {t("region")}
           </option>
           {regions.map((region) => (
             <option key={region.slug} value={region.slug} className="bg-neutral-900 text-white">

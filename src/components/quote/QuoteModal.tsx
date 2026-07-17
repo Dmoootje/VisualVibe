@@ -140,9 +140,8 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
           website: "",
         }),
       });
-      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.error ?? t("error"));
+        throw new Error(t("error"));
       }
       setSentServices(selectedNames);
       idempotencyKeyRef.current = null;
@@ -186,7 +185,7 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                   <span style={{ width: 5, height: 5, borderRadius: 9999, background: "rgba(255,255,255,.22)" }} />
                   <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: "#FF9A45" }}>{isKennis ? t("meet") : t("request")}</span>
                 </div>
-                <button type="button" onClick={close} aria-label="Sluiten" className="vvqm-x" style={{ width: 38, height: 38, borderRadius: 9999, border: "1px solid rgba(255,255,255,.14)", background: "rgba(255,255,255,.03)", color: "rgba(255,255,255,.7)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                <button type="button" onClick={close} aria-label={t("close")} className="vvqm-x" style={{ width: 38, height: 38, borderRadius: 9999, border: "1px solid rgba(255,255,255,.14)", background: "rgba(255,255,255,.03)", color: "rgba(255,255,255,.7)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>
               </div>
@@ -253,7 +252,7 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5" /><path d="m12 19-7-7 7-7" /></svg>{t("back")}
                       </button>
                       <h3 style={{ fontFamily: SORA, fontWeight: 800, fontSize: 30, letterSpacing: "-.02em", color: "#fff", margin: "0 0 8px" }}>{t("detailsHeading")}</h3>
-                      <p style={{ fontSize: 15.5, lineHeight: 1.5, color: "rgba(255,255,255,.6)", margin: "0 0 18px" }}>Vul je gegevens aan, dan sturen we een voorstel op maat. De rest bespreken we samen.</p>
+                      <p style={{ fontSize: 15.5, lineHeight: 1.5, color: "rgba(255,255,255,.6)", margin: "0 0 18px" }}>{t("detailsIntro")}</p>
                       {selectedNames.length > 0 && (
                         <div style={{ borderRadius: 14, border: "1px solid rgba(255,122,0,.22)", background: "rgba(255,122,0,.05)", padding: "14px 16px", marginBottom: 22 }}>
                           <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#FF9A45", marginBottom: 10 }}>{t("requestFor")}</div>
@@ -268,35 +267,35 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                   )}
                   {isKennis && (
                     <>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 14px", borderRadius: 9999, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.25)", fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#FF9A45", marginBottom: 16 }}><span style={{ width: 6, height: 6, borderRadius: 9999, background: "#FF7A00" }} />Vrijblijvend gesprek</span>
-                      <h3 style={{ fontFamily: SORA, fontWeight: 800, fontSize: 30, letterSpacing: "-.02em", color: "#fff", margin: "0 0 8px" }}>Leuk - laten we kennismaken</h3>
-                      <p style={{ fontSize: 15.5, lineHeight: 1.5, color: "rgba(255,255,255,.6)", margin: "0 0 24px" }}>Laat je gegevens achter, dan neem ik - Jens - snel persoonlijk contact op. Geen verplichtingen.</p>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 14px", borderRadius: 9999, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.25)", fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#FF9A45", marginBottom: 16 }}><span style={{ width: 6, height: 6, borderRadius: 9999, background: "#FF7A00" }} />{t("conversation")}</span>
+                      <h3 style={{ fontFamily: SORA, fontWeight: 800, fontSize: 30, letterSpacing: "-.02em", color: "#fff", margin: "0 0 8px" }}>{t("meetHeading")}</h3>
+                      <p style={{ fontSize: 15.5, lineHeight: 1.5, color: "rgba(255,255,255,.6)", margin: "0 0 24px" }}>{t("meetIntro")}</p>
                     </>
                   )}
 
                   <div className="vvqm-form" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 16px" }}>
                     <label className="vvqm-fldWrap" style={{ display: "block", gridColumn: "1 / -1" }}>
-                      <span style={fieldLabel}>Naam</span>
+                      <span style={fieldLabel}>{t("name")}</span>
                       <span className="vvqm-fldIco"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg></span>
-                      <input className="vvqm-inp pad" type="text" placeholder="Voor- en achternaam" value={naam} onChange={(e) => setNaam(e.target.value)} />
+                      <input className="vvqm-inp pad" type="text" placeholder={t("namePlaceholder")} value={naam} onChange={(e) => setNaam(e.target.value)} />
                     </label>
                     <label className="vvqm-fldWrap" style={{ display: "block" }}>
-                      <span style={fieldLabel}>E-mailadres</span>
+                      <span style={fieldLabel}>{t("email")}</span>
                       <span className="vvqm-fldIco"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
-                      <input className="vvqm-inp pad" type="email" placeholder="jij@bedrijf.be" value={email} onChange={(e) => setEmail(e.target.value)} />
+                      <input className="vvqm-inp pad" type="email" placeholder={t("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} />
                     </label>
                     <label className="vvqm-fldWrap" style={{ display: "block" }}>
-                      <span style={fieldLabel}>Telefoonnummer</span>
+                      <span style={fieldLabel}>{t("phone")}</span>
                       <span className="vvqm-fldIco"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
                       <input className="vvqm-inp pad" type="tel" placeholder="+32 ..." value={tel} onChange={(e) => setTel(e.target.value)} />
                     </label>
                     <label className="vvqm-fldWrap" style={{ display: "block", gridColumn: "1 / -1" }}>
-                      <span style={fieldLabel}>Adres</span>
+                      <span style={fieldLabel}>{t("address")}</span>
                       <span className="vvqm-fldIco"><OvIcon id="pin" size={16} strokeWidth={1.9} /></span>
-                      <input className="vvqm-inp pad" type="text" placeholder="Straat, nr, gemeente" value={adres} onChange={(e) => setAdres(e.target.value)} />
+                      <input className="vvqm-inp pad" type="text" placeholder={t("addressPlaceholder")} value={adres} onChange={(e) => setAdres(e.target.value)} />
                     </label>
                     <label style={{ display: "block", gridColumn: "1 / -1" }}>
-                      <span style={fieldLabel}>Korte beschrijving <span style={{ color: "rgba(255,255,255,.35)", fontWeight: 400 }}>(optioneel - de rest bespreken we samen)</span></span>
+                      <span style={fieldLabel}>{t("description")} <span style={{ color: "rgba(255,255,255,.35)", fontWeight: 400 }}>({t("optional")})</span></span>
                       <textarea className="vvqm-inp" rows={4} placeholder="Vertel kort waar je aan denkt..." value={bericht} onChange={(e) => setBericht(e.target.value)} style={{ resize: "vertical", minHeight: 96 }} />
                     </label>
                   </div>
@@ -312,8 +311,8 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                   </label>
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 20, marginTop: 20 }}>
-                    {["Veilig opgeslagen", "Volledig vrijblijvend", "Rechtstreeks van Jens"].map((t) => (
-                      <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "rgba(255,255,255,.5)" }}><Check size={15} stroke="#FF9A45" w={2.4} />{t}</span>
+                    {[t("trustStored"), t("trustNoObligation"), t("trustDirect")].map((item) => (
+                      <span key={item} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "rgba(255,255,255,.5)" }}><Check size={15} stroke="#FF9A45" w={2.4} />{item}</span>
                     ))}
                   </div>
 
@@ -340,7 +339,7 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                       ))}
                     </div>
                   )}
-                  {email.trim() && <p style={{ fontSize: 14, color: "rgba(255,255,255,.5)", margin: "0 0 26px" }}>Je aanvraag voor <span style={{ color: "#FF9A45", fontWeight: 600 }}>{email.trim()}</span> is veilig opgeslagen.</p>}
+                  {email.trim() && <p style={{ fontSize: 14, color: "rgba(255,255,255,.5)", margin: "0 0 26px" }}>{t("stored", { email: email.trim() })}</p>}
                   <button type="button" onClick={close} style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 16, color: "#fff", padding: "14px 30px", borderRadius: 12, background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.16)", cursor: "pointer" }}>{t("close")}</button>
                 </div>
               )}
