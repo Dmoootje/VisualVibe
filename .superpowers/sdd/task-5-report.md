@@ -47,6 +47,17 @@ Exact verification:
 - `npm run audit:locales`: completed with the same 59 content findings, including the pre-existing blocking Dutch hero alt issue outside Task 5.
 - `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
 
+## Final mobile navigation audit
+
+Audited the full mobile drawer as one visitor screen. Root labels, item counts, panel headings, all-links, discovery labels, navigation links and CTAs now consume locale messages. Content-record names and VisualVibe/WeddingVibe brand names remain owned by their appropriate data sources.
+
+Final evidence:
+
+- `npm test -- src/i18n/sharedMessages.test.ts`: 6 passed, including a full mobile-chrome regression scan.
+- `npm run typecheck`: passed.
+- `npm run audit:locales`: 59 pre-existing content findings, with one unrelated blocking Dutch hero alt issue.
+- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
+
 Self-review confirmed the cited literals now consume locale messages, the message path schema remains identical across all four locale files, English remains disabled, and no API-provided error reaches the quotation interface.
 
 ## Second review fixes

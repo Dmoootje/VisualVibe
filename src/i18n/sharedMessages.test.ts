@@ -51,4 +51,22 @@ describe("shared locale messages", () => {
       expect(files).not.toContain(literal);
     }
   });
+
+  it("localizes the complete mobile navigation chrome", () => {
+    const mobile = readFileSync("src/components/nav/MobileNavDrawer.tsx", "utf8");
+    for (const literal of [
+      '"Diensten",', '"Realisaties",', '"Sectoren",', '"Kennisbank",',
+      '"Over ons"', '"Contact"', "gratis tools", "categorieën", "artikels",
+      ">Ontdek <", ">Offerte aanvragen <", "Trouwfotografie &amp; huwelijksvideo",
+    ]) {
+      expect(mobile).not.toContain(literal);
+    }
+    for (const key of [
+      "services", "disciplineCount", "caseStudies", "categoryCount", "sectors",
+      "sectorCount", "freeToolCount", "knowledgeBase", "knowledgeCounts", "about",
+      "contact", "discover", "quotation",
+    ]) {
+      expect(mobile).toContain(`t("${key}"`);
+    }
+  });
 });

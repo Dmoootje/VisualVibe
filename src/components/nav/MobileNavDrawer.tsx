@@ -439,7 +439,7 @@ export function MobileNavDrawer({
             whiteSpace: "nowrap",
           }}
         >
-          Alle <ArrowRight />
+          {t("all")} <ArrowRight />
         </Link>
       )}
     </div>
@@ -627,11 +627,11 @@ export function MobileNavDrawer({
         <div className="vvnav-mvView">
           <div className="vvnav-mvPanel" style={panelStyle("root")}>
             <div style={eyebrowStyle}>{t("menu")}</div>
-            {linkRow("/", "Home")}
+            {linkRow("/", t("home"))}
             {appRow(
               <GridGlyph />,
-              "Diensten",
-              `${pillars.length} disciplines`,
+              t("services"),
+              t("disciplineCount", { count: pillars.length }),
               () => setView("diensten"),
             )}
             {appRow(
@@ -642,37 +642,37 @@ export function MobileNavDrawer({
             )}
             {appRow(
               <NavIcon id="layers" size={20} />,
-              "Realisaties",
-              `${realisatieCards.length} categorieën`,
+              t("caseStudies"),
+              t("categoryCount", { count: realisatieCards.length }),
               () => setView("realisaties"),
             )}
             {appRow(
               <NavIcon id="briefcase" size={20} />,
-              "Sectoren",
-              `${sectorCards.length} sectoren`,
+              t("sectors"),
+              t("sectorCount", { count: sectorCards.length }),
               () => setView("sectoren"),
             )}
             {appRow(
               <NavIcon id="tools" size={20} />,
-              "Tools",
-              `${toolsCards.length} gratis tools`,
+              t("tools"),
+              t("freeToolCount", { count: toolsCards.length }),
               () => setView("tools"),
             )}
             {kennisbankItems.length > 0 &&
               appRow(
                 <NavIcon id="book" size={20} />,
-                "Kennisbank",
+                t("knowledgeBase"),
                 kennisbankPostCount > 0
-                  ? `${kennisbankItems.length} categorieën · ${kennisbankPostCount} artikels`
-                  : `${kennisbankItems.length} categorieën`,
+                  ? t("knowledgeCounts", { categories: kennisbankItems.length, articles: kennisbankPostCount })
+                  : t("categoryCount", { count: kennisbankItems.length }),
                 () => setView("kennisbank"),
               )}
-            {linkRow("/over-ons", "Over ons")}
-            {linkRow("/contact", "Contact")}
+            {linkRow("/over-ons", t("about"))}
+            {linkRow("/contact", t("contact"))}
           </div>
 
           <div className="vvnav-mvPanel" style={panelStyle("diensten")}>
-            {pushHead("Diensten", "/diensten")}
+            {pushHead(t("services"), "/diensten")}
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {pillars.map((pillar, index) => (
                 <div
@@ -986,7 +986,7 @@ export function MobileNavDrawer({
                           color: "#FF9A45",
                         }}
                       >
-                        Ontdek <ArrowRight />
+                        {t("discover")} <ArrowRight />
                       </span>
                     </div>
                   </Link>
@@ -997,17 +997,17 @@ export function MobileNavDrawer({
 
           {cardPanel(
             "realisaties",
-            "Realisaties",
+            t("caseStudies"),
             "/realisaties",
             realisatieCards,
             <WeddingCtaCard onClick={onClose} />,
           )}
-          {cardPanel("sectoren", "Sectoren", "/sectoren", sectorCards)}
-          {cardPanel("tools", "Tools", "/tools", toolsCards)}
+          {cardPanel("sectoren", t("sectors"), "/sectoren", sectorCards)}
+          {cardPanel("tools", t("tools"), "/tools", toolsCards)}
           {kennisbankItems.length > 0 &&
             cardPanel(
               "kennisbank",
-              "Kennisbank",
+              t("knowledgeBase"),
               "/kennisbank",
               kennisbankItems,
             )}
