@@ -1,34 +1,13 @@
 "use client";
 
 import {
-  createContext,
-  useCallback,
-  useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
 import { OvIcon } from "@/components/over-ons/ov-icons";
 
 type Mode = "offerte" | "kennis";
-
-type QuoteModalContextValue = {
-  openOfferte: () => void;
-  openKennis: () => void;
-};
-
-const QuoteModalContext = createContext<QuoteModalContextValue | null>(null);
-
-export function useQuoteModal(): QuoteModalContextValue {
-  const ctx = useContext(QuoteModalContext);
-  if (!ctx) {
-    // A no-op fallback keeps triggers safe if rendered outside the provider.
-    return { openOfferte: () => {}, openKennis: () => {} };
-  }
-  return ctx;
-}
 
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";
@@ -62,9 +41,9 @@ function Check({ size = 14, stroke = "#fff", w = 3 }: { size?: number; stroke?: 
 
 const fieldLabel = { display: "block", fontSize: 12.5, fontWeight: 600, color: "rgba(255,255,255,.6)", marginBottom: 7 } as const;
 
-export function QuoteModalProvider({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<Mode>("offerte");
+export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () => void }) {
+  const open = true;
+  const close = onClose;
   const [step, setStep] = useState<1 | 2>(1);
   const [selected, setSelected] = useState<string[]>([]);
   const [done, setDone] = useState(false);
@@ -80,66 +59,20 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
   const [sentServices, setSentServices] = useState<string[]>([]);
   const idempotencyKeyRef = useRef<string | null>(null);
 
-  const openOfferte = useCallback(() => {
-    setMode("offerte");
-    setSelected([]);
-    setStep(1);
-    setDone(false);
-    setError(null);
-    setPrivacyAccepted(false);
-    idempotencyKeyRef.current = null;
-    setOpen(true);
-  }, []);
-  const openKennis = useCallback(() => {
-    setMode("kennis");
-    setSelected([]);
-    setStep(1);
-    setDone(false);
-    setError(null);
-    setPrivacyAccepted(false);
-    idempotencyKeyRef.current = null;
-    setOpen(true);
-  }, []);
-  const close = useCallback(() => setOpen(false), []);
-
   // Lock body scroll + Escape to close.
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
-
-  // Sitewide interception: any internal link to /offerte-aanvragen opens the
-  // offerte sheet instead of navigating (the page stays as a no-JS fallback).
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      const target = e.target as HTMLElement | null;
-      const anchor = target?.closest?.("a");
-      if (!anchor) return;
-      if (anchor.target && anchor.target !== "_self") return;
-      const href = anchor.getAttribute("href") ?? "";
-      if (/^(https?:)?\/\//i.test(href) || href.startsWith("mailto:") || href.startsWith("tel:") || href.startsWith("#")) return;
-      if (anchor.pathname.replace(/\/+$/, "").endsWith("/offerte-aanvragen")) {
-        e.preventDefault();
-        openOfferte();
-      }
-    }
-    // Capture phase: run before next-intl <Link>'s own handler so preventDefault
-    // stops the navigation and the sheet opens instead.
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [openOfferte]);
-
-  const ctx = useMemo(() => ({ openOfferte, openKennis }), [openOfferte, openKennis]);
+  }, [close, open]);
 
   const isKennis = mode === "kennis";
   const showStepper = open && !done && !isKennis;
@@ -222,9 +155,7 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
   const doneFirstName = naam.trim() ? ` ${naam.trim().split(" ")[0]}` : "";
 
   return (
-    <QuoteModalContext.Provider value={ctx}>
-      {children}
-
+    <>
       {open && (
         <div
           role="dialog"
@@ -415,6 +346,6 @@ export function QuoteModalProvider({ children }: { children: ReactNode }) {
           </div>
         </div>
       )}
-    </QuoteModalContext.Provider>
+    </>
   );
 }

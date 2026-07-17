@@ -216,7 +216,7 @@ function ChecklistPdfDocument({
         ))}
 
         <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>© VisualVibe — webdesign, SEO, fotografie, video en digitale beleving.</Text>
+          <Text style={styles.footerText}>© VisualVibe - webdesign, SEO, fotografie, video en digitale beleving.</Text>
           <Text style={styles.footerText}>visualvibe.media · /be/tools/seo-geo-checklist/</Text>
         </View>
       </Page>

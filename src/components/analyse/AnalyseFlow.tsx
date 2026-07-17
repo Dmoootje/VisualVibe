@@ -374,7 +374,7 @@ export function AnalyseFlow() {
                 Jouw website-URL
               </h2>
               <p className="mt-1 text-[15px] text-[#8f8880]">
-                Start hier — binnen een minuut weet je waar je staat.
+                Start hier. Binnen een minuut weet je waar je staat.
               </p>
 
               <div className="mx-auto mt-7 flex max-w-[620px] flex-col gap-3 sm:flex-row">

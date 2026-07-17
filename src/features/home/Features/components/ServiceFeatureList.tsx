@@ -1,5 +1,3 @@
-"use client";
-
 import { Check } from "lucide-react";
 
 /** Compact kernbullets list with orange check markers. */

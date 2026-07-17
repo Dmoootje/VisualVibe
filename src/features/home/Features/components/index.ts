@@ -1,4 +1,5 @@
 export { FeaturesHeader } from "./FeaturesHeader";
+export { FeaturesInteractive } from "./FeaturesInteractive";
 export { FeaturesTabs } from "./FeaturesTabs";
 export { MobileFeatureTitle } from "./MobileFeatureTitle";
 export { FeatureContent } from "./FeatureContent";

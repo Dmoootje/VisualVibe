@@ -383,8 +383,8 @@ html {
 
 /* ── Sector-icon system ──────────────────────────────────────────────────
    Ported from the design handoff, themed to the VisualVibe house orange
-   (#FF7500). The 10 glyphs live in <SectorIconSprite/>; colour flows through
-   currentColor from --vv-accent. Set --vv-accent on any ancestor to retheme. */
+   (#FF7500). Small glyphs use lightweight inline icons; the detailed sprite is
+   mounted only on sector detail pages. Set --vv-accent on an ancestor to retheme. */
 :root {
     --vv-accent: #ff7500;
 }
@@ -620,15 +620,33 @@ html {
 
 .vv-partner {
     display: inline-flex;
-    filter: brightness(0) invert(1);
+    align-items: center;
+    gap: 7px;
     opacity: 0.5;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
     transition: opacity 0.3s ease;
 }
 
-.vv-partner svg {
-    height: 26px;
-    width: auto;
-    display: block;
+.vv-partner::before {
+    width: 8px;
+    height: 8px;
+    content: "";
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 117, 0, 0.35);
+}
+
+.vv-partner-google::before { color: #4285f4; }
+.vv-partner-meta::before { color: #2f8cff; }
+.vv-partner-leadinfo::before { color: #ff7500; }
+
+.vv-partner-google,
+.vv-partner-meta {
+    letter-spacing: -0.025em;
 }
 
 .vv-pchip {

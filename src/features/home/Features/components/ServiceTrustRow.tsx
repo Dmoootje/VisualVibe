@@ -1,5 +1,3 @@
-"use client";
-
 import { featuresConfig } from "../config/features.config";
 
 /** Shared trust badges shown once, under the active tab content. */
