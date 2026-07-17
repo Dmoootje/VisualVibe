@@ -157,6 +157,57 @@ Een centrale woordenlijst legt merk- en vaktermen vast. Voorbeelden zijn KMO, SM
 
 Vertalingen moeten natuurlijk Engels zijn en niet woord voor woord Nederlands volgen. Claims, prijzen, bedrijfsgegevens en juridische betekenis mogen niet inhoudelijk veranderen. Lokale verwijzingen naar Limburg en België blijven correct en worden voor een internationaal publiek waar nodig verduidelijkt.
 
+### Professionele vertaalmethode
+
+Iedere Engelse pagina en ieder artikel wordt behandeld als professionele lokalisatie door een Nederlandstalige vertaler met kennis van online marketing, webdesign, SEO, GEO en de overige diensten van VisualVibe.
+
+Voor de eerste vertaalzin leest de vertaler:
+
+- de volledige Nederlandse bron, niet alleen het eerstvolgende tekstfragment;
+- minimaal 500 woorden vooruit wanneer de bron langer is en in delen wordt verwerkt;
+- de paginatitel, metadata, headings, FAQ, CTA's, captions en alt-teksten;
+- de gekoppelde dienst, doelgroep, regio en relevante interne links;
+- de centrale woordenlijst en het vertaalbrief voor die pagina.
+
+De vertaler maakt daarna eerst een compacte inhouds- en zoekintentieanalyse. Pas daarna wordt de volledige pagina als samenhangend geheel vertaald. Paragrafen worden niet onafhankelijk of zonder de rest van de pagina verwerkt.
+
+De Engelse tekst behoudt de Nederlandse merktoon: professioneel, concreet, toegankelijk en deskundig, zonder generieke marketingclichés of overdreven verkooppraat. Zinsbouw, idiomen en voorbeelden mogen worden herschreven wanneer dat natuurlijker Engels oplevert, zolang feiten, aanbod, claims en betekenis gelijk blijven.
+
+### SEO- en GEO-lokalisatie
+
+SEO-lokalisatie is geen letterlijke omzetting van Nederlandse zoekwoorden. Voor iedere indexeerbare pagina of artikel wordt een vertaalbrief vastgelegd met:
+
+- primaire Nederlandse zoekintentie;
+- beoogde Engelse doelgroep en geografische context;
+- aanbevolen Engelse hoofdterm;
+- relevante long-tailvarianten en semantisch verwante termen;
+- zoekvraag die de pagina direct moet beantwoorden;
+- gewenste slug, title, meta description en H1;
+- belangrijke interne links en hun natuurlijke Engelse ankerteksten;
+- kernfeiten die GEO-antwoorden ondubbelzinnig moeten kunnen citeren.
+
+Waar zoekvolume, actuele formuleringen of Engelse zoekintentie niet betrouwbaar uit de bron zijn af te leiden, gebeurt gericht zoekwoordenonderzoek voordat de vertaling wordt afgerond. Termen worden natuurlijk verwerkt en niet kunstmatig herhaald. Headings, vetgedrukte tekst, quotes, FAQ's, directe antwoorden en meta descriptions mogen worden aangepast voor Engelse leesbaarheid en zoekintentie.
+
+Iedere vertaalde pagina krijgt een eigen locale-specifieke canonical. Equivalente taalversies worden gekoppeld met hreflang zodra de taal wordt gepubliceerd. Canonicals worden niet gebruikt om de Engelse versie naar de Nederlandse versie te laten wijzen. Daarmee blijft iedere taalversie zelfstandig indexeerbaar zonder onjuiste canonicalisering.
+
+### Menselijkheidscontrole
+
+Na de eerste vertaling voert een andere agent een onafhankelijke redactionele review uit zonder de eerste formuleringen klakkeloos te behouden. Die controleert minimaal:
+
+- natuurlijk ritme en idiomatisch Engels;
+- behoud van de VisualVibe-toon;
+- correcte vakterminologie;
+- afwezigheid van letterlijke Nederlandse zinsbouw;
+- variatie zonder betekenisverlies;
+- correcte SEO-focus zonder keyword stuffing;
+- duidelijke, citeerbare GEO-antwoorden;
+- consistente interne links en CTA's;
+- gelijke feiten, prijzen, voorwaarden en claims;
+- geen alinea die met een spatie begint;
+- geen U+2014 of U+2015.
+
+Een algemene cloud-humanizer is geen standaardstap. Zo'n hulpmiddel mag alleen na de professionele review worden overwogen voor een duidelijk gemarkeerde tekst, gevolgd door een nieuwe feiten-, terminologie-, SEO- en linkcontrole. De humanizer mag nooit ongecontroleerd de definitieve content overschrijven.
+
 ## Validatie en foutgedrag
 
 De build- en contentcontroles melden minimaal:
@@ -212,5 +263,6 @@ Daarnaast worden representatieve pagina's visueel gecontroleerd op desktop en mo
 - Bestaande Nederlandse pagina's blijven werken.
 - Firestore bevat alleen meertalige velden waar de broninhoud al uit Firestore komt.
 - Alle relevante tests, buildcontroles, contentvalidaties en linkcontroles slagen.
+- Iedere Engelse pagina heeft een vertaalbrief en een onafhankelijke menselijke taalreview door een tweede agent doorlopen.
+- Vertalingen zijn als volledige documenten met broncontext gemaakt, niet als losse tekstfragmenten.
 - De Engelse website kan daarna met één gecontroleerde publicatiewijziging worden geactiveerd.
-

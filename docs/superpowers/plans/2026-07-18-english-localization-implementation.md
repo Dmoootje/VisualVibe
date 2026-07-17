@@ -18,6 +18,11 @@
 - Fixed and editorial content remains code-first; only already Firestore-backed content gains localized fields.
 - No new general-purpose translation CMS or full Firestore content migration.
 - Existing image URLs and filenames are reused; alt text, captions, and link titles are localized.
+- Every translator reads the complete Dutch source before translating and reads at least 500 words ahead when processing long content in sections.
+- Every indexable page receives a written translation brief covering audience, search intent, main keyword, long-tail terms, GEO answer, metadata, slug, and internal links.
+- Translation is professional localization, not sentence-by-sentence machine translation.
+- A second agent independently reviews every English page for natural language, tone, facts, terminology, SEO, GEO, and links.
+- A cloud humanizer is not part of the default pipeline and may never overwrite reviewed content without another full review.
 - Do not publish `/en`, English sitemap URLs, English hreflang, or an English language switcher option.
 - Preserve all existing Dutch behavior and content.
 - Follow the existing NOVA feature architecture and two-hop barrel exports.
@@ -193,11 +198,14 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 **Files:**
 - Create: `src/i18n/glossary.ts`
 - Create: `docs/localization/english-style-guide.md`
+- Create: `docs/localization/translation-brief.schema.json`
+- Create: `docs/localization/briefs/.gitkeep`
 - Test: `src/i18n/glossary.test.ts`
 
 **Interfaces:**
 - Produces: `ENGLISH_GLOSSARY` with approved source term, target term, notes, and preserve flag.
 - Produces: writing rules used by all content workers.
+- Produces: one validated translation-brief format used before any page translation.
 
 - [ ] **Step 1: Write a test requiring unique normalized source terms and entries for `KMO`, `offerte`, `realisaties`, `websiteanalyse`, `vindbaarheid`, `AEO`, `GEO`, `FPV`, and `Limburg`**
 
@@ -205,7 +213,13 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 - [ ] **Step 3: Document English as natural international business English, preserving factual claims, prices, legal meaning, and Belgian geographic context**
 
-- [ ] **Step 4: Run the glossary test and commit with `docs: add English localization guide`**
+- [ ] **Step 4: Define a translation-brief JSON schema requiring `sourceRoute`, `targetRoute`, `audience`, `searchIntent`, `mainKeyword`, `longTailKeywords`, `semanticTerms`, `directAnswer`, `title`, `metaDescription`, `h1`, `slug`, `internalLinks`, and `factsToPreserve`**
+
+- [ ] **Step 5: Add the mandatory workflow to the style guide: read the full source first, read at least 500 words ahead for sectioned work, write the brief, translate the full document, self-review, then independent second-agent review**
+
+- [ ] **Step 6: Explicitly ban paragraph-leading spaces, U+2014, U+2015, literal Dutch syntax, unsupported claims, keyword stuffing, and automatic humanizer rewrites**
+
+- [ ] **Step 7: Run the glossary test and validate the sample brief against the schema, then commit with `docs: add English localization guide`**
 
 ### Task 5: Localize shared navigation, chrome, forms, consent, and errors
 
@@ -271,6 +285,7 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 - Modify: public page owners under `src/app/[locale]/(site)/**` excluding knowledge base.
 - Modify: matching `src/features/**/config/**`, `src/config/**`, and `src/data/**` records.
 - Modify: `src/lib/seo/**` and `src/components/seo/**` where locale assumptions remain Dutch-only.
+- Create: `docs/localization/briefs/commercial/*.json`, one brief per indexable commercial page.
 - Test: existing page and SEO tests plus new locale assertions colocated with each changed owner.
 
 **Interfaces:**
@@ -279,17 +294,21 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 - [ ] **Step 1: Generate the exact page inventory with `rg --files 'src/app/[locale]/(site)' | sort` and classify every non-admin, non-internal route**
 
-- [ ] **Step 2: For each page owner, add a failing English render or metadata assertion before changing its content source**
+- [ ] **Step 2: Read each complete source page plus its linked service context, then create and validate its translation brief before writing English copy; use targeted current keyword research when the English search intent or terminology is uncertain**
 
-- [ ] **Step 3: Convert Dutch-only content records to `Localized<T>` at their existing owning module, keeping component structure shared**
+- [ ] **Step 3: For each page owner, add a failing English render or metadata assertion before changing its content source**
 
-- [ ] **Step 4: Translate all visible copy, metadata, FAQ/schema text, accessible names, alt text, captions, and title attributes using the style guide**
+- [ ] **Step 4: Convert Dutch-only content records to `Localized<T>` at their existing owning module, keeping component structure shared**
 
-- [ ] **Step 5: Verify every internal English link is generated through locale-aware navigation and never hard-coded to `/be`**
+- [ ] **Step 5: Translate each complete page as a coherent document, adapting headings, emphasis, quotes, direct answers, keywords, metadata, slugs, alt text, captions, and link titles to the approved brief**
 
-- [ ] **Step 6: Run all affected page tests, SEO tests, typecheck, and locale audit**
+- [ ] **Step 6: Have a second agent review every page against its Dutch source and brief, then correct literal phrasing, tone drift, factual drift, keyword stuffing, weak GEO answers, and unnatural anchor text**
 
-- [ ] **Step 7: Commit with `feat: localize core marketing pages`**
+- [ ] **Step 7: Verify every internal English link is generated through locale-aware navigation and never hard-coded to `/be`**
+
+- [ ] **Step 8: Run all affected page tests, SEO tests, typecheck, and locale audit**
+
+- [ ] **Step 9: Commit with `feat: localize core marketing pages`**
 
 ### Task 8: Localize services, subservices, sectors, regions, and case studies
 
@@ -302,6 +321,7 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 - Modify: `src/data/regionMunicipalities.ts`
 - Modify: sector and realization records found with `rg -l "Sector|sector|Realisatie|realisatie" src/data src/features src/components`
 - Modify: corresponding route and component owners.
+- Create: `docs/localization/briefs/services/*.json`, one brief per indexable service, subservice, sector, region, and case-study page.
 - Test: existing service, subservice, region, sector, and realization tests plus locale tests.
 
 **Interfaces:**
@@ -311,15 +331,19 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 - [ ] **Step 2: Run tests and record the failing entity IDs as the authoritative translation inventory**
 
-- [ ] **Step 3: Add English content for every failing entity without duplicating React components or changing factual claims**
+- [ ] **Step 3: Read each full entity page and its related-page context, create its validated translation brief, and research uncertain English search intent before translating**
 
-- [ ] **Step 4: Add natural English slugs and a locale-aware slug lookup that preserves stable internal IDs**
+- [ ] **Step 4: Add coherent, natural English content for every failing entity without duplicating React components or changing factual claims**
 
-- [ ] **Step 5: Update related-content selectors so cards and links never mix locales**
+- [ ] **Step 5: Add natural English slugs and a locale-aware slug lookup that preserves stable internal IDs**
 
-- [ ] **Step 6: Run entity tests, route tests, typecheck, locale audit, and build**
+- [ ] **Step 6: Update related-content selectors so cards and links never mix locales**
 
-- [ ] **Step 7: Commit with `feat: localize services regions and case studies`**
+- [ ] **Step 7: Dispatch an independent language reviewer for every entity and fix all tone, accuracy, SEO, GEO, terminology, and link findings**
+
+- [ ] **Step 8: Run entity tests, route tests, typecheck, locale audit, and build**
+
+- [ ] **Step 9: Commit with `feat: localize services regions and case studies`**
 
 ### Task 9: Add knowledge-base translation identity and validation
 
@@ -350,6 +374,7 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 **Files:**
 - Create: `content/kennisbank/en/*.mdx`, exactly one file for each Dutch `translationKey`.
+- Create: `docs/localization/briefs/knowledge-base/*.json`, exactly one brief for each Dutch `translationKey`.
 - Modify: `src/data/kennisbankCategories.ts`
 - Modify: knowledge-base hub, category, article, card, CTA, and sidebar owners under `src/app/[locale]/(site)/kennisbank` and `src/components/kennisbank`, `src/components/blog`.
 - Test: knowledge-base validation and render tests.
@@ -360,17 +385,21 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 - [ ] **Step 1: Divide the 58 source files into mutually exclusive alphabetical agent sets; each agent owns only its assigned new English MDX files**
 
-- [ ] **Step 2: For each Dutch article, create a complete English MDX partner with the same `translationKey`, `locale: en`, natural English slug, translated title, description, headings, body, FAQ, metadata, alt text, CTA, and preserved factual values**
+- [ ] **Step 2: Before translating, read the entire Dutch article, its metadata, linked service context, and relevant related articles; create a validated brief with English search intent, main keyword, long-tail terms, semantic terms, direct GEO answer, metadata, slug, links, and facts to preserve**
 
-- [ ] **Step 3: Rewrite internal links to the matching English slug; when the target is outside the knowledge base, use the locale-aware English route mapping**
+- [ ] **Step 3: For each Dutch article, create a complete English MDX partner as one coherent document with the same `translationKey`, `locale: en`, natural English slug, adapted headings, emphasis, quotes, title, description, body, FAQ, metadata, alt text, CTA, and preserved factual values**
 
-- [ ] **Step 4: Translate knowledge-base categories, hub copy, article chrome, table of contents, related-content labels, author labels, and structured data**
+- [ ] **Step 4: Rewrite internal links to the matching English slug; when the target is outside the knowledge base, use the locale-aware English route mapping**
 
-- [ ] **Step 5: Run `npm run audit:locales` and knowledge-base tests; require exactly 58 valid Dutch-English translation pairs and zero cross-locale internal links**
+- [ ] **Step 5: Translate knowledge-base categories, hub copy, article chrome, table of contents, related-content labels, author labels, and structured data**
 
-- [ ] **Step 6: Perform a second-agent language review of every English file for accuracy, natural phrasing, glossary consistency, and unchanged claims; fixes remain in the owning file set**
+- [ ] **Step 6: Run `npm run audit:locales` and knowledge-base tests; require exactly 58 valid Dutch-English translation pairs and zero cross-locale internal links**
 
-- [ ] **Step 7: Commit all reviewed article files and knowledge-base UI with `feat: add complete English knowledge base`**
+- [ ] **Step 7: Assign every English article to a second agent who did not translate it; compare the full English text with the full Dutch source and brief, checking natural rhythm, Dutch syntax leakage, tone, facts, keywords, GEO clarity, headings, emphasis, quotes, metadata, alt text, and links**
+
+- [ ] **Step 8: Apply all review corrections and rerun article validation; do not use a general humanizer unless a specific text is explicitly marked for it and then fully re-reviewed**
+
+- [ ] **Step 9: Commit all reviewed article files, briefs, and knowledge-base UI with `feat: add complete English knowledge base`**
 
 ### Task 11: Localize existing Firestore-backed public content
 
@@ -429,9 +458,11 @@ expect(isPublicLocalePrefix("/de/contact")).toBe(false);
 
 - [ ] **Step 9: Record commands, results, article pair count, known non-blocking language notes, and the later one-line publication procedure in `docs/localization/english-readiness-report.md`**
 
-- [ ] **Step 10: Review `git diff --stat` and `git diff --check`; confirm `storage.rules` and `public/image.jpg` are absent from all feature commits**
+- [ ] **Step 10: Record translation-brief coverage and independent-review coverage; require one validated brief and one second-agent review for every indexable English page and all 58 articles**
 
-- [ ] **Step 11: Commit integration fixes and the readiness report with `test: verify complete English localization`**
+- [ ] **Step 11: Review `git diff --stat` and `git diff --check`; confirm `storage.rules` and `public/image.jpg` are absent from all feature commits**
+
+- [ ] **Step 12: Commit integration fixes and the readiness report with `test: verify complete English localization`**
 
 ## Later Publication Procedure
 
@@ -443,4 +474,3 @@ Publication is deliberately outside this implementation. After the user explicit
 4. expose English in the language selector;
 5. run the complete Task 12 verification again;
 6. deploy only after the public URL smoke test passes.
-
