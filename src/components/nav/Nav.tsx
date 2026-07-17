@@ -8,6 +8,7 @@ import NextLink from "next/link";
 import dynamic from "next/dynamic";
 import { SectorIcon } from "@/components/sectors";
 import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
+import { toolCards as toolPreviewCards } from "@/data/tools";
 import { NavIcon } from "./nav-icons";
 import type { NavCard, NavPillar } from "./navData";
 
@@ -63,11 +64,11 @@ const GRADIENT = "linear-gradient(90deg,#FF3B2E,#FF7A00)";
 // Two-line ellipsis for the card sublines in the dropdowns/submenus.
 const CLAMP2: CSSProperties = { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" };
 
-type DesktopMenu = "diensten" | "regio" | "realisaties" | "sectoren" | "kennisbank" | null;
+type DesktopMenu = "diensten" | "regio" | "realisaties" | "sectoren" | "tools" | "kennisbank" | null;
 
 // Mobile push-navigation drawer: the current level + its parent chain drive the
 // iOS-style slide/dim transforms.
-type DrawerView = "root" | "diensten" | "service" | "regio" | "realisaties" | "sectoren" | "kennisbank";
+type DrawerView = "root" | "diensten" | "service" | "regio" | "realisaties" | "sectoren" | "tools" | "kennisbank";
 const DRAWER_PARENT: Record<DrawerView, DrawerView | null> = {
   root: null,
   diensten: "root",
@@ -75,6 +76,7 @@ const DRAWER_PARENT: Record<DrawerView, DrawerView | null> = {
   regio: "root",
   realisaties: "root",
   sectoren: "root",
+  tools: "root",
   kennisbank: "root",
 };
 const DRAWER_DEPTH: Record<DrawerView, number> = {
@@ -84,6 +86,7 @@ const DRAWER_DEPTH: Record<DrawerView, number> = {
   regio: 1,
   realisaties: 1,
   sectoren: 1,
+  tools: 1,
   kennisbank: 1,
 };
 
@@ -197,6 +200,7 @@ export function Nav({
   regions,
   sectorCards,
   realisatieCards,
+  toolsCards,
   kennisbankItems,
   kennisbankPostCount = 0,
   googleRating = null,
@@ -205,6 +209,7 @@ export function Nav({
   regions: NavRegion[];
   sectorCards: NavCard[];
   realisatieCards: NavCard[];
+  toolsCards: NavCard[];
   kennisbankItems: NavCard[];
   kennisbankPostCount?: number;
   googleRating?: NavGoogleRating | null;
@@ -520,6 +525,7 @@ export function Nav({
           <RegioMega regions={regions} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
           <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
           <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
+          <ToolsMega items={toolsCards} open={menu === "tools"} onOpen={() => setMenu("tools")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
             <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
@@ -573,6 +579,7 @@ export function Nav({
               {appRow(<PinGlyph />, "Regio", `${regions.length} werkgebieden`, () => setView("regio"))}
               {appRow(<NavIcon id="layers" size={20} />, "Realisaties", `${realisatieCards.length} categorieën`, () => setView("realisaties"))}
               {appRow(<NavIcon id="briefcase" size={20} />, "Sectoren", `${sectorCards.length} sectoren`, () => setView("sectoren"))}
+              {appRow(<NavIcon id="tools" size={20} />, "Tools", `${toolsCards.length} gratis tools`, () => setView("tools"))}
               {kennisbankItems.length > 0 &&
                 appRow(
                   <NavIcon id="book" size={20} />,
@@ -711,6 +718,7 @@ export function Nav({
             {/* REALISATIES / SECTOREN / KENNISBANK (iconed card panels) */}
             {cardPanel("realisaties", "Realisaties", "/realisaties", realisatieCards, <WeddingCtaCard onClick={closeDrawer} />)}
             {cardPanel("sectoren", "Sectoren", "/sectoren", sectorCards)}
+            {cardPanel("tools", "Tools", "/tools", toolsCards)}
             {kennisbankItems.length > 0 && cardPanel("kennisbank", "Kennisbank", "/kennisbank", kennisbankItems)}
           </div>
 
@@ -761,6 +769,108 @@ function DesktopDropdown({ label, allHref, items, open, onOpen, onClose, cta }: 
           {cta}
         </div>
       </div>
+      )}
+    </div>
+  );
+}
+
+function ToolsMega({
+  items,
+  open,
+  onOpen,
+  onClose,
+}: {
+  items: NavCard[];
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}) {
+  const [activeHref, setActiveHref] = useState(items[0]?.href ?? "/website-analyse");
+  const active = items.find((item) => item.href === activeHref) ?? items[0];
+  const preview = toolPreviewCards.find((tool) => tool.href === active?.href) ?? toolPreviewCards[0];
+
+  return (
+    <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
+      <Link href="/tools" style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
+        Tools <ChevDown className="vvnav-navChev" color="currentColor" />
+      </Link>
+      {open && (
+        <div className="vvnav-mega is-open">
+          <div style={{ display: "grid", gridTemplateColumns: "330px 430px", borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)", overflow: "hidden" }}>
+            <div style={{ padding: 16, borderRight: "1px solid rgba(255,255,255,.07)" }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)", padding: "6px 12px 12px" }}>
+                Gratis tools
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {items.map((item) => {
+                  const on = item.href === active?.href;
+                  const itemPreview = toolPreviewCards.find((tool) => tool.href === item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onMouseEnter={() => setActiveHref(item.href)}
+                      className="vvnav-railItem"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 13,
+                        padding: "12px",
+                        borderRadius: 13,
+                        border: `1px solid ${on ? "rgba(255,122,0,.3)" : "rgba(255,255,255,.07)"}`,
+                        background: on ? "rgba(255,122,0,.09)" : "rgba(255,255,255,.02)",
+                      }}
+                    >
+                      <span style={{ flex: "none", width: 40, height: 40, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center", color: on ? "#FF7A00" : "rgba(255,255,255,.75)", background: on ? "rgba(255,122,0,.16)" : "rgba(255,255,255,.04)", border: `1px solid ${on ? "rgba(255,122,0,.3)" : "rgba(255,255,255,.08)"}` }}>
+                        <CardIcon icon={item.icon} iconKind={item.iconKind} size={20} />
+                      </span>
+                      <span style={{ flex: 1, minWidth: 0 }}>
+                        <span style={{ display: "block", fontFamily: SORA, fontWeight: 750, fontSize: 15, color: "#fff" }}>{item.name}</span>
+                        <span style={{ display: "block", fontSize: 11.5, color: "rgba(255,255,255,.48)", marginTop: 1 }}>{itemPreview?.tag ?? "Tool"}</span>
+                      </span>
+                      <ChevRight color={on ? "#FF7A00" : "rgba(255,255,255,.28)"} size={14} />
+                    </Link>
+                  );
+                })}
+              </div>
+              <Link href="/tools" onClick={onClose} style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45" }}>
+                Alle tools <ArrowRight />
+              </Link>
+            </div>
+
+            {preview && (
+              <div style={{ padding: 22, background: "radial-gradient(120% 120% at 100% 0%,rgba(255,122,0,.16),transparent 58%),rgba(255,255,255,.012)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+                  <span style={{ flex: "none", width: 54, height: 54, borderRadius: 16, background: "rgba(255,122,0,.11)", border: "1px solid rgba(255,122,0,.28)", color: "#FF9A45", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 18px 45px -28px rgba(255,122,0,.9)" }}>
+                    <CardIcon icon={preview.icon} size={27} />
+                  </span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, fontWeight: 800, letterSpacing: ".14em", textTransform: "uppercase", color: "#FF9A45" }}>
+                      {preview.tag}
+                    </span>
+                    <span style={{ display: "block", marginTop: 4, fontFamily: SORA, fontSize: 20, lineHeight: 1.12, fontWeight: 850, color: "#fff" }}>
+                      {preview.previewTitle}
+                    </span>
+                  </span>
+                </div>
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: "rgba(255,255,255,.66)" }}>
+                  {preview.previewText}
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8, marginTop: 18 }}>
+                  {preview.previewPoints.map((point) => (
+                    <span key={point} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 10px", borderRadius: 11, border: "1px solid rgba(255,255,255,.08)", background: "rgba(0,0,0,.18)", fontSize: 12.5, fontWeight: 700, color: "rgba(255,255,255,.82)" }}>
+                      <span style={{ width: 7, height: 7, borderRadius: 99, background: "#34D399", boxShadow: "0 0 18px rgba(52,211,153,.75)" }} />
+                      {point}
+                    </span>
+                  ))}
+                </div>
+                <Link href={preview.href} onClick={onClose} style={{ marginTop: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, fontWeight: 800, fontSize: 13, color: "#fff", padding: "11px 16px", borderRadius: 11, background: GRADIENT, boxShadow: "0 14px 30px -14px rgba(255,90,0,.85)" }}>
+                  {preview.cta} <ArrowRight />
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import { regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { realisatieCategories } from "@/data/realisatieCategories";
+import { toolCards } from "@/data/tools";
 
 export type NavLink = { name: string; href: string };
 /** A richer nav row: icon + name + a one-line subtitle (used in the dropdowns/submenus). */
@@ -180,6 +181,13 @@ export const realisatieCards: NavCard[] = realisatieCategories.map((category) =>
   href: `/realisaties/${category.slug}`,
   icon: REALISATIE_ICON[category.slug] ?? "layers",
   desc: REALISATIE_MENU_COPY[category.slug]?.desc ?? category.description,
+}));
+
+export const toolsCards: NavCard[] = toolCards.map((tool) => ({
+  name: tool.name,
+  href: tool.href,
+  icon: tool.icon,
+  desc: tool.desc,
 }));
 
 /** Build a kennisbank card for a category (the Header filters to non-empty ones). */
