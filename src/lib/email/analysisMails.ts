@@ -9,6 +9,7 @@ import {
   renderAnalysisVerificationEmail,
 } from "@/lib/email/templates";
 import { adminDb } from "@/lib/firebase/admin";
+import { getAnalysisReport } from "@/lib/firestore/analysisReports";
 import { getEmailSettings } from "@/lib/firestore/emailSettings";
 import {
   claimAutomaticMailDispatch,
@@ -44,6 +45,17 @@ async function loadEmailSettings(): Promise<EmailSettings | null> {
     return await getEmailSettings();
   } catch {
     // De analyse-flow mag nooit crashen op een instellingenlookup.
+    return null;
+  }
+}
+
+async function loadStoredAnalysisReport(analysisLead: AnalysisLead) {
+  if (!analysisLead.reportId) return null;
+  try {
+    return await getAnalysisReport(analysisLead.reportId);
+  } catch {
+    // De rapportmail mag nooit blokkeren op een tijdelijke Firestore-read.
+    // Zonder volledig rapport valt de template terug op score + samenvatting.
     return null;
   }
 }
@@ -220,6 +232,7 @@ export async function sendAnalysisReportMail(input: {
   const settings = await loadEmailSettings();
   if (!settings) return { status: "failed" };
   if (!settings.smtp.enabled) return { status: "skipped" };
+  const storedReport = await loadStoredAnalysisReport(analysisLead);
 
   const rendered = renderAnalysisReportEmail({
     firstName: analysisLead.firstName,
@@ -228,6 +241,8 @@ export async function sendAnalysisReportMail(input: {
       ? { score: analysisLead.analysisScore }
       : {}),
     criticalIssues: analysisLead.criticalIssues ?? [],
+    ...(analysisLead.analysisSummary ? { analysisSummary: analysisLead.analysisSummary } : {}),
+    ...(storedReport?.report ? { report: storedReport.report } : {}),
     reportUrl,
     settings,
   });
