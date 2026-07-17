@@ -1,2 +1,2 @@
-export { QuoteModalProvider, useQuoteModal } from "./QuoteModal";
+export { QuoteModalController } from "./QuoteModalController";
 export { QuoteButton } from "./QuoteButton";

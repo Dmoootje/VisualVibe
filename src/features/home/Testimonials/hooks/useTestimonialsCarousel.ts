@@ -14,7 +14,7 @@ export function useTestimonialsCarousel(items: CarouselTestimonial[]) {
     const [inView, setInView] = useState(false);
     const [pageVisible, setPageVisible] = useState(false);
     const [reduceMotion, setReduceMotion] = useState(true);
-    const rootRef = useRef<HTMLElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
     const total = items.length;
 
     useEffect(() => {

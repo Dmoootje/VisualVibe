@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowRight, CheckCircle2, Gauge, SearchCheck, Sparkles } from "lucide-react";
 import { businessConfig } from "@/config/business.config";
 import { AnalyseFlow } from "@/components/analyse/AnalyseFlow";
@@ -7,6 +8,7 @@ import { PageAmbient } from "@/components/ui/PageAmbient";
 import { getAnalysisIntegrationPublic } from "@/lib/analyse/integration";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import { TOOL_PAGE_IMAGES } from "@/data/toolPageImages";
 
 const PAGE_PATH = "/website-analyse/";
 const PAGE_URL = `${businessConfig.url}${localizedPath("nl", PAGE_PATH)}`;
@@ -27,6 +29,8 @@ export const metadata = pageMetadata({
     "GEO analyse",
   ],
   path: PAGE_PATH,
+  ogImage: TOOL_PAGE_IMAGES.websiteAnalyse.url,
+  ogImageAlt: TOOL_PAGE_IMAGES.websiteAnalyse.alt,
 });
 
 // De modus en sleutels worden live uit de admin-config gelezen, dus per request
@@ -162,6 +166,7 @@ export default async function WebsiteAnalysePage() {
         url={PAGE_URL}
         name="Gratis website analyse"
         description="Gratis website analyse van VisualVibe voor SEO, snelheid, techniek, content en AI-vindbaarheid."
+        primaryImage={TOOL_PAGE_IMAGES.websiteAnalyse.url}
       />
       <FaqPageJsonLd items={FAQ_ITEMS} />
       <PageAmbient />
@@ -169,7 +174,8 @@ export default async function WebsiteAnalysePage() {
       <main className="relative z-10">
         <section className="pb-12 pt-28 sm:pt-32 md:pb-16 md:pt-36">
           <div className="container mx-auto px-2.5 sm:px-4">
-            <header className="mx-auto max-w-3xl text-center">
+            <header className="mx-auto grid max-w-[1120px] items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
+              <div className="text-center lg:text-left">
                 <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#ff8a2a]">
                   <span aria-hidden="true" className="h-[1.5px] w-[26px] rounded-full bg-[#ff8a2a]" />
                   Website analyse
@@ -178,13 +184,23 @@ export default async function WebsiteAnalysePage() {
                 <h1 className="text-4xl font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-5xl md:text-[62px]">
                   Gratis website analyse
                 </h1>
-                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/68 sm:text-lg">
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/68 sm:text-lg lg:mx-0">
                   Vul je website in en ontdek meteen hoe je scoort op SEO, snelheid, techniek,
                   content en AI-vindbaarheid. Je krijgt geen vaag rapport, maar concrete
                   verbeterpunten waarmee je website sterker kan worden in Google én in moderne
                   AI-zoekresultaten.
                 </p>
-
+              </div>
+              <div className="relative aspect-[1200/630] overflow-hidden rounded-[24px] border border-white/[0.1] bg-white/[0.025] shadow-[0_28px_90px_-44px_rgba(255,117,0,0.72)]">
+                <Image
+                  src={TOOL_PAGE_IMAGES.websiteAnalyse.url}
+                  alt={TOOL_PAGE_IMAGES.websiteAnalyse.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1023px) 100vw, 600px"
+                  className="object-cover"
+                />
+              </div>
             </header>
 
             <div className="mx-auto mt-11 max-w-[1120px]">

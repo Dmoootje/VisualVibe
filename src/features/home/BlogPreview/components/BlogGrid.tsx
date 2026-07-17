@@ -1,5 +1,3 @@
-"use client";
-
 import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
 import { BlogCard } from "./BlogCard";
 

@@ -1,9 +1,11 @@
+import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 import { BreadcrumbJsonLd, WebPageJsonLd } from "@/components/seo";
 import { PageAmbient } from "@/components/ui/PageAmbient";
 import { SeoGeoChecklist } from "@/components/tools/SeoGeoChecklist";
 import { businessConfig } from "@/config/business.config";
 import { getSeoGeoChecklistItemCount, seoGeoChecklistCategories } from "@/data/tools";
+import { TOOL_PAGE_IMAGES } from "@/data/toolPageImages";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 
@@ -23,6 +25,8 @@ export const metadata = pageMetadata({
     "technische SEO checklist",
   ],
   path: PAGE_PATH,
+  ogImage: TOOL_PAGE_IMAGES.seoGeoChecklist.url,
+  ogImageAlt: TOOL_PAGE_IMAGES.seoGeoChecklist.alt,
 });
 
 export default function SeoGeoChecklistPage() {
@@ -41,13 +45,14 @@ export default function SeoGeoChecklistPage() {
         url={PAGE_URL}
         name="SEO/GEO checklist"
         description="Gratis checklist voor SEO, GEO, AEO, structured data, snelheid en lokale vindbaarheid."
+        primaryImage={TOOL_PAGE_IMAGES.seoGeoChecklist.url}
       />
       <PageAmbient />
 
       <main className="relative z-10">
         <section className="pb-10 pt-28 sm:pt-32 md:pt-36">
           <div className="container mx-auto px-2.5 sm:px-4">
-            <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-center">
               <div>
                 <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#ff8a2a]">
                   SEO, GEO & AEO
@@ -62,19 +67,31 @@ export default function SeoGeoChecklistPage() {
                 </p>
               </div>
 
-              <div className="rounded-[24px] border border-[rgba(255,117,0,0.28)] bg-[rgba(255,117,0,0.08)] p-5">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[rgba(255,117,0,0.28)] bg-black/25 text-[#ff8a2a]">
-                    <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="text-3xl font-extrabold text-white">{itemCount}</p>
-                    <p className="text-sm font-semibold text-white/56">controlepunten</p>
-                  </div>
+              <div className="space-y-4">
+                <div className="relative aspect-[1200/630] overflow-hidden rounded-[24px] border border-white/[0.1] bg-white/[0.025] shadow-[0_28px_90px_-44px_rgba(255,117,0,0.72)]">
+                  <Image
+                    src={TOOL_PAGE_IMAGES.seoGeoChecklist.url}
+                    alt={TOOL_PAGE_IMAGES.seoGeoChecklist.alt}
+                    fill
+                    priority
+                    sizes="(max-width: 1023px) 100vw, 420px"
+                    className="object-cover"
+                  />
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-white/62">
-                  Vink af wat klaar is en download een branded PDF voor je planning, klant of team.
-                </p>
+                <div className="rounded-[24px] border border-[rgba(255,117,0,0.28)] bg-[rgba(255,117,0,0.08)] p-5">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[rgba(255,117,0,0.28)] bg-black/25 text-[#ff8a2a]">
+                      <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p className="text-3xl font-extrabold text-white">{itemCount}</p>
+                      <p className="text-sm font-semibold text-white/56">controlepunten</p>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-white/62">
+                    Vink af wat klaar is en download een branded PDF voor je planning, klant of team.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

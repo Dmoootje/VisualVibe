@@ -1,7 +1,3 @@
-.home-sector-marquee:not(.is-running) .vv-mq-track {
-  animation-play-state: paused;
-}
-
 @media (max-width: 767px) {
   .home-sector-marquee > div {
     gap: 0;

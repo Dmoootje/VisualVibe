@@ -38,6 +38,12 @@ describe("WebsiteAnalysePage", () => {
     });
     expect(metadata.description).toContain("SEO");
     expect(metadata.description).toContain("snelheid");
+    expect(JSON.stringify(metadata.openGraph?.images)).toContain(
+      "Gratis%20website%20analyse.webp",
+    );
+    expect(JSON.stringify(metadata.openGraph?.images)).toContain(
+      "Gratis VisualVibe website analyse voor SEO, snelheid, techniek en AI-vindbaarheid",
+    );
   });
 
   it("renders SEO landing-page content around the analysis tool", async () => {
@@ -51,6 +57,9 @@ describe("WebsiteAnalysePage", () => {
     expect(html).toContain("AI-vindbaarheid");
     expect(html).toContain("Gratis analyse of volledige SEO-audit?");
     expect(html).toContain("Veelgestelde vragen");
+    expect(html).toContain(
+      'alt="Gratis VisualVibe website analyse voor SEO, snelheid, techniek en AI-vindbaarheid"',
+    );
 
     expect(html).toContain("/diensten/seo/");
     expect(html).toContain("/diensten/webdesign/");

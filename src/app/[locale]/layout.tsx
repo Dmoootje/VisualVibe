@@ -5,11 +5,9 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ConsentAnalytics, CookieConsent } from "@/components/consent";
 import "../globals.css";
-import { ThemeProvider } from "@/providers";
 import { SiteBackground } from "@/components/ui";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo";
-import { SectorIconSprite } from "@/components/sectors";
 import { businessConfig } from "@/config/business.config";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -127,19 +125,11 @@ export default async function LocaleLayout({
           data-key="JFU/1WVq2PehJ+OTBgN9kg"
         />
         <SiteBackground />
-        <SectorIconSprite />
         <OrganizationJsonLd />
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          {children}
           {/* Inside the intl provider: the banner uses next-intl <Link>, which
               needs the locale context (it opens client-side, after hydration). */}
           {gaId && <CookieConsent />}

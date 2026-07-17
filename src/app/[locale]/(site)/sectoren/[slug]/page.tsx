@@ -35,6 +35,7 @@ import {
   SectorLocal,
   SectorFaq,
   SectorKnowledge,
+  SectorIconSprite,
 } from "@/components/sectors";
 import type { Region } from "@/types";
 
@@ -111,6 +112,7 @@ export default async function SectorDetailPage({
 
   return (
     <div className="min-h-screen text-white">
+      <SectorIconSprite />
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
