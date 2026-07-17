@@ -137,17 +137,34 @@ describe("renderAnalysisReportEmail", () => {
     expect(email.html).toContain('<html lang="en">');
     expect(email.html).toContain("Overall score");
     expect(email.html).toContain("View your full report");
-    expect(email.text).toContain("Would you like to know how best to address these points?");
+    expect(email.text).toContain("Would you like practical advice on what to improve first?");
     expect(email.text).not.toContain("Je websiteanalyse");
   });
 
   it("includes detailed findings only when report metadata identifies English", () => {
     const fixture = reportFixture();
-    const report: NormalizedPartnerAuditReport = { ...fixture, summary: "The technical foundation is sound.", page: { ...fixture.page, language: "en-GB" }, topIssues: [{ id: "context", severity: "medium", title: "Clarify regional context", explanation: "The region is not explicit.", recommendation: "Name the service area." }] };
+    const report: NormalizedPartnerAuditReport = { ...fixture, outputLanguage: "en", summary: "The technical foundation is sound.", page: { ...fixture.page, language: "nl-BE" }, topIssues: [{ id: "context", severity: "medium", title: "Clarify regional context", explanation: "The region is not explicit.", recommendation: "Name the service area." }] };
     const email = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", criticalIssues: [], report, reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
     expect(email.text).toContain("The technical foundation is sound.");
     expect(email.text).toContain("Clarify regional context");
     expect(email.html).toContain("Key findings");
+  });
+
+  it("suppresses findings when an English webpage has Dutch report output", () => {
+    const fixture = reportFixture();
+    const report: NormalizedPartnerAuditReport = { ...fixture, outputLanguage: "nl", page: { ...fixture.page, language: "en-GB" } };
+    const email = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", criticalIssues: [], report, reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
+    expect(email.text).not.toContain(report.summary);
+    expect(email.text).not.toContain("AIO-context kan sterker");
+  });
+
+  it("suppresses legacy findings when output language metadata is missing", () => {
+    const fixture = reportFixture();
+    const report: NormalizedPartnerAuditReport = { ...fixture, page: { ...fixture.page, language: "en-GB" } };
+    const email = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", criticalIssues: [], report, reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
+    expect(email.text).not.toContain(report.summary);
+    expect(email.text).toContain("Would you like practical advice on what to improve first? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.");
+    expect(email.text).toContain("Reply directly to this email if you would like to discuss your report.");
   });
 
   it("uses safe English fallback copy when stored report findings are not known to be English", () => {
@@ -163,7 +180,7 @@ describe("renderAnalysisReportEmail", () => {
     const verification = renderAnalysisVerificationEmail({ firstName: "Alex", code: "123456", ttlMinutes: 15, locale: "en", settings: emailSettings() });
     expect(verification.text).toContain("If you did not request a website analysis, you can safely ignore this email.");
     const report = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", score: 91, criticalIssues: [], reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
-    expect(report.text).toContain("Would you like to know how best to address these points? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.");
+    expect(report.text).toContain("Would you like practical advice on what to improve first? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.");
   });
 
   it("renders the richer analyzer summary and follow-up CTAs", () => {

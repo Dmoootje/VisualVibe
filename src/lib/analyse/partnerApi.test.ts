@@ -16,6 +16,7 @@ const completedReport = {
   topIssues: [],
   strengths: [],
   technical: {},
+  outputLanguage: "en",
 };
 
 describe("parsePartnerSecretKey", () => {
@@ -112,6 +113,8 @@ describe("runPartnerAnalysis", () => {
     expect(result.partnerAnalysisId).toBe("analysis-id");
     expect(result.report.overallScore).toBe(91);
     expect(result.report.page.language).toBe("en-GB");
+    expect(result.report.outputLanguage).toBe("en");
+
     expect(calls.map((call) => call.url)).toEqual([
       "https://seo.example/api/partner/v1/analyses",
       "https://seo.example/api/partner/v1/analyses/analysis-id",
@@ -126,5 +129,14 @@ describe("runPartnerAnalysis", () => {
     });
     expect(calls[0].init?.headers).toMatchObject({ "X-Partner-Nonce": "nonce-start" });
     expect(calls[1].init?.headers).toMatchObject({ "X-Partner-Nonce": "nonce-poll" });
+  });
+
+  it("does not infer output language from the requested locale when the partner omits it", async () => {
+    const legacy = { ...completedReport };
+    delete (legacy as { outputLanguage?: string }).outputLanguage;
+    const responses = [new Response(JSON.stringify({ analysisId: "legacy" }), { status: 202 }), new Response(JSON.stringify({ status: "completed", result: legacy }), { status: 200 })];
+    const result = await runPartnerAnalysis({ apiBaseUrl: "https://seo.example/api/partner/v1", privateKey: "sk_live_key123_secret_with_parts", partnerSiteId: 42, safeUrl: "https://voorbeeld.be/", externalReference: "lead-id", idempotencyKey: "lead-id", locale: "en" }, { fetcher: async () => responses.shift()!, sleep: async () => undefined, now: () => 1_700_000_000_000, nonce: () => "nonce" });
+    expect(result.status).toBe("completed");
+    if (result.status === "completed") expect(result.report.outputLanguage).toBeUndefined();
   });
 });

@@ -665,14 +665,15 @@ export function renderAnalysisReportEmail(input: {
     const name = firstName(input.firstName);
     const domain = cleanText(input.domain) || "your website";
     const reportUrl = absoluteUrl(input.reportUrl);
-    const reportIsEnglish = input.report?.page.language?.toLowerCase().startsWith("en") === true;
+    const reportIsEnglish = input.report?.outputLanguage === "en";
     const summary = reportIsEnglish ? cleanText(input.report?.summary) || cleanText(input.analysisSummary) : "";
     const issues = reportIsEnglish ? analysisIssueItems({ report: input.report ?? undefined, criticalIssues: input.criticalIssues }) : [];
     const score = typeof input.report?.overallScore === "number" ? input.report.overallScore : input.score;
     const subject = cleanSubject(name ? `${name}, your website analysis is ready` : "Your website analysis is ready");
     const title = "Your website analysis is ready";
     const intro = reportIsEnglish ? `We have analysed ${domain}. Here are the main findings, with your full report available online.` : `We have analysed ${domain}. Your score is shown below, and your full report is available online.`;
-    const nextStep = "Would you like to know how best to address these points? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.";
+    const nextStep = reportIsEnglish ? "Would you like to know how best to address these points? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs." : "Would you like practical advice on what to improve first? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.";
+    const contact = reportIsEnglish ? "Reply directly to this email if you would like to talk through the findings." : "Reply directly to this email if you would like to discuss your report.";
     const bodyHtml = [
       `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY.en.greeting(name))}</p>`,
       `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(intro)}</p>`,
@@ -680,13 +681,13 @@ export function renderAnalysisReportEmail(input: {
       summary ? sectionHtml("Summary", `<p style="margin:0;line-height:1.65;color:#242424;">${paragraphHtml(summary)}</p>`) : "",
       issues.length ? sectionHtml("Key findings", listHtml(issues)) : "",
       sectionHtml("Next step", `<p style="margin:0;line-height:1.65;color:#242424;">${escapeHtml(nextStep)}</p>`),
-      `<p style="margin:24px 0 0;line-height:1.65;color:#645d55;">Reply directly to this email if you would like to talk through the findings.</p>`,
+      `<p style="margin:24px 0 0;line-height:1.65;color:#645d55;">${contact}</p>`,
     ].join("");
     const cta = reportUrl ? { label: "View your full report", url: reportUrl } : null;
     return {
       subject,
       html: renderHtmlLayout({ preheader: subject, title, bodyHtml, settings: input.settings, locale: "en", cta }),
-      text: renderTextLayout(title, [CUSTOMER_COPY.en.greeting(name), intro, score !== undefined ? `Overall score: ${analysisScoreText(score)}` : undefined, summary ? `Summary:\n${summary}` : undefined, issues.length ? `Key findings:\n${issues.map((issue) => `- ${issue}`).join("\n")}` : undefined, `Next step:\n${nextStep}`, "Reply directly to this email if you would like to talk through the findings."], input.settings, cta),
+      text: renderTextLayout(title, [CUSTOMER_COPY.en.greeting(name), intro, score !== undefined ? `Overall score: ${analysisScoreText(score)}` : undefined, summary ? `Summary:\n${summary}` : undefined, issues.length ? `Key findings:\n${issues.map((issue) => `- ${issue}`).join("\n")}` : undefined, `Next step:\n${nextStep}`, contact], input.settings, cta),
       replyTo: input.settings.smtp.replyTo || undefined,
     };
   }

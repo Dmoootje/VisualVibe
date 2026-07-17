@@ -76,6 +76,8 @@ export type NormalizedPartnerKeywordDensity = {
 
 export type NormalizedPartnerAuditReport = {
   schemaVersion: 1;
+  /** Language used for generated report copy, distinct from page.language. */
+  outputLanguage?: "nl" | "en" | "fr";
   url: string;
   overallScore: number;
   summary: string;
@@ -168,6 +170,7 @@ export type AnalysisReportDocument = {
   schemaVersion: number;
   normalizedDomain: string;
   sourceUrl: string;
+  outputLanguage?: "nl" | "en" | "fr";
   report: NormalizedPartnerAuditReport;
   createdAt: string;
   updatedAt: string;

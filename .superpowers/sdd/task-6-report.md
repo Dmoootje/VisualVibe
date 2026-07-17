@@ -71,3 +71,16 @@ The new focused suite initially failed for the intended reasons: locale helper a
 - TypeScript passed.
 - Prohibited-character scan and `git diff --check` passed.
 - Locale audit remains at the same unrelated baseline: one Dutch knowledge-base alt-text blocker and 58 expected English knowledge-base partner notices.
+
+## Final output-language correction
+
+The report model now distinguishes the analysed page language from the generated report output language. `outputLanguage` is validated on the normalized partner report, persisted explicitly on the report document and retained inside the normalized report. It is never inferred from `page.language` or from the requested visitor locale when a legacy partner response omits it.
+
+English visitor emails include dynamic summaries and findings only when `outputLanguage` is exactly `en`. A Dutch webpage with explicitly English report output includes those findings. An English webpage with Dutch, unknown or legacy output suppresses them and uses the approved neutral fallback, next-step and reply wording.
+
+### Final RED/GREEN evidence
+
+- RED: five focused failures demonstrated missing output-language parsing/persistence, page-language leakage and outdated fallback wording.
+- GREEN: 16 focused files and 88 tests passed.
+- TypeScript, prohibited-character scan and diff check passed.
+- Locale audit remains unchanged at the unrelated baseline documented above.

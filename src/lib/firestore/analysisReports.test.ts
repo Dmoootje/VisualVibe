@@ -26,6 +26,7 @@ const report = {
   topIssues: [],
   strengths: [],
   technical: {},
+  outputLanguage: "en" as const,
 };
 
 describe("analysisReports", () => {
@@ -52,10 +53,12 @@ describe("analysisReports", () => {
         sourceUrl: "https://voorbeeld.be/",
         schemaVersion: 1,
         report,
+        outputLanguage: "en",
       }),
     );
     expect(firestore.create.mock.calls[0][0]).not.toHaveProperty("raw");
     expect(created.id).toBe("report-id");
+    expect(created.outputLanguage).toBe("en");
   });
 
   it("returns null for a missing report", async () => {
