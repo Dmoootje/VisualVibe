@@ -1,4 +1,6 @@
-export type BlogLocale = "nl" | "fr" | "en";
+import type { SupportedLocale } from "@/i18n/locales";
+
+export type BlogLocale = Exclude<SupportedLocale, "de">;
 
 export type BlogPostStatus = "draft" | "scheduled" | "published" | "archived";
 
