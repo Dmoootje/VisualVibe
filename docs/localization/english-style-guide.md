@@ -27,6 +27,8 @@ An automatic humanizer is not part of this workflow. It must never rewrite final
 
 Localise search intent, not just keywords. The brief records the English audience, main keyword, long-tail keywords and semantic terms before copy is written. Use them only where they fit the reader's question and natural English. Never translate a Dutch keyword literally when English users express the intent differently.
 
+Record `primaryDutchSearchIntent` first as the main question or need answered by the Dutch source, in Dutch and without adapting it for the target market. The separate `searchIntent` object describes the intended English reader's question, intent type and geographic context after localisation research. These fields may be closely related, but they are not interchangeable: the first protects the source purpose, while the second guides the English page and its keyword choices. Any justified shift must preserve the source facts and commercial scope.
+
 Keep one clear H1 and create a distinct English title, meta description and slug. Adapt headings, bold text, quotations, FAQs and direct-answer passages when this improves English readability, search intent or citation clarity. Do not create canonical duplication. Each locale will use its own canonical URL when published, and English must not canonicalise to Dutch.
 
 Near the top, answer the main question directly where the page type supports it. Make factual statements bounded, unambiguous and easy to cite. Keep claims consistent across related pages. Do not repeat the main keyword mechanically, force variants into headings or sacrifice clarity for keyword density.

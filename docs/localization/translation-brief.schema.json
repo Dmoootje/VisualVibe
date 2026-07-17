@@ -9,6 +9,7 @@
     "sourceRoute",
     "targetRoute",
     "audience",
+    "primaryDutchSearchIntent",
     "searchIntent",
     "mainKeyword",
     "longTailKeywords",
@@ -25,6 +26,10 @@
     "sourceRoute": { "$ref": "#/$defs/route" },
     "targetRoute": { "$ref": "#/$defs/route" },
     "audience": { "$ref": "#/$defs/nonEmptyString" },
+    "primaryDutchSearchIntent": {
+      "allOf": [{ "$ref": "#/$defs/nonEmptyString" }],
+      "description": "The primary question or need answered by the Dutch source, recorded in Dutch before English keyword localisation."
+    },
     "searchIntent": {
       "type": "object",
       "additionalProperties": false,

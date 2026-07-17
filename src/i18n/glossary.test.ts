@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 import { ENGLISH_GLOSSARY } from "./glossary";
 
@@ -43,4 +45,30 @@ describe("ENGLISH_GLOSSARY", () => {
       expect(entry).toMatchObject({ source, target: source, preserve: true });
     },
   );
+});
+
+describe("English translation brief schema", () => {
+  const schema = JSON.parse(
+    readFileSync(
+      resolve("docs/localization/translation-brief.schema.json"),
+      "utf8",
+    ),
+  ) as {
+    required: string[];
+    properties: Record<string, unknown>;
+  };
+
+  it("rejects a brief that omits the primary Dutch search intent", () => {
+    const briefWithoutDutchIntent = Object.fromEntries(
+      schema.required
+        .filter((field) => field !== "primaryDutchSearchIntent")
+        .map((field) => [field, "present"]),
+    );
+    const missingRequiredFields = schema.required.filter(
+      (field) => !Object.hasOwn(briefWithoutDutchIntent, field),
+    );
+
+    expect(schema.properties).toHaveProperty("primaryDutchSearchIntent");
+    expect(missingRequiredFields).toContain("primaryDutchSearchIntent");
+  });
 });

@@ -57,3 +57,11 @@ The schema was checked with the Python `jsonschema` Draft 2020-12 validator. A r
 ## Concerns
 
 The glossary is deliberately small and authoritative for the first high-risk terms. Content workers should add new recurring decisions through reviewed glossary changes instead of inventing page-local terminology. Keyword selection still requires page-specific research whenever the Dutch source does not establish English search behaviour reliably.
+
+## Important finding fix
+
+An independent review identified that the schema recorded intended English search intent but did not explicitly preserve the source-side Dutch search intent. A regression test was added first and failed because `primaryDutchSearchIntent` was absent from both `properties` and `required`.
+
+The schema now requires `primaryDutchSearchIntent` as the main question or need answered by the Dutch source, recorded in Dutch before localisation. The style guide distinguishes this source record from the separate English `searchIntent`, which captures the target audience's researched question, intent type and geographic context.
+
+The representative validation sample now contains `primaryDutchSearchIntent`. A negative validation removes that field and confirms one schema error with validator `required` and path `primaryDutchSearchIntent`.
