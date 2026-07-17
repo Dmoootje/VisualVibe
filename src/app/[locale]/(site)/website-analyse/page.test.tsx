@@ -48,7 +48,7 @@ describe("WebsiteAnalysePage", () => {
 
   it("renders SEO landing-page content around the analysis tool", async () => {
     const { default: WebsiteAnalysePage } = await loadPageModule();
-    const html = renderToStaticMarkup(await WebsiteAnalysePage());
+    const html = renderToStaticMarkup(await WebsiteAnalysePage({ params: Promise.resolve({ locale: "nl" }) }));
 
     expect(html).toContain("Gratis website analyse");
     expect(html).toContain("Wat controleert onze website analyse?");
@@ -68,7 +68,7 @@ describe("WebsiteAnalysePage", () => {
 
   it("publishes FAQ structured data for long-tail search questions", async () => {
     const { default: WebsiteAnalysePage } = await loadPageModule();
-    const html = renderToStaticMarkup(await WebsiteAnalysePage());
+    const html = renderToStaticMarkup(await WebsiteAnalysePage({ params: Promise.resolve({ locale: "nl" }) }));
 
     expect(html).toContain('"@type":"FAQPage"');
     expect(html).toContain("Wat is een website analyse?");

@@ -23,6 +23,7 @@ import { addLeadEvent } from "@/lib/firestore/leadEvents";
 import { createLead } from "@/lib/firestore/leads";
 import { hmacIdentifier } from "@/lib/security/encryption";
 import type { AnalysisStartResponse } from "@/types/analysis";
+import { analysisLocale } from "@/lib/analyse/locale";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -59,6 +60,7 @@ const startSchema = z.object({
     errorMap: () => ({ message: "Bevestig dat we je gegevens mogen verwerken." }),
   }),
   newsletterOptIn: z.boolean().optional(),
+  locale: z.enum(["nl", "en", "fr"]).optional(),
   sourcePage: z.string().trim().max(500).optional(),
   referrer: z.string().trim().max(1000).optional(),
   utmSource: optionalLine(200),
@@ -112,6 +114,7 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
+  const locale = analysisLocale(input.locale);
   const { deviceId, newCookieValue } = parseOrCreateDeviceId(
     request.cookies.get(DEVICE_COOKIE_NAME)?.value,
   );
@@ -200,7 +203,7 @@ export async function POST(request: NextRequest) {
       company: input.companyName,
       selectedServices: ["seo"],
       formType: "website_analysis",
-      locale: "nl",
+      locale,
       idempotencyKey,
       message: `Gratis websiteanalyse aangevraagd voor ${normalizedUrl.submittedUrl}`,
       sourcePage: input.sourcePage,
@@ -232,6 +235,7 @@ export async function POST(request: NextRequest) {
       leadId: lead.id,
       leadNumber: lead.leadNumber,
       status: "pending_verification",
+      locale,
       firstName: input.firstName,
       companyName: input.companyName,
       email: normalizedEmail.email,

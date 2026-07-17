@@ -9,6 +9,7 @@ import { getAnalysisIntegrationPublic } from "@/lib/analyse/integration";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { TOOL_PAGE_IMAGES } from "@/data/toolPageImages";
+import { analysisLocale } from "@/lib/analyse/locale";
 
 const PAGE_PATH = "/website-analyse/";
 const PAGE_URL = `${businessConfig.url}${localizedPath("nl", PAGE_PATH)}`;
@@ -153,7 +154,9 @@ function SectionHeader({
   );
 }
 
-export default async function WebsiteAnalysePage() {
+export default async function WebsiteAnalysePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = analysisLocale(routeLocale);
   const integration = await getAnalysisIntegrationPublic();
   const useWidget = integration.mode === "widget";
 
@@ -208,6 +211,7 @@ export default async function WebsiteAnalysePage() {
                 <WebsiteAnalyseWidget
                   scriptSrc={integration.widgetScriptUrl}
                   siteKey={integration.publicKey}
+                  locale={locale}
                 />
               ) : (
                 <AnalyseFlow />

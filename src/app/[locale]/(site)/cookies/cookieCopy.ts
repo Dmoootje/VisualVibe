@@ -7,7 +7,7 @@ export function getCookieCopy(locale: string, companyName: string) {
       metaDescription: `See which essential and analytics cookies ${companyName} uses, how Google Analytics depends on your consent and how to change your preferences.`,
       updated: "13 July 2026",
       introduction: `This page explains which cookies and similar technologies ${companyName} uses on this website and how you can control them.`,
-      consent: "Until you make a choice, or if you select Reject, no analytics cookies are stored on your device. If you select Accept, we enable Google Analytics. We remember your preference so that the banner does not reappear on every visit.",
+      consent: "Until you make a choice, or if you select Reject, analytics cookies remain disabled through Google Consent Mode and no analytics cookies are stored on your device. If you select Accept, we enable Google Analytics. We remember your preference so that the banner does not reappear on every visit.",
     };
   }
   return {

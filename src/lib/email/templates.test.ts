@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { renderAnalysisReportEmail, renderCustomerConfirmation } from "@/lib/email/templates";
+import { renderAnalysisReportEmail, renderAnalysisVerificationEmail, renderCustomerConfirmation } from "@/lib/email/templates";
 import type { NormalizedPartnerAuditReport } from "@/types/analysis";
 import type { EmailSettings } from "@/types/email";
 
@@ -136,10 +136,34 @@ describe("renderAnalysisReportEmail", () => {
     expect(email.subject).toBe("Alex, your website analysis is ready");
     expect(email.html).toContain('<html lang="en">');
     expect(email.html).toContain("Overall score");
-    expect(email.html).toContain("Key findings");
     expect(email.html).toContain("View your full report");
-    expect(email.text).toContain("Would you like practical advice on what to tackle first?");
+    expect(email.text).toContain("Would you like to know how best to address these points?");
     expect(email.text).not.toContain("Je websiteanalyse");
+  });
+
+  it("includes detailed findings only when report metadata identifies English", () => {
+    const fixture = reportFixture();
+    const report: NormalizedPartnerAuditReport = { ...fixture, summary: "The technical foundation is sound.", page: { ...fixture.page, language: "en-GB" }, topIssues: [{ id: "context", severity: "medium", title: "Clarify regional context", explanation: "The region is not explicit.", recommendation: "Name the service area." }] };
+    const email = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", criticalIssues: [], report, reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
+    expect(email.text).toContain("The technical foundation is sound.");
+    expect(email.text).toContain("Clarify regional context");
+    expect(email.html).toContain("Key findings");
+  });
+
+  it("uses safe English fallback copy when stored report findings are not known to be English", () => {
+    const report = reportFixture();
+    const email = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", score: 91, criticalIssues: ["Nederlandse bevinding"], analysisSummary: "Nederlandse samenvatting", report, reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
+    expect(email.text).toContain("We have analysed example.be. Your score is shown below, and your full report is available online.");
+    expect(email.text).not.toContain("Nederlandse bevinding");
+    expect(email.text).not.toContain("Nederlandse samenvatting");
+    expect(email.text).not.toContain(report.summary);
+  });
+
+  it("uses editorially approved English wording in analysis emails", () => {
+    const verification = renderAnalysisVerificationEmail({ firstName: "Alex", code: "123456", ttlMinutes: 15, locale: "en", settings: emailSettings() });
+    expect(verification.text).toContain("If you did not request a website analysis, you can safely ignore this email.");
+    const report = renderAnalysisReportEmail({ firstName: "Alex", domain: "example.be", score: 91, criticalIssues: [], reportUrl: "https://visualvibe.media/en/report/demo", locale: "en", settings: emailSettings() });
+    expect(report.text).toContain("Would you like to know how best to address these points? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.");
   });
 
   it("renders the richer analyzer summary and follow-up CTAs", () => {

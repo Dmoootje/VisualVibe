@@ -12,7 +12,7 @@ const completedReport = {
   overallScore: 91,
   summary: "Sterk resultaat",
   categories: [],
-  page: {},
+  page: { language: "en-GB" },
   topIssues: [],
   strengths: [],
   technical: {},
@@ -94,6 +94,7 @@ describe("runPartnerAnalysis", () => {
         safeUrl: "https://voorbeeld.be/",
         externalReference: "lead-id",
         idempotencyKey: "lead-id",
+        locale: "en",
       },
       {
         fetcher: async (url, init) => {
@@ -110,6 +111,7 @@ describe("runPartnerAnalysis", () => {
     if (result.status !== "completed") return;
     expect(result.partnerAnalysisId).toBe("analysis-id");
     expect(result.report.overallScore).toBe(91);
+    expect(result.report.page.language).toBe("en-GB");
     expect(calls.map((call) => call.url)).toEqual([
       "https://seo.example/api/partner/v1/analyses",
       "https://seo.example/api/partner/v1/analyses/analysis-id",
@@ -120,6 +122,7 @@ describe("runPartnerAnalysis", () => {
       resultMode: "extended",
       externalReference: "lead-id",
       idempotencyKey: "lead-id",
+      language: "en",
     });
     expect(calls[0].init?.headers).toMatchObject({ "X-Partner-Nonce": "nonce-start" });
     expect(calls[1].init?.headers).toMatchObject({ "X-Partner-Nonce": "nonce-poll" });

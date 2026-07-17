@@ -46,3 +46,28 @@ Command: `npm test -- src/lib/email/templates.test.ts src/app/[locale]/(site)/pr
 Website-analysis findings and summaries are dynamic report data. The English email localises its framing and labels, but it deliberately does not machine-translate stored report findings. If the upstream analyser produces Dutch content for an English request, those dynamic passages will remain Dutch until the analyser itself supports locale-specific output.
 
 Independent editorial review was requested from the coordinating agent before integration.
+
+## Editorial-gate corrections
+
+The independent editorial gate returned changes required. All listed findings were addressed:
+
+- The analysis form now submits a validated visitor locale. The start route stores it on both the general lead and analysis lead, and the verification email receives the same locale.
+- The external widget receives the actual route locale instead of a hard-coded Dutch locale.
+- The signed partner analysis request now receives the validated analysis-lead locale. The returned report's language metadata remains intact.
+- English report emails only include dynamic summaries and findings when report metadata explicitly identifies English. Unknown or non-English reports use the approved safe fallback and never machine-translate stored findings.
+- Cookie consent, Google Consent Mode, analytics measurement, privacy no-consent language and Google Analytics processor/transfer wording were corrected exactly as directed.
+- Verification and analysis-report email wording was replaced with the approved editorial copy.
+
+### Additional RED evidence
+
+The new focused suite initially failed for the intended reasons: locale helper absent, partner request still sent `language: nl`, the engine omitted locale, English email leaked Dutch findings, and consent and email strings did not match the approved wording.
+
+### Additional GREEN evidence
+
+- Analysis, email and legal focused suite: 15 files, 83 tests passed.
+- Locale propagation route test confirms English reaches both lead records and the verification email.
+- Partner tests confirm `language: en` and preserved `page.language` metadata.
+- Email tests confirm safe fallback for unknown language and detailed findings for explicitly English reports.
+- TypeScript passed.
+- Prohibited-character scan and `git diff --check` passed.
+- Locale audit remains at the same unrelated baseline: one Dutch knowledge-base alt-text blocker and 58 expected English knowledge-base partner notices.

@@ -5,6 +5,7 @@ import { AlertTriangle, ArrowRight, CheckCircle2, MailCheck } from "lucide-react
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { AnalysisLimitState } from "@/components/analyse/AnalysisLimitState";
+import { analysisLocale } from "@/lib/analyse/locale";
 import type {
   AnalysisQuotaDecision,
   AnalysisResendRequest,
@@ -169,6 +170,7 @@ export function AnalyseFlow() {
       url: url.trim(),
       privacyAccepted,
       newsletterOptIn,
+      locale: analysisLocale(window.location.pathname.split("/").filter(Boolean)[0]),
       // Letterlijke consenttekst op moment van aanvinken (contract: AnalysisLead).
       ...(newsletterOptIn ? { newsletterConsentTextVersion: NEWSLETTER_CONSENT_TEXT } : {}),
       sourcePage: window.location.pathname,

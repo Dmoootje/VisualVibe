@@ -408,6 +408,7 @@ export async function POST(request: NextRequest) {
     // Stabiel per lead: een retry hergebruikt bij de partner dezelfde analyse
     // (idempotency) i.p.v. opnieuw af te rekenen.
     idempotencyKey: analysisLead.id,
+    locale: analysisLead.locale ?? "nl",
   });
 
   if (result.status !== "completed") {

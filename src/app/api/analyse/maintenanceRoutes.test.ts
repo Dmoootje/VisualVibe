@@ -172,6 +172,16 @@ describe("analysis maintenance route gates", () => {
     });
   });
 
+  it("propagates the validated English visitor locale into both leads and the verification email", async () => {
+    mocks.getAnalysisQuotaConfig.mockResolvedValue({ ...DEFAULT_ANALYSIS_QUOTA_CONFIG, maintenanceMode: false });
+    mocks.createAnalysisLead.mockImplementation(async (input: typeof pendingLead & { locale?: "nl" | "en" | "fr" }) => ({ ...pendingLead, ...input }));
+    const response = await startAnalysis(request("/api/analyse/start", { firstName: "Alex", email: "alex@example.com", url: "https://example.com", privacyAccepted: true, locale: "en" }));
+    expect(response.status).toBe(200);
+    expect(mocks.createLead).toHaveBeenCalledWith(expect.objectContaining({ locale: "en" }));
+    expect(mocks.createAnalysisLead).toHaveBeenCalledWith(expect.objectContaining({ locale: "en" }));
+    expect(mocks.sendAnalysisVerificationMail).toHaveBeenCalledWith(expect.objectContaining({ analysisLead: expect.objectContaining({ locale: "en" }) }));
+  });
+
   it("refuses start before registering an attempt or creating a lead", async () => {
     const response = await startAnalysis(request("/api/analyse/start", {
       firstName: "Jan",

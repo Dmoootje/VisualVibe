@@ -311,6 +311,7 @@ export type AnalysisStartRequest = {
   url: string;
   privacyAccepted: boolean;
   newsletterOptIn?: boolean;
+  locale?: "nl" | "en" | "fr";
   sourcePage?: string;
   referrer?: string;
   utmSource?: string;

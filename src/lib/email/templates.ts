@@ -619,7 +619,7 @@ export function renderAnalysisVerificationEmail(input: {
   const title = locale === "en" ? "Confirm your email address" : "Bevestig je e-mailadres";
   const intro = locale === "en" ? "Enter the code below to confirm your email address and start your free website analysis." : "Gebruik onderstaande code om je e-mailadres te bevestigen en je gratis websiteanalyse te starten.";
   const validity = locale === "en" ? `The code is valid for ${ttlMinutes} ${ttlMinutes === 1 ? "minute" : "minutes"}.` : `De code is ${ttlMinutes} ${ttlMinutes === 1 ? "minuut" : "minuten"} geldig.`;
-  const ignore = locale === "en" ? "Did you not request an analysis? You can safely ignore this email." : "Heb je geen analyse aangevraagd? Dan kun je deze e-mail gewoon negeren.";
+  const ignore = locale === "en" ? "If you did not request a website analysis, you can safely ignore this email." : "Heb je geen analyse aangevraagd? Dan kun je deze e-mail gewoon negeren.";
 
   const bodyHtml = [
     `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY[locale].greeting(name))}</p>`,
@@ -665,13 +665,14 @@ export function renderAnalysisReportEmail(input: {
     const name = firstName(input.firstName);
     const domain = cleanText(input.domain) || "your website";
     const reportUrl = absoluteUrl(input.reportUrl);
-    const summary = cleanText(input.report?.summary) || cleanText(input.analysisSummary);
-    const issues = analysisIssueItems({ report: input.report ?? undefined, criticalIssues: input.criticalIssues });
+    const reportIsEnglish = input.report?.page.language?.toLowerCase().startsWith("en") === true;
+    const summary = reportIsEnglish ? cleanText(input.report?.summary) || cleanText(input.analysisSummary) : "";
+    const issues = reportIsEnglish ? analysisIssueItems({ report: input.report ?? undefined, criticalIssues: input.criticalIssues }) : [];
     const score = typeof input.report?.overallScore === "number" ? input.report.overallScore : input.score;
     const subject = cleanSubject(name ? `${name}, your website analysis is ready` : "Your website analysis is ready");
     const title = "Your website analysis is ready";
-    const intro = `We have analysed ${domain}. Here are the main findings, with your full report available online.`;
-    const nextStep = "Would you like practical advice on what to tackle first? We would be happy to discuss the report and prepare a no-obligation quotation tailored to your needs.";
+    const intro = reportIsEnglish ? `We have analysed ${domain}. Here are the main findings, with your full report available online.` : `We have analysed ${domain}. Your score is shown below, and your full report is available online.`;
+    const nextStep = "Would you like to know how best to address these points? We would be happy to talk you through the report and provide a no-obligation quotation tailored to your needs.";
     const bodyHtml = [
       `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY.en.greeting(name))}</p>`,
       `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(intro)}</p>`,
