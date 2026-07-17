@@ -3,11 +3,72 @@ import path from "node:path";
 import process from "node:process";
 
 import matter from "gray-matter";
+import ts from "typescript";
 
 const root = process.cwd();
 const localeSource = fs.readFileSync(path.join(root, "src/i18n/locales.ts"), "utf8");
-const locales = [...localeSource.matchAll(/^\s*(nl|en|fr|de): \{ status: "(published|ready|disabled)" \}/gm)]
-  .map(([, locale, status]) => ({ locale, status }));
+const expectedLocales = ["nl", "en", "fr", "de"];
+const allowedStatuses = new Set(["published", "ready", "disabled"]);
+
+function unwrapExpression(expression) {
+  if (
+    ts.isAsExpression(expression) ||
+    ts.isSatisfiesExpression(expression) ||
+    ts.isParenthesizedExpression(expression)
+  ) {
+    return unwrapExpression(expression.expression);
+  }
+  return expression;
+}
+
+function readLocaleConfiguration(source) {
+  const sourceFile = ts.createSourceFile(
+    "locales.ts",
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+  let initializer;
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (ts.isIdentifier(declaration.name) && declaration.name.text === "LOCALE_CONFIG") {
+        initializer = declaration.initializer && unwrapExpression(declaration.initializer);
+      }
+    }
+  }
+  if (!initializer || !ts.isObjectLiteralExpression(initializer)) return [];
+
+  return initializer.properties.flatMap((property) => {
+    if (!ts.isPropertyAssignment(property)) return [];
+    const locale = property.name.getText(sourceFile).replace(/^['"]|['"]$/g, "");
+    const value = unwrapExpression(property.initializer);
+    if (!ts.isObjectLiteralExpression(value)) return [];
+    const statusProperty = value.properties.find(
+      (candidate) =>
+        ts.isPropertyAssignment(candidate) &&
+        candidate.name.getText(sourceFile).replace(/^['"]|['"]$/g, "") === "status",
+    );
+    if (!statusProperty || !ts.isPropertyAssignment(statusProperty)) return [];
+    const statusValue = unwrapExpression(statusProperty.initializer);
+    if (!ts.isStringLiteral(statusValue)) return [];
+    return [{ locale, status: statusValue.text }];
+  });
+}
+
+const locales = readLocaleConfiguration(localeSource);
+const localeNames = locales.map(({ locale }) => locale).sort();
+if (
+  JSON.stringify(localeNames) !== JSON.stringify([...expectedLocales].sort()) ||
+  locales.some(({ status }) => !allowedStatuses.has(status))
+) {
+  throw new Error("Invalid locale configuration: expected exactly nl, en, fr, and de with valid statuses");
+}
+const publishedLocales = locales.filter(({ status }) => status === "published").map(({ locale }) => locale);
+if (publishedLocales.length !== 1 || publishedLocales[0] !== "nl") {
+  throw new Error("Invalid locale configuration: only nl may be published");
+}
 const statuses = new Map(locales.map(({ locale, status }) => [locale, status]));
 const issues = [];
 
@@ -59,6 +120,28 @@ function walk(directory, accept) {
   });
 }
 
+function extractLocaleLinks(document) {
+  const links = [];
+  const serializedData = JSON.stringify(document.data);
+  for (const match of serializedData.matchAll(/"(\/(?:be|en|fr|de)(?:[/?#][^"\\]*)?)"/g)) {
+    links.push(match[1]);
+  }
+  for (const match of document.content.matchAll(/\]\(<?(\/(?:be|en|fr|de)(?:[/?#][^\s)>]*)?)/g)) {
+    links.push(match[1]);
+  }
+  for (const match of document.content.matchAll(/^\s*\[[^\]]+\]:\s*<?(\/(?:be|en|fr|de)(?:[/?#][^\s>]*)?)/gm)) {
+    links.push(match[1]);
+  }
+  for (const match of document.content.matchAll(/\bhref\s*=\s*(["'])(\/(?:be|en|fr|de)(?:[/?#][^"']*)?)\1/gi)) {
+    links.push(match[2]);
+  }
+  return links;
+}
+
+function targetsPrefix(link, prefix) {
+  return link === prefix || ["/", "?", "#"].some((separator) => link.startsWith(`${prefix}${separator}`));
+}
+
 const articles = [];
 for (const filename of walk(path.join(root, "content"), (file) => file.endsWith(".mdx"))) {
   const relative = path.relative(root, filename);
@@ -83,11 +166,9 @@ for (const filename of walk(path.join(root, "content"), (file) => file.endsWith(
   const otherPrefixes = Object.entries(localePrefixes)
     .filter(([candidate]) => candidate !== locale)
     .map(([, prefix]) => prefix);
-  const strings = JSON.stringify(document.data).match(/"\/(?:be|en|fr|de)(?:\/[^"#?]*)?"/g) ?? [];
-  const bodyLinks = [...document.content.matchAll(/\]\((\/(?:be|en|fr|de)(?:\/[^\s)#?]*)?)/g)].map((match) => match[1]);
-  const links = [...strings.map((item) => JSON.parse(item)), ...bodyLinks];
+  const links = extractLocaleLinks(document);
   for (const link of new Set(links)) {
-    if (otherPrefixes.some((prefix) => link === prefix || link.startsWith(`${prefix}/`))) {
+    if (otherPrefixes.some((prefix) => targetsPrefix(link, prefix))) {
       add("cross_locale_link", locale, `${relative}:${link}`, `Link targets another locale: ${link}`);
     }
   }
@@ -147,9 +228,10 @@ issues.sort((left, right) =>
 const blocking = issues.filter((issue) =>
   issue.code === "forbidden_character" || ["published", "ready"].includes(statuses.get(issue.locale)),
 );
+const blockingIssues = new Set(blocking);
 console.log(`Locale audit: ${issues.length} issue(s), ${blocking.length} blocking.`);
 for (const issue of issues) {
-  const severity = blocking.includes(issue) ? "BLOCK" : "INFO";
+  const severity = blockingIssues.has(issue) ? "BLOCK" : "INFO";
   console.log(`[${severity}] ${issue.code} ${issue.locale} ${issue.source}: ${issue.message}`);
 }
 
