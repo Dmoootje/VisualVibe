@@ -11,6 +11,7 @@ import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { toolCards as toolPreviewCards } from "@/data/toolCards";
 import { NavIcon } from "./nav-icons";
 import type { NavCard, NavPillar } from "./navData";
+import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
   () => import("@/features/home/RegionIntro/components/RegionMiniMap").then((module) => module.RegionMiniMap),
@@ -170,6 +171,7 @@ export function Nav({
   kennisbankPostCount?: number;
   googleRating?: NavGoogleRating | null;
 }) {
+  const t = useTranslations("nav");
   const pathname = usePathname();
 
   // Desktop
@@ -243,7 +245,7 @@ export function Nav({
 
         {/* ===== desktop center ===== */}
         <div className="vvnav-center" style={{ alignItems: "center", gap: 26, fontWeight: 600, fontSize: 15, color: "rgba(255,255,255,.85)" }}>
-          <Link href="/" aria-label="Home" className="vvnav-link" style={{ display: "inline-flex" }}>
+          <Link href="/" aria-label={t("home")} className="vvnav-link" style={{ display: "inline-flex" }}>
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="m3 10 9-7 9 7" /><path d="M5 9v11h14V9" />
             </svg>
@@ -261,7 +263,7 @@ export function Nav({
               style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "#fff", padding: "8px 0" }}
               aria-expanded={menu === "diensten"}
             >
-              Diensten <ChevDown className="vvnav-navChev" />
+              {t("services")} <ChevDown className="vvnav-navChev" />
             </Link>
 
             {menu === "diensten" && (
@@ -270,7 +272,7 @@ export function Nav({
                 {/* left rail */}
                 <div style={{ width: 322, flex: "none", padding: 16, borderRight: "1px solid rgba(255,255,255,.07)" }}>
                   <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)", padding: "6px 12px 12px" }}>
-                    Onze diensten
+                    {t("ourServices")}
                   </div>
                   {pillars.map((p, i) => {
                     const on = i === active;
@@ -310,7 +312,7 @@ export function Nav({
                             <div style={{ fontSize: 12.5, color: "rgba(255,255,255,.5)", marginTop: 2 }}>{ap.tag}</div>
                           </div>
                           <Link href={ap.href} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
-                            Overzicht <ArrowRight />
+                            {t("overview")} <ArrowRight />
                           </Link>
                         </div>
 
@@ -357,14 +359,14 @@ export function Nav({
           {kennisbankItems.length > 0 && (
             <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
-          <Link href="/over-ons" className="vvnav-link">Over ons</Link>
-          <Link href="/contact" className="vvnav-link">Contact</Link>
+          <Link href="/over-ons" className="vvnav-link">{t("about")}</Link>
+          <Link href="/contact" className="vvnav-link">{t("contact")}</Link>
         </div>
 
         {/* ===== desktop right ===== */}
         <div className="vvnav-right" style={{ alignItems: "center", gap: 18 }}>
           {googleRating && <GoogleRatingBadge {...googleRating} />}
-          <NextLink href="/admin/login" prefetch={false} aria-label="Inloggen" style={{ display: "inline-flex" }}>
+          <NextLink href="/admin/login" prefetch={false} aria-label={t("login")} style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>
           <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>

@@ -8,6 +8,7 @@ import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { Link } from "@/i18n/navigation";
 import { NavIcon } from "./nav-icons";
 import type { NavCard, NavPillar } from "./navData";
+import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
   () =>
@@ -320,6 +321,7 @@ export function MobileNavDrawer({
   kennisbankPostCount,
   onClose,
 }: MobileNavDrawerProps) {
+  const t = useTranslations("nav");
   const [view, setView] = useState<DrawerView>("root");
   const [serviceIndex, setServiceIndex] = useState<number | null>(null);
   const currentPillar =
@@ -623,7 +625,7 @@ export function MobileNavDrawer({
 
         <div className="vvnav-mvView">
           <div className="vvnav-mvPanel" style={panelStyle("root")}>
-            <div style={eyebrowStyle}>Menu</div>
+            <div style={eyebrowStyle}>{t("menu")}</div>
             {linkRow("/", "Home")}
             {appRow(
               <GridGlyph />,
@@ -1057,7 +1059,7 @@ export function MobileNavDrawer({
               border: "1px solid rgba(255,255,255,.12)",
             }}
           >
-            <UserIcon size={17} /> Inloggen
+            <UserIcon size={17} /> {t("login")}
           </NextLink>
         </div>
       </aside>

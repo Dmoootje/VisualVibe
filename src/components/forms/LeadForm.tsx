@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { services } from "@/data/services";
 import { regions } from "@/data/regions";
+import { useTranslations } from "next-intl";
 
 const inputClasses =
   "w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-white/40 [color-scheme:dark] transition-colors focus:border-amber-500/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30";
@@ -39,13 +40,22 @@ const OFFERTE_PLACEHOLDERS: Record<string, string> = {
 // form until client-side hydration. Not needed here since we only read
 // these values on submit, never during render.
 export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
+  const t = useTranslations("leadForm");
+  const contactSteps = [
+    { name: "name", text: t("nameRequired") },
+    { name: "email", text: t("emailRequired") },
+    { name: "phone", text: t("phone") },
+    { name: "company", text: t("company") },
+    { name: "message", text: t("messageContact"), multiline: true },
+  ];
+  const placeholders = { name: t("nameRequired"), email: t("emailRequired"), phone: t("phone"), company: t("company"), message: t("messageQuote") };
   const [state, setState] = useState<SubmitState>({ status: "idle" });
   const [isPending, setIsPending] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
 
   // Typewriter placeholder state (contact variant only).
   const animate = variant === "contact";
-  const [typed, setTyped] = useState<string[]>(() => CONTACT_STEPS.map(() => ""));
+  const [typed, setTyped] = useState<string[]>(() => contactSteps.map(() => ""));
   const [activeIndex, setActiveIndex] = useState(-1);
   const [typingDone, setTypingDone] = useState(false);
   const [filled, setFilled] = useState<Record<string, boolean>>({});
@@ -57,7 +67,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      setTyped(CONTACT_STEPS.map((s) => s.text));
+      setTyped(contactSteps.map((s) => s.text));
       setTypingDone(true);
       return;
     }
@@ -67,10 +77,10 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
 
     (async () => {
       await wait(500);
-      for (let i = 0; i < CONTACT_STEPS.length; i++) {
+      for (let i = 0; i < contactSteps.length; i++) {
         if (cancelled) return;
         setActiveIndex(i);
-        const text = CONTACT_STEPS[i].text;
+        const text = contactSteps[i].text;
         for (let c = 1; c <= text.length; c++) {
           if (cancelled) return;
           setTyped((prev) => {
@@ -169,7 +179,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setState({ status: "error", message: data.error ?? "Er ging iets mis. Probeer opnieuw." });
+        setState({ status: "error", message: data.error ?? t("error") });
         setIsPending(false);
         return;
       }
@@ -177,10 +187,10 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       formElement.reset();
       idempotencyKeyRef.current = null;
       setFilled({}); // Empty again -> the animated placeholders reappear.
-      setState({ status: "success", message: "Bedankt! Je aanvraag is veilig opgeslagen." });
+      setState({ status: "success", message: t("success") });
       setIsPending(false);
     } catch {
-      setState({ status: "error", message: "Er ging iets mis. Probeer opnieuw." });
+      setState({ status: "error", message: t("error") });
       setIsPending(false);
     }
   }
@@ -195,7 +205,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
 
       {/* Honeypot field - hidden from real visitors via CSS, bots fill every field they find. */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
-        <label htmlFor="website">Website</label>
+        <label htmlFor="website">{t("website")}</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
@@ -204,8 +214,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           <input
             name="name"
             required
-            aria-label="Voor- en achternaam"
-            placeholder={animate ? undefined : OFFERTE_PLACEHOLDERS.name}
+            aria-label={t("name")}
+            placeholder={animate ? undefined : placeholders.name}
             onInput={markFilled}
             className={inputClasses}
           />
@@ -216,8 +226,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
             name="email"
             type="email"
             required
-            aria-label="E-mailadres"
-            placeholder={animate ? undefined : OFFERTE_PLACEHOLDERS.email}
+            aria-label={t("email")}
+            placeholder={animate ? undefined : placeholders.email}
             onInput={markFilled}
             className={inputClasses}
           />
@@ -230,8 +240,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           <input
             name="phone"
             type="tel"
-            aria-label="Telefoonnummer"
-            placeholder={animate ? undefined : OFFERTE_PLACEHOLDERS.phone}
+            aria-label={t("phone")}
+            placeholder={animate ? undefined : placeholders.phone}
             onInput={markFilled}
             className={inputClasses}
           />
@@ -240,8 +250,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
         <div className="relative">
           <input
             name="company"
-            aria-label="Bedrijfsnaam"
-            placeholder={animate ? undefined : OFFERTE_PLACEHOLDERS.company}
+            aria-label={t("company")}
+            placeholder={animate ? undefined : placeholders.company}
             onInput={markFilled}
             className={inputClasses}
           />
@@ -288,8 +298,8 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           name="message"
           required
           rows={5}
-          aria-label="Je bericht"
-          placeholder={animate ? undefined : OFFERTE_PLACEHOLDERS.message}
+          aria-label={t("messageContact")}
+          placeholder={animate ? undefined : placeholders.message}
           onInput={markFilled}
           className={inputClasses}
         />
@@ -312,7 +322,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           />
           {/* Link naar het privacybeleid volgt zodra die pagina bestaat - geen "#"-placeholder. */}
           <span>
-            Ik ga akkoord met de verwerking van mijn gegevens voor de opvolging van deze aanvraag.
+            {t("privacy")}
           </span>
         </label>
 
@@ -321,7 +331,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           disabled={isPending}
           className="h-11 w-full shrink-0 gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600 sm:w-auto"
         >
-          {isPending ? "Bezig met verzenden..." : variant === "offerte" ? "Offerte aanvragen" : "Bericht versturen"}
+          {isPending ? t("submitting") : variant === "offerte" ? t("submitQuote") : t("submitContact")}
           {!isPending && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
         </Button>
       </div>

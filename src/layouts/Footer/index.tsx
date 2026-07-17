@@ -4,8 +4,10 @@ import { SocialLinks, FooterNav, FooterPartners, FooterRegioMaps } from "./compo
 import { footerConfig } from "./config/footer.config";
 import { businessConfig } from "@/config/business.config";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
+import { getTranslations } from "next-intl/server";
 
 export async function Footer() {
+  const t = await getTranslations("footer");
   const settings = await getSiteSettings();
 
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
@@ -42,7 +44,7 @@ export async function Footer() {
               <img src="/weddingvibe-logo-licht.svg" alt="WeddingVibe" className="h-[18px] w-auto" width={79} height={18} />
             </Link>
             <p className="mt-[18px] max-w-[340px] text-[15px] leading-relaxed text-white/55">
-              {footerConfig.description}
+              {t("description")}
             </p>
 
             <div className="mt-[26px] flex flex-col gap-[11px] text-[14.5px]">
@@ -86,15 +88,15 @@ export async function Footer() {
 
         {/* Partners / certifications */}
         <FooterPartners
-          title={footerConfig.partners.title}
-          subtitle={footerConfig.partners.subtitle}
+          title={t("partnersTitle")}
+          subtitle={t("partnersSubtitle")}
           partners={footerConfig.partners.items}
         />
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 py-7 sm:flex-row">
           <span className="text-[13.5px] text-white/60">
-            © {new Date().getFullYear()} {businessConfig.displayName}. Alle rechten voorbehouden.
+            © {new Date().getFullYear()} {businessConfig.displayName}. {t("rights")}
           </span>
           <div className="flex flex-wrap gap-6">
             {footerConfig.legalLinks.map((link) => (
