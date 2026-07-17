@@ -28,8 +28,8 @@ const nextConfig = {
         destination: '/be/',
         permanent: true,
       },
-      // fr/en stonden als locales aangekondigd terwijl alleen Nederlandse
-      // content bestaat; crawlers vonden daardoor honderden /fr- en /en-URL's
+      // fr/en/de stonden als locales aangekondigd terwijl alleen Nederlandse
+      // content bestaat; crawlers vonden daardoor honderden vertaalde URL's
       // (grotendeels 404). Vouw ze permanent op de gepubliceerde Nederlandse
       // pagina's tot er echte vertalingen zijn (zie src/i18n/routing.ts).
       // De kale prefix staat bewust vóór de :path*-regel (vangt het lege pad),
@@ -39,6 +39,8 @@ const nextConfig = {
       { source: '/en/:path+', destination: '/be/:path+/', permanent: true },
       { source: '/fr', destination: '/be/', permanent: true },
       { source: '/fr/:path+', destination: '/be/:path+/', permanent: true },
+      { source: '/de', destination: '/be/', permanent: true },
+      { source: '/de/:path+', destination: '/be/:path+/', permanent: true },
     ];
   },
   async rewrites() {
