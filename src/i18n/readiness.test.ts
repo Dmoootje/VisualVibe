@@ -93,6 +93,23 @@ describe("evaluateLocaleReadiness", () => {
     expect(result.issues[0]?.code).toBe("cross_locale_link");
   });
 
+  it.each([
+    ["exact locale root", "/be", true],
+    ["locale path", "/be/diensten/seo", true],
+    ["locale root query", "/be?x=1", true],
+    ["locale root fragment", "/be#section", true],
+    ["non-boundary prefix", "/beer", false],
+  ])("handles %s without prefix false positives", (_case, link, blocked) => {
+    const result = evaluateLocaleReadiness({
+      locale: "en",
+      content: [{ source: "knowledge/what-is-aeo", links: [link] }],
+    });
+
+    expect(result.issues.some((issue) => issue.code === "cross_locale_link")).toBe(
+      blocked,
+    );
+  });
+
   it("reports leaked routes for unpublished locale prefixes", () => {
     const result = evaluateLocaleReadiness({
       locale: "en",

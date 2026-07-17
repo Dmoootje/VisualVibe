@@ -51,7 +51,11 @@ function isCrossLocaleLink(link: string, locale: SupportedLocale): boolean {
 
   return Object.entries(localePrefixes).some(
     ([candidate, prefix]) =>
-      candidate !== locale && (link === prefix || link.startsWith(`${prefix}/`)),
+      candidate !== locale &&
+      (link === prefix ||
+        ["/", "?", "#"].some((separator) =>
+          link.startsWith(`${prefix}${separator}`),
+        )),
   );
 }
 
