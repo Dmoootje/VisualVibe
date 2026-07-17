@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visualvibe.be/schemas/translation-brief.schema.json",
+  "title": "VisualVibe English translation brief",
+  "description": "Required context and search-intent decisions recorded before translating one complete source document.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sourceRoute",
+    "targetRoute",
+    "audience",
+    "searchIntent",
+    "mainKeyword",
+    "longTailKeywords",
+    "semanticTerms",
+    "directAnswer",
+    "title",
+    "metaDescription",
+    "h1",
+    "slug",
+    "internalLinks",
+    "factsToPreserve"
+  ],
+  "properties": {
+    "sourceRoute": { "$ref": "#/$defs/route" },
+    "targetRoute": { "$ref": "#/$defs/route" },
+    "audience": { "$ref": "#/$defs/nonEmptyString" },
+    "searchIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "question", "geographicContext"],
+      "properties": {
+        "type": {
+          "enum": ["informational", "commercial", "transactional", "navigational", "mixed"]
+        },
+        "question": { "$ref": "#/$defs/nonEmptyString" },
+        "geographicContext": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "mainKeyword": { "$ref": "#/$defs/nonEmptyString" },
+    "longTailKeywords": { "$ref": "#/$defs/nonEmptyStringArray" },
+    "semanticTerms": { "$ref": "#/$defs/nonEmptyStringArray" },
+    "directAnswer": { "$ref": "#/$defs/nonEmptyString" },
+    "title": { "$ref": "#/$defs/nonEmptyString" },
+    "metaDescription": { "$ref": "#/$defs/nonEmptyString" },
+    "h1": { "$ref": "#/$defs/nonEmptyString" },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "internalLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sourceHref", "targetHref", "anchor"],
+        "properties": {
+          "sourceHref": { "$ref": "#/$defs/route" },
+          "targetHref": { "$ref": "#/$defs/route" },
+          "anchor": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "factsToPreserve": { "$ref": "#/$defs/nonEmptyStringArray" }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "route": {
+      "type": "string",
+      "pattern": "^/[^?#]*$"
+    }
+  }
+}
