@@ -160,6 +160,22 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
     </>
   ),
+  tools: (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1.6" />
+      <rect x="14" y="3" width="7" height="7" rx="1.6" />
+      <rect x="3" y="14" width="7" height="7" rx="1.6" />
+      <path d="M17.5 14.5v6M14.5 17.5h6" />
+    </>
+  ),
+  checklist: (
+    <>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M8 7h8M8 12h8M8 17h5" />
+      <path d="m6.8 11.8.9.9 1.8-2" />
+      <path d="m6.8 16.8.9.9 1.8-2" />
+    </>
+  ),
   // Cross-service realisatie-category glyphs
   building: (
     <>

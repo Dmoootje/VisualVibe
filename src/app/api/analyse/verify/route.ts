@@ -4,10 +4,12 @@ import { businessConfig } from "@/config/business.config";
 import { getAnalysisQuotaConfig } from "@/lib/analyse/config";
 import { normalizeAndValidateUrl } from "@/lib/analyse/domain";
 import { runWebsiteAnalysis } from "@/lib/analyse/engine";
+import { toAnalysisLimitResponse } from "@/lib/analyse/limitResponse";
 import {
+  AnalysisMaintenanceError,
   checkAndReserveQuota,
-  consumeReservation,
-  releaseReservation,
+  finalizeAnalysisFailure,
+  finalizeAnalysisSuccess,
   type QuotaOutcome,
 } from "@/lib/analyse/quota";
 import { verifyVerificationCode } from "@/lib/analyse/verification";
@@ -23,7 +25,12 @@ import { createAnalysisReport } from "@/lib/firestore/analysisReports";
 import { addLeadEvent } from "@/lib/firestore/leadEvents";
 import { createSubscriber } from "@/lib/firestore/newsletter";
 import type { LeadEventType } from "@/types";
-import type { AnalysisLead, AnalysisVerifyResponse } from "@/types/analysis";
+import type {
+  AnalysisCompletionPending,
+  AnalysisFailurePending,
+  AnalysisLead,
+  AnalysisVerifyResponse,
+} from "@/types/analysis";
 
 export const runtime = "nodejs";
 // Tot 5 minuten: een diepere JS/SSR-crawl aan de partnerkant kan langer duren dan
@@ -44,6 +51,8 @@ const ANALYSING_LEASE_MS = 7 * 60_000;
 const LIMIT_MESSAGE = "Je hebt je drie gratis analyses voor deze periode gebruikt.";
 const FAILED_MESSAGE =
   "De analyse is tijdelijk niet gelukt. Je tegoed is niet gebruikt - probeer het zo opnieuw.";
+const FINALIZATION_RETRY_MESSAGE =
+  "De analyse is klaar, maar kon nog niet veilig worden afgerond. Probeer het zo opnieuw.";
 
 const verifySchema = z.object({
   analysisLeadId: z.string().trim().min(1).max(128),
@@ -118,6 +127,62 @@ async function shouldNotifyLimit(analysisLead: AnalysisLead): Promise<boolean> {
   }
 }
 
+async function completedResponse(
+  analysisLead: AnalysisLead,
+  completion: AnalysisCompletionPending,
+): Promise<NextResponse> {
+  const completedLead: AnalysisLead = {
+    ...analysisLead,
+    status: "completed",
+    analysisStatus: "completed",
+    analysisScore: completion.analysisScore,
+    criticalIssues: completion.criticalIssues,
+    ...(completion.analysisSummary ? { analysisSummary: completion.analysisSummary } : {}),
+    reportToken: completion.reportToken,
+    reportId: completion.reportId,
+    reportSchemaVersion: completion.reportSchemaVersion,
+    completedAt: completion.completedAt,
+    completionPending: null,
+    failurePending: null,
+  };
+
+  await sendAnalysisReportMail({
+    analysisLead: completedLead,
+    reportUrl: reportUrlAbsolute(completion.reportToken),
+  });
+  await sendAnalysisAdminNotification({ analysisLead: completedLead, kind: "completed" });
+  await safeLeadEvent(analysisLead, "analysis_completed");
+
+  return json({
+    status: "completed",
+    reportUrl: reportPath(completion.reportToken),
+    score: completion.analysisScore,
+    criticalIssues: completion.criticalIssues,
+  });
+}
+
+async function failedResponse(
+  analysisLead: AnalysisLead,
+  failure: AnalysisFailurePending,
+): Promise<NextResponse> {
+  const failedLead: AnalysisLead = {
+    ...analysisLead,
+    status: "failed",
+    analysisStatus: "failed",
+    failedAt: failure.failedAt,
+    quotaReason: failure.reason,
+    completionPending: null,
+    failurePending: null,
+  };
+  await safeLeadEvent(analysisLead, "analysis_failed");
+  await sendAnalysisAdminNotification({ analysisLead: failedLead, kind: "failed" });
+  return json({ status: "failed", message: FAILED_MESSAGE });
+}
+
+function retryableFinalizationResponse(): NextResponse {
+  return json({ status: "error", error: FINALIZATION_RETRY_MESSAGE }, 503);
+}
+
 export async function POST(request: NextRequest) {
   const contentLength = Number(request.headers.get("content-length") ?? 0);
   if (contentLength > 4_096) {
@@ -149,7 +214,12 @@ export async function POST(request: NextRequest) {
     });
   }
   if (analysisLead.status === "limit_reached") {
-    return json({ status: "limit_reached", message: LIMIT_MESSAGE });
+    return json({
+      status: "limit_reached",
+      message: analysisLead.quotaReason ?? LIMIT_MESSAGE,
+      ...(analysisLead.quotaDecision ? { quotaDecision: analysisLead.quotaDecision } : {}),
+      ...(analysisLead.quotaResetAt ? { resetsAt: analysisLead.quotaResetAt } : {}),
+    });
   }
   if (analysisLead.status === "expired") {
     return json(
@@ -158,6 +228,23 @@ export async function POST(request: NextRequest) {
     );
   }
   if (analysisLead.status === "analysing" || analysisLead.status === "queued") {
+    if (analysisLead.completionPending) {
+      try {
+        await finalizeAnalysisSuccess(analysisLead.id);
+      } catch {
+        return retryableFinalizationResponse();
+      }
+      return completedResponse(analysisLead, analysisLead.completionPending);
+    }
+    if (analysisLead.failurePending) {
+      try {
+        await finalizeAnalysisFailure(analysisLead.id, analysisLead.failurePending);
+      } catch {
+        return retryableFinalizationResponse();
+      }
+      return failedResponse(analysisLead, analysisLead.failurePending);
+    }
+
     // Gestrande run (proces gecrasht na de statuswrite): reservering vrijgeven
     // en de lead als mislukt afsluiten, zodat de bezoeker via een nieuwe code
     // opnieuw kan starten in plaats van eeuwig op 409 te blijven hangen.
@@ -166,20 +253,27 @@ export async function POST(request: NextRequest) {
     if (!stale) {
       return json({ status: "error", error: "De analyse loopt nog. Probeer het zo opnieuw." }, 409);
     }
-    if (analysisLead.analysisId) {
-      await releaseReservation(analysisLead.analysisId).catch(() => undefined);
-    }
-    await updateAnalysisLead(analysisLead.id, {
-      status: "failed",
-      analysisStatus: "failed",
+    const failure = {
+      reason: "stale_analysing_reclaimed",
       failedAt: new Date().toISOString(),
-      quotaReason: "stale_analysing_reclaimed",
-    });
+    };
+    try {
+      await finalizeAnalysisFailure(analysisLead.id, failure);
+    } catch {
+      return retryableFinalizationResponse();
+    }
     await safeLeadEvent(analysisLead, "analysis_failed");
     return json({ status: "failed", message: FAILED_MESSAGE });
   }
 
   const config = await getAnalysisQuotaConfig();
+
+  if (config.maintenanceMode) {
+    return json(
+      { status: "error", error: "De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw." },
+      503,
+    );
+  }
 
   // De dure analyse mag ALLEEN draaien direct na een geldige e-mailverificatie.
   // Een lead die niet (meer) op verificatie wacht - bv. na een mislukte run of
@@ -226,23 +320,28 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Quotacontrole en reservering. Staat de bewaking uit, dan is alles
-  // toegestaan zonder reservering (lege reservationId).
+  // Quotacontrole en reservering. Staat de bewaking uit, dan controleert de
+  // transactie alleen onderhoudsmodus en geeft ze een lege reservationId terug.
   let outcome: QuotaOutcome;
-  if (config.enabled) {
-    try {
-      outcome = await checkAndReserveQuota({
-        emailNormalized: analysisLead.emailNormalized,
-        deviceHash: analysisLead.deviceHash,
-        ipHash: analysisLead.ipHash,
-        normalizedDomain: analysisLead.normalizedDomain,
-        config,
-      });
-    } catch {
-      return json({ status: "failed", message: FAILED_MESSAGE });
+  try {
+    outcome = await checkAndReserveQuota({
+      emailNormalized: analysisLead.emailNormalized,
+      deviceHash: analysisLead.deviceHash,
+      ipHash: analysisLead.ipHash,
+      normalizedDomain: analysisLead.normalizedDomain,
+      config,
+    });
+  } catch (error) {
+    if (error instanceof AnalysisMaintenanceError) {
+      return json(
+        {
+          status: "error",
+          error: "De websiteanalyse is tijdelijk in onderhoud. Probeer het later opnieuw.",
+        },
+        503,
+      );
     }
-  } else {
-    outcome = { decision: "allowed", reservationId: "" };
+    return json({ status: "failed", message: FAILED_MESSAGE });
   }
 
   // Limiet of duplicaat: registreren, gededupeerd melden en netjes afwijzen.
@@ -251,21 +350,20 @@ export async function POST(request: NextRequest) {
       status: "limit_reached",
       quotaDecision: outcome.decision,
       quotaReason: outcome.reason,
+      quotaResetAt: outcome.resetsAt,
     });
     const limitedLead: AnalysisLead = {
       ...analysisLead,
       status: "limit_reached",
       quotaDecision: outcome.decision,
       quotaReason: outcome.reason,
+      quotaResetAt: outcome.resetsAt,
     };
     await safeLeadEvent(analysisLead, "analysis_limit_reached");
     if (await shouldNotifyLimit(analysisLead)) {
       await sendAnalysisAdminNotification({ analysisLead: limitedLead, kind: "limit_reached" });
     }
-    return json({
-      status: "limit_reached",
-      message: outcome.decision === "duplicate_request" ? outcome.reason : LIMIT_MESSAGE,
-    });
+    return json(toAnalysisLimitResponse(outcome));
   }
 
   // Toegestaan: analyse starten met een actieve reservering.
@@ -280,32 +378,21 @@ export async function POST(request: NextRequest) {
   await safeLeadEvent(analysisLead, "analysis_started");
 
   const failAnalysis = async (errorCode: string): Promise<NextResponse> => {
-    if (reservationId) {
-      try {
-        await releaseReservation(reservationId);
-      } catch {
-        // Reservering blijft dan staan; admin kan het quotum resetten.
-      }
+    const failure = { reason: errorCode, failedAt: new Date().toISOString() };
+    try {
+      await updateAnalysisLead(analysisLead.id, {
+        status: "analysing",
+        analysisStatus: "running",
+        failurePending: failure,
+      });
+      await finalizeAnalysisFailure(analysisLead.id, failure);
+    } catch {
+      return retryableFinalizationResponse();
     }
-    const failedAt = new Date().toISOString();
-    await updateAnalysisLead(analysisLead.id, {
-      status: "failed",
-      analysisStatus: "failed",
-      failedAt,
-      quotaReason: errorCode,
-    });
-    const failedLead: AnalysisLead = {
-      ...analysisLead,
-      status: "failed",
-      analysisStatus: "failed",
-      failedAt,
-      quotaDecision: outcome.decision,
-      quotaReason: errorCode,
-    };
-    await safeLeadEvent(analysisLead, "analysis_failed");
-    // Gededupet via de idempotencyKey in analysisMails; nooit twee meldingen.
-    await sendAnalysisAdminNotification({ analysisLead: failedLead, kind: "failed" });
-    return json({ status: "failed", message: FAILED_MESSAGE });
+    return failedResponse(
+      { ...analysisLead, quotaDecision: outcome.decision, failurePending: failure },
+      failure,
+    );
   };
 
   // De URL wordt vlak voor de run opnieuw gevalideerd (DNS kan intussen naar
@@ -341,50 +428,34 @@ export async function POST(request: NextRequest) {
 
   const token = newReportToken();
   const completedAt = new Date().toISOString();
-  await updateAnalysisLead(analysisLead.id, {
-    status: "completed",
-    analysisStatus: "completed",
+  const completionPending: AnalysisCompletionPending = {
     analysisScore: result.score,
     criticalIssues: result.criticalIssues,
     ...(result.summary ? { analysisSummary: result.summary } : {}),
     reportToken: token,
     reportId: analysisReport.id,
     reportSchemaVersion: analysisReport.schemaVersion,
-    completedAt,
-  });
-
-  if (reservationId) {
-    try {
-      await consumeReservation(reservationId);
-    } catch {
-      // De reservering blijft dan meetellen; dat is de veilige kant.
-    }
-  }
-
-  const completedLead: AnalysisLead = {
-    ...analysisLead,
-    status: "completed",
-    analysisStatus: "completed",
-    analysisScore: result.score,
-    criticalIssues: result.criticalIssues,
-    ...(result.summary ? { analysisSummary: result.summary } : {}),
-    reportToken: token,
-    reportId: analysisReport.id,
-    reportSchemaVersion: analysisReport.schemaVersion,
-    ...(reservationId ? { analysisId: reservationId } : {}),
-    quotaDecision: outcome.decision,
-    startedAt,
     completedAt,
   };
+  try {
+    await updateAnalysisLead(analysisLead.id, {
+      status: "analysing",
+      analysisStatus: "running",
+      completionPending,
+    });
+    await finalizeAnalysisSuccess(analysisLead.id);
+  } catch {
+    return retryableFinalizationResponse();
+  }
 
-  await sendAnalysisReportMail({ analysisLead: completedLead, reportUrl: reportUrlAbsolute(token) });
-  await sendAnalysisAdminNotification({ analysisLead: completedLead, kind: "completed" });
-  await safeLeadEvent(analysisLead, "analysis_completed");
-
-  return json({
-    status: "completed",
-    reportUrl: reportPath(token),
-    score: result.score,
-    criticalIssues: result.criticalIssues,
-  });
+  return completedResponse(
+    {
+      ...analysisLead,
+      ...(reservationId ? { analysisId: reservationId } : {}),
+      quotaDecision: outcome.decision,
+      startedAt,
+      completionPending,
+    },
+    completionPending,
+  );
 }

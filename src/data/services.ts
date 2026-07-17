@@ -406,7 +406,8 @@ export const services: Service[] = [
     relatedPosts: [],
     seo: {
       title: "3D Tour & Virtuele Rondleiding Limburg | VisualVibe",
-      description: "3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca in Limburg.",
+      description:
+        "3D-tours en virtuele rondleidingen in Limburg voor vastgoed, showrooms en horeca. Laat klanten online door je ruimte wandelen.",
       keywords: ["3D tour Limburg", "virtuele rondleiding", "showroom 3D tour", "vastgoed 3D tour"],
     },
   },
@@ -436,7 +437,8 @@ export const services: Service[] = [
     relatedPosts: [],
     seo: {
       title: "Podcast Laten Opnemen Limburg | VisualVibe",
-      description: "Podcast en videopodcast laten opnemen voor jouw bedrijf, van eenmalige opname tot volledig traject.",
+      description:
+        "Podcast of videopodcast laten opnemen in Limburg? VisualVibe verzorgt concept, opname, montage en publicatieklaar materiaal voor bedrijven.",
       keywords: ["podcast opnemen Limburg", "videopodcast", "bedrijfspodcast", "podcast studio Limburg"],
     },
   },
@@ -460,7 +462,8 @@ export const services: Service[] = [
     relatedPosts: [],
     seo: {
       title: "Masterclass & Opleiding Filmen Limburg | VisualVibe",
-      description: "Masterclasses, opleidingen en workshops professioneel laten opnemen in Limburg.",
+      description:
+        "Masterclasses, opleidingen en workshops professioneel laten filmen in Limburg, met multicamera-opname, montage en afleverklare modules.",
       keywords: ["masterclass opnemen", "opleiding filmen", "workshop video Limburg"],
     },
   },

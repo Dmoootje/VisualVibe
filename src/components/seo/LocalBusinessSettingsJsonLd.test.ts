@@ -25,6 +25,7 @@ describe("LocalBusinessSettingsJsonLd", () => {
     const schema = renderSchema("be");
 
     expect(schema).toMatchObject({
+      "@type": "LocalBusiness",
       priceRange: "$$",
       address: { addressCountry: "BE" },
     });

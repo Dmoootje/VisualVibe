@@ -100,68 +100,16 @@
   .vvh-hero-falling,
   .vvh-cardGlow,
   .vvh-ringR,
-  .vvh-fl,
-  .vvh-shimmer,
-  .vvh-cursorW {
+  .vvh-fl {
     display: none !important;
   }
 
-  .vvh-scene,
-  .vvh-hlabel,
-  .vvh-hdot {
-    animation: none !important;
-  }
-
-  .vvh-scene {
-    display: none;
-    opacity: 0;
-    transform: none;
-  }
-
-  .vvh-scene[style*="--s:0"] {
-    z-index: 3;
-    display: block;
-    opacity: 1;
-  }
-
-  .vvh-hlabel {
-    display: none;
-    opacity: 0;
-    transform: none;
-  }
-
-  .vvh-hlabel[style*="--s:0"] {
-    display: inline;
-    opacity: 1;
-  }
-
-  .vvh-hdot {
-    display: none;
-  }
-
-  .vvh-hdot[style*="--s:0"] {
-    display: inline-block;
-    width: 26px;
-    background: linear-gradient(90deg, #ff3b2e, #ff7a00);
-  }
-
-  .vvh-ring,
-  .vvh-liveDot,
-  .vvh-bw,
-  .vvh-focusBox,
-  .vvh-apert,
-  .vvh-flash,
-  .vvh-playhead,
-  .vvh-strip,
-  .vvh-eq,
-  .vvh-pulseP,
-  .vvh-fly,
-  .vvh-sweep,
-  .vvh-bob,
-  .vvh-cube,
-  .vvh-orbit,
-  .vvh-orbit2 {
-    animation: none !important;
+  /* The full box-shadow needs ~150px to fade out but the section only has
+     56px of bottom padding before its overflow-hidden clips it, which reads
+     as a hard edge into the next section. Shrink the falloff so it fully
+     dissipates within the available room. */
+  .vvh-stagecard {
+    box-shadow: 0 16px 32px -18px rgba(255, 80, 0, 0.5) !important;
   }
 }
 

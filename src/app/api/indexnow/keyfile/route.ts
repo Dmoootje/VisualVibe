@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { getIndexNowKey } from "@/lib/seo/indexnow";
+import { createIndexNowKeyfileResponse } from "@/lib/seo/indexnowKeyfileResponse";
+import { resolveRequestedIndexNowKey } from "@/lib/seo/indexnowKeyfile";
 
 // Serveert het IndexNow-sleutelbestand. next.config schrijft /{sleutel}.txt door
 // naar deze route (?key=<sleutel>). Zoekmachines halen dit bestand op om te
@@ -8,23 +9,6 @@ import { getIndexNowKey } from "@/lib/seo/indexnow";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  const requested = request.nextUrl.searchParams.get("key")?.trim() ?? "";
-  const key = await getIndexNowKey();
-
-  // Alleen het pad dat exact overeenkomt met de actieve sleutel geeft het
-  // bestand terug; elk ander .txt-pad valt door naar een nette 404.
-  if (!key || requested !== key) {
-    return new Response("Not found", {
-      status: 404,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-  }
-
-  return new Response(key, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=300",
-    },
-  });
+  const requested = resolveRequestedIndexNowKey(request.nextUrl);
+  return createIndexNowKeyfileResponse(requested);
 }

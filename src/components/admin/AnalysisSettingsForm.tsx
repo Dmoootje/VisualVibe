@@ -14,31 +14,36 @@ const inputClasses =
   "w-full rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/35 [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-amber-500/70 disabled:cursor-not-allowed disabled:opacity-50";
 
 type NumericFieldDef = {
-  key: Exclude<keyof AnalysisQuotaConfig, "enabled">;
+  key: Exclude<keyof AnalysisQuotaConfig, "enabled" | "maintenanceMode">;
   label: string;
   hint: string;
+  zeroIsUnlimited?: boolean;
 };
 
 const QUOTA_FIELDS: NumericFieldDef[] = [
   {
-    key: "maxPerEmail90d",
-    label: "Analyses per e-mailadres (90 dagen)",
-    hint: "Aantal succesvol afgeronde analyses dat een geverifieerd e-mailadres in 90 dagen mag aanvragen.",
+    key: "maxPerEmail24h",
+    label: "Analyses per e-mailadres (24 uur)",
+    hint: "Aantal succesvol afgeronde analyses dat een geverifieerd e-mailadres in 24 uur mag aanvragen.",
+    zeroIsUnlimited: true,
   },
   {
-    key: "maxPerDevice90d",
-    label: "Analyses per toestel (90 dagen)",
-    hint: "Aantal succesvol afgeronde analyses per toestel (gehashte first-party cookie) in 90 dagen.",
+    key: "maxPerDevice24h",
+    label: "Analyses per toestel (24 uur)",
+    hint: "Aantal succesvol afgeronde analyses per toestel (gehashte first-party cookie) in 24 uur.",
+    zeroIsUnlimited: true,
   },
   {
     key: "maxPerIp24h",
     label: "Aanvragen per IP (24 uur)",
     hint: "Maximaal aantal analyseaanvragen per gehasht IP-adres per 24 uur.",
+    zeroIsUnlimited: true,
   },
   {
     key: "maxPerIp30d",
     label: "Analyses per IP (30 dagen)",
     hint: "Maximaal aantal analyses per gehasht IP-adres per 30 dagen.",
+    zeroIsUnlimited: true,
   },
   {
     key: "maxCodesPerEmailPerHour",
@@ -92,6 +97,22 @@ export function AnalysisSettingsForm({ config }: { config: AnalysisQuotaConfig }
           </span>
         </label>
 
+        <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-amber-500/25 bg-amber-500/[0.06] p-4">
+          <input
+            type="checkbox"
+            name="maintenanceMode"
+            defaultChecked={config.maintenanceMode}
+            className="mt-1 h-4 w-4 shrink-0 accent-amber-500"
+          />
+          <span>
+            <span className="text-sm font-medium text-white">Onderhoudsmodus</span>
+            <span className="mt-1 block text-xs leading-5 text-white/45">
+              Nieuwe analysestarts worden tijdelijk geweigerd. Bestaande rapporten blijven
+              bereikbaar.
+            </span>
+          </span>
+        </label>
+
         <div className="grid gap-4 sm:grid-cols-2">
           {QUOTA_FIELDS.map((field) => (
             <div key={field.key} className="flex flex-col gap-1.5">
@@ -108,7 +129,8 @@ export function AnalysisSettingsForm({ config }: { config: AnalysisQuotaConfig }
                 className={inputClasses}
               />
               <span className="text-xs leading-5 text-white/40">
-                {field.hint} Standaard: {DEFAULT_ANALYSIS_QUOTA_CONFIG[field.key]}.
+                {field.hint} {field.zeroIsUnlimited ? "0 = onbeperkt. " : ""}Standaard:{" "}
+                {DEFAULT_ANALYSIS_QUOTA_CONFIG[field.key]}.
               </span>
             </div>
           ))}

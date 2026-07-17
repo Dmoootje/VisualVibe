@@ -1,6 +1,7 @@
 import "server-only";
 
 import { randomUUID, timingSafeEqual } from "node:crypto";
+import { isIP } from "node:net";
 import { hmacIdentifier } from "@/lib/security/encryption";
 
 export const DEVICE_COOKIE_NAME = "vv_device";
@@ -55,21 +56,40 @@ export function deviceHash(deviceId: string): string {
  * kortstondig in geheugen gebruikt en NOOIT opgeslagen, gelogd of
  * geretourneerd; alleen de HMAC-hash verlaat deze functie.
  *
- * TRUST-AANNAME: X-Forwarded-For / X-Real-IP worden vertrouwd zoals de hosting
- * (Firebase App Hosting / Vercel) ze aanlevert. Deze headers zijn door een
- * client vrij te zetten wanneer de app direct benaderbaar is; het IP-quotum is
- * daarom bewust een AANVULLENDE controle (nooit de enige blokkade, cf. de
- * opdracht) bovenop de niet-spoofbare e-mailverificatie- en devicelimieten.
- * Voor harde IP-limieten hoort de trusted-proxy/client-IP-config op
- * platformniveau te staan.
+ * Firebase App Hosting loopt via de Google External Application Load Balancer.
+ * Die voegt rechts in XFF `<client-ip>,<load-balancer-ip>` toe en verklaart
+ * alle voorafgaande waarden onbetrouwbaar. Daarom worden uitsluitend de twee
+ * laatste posities gevalideerd en is de voorlaatste het quota-IP. X-Real-IP is
+ * geen autoriteit. Zie https://cloud.google.com/load-balancing/docs/https#x-forwarded-for_header.
  */
-export function ipHashFromRequest(request: Request): string | undefined {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const realIp = request.headers.get("x-real-ip");
-  const first = forwarded?.split(",")[0]?.trim() || realIp?.trim() || "";
-  if (!first) return undefined;
-
-  const ip = first.toLowerCase().replace(/^\[|\]$/g, "");
-  if (!ip) return undefined;
+export function ipHashFromRequest(request: Request): string {
+  const ip = trustedClientIp(request.headers.get("x-forwarded-for")) ?? "unknown-ip";
   return hmacIdentifier(ip, "ip-quota");
+}
+
+function normalizeIp(raw: string): string | null {
+  const trimmed = raw.trim();
+  const unbracketed = trimmed.startsWith("[") && trimmed.endsWith("]")
+    ? trimmed.slice(1, -1)
+    : trimmed;
+  const version = isIP(unbracketed);
+  if (version === 4) return unbracketed;
+  if (version !== 6) return null;
+
+  try {
+    const hostname = new URL(`http://[${unbracketed}]/`).hostname;
+    return hostname.slice(1, -1).toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+function trustedClientIp(forwarded: string | null): string | null {
+  if (!forwarded) return null;
+  const values = forwarded.split(",").map((value) => value.trim());
+  if (values.length < 2) return null;
+
+  const trustedClient = normalizeIp(values.at(-2) ?? "");
+  const trustedProxy = normalizeIp(values.at(-1) ?? "");
+  return trustedClient && trustedProxy ? trustedClient : null;
 }

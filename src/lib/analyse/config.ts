@@ -11,8 +11,8 @@ const COLLECTION = "analysis_settings";
 const SETTINGS_ID = "default";
 
 const NUMERIC_KEYS = [
-  "maxPerEmail90d",
-  "maxPerDevice90d",
+  "maxPerEmail24h",
+  "maxPerDevice24h",
   "maxPerIp24h",
   "maxPerIp30d",
   "maxCodesPerEmailPerHour",
@@ -23,11 +23,16 @@ const NUMERIC_KEYS = [
 
 type NumericKey = (typeof NUMERIC_KEYS)[number];
 
-function mergeWithDefaults(data: Record<string, unknown> | undefined): AnalysisQuotaConfig {
+export function mergeWithDefaults(
+  data: Record<string, unknown> | undefined,
+): AnalysisQuotaConfig {
   const merged: AnalysisQuotaConfig = { ...DEFAULT_ANALYSIS_QUOTA_CONFIG };
   if (!data) return merged;
 
   if (typeof data.enabled === "boolean") merged.enabled = data.enabled;
+  if (typeof data.maintenanceMode === "boolean") {
+    merged.maintenanceMode = data.maintenanceMode;
+  }
   for (const key of NUMERIC_KEYS) {
     const value = data[key];
     if (typeof value === "number" && Number.isInteger(value) && value >= 0) {
@@ -66,6 +71,12 @@ export async function updateAnalysisQuotaConfig(
       throw new Error("De instelling 'enabled' moet een boolean zijn.");
     }
     patch.enabled = input.enabled;
+  }
+  if (input.maintenanceMode !== undefined) {
+    if (typeof input.maintenanceMode !== "boolean") {
+      throw new Error("De instelling 'maintenanceMode' moet een boolean zijn.");
+    }
+    patch.maintenanceMode = input.maintenanceMode;
   }
   for (const key of NUMERIC_KEYS) {
     const value = input[key];

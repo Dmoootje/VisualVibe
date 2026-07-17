@@ -1,4 +1,5 @@
 const createNextIntlPlugin = require('next-intl/plugin');
+const { securityHeaders } = require('./security-headers.config.cjs');
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
@@ -54,7 +55,7 @@ const nextConfig = {
       afterFiles: [
         {
           source: '/:key([a-zA-Z0-9-]{8,128}).txt',
-          destination: '/api/indexnow/keyfile?key=:key',
+          destination: '/api/indexnow/keyfile/:key/',
         },
       ],
       fallback: [],
@@ -110,15 +111,9 @@ const nextConfig = {
       },
     ],
   },
-  // Inline de globale CSS als <style> in de <head> i.p.v. een los, render-blocking
-  // <link rel=stylesheet>. Op mobiel 4G moest de browser dat losse bestand eerst
-  // ontdekken en in een aparte round-trip (extra RTT + edge/Cloud-Run-hop) ophalen
-  // voordat er iets rendert; inline reist de CSS mee met de HTML-stream en verdwijnt
-  // de render-blocking-request. De CSP staat inline styles al toe (style-src
-  // 'unsafe-inline'), zoals next/font/google ook al inline <style> injecteert.
-  experimental: {
-    inlineCss: true,
-  },
+  // Houd globale CSS uit de eerste HTML-response. `experimental.inlineCss` maakte
+  // de homepage-HTML te groot en dupliceerde CSS in de Next flight-data, waardoor
+  // GTmetrix lang bleef wachten/ontvangen op het document zelf.
   // Merk- en icoonassets in /public hebben vaste (niet-gehashte) namen en wijzigen
   // zelden; geef ze een lange browsercache i.p.v. de korte default. Werkt pas
   // volledig wanneer Cloudflare's "Browser Cache TTL" op "Respect Existing Headers"
@@ -127,9 +122,13 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/:path*',
+        headers: securityHeaders,
+      },
+      {
         source:
           '/:asset(logo\\.svg|logo-email\\.png|weddingvibe-logo\\.svg|weddingvibe-logo-licht\\.svg|favicon\\.svg|favicon-96x96\\.png|apple-touch-icon\\.png|web-app-manifest-192x192\\.png|web-app-manifest-512x512\\.png)',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000' }],
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000' }],
       },
     ];
   },

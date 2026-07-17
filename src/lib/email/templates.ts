@@ -4,6 +4,7 @@ import {
   resolveLeadEmailServiceBlocks,
   resolveLeadEmailServiceId,
 } from "@/config/leadEmailServiceBlocks";
+import type { NormalizedPartnerAuditReport } from "@/types/analysis";
 import type {
   AiReplyDraft,
   EmailLocale,
@@ -18,6 +19,8 @@ import { renderBrandingHtml } from "@/lib/email/brandingDefaults";
 
 const SITE_URL = "https://visualvibe.media";
 const LOGO_URL = `${SITE_URL}/logo.svg`;
+const VISUALVIBE_ANALYZER_URL = `${SITE_URL}/be/website-analyse/`;
+const SEO_WEBSITES_ANALYZER_URL = "https://seowebsites.be/nl/seo-website-analyse";
 
 type CustomerCopy = {
   subject: string;
@@ -474,6 +477,132 @@ function analysisScoreText(score: number): string {
   return Number.isInteger(score) ? String(score) : score.toFixed(1);
 }
 
+function formatAnalysisNumber(value: number): string {
+  return Number.isFinite(value) ? Math.round(value).toLocaleString("nl-BE") : "0";
+}
+
+function formatAnalysisPercent(value: number): string {
+  if (!Number.isFinite(value)) return "0%";
+  const rounded = Math.round(value * 100) / 100;
+  return `${Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2)}%`;
+}
+
+function deriveAnalysisStats(report: NormalizedPartnerAuditReport | undefined): {
+  totalChecks: number;
+  passed: number;
+  warnings: number;
+  errors: number;
+} | null {
+  if (!report) return null;
+  if (report.stats) return report.stats;
+  const checks = report.categories.flatMap((category) => category.checks);
+  if (checks.length === 0) return null;
+  return {
+    totalChecks: checks.length,
+    passed: checks.filter((check) => check.status === "pass").length,
+    warnings: checks.filter((check) => check.status === "warning").length,
+    errors: checks.filter((check) => check.status === "error").length,
+  };
+}
+
+function analysisMetricTableHtml(items: Array<{ label: string; value: string; color?: string }>): string {
+  if (items.length === 0) return "";
+  const rows: string[] = [];
+  for (let index = 0; index < items.length; index += 2) {
+    const cells = items.slice(index, index + 2);
+    rows.push(
+      `<tr>${cells
+        .map(
+          (item) =>
+            `<td width="50%" style="padding:6px;vertical-align:top;"><div style="padding:14px 15px;border:1px solid #ece7e1;border-radius:12px;background:#faf8f5;"><p style="margin:0 0 5px;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:.05em;text-transform:uppercase;color:#645d55;">${escapeHtml(item.label)}</p><p style="margin:0;font-family:Arial,sans-serif;font-size:22px;font-weight:bold;line-height:1.15;color:${item.color ?? "#111111"};">${escapeHtml(item.value)}</p></div></td>`,
+        )
+        .join("")}${cells.length === 1 ? `<td width="50%" style="padding:6px;">&nbsp;</td>` : ""}</tr>`,
+    );
+  }
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:separate;margin:8px -6px 0;">${rows.join("")}</table>`;
+}
+
+function topKeywordText(report: NormalizedPartnerAuditReport | undefined): string | null {
+  const topKeyword = report?.keywordDensity?.single[0];
+  if (!topKeyword) return null;
+  const phrase = cleanText(topKeyword.phrase);
+  if (!phrase) return null;
+  return `${phrase} · ${formatAnalysisPercent(topKeyword.density)}`;
+}
+
+function analysisQuickWinsHtml(report: NormalizedPartnerAuditReport | undefined): string {
+  const stats = deriveAnalysisStats(report);
+  const topKeyword = topKeywordText(report);
+  const wordCount = report?.keywordDensity?.totalWords ?? report?.page.wordCount;
+  const items = [
+    stats ? { label: "Geslaagd", value: formatAnalysisNumber(stats.passed), color: "#16a34a" } : null,
+    stats ? { label: "Aandacht", value: formatAnalysisNumber(stats.warnings), color: "#c95600" } : null,
+    stats ? { label: "Problemen", value: formatAnalysisNumber(stats.errors), color: "#dc2626" } : null,
+    stats ? { label: "Controles", value: formatAnalysisNumber(stats.totalChecks) } : null,
+    topKeyword ? { label: "Topkeyword", value: topKeyword, color: "#16a34a" } : null,
+    typeof wordCount === "number" && Number.isFinite(wordCount)
+      ? { label: "Woorden", value: formatAnalysisNumber(wordCount) }
+      : null,
+  ].filter((item): item is { label: string; value: string; color?: string } => Boolean(item));
+  if (items.length === 0) return "";
+  return sectionHtml("Quick Wins", analysisMetricTableHtml(items));
+}
+
+function analysisPageDetailsHtml(report: NormalizedPartnerAuditReport | undefined): string {
+  if (!report) return "";
+  const rows: Array<[string, string | undefined]> = [
+    ["Geanalyseerde URL", report.url],
+    ["Meta title", report.page.metaTitle],
+    ["Meta description", report.page.metaDescription],
+    ["H1", report.page.h1],
+    ["Indexeerbaar", report.page.indexable === undefined ? undefined : report.page.indexable ? "Ja" : "Nee"],
+    [
+      "Gerenderde inhoud",
+      report.technical.renderedAvailable === undefined
+        ? undefined
+        : report.technical.renderedAvailable
+          ? "Beschikbaar"
+          : "Niet beschikbaar",
+    ],
+  ];
+  return sectionHtml("Paginagegevens", detailTable(rows));
+}
+
+function analysisIssueItems(input: {
+  report?: NormalizedPartnerAuditReport;
+  criticalIssues: string[];
+}): string[] {
+  const reportIssues = input.report?.topIssues
+    .map((issue) => {
+      const title = cleanText(issue.title);
+      const recommendation = cleanText(issue.recommendation);
+      if (!title) return "";
+      return recommendation ? `${title}: ${recommendation}` : title;
+    })
+    .filter(Boolean) ?? [];
+  if (reportIssues.length) return reportIssues.slice(0, 5);
+  return input.criticalIssues.map((issue) => cleanText(issue)).filter(Boolean).slice(0, 5);
+}
+
+function analysisStrengthItems(report: NormalizedPartnerAuditReport | undefined): string[] {
+  return (report?.strengths ?? [])
+    .map((strength) => {
+      const title = cleanText(strength.title);
+      const explanation = cleanText(strength.explanation);
+      if (!title) return "";
+      return explanation ? `${title}: ${explanation}` : title;
+    })
+    .filter(Boolean)
+    .slice(0, 3);
+}
+
+function analysisFollowUpHtml(): string {
+  return sectionHtml(
+    "Meer testpower nodig?",
+    `<div style="padding:16px 18px;border:1px solid #f2d4bb;border-radius:14px;background:#fff7f0;"><p style="margin:0 0 14px;line-height:1.6;color:#242424;">Wil je opnieuw testen of dieper graven in je SEO, AIO en GEO-signalen? Kies hieronder je volgende stap.</p><div><a href="${escapeHtml(VISUALVIBE_ANALYZER_URL)}" style="display:inline-block;margin:0 8px 8px 0;padding:11px 15px;border-radius:9px;background:#ff7500;color:#ffffff;text-decoration:none;font-size:13px;font-weight:bold;">Nieuwe gratis analyse starten</a><a href="${escapeHtml(SEO_WEBSITES_ANALYZER_URL)}" style="display:inline-block;margin:0 0 8px 0;padding:10px 14px;border:1px solid #16a34a;border-radius:9px;background:#ecfdf3;color:#166534;text-decoration:none;font-size:13px;font-weight:bold;">Geavanceerde analyse via SEO Websites</a></div></div>`,
+  );
+}
+
 export function renderAnalysisVerificationEmail(input: {
   firstName: string;
   code: string;
@@ -525,24 +654,30 @@ export function renderAnalysisReportEmail(input: {
   domain: string;
   score?: number;
   criticalIssues: string[];
+  analysisSummary?: string;
+  report?: NormalizedPartnerAuditReport | null;
   reportUrl: string;
   settings: EmailSettings | EmailSettingsAdminView;
 }): RenderedEmail {
   const { settings } = input;
   const name = firstName(input.firstName);
   const domain = cleanText(input.domain) || "je website";
-  const issues = input.criticalIssues
-    .map((issue) => cleanText(issue))
-    .filter(Boolean)
-    .slice(0, 3);
+  const report = input.report ?? undefined;
+  const issues = analysisIssueItems({ report, criticalIssues: input.criticalIssues });
+  const strengths = analysisStrengthItems(report);
+  const summary = cleanText(report?.summary) || cleanText(input.analysisSummary);
   const score =
-    typeof input.score === "number" && Number.isFinite(input.score) ? input.score : undefined;
+    typeof report?.overallScore === "number" && Number.isFinite(report.overallScore)
+      ? report.overallScore
+      : typeof input.score === "number" && Number.isFinite(input.score)
+        ? input.score
+        : undefined;
   const reportUrl = absoluteUrl(input.reportUrl);
   const subject = cleanSubject(
     name ? `${name}, je websiteanalyse is klaar` : "Je websiteanalyse is klaar",
   );
   const title = "Je websiteanalyse is klaar";
-  const intro = `We hebben ${domain} doorgelicht. Hieronder zie je de belangrijkste punten; het volledige rapport staat online voor je klaar.`;
+  const intro = `We hebben ${domain} doorgelicht. Hieronder vind je de belangrijkste inzichten uit je analyse; het volledige rapport staat online voor je klaar.`;
   const nextStep =
     "Wil je weten hoe je deze punten het beste aanpakt? We bespreken het rapport graag met je en maken vrijblijvend een offerte op maat.";
   const contact = "Je kunt rechtstreeks op deze e-mail antwoorden, we denken graag met je mee.";
@@ -553,21 +688,48 @@ export function renderAnalysisReportEmail(input: {
     score !== undefined
       ? `<div style="margin:20px 0;padding:16px 20px;border:1px solid #ece7e1;border-radius:12px;background:#faf8f5;text-align:center;"><p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:#645d55;">Totaalscore</p><p style="margin:0;font-family:Arial,sans-serif;font-size:34px;font-weight:bold;line-height:1.1;color:#c95600;">${escapeHtml(analysisScoreText(score))}</p></div>`
       : "",
+    summary
+      ? sectionHtml("Samenvatting", `<p style="margin:0;line-height:1.65;color:#242424;">${paragraphHtml(summary)}</p>`)
+      : "",
+    analysisQuickWinsHtml(report),
     issues.length ? sectionHtml("Belangrijkste bevindingen", listHtml(issues)) : "",
+    strengths.length ? sectionHtml("Sterke punten", listHtml(strengths)) : "",
+    analysisPageDetailsHtml(report),
     sectionHtml(
       "Volgende stap",
       `<p style="margin:0;line-height:1.65;color:#242424;">${escapeHtml(nextStep)}</p>`,
     ),
+    analysisFollowUpHtml(),
     `<p style="margin:24px 0 0;line-height:1.65;color:#645d55;">${escapeHtml(contact)}</p>`,
   ].join("");
+  const stats = deriveAnalysisStats(report);
+  const topKeyword = topKeywordText(report);
+  const wordCount = report?.keywordDensity?.totalWords ?? report?.page.wordCount;
   const textSections = [
     CUSTOMER_COPY.nl.greeting(name),
     intro,
     score !== undefined ? `Totaalscore: ${analysisScoreText(score)}` : undefined,
+    summary ? `Samenvatting:\n${summary}` : undefined,
+    stats
+      ? [
+          "Quick Wins:",
+          `- Geslaagd: ${formatAnalysisNumber(stats.passed)}`,
+          `- Aandacht: ${formatAnalysisNumber(stats.warnings)}`,
+          `- Problemen: ${formatAnalysisNumber(stats.errors)}`,
+          `- Controles: ${formatAnalysisNumber(stats.totalChecks)}`,
+        ].join("\n")
+      : undefined,
+    topKeyword ? `Topkeyword: ${topKeyword}` : undefined,
+    typeof wordCount === "number" && Number.isFinite(wordCount)
+      ? `Woorden: ${formatAnalysisNumber(wordCount)}`
+      : undefined,
     issues.length
       ? `Belangrijkste bevindingen:\n${issues.map((issue) => `- ${issue}`).join("\n")}`
       : undefined,
+    strengths.length ? `Sterke punten:\n${strengths.map((strength) => `- ${strength}`).join("\n")}` : undefined,
     `Volgende stap:\n${nextStep}`,
+    `Nieuwe gratis analyse starten: ${VISUALVIBE_ANALYZER_URL}`,
+    `Geavanceerde analyse via SEO Websites: ${SEO_WEBSITES_ANALYZER_URL}`,
     contact,
   ];
   const cta = reportUrl ? { label: "Bekijk het volledige rapport", url: reportUrl } : null;

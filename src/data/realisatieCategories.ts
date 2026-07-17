@@ -16,6 +16,8 @@ export type RealisatieCategory = {
   description: string;
   seoTitle: string;
   seoDescription: string;
+  /** Keep taxonomy/context pages indexable, even before direct case cards exist. */
+  indexWhenEmpty?: boolean;
   /** Optional stat rail in the realisatie-header (design_handoff_realisaties). */
   stats?: RealisatieStat[];
 };
@@ -91,6 +93,7 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Podcasting realisaties | VisualVibe",
     seoDescription:
       "Podcast-realisaties van VisualVibe: bedrijfspodcasts en videopodcasts voor experts en bedrijven in Limburg, van opname en montage tot afgewerkte publicatie.",
+    indexWhenEmpty: true,
   },
   {
     slug: "bedrijven",
@@ -99,6 +102,7 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Realisaties voor bedrijven | VisualVibe",
     seoDescription:
       "Realisaties voor bedrijven: volledige trajecten waarin webdesign, fotografie en video samenkomen. Bekijk wat VisualVibe voor KMO's in Limburg realiseerde.",
+    indexWhenEmpty: true,
   },
   {
     slug: "projecten",
@@ -107,6 +111,7 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Project-realisaties | VisualVibe",
     seoDescription:
       "Project-realisaties van VisualVibe: bouw-, renovatie- en interieurprojecten in beeld gebracht met fotografie en dronebeelden voor aannemers in Limburg.",
+    indexWhenEmpty: true,
   },
   {
     slug: "events",
@@ -115,6 +120,7 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Event-realisaties | VisualVibe",
     seoDescription:
       "Event-realisaties van VisualVibe: eventfotografie en aftermovies van bedrijfsevents en openingen in Limburg. Sfeerbeelden die je volgende editie promoten.",
+    indexWhenEmpty: true,
   },
   {
     slug: "sport",
@@ -123,6 +129,7 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Sport-realisaties | VisualVibe",
     seoDescription:
       "Sport-realisaties van VisualVibe: webdesign, fotografie en video voor sportclubs en sportevenementen in Limburg. Beeld dat leden, supporters en sponsors raakt.",
+    indexWhenEmpty: true,
   },
   {
     slug: "buitenland",
@@ -131,11 +138,18 @@ export const realisatieCategories: RealisatieCategory[] = [
     seoTitle: "Realisaties in het buitenland | VisualVibe",
     seoDescription:
       "Buitenlandse realisaties van VisualVibe: webdesign-, foto- en videoprojecten buiten de landsgrenzen, van drone-opnames in de Alpen tot werk in Nederland.",
+    indexWhenEmpty: true,
   },
 ];
 
 export function getRealisatieCategoryBySlug(slug: string): RealisatieCategory | undefined {
   return realisatieCategories.find((category) => category.slug === slug);
+}
+
+export function shouldIndexRealisatieCategoryWithoutCases(
+  category: RealisatieCategory,
+): boolean {
+  return category.indexWhenEmpty === true;
 }
 
 /**

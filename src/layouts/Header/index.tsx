@@ -7,6 +7,7 @@ import {
   pillars,
   realisatieCards,
   sectorCards,
+  toolsCards,
   type NavCard,
 } from "@/components/nav/navData";
 import { GOOGLE_MAPS_PROFILE_URL, getGoogleRatingSummary } from "@/lib/reviews/google";
@@ -38,6 +39,7 @@ export async function Header({ locale }: { locale: string }) {
       regions={navRegions}
       sectorCards={sectorCards}
       realisatieCards={realisatieCards}
+      toolsCards={toolsCards}
       kennisbankItems={kennisbankItems}
       kennisbankPostCount={localizedPosts.length}
       googleRating={googleRating}

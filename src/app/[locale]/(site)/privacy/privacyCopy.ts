@@ -1,0 +1,2 @@
+export const ANALYSIS_RETENTION_COPY =
+  "Voor de quota gebruiken we pseudonieme HMAC-identifiers voor e-mail, toestel en IP-adres. Voor e-mail en toestel tellen alleen gebeurtenissen uit de afgelopen 24 uur. Voor IP-adressen zijn de actieve telvensters 24 uur en 30 dagen. Technische quotagegevens kunnen voor beveiliging en beheer maximaal 91 dagen bewaard blijven; die langere bewaartermijn verlengt de actieve telvensters niet. Verificatiecodes vervallen na 15 minuten.";

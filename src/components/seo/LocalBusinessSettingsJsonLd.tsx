@@ -32,7 +32,7 @@ function normalizeAddressCountry(value?: string): string {
 }
 
 /**
- * LocalBusiness (ProfessionalService) schema built from the live site_settings.
+ * LocalBusiness schema built from the live site_settings.
  * Every critical NAP field falls back to business.config, so a temporarily empty
  * Firestore setting can never publish incomplete or contradictory local schema.
  */
@@ -99,7 +99,7 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
     <JsonLd
       data={{
         "@context": "https://schema.org",
-        "@type": "ProfessionalService",
+        "@type": "LocalBusiness",
         "@id": `${businessConfig.url}/#localbusiness`,
         name: settings.companyName || businessConfig.displayName,
         legalName: businessConfig.legalName,

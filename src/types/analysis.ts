@@ -146,6 +146,7 @@ export type AnalysisLead = {
   forceRequested?: boolean;
   quotaDecision?: AnalysisQuotaDecision;
   quotaReason?: string;
+  quotaResetAt?: string;
   createdAt: string;
   updatedAt: string;
   verifiedAt?: string;
@@ -153,6 +154,10 @@ export type AnalysisLead = {
   completedAt?: string;
   failedAt?: string;
   expiredAt?: string;
+  /** Niet-terminale payload waarmee een mislukte afronding veilig kan worden hervat. */
+  completionPending?: AnalysisCompletionPending | null;
+  /** Niet-terminale foutpayload waarmee een mislukte vrijgave veilig kan worden hervat. */
+  failurePending?: AnalysisFailurePending | null;
 };
 
 export type AnalysisReportDocument = {
@@ -169,10 +174,12 @@ export type AnalysisReportDocument = {
 /** Firestore: analysis_settings/default. Beheerbaar in /admin/settings/analyse. */
 export type AnalysisQuotaConfig = {
   enabled: boolean;
-  /** Succesvol afgeronde analyses per geverifieerd e-mailadres per 90 dagen. */
-  maxPerEmail90d: number;
-  /** Succesvol afgeronde analyses per device per 90 dagen. */
-  maxPerDevice90d: number;
+  /** Tijdelijke operationele blokkade voor nieuwe analysestarts. */
+  maintenanceMode: boolean;
+  /** Succesvol afgeronde analyses per geverifieerd e-mailadres per 24 uur. */
+  maxPerEmail24h: number;
+  /** Succesvol afgeronde analyses per device per 24 uur. */
+  maxPerDevice24h: number;
   /** Analyseaanvragen per IP per 24 uur. */
   maxPerIp24h: number;
   /** Analyses per IP per 30 dagen. */
@@ -189,10 +196,11 @@ export type AnalysisQuotaConfig = {
 
 export const DEFAULT_ANALYSIS_QUOTA_CONFIG: AnalysisQuotaConfig = {
   enabled: true,
-  maxPerEmail90d: 3,
-  maxPerDevice90d: 3,
-  maxPerIp24h: 10,
-  maxPerIp30d: 25,
+  maintenanceMode: false,
+  maxPerEmail24h: 3,
+  maxPerDevice24h: 3,
+  maxPerIp24h: 12,
+  maxPerIp30d: 180,
   maxCodesPerEmailPerHour: 5,
   duplicateWindowMinutes: 2,
   codeTtlMinutes: 15,
@@ -310,8 +318,31 @@ export type AnalysisStartRequest = {
   website?: string;
 };
 
+export type AnalysisLimitResponse = {
+  status: "limit_reached";
+  message: string;
+  quotaDecision?: AnalysisQuotaDecision;
+  resetsAt?: string;
+};
+
+export type AnalysisCompletionPending = {
+  analysisScore: number;
+  criticalIssues: string[];
+  analysisSummary?: string;
+  reportToken: string;
+  reportId: string;
+  reportSchemaVersion: number;
+  completedAt: string;
+};
+
+export type AnalysisFailurePending = {
+  reason: string;
+  failedAt: string;
+};
+
 export type AnalysisStartResponse =
   | { status: "code_sent"; analysisLeadId: string }
+  | AnalysisLimitResponse
   | { status: "error"; error: string };
 
 export type AnalysisVerifyRequest = {
@@ -322,7 +353,7 @@ export type AnalysisVerifyRequest = {
 export type AnalysisVerifyResponse =
   | { status: "completed"; reportUrl: string; score: number; criticalIssues: string[] }
   | { status: "reused"; reportUrl: string; score: number; criticalIssues: string[] }
-  | { status: "limit_reached"; message: string }
+  | AnalysisLimitResponse
   | { status: "failed"; message: string }
   | { status: "invalid_code"; attemptsLeft: number }
   | { status: "code_expired" }
