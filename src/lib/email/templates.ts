@@ -608,29 +608,30 @@ export function renderAnalysisVerificationEmail(input: {
   code: string;
   ttlMinutes: number;
   settings: EmailSettings | EmailSettingsAdminView;
+  locale?: EmailLocale;
 }): RenderedEmail {
   const { settings } = input;
+  const locale = input.locale ?? "nl";
   const name = firstName(input.firstName);
   const code = cleanText(input.code);
   const ttlMinutes = Math.max(1, Math.round(input.ttlMinutes));
-  const subject = cleanSubject(`Je verificatiecode: ${code}`);
-  const title = "Bevestig je e-mailadres";
-  const intro =
-    "Gebruik onderstaande code om je e-mailadres te bevestigen en je gratis websiteanalyse te starten.";
-  const validity = `De code is ${ttlMinutes} ${ttlMinutes === 1 ? "minuut" : "minuten"} geldig.`;
-  const ignore = "Heb je geen analyse aangevraagd? Dan kun je deze e-mail gewoon negeren.";
+  const subject = cleanSubject(locale === "en" ? `Your verification code: ${code}` : `Je verificatiecode: ${code}`);
+  const title = locale === "en" ? "Confirm your email address" : "Bevestig je e-mailadres";
+  const intro = locale === "en" ? "Enter the code below to confirm your email address and start your free website analysis." : "Gebruik onderstaande code om je e-mailadres te bevestigen en je gratis websiteanalyse te starten.";
+  const validity = locale === "en" ? `The code is valid for ${ttlMinutes} ${ttlMinutes === 1 ? "minute" : "minutes"}.` : `De code is ${ttlMinutes} ${ttlMinutes === 1 ? "minuut" : "minuten"} geldig.`;
+  const ignore = locale === "en" ? "Did you not request an analysis? You can safely ignore this email." : "Heb je geen analyse aangevraagd? Dan kun je deze e-mail gewoon negeren.";
 
   const bodyHtml = [
-    `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY.nl.greeting(name))}</p>`,
+    `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY[locale].greeting(name))}</p>`,
     `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(intro)}</p>`,
     `<div style="margin:20px 0;padding:18px 20px;border:1px solid #ece7e1;border-radius:12px;background:#faf8f5;text-align:center;"><span style="font-family:'Courier New',Courier,monospace;font-size:32px;font-weight:bold;letter-spacing:8px;color:#111111;">${escapeHtml(code)}</span></div>`,
     `<p style="margin:0;font-size:14px;line-height:1.65;color:#242424;">${escapeHtml(validity)}</p>`,
     `<p style="margin:20px 0 0;font-size:13px;line-height:1.65;color:#645d55;">${escapeHtml(ignore)}</p>`,
   ].join("");
   const textSections = [
-    CUSTOMER_COPY.nl.greeting(name),
+    CUSTOMER_COPY[locale].greeting(name),
     intro,
-    `Verificatiecode: ${code}`,
+    `${locale === "en" ? "Verification code" : "Verificatiecode"}: ${code}`,
     validity,
     ignore,
   ];
@@ -638,11 +639,11 @@ export function renderAnalysisVerificationEmail(input: {
   return {
     subject,
     html: renderHtmlLayout({
-      preheader: "Bevestig je e-mailadres om je gratis websiteanalyse te starten.",
+      preheader: locale === "en" ? "Confirm your email address to start your free website analysis." : "Bevestig je e-mailadres om je gratis websiteanalyse te starten.",
       title,
       bodyHtml,
       settings,
-      locale: "nl",
+      locale,
     }),
     text: renderTextLayout(title, textSections, settings),
     replyTo: settings.smtp.replyTo || undefined,
@@ -658,7 +659,36 @@ export function renderAnalysisReportEmail(input: {
   report?: NormalizedPartnerAuditReport | null;
   reportUrl: string;
   settings: EmailSettings | EmailSettingsAdminView;
+  locale?: EmailLocale;
 }): RenderedEmail {
+  if (input.locale === "en") {
+    const name = firstName(input.firstName);
+    const domain = cleanText(input.domain) || "your website";
+    const reportUrl = absoluteUrl(input.reportUrl);
+    const summary = cleanText(input.report?.summary) || cleanText(input.analysisSummary);
+    const issues = analysisIssueItems({ report: input.report ?? undefined, criticalIssues: input.criticalIssues });
+    const score = typeof input.report?.overallScore === "number" ? input.report.overallScore : input.score;
+    const subject = cleanSubject(name ? `${name}, your website analysis is ready` : "Your website analysis is ready");
+    const title = "Your website analysis is ready";
+    const intro = `We have analysed ${domain}. Here are the main findings, with your full report available online.`;
+    const nextStep = "Would you like practical advice on what to tackle first? We would be happy to discuss the report and prepare a no-obligation quotation tailored to your needs.";
+    const bodyHtml = [
+      `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(CUSTOMER_COPY.en.greeting(name))}</p>`,
+      `<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#242424;">${escapeHtml(intro)}</p>`,
+      score !== undefined ? `<div style="margin:20px 0;padding:16px 20px;border:1px solid #ece7e1;border-radius:12px;background:#faf8f5;text-align:center;"><p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:#645d55;">Overall score</p><p style="margin:0;font-family:Arial,sans-serif;font-size:34px;font-weight:bold;line-height:1.1;color:#c95600;">${escapeHtml(analysisScoreText(score))}</p></div>` : "",
+      summary ? sectionHtml("Summary", `<p style="margin:0;line-height:1.65;color:#242424;">${paragraphHtml(summary)}</p>`) : "",
+      issues.length ? sectionHtml("Key findings", listHtml(issues)) : "",
+      sectionHtml("Next step", `<p style="margin:0;line-height:1.65;color:#242424;">${escapeHtml(nextStep)}</p>`),
+      `<p style="margin:24px 0 0;line-height:1.65;color:#645d55;">Reply directly to this email if you would like to talk through the findings.</p>`,
+    ].join("");
+    const cta = reportUrl ? { label: "View your full report", url: reportUrl } : null;
+    return {
+      subject,
+      html: renderHtmlLayout({ preheader: subject, title, bodyHtml, settings: input.settings, locale: "en", cta }),
+      text: renderTextLayout(title, [CUSTOMER_COPY.en.greeting(name), intro, score !== undefined ? `Overall score: ${analysisScoreText(score)}` : undefined, summary ? `Summary:\n${summary}` : undefined, issues.length ? `Key findings:\n${issues.map((issue) => `- ${issue}`).join("\n")}` : undefined, `Next step:\n${nextStep}`, "Reply directly to this email if you would like to talk through the findings."], input.settings, cta),
+      replyTo: input.settings.smtp.replyTo || undefined,
+    };
+  }
   const { settings } = input;
   const name = firstName(input.firstName);
   const domain = cleanText(input.domain) || "je website";

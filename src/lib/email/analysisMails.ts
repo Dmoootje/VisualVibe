@@ -135,7 +135,7 @@ async function dispatchAnalysisMail(
       htmlBody: mail.stored.html,
       textBody: mail.stored.text,
       createdBy: "system",
-      locale: "nl",
+      locale: analysisLead.locale ?? "nl",
       idempotencyKey: mail.idempotencyKey,
     });
   } catch {
@@ -203,6 +203,7 @@ export async function sendAnalysisVerificationMail(input: {
     firstName: analysisLead.firstName,
     code,
     ttlMinutes,
+    locale: analysisLead.locale ?? "nl",
     settings,
   });
   // De code mag nooit onversleuteld in Firestore staan; mail_history krijgt
@@ -211,6 +212,7 @@ export async function sendAnalysisVerificationMail(input: {
     firstName: analysisLead.firstName,
     code: "******",
     ttlMinutes,
+    locale: analysisLead.locale ?? "nl",
     settings,
   });
 
@@ -244,6 +246,7 @@ export async function sendAnalysisReportMail(input: {
     ...(analysisLead.analysisSummary ? { analysisSummary: analysisLead.analysisSummary } : {}),
     ...(storedReport?.report ? { report: storedReport.report } : {}),
     reportUrl,
+    locale: analysisLead.locale ?? "nl",
     settings,
   });
 

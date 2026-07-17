@@ -111,6 +111,8 @@ export type AnalysisLead = {
   leadId?: string;
   leadNumber?: string;
   status: AnalysisLeadStatus;
+  /** Locale selected on the visitor-facing analysis form. */
+  locale?: "nl" | "en" | "fr";
   firstName: string;
   companyName?: string;
   email: string;

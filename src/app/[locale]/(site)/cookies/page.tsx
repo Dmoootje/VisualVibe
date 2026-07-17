@@ -4,15 +4,18 @@ import { getSiteSettings } from "@/lib/firestore/siteSettings";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ManageCookiesButton } from "@/components/consent";
+import { getCookieCopy } from "./cookieCopy";
 
 // ISR: contactgegevens komen uit de admin-instellingen.
 export const revalidate = 60;
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
   const settings = await getSiteSettings();
+  const copy = getCookieCopy(locale, settings.companyName);
   return pageMetadata({
-    title: `Cookiebeleid | ${settings.companyName}`,
-    description: `Welke cookies gebruikt ${settings.companyName}? Functionele cookies en analytische cookies (Google Analytics), pas actief na jouw toestemming. Beheer hier je voorkeuren.`,
+    title: copy.metaTitle,
+    description: copy.metaDescription,
     path: "/cookies/",
   });
 }
@@ -23,8 +26,10 @@ function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-3 mt-10 text-xl font-bold text-white sm:text-2xl">{children}</h2>;
 }
 
-export default async function CookiesPage() {
+export default async function CookiesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const settings = await getSiteSettings();
+  if (locale === "en") return <EnglishCookies settings={settings} />;
 
   return (
     <div className="min-h-screen pb-20 pt-28 text-white">
@@ -144,4 +149,15 @@ export default async function CookiesPage() {
       </div>
     </div>
   );
+}
+
+function EnglishCookies({ settings }: { settings: Awaited<ReturnType<typeof getSiteSettings>> }) {
+  const copy = getCookieCopy("en", settings.companyName);
+  return <div className="min-h-screen pb-20 pt-28 text-white"><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: copy.title, path: "/cookies" }]} /><div className="container mx-auto"><article className="mx-auto max-w-[760px]"><p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">{copy.label}</p><h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">{copy.title}</h1><p className="mt-4 text-white/50">Last updated: {copy.updated}</p><div className="mt-8 space-y-4 text-[15.5px] leading-relaxed text-white/70"><p>{copy.introduction}</p>
+  <H2>1. What are cookies?</H2><p>Cookies are small text files that a website stores on your device. Some are necessary for a website to work properly, while others may be used to track visitors for analytics or marketing.</p>
+  <H2>2. Which cookies does this website use?</H2><p>We deliberately keep cookie use to a minimum. We do not display advertising or sell data. We use two types of cookies:</p><ul className="list-disc space-y-2 pl-5"><li><strong className="text-white">Strictly necessary functional cookies:</strong> security and session cookies used only when a {settings.companyName} administrator signs in to the protected administration area. Regular visitors do not receive this cookie. These cookies are necessary for security and do not require consent.</li><li><strong className="text-white">Analytics cookies (Google Analytics 4):</strong> with your consent, we use Google Analytics to measure how visitors use the site, including viewed pages, device type and approximate region. Cookies include <code>_ga</code> and <code>_ga_&lt;id&gt;</code>. They are only stored after you accept them in the cookie banner. We do not use analytics data for advertising or profiling.</li></ul>
+  <H2>3. Consent and preference management</H2><p>On your first visit, we display a cookie banner. {copy.consent} You can change or withdraw your choice at any time:</p><div className="pt-1"><ManageCookiesButton /></div>
+  <H2>4. Embedded third-party content</H2><p>Some pages load content directly from external services. Once it appears or you interact with it, the provider may store cookies or process data under its own policy:</p><ul className="list-disc space-y-2 pl-5"><li><strong className="text-white">YouTube (Google):</strong> videos, including those on our video production pages.</li><li><strong className="text-white">Google Maps:</strong> the map on our contact page.</li><li><strong className="text-white">Matterport:</strong> 3D tours and virtual walkthroughs.</li></ul><p>Consult each provider's privacy and cookie policies for details. To avoid this processing, do not visit those pages or block third-party cookies in your browser.</p>
+  <H2>5. Managing or deleting cookies</H2><p>You can use the cookie banner or your browser settings to view, block and delete cookies, including on a site-by-site basis. See the help pages for Chrome, Safari, Firefox or Edge. Blocking our functional cookies has no noticeable effect for regular visitors.</p>
+  <H2>6. Questions and changes</H2><p>For questions, email <a className="text-[#ff9a45] hover:underline" href={`mailto:${settings.mainEmail}`}>{settings.mainEmail}</a>. If our practices change, we will update this page and request consent first where required. Our <Link href="/privacy" className="text-[#ff9a45] hover:underline">privacy policy</Link> explains how we process personal data.</p></div></article></div></div>;
 }
