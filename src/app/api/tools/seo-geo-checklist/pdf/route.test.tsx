@@ -1,7 +1,32 @@
 import { describe, expect, it } from "vitest";
+import { buildChecklistPdfModel } from "@/lib/tools/seoGeoChecklistPdf";
 import { POST } from "./route";
 
 describe("SEO/GEO checklist PDF route", () => {
+  it("builds a printable full checklist when nothing is checked", () => {
+    const model = buildChecklistPdfModel([]);
+
+    expect(model.hasEmptySelectionNotice).toBe(true);
+    expect(model.groups).toHaveLength(6);
+    expect(model.groups.flatMap((group) => group.items)).toHaveLength(24);
+    expect(model.groups.flatMap((group) => group.items).every((item) => item.checked === false)).toBe(
+      true,
+    );
+  });
+
+  it("marks selected items while keeping the full checklist printable", () => {
+    const model = buildChecklistPdfModel(["technical-seo-indexable", "aio-geo-direct-answer"]);
+
+    expect(model.hasEmptySelectionNotice).toBe(false);
+    expect(model.groups.flatMap((group) => group.items)).toHaveLength(24);
+    expect(
+      model.groups
+        .flatMap((group) => group.items)
+        .filter((item) => item.checked)
+        .map((item) => item.id),
+    ).toEqual(["technical-seo-indexable", "aio-geo-direct-answer"]);
+  });
+
   it("returns a branded PDF for selected checklist items", async () => {
     const response = await POST(
       new Request("https://visualvibe.media/api/tools/seo-geo-checklist/pdf", {

@@ -1,10 +1,9 @@
 import { Document, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 import type { ReactElement } from "react";
 import {
-  getSeoGeoChecklistItemsById,
-  seoGeoChecklistCategories,
-  type SelectedSeoGeoChecklistItem,
-} from "@/data/tools";
+  buildChecklistPdfModel,
+  type ChecklistPdfModel,
+} from "@/lib/tools/seoGeoChecklistPdf";
 
 export const runtime = "nodejs";
 
@@ -15,6 +14,7 @@ type PdfPayload = {
 const styles = StyleSheet.create({
   page: {
     padding: 42,
+    paddingBottom: 66,
     backgroundColor: "#fffaf5",
     color: "#181412",
     fontFamily: "Helvetica",
@@ -103,6 +103,11 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     paddingTop: 1,
   },
+  uncheckedCheck: {
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#d9b59a",
+  },
   itemTitle: {
     fontSize: 10.5,
     fontWeight: 700,
@@ -148,22 +153,13 @@ function isValidPayload(value: unknown): value is PdfPayload {
   );
 }
 
-function groupSelectedItems(items: SelectedSeoGeoChecklistItem[]) {
-  return seoGeoChecklistCategories.flatMap((category) => {
-    const selected = items.filter((item) => item.categoryId === category.id);
-    return selected.length > 0 ? [{ category, selected }] : [];
-  });
-}
-
 function ChecklistPdfDocument({
-  selectedItems,
+  model,
   generatedAt,
 }: {
-  selectedItems: SelectedSeoGeoChecklistItem[];
+  model: ChecklistPdfModel;
   generatedAt: string;
 }): ReactElement {
-  const groups = groupSelectedItems(selectedItems);
-
   return (
     <Document
       title="VisualVibe SEO/GEO checklist"
@@ -181,41 +177,43 @@ function ChecklistPdfDocument({
           <Text style={styles.eyebrow}>SEO, GEO & AI-vindbaarheid</Text>
           <Text style={styles.title}>Jouw SEO/GEO checklist</Text>
           <Text style={styles.intro}>
-            Deze PDF bevat de checklistpunten die je hebt aangevinkt op visualvibe.media.
-            Gebruik ze als praktische actielijst voor betere vindbaarheid in Google en moderne
-            AI-zoekervaringen.
+            Deze PDF bevat de volledige VisualVibe checklist. Aangevinkte punten zijn gemarkeerd;
+            de overige punten blijven als printbare checklist beschikbaar voor thuis, je team of je
+            klant.
           </Text>
           <View style={styles.metaRow}>
             <Text style={styles.pill}>{generatedAt}</Text>
-            <Text style={styles.pill}>{selectedItems.length} gekozen punten</Text>
+            <Text style={styles.pill}>{model.checkedCount} aangevinkt</Text>
             <Text style={styles.pill}>visualvibe.media</Text>
           </View>
         </View>
 
-        {groups.length === 0 ? (
+        {model.hasEmptySelectionNotice ? (
           <View style={styles.emptyBox}>
             <Text style={styles.sectionTitle}>Nog geen punten aangevinkt</Text>
             <Text style={styles.intro}>
-              Vink op de checklistpagina de punten aan die voor jouw website belangrijk zijn en
-              download daarna opnieuw je VisualVibe PDF.
+              Je hebt nog niets aangevinkt. Daarom tonen we hieronder de volledige checklist met
+              lege vakjes, zodat je ze thuis of op kantoor verder kunt invullen.
             </Text>
           </View>
-        ) : (
-          groups.map(({ category, selected }) => (
-            <View key={category.id} style={styles.section} wrap={false}>
-              <Text style={styles.sectionTitle}>{category.title}</Text>
-              {selected.map((item) => (
-                <View key={item.id} style={styles.item}>
-                  <Text style={styles.check}>✓</Text>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.itemTitle}>{item.title}</Text>
-                    <Text style={styles.itemHelp}>{item.help}</Text>
-                  </View>
+        ) : null}
+
+        {model.groups.map(({ category, items }) => (
+          <View key={category.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{category.title}</Text>
+            {items.map((item) => (
+              <View key={item.id} style={styles.item}>
+                <Text style={item.checked ? styles.check : [styles.check, styles.uncheckedCheck]}>
+                  {item.checked ? "✓" : ""}
+                </Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.itemHelp}>{item.help}</Text>
                 </View>
-              ))}
-            </View>
-          ))
-        )}
+              </View>
+            ))}
+          </View>
+        ))}
 
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>© VisualVibe — webdesign, SEO, fotografie, video en digitale beleving.</Text>
@@ -238,7 +236,7 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "invalid_payload" }, { status: 400 });
   }
 
-  const selectedItems = getSeoGeoChecklistItemsById(payload.checkedItemIds);
+  const model = buildChecklistPdfModel(payload.checkedItemIds);
   const generatedAt = new Intl.DateTimeFormat("nl-BE", {
     day: "2-digit",
     month: "long",
@@ -246,7 +244,7 @@ export async function POST(request: Request): Promise<Response> {
   }).format(new Date());
 
   const blob = await pdf(
-    <ChecklistPdfDocument selectedItems={selectedItems} generatedAt={generatedAt} />,
+    <ChecklistPdfDocument model={model} generatedAt={generatedAt} />,
   ).toBlob();
 
   return new Response(await blob.arrayBuffer(), {

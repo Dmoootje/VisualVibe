@@ -36,5 +36,7 @@ describe("SeoGeoChecklistPage", () => {
     expect(html).toContain("Snelheid &amp; afbeeldingen");
     expect(html).toContain("Lokale vindbaarheid");
     expect(html).toContain("Download als VisualVibe PDF");
+    expect(html).toContain("Analyseer je pagina gratis");
+    expect(html).toContain('href="/website-analyse"');
   });
 });

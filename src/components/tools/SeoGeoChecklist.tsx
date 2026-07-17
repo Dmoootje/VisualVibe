@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Download, Loader2 } from "lucide-react";
+import { Download, Loader2, SearchCheck } from "lucide-react";
 import type { SeoGeoChecklistCategory } from "@/data/tools";
 
 type SeoGeoChecklistProps = {
@@ -134,19 +134,28 @@ export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
             </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={downloadPdf}
-          disabled={downloadState === "loading"}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-red-500 to-amber-500 px-5 py-3 text-sm font-bold text-white shadow-[0_16px_38px_-18px_rgba(255,90,0,0.9)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70"
-        >
-          {downloadState === "loading" ? (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          ) : (
-            <Download className="h-4 w-4" aria-hidden="true" />
-          )}
-          Download als VisualVibe PDF
-        </button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-end">
+          <button
+            type="button"
+            onClick={downloadPdf}
+            disabled={downloadState === "loading"}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-red-500 to-amber-500 px-5 py-3 text-sm font-bold text-white shadow-[0_16px_38px_-18px_rgba(255,90,0,0.9)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70"
+          >
+            {downloadState === "loading" ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Download className="h-4 w-4" aria-hidden="true" />
+            )}
+            Download als VisualVibe PDF
+          </button>
+          <a
+            href="/website-analyse"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-black/20 px-5 py-3 text-sm font-bold text-white transition-colors hover:border-[rgba(255,117,0,0.48)] hover:text-[#ff9a45]"
+          >
+            <SearchCheck className="h-4 w-4" aria-hidden="true" />
+            Analyseer je pagina gratis
+          </a>
+        </div>
       </div>
     </section>
   );
