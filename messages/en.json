@@ -18,6 +18,11 @@
     "closeMenu": "Close menu",
     "showServiceParts": "Show sections for {service}",
     "ourRegions": "Our regions",
+    "allRegions": "All regions",
+    "homeRegion": "Home region",
+    "region": "Region",
+    "workAreas": "{count} areas served",
+    "mobileProposal": "Request a no-obligation proposal.",
     "quotation": "Request a quotation",
     "shortQuotation": "Quotation",
     "readyFor": "Ready to discuss {service}?",
@@ -28,7 +33,7 @@
     "googleRating": "VisualVibe on Google: {rating} out of 5 stars, {count} reviews"
   },
   "footer": {
-    "description": "Creative media agency in Limburg, Belgium, specialising in web design, SEO, photography, video and digital experiences.",
+    "description": "Creative media agency in Limburg, Belgium, specialising in web design, SEO, photography, videography, drone production, 3D, VR, AR and podcasting.",
     "services": "Services",
     "company": "Company",
     "region": "Region",

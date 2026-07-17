@@ -48,3 +48,18 @@ Exact verification:
 - `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
 
 Self-review confirmed the cited literals now consume locale messages, the message path schema remains identical across all four locale files, English remains disabled, and no API-provided error reaches the quotation interface.
+
+## Second review fixes
+
+- Localized the quotation description placeholder, desktop region menu labels, mobile wedding title, work-area count, service CTA and quotation CTA.
+- Removed obsolete Dutch form placeholder constants.
+- LeadForm now ignores API error bodies and always renders the safe localized error copy.
+- Expanded the English footer description to retain videography, drone production, 3D, VR, AR and podcasting.
+- Strengthened regression coverage for both forms, region navigation, mobile navigation and factual footer scope.
+
+Verification on the final second-review state:
+
+- `npm test -- src/i18n/sharedMessages.test.ts`: 5 passed.
+- `npm run typecheck`: passed.
+- `npm run audit:locales`: completed with 59 pre-existing content findings and one unrelated blocking Dutch hero alt issue.
+- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.

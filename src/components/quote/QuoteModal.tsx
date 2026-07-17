@@ -296,7 +296,7 @@ export function QuoteModalContent({ mode, onClose }: { mode: Mode; onClose: () =
                     </label>
                     <label style={{ display: "block", gridColumn: "1 / -1" }}>
                       <span style={fieldLabel}>{t("description")} <span style={{ color: "rgba(255,255,255,.35)", fontWeight: 400 }}>({t("optional")})</span></span>
-                      <textarea className="vvqm-inp" rows={4} placeholder="Vertel kort waar je aan denkt..." value={bericht} onChange={(e) => setBericht(e.target.value)} style={{ resize: "vertical", minHeight: 96 }} />
+                      <textarea className="vvqm-inp" rows={4} placeholder={t("descriptionPlaceholder")} value={bericht} onChange={(e) => setBericht(e.target.value)} style={{ resize: "vertical", minHeight: 96 }} />
                     </label>
                   </div>
 

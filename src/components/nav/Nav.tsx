@@ -555,20 +555,21 @@ function RegioMega({
   onOpen: () => void;
   onClose: () => void;
 }) {
+  const t = useTranslations("nav");
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
       <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
-        Regio <ChevDown className="vvnav-navChev" color="currentColor" />
+            {t("regions")} <ChevDown className="vvnav-navChev" color="currentColor" />
       </Link>
       {open && (
       <div className="vvnav-mega vvnav-megaC is-open">
         <div style={{ width: "min(760px, calc(100vw - 32px))", padding: 16, borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "2px 6px 12px" }}>
             <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>
-              Onze regio&apos;s
+                  {t("ourRegions")}
             </span>
             <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
-              Alle regio&apos;s <ArrowRight />
+                  {t("allRegions")} <ArrowRight />
             </Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
@@ -594,7 +595,7 @@ function RegioMega({
                           : { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.05)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }
                       }
                     >
-                      {isHome ? "Thuisregio" : "Regio"}
+                        {isHome ? t("homeRegion") : t("region")}
                     </span>
                     <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 14.5, color: "#fff", lineHeight: 1.15 }}>{region.title}</span>
                   </div>

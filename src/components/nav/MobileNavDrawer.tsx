@@ -276,7 +276,7 @@ function WeddingCtaCard({ onClick }: { onClick: () => void }) {
             paddingRight: 44,
           }}
         >
-          Trouwfotografie &amp; huwelijksvideo
+          {t("weddingTitle")}
         </span>
       </span>
       <span
@@ -636,8 +636,8 @@ export function MobileNavDrawer({
             )}
             {appRow(
               <PinGlyph />,
-              "Regio",
-              `${regions.length} werkgebieden`,
+            t("regions"),
+            t("workAreas", { count: regions.length }),
               () => setView("regio"),
             )}
             {appRow(
@@ -842,7 +842,7 @@ export function MobileNavDrawer({
                           color: "#fff",
                         }}
                       >
-                        Klaar voor {currentPillar.name.toLowerCase()}?
+                         {t("readyFor", { service: currentPillar.name.toLowerCase() })}
                       </span>
                       <span
                         style={{
@@ -852,7 +852,7 @@ export function MobileNavDrawer({
                           marginTop: 2,
                         }}
                       >
-                        Vraag vrijblijvend een voorstel aan.
+                         {t("mobileProposal")}
                       </span>
                     </span>
                     <span
@@ -880,7 +880,7 @@ export function MobileNavDrawer({
           </div>
 
           <div className="vvnav-mvPanel" style={panelStyle("regio")}>
-            {pushHead("Regio", "/regio")}
+            {pushHead(t("regions"), "/regio")}
             <div style={eyebrowStyle}>{t("ourRegions")}</div>
             <div
               style={{
@@ -963,7 +963,7 @@ export function MobileNavDrawer({
                             : "rgba(255,255,255,.6)",
                         }}
                       >
-                        {isHome ? "Thuisregio" : "Regio"}
+                         {isHome ? t("homeRegion") : t("region")}
                       </span>
                       <span
                         style={{
@@ -1040,7 +1040,7 @@ export function MobileNavDrawer({
               boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)",
             }}
           >
-            Offerte aanvragen <ArrowRight size={16} />
+             {t("quotation")} <ArrowRight size={16} />
           </Link>
           <NextLink
             href="/admin/login"

@@ -17,23 +17,6 @@ type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 // loads (name -> email -> phone -> company -> message), ending with a blinking
 // white cursor dot. Each label is drawn by an overlay while the field is empty
 // (a native placeholder can't do per-character colour or a blinking caret).
-const CONTACT_STEPS: { name: string; text: string; multiline?: boolean }[] = [
-  { name: "name", text: "Voor- en achternaam*" },
-  { name: "email", text: "E-mailadres*" },
-  { name: "phone", text: "Telefoonnummer" },
-  { name: "company", text: "Bedrijfsnaam" },
-  { name: "message", text: "Vertel ons meer over je uitdaging, doelen en wensen..", multiline: true },
-];
-
-// Native placeholders for the non-animated (offerte) variant.
-const OFFERTE_PLACEHOLDERS: Record<string, string> = {
-  name: "Voor- en achternaam*",
-  email: "E-mailadres*",
-  phone: "Telefoonnummer",
-  company: "Bedrijfsnaam",
-  message: "Vertel ons over je project, doelen en wensen…",
-};
-
 // Reads location/search params from `window` at submit time rather than via
 // next/navigation's usePathname/useSearchParams - the latter requires a
 // Suspense boundary on statically prerendered pages, which would blank the
@@ -179,7 +162,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setState({ status: "error", message: data.error ?? t("error") });
+        setState({ status: "error", message: t("error") });
         setIsPending(false);
         return;
       }

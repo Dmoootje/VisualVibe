@@ -23,12 +23,21 @@ describe("shared locale messages", () => {
     const quote = readFileSync("src/components/quote/QuoteModal.tsx", "utf8");
     const lead = readFileSync("src/components/forms/LeadForm.tsx", "utf8");
     const nav = readFileSync("src/components/nav/Nav.tsx", "utf8");
+    const mobileNav = readFileSync("src/components/nav/MobileNavDrawer.tsx", "utf8");
     expect(quote).toContain('t("detailsIntro")');
     expect(quote).toContain('t("trustStored")');
     expect(quote).toContain('t("stored", { email: email.trim() })');
+    expect(quote).toContain('placeholder={t("descriptionPlaceholder")}');
     expect(quote).not.toContain("data.error");
+    expect(lead).not.toContain("data.error");
+    expect(lead).toContain('message: t("error")');
     expect(lead).toContain('aria-label={t("service")}');
     expect(nav).toContain('label={t("caseStudies")}');
+    expect(nav).toContain('t("allRegions")');
+    expect(nav).toContain('t("homeRegion")');
+    expect(mobileNav).toContain('t("weddingTitle")');
+    expect(mobileNav).toContain('t("mobileProposal")');
+    expect(en.footer.description).toMatch(/videography.*drone.*3D.*VR.*AR.*podcasting/i);
   });
 
   it("does not reintroduce reviewed Dutch literals in shared components", () => {
