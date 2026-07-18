@@ -13,8 +13,8 @@
   "slug": "wordpress-for-smes-complete-guide",
   "internalLinks": [
     { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/custom-web-application/", "anchor": "custom web application" },
-    { "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/", "targetHref": "/en/kennisbank/webdesign/create-a-wordpress-backup/", "anchor": "creating a WordPress backup" },
-    { "sourceHref": "/be/kennisbank/webdesign/wordpress-website-beveiligen/", "targetHref": "/en/kennisbank/webdesign/secure-a-wordpress-website/", "anchor": "securing a WordPress website" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/", "targetHref": "/en/kennisbank/webdesign/how-to-back-up-wordpress/", "anchor": "creating a WordPress backup" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-website-beveiligen/", "targetHref": "/en/kennisbank/webdesign/securing-a-wordpress-website/", "anchor": "securing a WordPress website" },
     { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },
     { "sourceHref": "/be/diensten/webdesign/wordpress-website-laten-maken/", "targetHref": "/en/diensten/web-design/wordpress-website/", "anchor": "WordPress website service" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your WordPress project" }

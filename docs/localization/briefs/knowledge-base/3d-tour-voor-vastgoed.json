@@ -16,8 +16,8 @@
     { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what is a 3D tour" },
     { "sourceHref": "/be/diensten/3d-vr-ar/vastgoed-3d-tour/", "targetHref": "/en/diensten/3d-vr-ar/real-estate-3d-tour/", "anchor": "real estate 3D tour service" },
     { "sourceHref": "/be/kennisbank/fotografie/vastgoedfotografie-tips/", "targetHref": "/en/kennisbank/fotografie/real-estate-photography-tips/", "anchor": "real estate photography tips" },
-    { "sourceHref": "/be/kennisbank/drone/dronefotografie-voor-vastgoed/", "targetHref": "/en/kennisbank/drone/drone-photography-for-real-estate/", "anchor": "drone photography for real estate" },
-    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/website-development-in-limburg-complete-guide/", "anchor": "complete website guide" },
+    { "sourceHref": "/be/kennisbank/drone/dronefotografie-voor-vastgoed/", "targetHref": "/en/kennisbank/drone/real-estate-drone-photography/", "anchor": "drone photography for real estate" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete website guide" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your property tour" }
   ],
   "factsToPreserve": [

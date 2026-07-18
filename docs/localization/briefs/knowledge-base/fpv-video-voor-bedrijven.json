@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/drone/fpv-video-voor-bedrijven/",
-  "targetRoute": "/en/knowledge-base/drone/fpv-video-for-business/",
+  "targetRoute": "/en/kennisbank/drone/fpv-video-for-business/",
   "audience": "Business owners, marketers, communications managers, project managers and event organisers considering a dynamic FPV production in Belgium.",
   "primaryDutchSearchIntent": "Bedrijven helpen beoordelen of FPV hun locatie, proces of event overtuigend kan tonen en uitleggen hoe een meeslepende route veilig, wettelijk en productieklaar wordt voorbereid.",
   "searchIntent": {
@@ -31,15 +31,15 @@
   "h1": "FPV video for business: from immersive route to safe production",
   "slug": "fpv-video-for-business",
   "internalLinks": [
-    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/knowledge-base/drone/drone-footage-for-business/", "anchor": "drone footage for business" },
-    { "sourceHref": "/be/diensten/drone-fpv/fpv-video/", "targetHref": "/en/services/drone-fpv/fpv-video/", "anchor": "FPV video service" },
-    { "sourceHref": "/be/kennisbank/drone/dronebeelden-combineren-met-bedrijfsvideo/", "targetHref": "/en/knowledge-base/drone/combine-drone-footage-with-corporate-video/", "anchor": "combining drone footage with corporate video" },
-    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare for a corporate shoot" },
-    { "sourceHref": "/be/diensten/drone-fpv/dronevideo/", "targetHref": "/en/services/drone-fpv/drone-video/", "anchor": "drone video" },
-    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/knowledge-base/videography/why-invest-in-a-corporate-video/", "anchor": "why businesses invest in corporate video" },
-    { "sourceHref": "/be/diensten/videografie/promovideo/", "targetHref": "/en/services/videography/promotional-video/", "anchor": "promotional video" },
-    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/knowledge-base/videography/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
-    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/knowledge-base/videography/social-media-video-for-smes/", "anchor": "social media video for SMEs" }
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/kennisbank/drone/drone-footage-for-businesses/", "anchor": "drone footage for business" },
+    { "sourceHref": "/be/diensten/drone-fpv/fpv-video/", "targetHref": "/en/diensten/drone-fpv/fpv-video/", "anchor": "FPV video service" },
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-combineren-met-bedrijfsvideo/", "targetHref": "/en/kennisbank/drone/combine-drone-footage-with-corporate-video/", "anchor": "combining drone footage with corporate video" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare for a corporate shoot" },
+    { "sourceHref": "/be/diensten/drone-fpv/dronevideo/", "targetHref": "/en/diensten/drone-fpv/drone-video/", "anchor": "drone video" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why businesses invest in corporate video" },
+    { "sourceHref": "/be/diensten/videografie/promovideo/", "targetHref": "/en/diensten/videography/promotional-video/", "anchor": "promotional video" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" }
   ],
   "factsToPreserve": [
     "FPV is a filming perspective, not a guarantee that a single uninterrupted take is desirable.",

@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/webdesign/wordpress-backup-maken/",
-  "targetRoute": "/en/knowledge-base/webdesign/how-to-back-up-wordpress/",
+  "targetRoute": "/en/kennisbank/webdesign/how-to-back-up-wordpress/",
   "audience": "Website owners and SMEs that want to prevent data loss and reduce recovery time after a WordPress incident.",
   "primaryDutchSearchIntent": "Uitleggen hoe een KMO een volledige en herstelbare WordPress-back-upstrategie opzet.",
   "searchIntent": {
@@ -29,8 +29,8 @@
   "h1": "How to back up WordPress: build a recovery-ready backup strategy",
   "slug": "how-to-back-up-wordpress",
   "internalLinks": [
-    { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/knowledge-base/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },
-    { "sourceHref": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/", "targetHref": "/en/knowledge-base/webdesign/wordpress-for-smes-complete-guide/", "anchor": "WordPress for SMEs" }
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/", "targetHref": "/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/", "anchor": "WordPress for SMEs" }
   ],
   "factsToPreserve": [
     "A complete recovery copy requires both files and the database.",

@@ -61,6 +61,17 @@ describe("knowledge-base translation identity", () => {
     expect(translations.en).toBe(english);
   });
 
+  it("has no validation issues when all 58 English articles are enabled", () => {
+    const enabledLocales = ["nl", "en"];
+    const posts = getAllPosts({ includeDrafts: true }).filter((item) =>
+      enabledLocales.includes(item.locale),
+    );
+    const englishPosts = posts.filter((item) => item.locale === "en");
+
+    expect(englishPosts).toHaveLength(58);
+    expect(validateKennisbankPosts(posts)).toEqual([]);
+  });
+
   it("builds an article URL from the translated post's own locale and slug", () => {
     expect(
       localizedPostHref({ locale: "en", categorySlug: "seo-geo", slug: "english-slug" }),

@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/videografie/social-media-video-voor-kmo/",
-  "targetRoute": "/en/knowledge-base/videografie/social-media-video-for-smes/",
+  "targetRoute": "/en/kennisbank/videografie/social-media-video-for-smes/",
   "audience": "Business owners, marketers and communications leads at SMEs that want to publish professional video regularly on LinkedIn, Instagram, YouTube or TikTok",
   "primaryDutchSearchIntent": "KMO's helpen een herhaalbaar social-videosysteem te bouwen dat doelen, formats, productie, platformversies, toegankelijkheid, publicatie en meting met elkaar verbindt",
   "searchIntent": {
@@ -35,12 +35,12 @@
   "h1": "Social media video for SMEs: from content plan to measurable series",
   "slug": "social-media-video-for-smes",
   "internalLinks": [
-    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/knowledge-base/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
-    { "sourceHref": "/be/diensten/videografie/social-media-video/", "targetHref": "/en/services/videography/social-media-video/", "anchor": "professional social media video production" },
-    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/services/videography/corporate-video/", "anchor": "broader corporate video production" },
-    { "sourceHref": "/be/kennisbank/videografie/bedrijfsvideo-script-opbouwen/", "targetHref": "/en/knowledge-base/videografie/how-to-structure-a-corporate-video-script/", "anchor": "structuring a corporate video script" },
-    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "preparing a corporate photo shoot" },
-    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/knowledge-base/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
+    { "sourceHref": "/be/diensten/videografie/social-media-video/", "targetHref": "/en/diensten/videography/social-media-video/", "anchor": "professional social media video production" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "broader corporate video production" },
+    { "sourceHref": "/be/kennisbank/videografie/bedrijfsvideo-script-opbouwen/", "targetHref": "/en/kennisbank/videografie/how-to-structure-a-corporate-video-script/", "anchor": "structuring a corporate video script" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "preparing a corporate photo shoot" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your social video series" }
   ],
   "factsToPreserve": [

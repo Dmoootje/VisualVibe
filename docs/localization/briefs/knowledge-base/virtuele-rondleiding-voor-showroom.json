@@ -17,7 +17,7 @@
     { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-horeca/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-hospitality/", "anchor": "3D tour for hospitality" },
     { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-vastgoed/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-real-estate/", "anchor": "3D tour for real estate" },
     { "sourceHref": "/be/kennisbank/3d-vr/hoe-verhoogt-een-virtuele-tour-vertrouwen/", "targetHref": "/en/kennisbank/3d-vr/how-a-virtual-tour-builds-trust/", "anchor": "how a virtual tour builds trust" },
-    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-webshops/", "anchor": "product photography for webshops" },
+    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-online-shops/", "anchor": "product photography for webshops" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your showroom tour" }
   ],
   "factsToPreserve": [

@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/webdesign/wordpress-website-beveiligen/",
-  "targetRoute": "/en/knowledge-base/webdesign/securing-a-wordpress-website/",
+  "targetRoute": "/en/kennisbank/webdesign/securing-a-wordpress-website/",
   "audience": "Belgian SMEs, self-employed professionals and website administrators who want to reduce WordPress security risks and prepare for incidents",
   "primaryDutchSearchIntent": "KMO's een praktische en gelaagde aanpak geven om een WordPress-website veiliger te beheren",
   "searchIntent": {
@@ -31,17 +31,17 @@
   "internalLinks": [
     {
       "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/",
-      "targetHref": "/en/knowledge-base/webdesign/wordpress-maintenance-checklist/",
+      "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/",
       "anchor": "WordPress maintenance checklist"
     },
     {
       "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/",
-      "targetHref": "/en/knowledge-base/webdesign/how-to-back-up-wordpress/",
+      "targetHref": "/en/kennisbank/webdesign/how-to-back-up-wordpress/",
       "anchor": "How to back up WordPress"
     },
     {
       "sourceHref": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/",
-      "targetHref": "/en/knowledge-base/webdesign/wordpress-for-smes-complete-guide/",
+      "targetHref": "/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/",
       "anchor": "WordPress for SMEs"
     },
     {
