@@ -103,8 +103,10 @@ describe("Task 7 editorial corrections", () => {
     ].join("\n");
     for (const href of [
       "/en/diensten/", "/en/regio/", "/en/sectoren/", "/en/realisaties/",
-      "/en/diensten/seo/", "/en/diensten/webdesign/", "/en/trouwfotograaf-limburg/",
+      "/en/diensten/seo/", "/en/diensten/web-design/",
     ]) expect(files).toContain(href);
+    expect(files).not.toContain("/en/diensten/webdesign/");
+    expect(files).not.toContain("/en/trouwfotograaf-limburg/");
     for (const invented of ["/en/services/", "/en/regions/", "/en/sectors/", "/en/case-studies/", "/en/wedding-photographer-limburg/"]) {
       expect(files).not.toContain(invented);
     }
