@@ -1,0 +1,28 @@
+{
+  "sourceRoute": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/",
+  "targetRoute": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/",
+  "audience": "Self-employed professionals and SMEs in Limburg seeking more relevant local search traffic and better-matched enquiries.",
+  "primaryDutchSearchIntent": "Limburgse KMO's leren hoe website, Google Business Profiel, lokale content en bewijs samen hun regionale vindbaarheid versterken.",
+  "searchIntent": { "type": "informational", "question": "How can an SME in Limburg use its website, Google Business Profile, reviews, local pages and evidence to improve regional visibility?", "geographicContext": "Limburg, Belgium, with relevant cross-border context where a business genuinely serves Dutch Limburg." },
+  "mainKeyword": "local SEO Limburg",
+  "longTailKeywords": ["SEO for SMEs", "local visibility Limburg", "optimise Google Business Profile", "web design and SEO Limburg", "get found on Google Limburg", "SEO agency Limburg"],
+  "semanticTerms": ["Google Business Profile", "NAP consistency", "business category", "reviews", "service area", "local landing page", "local evidence", "case study", "local conversion"],
+  "directAnswer": "Local SEO helps an SME become more relevant when people search for its services in a region. In Limburg, that means aligning the website, Google Business Profile, business details, categories, reviews, service pages, genuine local evidence and measurable contact journeys without creating thin location pages or promising rankings.",
+  "title": "Local SEO for SMEs in Limburg: get found by regional customers",
+  "metaDescription": "Local SEO in Limburg for SMEs: learn how your website, Business Profile, local pages, case studies, reviews and SEO content build visibility.",
+  "h1": "Local SEO for SMEs in Limburg: get found by regional customers",
+  "slug": "local-seo-for-smes-in-limburg",
+  "internalLinks": [
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your local SEO" }
+  ],
+  "factsToPreserve": [
+    "Google describes local results in terms of relevance, distance and prominence, but does not guarantee positions.",
+    "Business Profile names and categories should represent the real business rather than contain promotional keyword additions.",
+    "Consistent business details help users and systems understand the organisation, but NAP consistency alone does not guarantee rankings.",
+    "Reviews should be genuine and handled without incentives or selective manipulation.",
+    "Location pages need distinct search intent, useful local information and genuine evidence rather than swapped place names.",
+    "Real photographs and case studies can provide local evidence but do not guarantee visibility.",
+    "Traffic, profile interactions and calls require context and do not prove ranking or revenue causality on their own.",
+    "Local SEO is ongoing work and no fixed timeframe or ranking can be promised."
+  ]
+}
