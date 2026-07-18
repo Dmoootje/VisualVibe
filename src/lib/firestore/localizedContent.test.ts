@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   mergeDutchVisitorFields,
+  mergeDutchRecords,
   readLocalizedOptional,
   readLocalizedRequired,
 } from "./localizedContent";
@@ -60,5 +61,24 @@ describe("Firestore localized public content", () => {
         ["caption"],
       ),
     ).toEqual({ caption: { nl: null, en: "Caption" } });
+  });
+
+  it("preserves localized fields in ordered array records by stable identity", () => {
+    expect(
+      mergeDutchRecords(
+        [
+          { id: "second", title: { nl: "Tweede", en: "Second" } },
+          { id: "first", title: { nl: "Eerste", en: "First" } },
+        ],
+        [
+          { id: "first", title: "Eerste aangepast" },
+          { id: "second", title: "Tweede aangepast" },
+        ],
+        ["title"],
+      ),
+    ).toEqual([
+      { id: "first", title: { nl: "Eerste aangepast", en: "First" } },
+      { id: "second", title: { nl: "Tweede aangepast", en: "Second" } },
+    ]);
   });
 });
