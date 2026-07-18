@@ -5,21 +5,21 @@
   "primaryDutchSearchIntent": "panden professioneel presenteren en sneller geschikte kopers of huurders bereiken",
   "searchIntent": {
     "type": "commercial",
-    "question": "Which web design and visual content services help estate agents, property agencies and landlords build trust and attract customers?",
+    "question": "Who can present our properties professionally with photography, virtual tours, drone footage and an effective agency website?",
     "geographicContext": "Limburg, Belgium and the wider Flanders region"
   },
   "mainKeyword": "property photography Limburg",
   "longTailKeywords": [
-    "property photography Limburg for businesses in Limburg",
-    "property photography Limburg and professional photography"
+    "property photography Limburg Belgium",
+    "3D property tours and drone footage"
   ],
   "semanticTerms": [
-    "web design",
-    "professional photography",
-    "local SEO",
-    "online visibility"
+    "estate agent web design",
+    "3D virtual tours",
+    "drone footage",
+    "property marketing"
   ],
-  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for estate agents, property agencies and landlords.",
+  "directAnswer": "VisualVibe helps estate agents market property with professional photography, 3D tours, insured EASA-certified drone footage and effective web design.",
   "title": "Property photography and web design for estate agents | VisualVibe",
   "metaDescription": "Property photography, 3D tours, drone footage and web design for estate agents in Limburg and Flanders.",
   "h1": "Property photography, 3D tours and web design for estate agents",

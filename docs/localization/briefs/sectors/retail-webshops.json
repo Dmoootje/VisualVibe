@@ -5,21 +5,21 @@
   "primaryDutchSearchIntent": "producten professioneel presenteren en online en in de winkel meer verkopen",
   "searchIntent": {
     "type": "commercial",
-    "question": "Which web design and visual content services help retailers and ecommerce businesses build trust and attract customers?",
+    "question": "Who can build a strong ecommerce website and create product imagery that supports online and in-store sales?",
     "geographicContext": "Limburg, Belgium and the wider Flanders region"
   },
   "mainKeyword": "ecommerce web design",
   "longTailKeywords": [
-    "ecommerce web design for businesses in Limburg",
-    "ecommerce web design and professional photography"
+    "ecommerce website design Limburg Belgium",
+    "ecommerce web design and product photography"
   ],
   "semanticTerms": [
     "web design",
-    "professional photography",
-    "local SEO",
-    "online visibility"
+    "product photography",
+    "retail marketing",
+    "local SEO"
   ],
-  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for retailers and ecommerce businesses.",
+  "directAnswer": "VisualVibe helps retailers sell more effectively with a fast ecommerce website, professional product photography, video and local SEO.",
   "title": "Ecommerce web design and product photography | VisualVibe",
   "metaDescription": "Ecommerce websites, product photography, video and local SEO for retailers in Limburg and Flanders.",
   "h1": "Ecommerce web design and product photography for retailers",

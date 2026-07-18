@@ -5,21 +5,21 @@
   "primaryDutchSearchIntent": "de sfeer van de zaak online overbrengen en meer lokale afspraken aantrekken",
   "searchIntent": {
     "type": "commercial",
-    "question": "Which web design and visual content services help wellness centres, beauty salons and practices build trust and attract customers?",
+    "question": "Who can turn the atmosphere of our wellness or beauty business into a website that encourages local bookings?",
     "geographicContext": "Limburg, Belgium and the wider Flanders region"
   },
   "mainKeyword": "beauty salon web design Limburg",
   "longTailKeywords": [
-    "beauty salon web design Limburg for businesses in Limburg",
-    "beauty salon web design Limburg and professional photography"
+    "beauty salon web design Limburg Belgium",
+    "wellness website design and lifestyle photography"
   ],
   "semanticTerms": [
-    "web design",
-    "professional photography",
-    "local SEO",
-    "online visibility"
+    "lifestyle photography",
+    "virtual tour",
+    "online booking",
+    "local SEO"
   ],
-  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for wellness centres, beauty salons and practices.",
+  "directAnswer": "VisualVibe helps wellness and beauty businesses attract local clients with refined web design, authentic photography, virtual tours and local SEO.",
   "title": "Web design and photography for wellness and beauty | VisualVibe",
   "metaDescription": "Lifestyle photography, virtual tours and web design for wellness and beauty businesses in Limburg and Flanders.",
   "h1": "Web design and photography for wellness and beauty businesses",
