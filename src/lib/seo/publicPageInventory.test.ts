@@ -8,6 +8,7 @@ import {
 describe("public page inventory", () => {
   afterEach(() => {
     vi.doUnmock("@/data/cases");
+    vi.doUnmock("@/data/realisatieCategories");
   });
 
   it("resolves static Dutch and English routes from stable content IDs", () => {
@@ -78,5 +79,35 @@ describe("public page inventory", () => {
     expect(getRoutesWithCase()).toContainEqual({
       nl: "/realisaties/fotografie/",
     });
+  });
+
+  it("resolves Dutch-only category paths by stable ID without an English partner", async () => {
+    vi.resetModules();
+    vi.doMock("@/data/realisatieCategories", async () => {
+      const actual = await vi.importActual<typeof import("@/data/realisatieCategories")>(
+        "@/data/realisatieCategories",
+      );
+      return {
+        ...actual,
+        getLocalizedRealisatieCategoryById: (id: string, locale: "nl" | "en") => {
+          const localized = actual.getLocalizedRealisatieCategoryById(id, locale);
+          return id === "videografie" && locale === "nl"
+            ? { ...localized, slug: "localized-videography-source" }
+            : localized;
+        },
+      };
+    });
+    const { getStaticPublicRoutePairs: getRoutesWithLocalizedSlug } = await import(
+      "./publicPageInventory"
+    );
+
+    const paths = getRoutesWithLocalizedSlug();
+    expect(paths).toContainEqual({
+      nl: "/realisaties/localized-videography-source/",
+    });
+    expect(paths).not.toContainEqual(expect.objectContaining({
+      nl: "/realisaties/localized-videography-source/",
+      en: expect.any(String),
+    }));
   });
 });

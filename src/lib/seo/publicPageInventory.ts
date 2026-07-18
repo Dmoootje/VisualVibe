@@ -96,7 +96,9 @@ function getStaticRealisationRoutes(): PublicRoutePair[] {
 
     return indexableInEnglish
       ? [realisationCategoryPair(category.slug)]
-      : [{ nl: `/realisaties/${category.slug}/` }];
+      : [{
+          nl: `/realisaties/${getLocalizedRealisatieCategoryById(category.slug, "nl").slug}/`,
+        }];
   });
 }
 

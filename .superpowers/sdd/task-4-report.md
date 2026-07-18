@@ -112,3 +112,31 @@ The website-analysis page and test are an approved scope expansion: including `/
 ## Concerns
 
 No blocking concerns. A future Firestore application case without a matching checked-in stable-ID translation is intentionally omitted from detail sitemap entries; it must first gain a real localized route and page owner. English photography and videography realisation categories remain excluded until those pages become genuinely indexable.
+
+## Re-review resolution
+
+The independent re-review withdrew its checked-in case-detail finding: `cases` is currently empty and the application has no generic `realisaties/[category]/[slug]` page owner, so emitting those URLs would create sitemap 404s. Checked-in cases correctly remain an input to category indexability only.
+
+The remaining Important finding was valid. Dutch-only realisation category paths interpolated the stable source slug directly instead of resolving the Dutch public slug through `getLocalizedRealisatieCategoryById`.
+
+Focused RED:
+
+```text
+npx vitest run src/lib/seo/publicPageInventory.test.ts
+Test Files  1 failed (1)
+Tests       1 failed | 4 passed (5)
+Exit code   1
+```
+
+The regression replaced the Dutch videography public slug at the stable-ID resolver boundary. The inventory continued to emit `/realisaties/videografie/`, proving it bypassed the resolver.
+
+Focused GREEN after routing the Dutch-only branch through the stable-ID helper:
+
+```text
+npx vitest run src/lib/seo/publicPageInventory.test.ts src/lib/seo/siteUrls.publication.test.ts
+Test Files  2 passed (2)
+Tests       9 passed (9)
+Exit code   0
+```
+
+The regression also asserts that the Dutch-only category record has no English path, so sitemap generation cannot fabricate English hreflang or an English entry for it. Per the re-review instruction, the full suite was not rerun for this pure path-resolution fix.
