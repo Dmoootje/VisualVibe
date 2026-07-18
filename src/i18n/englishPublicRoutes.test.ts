@@ -71,6 +71,45 @@ describe("English public routes", () => {
     }
   });
 
+  it("rewrites English application routes and keeps their visible links canonical", async () => {
+    const config = require("../../next.config.js") as {
+      rewrites: () => Promise<{ beforeFiles: unknown[] }>;
+    };
+    const { beforeFiles } = await config.rewrites();
+
+    expect(beforeFiles).toEqual(expect.arrayContaining([
+      {
+        source: "/en/realisaties/applications",
+        destination: "/en/realisaties/applicaties",
+      },
+      {
+        source: "/en/realisaties/applications/:slug",
+        destination: "/en/realisaties/applicaties/:slug",
+      },
+    ]));
+
+    const categorySource = readFileSync(
+      "src/app/[locale]/(site)/realisaties/[category]/page.tsx",
+      "utf8",
+    );
+    const applicationSources = [
+      readFileSync(
+        "src/app/[locale]/(site)/realisaties/applicaties/page.tsx",
+        "utf8",
+      ),
+      readFileSync(
+        "src/app/[locale]/(site)/realisaties/applicaties/[slug]/page.tsx",
+        "utf8",
+      ),
+    ];
+
+    expect(categorySource).not.toContain("/services/");
+    for (const source of applicationSources) {
+      expect(source).not.toContain("/services/");
+      expect(source).toContain("/diensten/custom-software/");
+    }
+  });
+
   it("uses the translated case-study category slug from the English registry", () => {
     const article = readFileSync(
       "content/kennisbank/en/what-is-a-3d-tour.mdx",

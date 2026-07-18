@@ -30,20 +30,29 @@ import {
   getServiceBySlug,
   serviceHref,
 } from "@/data/services";
-import { regions } from "@/data/regions";
-import { getRealisatieCategoryBySlug, serviceToCategorySlug } from "@/data/realisatieCategories";
+import { englishServiceEditorial } from "@/data/locales/en/services";
+import { getLocalizedRegionById, regions } from "@/data/regions";
+import {
+  getLocalizedRealisatieCategoryById,
+  serviceToCategorySlug,
+} from "@/data/realisatieCategories";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
-import { isBlogLocale, localizedPath } from "@/lib/kennisbank/posts";
+import { localizedPath } from "@/lib/kennisbank/posts";
 import { getWebdesignImages } from "@/lib/firestore/webdesignImages";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getVideografieVideos } from "@/lib/youtube";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
-import type { SupportedLocale } from "@/i18n/locales";
+import { getPublishedLocales, type SupportedLocale } from "@/i18n/locales";
 
 export function generateStaticParams() {
   // Flat route serves hoofddiensten only; sub-services live at /diensten/<parent>/<sub>.
-  return services.map((service) => ({ slug: service.slug }));
+  return getPublishedLocales().flatMap((locale) =>
+    services.map((service) => ({
+      locale,
+      slug: getLocalizedServiceById(service.slug, locale).slug,
+    })),
+  );
 }
 
 // ISR so admin-managed Webdesign showcase images propagate without a rebuild.
@@ -86,47 +95,64 @@ export default async function ServiceDetailPage({
 }) {
   const { locale: localeParam, slug } = await params;
   const locale = localeParam as SupportedLocale;
-  const service = getServiceBySlug(slug);
-
-  if (!service) {
+  if (locale !== "nl" && locale !== "en") notFound();
+  let localizedService;
+  try {
+    localizedService = getServiceByLocalizedSlug(slug, locale);
+  } catch {
     notFound();
   }
+  const service = localizedService.service;
+  const sourceService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const en = locale === "en";
 
   // A sub-service reached via its old flat URL: 308 straight to the final
   // localized nested URL (prefix + trailing slash) so there is exactly one hop.
-  if (service.parentSlug) {
-    permanentRedirect(localizedPath(isBlogLocale(locale) ? locale : "nl", `${serviceHref(service)}/`));
+  if (sourceService.parentSlug) {
+    permanentRedirect(localizedPath(locale, `${serviceHref(service)}/`));
   }
 
-  const relatedServices = service.relatedServices
-    .map((relatedSlug) => getServiceBySlug(relatedSlug))
-    .filter((related): related is NonNullable<typeof related> => Boolean(related));
+  const relatedServices = sourceService.relatedServices.flatMap((relatedId) => {
+    try {
+      return [getLocalizedServiceById(relatedId, locale).service];
+    } catch {
+      return [];
+    }
+  });
 
-  const parentService = service.parentSlug ? getServiceBySlug(service.parentSlug) : undefined;
-  const childServices = allServices.filter((s) => s.parentSlug === service.slug);
+  const parentService = sourceService.parentSlug
+    ? getLocalizedServiceById(sourceService.parentSlug, locale).service
+    : undefined;
+  const childServices = allServices
+    .filter((candidate) => candidate.parentSlug === sourceService.slug)
+    .map((candidate) => getLocalizedServiceById(candidate.slug, locale).service);
+  const localizedRegions = regions.map((region) =>
+    getLocalizedRegionById(region.slug, locale),
+  );
+  const englishContent = en ? englishServiceEditorial[localizedService.id] : undefined;
 
   // Realisatie-categorie bij deze dienst (indien die bestaat): voedt de
   // cross-link "Bekijk onze <naam>-realisaties" onder de kennisbank-sectie.
-  const realisatieCategorySlug = serviceToCategorySlug[service.slug];
+  const realisatieCategorySlug = serviceToCategorySlug[sourceService.slug];
   const realisatieCategory = realisatieCategorySlug
-    ? getRealisatieCategoryBySlug(realisatieCategorySlug)
+    ? getLocalizedRealisatieCategoryById(realisatieCategorySlug, locale)
     : undefined;
 
   // Webdesign and SEO lead with a bespoke animated hero + realisatie showcase
   // (admin-managed images/projects); their regular content follows below.
-  const isWebdesign = service.slug === "webdesign";
-  const isSeo = service.slug === "seo";
-  const isFotografie = service.slug === "fotografie";
-  const isVideografie = service.slug === "videografie";
-  const isDrone = service.slug === "drone-fpv";
-  const is3dVrAr = service.slug === "3d-vr-ar";
+  const isWebdesign = sourceService.slug === "webdesign";
+  const isSeo = sourceService.slug === "seo";
+  const isFotografie = sourceService.slug === "fotografie";
+  const isVideografie = sourceService.slug === "videografie";
+  const isDrone = sourceService.slug === "drone-fpv";
+  const is3dVrAr = sourceService.slug === "3d-vr-ar";
   const [webdesignImages, webdesignProjects] =
-    isWebdesign || isSeo
+    !en && (isWebdesign || isSeo)
       ? await Promise.all([getWebdesignImages(), getWebdesignProjects(locale)])
       : [null, null];
 
   // Videografie: YouTube-fed video gallery (playlists -> filter tabs).
-  const videoData = isVideografie ? await getVideografieVideos() : null;
+  const videoData = !en && isVideografie ? await getVideografieVideos() : null;
 
   // SEO cases = the SEO/GEO-tagged webdesign projects, in configured order.
   const seoItems: SeoCaseItem[] =
@@ -141,7 +167,9 @@ export default async function ServiceDetailPage({
 
   // Gedeelde cross-link-secties (kennisbank, realisaties, regio's) conform de
   // interne-link-regels: elke dienstpagina rendert ze, ook de bespoke varianten.
-  const kennisbankSection = <ServiceRelatedPosts serviceSlug={service.slug} />;
+  const kennisbankSection = en ? null : (
+    <ServiceRelatedPosts serviceSlug={sourceService.slug} />
+  );
 
   const realisatieLinkSection = realisatieCategory ? (
     <Section orbs="tl-br">
@@ -149,7 +177,9 @@ export default async function ServiceDetailPage({
         <div className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold">
-              Bekijk onze {service.title.toLowerCase()}-realisaties
+              {en
+                ? `View our ${service.title.toLowerCase()} case studies`
+                : `Bekijk onze ${service.title.toLowerCase()}-realisaties`}
             </h2>
             <p className="mt-2 max-w-xl text-white/60">{realisatieCategory.description}</p>
           </div>
@@ -157,7 +187,7 @@ export default async function ServiceDetailPage({
             href={`/realisaties/${realisatieCategory.slug}/`}
             className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
           >
-            Bekijk de realisaties
+            {en ? "View case studies" : "Bekijk de realisaties"}
             <ArrowRight className="h-[15px] w-[15px]" />
           </Link>
         </div>
@@ -168,13 +198,16 @@ export default async function ServiceDetailPage({
   const regioSection = (
     <Section orbs="tr-bl">
       <Container>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">Actief in deze regio&apos;s</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+          {en ? "Active in these regions" : <>Actief in deze regio&apos;s</>}
+        </h2>
         <p className="mb-6 max-w-2xl text-white/60">
-          Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen
-          en Nederlands-Limburg.
+          {en
+            ? "From our base in Limburg, Belgium, we work with businesses across Flanders, Antwerp province and Dutch Limburg."
+            : "Vanuit onze thuisbasis in Limburg werken we voor bedrijven in heel Vlaanderen, Antwerpen en Nederlands-Limburg."}
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {regions.map((region) => (
+          {localizedRegions.map((region) => (
             <RegionMapCard key={region.slug} region={region} />
           ))}
         </div>
@@ -184,19 +217,22 @@ export default async function ServiceDetailPage({
 
   const breadcrumbItems = [
     { name: "Home", path: "/" },
-    { name: "Diensten", path: "/diensten" },
-    ...(parentService ? [{ name: parentService.title, path: `/diensten/${parentService.slug}` }] : []),
-    { name: service.title, path: `/diensten/${service.slug}` },
+    { name: en ? "Services" : "Diensten", path: "/diensten" },
+    ...(parentService
+      ? [{ name: parentService.title, path: serviceHref(parentService) }]
+      : []),
+    { name: service.title, path: serviceHref(service) },
   ];
 
   const jsonLd = (
     <>
-      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <BreadcrumbJsonLd locale={locale} items={breadcrumbItems} />
       <ServiceJsonLd
+        locale={locale}
         service={{
           name: service.title,
           description: service.excerpt,
-          url: `${businessConfig.url}${localizedPath("nl", `${serviceHref(service)}/`)}`,
+          url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service)}/`)}`,
         }}
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
@@ -205,7 +241,7 @@ export default async function ServiceDetailPage({
 
   // SEO leads with a fully bespoke, SEO-optimized page (continuous background,
   // animated hero + realisaties, subdiensten cards, sector pills, FAQ).
-  if (isSeo && webdesignImages) {
+  if (!en && isSeo && webdesignImages) {
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
@@ -226,7 +262,7 @@ export default async function ServiceDetailPage({
   }
 
   // Fotografie leads with the cinematic viewfinder hero + gallery lightbox.
-  if (isFotografie) {
+  if (!en && isFotografie) {
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
@@ -246,7 +282,7 @@ export default async function ServiceDetailPage({
   }
 
   // Videografie leads with the video-player hero + YouTube gallery lightbox.
-  if (isVideografie && videoData) {
+  if (!en && isVideografie && videoData) {
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
@@ -268,7 +304,7 @@ export default async function ServiceDetailPage({
   }
 
   // Drone & FPV leads with the quadcopter/FPV hero + drone realisaties split.
-  if (isDrone) {
+  if (!en && isDrone) {
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
@@ -291,7 +327,7 @@ export default async function ServiceDetailPage({
 
   // 3D, VR & AR leads with the immersive cursor-driven 3D hero, video showreel,
   // and the two most recent Matterport tours embedded live in-page.
-  if (is3dVrAr) {
+  if (!en && is3dVrAr) {
     return (
       <div className="min-h-screen text-white">
         {jsonLd}
@@ -314,7 +350,7 @@ export default async function ServiceDetailPage({
     <div className="min-h-screen text-white">
       {jsonLd}
 
-      {isWebdesign && webdesignImages && webdesignProjects ? (
+      {!en && isWebdesign && webdesignImages && webdesignProjects ? (
         <>
           <WebdesignHero heroImage={webdesignImages.hero} />
           <WebdesignShowcase projects={webdesignProjects} images={webdesignImages} />
@@ -323,7 +359,7 @@ export default async function ServiceDetailPage({
         <PageHero title={service.title} subtitle={service.intro} />
       )}
 
-      {isWebdesign ? (
+      {!en && isWebdesign ? (
         <Section orbs="tl-br">
           <Container>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">{service.title} diensten overzicht</h2>
@@ -333,7 +369,9 @@ export default async function ServiceDetailPage({
       ) : childServices.length > 0 ? (
         <Section orbs="tl-br">
           <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">{service.title} diensten overzicht</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+              {en ? "Service overview" : `${service.title} diensten overzicht`}
+            </h2>
             <ServiceGrid services={childServices} />
           </Container>
         </Section>
@@ -341,7 +379,9 @@ export default async function ServiceDetailPage({
         service.benefits.length > 0 && (
           <Section orbs="tl-br">
             <Container>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6">Wat we voor je doen</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+                {en ? "What we do" : "Wat we voor je doen"}
+              </h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
                   <li key={benefit} className="flex items-start gap-2 text-white/80">
@@ -358,7 +398,9 @@ export default async function ServiceDetailPage({
       {service.process.length > 0 && (
         <Section orbs="tr-bl">
           <Container>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Hoe we werken</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+              {en ? "How we work" : "Hoe we werken"}
+            </h2>
             <ProcessSteps steps={service.process} />
           </Container>
         </Section>
@@ -376,13 +418,21 @@ export default async function ServiceDetailPage({
       {/* Veelgestelde vragen (links) + Combineer <dienst> met (rechts). */}
       <ServiceFaqCombine
         faqs={service.faqs}
+        faqHeading={en ? "Frequently asked questions" : undefined}
         combineWith={service.title}
+        combineEyebrow={en ? "More services" : undefined}
+        combineHeading={en ? `Combine ${service.title} with` : undefined}
         relatedServices={relatedServices}
       />
 
       <CTASection
-        title={`Interesse in ${service.title.toLowerCase()}?`}
-        description="Vraag een vrijblijvende offerte aan en ontvang binnen de 2 werkdagen een reactie."
+        title={englishContent?.cta.title ?? `Interesse in ${service.title.toLowerCase()}?`}
+        description={
+          englishContent?.cta.description ??
+          "Vraag een vrijblijvende offerte aan en ontvang binnen de 2 werkdagen een reactie."
+        }
+        primaryLabel={englishContent?.cta.label}
+        primaryHref={englishContent?.cta.href.replace(/^\/en(?=\/)/u, "")}
       />
     </div>
   );

@@ -60,6 +60,14 @@ const nextConfig = {
           destination: '/en/website-analyse/rapport/:token',
         },
         {
+          source: '/en/realisaties/applications',
+          destination: '/en/realisaties/applicaties',
+        },
+        {
+          source: '/en/realisaties/applications/:slug',
+          destination: '/en/realisaties/applicaties/:slug',
+        },
+        {
           source: '/en/diensten/custom-software',
           destination: '/en/diensten/software-op-maat',
         },

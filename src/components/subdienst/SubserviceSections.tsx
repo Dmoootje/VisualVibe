@@ -21,6 +21,7 @@ import type {
   SubservicePricingContent,
   SubserviceRegionalContent,
 } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
 
 type CardSectionProps = {
   content: SubserviceCardSectionContent;
@@ -79,13 +80,20 @@ function SubserviceCardSection({ content, eyebrow, icon: Icon }: CardSectionProp
   );
 }
 
-export function SubserviceOverview({ content }: { content: SubserviceOverviewContent }) {
+export function SubserviceOverview({
+  content,
+  locale = "nl",
+}: {
+  content: SubserviceOverviewContent;
+  locale?: SupportedLocale;
+}) {
+  const en = locale === "en";
   return (
     <Section className="px-0">
       <Container>
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.65fr)] lg:gap-12">
           <div>
-            <SectionHeading eyebrow="Kort uitgelegd" title={content.title} />
+            <SectionHeading eyebrow={en ? "In brief" : "Kort uitgelegd"} title={content.title} />
             <div className="max-w-3xl space-y-5 text-base leading-8 text-white/70">
               {content.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
@@ -93,12 +101,17 @@ export function SubserviceOverview({ content }: { content: SubserviceOverviewCon
             </div>
           </div>
           {content.highlights && content.highlights.length > 0 && (
-            <aside className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 sm:p-6" aria-label="Belangrijkste aandachtspunten">
+            <aside
+              className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 sm:p-6"
+              aria-label={en ? "Key considerations" : "Belangrijkste aandachtspunten"}
+            >
               <div className="mb-5 flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 text-amber-300">
                   <Compass aria-hidden="true" className="h-5 w-5" />
                 </span>
-                <h3 className="font-sora text-lg font-bold text-white">Waar we op letten</h3>
+                <h3 className="font-sora text-lg font-bold text-white">
+                  {en ? "What we pay attention to" : "Waar we op letten"}
+                </h3>
               </div>
               <ul className="space-y-3">
                 {content.highlights.map((highlight) => (
@@ -116,30 +129,31 @@ export function SubserviceOverview({ content }: { content: SubserviceOverviewCon
   );
 }
 
-export function SubserviceOutcomeCards({ content }: { content: SubserviceCardSectionContent }) {
-  return <SubserviceCardSection content={content} eyebrow="Resultaat" icon={Target} />;
+export function SubserviceOutcomeCards({ content, locale = "nl" }: { content: SubserviceCardSectionContent; locale?: SupportedLocale }) {
+  return <SubserviceCardSection content={content} eyebrow={locale === "en" ? "Outcomes" : "Resultaat"} icon={Target} />;
 }
 
-export function SubserviceIdealFor({ content }: { content: SubserviceCardSectionContent }) {
-  return <SubserviceCardSection content={content} eyebrow="Voor wie" icon={Layers3} />;
+export function SubserviceIdealFor({ content, locale = "nl" }: { content: SubserviceCardSectionContent; locale?: SupportedLocale }) {
+  return <SubserviceCardSection content={content} eyebrow={locale === "en" ? "Who it is for" : "Voor wie"} icon={Layers3} />;
 }
 
-export function SubserviceDeliverables({ content }: { content: SubserviceCardSectionContent }) {
-  return <SubserviceCardSection content={content} eyebrow="Inbegrepen" icon={PackageCheck} />;
+export function SubserviceDeliverables({ content, locale = "nl" }: { content: SubserviceCardSectionContent; locale?: SupportedLocale }) {
+  return <SubserviceCardSection content={content} eyebrow={locale === "en" ? "Included" : "Inbegrepen"} icon={PackageCheck} />;
 }
 
-export function SubserviceWhyVisualVibe({ content }: { content: SubserviceCardSectionContent }) {
+export function SubserviceWhyVisualVibe({ content, locale = "nl" }: { content: SubserviceCardSectionContent; locale?: SupportedLocale }) {
   return <SubserviceCardSection content={content} eyebrow="VisualVibe" icon={Sparkles} />;
 }
 
-export function SubservicePricing({ content }: { content: SubservicePricingContent }) {
+export function SubservicePricing({ content, locale = "nl" }: { content: SubservicePricingContent; locale?: SupportedLocale }) {
+  const en = locale === "en";
   return (
     <Section className="px-0">
       <Container>
         <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-6 sm:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.8fr)] lg:gap-12">
             <div>
-              <SectionHeading eyebrow="Investering" title={content.title} />
+              <SectionHeading eyebrow={en ? "Investment" : "Investering"} title={content.title} />
               <div className="space-y-4 text-base leading-7 text-white/70">
                 {content.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
@@ -151,7 +165,9 @@ export function SubservicePricing({ content }: { content: SubservicePricingConte
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 text-amber-300">
                   <WalletCards aria-hidden="true" className="h-5 w-5" />
                 </span>
-                <h3 className="font-sora text-lg font-bold text-white">Prijsbepalende factoren</h3>
+                <h3 className="font-sora text-lg font-bold text-white">
+                  {en ? "Factors that determine the price" : "Prijsbepalende factoren"}
+                </h3>
               </div>
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {content.factors.map((factor) => (
@@ -226,16 +242,22 @@ export function SubserviceRealisations({
 export function SubserviceRegions({
   content,
   regions,
+  locale = "nl",
 }: {
   content: SubserviceRegionalContent;
   regions: Region[];
+  locale?: SupportedLocale;
 }) {
   if (regions.length === 0) return null;
 
   return (
     <Section className="px-0">
       <Container>
-        <SectionHeading eyebrow="Regio's" title={content.title} intro={content.description} />
+        <SectionHeading
+          eyebrow={locale === "en" ? "Regions" : "Regio's"}
+          title={content.title}
+          intro={content.description}
+        />
         <ul className="flex flex-wrap gap-3">
           {regions.map((region) => (
             <li key={region.slug}>

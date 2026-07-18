@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Service, ServiceFaq } from "@/types";
-import { serviceHrefBySlug } from "@/data/services";
+import { serviceHref } from "@/data/services";
 import { serviceCategories } from "@/data/serviceCategories";
 import {
   Accordion,
@@ -50,18 +50,28 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 const H2 = "font-sora text-[28px] font-extrabold leading-[1.12] tracking-[-0.02em] text-white sm:text-[34px]";
 
 /** The "Combineer <x> met" column: related services as iconed hover-cards. */
-function CombineColumn({ combineWith, relatedServices }: { combineWith: string; relatedServices: Service[] }) {
+function CombineColumn({
+  combineWith,
+  relatedServices,
+  eyebrow,
+  heading,
+}: {
+  combineWith: string;
+  relatedServices: Service[];
+  eyebrow: string;
+  heading?: string;
+}) {
   return (
     <div>
-      <Eyebrow>Meer diensten</Eyebrow>
-      <h2 className={H2}>Combineer {combineWith} met</h2>
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className={H2}>{heading ?? `Combineer ${combineWith} met`}</h2>
       <div className="mt-7 flex flex-col gap-3.5">
         {relatedServices.map((related, i) => {
           const Icon = iconForSlug(related.slug);
           return (
             <Link
               key={related.slug}
-              href={serviceHrefBySlug(related.slug)}
+              href={serviceHref(related)}
               style={{ ["--i" as string]: i } as React.CSSProperties}
               className="vvw-caseRow vg-ovrow flex items-center gap-4 rounded-[14px] border border-white/[0.08] bg-white/[0.02] px-[22px] py-5"
             >
@@ -111,11 +121,15 @@ export function ServiceFaqCombine({
   faqs,
   faqHeading = "Veelgestelde vragen",
   combineWith,
+  combineEyebrow = "Meer diensten",
+  combineHeading,
   relatedServices,
 }: {
   faqs: ServiceFaq[];
   faqHeading?: string;
   combineWith: string;
+  combineEyebrow?: string;
+  combineHeading?: string;
   relatedServices: Service[];
 }) {
   const hasFaqs = faqs.length > 0;
@@ -127,14 +141,24 @@ export function ServiceFaqCombine({
       {hasFaqs && hasRelated ? (
         <div className="container mx-auto grid items-start gap-10 px-2.5 sm:px-4 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <FaqColumn faqs={faqs} faqHeading={faqHeading} />
-          <CombineColumn combineWith={combineWith} relatedServices={relatedServices} />
+          <CombineColumn
+            combineWith={combineWith}
+            relatedServices={relatedServices}
+            eyebrow={combineEyebrow}
+            heading={combineHeading}
+          />
         </div>
       ) : (
         <div className="container mx-auto max-w-[720px] px-2.5 sm:px-4">
           {hasFaqs ? (
             <FaqColumn faqs={faqs} faqHeading={faqHeading} />
           ) : (
-            <CombineColumn combineWith={combineWith} relatedServices={relatedServices} />
+            <CombineColumn
+              combineWith={combineWith}
+              relatedServices={relatedServices}
+              eyebrow={combineEyebrow}
+              heading={combineHeading}
+            />
           )}
         </div>
       )}

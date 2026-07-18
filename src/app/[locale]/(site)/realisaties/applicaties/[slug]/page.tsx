@@ -221,7 +221,7 @@ export default async function ApplicationCasePage({
                   </a>
                 )}
                 <Link
-                  href={en ? "/services/" : "/diensten/software-op-maat/"}
+                  href={en ? "/diensten/custom-software/" : "/diensten/software-op-maat/"}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.15] px-6 py-3 font-semibold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.45)] hover:text-white"
                 >
                   {en ? "Custom software" : "Software op maat"}
