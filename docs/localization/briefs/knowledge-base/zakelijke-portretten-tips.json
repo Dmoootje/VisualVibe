@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/fotografie/zakelijke-portretten-tips/",
-  "targetRoute": "/en/knowledge-base/photography/corporate-portrait-tips/",
+  "targetRoute": "/en/kennisbank/fotografie/corporate-portrait-tips/",
   "audience": "Business owners, employees, HR teams and marketing leads planning professional portraits for one person or a complete team",
   "primaryDutchSearchIntent": "Professionals en KMO's helpen een passende portretstijl, voorbereiding en consistente beeldselectie te kiezen voor website, LinkedIn, pers en teamcommunicatie",
   "searchIntent": {
@@ -36,12 +36,12 @@
   "h1": "Corporate portraits: practical tips for stronger team photos",
   "slug": "corporate-portrait-tips",
   "internalLinks": [
-    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/knowledge-base/photography/what-is-corporate-photography/", "anchor": "what corporate photography includes" },
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography includes" },
     { "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/", "targetHref": "/en/services/photography/business-portraits/", "anchor": "corporate portrait photography" },
-    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/knowledge-base/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/kennisbank/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
     { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/services/photography/corporate-photography/", "anchor": "corporate photo shoot" },
-    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare a corporate photo shoot" },
-    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/knowledge-base/web-design/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare a corporate photo shoot" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your portrait session" }
   ],
   "factsToPreserve": [
