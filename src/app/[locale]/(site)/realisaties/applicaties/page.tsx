@@ -32,7 +32,7 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
   const category = getLocalizedRealisatieCategoryById("applicaties", locale);
 
   const [allProjects, images] = await Promise.all([
-    getApplicationCases(locale),
+    getApplicationCases("nl"),
     getApplicationCaseImages(),
   ]);
   const projects = allProjects.flatMap((project) => {

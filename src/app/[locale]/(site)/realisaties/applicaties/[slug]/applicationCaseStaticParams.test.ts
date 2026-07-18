@@ -17,6 +17,15 @@ vi.mock("@/lib/firestore/applicationCases", () => firestoreMocks);
 vi.mock("@/components/realisaties/ApplicationPortfolioCarousel", () => ({
   ApplicationPortfolioCarousel: ({ projects }: { projects: unknown }) => JSON.stringify(projects),
 }));
+vi.mock("@/components/realisaties/RealisatieHeader", () => ({ RealisatieHeader: () => null }));
+vi.mock("@/components/realisaties/RealisatieApplicatieGrid", () => ({
+  RealisatieApplicatieGrid: ({ projects }: { projects: unknown }) => JSON.stringify(projects),
+}));
+vi.mock("@/components/realisaties/RealisatieCategoryGrid", () => ({ RealisatieCategoryGrid: () => null }));
+vi.mock("@/components/ui", () => ({
+  Container: ({ children }: { children: unknown }) => children,
+  Section: ({ children }: { children: unknown }) => children,
+}));
 
 import {
   applicationCases,
@@ -51,6 +60,7 @@ describe("application case static publication params", () => {
   });
 
   it("builds English related cards from Dutch source records without Dutch leaks", async () => {
+    firestoreMocks.getApplicationCases.mockReset();
     const current = applicationCases[0];
     const related = {
       ...applicationCases[1],
@@ -78,6 +88,37 @@ describe("application case static publication params", () => {
     expect(html).toContain(englishRelated.slug);
     expect(html).not.toContain(related.title);
     expect(html).not.toContain(related.slug);
+    expect(html).not.toContain(dutchOnly.title);
+    expect(html).not.toContain(dutchOnly.slug);
+  });
+
+  it("builds the English application hub from Dutch source records without Dutch leaks", async () => {
+    firestoreMocks.getApplicationCases.mockReset();
+    const reviewedSource = {
+      ...applicationCases[1],
+      slug: "nederlandse-beheerroute-voor-seo",
+      title: "Nederlandse beheertitel voor SEO",
+    };
+    const dutchOnly = {
+      ...applicationCases[2],
+      id: "firestore-only-hub",
+      slug: "alleen-nederlandse-hub-app",
+      title: "Alleen Nederlandse hub-app",
+      published: true,
+    };
+    firestoreMocks.getApplicationCases.mockResolvedValue([reviewedSource, dutchOnly]);
+
+    const hub = await import("../page");
+    const englishReviewed = getLocalizedApplicationCaseById(reviewedSource.id, "en");
+    const html = renderToStaticMarkup(await hub.default({
+      params: Promise.resolve({ locale: "en" }),
+    }));
+
+    expect(firestoreMocks.getApplicationCases).toHaveBeenCalledWith("nl");
+    expect(html).toContain(englishReviewed.title);
+    expect(html).toContain(englishReviewed.slug);
+    expect(html).not.toContain(reviewedSource.title);
+    expect(html).not.toContain(reviewedSource.slug);
     expect(html).not.toContain(dutchOnly.title);
     expect(html).not.toContain(dutchOnly.slug);
   });
