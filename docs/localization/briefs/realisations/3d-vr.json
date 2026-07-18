@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/3d-vr/",
+  "targetRoute": "/en/case-studies/3d-vr-ar/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "3D-, VR- en AR-realisaties bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which navigable 3D and virtual-tour projects has VisualVibe created?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "3D virtual tour case studies",
+  "longTailKeywords": [
+    "3D virtual tour case studies Limburg Belgium",
+    "3D virtual tour case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe creates live, navigable 3D scans and 360-degree virtual tours for property, showrooms and hospitality venues.",
+  "title": "3D, VR and AR case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe's navigable Matterport tours for property, showrooms and hospitality venues in Limburg, Belgium, and step inside each space in 360 degrees.",
+  "h1": "3D, VR and AR case studies",
+  "slug": "3d-vr-ar",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

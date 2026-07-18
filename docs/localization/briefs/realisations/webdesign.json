@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/webdesign/",
+  "targetRoute": "/en/case-studies/web-design/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Websites en webshops bekijken die VisualVibe bouwde",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which websites and online shops has VisualVibe built for SMEs?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "web design case studies",
+  "longTailKeywords": [
+    "web design case studies Limburg Belgium",
+    "web design case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe builds fast websites and online shops for SMEs in Limburg, Belgium, with Google and AI search visibility in mind.",
+  "title": "Web design case studies | VisualVibe",
+  "metaDescription": "Explore fast websites and online shops built by VisualVibe for SMEs in Limburg, Belgium, and across Flanders, with Google and AI search visibility in mind.",
+  "h1": "Web design case studies",
+  "slug": "web-design",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

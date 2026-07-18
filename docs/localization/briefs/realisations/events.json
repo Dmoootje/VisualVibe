@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/events/",
+  "targetRoute": "/en/case-studies/events/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Eventrealisaties bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which corporate events and openings has VisualVibe captured?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "event photography and aftermovie case studies",
+  "longTailKeywords": [
+    "event photography and aftermovie case studies Limburg Belgium",
+    "event photography and aftermovie case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe captures corporate events and openings through event photography and highlight films.",
+  "title": "Event case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe event photography and highlight films from corporate events and openings in Limburg, Belgium, created to help promote the next edition.",
+  "h1": "Event case studies",
+  "slug": "events",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

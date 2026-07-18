@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/drone/",
+  "targetRoute": "/en/case-studies/drone-fpv/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Drone- en FPV-realisaties bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which aerial and FPV productions has VisualVibe created?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "drone and FPV case studies",
+  "longTailKeywords": [
+    "drone and FPV case studies Limburg Belgium",
+    "drone and FPV case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe creates aerial imagery and FPV video for businesses, property, construction and events.",
+  "title": "Drone and FPV case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe drone and FPV productions for property, construction projects and events across Limburg, Belgium, and the rest of Flanders.",
+  "h1": "Drone and FPV case studies",
+  "slug": "drone-fpv",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/fotografie/",
+  "targetRoute": "/en/case-studies/photography/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Fotografierealisaties van VisualVibe bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "What business, product, event and real-estate photography has VisualVibe created?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "business photography case studies",
+  "longTailKeywords": [
+    "business photography case studies Limburg Belgium",
+    "business photography case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe creates professional photography for businesses, products, events and real estate in Limburg, Belgium.",
+  "title": "Photography case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe business, product, event and property photography in Limburg, Belgium, and see how we bring brands into focus.",
+  "h1": "Photography case studies",
+  "slug": "photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

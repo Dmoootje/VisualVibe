@@ -1,0 +1,46 @@
+{
+  "sourceRoute": "/be/realisaties/",
+  "targetRoute": "/en/case-studies/",
+  "audience": "Businesses comparing VisualVibe's application, web, photography, video and immersive-media work",
+  "primaryDutchSearchIntent": "Realisaties van VisualVibe per discipline en projecttype bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "What application, web design and visual-media projects has VisualVibe completed?",
+    "geographicContext": "Limburg, Belgium, Flanders, the Netherlands and selected projects abroad"
+  },
+  "mainKeyword": "VisualVibe case studies",
+  "longTailKeywords": [
+    "creative media agency case studies",
+    "web design and video production portfolio"
+  ],
+  "semanticTerms": [
+    "applications",
+    "web design",
+    "photography",
+    "videography",
+    "drone and FPV",
+    "3D virtual tours"
+  ],
+  "directAnswer": "VisualVibe's case studies cover applications, web design, photography, videography, drone and FPV, 3D virtual tours, podcasting and integrated creative-media projects.",
+  "title": "Web, application and media case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe case studies in applications, SaaS, web design, photography, video, drone and FPV, 3D virtual tours and podcasting.",
+  "h1": "Work built to perform and be remembered",
+  "slug": "case-studies",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/",
+      "targetHref": "/en/services/",
+      "anchor": "services"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "The hub includes seven primary disciplines and five contextual collections",
+    "Do not invent project results or performance metrics",
+    "Dynamic records without reviewed English fields must remain hidden"
+  ]
+}
