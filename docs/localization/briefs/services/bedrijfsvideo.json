@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/videografie/bedrijfsvideo/",
+  "targetRoute": "/en/services/videography/corporate-video/",
+  "audience": "SMEs that need to explain who they are, what they offer and how they work",
+  "primaryDutchSearchIntent": "Een professionele videoproductiepartner vinden die concept, opname, montage en bruikbare opleverformaten duidelijk afstemt op het communicatiedoel.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional corporate video services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "corporate video production",
+  "longTailKeywords": [
+    "corporate video production Limburg Belgium",
+    "professional corporate video production for SMEs",
+    "corporate video production VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "A corporate video turns a clear business message into a concise film with real people, relevant workplace footage and channel-specific versions.",
+  "title": "Corporate video in Limburg | VisualVibe",
+  "metaDescription": "Professional corporate video for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "Corporate video shaped around a clear purpose",
+  "slug": "corporate-video",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

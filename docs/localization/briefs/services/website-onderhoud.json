@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/website-onderhoud/",
+  "targetRoute": "/en/services/web-design/website-maintenance/",
+  "audience": "SMEs and independent businesses that need clearly scoped technical maintenance without an internal web team.",
+  "primaryDutchSearchIntent": "Planmatig website-onderhoud vinden voor updates, back-ups, technische controles en afgesproken wijzigingen met duidelijke verantwoordelijkheden.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can maintain our business website with a clear scope for updates, backups, checks and incident follow-up?",
+    "geographicContext": "Limburg, Belgium, with remote service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "website maintenance",
+  "longTailKeywords": [
+    "website maintenance for SMEs",
+    "WordPress maintenance Limburg Belgium",
+    "business website updates and backups",
+    "technical website management service"
+  ],
+  "semanticTerms": [
+    "software updates",
+    "backup checks",
+    "technical baseline",
+    "incident follow-up",
+    "plugin maintenance",
+    "functional testing",
+    "maintenance agreement"
+  ],
+  "directAnswer": "Website maintenance provides planned updates, backup checks, functional testing and technical issue follow-up within an agreed scope, while keeping new development and external-provider responsibilities clearly separate.",
+  "title": "Website Maintenance for SMEs in Limburg | VisualVibe",
+  "metaDescription": "Need website maintenance for updates, backups and technical checks? VisualVibe provides planned support with clear tasks and responsibilities for SMEs.",
+  "h1": "Website maintenance with clear technical responsibilities",
+  "slug": "website-maintenance",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/wordpress-website-laten-maken/",
+      "targetHref": "/en/services/web-design/wordpress-website/",
+      "anchor": "WordPress website development"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-vernieuwen/",
+      "targetHref": "/en/services/web-design/website-redesign/",
+      "anchor": "website redesign"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/technische-seo/",
+      "targetHref": "/en/services/seo/technical-seo/",
+      "anchor": "technical SEO"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-laten-maken/",
+      "targetHref": "/en/services/web-design/business-website-design/",
+      "anchor": "business website design"
+    }
+  ],
+  "factsToPreserve": [
+    "The technical baseline determines whether routine maintenance is possible or separate stabilisation is required first.",
+    "A maintenance agreement is not an unlimited help desk and new pages, redesigns and complex features remain separate projects.",
+    "No provider can guarantee complete website security.",
+    "Hosting, accounts, external services and user behaviour remain separate parts of the security and responsibility chain.",
+    "Response terms depend on the maintenance plan and recovery time can depend on third parties and technical complexity."
+  ]
+}

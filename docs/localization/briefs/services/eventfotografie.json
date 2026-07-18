@@ -1,0 +1,62 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/eventfotografie/",
+  "targetRoute": "/en/services/photography/event-photography/",
+  "audience": "Companies and organisations planning conferences, openings, launches, celebrations and other business events that need purposeful visual coverage.",
+  "primaryDutchSearchIntent": "Een eventfotograaf vinden die programma, gasten, sprekers, sfeer en merkdetails als één bruikbare reportage vastlegt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can photograph our corporate event discreetly while covering the programme, people, atmosphere and communication priorities?",
+    "geographicContext": "Limburg, Belgium, with event coverage across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "event photography",
+  "longTailKeywords": [
+    "corporate event photographer Limburg Belgium",
+    "conference event photography",
+    "corporate event photography coverage",
+    "photographer for a business launch"
+  ],
+  "semanticTerms": [
+    "event schedule",
+    "key moments",
+    "speaker photography",
+    "guest photography",
+    "event photo story",
+    "brand details",
+    "event privacy policy"
+  ],
+  "directAnswer": "Corporate event photography follows an agreed schedule and priority list to capture speakers, guests, reactions, atmosphere, venue and brand details as a varied series for follow-up communications.",
+  "title": "Corporate Event Photography in Limburg | VisualVibe",
+  "metaDescription": "Event photography for conferences, openings and corporate occasions, capturing the programme, guests, speakers, atmosphere and recognisable brand details.",
+  "h1": "Event photography that brings programme and atmosphere together",
+  "slug": "event-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/videografie/event-aftermovie/",
+      "targetHref": "/en/services/videography/event-aftermovie/",
+      "anchor": "event aftermovie"
+    },
+    {
+      "sourceHref": "/be/diensten/drone-fpv/event-dronebeelden/",
+      "targetHref": "/en/services/drone-fpv/event-drone-footage/",
+      "anchor": "event drone footage"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/brandingfotografie/",
+      "targetHref": "/en/services/photography/brand-photography/",
+      "anchor": "brand photography"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/social-media-video/",
+      "targetHref": "/en/services/videography/social-media-video/",
+      "anchor": "social media video"
+    }
+  ],
+  "factsToPreserve": [
+    "The organiser communicates its photography and privacy policy to visitors.",
+    "Photography follows recognisable indicators, restricted zones and specific briefing arrangements.",
+    "Room, stage and lighting conditions determine which photographs are feasible without disrupting the programme.",
+    "Named guests are best coordinated by an on-site contact who can recognise and bring them together.",
+    "Material required during the event needs a separate workflow and coordination defined in the quotation.",
+    "No fixed delivery time or guarantee of photographing every person or moment is stated."
+  ]
+}

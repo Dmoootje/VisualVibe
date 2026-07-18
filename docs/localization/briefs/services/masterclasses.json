@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/masterclasses/",
+  "targetRoute": "/en/services/masterclasses/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Een opleiding, workshop of masterclass professioneel laten opnemen als herbruikbare video.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Record a course, workshop or masterclass as reusable professional video.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "masterclass video production",
+  "longTailKeywords": [
+    "masterclass video production for SMEs",
+    "masterclass video production Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "VisualVibe records courses and workshops as polished modules for online learning, internal training or on-demand viewing.",
+  "title": "Course and Masterclass Video Production | VisualVibe",
+  "metaDescription": "VisualVibe records courses and workshops as polished modules for online learning, internal training or on-demand viewing.",
+  "h1": "Masterclasses",
+  "slug": "masterclasses",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/masterclasses/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

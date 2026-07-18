@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/seo/google-business-profiel-optimalisatie/",
+  "targetRoute": "/en/services/seo/google-business-profile-optimisation/",
+  "audience": "Shops, practices, hospitality businesses, service-area providers and multi-location SMEs that need an accurate, manageable Google Business Profile.",
+  "primaryDutchSearchIntent": "Een Google Business Profiel correct en bruikbaar inrichten met actuele bedrijfsinformatie, relevante categorieen en duidelijke beheerafspraken.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional Google Business Profile optimisation support for an SME in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "Google Business Profile optimisation",
+  "longTailKeywords": [
+    "Google Business Profile optimisation for SMEs",
+    "Google Business Profile optimisation Limburg Belgium",
+    "Google Business Profile optimisation consultant"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "online visibility",
+    "website content",
+    "technical quality",
+    "VisualVibe"
+  ],
+  "directAnswer": "Google Business Profile optimisation keeps categories, services, contact details, opening hours, imagery and website links accurate and aligned with real operations.",
+  "title": "Google Business Profile Optimisation | VisualVibe",
+  "metaDescription": "Google Business Profile optimisation for accurate categories, services, contact details, imagery and a clearer connection with your website.",
+  "h1": "Google Business Profile optimisation based on accurate information",
+  "slug": "google-business-profile-optimisation",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium.",
+    "No rankings, Google Maps placement, AI citation, traffic or lead result is guaranteed.",
+    "Scope, access, implementation, monitoring and deliverables depend on the agreed quotation.",
+    "The business remains responsible for the accuracy of its company details, specialist claims and authorised platform access."
+  ]
+}

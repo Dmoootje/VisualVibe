@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/seo/lokale-seo/",
+  "targetRoute": "/en/services/seo/local-seo/",
+  "audience": "Local shops, practices, hospitality businesses, service-area providers and multi-location SMEs that need accurate regional search visibility.",
+  "primaryDutchSearchIntent": "Bedrijven helpen lokaal vindbaar te worden door website, Google Business Profiel en correcte bedrijfsgegevens inhoudelijk op elkaar af te stemmen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional Local SEO support for an SME in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "local SEO Limburg Belgium",
+  "longTailKeywords": [
+    "local SEO Limburg Belgium for SMEs",
+    "local search optimisation for SMEs",
+    "local SEO consultant Limburg Belgium"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "online visibility",
+    "website content",
+    "technical quality",
+    "VisualVibe"
+  ],
+  "directAnswer": "Local SEO aligns a business's website, Google Business Profile and official details with the genuine area it serves, without thin location pages or ranking guarantees.",
+  "title": "Local SEO for Businesses in Limburg, Belgium | VisualVibe",
+  "metaDescription": "VisualVibe aligns your website, Google profile and business details with the needs of customers searching locally in Limburg, Belgium.",
+  "h1": "Local SEO for a genuine service area",
+  "slug": "local-seo",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium.",
+    "No rankings, Google Maps placement, AI citation, traffic or lead result is guaranteed.",
+    "Scope, access, implementation, monitoring and deliverables depend on the agreed quotation.",
+    "The business remains responsible for the accuracy of its company details, specialist claims and authorised platform access."
+  ]
+}

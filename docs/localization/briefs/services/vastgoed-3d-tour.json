@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/3d-vr-ar/vastgoed-3d-tour/",
+  "targetRoute": "/en/services/3d-vr-ar/real-estate-3d-tour/",
+  "audience": "estate agents and property sellers who need to clarify layout and spatial flow online",
+  "primaryDutchSearchIntent": "Een professionele interactieve tour laten maken die ruimte, route en relevante informatie online begrijpelijk presenteert.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional real estate 3d tour services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "real estate 3D tour",
+  "longTailKeywords": [
+    "real estate 3D tour Limburg Belgium",
+    "professional real estate 3D tour for SMEs",
+    "real estate 3D tour VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "A real estate 3D tour helps prospective buyers understand how rooms and levels connect before arranging an in-person viewing.",
+  "title": "Real estate 3D tour in Limburg | VisualVibe",
+  "metaDescription": "Professional real estate 3d tour for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "Real estate 3D tour shaped around a clear purpose",
+  "slug": "real-estate-3d-tour",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

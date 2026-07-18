@@ -1,0 +1,55 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/bedrijfsfotografie/",
+  "targetRoute": "/en/services/photography/corporate-photography/",
+  "audience": "SMEs and independent businesses in Limburg, Belgium, that need a consistent image library showing their people, workplace and expertise.",
+  "primaryDutchSearchIntent": "Een bedrijfsfotograaf vinden die een authentieke, breed inzetbare beeldbank van team, werkplek en vakmanschap maakt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can create professional corporate photography for our SME on location?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "corporate photography",
+  "longTailKeywords": [
+    "corporate photographer Limburg Belgium",
+    "professional business photography for SMEs",
+    "on-location corporate photo shoot",
+    "employee and workplace photography"
+  ],
+  "semanticTerms": [
+    "business image library",
+    "corporate portraits",
+    "workplace photography",
+    "shot list",
+    "web-ready images",
+    "print-ready photography"
+  ],
+  "directAnswer": "Corporate photography creates a consistent, practical image library of your people, workplace and expertise for websites, vacancies, presentations, print and social media.",
+  "title": "Corporate Photography for SMEs in Limburg | VisualVibe",
+  "metaDescription": "Corporate photography for SMEs, with authentic images of your team, workplace and expertise, prepared as a versatile image library for every communication channel.",
+  "h1": "Corporate photography that makes your business recognisable",
+  "slug": "corporate-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/",
+      "targetHref": "/en/services/photography/business-portraits/",
+      "anchor": "business portraits"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/brandingfotografie/",
+      "targetHref": "/en/services/photography/brand-photography/",
+      "anchor": "brand photography"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/",
+      "targetHref": "/en/services/web-design/",
+      "anchor": "web design"
+    }
+  ],
+  "factsToPreserve": [
+    "The service is planned around audience, use, location, employees, privacy and practical constraints.",
+    "The organisation remains responsible for internal arrangements and permissions for recognisable employees.",
+    "The exact selection, crops, print files and applications depend on the agreed briefing and quotation.",
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and Dutch Limburg.",
+    "No fixed price, image count, turnaround time or guaranteed result is stated."
+  ]
+}

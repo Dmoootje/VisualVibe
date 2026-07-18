@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/drone-fpv/",
+  "targetRoute": "/en/services/drone-fpv/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Professionele drone- of FPV-beelden laten maken voor een bedrijf of project.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Commission safe professional aerial and FPV footage for a business or project.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "drone video Limburg",
+  "longTailKeywords": [
+    "drone video Limburg for SMEs",
+    "drone video Limburg Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "A certified pilot captures professional drone and FPV footage for businesses, property, construction and events.",
+  "title": "Drone and FPV Video Limburg | VisualVibe",
+  "metaDescription": "A certified pilot captures professional drone and FPV footage for businesses, property, construction and events.",
+  "h1": "Drone and FPV",
+  "slug": "drone-fpv",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/drone-fpv/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

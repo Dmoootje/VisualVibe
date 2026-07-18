@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/seo/technische-seo/",
+  "targetRoute": "/en/services/seo/technical-seo/",
+  "audience": "SMEs, online shops and content-heavy websites that need crawl, indexing, rendering, structure or performance problems investigated and prioritised.",
+  "primaryDutchSearchIntent": "Technische belemmeringen voor crawling, indexering, prestaties en mobiele bruikbaarheid onderzoeken en gericht prioriteren.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional Technical SEO support for an SME in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "technical SEO audit",
+  "longTailKeywords": [
+    "technical SEO audit for SMEs",
+    "technical SEO audit Limburg Belgium",
+    "technical SEO audit consultant"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "online visibility",
+    "website content",
+    "technical quality",
+    "VisualVibe"
+  ],
+  "directAnswer": "A technical SEO audit identifies and prioritises barriers affecting crawling, rendering, indexing, site structure, mobile use and performance.",
+  "title": "Technical SEO Audits and Optimisation | VisualVibe",
+  "metaDescription": "Technical SEO for SMEs, including crawlability, indexing, website structure, structured data and speed, prioritised by VisualVibe.",
+  "h1": "Technical SEO for a crawlable, understandable website",
+  "slug": "technical-seo",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium.",
+    "No rankings, Google Maps placement, AI citation, traffic or lead result is guaranteed.",
+    "Scope, access, implementation, monitoring and deliverables depend on the agreed quotation.",
+    "The business remains responsible for the accuracy of its company details, specialist claims and authorised platform access."
+  ]
+}

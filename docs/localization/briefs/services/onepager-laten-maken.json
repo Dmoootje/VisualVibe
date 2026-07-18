@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/onepager-laten-maken/",
+  "targetRoute": "/en/services/web-design/one-page-website/",
+  "audience": "Independent professionals, SMEs and campaign owners with one focused offer that can be explained without complex navigation.",
+  "primaryDutchSearchIntent": "Een compacte onepage website laten maken die één duidelijk aanbod logisch presenteert en bezoekers naar contact begeleidt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can design a professional one-page website for one focused business offer?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "one-page website design",
+  "longTailKeywords": [
+    "one-page website for a small business",
+    "single-page website design Belgium",
+    "compact website for an independent professional",
+    "one-page campaign website"
+  ],
+  "semanticTerms": [
+    "single-page website",
+    "anchor links",
+    "responsive design",
+    "call to action",
+    "landing page",
+    "semantic headings",
+    "website expansion"
+  ],
+  "directAnswer": "A one-page website presents one focused offer in a logical sequence, moving visitors from the core message through evidence and common questions to a clear contact action.",
+  "title": "One-Page Website Design for Independent Businesses | VisualVibe",
+  "metaDescription": "Need a one-page website for one clear offer? VisualVibe builds a fast, mobile-friendly site with a logical narrative and direct route to contact.",
+  "h1": "A one-page website with a focused narrative",
+  "slug": "one-page-website",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/website-laten-maken/",
+      "targetHref": "/en/services/web-design/business-website-design/",
+      "anchor": "business website design"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/seo-copywriting/",
+      "targetHref": "/en/services/seo/seo-copywriting/",
+      "anchor": "SEO copywriting"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/brandingfotografie/",
+      "targetHref": "/en/services/photography/brand-photography/",
+      "anchor": "brand photography"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-onderhoud/",
+      "targetHref": "/en/services/web-design/website-maintenance/",
+      "anchor": "website maintenance"
+    }
+  ],
+  "factsToPreserve": [
+    "The format is recommended only when one page can answer the communication need without complex navigation.",
+    "A one-page website has less scope than separate URLs for targeting several services, regions or search intents.",
+    "Future expansion is possible only when the technical and visual foundation supports it and requires new navigation and content decisions.",
+    "The price still reflects strategy, content, design, development, testing, features and supplied materials despite there being one URL.",
+    "No ranking, campaign-performance, launch-date or conversion guarantee is stated."
+  ]
+}

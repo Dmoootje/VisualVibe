@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/podcasting/podcast-traject/",
+  "targetRoute": "/en/services/podcasting/podcast-production-programme/",
+  "audience": "organisations planning a sustainable podcast series rather than a one-off episode",
+  "primaryDutchSearchIntent": "Een professionele podcastproductie opzetten die inhoud, doelgroep, opname, montage en publicatieverantwoordelijkheden helder afbakent.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional podcast production programme in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "business podcast production programme",
+  "longTailKeywords": [
+    "business podcast production programme Limburg Belgium",
+    "business podcast production programme for SMEs",
+    "professional business podcast production programme"
+  ],
+  "semanticTerms": [
+    "professional recording",
+    "content planning",
+    "editing",
+    "publication-ready files",
+    "VisualVibe"
+  ],
+  "directAnswer": "A podcast production programme coordinates format, episodes, guests, recording, approval and delivery across a defined series.",
+  "title": "Podcast production programme in Limburg | VisualVibe",
+  "metaDescription": "Professional podcast production programme in Limburg, Belgium, with clear preparation, reliable recording and deliverables shaped around their intended use.",
+  "h1": "Podcast production programme designed for practical reuse",
+  "slug": "podcast-production-programme",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "The exact scope, deliverables, revisions and publishing support depend on the agreed quotation.",
+    "Hosting, platform subscriptions, licences and account management are included only when explicitly agreed.",
+    "No audience reach, lead volume, learning outcome or expert status is guaranteed."
+  ]
+}

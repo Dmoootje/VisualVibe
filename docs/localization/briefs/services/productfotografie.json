@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/productfotografie/",
+  "targetRoute": "/en/services/photography/product-photography/",
+  "audience": "Online shops, brands, manufacturers, wholesalers, makers, hospitality businesses and retailers needing consistent product imagery.",
+  "primaryDutchSearchIntent": "Consistente productfotografie laten maken voor webshop, catalogus en campagne volgens het assortiment en technische beeldvereisten.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can produce consistent product photography and exports for our online shop, catalogue or campaign?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "product photography",
+  "longTailKeywords": [
+    "e-commerce product photography Limburg Belgium",
+    "professional packshot photography",
+    "product photography for online shops",
+    "lifestyle product photography for brands"
+  ],
+  "semanticTerms": [
+    "packshots",
+    "product variants",
+    "shot list",
+    "colour correction",
+    "background removal",
+    "lifestyle images",
+    "technical image exports"
+  ],
+  "directAnswer": "Professional product photography uses a repeatable setup, agreed shot list and channel-specific exports to present products consistently through packshots, details and lifestyle images.",
+  "title": "Product Photography for Online Shops in Limburg | VisualVibe",
+  "metaDescription": "Product photography for online shops, catalogues and campaigns, including consistent packshots, details and lifestyle images matched to your brand and specifications.",
+  "h1": "Product photography that supports comparison and experience",
+  "slug": "product-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/",
+      "targetHref": "/en/services/web-design/online-shop-development/",
+      "anchor": "online shop development"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/brandingfotografie/",
+      "targetHref": "/en/services/photography/brand-photography/",
+      "anchor": "brand photography"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/social-media-video/",
+      "targetHref": "/en/services/videography/social-media-video/",
+      "anchor": "social media video"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/seo-copywriting/",
+      "targetHref": "/en/services/seo/seo-copywriting/",
+      "anchor": "SEO copywriting"
+    }
+  ],
+  "factsToPreserve": [
+    "Product, variant, view and channel requirements are recorded before production.",
+    "Fragile, valuable or difficult-to-transport products require adapted logistics agreed in advance.",
+    "Glossy and transparent products require specialist lighting and may require additional finishing.",
+    "Exact colour equivalence cannot be guaranteed across screens, print processes and materials.",
+    "Production, retouching, background removal and technical exports are separate scope choices in the quotation."
+  ]
+}

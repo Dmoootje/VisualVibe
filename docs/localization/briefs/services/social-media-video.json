@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/videografie/social-media-video/",
+  "targetRoute": "/en/services/videography/social-media-video/",
+  "audience": "SMEs planning consistent video content for LinkedIn, Instagram, TikTok or YouTube",
+  "primaryDutchSearchIntent": "Een professionele videoproductiepartner vinden die concept, opname, montage en bruikbare opleverformaten duidelijk afstemt op het communicatiedoel.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional social media video services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "social media video production",
+  "longTailKeywords": [
+    "social media video production Limburg Belgium",
+    "professional social media video production for SMEs",
+    "social media video production VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "Social media video is designed around the viewing habits, format and purpose of each platform, with a direct opening and clear on-screen message.",
+  "title": "Social media video in Limburg | VisualVibe",
+  "metaDescription": "Professional social media video for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "Social media video shaped around a clear purpose",
+  "slug": "social-media-video",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

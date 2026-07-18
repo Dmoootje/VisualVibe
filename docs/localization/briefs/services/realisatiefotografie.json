@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/realisatiefotografie/",
+  "targetRoute": "/en/services/photography/project-photography/",
+  "audience": "Construction companies, interior contractors, architects, installers, designers and skilled trades that need completed work documented for portfolios and case studies.",
+  "primaryDutchSearchIntent": "Een afgewerkt bouw-, interieur- of vakproject professioneel laten fotograferen met nadruk op de eigen bijdrage, uitvoering en materialen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can photograph our completed project in a way that clearly demonstrates our specific contribution and craftsmanship?",
+    "geographicContext": "Limburg, Belgium, with project photography across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "project photography",
+  "longTailKeywords": [
+    "construction project photographer Limburg Belgium",
+    "completed interior project photography",
+    "photography for construction case studies",
+    "craftsmanship portfolio photography"
+  ],
+  "semanticTerms": [
+    "construction photography",
+    "interior project photography",
+    "portfolio images",
+    "case-study photography",
+    "material details",
+    "project completion",
+    "technical execution"
+  ],
+  "directAnswer": "Project photography turns completed construction, interior or specialist work into a useful case study by combining context, spatial views and technical details that demonstrate the commissioning business's specific contribution.",
+  "title": "Project Photography for Construction and Interiors | VisualVibe",
+  "metaDescription": "Project photography for construction, interiors and skilled work, from context to detail, carefully prepared for portfolios, case studies and presentations.",
+  "h1": "Project photography centred on your craftsmanship",
+  "slug": "project-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/drone-fpv/realisatie-dronebeelden/",
+      "targetHref": "/en/services/drone-fpv/project-drone-footage/",
+      "anchor": "project drone footage"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/",
+      "targetHref": "/en/services/photography/corporate-photography/",
+      "anchor": "corporate photography"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/vastgoedfotografie/",
+      "targetHref": "/en/services/photography/property-photography/",
+      "anchor": "property photography"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/bedrijfsvideo/",
+      "targetHref": "/en/services/videography/corporate-video/",
+      "anchor": "corporate video"
+    }
+  ],
+  "factsToPreserve": [
+    "The shot list begins with the commissioning business's actual contribution, materials and techniques.",
+    "Usage by several involved contractors requires clear commissioning, image-selection and delivery agreements in advance.",
+    "Recognisable employees or residents only appear when the necessary arrangements have been made.",
+    "Drone feasibility depends on location, conditions and applicable requirements.",
+    "Completion status, styling, access, weather, safety and coordination can affect the scope and price."
+  ]
+}
