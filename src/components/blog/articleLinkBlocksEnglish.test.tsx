@@ -24,21 +24,21 @@ describe("English in-article knowledge-base links", () => {
       createElement(
         "div",
         null,
-        createElement(MdxLink, {
-          href: "/en/about/",
-          locale: "en",
-          children: "About",
-        }),
-        createElement(MdxLink, {
-          href: "/diensten/seo/technische-seo/",
-          locale: "en",
-          children: "Technical SEO",
-        }),
-        createElement(MdxLink, {
-          href: "/realisaties/photography/",
-          locale: "en",
-          children: "Photography portfolio",
-        }),
+        createElement(
+          MdxLink,
+          { href: "/en/about/", locale: "en" },
+          "About",
+        ),
+        createElement(
+          MdxLink,
+          { href: "/diensten/seo/technische-seo/", locale: "en" },
+          "Technical SEO",
+        ),
+        createElement(
+          MdxLink,
+          { href: "/realisaties/photography/", locale: "en" },
+          "Photography portfolio",
+        ),
       ),
     );
 
