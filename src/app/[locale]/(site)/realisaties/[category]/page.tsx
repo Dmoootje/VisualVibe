@@ -110,7 +110,7 @@ export default async function RealisatieCategoryPage({
   const mappedService = mappedServiceSlug ? getLocalizedServiceById(mappedServiceSlug, locale).service : undefined;
 
   const [webdesignImages, webdesignProjects] = isWebdesign
-    ? await Promise.all([getWebdesignImages(), getWebdesignProjects(locale)])
+    ? await Promise.all([getWebdesignImages(), getWebdesignProjects("nl")])
     : [null, null];
   const localizedWebdesignProjects = (webdesignProjects?.flatMap((project) => {
     try {
