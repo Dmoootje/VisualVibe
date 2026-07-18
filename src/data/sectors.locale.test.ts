@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { sectors, getLocalizedSectorById, getSectorByLocalizedSlug } from "./sectors";
 import { englishSectorEditorial } from "./locales/en/sectors";
-import { getServiceByLocalizedSlug } from "./services";
+import { getLocalizedServiceById, getServiceByLocalizedSlug } from "./services";
 import { getRegionByLocalizedSlug } from "./regions";
 
 const prohibitedTypography = /[\u2014\u2015]/u;
@@ -66,6 +66,14 @@ describe("English sector localisation", () => {
         } else {
           expect(["contact", "request-a-quotation", "sectoren", "realisaties"]).toContain(segments[0]);
         }
+      }
+    }
+  });
+
+  it("keeps every recommended service as a resolvable stable service ID", () => {
+    for (const record of Object.values(englishSectorEditorial)) {
+      for (const serviceId of record.recommendedServices) {
+        expect(() => getLocalizedServiceById(serviceId, "en"), `${record.slug}: ${serviceId}`).not.toThrow();
       }
     }
   });
