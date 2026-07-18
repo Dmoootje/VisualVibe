@@ -47,7 +47,17 @@ const nextConfig = {
     return {
       // A few legacy metadata paths still mention /image.jpg. Resolve that path
       // to the branded fallback before the old public template asset can win.
-      beforeFiles: [{ source: '/image.jpg', destination: '/api/og' }],
+      beforeFiles: [
+        { source: '/image.jpg', destination: '/api/og' },
+        {
+          source: '/en/diensten/custom-software',
+          destination: '/en/diensten/software-op-maat',
+        },
+        {
+          source: '/en/diensten/custom-software/:subslug',
+          destination: '/en/diensten/software-op-maat/:subslug',
+        },
+      ],
       // IndexNow verifieert de eigenaar via een sleutelbestand op /{sleutel}.txt.
       // De sleutel is dynamisch (beheerbaar in de admin), dus we kunnen geen
       // statisch bestand plaatsen: schrijf /{sleutel}.txt door naar de route die

@@ -1,5 +1,6 @@
 import { businessConfig } from "@/config/business.config";
 import { JsonLd } from "./JsonLd";
+import type { SupportedLocale } from "@/i18n/locales";
 
 /**
  * Site-wide WebSite entity (rendered once in the locale layout, naast
@@ -7,16 +8,18 @@ import { JsonLd } from "./JsonLd";
  * pagina-schema's zoals CollectionPage er via isPartOf naar verwijzen
  * zonder de entiteit te dupliceren.
  */
-export function WebSiteJsonLd() {
+export function WebSiteJsonLd({ locale = "nl" }: { locale?: SupportedLocale }) {
+  const en = locale === "en";
+  const homeUrl = en ? `${businessConfig.url}/en/` : `${businessConfig.url}/`;
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "@id": `${businessConfig.url}/#website`,
-        url: `${businessConfig.url}/`,
+        "@id": `${homeUrl}#website`,
+        url: homeUrl,
         name: businessConfig.displayName,
-        inLanguage: "nl-BE",
+        inLanguage: en ? "en-BE" : "nl-BE",
         publisher: { "@id": `${businessConfig.url}/#organization` },
       }}
     />

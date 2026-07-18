@@ -12,7 +12,7 @@
   "metaDescription": "Using WordPress for your SME? Learn when it fits and how to manage hosting, updates, backups, security, performance and ownership professionally.",
   "slug": "wordpress-for-smes-complete-guide",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/custom-web-application/", "anchor": "custom web application" },
+    { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/web-application-development/", "anchor": "custom web application" },
     { "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/", "targetHref": "/en/kennisbank/webdesign/how-to-back-up-wordpress/", "anchor": "creating a WordPress backup" },
     { "sourceHref": "/be/kennisbank/webdesign/wordpress-website-beveiligen/", "targetHref": "/en/kennisbank/webdesign/securing-a-wordpress-website/", "anchor": "securing a WordPress website" },
     { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },

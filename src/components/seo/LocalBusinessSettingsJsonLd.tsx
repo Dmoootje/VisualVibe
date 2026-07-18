@@ -1,6 +1,7 @@
 import { businessConfig } from "@/config/business.config";
 import type { SiteSettings } from "@/types";
 import { JsonLd } from "./JsonLd";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const DAY_SCHEMA: Record<string, string> = {
   monday: "Monday",
@@ -23,6 +24,17 @@ const SERVICE_CATALOG = [
   "Applicaties en software op maat",
 ];
 
+const ENGLISH_SERVICE_CATALOG = [
+  "Web design",
+  "SEO and GEO",
+  "Photography",
+  "Video production",
+  "Drone and FPV",
+  "3D, VR and AR",
+  "Podcast production",
+  "Custom applications and software",
+];
+
 function normalizeAddressCountry(value?: string): string {
   const country = value?.trim();
 
@@ -36,7 +48,8 @@ function normalizeAddressCountry(value?: string): string {
  * Every critical NAP field falls back to business.config, so a temporarily empty
  * Firestore setting can never publish incomplete or contradictory local schema.
  */
-export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettings }) {
+export function LocalBusinessSettingsJsonLd({ settings, locale = "nl" }: { settings: SiteSettings; locale?: SupportedLocale }) {
+  const en = locale === "en";
   const liveOpeningHours = (settings.openingHours ?? [])
     .filter((day) => day.isOpen && day.openTime && day.closeTime && DAY_SCHEMA[day.day])
     .flatMap((day) => {
@@ -90,7 +103,8 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         }
       : undefined;
 
-  const areaServed = businessConfig.serviceArea.map((name) => ({
+  const serviceAreas = en ? ["Limburg", "Flanders", "Antwerp Province", "Dutch Limburg"] : businessConfig.serviceArea;
+  const areaServed = serviceAreas.map((name) => ({
     "@type": "AdministrativeArea",
     name,
   }));
@@ -103,8 +117,8 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         "@id": `${businessConfig.url}/#localbusiness`,
         name: settings.companyName || businessConfig.displayName,
         legalName: businessConfig.legalName,
-        description: businessConfig.description,
-        url: businessConfig.url,
+        description: en ? "Creative media agency in Limburg, Belgium, for web design, SEO, visual content and custom digital applications." : businessConfig.description,
+        url: en ? `${businessConfig.url}/en/` : businessConfig.url,
         image: `${businessConfig.url}/api/og`,
         logo: {
           "@type": "ImageObject",
@@ -123,8 +137,8 @@ export function LocalBusinessSettingsJsonLd({ settings }: { settings: SiteSettin
         founder: { "@id": `${businessConfig.url}/#founder` },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Creatieve en digitale diensten",
-          itemListElement: SERVICE_CATALOG.map((name) => ({
+          name: en ? "Creative and digital services" : "Creatieve en digitale diensten",
+          itemListElement: (en ? ENGLISH_SERVICE_CATALOG : SERVICE_CATALOG).map((name) => ({
             "@type": "Offer",
             itemOffered: {
               "@type": "Service",
