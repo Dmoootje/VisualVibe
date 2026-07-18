@@ -202,3 +202,12 @@ The independent reviewers compared each English record with the complete Dutch s
 ### Boundaries
 
 This sub-scope does not modify or translate realizations or case studies, which remain owned by Task 8C. It does not create municipality detail routes, alter Firestore content or publish English. Existing image files and URLs remain unchanged.
+
+### Final verification
+
+- `npm test`: 62 test files and 240 tests passed. One initial full-suite run hit the existing five-second homepage test timeout; the isolated test passed in 3.77 seconds and the fresh full rerun passed completely.
+- `npm run typecheck`: passed.
+- `npm run validate:subservices`: passed for all 46 subservice pages.
+- `npm run build`: passed and generated only the currently published Dutch routes. Existing unrelated lint warnings remain non-blocking.
+- `npm run audit:locales`: completed with the pre-existing Dutch knowledge-base alt-text blocker in `wordpress-backup-maken.mdx` and informational missing English knowledge-base partners. Neither belongs to this sector and region sub-scope.
+- Repository-wide U+2014/U+2015 scan and `git diff --check`: clean.
