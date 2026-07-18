@@ -15,8 +15,8 @@ Task 12 found and fixed publication-boundary, preview and content-link defects. 
 - Knowledge-base translation briefs: 58
 - Stable translation-key pairing: 58 of 58
 - Independent second-agent knowledge-base review: 58 of 58, recorded across the Task 10 wave review reports and their review commits
-- Other English page briefs: 99: 9 commercial, 3 legal, 17 realisations, 5 regions, 11 sectors and 54 services
-- Total checked-in English page briefs: 157
+- Other English page briefs: 105: 9 commercial, 3 legal, 17 realisations, 5 regions, 11 sectors and 60 services
+- Total checked-in English page briefs: 163
 - Independent review of the other indexable English page inventory is recorded in `task-8-report.md`, including commercial, legal, service, region, sector and realisation coverage.
 
 ## Fresh command evidence
@@ -24,7 +24,7 @@ Task 12 found and fixed publication-boundary, preview and content-link defects. 
 | Command or check | Result |
 | --- | --- |
 | `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}' .` | No matches; `rg` exit 1 means the forbidden characters were absent. |
-| `npm run test` | Passed: 78 test files, 306 tests. |
+| `npm run test` | Passed: 82 test files, 318 tests. |
 | `npx vitest run src/lib/seo/siteUrls.publication.test.ts` | Passed: 1 test file, 2 regression tests. The tests were observed failing before the fixes. |
 | `npm run typecheck` | Passed with exit code 0. |
 | `npm run lint` | Passed with 0 errors and 6 existing warnings. |
@@ -44,6 +44,7 @@ Visual QA passed through a temporary, non-committed enabled-English preview on 1
 
 - Desktop viewport: home, services, contact, privacy, knowledge-base hub and a full knowledge-base article rendered with English titles, headings and chrome.
 - Mobile viewport at 390 by 844: the same representative page types rendered without horizontal overflow, missing alt attributes, broken images or application-error content.
+- The custom-software hub was additionally checked on desktop and mobile after final review: English H1, metadata, content and CTA labels; no Dutch leakage; no overflow, missing alt text or broken images; JSON-LD reported `en-BE` and English descriptions.
 - The preview found and drove fixes for a Dutch navigation CTA, Dutch hub metadata and headings, missing code-owned English defaults for public site settings, 673 non-canonical English knowledge-base relationships, and remaining Dutch breadcrumbs, search labels, filters, accessibility labels and related-content chrome.
 - A final English article scan found none of the known leaked labels (`Kennisbank`, `Zoeken`, `Zoekopdracht wissen`, `Inhoudsopgave`, `Deel dit artikel`, `Gerelateerde artikelen`, `Profielfoto van`, `Binnenkort`).
 
