@@ -30,7 +30,7 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
   const category = getLocalizedRealisatieCategoryById("applicaties", locale);
 
   const [allProjects, images] = await Promise.all([
-    getApplicationCases(),
+    getApplicationCases(locale),
     getApplicationCaseImages(),
   ]);
   const projects = allProjects.flatMap((project) => {

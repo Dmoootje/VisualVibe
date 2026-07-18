@@ -4,13 +4,14 @@ import { getSiteSettings } from "@/lib/firestore/siteSettings";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ANALYSIS_RETENTION_COPY, getPrivacyCopy } from "./privacyCopy";
+import type { SupportedLocale } from "@/i18n/locales";
 
 // ISR: adres- en contactgegevens komen uit de admin-instellingen.
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings(locale as SupportedLocale);
   const copy = getPrivacyCopy(locale, settings.companyName);
   return pageMetadata({
     title: copy.metaTitle,
@@ -27,7 +28,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings(locale as SupportedLocale);
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
   const cityLine = [settings.postalCode, settings.city].filter(Boolean).join(" ");
   const address = [streetLine, cityLine, settings.country].filter(Boolean).join(", ");

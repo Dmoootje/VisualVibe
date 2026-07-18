@@ -19,7 +19,7 @@ export default async function ApplicationCaseLayout({
   const { slug, locale: localeParam } = await params;
   const locale = localeParam as SupportedLocale;
   const [projects, images] = await Promise.all([
-    getApplicationCases(),
+    getApplicationCases(locale),
     getApplicationCaseImages(),
   ]);
 

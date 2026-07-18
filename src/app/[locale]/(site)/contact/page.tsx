@@ -16,7 +16,7 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }): Promise<Metadata> {
   const { locale } = await params;
   const copy = getCommercialCopy(locale).contact;
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings(locale);
   const place = settings.city ? ` in ${settings.city}` : "";
   return pageMetadata({
     locale,
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: S
 export default async function ContactPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const copy = getCommercialCopy(locale).contact;
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings(locale);
 
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
   const cityLine = [settings.postalCode, settings.city].filter(Boolean).join(" ");

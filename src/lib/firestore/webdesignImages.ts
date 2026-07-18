@@ -10,6 +10,7 @@ import { withTimeout } from "@/lib/firestore/withTimeout";
 const COLLECTION = "site_content";
 const DOC_ID = "webdesign_showcase";
 
+/** Image URLs are locale-neutral. Visitor-facing alt text comes from the localized project record. */
 export type WebdesignImages = Record<string, string>;
 
 /** Prefilled images: the hero preview + the Gordijnen Myriam case. */

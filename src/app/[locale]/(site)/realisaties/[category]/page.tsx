@@ -62,7 +62,7 @@ export async function generateMetadata({
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const fotoGalleryCount =
     categoryDef.id === "fotografie" && locale === "nl"
-      ? (locale === "nl" ? await getFotografieGalleries() : []).filter((gallery) => gallery.images.length > 0).length
+      ? (await getFotografieGalleries(locale)).filter((gallery) => gallery.images.length > 0).length
       : 0;
   const hasContent =
     categoryDef.id === "webdesign" ||
@@ -103,7 +103,7 @@ export default async function RealisatieCategoryPage({
   const mappedService = mappedServiceSlug ? getLocalizedServiceById(mappedServiceSlug, locale).service : undefined;
 
   const [webdesignImages, webdesignProjects] = isWebdesign
-    ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
+    ? await Promise.all([getWebdesignImages(), getWebdesignProjects(locale)])
     : [null, null];
   const localizedWebdesignProjects = (webdesignProjects?.flatMap((project) => {
     try {
@@ -119,7 +119,7 @@ export default async function RealisatieCategoryPage({
     localizedWebdesignProjects.filter((project) => project.id !== featured?.id);
 
   const fotoGalleries = isFotografie
-    ? (locale === "nl" ? await getFotografieGalleries() : []).filter((gallery) => gallery.images.length > 0)
+    ? (await getFotografieGalleries(locale)).filter((gallery) => gallery.images.length > 0)
     : [];
   const smugGalleries = isFotografie && locale === "nl" ? await getSmugMugGalleries() : [];
   const fotoStats =

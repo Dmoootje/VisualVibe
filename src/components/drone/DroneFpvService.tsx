@@ -9,6 +9,7 @@ import { DroneShowcase } from "./DroneShowcase";
 import { CursorDrone } from "./CursorDrone";
 import { Quad } from "./Quad";
 import { ArrowDown, ArrowRight, Check, DrIcon } from "./icons";
+import type { SupportedLocale } from "@/i18n/locales";
 
 // Subservice slug -> overzicht glyph.
 const OV_ICON: Record<string, string> = {
@@ -43,15 +44,17 @@ export async function DroneFpvService({
   subServices,
   relatedServices,
   crossLinks,
+  locale,
 }: {
   service: Service;
   subServices: Service[];
   relatedServices: Service[];
   /** Gedeelde cross-link-secties (kennisbank, realisaties, regio's) vanuit de dienstpagina. */
   crossLinks?: React.ReactNode;
+  locale: SupportedLocale;
 }) {
   // Admin-beheerde media (site_content/drone_showcase); valt terug op de seed.
-  const showcase = await getDroneShowcase();
+  const showcase = await getDroneShowcase(locale);
   const heroPhoto = showcase.photos[2] ?? showcase.photos[0];
 
   return (

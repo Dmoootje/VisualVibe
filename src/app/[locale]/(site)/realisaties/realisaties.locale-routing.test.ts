@@ -26,7 +26,7 @@ describe("realisation route locale integration", () => {
     expect(category).toContain("getRealisatieCategoryByLocalizedSlug");
     expect(category).toContain("getLocalizedRealisatieCategoryById");
     expect(category).toContain("getLocalizedWebdesignProject");
-    expect(category).toContain('locale === "nl" ? await getFotografieGalleries() : []');
+    expect(category).toContain("await getFotografieGalleries(locale)");
     expect(category).toContain('locale === "nl" ? await getVideografieVideos() : null');
   });
 
