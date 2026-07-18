@@ -2,18 +2,7 @@ import "server-only";
 
 import type { MetadataRoute } from "next";
 import { businessConfig } from "@/config/business.config";
-import { allServices, serviceHref } from "@/data/services";
-import { softwareServices } from "@/data/softwareServices";
-import { regions } from "@/data/regions";
-import { sectors } from "@/data/sectors";
 import { blogPosts } from "@/data/blog";
-import { cases } from "@/data/cases";
-import {
-  realisatieCategories,
-  shouldIndexRealisatieCategoryWithoutCases,
-} from "@/data/realisatieCategories";
-import { matterportTours } from "@/data/matterportTours";
-import { droneMedia } from "@/config/drone.config";
 import { getFotografieGalleries } from "@/lib/firestore/fotografieGalleries";
 import { getApplicationCases } from "@/lib/firestore/applicationCases";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
@@ -24,27 +13,23 @@ import {
   localizedPath,
   postHref,
 } from "@/lib/kennisbank/posts";
-import type { BlogLocale } from "@/types/blog";
 import { getPublishedLocales } from "@/i18n/locales";
 import type { SupportedLocale } from "@/i18n/locales";
-
-const staticPaths = [
-  "",
-  "diensten",
-  "regio",
-  "sectoren",
-  "realisaties",
-  "over-ons",
-  "contact",
-  "offerte-aanvragen",
-  "privacy",
-  "cookies",
-  "sitemap",
-  "trouwfotograaf-limburg",
-  "diensten/webdesign/website-met-ai-functionaliteiten",
-];
+import {
+  getDataPublicRoutePairs,
+  getStaticPublicRoutePairs,
+  type PublicRoutePair,
+} from "./publicPageInventory";
+import {
+  localizedPublicUrl,
+  publishedLanguageAlternates,
+  type LocalePathPair,
+} from "./publicationRoutes";
 
 const publishedLocales = getPublishedLocales();
+const publishedPublicLocales = publishedLocales.filter(
+  (locale): locale is "nl" | "en" => locale === "nl" || locale === "en",
+);
 const publishedLocaleSet = new Set<SupportedLocale>(publishedLocales);
 const indexablePosts = blogPosts.filter(
   (post) => publishedLocaleSet.has(post.locale) && !post.robots?.includes("noindex"),
@@ -54,27 +39,27 @@ const activeCategorySlugs = new Set(
 );
 activeCategorySlugs.add("software-op-maat");
 
-const softwarePaths = [
-  "diensten/software-op-maat",
-  ...softwareServices.map((service) => `diensten/software-op-maat/${service.slug}`),
-];
+function isBilingualRoute(pair: PublicRoutePair): pair is LocalePathPair {
+  return typeof pair.en === "string";
+}
 
-const dataPaths = [
-  ...allServices.map((service) => serviceHref(service).slice(1)),
-  ...softwarePaths,
-  ...regions.map((region) => `regio/${region.slug}`),
-  ...sectors.map((sector) => `sectoren/${sector.slug}`),
-];
+function publicRouteEntries(
+  pair: PublicRoutePair,
+  lastModified: Date = new Date(),
+): MetadataRoute.Sitemap {
+  const languages = isBilingualRoute(pair)
+    ? publishedLanguageAlternates(businessConfig.url, pair)
+    : undefined;
 
-const hrefLang: Record<BlogLocale, string> = {
-  nl: "nl-BE",
-  fr: "fr-BE",
-  en: "en-BE",
-};
-
-/** Normalises to a leading-and-trailing-slashed path ("" -> "/"). */
-function withSlash(path: string): string {
-  return path === "" ? "/" : `/${path}/`;
+  return publishedPublicLocales.flatMap((locale) => {
+    const routePath = locale === "nl" ? pair.nl : pair.en;
+    if (!routePath) return [];
+    return [{
+      url: localizedPublicUrl(businessConfig.url, locale, routePath),
+      lastModified,
+      alternates: languages ? { languages } : undefined,
+    }];
+  });
 }
 
 /**
@@ -94,76 +79,61 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const fotoGalleryCount = fotoGalleries.filter((gallery) => gallery.images.length > 0).length;
   const publishedApplicationProjects = applicationProjects.filter((project) => project.published);
 
-  const realisatiePaths = realisatieCategories
-    .filter(
-      (category) =>
-        category.slug === "webdesign" ||
-        category.slug === "videografie" ||
-        (category.slug === "applicaties" && publishedApplicationProjects.length > 0) ||
-        (category.slug === "3d-vr" && matterportTours.length > 0) ||
-        (category.slug === "drone" && droneMedia.length > 0) ||
-        (category.slug === "fotografie" && fotoGalleryCount > 0) ||
-        cases.some((item) => item.category === category.slug) ||
-        shouldIndexRealisatieCategoryWithoutCases(category)
-    )
-    .map((category) => `realisaties/${category.slug}`);
+  const publicRoutes = [
+    ...getStaticPublicRoutePairs(),
+    ...getDataPublicRoutePairs({
+      photographyGalleryCount: fotoGalleryCount,
+      publishedApplicationCases: publishedApplicationProjects,
+    }),
+  ];
+  const nonKennisbankEntries = publicRoutes.flatMap((pair) => publicRouteEntries(pair));
 
-  const applicationCasePaths = publishedApplicationProjects.map(
-    (project) => `realisaties/applicaties/${project.slug}`,
-  );
+  const kennisbankHubEntries = publicRouteEntries({
+    nl: "/kennisbank/",
+    en: "/kennisbank/",
+  });
+  const kennisbankCategoryEntries = kennisbankCategories
+    .filter((category) => activeCategorySlugs.has(category.slug))
+    .flatMap((category) => publicRouteEntries({
+      nl: categoryHref(category.slug),
+      en: categoryHref(category.slug),
+    }));
 
-  // Marketing routes bestaan alleen inhoudelijk in het Nederlands en worden
-  // daarom uitsluitend onder /be gepubliceerd.
-  const nonKennisbankEntries: MetadataRoute.Sitemap = [
-    ...staticPaths,
-    ...dataPaths,
-    ...realisatiePaths,
-    ...applicationCasePaths,
-  ].map((path) => ({
-    url: `${url}${localizedPath("nl", withSlash(path))}`,
-    lastModified: new Date(),
-  }));
-
-  const kennisbankEntries: MetadataRoute.Sitemap = [
-    {
-      url: `${url}${localizedPath("nl", "/kennisbank/")}`,
-      lastModified: new Date(),
-    },
-    ...kennisbankCategories
-      .filter((category) => activeCategorySlugs.has(category.slug))
-      .map((category) => ({
-        url: `${url}${localizedPath("nl", categoryHref(category.slug))}`,
-        lastModified: new Date(),
-      })),
-    ...indexablePosts.map((post) => {
-      const translations = Object.values(getPostTranslations(post.translationKey)).filter(
+  const translationKeys = [
+    ...new Set(indexablePosts.map((post) => post.translationKey)),
+  ];
+  const kennisbankArticleEntries: MetadataRoute.Sitemap = translationKeys.flatMap(
+    (translationKey) => {
+      const translations = Object.values(getPostTranslations(translationKey)).filter(
         (translation): translation is NonNullable<typeof translation> =>
           Boolean(
             translation &&
               publishedLocaleSet.has(translation.locale) &&
               !translation.robots?.includes("noindex"),
-          )
+          ),
       );
       const nlTranslation = translations.find((translation) => translation.locale === "nl");
+      const enTranslation = translations.find((translation) => translation.locale === "en");
       const languageAlternates =
-        translations.length > 1
-          ? Object.fromEntries([
-              ...translations.map((translation) => [
-                hrefLang[translation.locale],
-                `${url}${localizedPath(translation.locale, postHref(translation))}`,
-              ]),
-              ...(nlTranslation
-                ? [["x-default", `${url}${localizedPath("nl", postHref(nlTranslation))}`]]
-                : []),
-            ])
+        nlTranslation && enTranslation
+          ? publishedLanguageAlternates(url, {
+              nl: postHref(nlTranslation),
+              en: postHref(enTranslation),
+            })
           : undefined;
 
-      return {
+      return translations.map((post) => ({
         url: `${url}${localizedPath(post.locale, postHref(post))}`,
         lastModified: new Date(post.updatedAt ?? post.publishedAt),
         alternates: languageAlternates ? { languages: languageAlternates } : undefined,
-      };
-    }),
+      }));
+    },
+  );
+
+  const kennisbankEntries: MetadataRoute.Sitemap = [
+    ...kennisbankHubEntries,
+    ...kennisbankCategoryEntries,
+    ...kennisbankArticleEntries,
   ];
 
   return [...nonKennisbankEntries, ...kennisbankEntries];

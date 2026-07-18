@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `Free website analysis for SEO and performance | ${businessConfig.displayName}`,
     description: "Run a free website analysis for SEO, speed, technical issues, content and AI search visibility. Get clear priorities from VisualVibe's online tool.",
     keywords: ["free website analysis", "free SEO website analysis", "website performance analysis", "AI search visibility"],
-    path: "/website-analysis/", locale: "en", noindex: true,
+    path: "/website-analysis/", locale: "en",
     languagePaths: { nl: "/website-analyse/", en: "/website-analysis/" },
     ogImage: TOOL_PAGE_IMAGES.websiteAnalyse.url,
     ogImageAlt: "VisualVibe free website analysis for SEO, performance, technical quality and AI search visibility",
