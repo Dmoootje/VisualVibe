@@ -437,8 +437,12 @@ export function getKennisbankValidationIssues(): KennisbankValidationIssue[] {
 }
 
 /** CI/build hook: fails with a complete, actionable list of invalid live references. */
-export function assertValidKennisbankContent(): void {
-  assertValidKennisbankPosts(getAuthoredPosts());
+export function assertValidKennisbankContent(locales?: readonly SupportedLocale[]): void {
+  const authoredPosts = getAuthoredPosts();
+  const posts = locales
+    ? authoredPosts.filter((post) => locales.includes(post.locale as SupportedLocale))
+    : authoredPosts;
+  assertValidKennisbankPosts(posts);
 }
 
 // Pure URL helpers live in ./urls (no fs) so client components can use them too.

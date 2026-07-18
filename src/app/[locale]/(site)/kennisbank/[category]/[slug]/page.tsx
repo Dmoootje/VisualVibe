@@ -26,6 +26,7 @@ import { Breadcrumbs, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/co
 import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/seo";
 import { BlogHero, MdxContent, StickyBlogSidebar } from "@/components/blog";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
+import { getPublishedLocales } from "@/i18n/locales";
 
 const HREFLANG: Record<BlogLocale, string> = {
   nl: "nl-BE",
@@ -132,7 +133,8 @@ function absoluteAuthorUrl(post: BlogPost): string | undefined {
 }
 
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({
+  const publishedLocales = getPublishedLocales();
+  return getAllPosts().filter((post) => publishedLocales.includes(post.locale)).map((post) => ({
     locale: post.locale,
     category: post.categorySlug,
     slug: post.slug,
