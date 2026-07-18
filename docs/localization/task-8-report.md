@@ -211,3 +211,36 @@ This sub-scope does not modify or translate realizations or case studies, which 
 - `npm run build`: passed and generated only the currently published Dutch routes. Existing unrelated lint warnings remain non-blocking.
 - `npm run audit:locales`: completed with the pre-existing Dutch knowledge-base alt-text blocker in `wordpress-backup-maken.mdx` and informational missing English knowledge-base partners. Neither belongs to this sector and region sub-scope.
 - Repository-wide U+2014/U+2015 scan and `git diff --check`: clean.
+
+## Addendum: realisation and application content inventory
+
+### Static inventory completed
+
+- 12 realisation category owners have complete English overlays, unique display slugs, titles, descriptions, metadata and translated stat labels.
+- The case-study hub and all 12 category hubs have schema-shaped translation briefs under `docs/localization/briefs/realisations/`.
+- `src/data/cases.ts` contains no case records. Its matching English overlay is intentionally empty and tested for exact parity. No client, result or metric was invented.
+- All four checked-in application cases have complete English overlays keyed by stable ID. The overlays cover the display slug, cards, full detail copy, SEO metadata and all 12 image-slot alt texts per case.
+- All 12 checked-in web design showcase records have reviewed English card and modal fields. These records are visual showcase entries rather than indexable detail pages, so they do not receive page briefs.
+- The five checked-in Matterport tours and all checked-in drone categories, media titles and stat labels have English selectors. IDs, media URLs, locations, certification and output facts remain unchanged.
+
+### Independent editorial review
+
+- Category and hub review: `a3b74b8`. The reviewer compared the complete Dutch taxonomy with all 13 briefs and corrected source details, idiom, metadata length and search intent.
+- Application-case authoring: `1f1168c`; independent review: `fe20178`. The reviewer checked all four complete Dutch records, corrected terminology and source drift, and validated the briefs against the strict schema.
+- Empty static case inventory: `f6cc9a6`. The absence of Dutch records is explicitly protected by parity tests.
+- Web design showcase authoring: `9f8ac5d`; independent review: `70330f8`. The reviewer corrected source fidelity, project terminology and idiomatic quotation and search phrasing.
+
+### Task 11 and public-route boundary
+
+Firestore still stores legacy public free text without locale-keyed editorial fields. Task 8 does not redesign that storage.
+
+- `hubData` uses reviewed static English overlays for known web design and application IDs. Unknown Firestore-only IDs are omitted from English instead of exposing Dutch.
+- Firestore photography galleries and YouTube records are omitted from the English hub until Task 11 supplies reviewed localized public fields.
+- The Dutch hub remains unchanged and continues to show all current dynamic sources.
+- Direct public route integration is still required in `src/app/[locale]/(site)/realisaties/page.tsx`, `src/app/[locale]/(site)/realisaties/[category]/page.tsx` and the three files under `src/app/[locale]/(site)/realisaties/applicaties/`. Those callers currently render Dutch-owned static labels and call Firestore sources without the new locale selectors. They must be converted before Task 8 can be declared complete or any English test route can be exposed.
+
+### Focused verification
+
+- Six locale suites covering categories, empty cases, application cases, web design showcase records, static media and hub dynamic boundaries pass with 18 tests.
+- `npm run typecheck` passes.
+- The repository-wide U+2014/U+2015 scan returns no matches.
