@@ -37,6 +37,20 @@ describe("English public routes", () => {
     ];
 
     for (const rule of expected) expect(beforeFiles).toContainEqual(rule);
+
+    const customSoftwareIndex = beforeFiles.findIndex(
+      (rule) =>
+        (rule as { source?: string }).source ===
+        "/en/diensten/custom-software",
+    );
+    for (const rule of expected) {
+      const aliasIndex = beforeFiles.findIndex(
+        (candidate) =>
+          (candidate as { source?: string }).source === rule.source,
+      );
+      expect(aliasIndex).toBeGreaterThanOrEqual(0);
+      expect(aliasIndex).toBeLessThan(customSoftwareIndex);
+    }
   });
 
   it("keeps source-owned English links on canonical public path families", () => {

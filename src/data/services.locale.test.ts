@@ -5,7 +5,11 @@ import {
   englishServiceEditorial,
   englishSubserviceEditorial,
 } from "./locales/en/services";
-import { getLocalizedServiceById, getServiceByLocalizedSlug } from "./services";
+import {
+  getLocalizedServiceById,
+  getServiceByLocalizedSlug,
+  serviceHref,
+} from "./services";
 
 const prohibitedTypography = /[\u2014\u2015]/u;
 
@@ -69,6 +73,26 @@ describe("English service localisation", () => {
       ).toBe(true);
       expect(JSON.stringify(record)).not.toMatch(prohibitedTypography);
     }
+  });
+
+  it("keeps every generated English service link on a canonical registry path", () => {
+    const canonicalPaths = new Set(
+      [...services, ...subservices].map(({ slug }) => {
+        const localized = getLocalizedServiceById(slug, "en").service;
+        return `/en${serviceHref(localized)}/`;
+      }),
+    );
+    const invalidLinks = [
+      ...Object.values(englishServiceEditorial),
+      ...Object.values(englishSubserviceEditorial),
+    ].flatMap((record) =>
+      record.internalLinks
+        .filter(({ href }) => href.startsWith("/en/diensten/"))
+        .filter(({ href }) => !canonicalPaths.has(href))
+        .map(({ href }) => `${record.displaySlug}: ${href}`),
+    );
+
+    expect(invalidLinks).toEqual([]);
   });
 
   it("resolves English display slugs without changing stable Dutch IDs", () => {

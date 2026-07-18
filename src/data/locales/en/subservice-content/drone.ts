@@ -1,5 +1,6 @@
 import type { SubserviceEditorial } from "@/types";
 import type { EnglishServiceLocaleRecord } from "../services";
+import { getEnglishServicePublicHref } from "../servicePublicRoutes";
 
 type DroneEditorialSlug =
   | "dronefotografie"
@@ -1374,7 +1375,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       imageAlt: "Drone photography by VisualVibe in Limburg",
       internalLinks: localizedEditorial["dronefotografie"].relatedServices.map(
         (href) => ({
-          href: `/en/diensten/${href}/`,
+          href: getEnglishServicePublicHref(href),
           label: href
             .split("-")
             .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1396,7 +1397,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       imageAlt: "Drone video production by VisualVibe in Limburg",
       internalLinks: localizedEditorial["dronevideo"].relatedServices.map(
         (href) => ({
-          href: `/en/diensten/${href}/`,
+          href: getEnglishServicePublicHref(href),
           label: href
             .split("-")
             .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1418,7 +1419,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       imageAlt: "FPV Video by VisualVibe in Limburg",
       internalLinks: localizedEditorial["fpv-video"].relatedServices.map(
         (href) => ({
-          href: `/en/diensten/${href}/`,
+          href: getEnglishServicePublicHref(href),
           label: href
             .split("-")
             .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1442,7 +1443,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       internalLinks: localizedEditorial[
         "vastgoed-dronebeelden"
       ].relatedServices.map((href) => ({
-        href: `/en/diensten/${href}/`,
+        href: getEnglishServicePublicHref(href),
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1466,7 +1467,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       internalLinks: localizedEditorial[
         "realisatie-dronebeelden"
       ].relatedServices.map((href) => ({
-        href: `/en/diensten/${href}/`,
+        href: getEnglishServicePublicHref(href),
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1489,7 +1490,7 @@ export const englishDroneEditorial: Record<string, EnglishServiceLocaleRecord> =
       internalLinks: localizedEditorial[
         "event-dronebeelden"
       ].relatedServices.map((href) => ({
-        href: `/en/diensten/${href}/`,
+        href: getEnglishServicePublicHref(href),
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

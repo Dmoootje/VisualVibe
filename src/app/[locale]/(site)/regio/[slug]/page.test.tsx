@@ -36,7 +36,9 @@ describe("English region detail route", () => {
   it("keeps the Dutch detail CTA and generates only published locale-slug pairs", async () => {
     const html = renderToStaticMarkup(await RegionDetailPage({ params: Promise.resolve({ locale: "nl", slug: "limburg" }) }));
     expect(html).toContain('data-cta-href="/offerte-aanvragen"');
-    expect(generateStaticParams()).toEqual(expect.arrayContaining([{ locale: "nl", slug: "limburg" }]));
-    expect(generateStaticParams().some(({ locale }) => locale === "en")).toBe(false);
+    expect(generateStaticParams()).toEqual(expect.arrayContaining([
+      { locale: "nl", slug: "limburg" },
+      { locale: "en", slug: "limburg-belgium" },
+    ]));
   });
 });

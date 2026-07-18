@@ -47,8 +47,10 @@ describe("English sector routes", () => {
 
     expect(hubHtml).toContain('data-cta-href="/offerte-aanvragen"');
     expect(detailHtml).toContain('data-cta-href="/offerte-aanvragen"');
-    expect(detail.generateStaticParams()).toEqual(expect.arrayContaining([{ locale: "nl", slug: "bouw-renovatie" }]));
-    expect(detail.generateStaticParams().some(({ locale }) => locale === "en")).toBe(false);
+    expect(detail.generateStaticParams()).toEqual(expect.arrayContaining([
+      { locale: "nl", slug: "bouw-renovatie" },
+      { locale: "en", slug: "construction-renovation" },
+    ]));
   });
 
   it("renders an English detail route with localized services, regions and no dynamic Dutch fallback", async () => {

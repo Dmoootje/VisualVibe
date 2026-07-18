@@ -65,11 +65,20 @@ if (
 ) {
   throw new Error("Invalid locale configuration: expected exactly nl, en, fr, and de with valid statuses");
 }
-const publishedLocales = locales.filter(({ status }) => status === "published").map(({ locale }) => locale);
-if (publishedLocales.length !== 1 || publishedLocales[0] !== "nl") {
-  throw new Error("Invalid locale configuration: only nl may be published");
-}
 const statuses = new Map(locales.map(({ locale, status }) => [locale, status]));
+const publishedLocales = locales
+  .filter(({ status }) => status === "published")
+  .map(({ locale }) => locale)
+  .sort();
+if (
+  JSON.stringify(publishedLocales) !== JSON.stringify(["en", "nl"]) ||
+  statuses.get("fr") !== "disabled" ||
+  statuses.get("de") !== "disabled"
+) {
+  throw new Error(
+    "Invalid locale configuration: nl and en must be published; fr and de must be disabled",
+  );
+}
 const issues = [];
 
 function add(code, locale, source, message) {
