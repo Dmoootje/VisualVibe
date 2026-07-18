@@ -80,6 +80,8 @@ describe("English realisation category runtime", () => {
 
     expect(getWebdesignProjects).toHaveBeenCalledWith("nl");
     expect(html).toContain("English featured project");
+    expect(html).toContain("Explore our approach, what we do for you and answers to frequently asked questions.");
+    expect(html).not.toContain("Ontdek onze aanpak");
   });
 
   it("keeps the empty English photography category free of Dutch gallery data", async () => {

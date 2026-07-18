@@ -181,7 +181,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* Background comes from the site-wide SiteBackground in the layout. */}
       <Hero />
       <Features />
-      <RegionIntro />
+      <RegionIntro locale={en ? "en" : "nl"} />
       <SectorIntro />
       <HowItWorks />
       <HomepageReviewSignal locale={locale} />

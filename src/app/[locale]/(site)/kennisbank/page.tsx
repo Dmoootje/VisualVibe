@@ -7,7 +7,10 @@ import {
   isBlogLocale,
   localizedPath,
 } from "@/lib/kennisbank/posts";
-import { kennisbankCategories } from "@/data/kennisbankCategories";
+import {
+  getLocalizedKennisbankCategoryById,
+  kennisbankCategories,
+} from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { KennisbankLandingView, knowledgeBaseLabels } from "@/components/kennisbank";
@@ -89,12 +92,15 @@ export default async function KennisbankHubPage({
 
   // All eight registered categories with live counts (Blader per onderwerp);
   // the subset with content drives the filter chips + sidebar.
-  const allCategories: KbCategoryData[] = kennisbankCategories.map((category) => ({
-    slug: category.slug,
-    name: locale === "en" ? (getPostsByCategory(category.slug, locale)[0]?.category ?? category.name) : category.name,
-    description: locale === "en" ? `Practical guides for SMEs about ${getPostsByCategory(category.slug, locale)[0]?.category ?? category.name}.` : category.description,
-    count: getPostsByCategory(category.slug, locale).length,
-  }));
+  const allCategories: KbCategoryData[] = kennisbankCategories.map((category) => {
+    const localized = getLocalizedKennisbankCategoryById(category.slug, locale);
+    return {
+      slug: localized.slug,
+      name: localized.name,
+      description: localized.description,
+      count: getPostsByCategory(category.slug, locale).length,
+    };
+  });
   const activeCategories = allCategories.filter((category) => category.count > 0);
 
   // Featured = newest pillar guide, else the newest post; excluded from the grid.

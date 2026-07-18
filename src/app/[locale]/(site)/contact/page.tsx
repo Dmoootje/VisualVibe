@@ -118,6 +118,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         {/* Map section */}
         <div className="mt-10">
           <ContactMap
+            locale={locale}
             embedUrl={settings.googleMapsEmbedUrl}
             latitude={settings.latitude}
             longitude={settings.longitude}

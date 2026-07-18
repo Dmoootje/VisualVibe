@@ -2,7 +2,15 @@ import { Link } from "@/i18n/navigation";
 import { MapPin } from "lucide-react";
 import type { Region } from "@/types";
 
-export function RegionCard({ region, showIntro = false }: { region: Region; showIntro?: boolean }) {
+export function RegionCard({
+  region,
+  showIntro = false,
+  locale = "nl",
+}: {
+  region: Region;
+  showIntro?: boolean;
+  locale?: string;
+}) {
   return (
     <Link
       href={`/regio/${region.slug}`}
@@ -11,7 +19,9 @@ export function RegionCard({ region, showIntro = false }: { region: Region; show
       <span className="flex items-center gap-2 text-white/60">
         <MapPin className="h-4 w-4" />
         <span className="text-xs uppercase tracking-wide">
-          {region.type === "province" ? "Thuisregio" : "Regio"}
+          {locale === "en"
+            ? region.type === "province" ? "Home region" : "Region"
+            : region.type === "province" ? "Thuisregio" : "Regio"}
         </span>
       </span>
       <span className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">

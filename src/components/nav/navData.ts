@@ -10,10 +10,17 @@ import {
   softwareServiceHubHref,
 } from "@/data/softwareServices";
 import { getLocalizedRegionById, regions } from "@/data/regions";
-import { sectors } from "@/data/sectors";
-import { kennisbankCategories } from "@/data/kennisbankCategories";
-import { realisatieCategories } from "@/data/realisatieCategories";
+import { getLocalizedSectorById, sectors } from "@/data/sectors";
+import {
+  getLocalizedKennisbankCategoryById,
+  kennisbankCategories,
+} from "@/data/kennisbankCategories";
+import {
+  getLocalizedRealisatieCategoryById,
+  realisatieCategories,
+} from "@/data/realisatieCategories";
 import { toolCards } from "@/data/tools";
+import { englishToolCards } from "@/data/toolsEnglish";
 import type { PublicChromeLocale } from "./chromeRoutes";
 
 export type NavLink = { name: string; href: string };
@@ -212,40 +219,68 @@ export const KENNISBANK_ICON: Record<string, string> = {
 };
 
 // Sectoren cards (all 10 sectors, sector-sprite icons + their eyebrow tag).
-export const sectorCards: NavCard[] = sectors.map((sector) => ({
-  name: sector.title,
-  href: `/sectoren/${sector.slug}`,
-  icon: sector.icon ?? "kmo",
-  iconKind: "sector",
-  desc: sector.tag ?? sector.cardDescription ?? "",
-}));
+export function getSectorCards(locale: PublicChromeLocale): NavCard[] {
+  return sectors.map((sourceSector) => {
+    const sector = getLocalizedSectorById(sourceSector.slug, locale);
+    return {
+      name: sector.title,
+      href: `/sectoren/${sector.slug}`,
+      icon: sector.icon ?? "kmo",
+      iconKind: "sector",
+      desc: sector.tag ?? sector.cardDescription ?? "",
+    };
+  });
+}
+
+export const sectorCards: NavCard[] = getSectorCards("nl");
 
 // De categorievolgorde komt uit realisatieCategories. Applicaties staat daar
 // direct na Webdesign, en verschijnt dus op exact die plek in desktop én mobiel.
-export const realisatieCards: NavCard[] = realisatieCategories.map((category) => ({
-  name: REALISATIE_MENU_COPY[category.slug]?.name ?? category.name,
-  href: `/realisaties/${category.slug}`,
-  icon: REALISATIE_ICON[category.slug] ?? "layers",
-  desc: REALISATIE_MENU_COPY[category.slug]?.desc ?? category.description,
-}));
+export function getRealisatieCards(locale: PublicChromeLocale): NavCard[] {
+  return realisatieCategories.map((sourceCategory) => {
+    const category = getLocalizedRealisatieCategoryById(sourceCategory.slug, locale);
+    const menuCopy = locale === "nl" ? REALISATIE_MENU_COPY[sourceCategory.slug] : undefined;
+    return {
+      name: menuCopy?.name ?? category.name,
+      href: `/realisaties/${category.slug}`,
+      icon: REALISATIE_ICON[sourceCategory.slug] ?? "layers",
+      desc: menuCopy?.desc ?? category.description,
+    };
+  });
+}
 
-export const toolsCards: NavCard[] = toolCards.map((tool) => ({
-  name: tool.name,
-  href: tool.href,
-  icon: tool.icon,
-  desc: tool.desc,
-}));
+export const realisatieCards: NavCard[] = getRealisatieCards("nl");
+
+export function getToolsCards(locale: PublicChromeLocale): NavCard[] {
+  const tools = locale === "en" ? englishToolCards : toolCards;
+  return tools.map((tool) => ({
+    name: tool.name,
+    href: tool.href.replace(/^\/en(?=\/)/, ""),
+    icon: tool.icon,
+    desc: tool.desc,
+  }));
+}
+
+export const toolsCards: NavCard[] = getToolsCards("nl");
 
 /** Build a kennisbank card for a category (the Header filters to non-empty ones). */
-export function kennisbankCard(category: { slug: string; name: string; description: string }): NavCard {
+export function kennisbankCard(
+  category: { slug: string; name: string; description: string },
+  locale: PublicChromeLocale = "nl",
+): NavCard {
+  const localized = getLocalizedKennisbankCategoryById(category.slug, locale);
   return {
-    name: category.name,
-    href: `/kennisbank/${category.slug}`,
-    icon: KENNISBANK_ICON[category.slug] ?? "book",
-    desc: category.description,
+    name: localized.name,
+    href: `/kennisbank/${localized.slug}`,
+    icon: KENNISBANK_ICON[localized.slug] ?? "book",
+    desc: localized.description,
   };
+}
+
+export function getKennisbankCards(locale: PublicChromeLocale): NavCard[] {
+  return kennisbankCategories.map((category) => kennisbankCard(category, locale));
 }
 
 // Default kennisbank cards (all registered categories); the Header narrows this
 // to only categories that actually have posts.
-export const kennisbankCards: NavCard[] = kennisbankCategories.map(kennisbankCard);
+export const kennisbankCards: NavCard[] = getKennisbankCards("nl");

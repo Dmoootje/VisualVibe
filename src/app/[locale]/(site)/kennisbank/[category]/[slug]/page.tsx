@@ -16,7 +16,10 @@ import {
 } from "@/lib/kennisbank/posts";
 import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { extractToc } from "@/lib/kennisbank/toc";
-import { getCategoryBySlug } from "@/data/kennisbankCategories";
+import {
+  getCategoryBySlug,
+  getLocalizedKennisbankCategoryById,
+} from "@/data/kennisbankCategories";
 import { serviceHref } from "@/data/services";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { businessConfig } from "@/config/business.config";
@@ -256,7 +259,9 @@ export default async function KennisbankPostPage({
   }
 
   const categoryDef = getCategoryBySlug(post.categorySlug);
-  const categoryName = categoryDef?.name ?? post.category;
+  const categoryName = categoryDef
+    ? getLocalizedKennisbankCategoryById(categoryDef.slug, post.locale).name
+    : post.category;
 
   const relatedServices = (post.relatedServices ?? [])
     .map((servicePath) => resolveKnowledgeBaseService(servicePath, post.locale))
@@ -344,6 +349,7 @@ export default async function KennisbankPostPage({
       <Section variant="pageHero" orbs="none" className="!bg-transparent">
         <Container>
           <Breadcrumbs
+            locale={post.locale}
             className="mb-6"
             items={[
               { name: "Home", href: "/" },
@@ -424,7 +430,7 @@ export default async function KennisbankPostPage({
             {relatedRegions.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-4">{labels.relatedRegions}</h2>
-                <RegionGrid regions={relatedRegions} showIntro={false} />
+                <RegionGrid regions={relatedRegions} showIntro={false} locale={post.locale} />
               </div>
             )}
           </Container>

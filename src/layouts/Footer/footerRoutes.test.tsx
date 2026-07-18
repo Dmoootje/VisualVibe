@@ -19,7 +19,14 @@ vi.mock("next-intl/server", () => ({
 }));
 
 vi.mock("@/lib/firestore/siteSettings", () => ({
-  getSiteSettings: async () => ({}),
+  getSiteSettings: async () => ({
+    street: "Example street",
+    houseNumber: "1",
+    postalCode: "3500",
+    city: "Hasselt",
+    country: "België",
+    fullAddress: "Example street 1, 3500 Hasselt, België",
+  }),
 }));
 
 import { Footer } from "./index";
@@ -36,6 +43,8 @@ describe("rendered footer routes", () => {
     expect(html).not.toContain('href="/regio/limburg"');
     expect(html).not.toContain('href="/over-ons"');
     expect(html).not.toContain('href="/trouwfotograaf-limburg"');
+    expect(html).toContain("Belgium");
+    expect(html).not.toContain("België");
   });
 
   it("retains the Dutch footer routes", async () => {
@@ -46,5 +55,6 @@ describe("rendered footer routes", () => {
     expect(html).toContain('href="/regio/limburg"');
     expect(html).toContain('href="/over-ons"');
     expect(html).toContain('href="/trouwfotograaf-limburg"');
+    expect(html).toContain("België");
   });
 });

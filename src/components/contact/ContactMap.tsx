@@ -8,6 +8,7 @@ type ContactMapProps = {
   markerTitle?: string;
   addressLines: string[];
   routeUrl?: string;
+  locale?: string;
 };
 
 /**
@@ -22,6 +23,7 @@ export function ContactMap({
   markerTitle,
   addressLines,
   routeUrl,
+  locale = "nl",
 }: ContactMapProps) {
   // Only iframe a genuinely embeddable Google Maps URL; a bad/relative value
   // would otherwise render this app's own 404 inside the map.
@@ -66,7 +68,7 @@ export function ContactMap({
             className="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-500/40 px-3.5 py-2 text-sm font-medium text-amber-400 transition-colors hover:bg-amber-500/10 hover:text-amber-300"
           >
             <Navigation className="h-4 w-4" aria-hidden="true" />
-            Bekijk route
+            {locale === "en" ? "View route" : "Bekijk route"}
           </a>
         </div>
       </div>

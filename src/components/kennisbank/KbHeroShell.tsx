@@ -25,6 +25,7 @@ export function KbHeroShell({
   graphic,
   backgroundImage,
   backgroundImageAlt,
+  locale = "nl",
 }: {
   breadcrumb: KbBreadcrumb[];
   eyebrow: { icon: React.ReactNode; label: string };
@@ -42,6 +43,7 @@ export function KbHeroShell({
    * wel context. Leeg = geen alt (puur decoratief).
    */
   backgroundImageAlt?: string;
+  locale?: string;
 }) {
   return (
     <header className="relative overflow-hidden border-b border-white/[0.06] pb-11 pt-28 sm:pt-32 md:pt-36">
@@ -79,7 +81,7 @@ export function KbHeroShell({
 
       <div className="container relative z-[2] mx-auto px-2.5 sm:px-4">
         <nav
-          aria-label="Kruimelpad"
+          aria-label={locale === "en" ? "Breadcrumbs" : "Kruimelpad"}
           className="mb-7 flex items-center gap-2 text-xs font-semibold text-white/40"
           style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
         >

@@ -180,6 +180,7 @@ export default async function SoftwareKennisbankPage({
       />
 
       <KbHeroShell
+        locale={locale}
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: labels.knowledgeBase, href: "/kennisbank/" },

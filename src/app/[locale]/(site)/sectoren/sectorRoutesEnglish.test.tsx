@@ -11,7 +11,7 @@ vi.mock("@/components/seo", () => ({
   JsonLd: ({ data }: { data: unknown }) => <script data-jsonld={JSON.stringify(data)} />,
 }));
 vi.mock("@/components/sections", () => ({
-  CTASection: ({ title, description, primaryHref }: { title: string; description?: string; primaryHref?: string }) => <section data-cta-href={primaryHref}>{title}{description}</section>,
+  CTASection: ({ title, description, primaryHref, primaryLabel }: { title: string; description?: string; primaryHref?: string; primaryLabel?: string }) => <section data-cta-href={primaryHref} data-cta-label={primaryLabel}>{title}{description}{primaryLabel}</section>,
   ServiceGrid: ({ services }: { services: Array<{ title: string; slug: string }> }) => <div>{services.map((service) => <a key={service.slug} href={`/diensten/${service.slug}`}>{service.title}</a>)}</div>,
   ProcessSteps: ({ steps }: { steps: Array<{ title: string }> }) => <div>{steps.map((step) => <span key={step.title}>{step.title}</span>)}</div>,
 }));
@@ -47,6 +47,7 @@ describe("English sector routes", () => {
 
     expect(hubHtml).toContain('data-cta-href="/offerte-aanvragen"');
     expect(detailHtml).toContain('data-cta-href="/offerte-aanvragen"');
+    expect(detailHtml).toContain('href="/offerte-aanvragen"');
     expect(detail.generateStaticParams()).toEqual(expect.arrayContaining([
       { locale: "nl", slug: "bouw-renovatie" },
       { locale: "en", slug: "construction-renovation" },
@@ -71,6 +72,10 @@ describe("English sector routes", () => {
     expect(html).toContain("Limburg, Belgium");
     expect(html).toContain("/regio/limburg-belgium");
     expect(html).toContain('data-cta-href="/request-a-quotation/"');
+    expect(html).toContain('data-cta-label="Request a quotation"');
+    expect(html).toContain('href="/request-a-quotation"');
+    expect(html).toContain("Request a quotation");
+    expect(html).not.toContain('href="/offerte-aanvragen"');
     expect(html).toContain('/en/kennisbank/');
     expect(html).not.toContain('/be/kennisbank/');
     expect(html).not.toContain("Andere sectoren");

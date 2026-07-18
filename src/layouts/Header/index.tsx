@@ -4,10 +4,10 @@ import { Nav } from "@/components/nav/Nav";
 import {
   getNavPillars,
   getNavRegions,
+  getRealisatieCards,
+  getSectorCards,
+  getToolsCards,
   kennisbankCard,
-  realisatieCards,
-  sectorCards,
-  toolsCards,
   type NavCard,
 } from "@/components/nav/navData";
 import { GOOGLE_MAPS_PROFILE_URL, getGoogleRatingSummary } from "@/lib/reviews/google";
@@ -27,7 +27,7 @@ export async function Header({ locale }: { locale: string }) {
             ? blogLocale === "nl"
             : getPostsByCategory(category.slug, blogLocale).length > 0
         )
-        .map(kennisbankCard)
+        .map((category) => kennisbankCard(category, publicLocale))
     : [];
 
   const ratingSummary = await getGoogleRatingSummary();
@@ -38,9 +38,9 @@ export async function Header({ locale }: { locale: string }) {
       locale={publicLocale}
       pillars={getNavPillars(publicLocale)}
       regions={getNavRegions(publicLocale)}
-      sectorCards={sectorCards}
-      realisatieCards={realisatieCards}
-      toolsCards={toolsCards}
+      sectorCards={getSectorCards(publicLocale)}
+      realisatieCards={getRealisatieCards(publicLocale)}
+      toolsCards={getToolsCards(publicLocale)}
       kennisbankItems={kennisbankItems}
       kennisbankPostCount={localizedPosts.length}
       googleRating={googleRating}

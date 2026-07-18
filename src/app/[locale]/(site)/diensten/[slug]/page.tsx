@@ -207,7 +207,7 @@ export default async function ServiceDetailPage({
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {localizedRegions.map((region) => (
-            <RegionMapCard key={region.slug} region={region} />
+            <RegionMapCard key={region.slug} region={region} locale={locale} />
           ))}
         </div>
       </Container>

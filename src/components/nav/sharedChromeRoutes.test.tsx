@@ -23,6 +23,12 @@ vi.mock("next-intl", () => ({
 }));
 
 import { MobileNavDrawer } from "./MobileNavDrawer";
+import {
+  getKennisbankCards,
+  getRealisatieCards,
+  getSectorCards,
+  getToolsCards,
+} from "./navData";
 
 const sharedProps = {
   pillars: [{
@@ -44,13 +50,27 @@ const sharedProps = {
 
 describe("rendered mobile chrome routes", () => {
   it("renders canonical aliases and no Dutch-only wedding link in English", () => {
-    const html = renderToStaticMarkup(<MobileNavDrawer {...sharedProps} locale="en" />);
+    const html = renderToStaticMarkup(
+      <MobileNavDrawer
+        {...sharedProps}
+        locale="en"
+        sectorCards={getSectorCards("en")}
+        realisatieCards={getRealisatieCards("en")}
+        toolsCards={getToolsCards("en")}
+        kennisbankItems={getKennisbankCards("en")}
+      />
+    );
 
     expect(html).toContain('href="/about"');
     expect(html).toContain('href="/request-a-quotation"');
     expect(html).not.toContain('href="/over-ons"');
     expect(html).not.toContain('href="/offerte-aanvragen"');
     expect(html).not.toContain('href="/trouwfotograaf-limburg"');
+    expect(html).toContain("Construction and renovation");
+    expect(html).toContain("Photography");
+    expect(html).toContain("Website analysis");
+    expect(html).not.toContain('href="/en/website-analysis/"');
+    expect(html).not.toContain('href="/realisaties/fotografie"');
   });
 
   it("retains Dutch aliases and the wedding link in Dutch", () => {

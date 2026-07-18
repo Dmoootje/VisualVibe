@@ -223,8 +223,9 @@ export default async function RealisatieCategoryPage({
                     {en ? `Learn more about ${mappedService.title}` : `Meer weten over onze dienst ${mappedService.title}?`}
                   </h2>
                   <p className="mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/60">
-                    Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde
-                    vragen.
+                    {en
+                      ? "Explore our approach, what we do for you and answers to frequently asked questions."
+                      : "Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde vragen."}
                   </p>
                 </div>
                 <Link

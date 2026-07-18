@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { getNavPillars, getNavRegions, toolsCards } from "./navData";
+import {
+  getKennisbankCards,
+  getNavPillars,
+  getNavRegions,
+  getRealisatieCards,
+  getSectorCards,
+  getToolsCards,
+  toolsCards,
+} from "./navData";
 
 describe("navigation tools cards", () => {
   it("exposes website analysis and SEO/GEO checklist in the menu data", () => {
@@ -19,6 +27,45 @@ describe("navigation tools cards", () => {
 });
 
 describe("localized navigation routes", () => {
+  it("builds every English overlay card from a stable localized registry", () => {
+    expect(getSectorCards("en")).toContainEqual(expect.objectContaining({
+      name: "Construction and renovation",
+      href: "/sectoren/construction-renovation",
+    }));
+    expect(getRealisatieCards("en")).toContainEqual(expect.objectContaining({
+      name: "Photography",
+      href: "/realisaties/photography",
+    }));
+    expect(getToolsCards("en")).toContainEqual(expect.objectContaining({
+      name: "Website analysis",
+      href: "/website-analysis/",
+    }));
+    expect(getKennisbankCards("en")).toContainEqual(expect.objectContaining({
+      name: "Photography",
+      href: "/kennisbank/fotografie",
+      desc: expect.stringContaining("photography"),
+    }));
+
+    const hrefs = [
+      ...getRealisatieCards("en"),
+      ...getToolsCards("en"),
+    ].map((card) => card.href);
+    expect(hrefs.every((href) => !href.startsWith("/en/"))).toBe(true);
+    expect(hrefs).not.toContain("/realisaties/fotografie");
+  });
+
+  it("keeps the existing Dutch overlay cards unchanged", () => {
+    expect(getToolsCards("nl")).toEqual(toolsCards);
+    expect(getRealisatieCards("nl")).toContainEqual(expect.objectContaining({
+      name: "Fotografie",
+      href: "/realisaties/fotografie",
+    }));
+    expect(getKennisbankCards("nl")).toContainEqual(expect.objectContaining({
+      name: "Fotografie",
+      href: "/kennisbank/fotografie",
+    }));
+  });
+
   it("resolves English service and software links from stable IDs", () => {
     const pillars = getNavPillars("en");
     const webDesign = pillars.find((pillar) => pillar.id === "webdesign");

@@ -4,6 +4,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { knowledgeBaseLabels } from "./localization";
 import { SearchBar } from "./SearchBar";
+import { toArticleCardData } from "./data";
+import type { BlogPost } from "@/types";
+import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 
 const read = (path: string) => readFileSync(path, "utf8");
 
@@ -84,5 +87,30 @@ describe("English knowledge-base chrome", () => {
     expect(html).toContain('aria-label="Clear search"');
     expect(html).not.toContain("Zoeken");
     expect(html).not.toContain("Zoekopdracht wissen");
+  });
+
+  it("localizes article-card category names and dates from the post locale", () => {
+    const post = {
+      locale: "en",
+      slug: "example",
+      categorySlug: "fotografie",
+      category: "Fotografie",
+      title: "Photography guide",
+      excerpt: "Example",
+      publishedAt: "2026-07-17T12:00:00.000Z",
+      author: "VisualVibe",
+      content: "",
+    } as BlogPost;
+
+    expect(toArticleCardData(post)).toMatchObject({
+      categoryName: "Photography",
+      date: expect.stringMatching(/17 July 2026/),
+    });
+    expect(toArticleCardData({ ...post, locale: "nl" })).toMatchObject({
+      categoryName: "Fotografie",
+      date: expect.stringMatching(/17 juli 2026/),
+    });
+    expect(toBlogCardPost(post).category).toBe("Photography");
+    expect(toBlogCardPost({ ...post, locale: "nl" }).category).toBe("Fotografie");
   });
 });

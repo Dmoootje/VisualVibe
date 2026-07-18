@@ -35,8 +35,14 @@ export async function Footer() {
 
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
   const cityLine = [settings.postalCode, settings.city].filter(Boolean).join(" ");
+  const displayCountry = locale === "en" && settings.country === "België"
+    ? "Belgium"
+    : settings.country;
+  const fallbackAddress = locale === "en"
+    ? settings.fullAddress?.replace(/België$/, "Belgium")
+    : settings.fullAddress;
   const addressLine =
-    [streetLine, cityLine, settings.country].filter(Boolean).join(", ") || settings.fullAddress || "";
+    [streetLine, cityLine, displayCountry].filter(Boolean).join(", ") || fallbackAddress || "";
 
   return (
     <footer className="vv-anim relative overflow-hidden bg-black text-white">

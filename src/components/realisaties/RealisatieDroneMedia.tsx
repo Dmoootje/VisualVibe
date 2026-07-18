@@ -9,6 +9,25 @@ import type { SupportedLocale } from "@/i18n/locales";
 
 const ALL = "all";
 
+const COPY = {
+  nl: {
+    featured: "UITGELICHT",
+    featuredCaseStudy: "UITGELICHTE REALISATIE",
+    featuredDescription: "Vloeiende luchtbeelden die de schaal en context van het project tonen - gedraaid met een gecertificeerde drone in 4K.",
+    filterDescription: "Filter op categorie of bekijk alle beelden - klik om te openen.",
+    emptyAppend: "We voegen hier binnenkort beelden aan toe.",
+    goTo: "Ga naar",
+  },
+  en: {
+    featured: "Featured",
+    featuredCaseStudy: "Featured case study",
+    featuredDescription: "Smooth aerial footage that shows the scale and context of the project, filmed in 4K by a certified drone operator.",
+    filterDescription: "Filter by category or view all footage - click an item to open it.",
+    emptyAppend: "We will add footage to this category soon.",
+    goTo: "Go to",
+  },
+} as const;
+
 function ytThumb(id: string): string {
   return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 }
@@ -49,6 +68,7 @@ export function RealisatieDroneMedia({
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const copy = locale === "en" ? COPY.en : COPY.nl;
 
   useEffect(() => setMounted(true), []);
 
@@ -90,7 +110,7 @@ export function RealisatieDroneMedia({
 
   const catDesc =
     categories.find((c) => c.name === cat)?.description ??
-    "Filter op categorie of bekijk alle beelden - klik om te openen.";
+    copy.filterDescription;
 
   const featured = media[0];
   const current = media[idx];
@@ -122,7 +142,7 @@ export function RealisatieDroneMedia({
               <span className="absolute bottom-0 right-0 h-[18px] w-[18px] border-b-2 border-r-2 border-white/75" />
             </div>
             <span className="absolute left-4 top-3.5 z-[2] inline-flex items-center gap-[7px] rounded-lg bg-[rgba(6,8,6,.6)] px-[11px] py-1.5 font-mono text-[10.5px] font-bold tracking-[0.06em] text-white backdrop-blur">
-              <span className="fg-rec h-[7px] w-[7px] rounded-full bg-[#FF3B2E]" />UITGELICHT
+              <span className="fg-rec h-[7px] w-[7px] rounded-full bg-[#FF3B2E]" />{copy.featured}
             </span>
             <span className="fg-giris absolute left-1/2 top-1/2 z-[2] flex h-[74px] w-[74px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-[0_18px_42px_-14px_rgba(255,90,0,0.9)]" style={{ background: "linear-gradient(135deg,#FF3B2E,#FF7A00)" }}>
               <PlayIcon size={30} />
@@ -131,7 +151,7 @@ export function RealisatieDroneMedia({
 
           <div>
             <div className="mb-[22px] inline-flex items-center gap-2.5 rounded-full border border-[rgba(255,122,0,0.25)] bg-[rgba(255,122,0,0.1)] px-[15px] py-2 font-mono text-xs font-bold tracking-[0.1em] text-[#FF9A45]">
-              <span className="vvw-liveDot h-[7px] w-[7px] rounded-full bg-[#FF7A00]" />UITGELICHTE REALISATIE
+              <span className="vvw-liveDot h-[7px] w-[7px] rounded-full bg-[#FF7A00]" />{copy.featuredCaseStudy}
             </div>
             <div className="mb-3 inline-flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">
               <FiIcon id="video" size={14} className="text-[#FF9A45]" />
@@ -141,7 +161,7 @@ export function RealisatieDroneMedia({
               {featured.title}
             </h2>
             <p className="mb-[30px] max-w-[460px] text-[16.5px] leading-[1.65] text-white/[0.68]">
-              Vloeiende luchtbeelden die de schaal en context van het project tonen - gedraaid met een gecertificeerde drone in 4K.
+              {copy.featuredDescription}
             </p>
             <button
               type="button"
@@ -234,7 +254,7 @@ export function RealisatieDroneMedia({
             </span>
             <h3 className="font-sora mb-2.5 text-[22px] font-bold text-white">{locale === "en" ? "Work in this category is coming soon" : "Binnenkort werk in deze categorie"}</h3>
             <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-white/55">
-              {catDesc} We voegen hier binnenkort beelden aan toe.
+              {catDesc} {copy.emptyAppend}
             </p>
           </div>
         )}
@@ -289,7 +309,7 @@ export function RealisatieDroneMedia({
                   key={`${m.title}-${k}`}
                   type="button"
                   onClick={() => setIdx(k)}
-                  aria-label={`Ga naar ${m.title}`}
+                  aria-label={`${copy.goTo} ${m.title}`}
                   className={`fg-lbthumb relative h-[59px] w-[104px] flex-none overflow-hidden rounded-[9px] border-2 bg-[#0b0a09] ${k === idx ? "on border-[#FF7A00]" : "border-white/[0.12]"}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}

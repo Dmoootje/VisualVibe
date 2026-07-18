@@ -38,6 +38,20 @@ describe("published knowledge-base metadata", () => {
     expect(metadata.alternates?.languages).not.toHaveProperty("de-DE");
   });
 
+  it("uses the central English category overlay in photography metadata and hero copy", async () => {
+    const page = await import("./[category]/page");
+    const params = Promise.resolve({ locale: "en", category: "fotografie" });
+    const metadata = await page.generateMetadata({ params });
+    const html = renderToStaticMarkup(await page.default({ params }));
+
+    expect(metadata.title).toMatchObject({
+      absolute: expect.stringContaining("Photography"),
+    });
+    expect(metadata.description).toContain("photography");
+    expect(html).toContain("Knowledge base: Photography by VisualVibe");
+    expect(html).not.toContain("Knowledge base: Fotografie by VisualVibe");
+  });
+
   it("links the bilingual custom-software knowledge category", async () => {
     const page = await import("./software-op-maat/page");
     const metadata = await page.generateMetadata({

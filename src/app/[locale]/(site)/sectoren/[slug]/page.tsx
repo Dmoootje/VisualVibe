@@ -222,6 +222,7 @@ export default async function SectorDetailPage({
         title={sector.ctaTitle ?? (en ? `Working in ${sector.title.toLowerCase()}? Let's talk.` : `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`)}
         description={sector.ctaText}
         primaryHref={en ? englishSectorEditorial[sector.id].cta.href : "/offerte-aanvragen"}
+        primaryLabel={en ? "Request a quotation" : undefined}
       />
     </div>
   );
