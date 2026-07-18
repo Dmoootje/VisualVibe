@@ -1,18 +1,20 @@
 import type { NormalizedPartnerAuditReport } from "@/types/analysis";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportPageDetails({ report }: { report: NormalizedPartnerAuditReport }) {
+export function ReportPageDetails({ report, locale = "nl" }: { report: NormalizedPartnerAuditReport; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
+  const en = locale === "en";
   const values = [
-    ["Geanalyseerde URL", report.url],
+    [en ? "Analysed URL" : "Geanalyseerde URL", report.url],
     ["Meta title", report.page.metaTitle],
     ["Meta description", report.page.metaDescription],
     ["H1", report.page.h1],
     ["Canonical", report.page.canonical],
-    ["Taal", report.page.language],
-    ["Indexeerbaar", report.page.indexable === undefined ? undefined : report.page.indexable ? "Ja" : "Nee"],
-    ["Client-side rendering", report.technical.csrDetected === undefined ? undefined : report.technical.csrDetected ? "Gedetecteerd" : "Niet gedetecteerd"],
-    ["Gerenderde inhoud", report.technical.renderedAvailable === undefined ? undefined : report.technical.renderedAvailable ? "Beschikbaar" : "Niet beschikbaar"],
+    [en ? "Language" : "Taal", report.page.language],
+    [en ? "Indexable" : "Indexeerbaar", report.page.indexable === undefined ? undefined : report.page.indexable ? (en ? "Yes" : "Ja") : (en ? "No" : "Nee")],
+    ["Client-side rendering", report.technical.csrDetected === undefined ? undefined : report.technical.csrDetected ? (en ? "Detected" : "Gedetecteerd") : (en ? "Not detected" : "Niet gedetecteerd")],
+    [en ? "Rendered content" : "Gerenderde inhoud", report.technical.renderedAvailable === undefined ? undefined : report.technical.renderedAvailable ? (en ? "Available" : "Beschikbaar") : (en ? "Not available" : "Niet beschikbaar")],
   ].filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].length > 0);
 
   if (values.length === 0) return null;

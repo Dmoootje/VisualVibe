@@ -75,4 +75,17 @@ describe("WebsiteAnalysePage", () => {
     expect(html).toContain("Is de website analyse gratis?");
     expect(html).toContain("Kan ik mijn website opnieuw analyseren?");
   });
+
+  it("renders a complete English landing page with localised SEO and links", async () => {
+    const { default: WebsiteAnalysePage, generateMetadata } = await loadPageModule();
+    const metadata = await generateMetadata({ params: Promise.resolve({ locale: "en" }) });
+    const html = renderToStaticMarkup(await WebsiteAnalysePage({ params: Promise.resolve({ locale: "en" }) }));
+    expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Free website analysis") });
+    expect(metadata.robots).toMatchObject({ index: false, follow: true });
+    expect(html).toContain("What does our website analysis check?");
+    expect(html).toContain("Is the website analysis free?");
+    expect(html).toContain("/en/services/seo/");
+    expect(html).not.toContain("Wat controleert");
+    expect(html).not.toContain("/be/");
+  });
 });

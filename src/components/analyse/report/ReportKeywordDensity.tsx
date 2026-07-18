@@ -1,8 +1,9 @@
 import type { NormalizedPartnerKeywordDensity, NormalizedPartnerKeywordStat } from "@/types/analysis";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportKeywordDensity({ density }: { density?: NormalizedPartnerKeywordDensity }) {
+export function ReportKeywordDensity({ density, locale = "nl" }: { density?: NormalizedPartnerKeywordDensity; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
   return (
     <section>
       <SectionTitle>{reportCopy.keywordDensity}</SectionTitle>
@@ -10,10 +11,10 @@ export function ReportKeywordDensity({ density }: { density?: NormalizedPartnerK
         <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 text-sm text-white/55">{reportCopy.noDensity}</div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
-          <DensityTable title={reportCopy.singleWords} rows={density.single} />
-          <DensityTable title={reportCopy.doubleWords} rows={density.double} />
+          <DensityTable title={reportCopy.singleWords} rows={density.single} locale={locale} />
+          <DensityTable title={reportCopy.doubleWords} rows={density.double} locale={locale} />
           <div className="lg:col-span-2">
-            <DensityTable title={reportCopy.tripleWords} rows={density.triple} />
+            <DensityTable title={reportCopy.tripleWords} rows={density.triple} locale={locale} />
           </div>
         </div>
       )}
@@ -21,12 +22,13 @@ export function ReportKeywordDensity({ density }: { density?: NormalizedPartnerK
   );
 }
 
-function DensityTable({ title, rows }: { title: string; rows: NormalizedPartnerKeywordStat[] }) {
+function DensityTable({ title, rows, locale }: { title: string; rows: NormalizedPartnerKeywordStat[]; locale: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
   return (
     <article className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025]">
       <h3 className="border-b border-white/10 px-4 py-3 text-sm font-bold text-white">{title}</h3>
       {rows.length === 0 ? (
-        <p className="p-4 text-sm text-white/45">Geen gegevens beschikbaar.</p>
+        <p className="p-4 text-sm text-white/45">{locale === "en" ? "No data available." : "Geen gegevens beschikbaar."}</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[520px] text-left text-sm">

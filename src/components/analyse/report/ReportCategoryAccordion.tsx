@@ -4,10 +4,11 @@ import { CheckCircle2, CircleX, TriangleAlert } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { NormalizedPartnerAuditCategory } from "@/types/analysis";
 import { defaultOpenCheckValues } from "@/components/analyse/report/reportViewModel";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportCategoryAccordion({ categories }: { categories: NormalizedPartnerAuditCategory[] }) {
+export function ReportCategoryAccordion({ categories, locale = "nl" }: { categories: NormalizedPartnerAuditCategory[]; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
   return (
     <section>
       <SectionTitle>{reportCopy.details}</SectionTitle>
