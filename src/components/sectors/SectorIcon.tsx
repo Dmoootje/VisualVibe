@@ -48,8 +48,7 @@ export function SectorIcon({ id, size = 34, animate = true, className, style }: 
     <span
       className={"vv-ico inline-flex items-center justify-center " + (animate ? "vv-animate " : "") + (className || "")}
       style={{ width: size, height: size, ...style }}
-      role="img"
-      aria-label={id}
+      aria-hidden="true"
     >
       <Icon className="vv-base" width={size} height={size} strokeWidth={1.8} aria-hidden="true" />
     </span>
@@ -64,7 +63,7 @@ export function SectorHeroEmblem({ id, size = 340, animate = true }: { id: strin
   const gid = "vvHeroGlow-" + id;
   const dim = "min(" + size + "px, 84vw)";
   return (
-    <svg className={"vv-ico " + (animate ? "vv-animate" : "")} viewBox="0 0 200 200" style={{ width: dim, height: dim }}>
+    <svg aria-hidden="true" className={"vv-ico " + (animate ? "vv-animate" : "")} viewBox="0 0 200 200" style={{ width: dim, height: dim }}>
       <defs>
         <radialGradient id={gid} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="rgba(255,117,0,0.30)" />

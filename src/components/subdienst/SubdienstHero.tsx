@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import type { ServiceCategory } from "@/types";
 import { SvcGlyph } from "@/components/subdiensten";
 import { iconForSubdienst, tagForSubdienst, type ResolvedIcon } from "./subdienstMeta";
+import type { SupportedLocale } from "@/i18n/locales";
 import "./subdienst-hero.css";
 
 export type SubHeroItem = {
@@ -116,15 +117,20 @@ export function SubdienstHero({
   pillarSlug,
   hero,
   siblings,
+  locale = "nl",
+  primaryCta,
 }: {
   pillar: string;
   pillarHref: string;
   pillarSlug: string;
   hero: SubHeroItem;
   siblings: SubHeroItem[];
+  locale?: SupportedLocale;
+  primaryCta?: { label: string; href: string };
 }) {
+  const en = locale === "en";
   const icon = iconForSubdienst(hero.slug, hero.category);
-  const tag = hero.tag ?? tagForSubdienst(hero.slug, pillar);
+  const tag = hero.tag ?? (en ? pillar : tagForSubdienst(hero.slug, pillar));
 
   const top = [...siblings, ...siblings];
   const reversed = [...siblings].reverse();
@@ -142,7 +148,7 @@ export function SubdienstHero({
               <path d="M19 12H5" />
               <path d="m12 19-7-7 7-7" />
             </svg>
-            Onderdeel van {pillar}
+            {en ? `Part of ${pillar}` : `Onderdeel van ${pillar}`}
           </Link>
 
           <span className="vvsh-tag">
@@ -154,15 +160,18 @@ export function SubdienstHero({
           {hero.desc && <p className="vvsh-desc">{hero.desc}</p>}
 
           <div className="vvsh-btns">
-            <Link href="/offerte-aanvragen" className="vvsh-btn vvsh-btnPrimary">
-              Offerte aanvragen
+            <Link
+              href={primaryCta?.href ?? "/offerte-aanvragen"}
+              className="vvsh-btn vvsh-btnPrimary"
+            >
+              {primaryCta?.label ?? "Offerte aanvragen"}
               <svg className="vvsh-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </Link>
             <Link href="/realisaties" className="vvsh-btn vvsh-btnGhost">
-              Bekijk realisaties
+              {en ? "View case studies" : "Bekijk realisaties"}
             </Link>
           </div>
         </div>
@@ -190,7 +199,9 @@ export function SubdienstHero({
 
       {siblings.length > 0 && (
         <div className="vvsh-mq">
-          <p className="vvsh-mqLabel">Andere diensten binnen {pillar}</p>
+          <p className="vvsh-mqLabel">
+            {en ? `Other services within ${pillar}` : `Andere diensten binnen ${pillar}`}
+          </p>
           <Pills
             items={top}
             cls="vvsh-mqL"

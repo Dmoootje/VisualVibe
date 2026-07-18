@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
+import type { NextRequest } from "next/server";
 
 vi.mock("next/server", () => ({
   NextResponse: {
@@ -7,25 +8,43 @@ vi.mock("next/server", () => ({
     rewrite: vi.fn(),
   },
 }));
-vi.mock("next-intl/middleware", () => ({ default: vi.fn(() => vi.fn()) }));
+vi.mock("next-intl/middleware", () => ({
+  default: vi.fn(() => vi.fn(() => "intl middleware")),
+}));
 
 let isPublicLocalePrefix: (pathname: string) => boolean;
+let runMiddleware: (request: NextRequest) => unknown;
 
 beforeAll(async () => {
-  ({ isPublicLocalePrefix } = await import("./middleware"));
+  ({ default: runMiddleware, isPublicLocalePrefix } = await import(
+    "./middleware"
+  ));
 });
 
 describe("public locale prefixes", () => {
-  it("accepts the published Dutch prefix", () => {
+  it("accepts every published locale prefix", () => {
     expect(isPublicLocalePrefix("/be/contact")).toBe(true);
+    expect(isPublicLocalePrefix("/en/contact")).toBe(true);
   });
 
-  it.each(["/en/contact", "/fr/contact", "/de/contact"])(
+  it.each(["/fr/contact", "/de/contact"])(
     "rejects disabled locale prefix %s",
     (pathname) => {
       expect(isPublicLocalePrefix(pathname)).toBe(false);
     },
   );
+
+  it("delegates published English paths to the locale middleware", () => {
+    const request = {
+      nextUrl: {
+        pathname: "/en/contact",
+        clone: vi.fn(() => ({ pathname: "/en/contact" })),
+      },
+      headers: new Headers(),
+    } as unknown as NextRequest;
+
+    expect(runMiddleware(request)).toBe("intl middleware");
+  });
 
   it("redirects every disabled locale prefix to the published locale", async () => {
     const nextConfig = (await import("../next.config.js")).default as {
@@ -35,7 +54,13 @@ describe("public locale prefixes", () => {
     };
     const redirects = await nextConfig.redirects();
 
-    for (const locale of ["en", "fr", "de"]) {
+    expect(
+      redirects.some(
+        ({ source }) => source === "/en" || source === "/en/:path+",
+      ),
+    ).toBe(false);
+
+    for (const locale of ["fr", "de"]) {
       expect(redirects).toContainEqual({
         source: `/${locale}`,
         destination: "/be/",

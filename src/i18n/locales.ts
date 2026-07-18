@@ -8,7 +8,7 @@ export type LocaleConfig = {
 
 export const LOCALE_CONFIG: Record<SupportedLocale, LocaleConfig> = {
   nl: { status: "published" },
-  en: { status: "disabled" },
+  en: { status: "published" },
   fr: { status: "disabled" },
   de: { status: "disabled" },
 };

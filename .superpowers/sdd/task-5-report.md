@@ -2,75 +2,61 @@
 
 ## Status
 
-Implemented the shared locale message schema and connected the principal visitor-facing navigation, footer, lead form, quotation modal, cookie-consent and root 404 copy to `next-intl`. English copy was written from the complete Dutch interaction context in natural international business English. English remains disabled by the locale publication controls. French and German contain schema-parity fallback values only and are not presented as completed translations.
+Complete locally on `feat/english-publication-release`. English is fully represented in the public and visible sitemap and production crawl. Dutch remains published, French and German remain disabled. The branch is ready for a draft pull request; no merge or deployment has been performed.
 
 ## RED evidence
 
-Command: `npm test -- src/i18n/sharedMessages.test.ts`
-
-Observed failure: Vitest could not import `messages/de.json`. This was the expected initial failure because German had no message file and the existing locale files only contained `common.locale`.
+- The initial production crawl reported 44 publication issues.
+- Route and source-isolation regressions failed before canonical-link and localized-source corrections.
+- The final rendered scan follow-up produced RED failures for four `WebPageJsonLd` call sites, English application-case JSON-LD, the English sector-hub CTA and the English local-SEO route example.
+- After the first rendered-copy fix, the permanent audit still failed on one visible hypothetical Dutch route example in the same article.
 
 ## GREEN evidence
 
-- `npm test -- src/i18n/sharedMessages.test.ts`: 3 tests passed.
-- `npm run typecheck`: passed with no TypeScript errors.
-- `npm run audit:locales`: completed and reported 59 pre-existing content issues. The one blocking issue is a missing Dutch hero alt in `content/kennisbank/wordpress-backup-maken.mdx`, outside Task 5. The remaining notices are the expected untranslated knowledge-base partners owned by later tasks.
-- Prohibited-character scan for U+2014 and U+2015: no matches.
+- Focused copy and metadata regressions: 8 test files, 24 tests passed.
+- Follow-up article and audit regressions: 2 test files, 5 tests passed.
+- Full suite: 105 test files, 398 tests passed.
+- Typecheck: passed.
+- Lint: 0 errors, 6 known warnings.
+- Content validation: passed; locale audit 0 issues and 0 blocking.
+- Fresh production build: passed, 374 of 374 static pages generated.
+- Sitemap inventory: 344 URLs, comprising 170 English and 174 Dutch URLs; visible/XML English parity is exactly 170 of 170.
+- English publication audit: 170 of 170 English sitemap pages crawled, 510 hreflang references, 6,080 internal English link references, 2 disabled-locale redirects, 0 issues.
+- English rendered copy audit: 170 routes, 0 issues across 0 routes.
+- Rendered sitemap title check: authored English labels present and representative Dutch slug-derived labels absent.
+- U+2014/U+2015 scan: 0 matches.
 
-## Translation context notes
+## Delivered artifacts
 
-- Read the full shared interaction components before translating, including form submission payloads, validation paths, consent behaviour and modal completion states.
-- Applied the approved glossary choice `request a quotation` to shared calls to action.
-- Used `case studies` for `realisaties` and clarified Limburg as Limburg, Belgium in the English footer description.
-- Rephrased Dutch prompts as natural English interaction copy rather than preserving Dutch syntax.
-- No automatic humanizer was used.
+- `scripts/audit-english-production.mjs`
+- `scripts/audit-english-production.test.mjs`
+- `scripts/audit-english-copy.mjs`
+- `scripts/audit-english-copy.test.mjs`
+- Package commands `audit:english-publication` and `audit:english-copy`
+- `docs/localization/english-publication-release-report.md`
+- This overwritten task report
 
-## Concerns and follow-up
+## Browser QA
 
-- Service, region and card names supplied by the existing Dutch data modules remain Dutch until their structured content is localised by the relevant content tasks.
-- Several deeply nested legacy navigation and quotation-card labels remain source-data literals. The primary interface labels and state messages are localised, but a final repository-wide literal audit should be run after the structured service and navigation data are translated to avoid duplicating work or introducing a second source of truth.
-- The root `not-found.tsx` cannot use request locale context because it handles paths outside `[locale]`; it now reads the Dutch fallback text from the shared message file instead of duplicating literals.
+The root coordinator checked the fresh production artifact on desktop and at 390 px mobile width. The reviewed pages and open menu were fully English, the language picker remained absent, and no broken navigation, horizontal overflow, missing alt text or visibly broken image was found.
 
-## Review fixes
+## Commits
 
-- Replaced the reviewed hard-coded navigation, mobile drawer, form, footer and quotation-modal strings with consumed message keys.
-- Connected every previously unused quotation key, including introductory copy, field labels, placeholders, trust signals and stored confirmation.
-- API error bodies are no longer read or displayed by the quotation modal. Visitors only receive the safe localized failure message.
-- Restored the original Dutch footer description, form prompts, contact button and quotation picker wording.
-- Corrected the English partner heading and named thank-you punctuation.
-- Added source-level component wiring and hard-coded Dutch regression tests alongside recursive key parity.
+- `de41940 fix: audit rendered English copy and metadata`
+- `fce83fc fix: remove obsolete English route example`
+- `68699dc fix: support streamed metadata in English copy audit`
+- `c7430c3 fix: harden English publication SEO surfaces`
+- `70a1668 test: align sitemap checks with shared inventory`
+- `32dbce0 fix: localize visible sitemap titles`
+- `d528701 test: use canonical English sitemap article`
+- Earlier Task 5 implementation commits run from `f9710ed` through `f3f8ca6`.
 
-Exact verification:
+## Concerns
 
-- `npm test -- src/i18n/sharedMessages.test.ts`: 5 passed.
-- `npm run typecheck`: passed.
-- `npm run audit:locales`: completed with the same 59 content findings, including the pre-existing blocking Dutch hero alt issue outside Task 5.
-- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
+- Six pre-existing non-blocking lint warnings remain.
+- The existing multi-lockfile workspace-root notice and one ambiguous Tailwind class warning remain in build output.
+- Four compatibility aliases remain unlinked and absent from the sitemaps, with correct English canonicals; they are non-blocking.
 
-## Final mobile navigation audit
+## Self-review
 
-Audited the full mobile drawer as one visitor screen. Root labels, item counts, panel headings, all-links, discovery labels, navigation links and CTAs now consume locale messages. Content-record names and VisualVibe/WeddingVibe brand names remain owned by their appropriate data sources.
-
-Final evidence:
-
-- `npm test -- src/i18n/sharedMessages.test.ts`: 6 passed, including a full mobile-chrome regression scan.
-- `npm run typecheck`: passed.
-- `npm run audit:locales`: 59 pre-existing content findings, with one unrelated blocking Dutch hero alt issue.
-- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
-
-Self-review confirmed the cited literals now consume locale messages, the message path schema remains identical across all four locale files, English remains disabled, and no API-provided error reaches the quotation interface.
-
-## Second review fixes
-
-- Localized the quotation description placeholder, desktop region menu labels, mobile wedding title, work-area count, service CTA and quotation CTA.
-- Removed obsolete Dutch form placeholder constants.
-- LeadForm now ignores API error bodies and always renders the safe localized error copy.
-- Expanded the English footer description to retain videography, drone production, 3D, VR, AR and podcasting.
-- Strengthened regression coverage for both forms, region navigation, mobile navigation and factual footer scope.
-
-Verification on the final second-review state:
-
-- `npm test -- src/i18n/sharedMessages.test.ts`: 5 passed.
-- `npm run typecheck`: passed.
-- `npm run audit:locales`: completed with 59 pre-existing content findings and one unrelated blocking Dutch hero alt issue.
-- `rg --hidden -g '!.git/**' -g '!node_modules/**' -e '\x{2014}' -e '\x{2015}'`: no matches.
+The permanent rendered-copy audit was reviewed to avoid false positives: both `en_BE` and `en_GB` are valid, `Bouw Realisaties` is retained as a proper name, and the published `/en/kennisbank/` namespace remains valid in technical examples. The visible sitemap now fails fast when a canonical English path lacks an authored localized title, preventing Dutch slug-derived labels from silently returning.

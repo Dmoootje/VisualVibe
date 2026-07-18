@@ -85,6 +85,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       "applicaties op maat Limburg",
     ],
     path: "/", locale: locale === "en" ? "en" : "nl",
+    languagePaths: { nl: "/", en: "/" },
     ogImageAlt: locale === "en"
       ? "VisualVibe, a creative media agency in Limburg for web design, SEO, photography and video production"
       : "VisualVibe, creatief mediabureau in Limburg voor webdesign, SEO, fotografie en video",
@@ -174,13 +175,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         url={en ? `${businessConfig.url}/en/` : HOME_URL}
         name={en ? HOME_EN.title : HOME_TITLE}
         description={en ? HOME_EN.description : HOME_DESCRIPTION}
+        inLanguage={en ? "en-BE" : "nl-BE"}
       />
       <FaqPageJsonLd items={faq} />
       {en ? <><EnglishHomepageBody reviews={reviews} /><SectorFaq title="Frequently asked questions about VisualVibe" items={faq} /></> : <>
       {/* Background comes from the site-wide SiteBackground in the layout. */}
       <Hero />
       <Features />
-      <RegionIntro />
+      <RegionIntro locale={en ? "en" : "nl"} />
       <SectorIntro />
       <HowItWorks />
       <HomepageReviewSignal locale={locale} />

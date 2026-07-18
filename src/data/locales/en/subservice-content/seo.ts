@@ -1203,7 +1203,7 @@ export const englishSeoEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt: "Local SEO visibility across Google search and business listings",
     internalLinks: [
       {
-        href: "/en/services/seo/google-business-profile-optimisation/",
+        href: "/en/diensten/seo/google-business-profile-optimisation/",
         label: "Google Business Profile optimisation",
       },
       {
@@ -1284,7 +1284,7 @@ export const englishSeoEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt:
       "Technical SEO audit showing crawl, indexing and performance checks",
     internalLinks: [
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
       {
         href: "/en/request-a-quotation/",
         label: "request a technical SEO quotation",
@@ -1363,7 +1363,7 @@ export const englishSeoEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt: "SEO copywriting plan with page structure and search intent",
     internalLinks: [
       {
-        href: "/en/services/seo/ai-seo-aeo-geo/",
+        href: "/en/diensten/seo/ai-seo-aeo-geo/",
         label: "AI SEO, AEO and GEO",
       },
       {
@@ -1444,7 +1444,7 @@ export const englishSeoEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt:
       "Optimised Google Business Profile with accurate business information",
     internalLinks: [
-      { href: "/en/services/seo/local-seo/", label: "local SEO" },
+      { href: "/en/diensten/seo/local-seo/", label: "local SEO" },
       {
         href: "/en/request-a-quotation/",
         label: "request a profile optimisation quotation",
@@ -1523,8 +1523,8 @@ export const englishSeoEditorial: Record<string, EnglishServiceLocaleRecord> = {
     },
     imageAlt: "Structured website content prepared for SEO, AEO and GEO",
     internalLinks: [
-      { href: "/en/services/seo/technical-seo/", label: "technical SEO" },
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/technical-seo/", label: "technical SEO" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
       {
         href: "/en/request-a-quotation/",
         label: "request an AI SEO quotation",

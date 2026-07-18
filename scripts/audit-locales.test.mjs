@@ -41,7 +41,7 @@ export const LOCALE_CONFIG = {
   nl: {
     status: "published",
   },
-  en: { status: "disabled" },
+  en: { status: "published" },
   fr: { status: "disabled" },
   de: { status: "disabled" },
 };
@@ -55,12 +55,16 @@ describe("audit-locales locale configuration", () => {
       path.join(fixture, "messages/nl.json"),
       JSON.stringify({ common: { locale: "nl", navigation: "Navigatie" } }),
     );
+    fs.writeFileSync(
+      path.join(fixture, "messages/en.json"),
+      JSON.stringify({ common: { locale: "en", navigation: "Navigation" } }),
+    );
 
     const result = runAudit(fixture);
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain("missing_content de messages/de.json");
-    expect(result.stdout).toContain("missing_message en common.navigation");
+    expect(result.stdout).toContain("missing_message fr common.navigation");
   });
 
   it("fails closed when the supported locale set is incomplete", () => {
@@ -72,16 +76,18 @@ describe("audit-locales locale configuration", () => {
     expect(result.stderr).toContain("Invalid locale configuration");
   });
 
-  it("fails closed unless only Dutch is published", () => {
+  it("fails closed unless Dutch and English are the only published locales", () => {
     const fixture = createFixture(validLocaleSource.replace(
-      'en: { status: "disabled" }',
-      'en: { status: "published" }',
+      'fr: { status: "disabled" }',
+      'fr: { status: "published" }',
     ));
 
     const result = runAudit(fixture);
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain("only nl may be published");
+    expect(result.stderr).toContain(
+      "nl and en must be published; fr and de must be disabled",
+    );
   });
 });
 

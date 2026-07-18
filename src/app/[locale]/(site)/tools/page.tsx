@@ -10,11 +10,11 @@ import Link from "next/link";
 
 const PAGE_PATH = "/tools/";
 const PAGE_URL = `${businessConfig.url}/be/tools/`;
-const nlMetadata = pageMetadata({ title: `Gratis tools voor je website | ${businessConfig.displayName}`, description: "Gebruik gratis VisualVibe tools zoals een website analyse en SEO/GEO checklist om je website, vindbaarheid en AI-vindbaarheid te verbeteren.", keywords: ["gratis tools website", "website analyse", "SEO/GEO checklist"], path: PAGE_PATH });
+const nlMetadata = pageMetadata({ title: `Gratis tools voor je website | ${businessConfig.displayName}`, description: "Gebruik gratis VisualVibe tools zoals een website analyse en SEO/GEO checklist om je website, vindbaarheid en AI-vindbaarheid te verbeteren.", keywords: ["gratis tools website", "website analyse", "SEO/GEO checklist"], path: PAGE_PATH, languagePaths: { nl: PAGE_PATH, en: PAGE_PATH } });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
-  return locale === "en" ? pageMetadata({ locale, title: `Free website SEO and GEO tools | ${businessConfig.displayName}`, description: "Use VisualVibe's free website analysis and SEO/GEO checklist to review technical SEO, content, performance and visibility in AI search.", keywords: ["free website SEO tools", "website analysis", "SEO GEO checklist"], path: PAGE_PATH }) : nlMetadata;
+  return locale === "en" ? pageMetadata({ locale, title: `Free website SEO and GEO tools | ${businessConfig.displayName}`, description: "Use VisualVibe's free website analysis and SEO/GEO checklist to review technical SEO, content, performance and visibility in AI search.", keywords: ["free website SEO tools", "website analysis", "SEO GEO checklist"], path: PAGE_PATH, languagePaths: { nl: PAGE_PATH, en: PAGE_PATH } }) : nlMetadata;
 }
 
 export default async function ToolsPage({ params }: { params?: Promise<{ locale: SupportedLocale }> }) {
@@ -26,7 +26,7 @@ export default async function ToolsPage({ params }: { params?: Promise<{ locale:
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
       <BreadcrumbJsonLd locale={en ? "en" : "nl"} items={[{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }]} />
-      <WebPageJsonLd url={en ? `${businessConfig.url}/en/tools/` : PAGE_URL} name={title} description={en ? "Free VisualVibe tools for website analysis, SEO, GEO and practical improvements." : "Gratis VisualVibe tools voor website analyse, SEO, GEO en praktische websiteverbetering."} />
+      <WebPageJsonLd url={en ? `${businessConfig.url}/en/tools/` : PAGE_URL} name={title} description={en ? "Free VisualVibe tools for website analysis, SEO, GEO and practical improvements." : "Gratis VisualVibe tools voor website analyse, SEO, GEO en praktische websiteverbetering."} inLanguage={en ? "en-BE" : "nl-BE"} />
       <PageAmbient />
       <main className="relative z-10"><section className="pb-12 pt-28 sm:pt-32 md:pb-16 md:pt-36"><div className="container mx-auto px-2.5 sm:px-4">
         <div className="max-w-3xl"><p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#ff8a2a]"><Sparkles className="h-4 w-4" aria-hidden="true" />VisualVibe tools</p><h1 className="text-4xl font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-5xl md:text-[62px]">{title}</h1><p className="mt-5 max-w-2xl text-base leading-relaxed text-white/68 sm:text-lg">{intro}</p></div>

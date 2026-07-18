@@ -60,6 +60,8 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   let sector;
   try { sector = getSectorByLocalizedSlug(slug, locale); } catch { return {}; }
+  const dutchSector = getLocalizedSectorById(sector.id, "nl");
+  const englishSector = getLocalizedSectorById(sector.id, "en");
 
   return pageMetadata({
     locale,
@@ -67,6 +69,10 @@ export async function generateMetadata({
     description: sector.seo.description,
     keywords: sector.seo.keywords,
     path: `/sectoren/${sector.slug}/`,
+    languagePaths: {
+      nl: `/sectoren/${dutchSector.slug}/`,
+      en: `/sectoren/${englishSector.slug}/`,
+    },
   });
 }
 
@@ -111,6 +117,7 @@ export default async function SectorDetailPage({
     <div className="min-h-screen text-white">
       <SectorIconSprite />
       <BreadcrumbJsonLd
+        locale={locale}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Industries" : "Sectoren", path: "/sectoren" },
@@ -120,6 +127,7 @@ export default async function SectorDetailPage({
       {recommendedServices.map((service) => (
         <ServiceJsonLd
           key={service.slug}
+          locale={locale}
           service={{
             name: service.title,
             description: service.excerpt,
@@ -216,6 +224,7 @@ export default async function SectorDetailPage({
         title={sector.ctaTitle ?? (en ? `Working in ${sector.title.toLowerCase()}? Let's talk.` : `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`)}
         description={sector.ctaText}
         primaryHref={en ? englishSectorEditorial[sector.id].cta.href : "/offerte-aanvragen"}
+        primaryLabel={en ? "Request a quotation" : undefined}
       />
     </div>
   );

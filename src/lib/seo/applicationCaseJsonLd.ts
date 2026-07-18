@@ -1,16 +1,19 @@
 import { businessConfig } from "@/config/business.config";
 import type { ApplicationCase } from "@/data/applicationCases";
+import type { SupportedLocale } from "@/i18n/locales";
 
 export type ApplicationCaseJsonLdInput = {
   project: ApplicationCase;
   canonical: string;
   cover?: string;
+  locale?: SupportedLocale;
 };
 
 export function buildApplicationCaseJsonLd({
   project,
   canonical,
   cover,
+  locale = "nl",
 }: ApplicationCaseJsonLdInput): Record<string, unknown> {
   const organizationId = `${businessConfig.url}/#organization`;
 
@@ -21,7 +24,7 @@ export function buildApplicationCaseJsonLd({
     url: canonical,
     name: project.seoTitle,
     description: project.seoDescription,
-    inLanguage: "nl-BE",
+    inLanguage: locale === "en" ? "en-BE" : "nl-BE",
     isPartOf: { "@id": `${businessConfig.url}/#website` },
     publisher: { "@id": organizationId },
     ...(cover
@@ -37,7 +40,7 @@ export function buildApplicationCaseJsonLd({
       "@id": `${canonical}#project`,
       name: project.title,
       description: project.seoDescription,
-      genre: "Maatwerk softwareproject",
+      genre: locale === "en" ? "Custom software project" : "Maatwerk softwareproject",
       creativeWorkStatus: project.status === "live" ? "Published" : "In development",
       creator: { "@id": organizationId },
       keywords: project.capabilities,

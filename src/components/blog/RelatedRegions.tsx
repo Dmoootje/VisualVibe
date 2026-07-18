@@ -1,6 +1,8 @@
 import { MapPin } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
+import type { BlogLocale } from "@/types/blog";
 
 export type RelatedRegion = {
   name: string;
@@ -20,14 +22,19 @@ export function RelatedRegions({
   items: RelatedRegion[];
   title?: string;
   className?: string;
-  locale?: string;
+  locale?: BlogLocale;
 }) {
   if (locale === "en" && title === "Actief in deze regio's") title = "Active in these regions";
+  const resolvedItems = items.flatMap((item) => {
+    const href = normalizeKnowledgeBaseHref(item.href, locale);
+    return href ? [{ ...item, href }] : [];
+  });
+  if (resolvedItems.length === 0) return null;
   return (
     <section className={cn("my-8", className)}>
       <h2 className="mb-4 text-xl font-bold text-white">{title}</h2>
       <ul className="flex flex-wrap gap-2.5">
-        {items.map((item) => (
+        {resolvedItems.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}

@@ -8,11 +8,17 @@ import { RegionMiniMap } from "./RegionMiniMap";
  * Premium, fully clickable region card with a mini-map visual, orange highlight
  * glow and a subtle hover lift. Dark glassmorphism styling to match VisualVibe.
  */
-export function RegionMapCard({ region }: { region: Region }) {
-  const card = regionCards[region.slug] ?? {
-    label: region.type === "province" ? "Thuisregio" : "Regio",
-    description: region.intro,
-  };
+export function RegionMapCard({ region, locale = "nl" }: { region: Region; locale?: string }) {
+  const stableId = "id" in region && typeof region.id === "string" ? region.id : region.slug;
+  const card = locale !== "en"
+    ? regionCards[stableId] ?? {
+        label: region.type === "province" ? "Thuisregio" : "Regio",
+        description: region.intro,
+      }
+    : {
+        label: region.type === "province" ? "Home region" : "Region",
+        description: region.intro,
+      };
   const isHome = region.type === "province";
 
   return (
@@ -24,7 +30,7 @@ export function RegionMapCard({ region }: { region: Region }) {
       <div className="relative h-36 w-full overflow-hidden bg-gradient-to-b from-neutral-900 to-neutral-950">
         {/* Ambient glow behind the map */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_45%,rgba(255,117,0,0.16),transparent_60%)] transition-opacity duration-300 group-hover:opacity-100 opacity-80" />
-        <RegionMiniMap slug={region.slug} />
+        <RegionMiniMap slug={stableId} />
         {/* Bottom fade into the content */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-neutral-950 to-transparent" />
       </div>
@@ -45,7 +51,7 @@ export function RegionMapCard({ region }: { region: Region }) {
         </h3>
         <p className="text-sm leading-relaxed text-white/60">{card.description}</p>
         <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-amber-400/90 transition-all duration-300 group-hover:gap-2.5">
-          Ontdek regio
+          {locale === "en" ? "Explore region" : "Ontdek regio"}
           <ArrowRight className="h-4 w-4" />
         </span>
       </div>

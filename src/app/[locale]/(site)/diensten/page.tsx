@@ -33,6 +33,7 @@ const dutchMetadata = pageMetadata({
     "podcast opnemen Limburg",
   ],
   path: "/diensten/",
+  languagePaths: { nl: "/diensten/", en: "/diensten/" },
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -43,6 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: "Services for ambitious businesses | VisualVibe",
       description: "Explore VisualVibe's web design, SEO, photography, video, drone, 3D, podcast and masterclass production services in Limburg, Belgium.",
       path: "/diensten/",
+      languagePaths: { nl: "/diensten/", en: "/diensten/" },
     });
   }
   return dutchMetadata;
@@ -555,7 +557,7 @@ function EnglishServicesPage() {
             <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">Creative services for businesses that want to stand out</h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe brings web design, SEO, photography, video production, drone footage, immersive 3D experiences, podcasting and masterclass production together in one team. Strategy, technology and visual content therefore support the same business goal.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/offerte-aanvragen" className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black">Request a quotation <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/request-a-quotation" className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black">Request a quotation <ArrowRight className="h-4 w-4" /></Link>
               <Link href="/realisaties" className="rounded-full border border-white/15 px-6 py-3 font-semibold">View our work</Link>
             </div>
           </Container>
@@ -574,7 +576,7 @@ function EnglishServicesPage() {
             </div>
           </Container>
         </section>
-        <CTASection title="Ready to bring your project to life?" description="Tell us what you want to achieve. We will recommend a practical combination of services and prepare a tailored quotation." primaryLabel="Discuss your project" primaryHref="/offerte-aanvragen" />
+        <CTASection title="Ready to bring your project to life?" description="Tell us what you want to achieve. We will recommend a practical combination of services and prepare a tailored quotation." primaryLabel="Discuss your project" primaryHref="/request-a-quotation" />
       </main>
     </div>
   );

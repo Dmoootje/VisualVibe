@@ -1,5 +1,6 @@
 import type { BlogPost } from "@/types/blog";
 import { postHref, categoryHref } from "@/lib/kennisbank/urls";
+import { getLocalizedKennisbankCategoryById } from "@/data/kennisbankCategories";
 
 /**
  * Lightweight, serialisable shape passed from the server pages into the client
@@ -20,7 +21,7 @@ export type ArticleCardData = {
   fullTitle: string;
   excerpt: string;
   readingTime?: string;
-  /** Pre-formatted nl-BE date for display. */
+  /** Pre-formatted locale-aware date for display. */
   date: string;
   author: string;
   /** Profielfoto van de auteur (admin-profiel); valt terug op het User-icoon. */
@@ -47,8 +48,8 @@ export function splitTitle(title: string): { title: string; titleAccent: string 
   return { title: lead, titleAccent: rest.charAt(0).toUpperCase() + rest.slice(1) };
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("nl-BE", {
+function formatDate(iso: string, locale: "nl" | "en"): string {
+  return new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "nl-BE", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -60,17 +61,19 @@ export function toArticleCardData(
   authorImages?: Record<string, string>,
 ): ArticleCardData {
   const { title, titleAccent } = splitTitle(post.title);
+  const locale = post.locale === "en" ? "en" : "nl";
+  const category = getLocalizedKennisbankCategoryById(post.categorySlug, locale);
   return {
     id: post.slug,
     href: postHref(post),
     categorySlug: post.categorySlug,
-    categoryName: post.category,
+    categoryName: category.name,
     title,
     titleAccent,
     fullTitle: post.title,
     excerpt: post.excerpt,
     readingTime: post.readingTime,
-    date: formatDate(post.publishedAt),
+    date: formatDate(post.publishedAt, locale),
     author: post.author,
     authorImage: authorImages?.[post.author],
     image: post.featuredImage ?? post.ogImage,

@@ -6,6 +6,7 @@
 // page that uses it. Project to this slim shape on the server first.
 
 import type { BlogPost } from "@/types";
+import { getLocalizedKennisbankCategoryById } from "@/data/kennisbankCategories";
 
 export type BlogCardPost = Pick<
   BlogPost,
@@ -24,11 +25,12 @@ export type BlogCardPost = Pick<
 >;
 
 export function toBlogCardPost(post: BlogPost): BlogCardPost {
+  const category = getLocalizedKennisbankCategoryById(post.categorySlug, post.locale);
   return {
     title: post.title,
     slug: post.slug,
     categorySlug: post.categorySlug,
-    category: post.category,
+    category: category.name,
     publishedAt: post.publishedAt,
     readingTime: post.readingTime,
     author: post.author,

@@ -22,7 +22,9 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const category = getLocalizedRealisatieCategoryById("applicaties", locale);
-  return pageMetadata({ title: category.seoTitle, description: category.seoDescription, path: `/realisaties/${category.slug}/` });
+  const dutchCategory = getLocalizedRealisatieCategoryById(category.id, "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById(category.id, "en");
+  return pageMetadata({ locale, title: category.seoTitle, description: category.seoDescription, path: `/realisaties/${category.slug}/`, languagePaths: { nl: `/realisaties/${dutchCategory.slug}/`, en: `/realisaties/${englishCategory.slug}/` } });
 }
 
 export default async function ApplicatieRealisatiesPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
@@ -30,7 +32,7 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
   const category = getLocalizedRealisatieCategoryById("applicaties", locale);
 
   const [allProjects, images] = await Promise.all([
-    getApplicationCases(locale),
+    getApplicationCases("nl"),
     getApplicationCaseImages(),
   ]);
   const projects = allProjects.flatMap((project) => {
@@ -45,10 +47,11 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
-          { name: "Realisaties", path: "/realisaties/" },
-          { name: category.name, path: "/realisaties/applicaties/" },
+          { name: en ? "Case studies" : "Realisaties", path: "/realisaties/" },
+          { name: category.name, path: `/realisaties/${category.slug}/` },
         ]}
       />
       <JsonLd
@@ -92,7 +95,7 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
               </p>
             </div>
             <Link
-              href={en ? "/services/custom-software/" : "/diensten/software-op-maat/"}
+              href={en ? "/diensten/custom-software/" : "/diensten/software-op-maat/"}
               className="inline-flex flex-none items-center justify-center gap-2 self-start rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:self-center"
             >
               {en ? "Explore custom software" : "Bekijk software op maat"}

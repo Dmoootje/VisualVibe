@@ -3,6 +3,10 @@ import { businessConfig } from "@/config/business.config";
 import { ogImageForPath } from "@/data/ogImages";
 import { MANUAL_PAGE_OG_IMAGES } from "@/data/manualOgImages";
 import type { SupportedLocale } from "@/i18n/locales";
+import {
+  publishedLanguageAlternates,
+  type LocalePathPair,
+} from "@/lib/seo/publicationRoutes";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
@@ -28,6 +32,8 @@ export type PageMetadataInput = {
   ogImageAlt?: string;
   /** Keep the page reachable but out of the index (e.g. an empty realisatie category). */
   noindex?: boolean;
+  /** Public Dutch and English partner paths for hreflang output. */
+  languagePaths?: LocalePathPair;
 };
 
 export function pageMetadata({
@@ -39,6 +45,7 @@ export function pageMetadata({
   ogImage,
   ogImageAlt,
   noindex,
+  languagePaths,
 }: PageMetadataInput): Metadata {
   const prefix = locale === "nl" ? "/be" : `/${locale}`;
   const url = `${businessConfig.url}${prefix}${path.startsWith("/") ? path : `/${path}`}`;
@@ -79,7 +86,12 @@ export function pageMetadata({
     title: { absolute: title },
     description,
     keywords,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      languages: languagePaths
+        ? publishedLanguageAlternates(businessConfig.url, languagePaths)
+        : undefined,
+    },
     robots,
     openGraph: {
       type: "website",

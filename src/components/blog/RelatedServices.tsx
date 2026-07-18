@@ -2,6 +2,8 @@ import { ArrowUpRight, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { CARD_INTERACTIVE } from "./styles";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
+import type { BlogLocale } from "@/types/blog";
 
 export type RelatedService = {
   title: string;
@@ -19,14 +21,19 @@ export function RelatedServices({
   items: RelatedService[];
   title?: string;
   className?: string;
-  locale?: string;
+  locale?: BlogLocale;
 }) {
   if (locale === "en" && title === "Gerelateerde diensten") title = "Related services";
+  const resolvedItems = items.flatMap((item) => {
+    const href = normalizeKnowledgeBaseHref(item.href, locale);
+    return href ? [{ ...item, href }] : [];
+  });
+  if (resolvedItems.length === 0) return null;
   return (
     <section className={cn("my-8", className)}>
       <h2 className="mb-4 text-xl font-bold text-white">{title}</h2>
       <div className="grid gap-4 sm:grid-cols-2">
-        {items.map((item) => {
+        {resolvedItems.map((item) => {
           const Icon = item.icon;
           return (
             <Link

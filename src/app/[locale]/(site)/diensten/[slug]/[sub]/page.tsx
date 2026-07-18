@@ -27,12 +27,18 @@ import {
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 import { subservices, getSubservicesByParent } from "@/data/subservices";
 import { getSubserviceEditorial } from "@/data/subservice-content";
-import { getServiceBySlug, serviceHref } from "@/data/services";
-import { regions } from "@/data/regions";
+import { englishSubserviceEditorial } from "@/data/locales/en/services";
+import {
+  getLocalizedServiceById,
+  getServiceByLocalizedSlug,
+  serviceHref,
+} from "@/data/services";
+import { getLocalizedRegionById, regions } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
 import { localizedPath } from "@/lib/kennisbank/posts";
 import { getHubData } from "@/lib/realisaties/hubData";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import { getPublishedLocales, type SupportedLocale } from "@/i18n/locales";
 
 const REALISATION_ELIGIBLE_SLUGS = new Set([
   "website-laten-maken",
@@ -65,31 +71,50 @@ const REALISATION_ELIGIBLE_SLUGS = new Set([
 export const revalidate = 3600;
 
 export function generateStaticParams() {
-  return subservices
-    .filter((service) => service.parentSlug)
-    .map((service) => ({ slug: service.parentSlug as string, sub: service.slug }));
+  return getPublishedLocales().flatMap((locale) =>
+    subservices.flatMap((source) => {
+      if (!source.parentSlug) return [];
+      const service = getLocalizedServiceById(source.slug, locale).service;
+      return [{ locale, slug: service.parentSlug as string, sub: service.slug }];
+    }),
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string; sub: string }>;
+  params: Promise<{ locale: SupportedLocale; slug: string; sub: string }>;
 }): Promise<Metadata> {
-  const { slug, sub } = await params;
-  const service = getServiceBySlug(sub);
-  const parentService = getServiceBySlug(slug);
-  if (!service || !parentService || parentService.parentSlug || service.parentSlug !== slug) {
+  const { locale, slug, sub } = await params;
+  if (locale !== "nl" && locale !== "en") notFound();
+  let localizedService;
+  let localizedParent;
+  try {
+    localizedService = getServiceByLocalizedSlug(sub, locale);
+    localizedParent = getServiceByLocalizedSlug(slug, locale);
+  } catch {
     return {};
   }
+  const sourceService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const sourceParent = getLocalizedServiceById(localizedParent.id, "nl").service;
+  if (sourceParent.parentSlug || sourceService.parentSlug !== localizedParent.id) return {};
 
-  const editorial = getSubserviceEditorial(sub);
+  const service = localizedService.service;
+  const editorial = locale === "nl" ? getSubserviceEditorial(localizedService.id) : undefined;
   const seo = editorial?.seo ?? service.seo;
+  const dutchService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const englishService = getLocalizedServiceById(localizedService.id, "en").service;
 
   return pageMetadata({
+    locale,
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
     path: `${serviceHref(service)}/`,
+    languagePaths: {
+      nl: `${serviceHref(dutchService)}/`,
+      en: `${serviceHref(englishService)}/`,
+    },
     ogImage: seo.ogImage,
   });
 }
@@ -97,17 +122,36 @@ export async function generateMetadata({
 export default async function SubServiceDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string; sub: string }>;
+  params: Promise<{ locale: SupportedLocale; slug: string; sub: string }>;
 }) {
-  const { slug, sub } = await params;
-  const service = getServiceBySlug(sub);
-  const parentService = getServiceBySlug(slug);
-
-  if (!service || !parentService || parentService.parentSlug || service.parentSlug !== slug) {
+  const { locale, slug, sub } = await params;
+  if (locale !== "nl" && locale !== "en") notFound();
+  let localizedService;
+  let localizedParent;
+  try {
+    localizedService = getServiceByLocalizedSlug(sub, locale);
+    localizedParent = getServiceByLocalizedSlug(slug, locale);
+  } catch {
     notFound();
   }
+  const sourceService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const sourceParent = getLocalizedServiceById(localizedParent.id, "nl").service;
+  if (sourceParent.parentSlug || sourceService.parentSlug !== localizedParent.id) notFound();
 
-  const editorial = getSubserviceEditorial(service.slug);
+  const service = localizedService.service;
+  const parentService = localizedParent.service;
+  const en = locale === "en";
+  const englishContent = en ? englishSubserviceEditorial[localizedService.id] : undefined;
+  const englishPrimaryCta = englishContent
+    ? {
+        ...englishContent.cta,
+        href: englishContent.cta.href.replace(/^\/en(?=\/)/u, ""),
+      }
+    : undefined;
+
+  const editorial = en
+    ? englishContent?.editorial
+    : getSubserviceEditorial(localizedService.id);
   const content = editorial?.content;
   const intro = editorial?.intro ?? service.intro;
   const excerpt = editorial?.excerpt ?? service.excerpt;
@@ -115,47 +159,52 @@ export default async function SubServiceDetailPage({
   const process = editorial?.process ?? service.process;
   const relatedServiceSlugs = editorial?.relatedServices ?? service.relatedServices;
 
-  const relatedServices = relatedServiceSlugs
-    .map((relatedSlug) => getServiceBySlug(relatedSlug))
-    .filter((related): related is NonNullable<typeof related> => Boolean(related));
+  const relatedServices = relatedServiceSlugs.flatMap((relatedId) => {
+    try {
+      return [getLocalizedServiceById(relatedId, locale).service];
+    } catch {
+      return [];
+    }
+  });
 
   const regionalSlugs = content?.regional?.regionSlugs;
   const relatedRegions = regionalSlugs?.length
     ? regionalSlugs
-        .map((regionSlug) => regions.find((region) => region.slug === regionSlug))
-        .filter((region): region is NonNullable<typeof region> => Boolean(region))
-    : regions;
+        .map((regionId) => getLocalizedRegionById(regionId, locale))
+    : regions.map((region) => getLocalizedRegionById(region.slug, locale));
 
   const hasPrimaryContent = Boolean(
     content?.overview || content?.outcomes || content?.idealFor || content?.deliverables,
   );
 
-  const realisationProjects = REALISATION_ELIGIBLE_SLUGS.has(service.slug)
-    ? (await getHubData()).projects.filter((project) => project.serviceSlugs.includes(service.slug)).slice(0, 3)
+  const realisationProjects = !en && REALISATION_ELIGIBLE_SLUGS.has(sourceService.slug)
+    ? (await getHubData()).projects.filter((project) => project.serviceSlugs.includes(sourceService.slug)).slice(0, 3)
     : [];
 
   const servicePath = `${serviceHref(service)}/`;
   const breadcrumbItems = [
     { name: "Home", path: "/" },
-    { name: "Diensten", path: "/diensten" },
+    { name: en ? "Services" : "Diensten", path: "/diensten" },
     { name: parentService.title, path: serviceHref(parentService) },
     { name: service.title, path: servicePath },
   ];
 
   return (
     <div className="min-h-screen text-white">
-      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <BreadcrumbJsonLd locale={locale} items={breadcrumbItems} />
       <ServiceJsonLd
+        locale={locale}
         service={{
           name: service.title,
           description: excerpt,
-          url: `${businessConfig.url}${localizedPath("nl", servicePath)}`,
+          url: `${businessConfig.url}${localizedPath(locale, servicePath)}`,
           areaServed: relatedRegions.map((region) => region.title),
         }}
       />
       {faqs.length > 0 && <FaqPageJsonLd items={faqs} />}
 
       <SubdienstHero
+        locale={locale}
         pillar={parentService.title}
         pillarHref={serviceHref(parentService)}
         pillarSlug={parentService.slug}
@@ -165,8 +214,10 @@ export default async function SubServiceDetailPage({
           category: service.category,
           desc: intro,
         }}
-        siblings={getSubservicesByParent(parentService.slug)
-          .filter((sibling) => sibling.slug !== service.slug)
+        primaryCta={englishPrimaryCta}
+        siblings={getSubservicesByParent(sourceParent.slug)
+          .filter((sibling) => sibling.slug !== sourceService.slug)
+          .map((sibling) => getLocalizedServiceById(sibling.slug, locale).service)
           .map((sibling) => ({
             slug: sibling.slug,
             name: sibling.title,
@@ -176,16 +227,18 @@ export default async function SubServiceDetailPage({
 
       {hasPrimaryContent ? (
         <>
-          {content?.overview && <SubserviceOverview content={content.overview} />}
-          {content?.outcomes && <SubserviceOutcomeCards content={content.outcomes} />}
-          {content?.idealFor && <SubserviceIdealFor content={content.idealFor} />}
-          {content?.deliverables && <SubserviceDeliverables content={content.deliverables} />}
+          {content?.overview && <SubserviceOverview content={content.overview} locale={locale} />}
+          {content?.outcomes && <SubserviceOutcomeCards content={content.outcomes} locale={locale} />}
+          {content?.idealFor && <SubserviceIdealFor content={content.idealFor} locale={locale} />}
+          {content?.deliverables && <SubserviceDeliverables content={content.deliverables} locale={locale} />}
         </>
       ) : (
         service.benefits.length > 0 && (
           <Section className="px-0">
             <Container>
-              <h2 className="mb-6 text-2xl font-bold sm:text-3xl">Wat we voor je doen</h2>
+              <h2 className="mb-6 text-2xl font-bold sm:text-3xl">
+                {en ? "What we do" : "Wat we voor je doen"}
+              </h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
                   <li key={benefit} className="flex items-start gap-2 text-white/80">
@@ -202,21 +255,25 @@ export default async function SubServiceDetailPage({
       {process.length > 0 && (
         <Section className="px-0">
           <Container>
-            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">Hoe VisualVibe te werk gaat</h2>
+            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">
+              {en ? "How VisualVibe works" : "Hoe VisualVibe te werk gaat"}
+            </h2>
             <ProcessSteps steps={process} />
           </Container>
         </Section>
       )}
 
-      {content?.pricing && <SubservicePricing content={content.pricing} />}
+      {content?.pricing && <SubservicePricing content={content.pricing} locale={locale} />}
       {content?.whyVisualVibe && <SubserviceWhyVisualVibe content={content.whyVisualVibe} />}
 
-      <SubserviceRealisations projects={realisationProjects} serviceTitle={service.title} />
+      {!en && <SubserviceRealisations projects={realisationProjects} serviceTitle={service.title} />}
 
       {faqs.length > 0 && (
         <Section className="px-0">
           <Container className="max-w-4xl">
-            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">Veelgestelde vragen</h2>
+            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">
+              {en ? "Frequently asked questions" : "Veelgestelde vragen"}
+            </h2>
             <Accordion type="single" collapsible>
               {faqs.map((faq, index) => (
                 <AccordionItem key={faq.question} value={`faq-${index + 1}`}>
@@ -232,7 +289,9 @@ export default async function SubServiceDetailPage({
       {relatedServices.length > 0 && (
         <Section className="px-0">
           <Container>
-            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">Gerelateerde diensten</h2>
+            <h2 className="mb-6 font-sora text-2xl font-extrabold sm:text-3xl">
+              {en ? "Related services" : "Gerelateerde diensten"}
+            </h2>
             <ul className="flex flex-wrap gap-3">
               {relatedServices.map((related) => (
                 <li key={related.slug}>
@@ -249,23 +308,28 @@ export default async function SubServiceDetailPage({
         </Section>
       )}
 
-      <ServiceRelatedPosts
-        serviceSlug={service.slug}
-        fallbackServiceSlug={parentService.slug}
-        intro="Praktische artikels met keuzes en voorbereiding die rechtstreeks bij deze dienst aansluiten."
-      />
+      {!en && (
+        <ServiceRelatedPosts
+          serviceSlug={sourceService.slug}
+          fallbackServiceSlug={sourceParent.slug}
+          intro="Praktische artikels met keuzes en voorbereiding die rechtstreeks bij deze dienst aansluiten."
+        />
+      )}
 
       {content?.regional ? (
-        <SubserviceRegions content={content.regional} regions={relatedRegions} />
+        <SubserviceRegions content={content.regional} regions={relatedRegions} locale={locale} />
       ) : (
         <SubserviceRegions
           content={{
-            title: "Actief in deze regio's",
+            title: en ? "Active in these regions" : "Actief in deze regio's",
             description:
-              "Vanuit Limburg werkt VisualVibe voor zelfstandigen en KMO's in Vlaanderen, Antwerpen en Nederlands-Limburg.",
+              en
+                ? "VisualVibe is based in Limburg, Belgium, and works with businesses across Flanders, Antwerp province and Dutch Limburg."
+                : "Vanuit Limburg werkt VisualVibe voor zelfstandigen en KMO's in Vlaanderen, Antwerpen en Nederlands-Limburg.",
             regionSlugs: regions.map((region) => region.slug),
           }}
           regions={relatedRegions}
+          locale={locale}
         />
       )}
 
@@ -275,8 +339,11 @@ export default async function SubServiceDetailPage({
           content?.cta?.description ??
           "Vertel ons wat je nodig hebt. Na een inhoudelijke analyse ontvang je een voorstel dat bij je project past."
         }
-        primaryLabel={content?.cta?.label}
-        primaryHref={content?.cta?.href}
+        primaryLabel={content?.cta?.label ?? englishPrimaryCta?.label}
+        primaryHref={(content?.cta?.href ?? englishPrimaryCta?.href)?.replace(
+          /^\/en(?=\/)/u,
+          "",
+        )}
         variant={0}
         className="px-0"
       />

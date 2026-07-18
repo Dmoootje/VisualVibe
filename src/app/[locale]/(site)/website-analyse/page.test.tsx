@@ -82,11 +82,24 @@ describe("WebsiteAnalysePage", () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ locale: "en" }) });
     const html = renderToStaticMarkup(await WebsiteAnalysePage({ params: Promise.resolve({ locale: "en" }) }));
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Free website analysis") });
-    expect(metadata.robots).toMatchObject({ index: false, follow: true });
+    expect(metadata.robots).toMatchObject({ index: true, follow: true });
+    expect(metadata.openGraph).toMatchObject({ locale: "en_GB" });
+    expect(metadata.alternates).toMatchObject({
+      canonical: "https://visualvibe.media/en/website-analysis/",
+      languages: {
+        "nl-BE": "https://visualvibe.media/be/website-analyse/",
+        "en-BE": "https://visualvibe.media/en/website-analysis/",
+        "x-default": "https://visualvibe.media/be/website-analyse/",
+      },
+    });
     expect(html).toContain("What does our website analysis check?");
     expect(html).toContain("Is the website analysis free?");
     expect(html).toContain("/en/diensten/seo/");
+    expect(html).toContain("/en/diensten/web-design/");
+    expect(html).not.toContain("/en/diensten/webdesign/");
     expect(html).not.toContain("Wat controleert");
     expect(html).not.toContain("/be/");
+    expect(html).toContain('"inLanguage":"en-BE"');
+    expect(html).not.toContain('"inLanguage":"nl-BE"');
   });
 });

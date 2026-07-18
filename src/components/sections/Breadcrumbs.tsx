@@ -12,9 +12,17 @@ export type Crumb = {
  * Visible breadcrumb trail, e.g. Home › Kennisbank › SEO & GEO › Artikel.
  * Pair with <BreadcrumbJsonLd> for the structured-data equivalent.
  */
-export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
+export function Breadcrumbs({
+  items,
+  className,
+  locale = "nl",
+}: {
+  items: Crumb[];
+  className?: string;
+  locale?: string;
+}) {
   return (
-    <nav aria-label="Kruimelpad" className={cn("text-sm", className)}>
+    <nav aria-label={locale === "en" ? "Breadcrumbs" : "Kruimelpad"} className={cn("text-sm", className)}>
       <ol className="flex flex-wrap items-center gap-1.5 text-white/50">
         {items.map((item, i) => {
           const isLast = i === items.length - 1;

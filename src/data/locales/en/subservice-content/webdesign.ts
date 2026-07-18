@@ -1604,18 +1604,18 @@ export const englishWebdesignEditorial: Record<
     imageAlt: "Responsive business website designed for an SME by VisualVibe",
     internalLinks: [
       {
-        href: "/en/services/web-design/online-shop-development/",
+        href: "/en/diensten/web-design/online-shop-development/",
         label: "online shop development",
       },
       {
-        href: "/en/services/web-design/one-page-website/",
+        href: "/en/diensten/web-design/one-page-website/",
         label: "one-page website design",
       },
       {
-        href: "/en/services/web-design/website-redesign/",
+        href: "/en/diensten/web-design/website-redesign/",
         label: "website redesign",
       },
-      { href: "/en/services/seo/", label: "SEO services" },
+      { href: "/en/diensten/seo/", label: "SEO services" },
     ],
     editorial: businessWebsiteEditorial,
   },
@@ -1638,16 +1638,16 @@ export const englishWebdesignEditorial: Record<
       "Mobile-friendly online shop with clear product categories and checkout",
     internalLinks: [
       {
-        href: "/en/services/web-design/business-website-design/",
+        href: "/en/diensten/web-design/business-website-design/",
         label: "business website design",
       },
       {
-        href: "/en/services/photography/product-photography/",
+        href: "/en/diensten/photography/product-photography/",
         label: "product photography",
       },
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
       {
-        href: "/en/services/web-design/website-maintenance/",
+        href: "/en/diensten/web-design/website-maintenance/",
         label: "website maintenance",
       },
     ],
@@ -1672,16 +1672,16 @@ export const englishWebdesignEditorial: Record<
       "Responsive one-page website with clear sections and a contact call to action",
     internalLinks: [
       {
-        href: "/en/services/web-design/business-website-design/",
+        href: "/en/diensten/web-design/business-website-design/",
         label: "business website design",
       },
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
       {
-        href: "/en/services/photography/brand-photography/",
+        href: "/en/diensten/photography/brand-photography/",
         label: "brand photography",
       },
       {
-        href: "/en/services/web-design/website-maintenance/",
+        href: "/en/diensten/web-design/website-maintenance/",
         label: "website maintenance",
       },
     ],
@@ -1706,16 +1706,16 @@ export const englishWebdesignEditorial: Record<
       "Existing business website being reviewed for a responsive redesign and SEO migration",
     internalLinks: [
       {
-        href: "/en/services/web-design/business-website-design/",
+        href: "/en/diensten/web-design/business-website-design/",
         label: "business website design",
       },
       {
-        href: "/en/services/web-design/seo-ready-website/",
+        href: "/en/diensten/web-design/seo-ready-website/",
         label: "SEO-ready website development",
       },
-      { href: "/en/services/seo/technical-seo/", label: "technical SEO" },
+      { href: "/en/diensten/seo/technical-seo/", label: "technical SEO" },
       {
-        href: "/en/services/web-design/website-maintenance/",
+        href: "/en/diensten/web-design/website-maintenance/",
         label: "website maintenance",
       },
     ],
@@ -1740,16 +1740,16 @@ export const englishWebdesignEditorial: Record<
       "Website maintenance dashboard showing updates, backups and technical checks",
     internalLinks: [
       {
-        href: "/en/services/web-design/wordpress-website/",
+        href: "/en/diensten/web-design/wordpress-website/",
         label: "WordPress website development",
       },
       {
-        href: "/en/services/web-design/website-redesign/",
+        href: "/en/diensten/web-design/website-redesign/",
         label: "website redesign",
       },
-      { href: "/en/services/seo/technical-seo/", label: "technical SEO" },
+      { href: "/en/diensten/seo/technical-seo/", label: "technical SEO" },
       {
-        href: "/en/services/web-design/business-website-design/",
+        href: "/en/diensten/web-design/business-website-design/",
         label: "business website design",
       },
     ],
@@ -1774,18 +1774,18 @@ export const englishWebdesignEditorial: Record<
       "Bespoke WordPress content blocks in a clear website management interface",
     internalLinks: [
       {
-        href: "/en/services/web-design/business-website-design/",
+        href: "/en/diensten/web-design/business-website-design/",
         label: "business website design",
       },
       {
-        href: "/en/services/web-design/website-maintenance/",
+        href: "/en/diensten/web-design/website-maintenance/",
         label: "WordPress maintenance",
       },
       {
-        href: "/en/services/web-design/seo-ready-website/",
+        href: "/en/diensten/web-design/seo-ready-website/",
         label: "SEO-ready website development",
       },
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
     ],
     editorial: wordpressWebsiteEditorial,
   },
@@ -1807,11 +1807,11 @@ export const englishWebdesignEditorial: Record<
     imageAlt:
       "SEO-ready website architecture connecting keyword research, content and technical templates",
     internalLinks: [
-      { href: "/en/services/seo/technical-seo/", label: "technical SEO" },
-      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
-      { href: "/en/services/seo/local-seo/", label: "local SEO" },
+      { href: "/en/diensten/seo/technical-seo/", label: "technical SEO" },
+      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/diensten/seo/local-seo/", label: "local SEO" },
       {
-        href: "/en/services/web-design/website-redesign/",
+        href: "/en/diensten/web-design/website-redesign/",
         label: "website redesign",
       },
     ],

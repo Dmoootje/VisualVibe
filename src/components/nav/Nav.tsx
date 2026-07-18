@@ -10,7 +10,11 @@ import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { toolCards as toolPreviewCards } from "@/data/toolCards";
 import { NavIcon } from "./nav-icons";
-import type { NavCard, NavPillar } from "./navData";
+import type { NavCard, NavPillar, NavRegion } from "./navData";
+import {
+  getChromeRoutes,
+  type PublicChromeLocale,
+} from "./chromeRoutes";
 import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
@@ -19,12 +23,6 @@ const RegionMiniMap = dynamic(
 );
 
 const MobileNavDrawer = dynamic(() => import("./MobileNavDrawer").then((module) => module.MobileNavDrawer), { ssr: false });
-
-export type NavRegion = {
-  slug: string;
-  title: string;
-  type: string;
-};
 
 // Renders a nav glyph from either the nav-icon set or the sector sprite.
 function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav" | "sector"; size?: number }) {
@@ -39,11 +37,11 @@ function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav
  * Witte WeddingVibe-CTA (zusterlabel) voor de Fotografie- en Realisaties-menu's,
  * in de stijl van de bestaande cross-promo cards op /over-ons en /diensten/fotografie.
  */
-function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
+function WeddingCtaCard({ href, onClick }: { href: string; onClick?: () => void }) {
   const t = useTranslations("nav");
   return (
     <Link
-      href="/trouwfotograaf-limburg"
+      href={href}
       onClick={onClick}
       className="vvnav-wedCard"
       style={{ position: "relative", marginTop: 10, display: "flex", alignItems: "center", gap: 13, padding: "13px 15px", borderRadius: 14, background: "#FFFFFF", boxShadow: "0 18px 42px -20px rgba(201,162,75,.6)" }}
@@ -156,6 +154,7 @@ function Logo({ size = 24 }: { size?: number }) {
 }
 
 export function Nav({
+  locale,
   pillars,
   regions,
   sectorCards,
@@ -165,6 +164,7 @@ export function Nav({
   kennisbankPostCount = 0,
   googleRating = null,
 }: {
+  locale: PublicChromeLocale;
   pillars: NavPillar[];
   regions: NavRegion[];
   sectorCards: NavCard[];
@@ -176,6 +176,7 @@ export function Nav({
 }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
+  const routes = getChromeRoutes(locale);
 
   // Desktop
   const [menu, setMenu] = useState<DesktopMenu>(null);
@@ -331,7 +332,7 @@ export function Nav({
                           ))}
                         </div>
 
-                        <Link href="/offerte-aanvragen" className="vvnav-featCard" style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 16, padding: "16px 18px", borderRadius: 14, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 62%),rgba(255,255,255,.02)" }}>
+                        <Link href={routes.quotation} className="vvnav-featCard" style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 16, padding: "16px 18px", borderRadius: 14, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 62%),rgba(255,255,255,.02)" }}>
                           <span style={{ flex: "none", width: 48, height: 48, borderRadius: 12, background: "radial-gradient(circle at 35% 30%,rgba(255,122,0,.2),rgba(255,122,0,.05))", border: "1px solid rgba(255,122,0,.25)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF7A00" }}>
                             <NavIcon id={ap.icon} size={26} strokeWidth={1.6} />
                           </span>
@@ -344,7 +345,9 @@ export function Nav({
                           </span>
                         </Link>
 
-                        {ap.id === "fotografie" && <WeddingCtaCard onClick={closeMenu} />}
+                        {ap.id === "fotografie" && routes.wedding && (
+                          <WeddingCtaCard href={routes.wedding} onClick={closeMenu} />
+                        )}
                       </>
                     )}
                   </div>
@@ -356,13 +359,13 @@ export function Nav({
 
           {/* Regio mega-menu with region map cards */}
           <RegioMega regions={regions} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <DesktopDropdown label={t("caseStudies")} allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
+          <DesktopDropdown label={t("caseStudies")} allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={routes.wedding ? <WeddingCtaCard href={routes.wedding} onClick={closeMenu} /> : undefined} />
           <DesktopDropdown label={t("sectors")} allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           <ToolsMega items={toolsCards} open={menu === "tools"} onOpen={() => setMenu("tools")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
             <DesktopDropdown label={t("knowledgeBase")} allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
-          <Link href="/over-ons" className="vvnav-link">{t("about")}</Link>
+          <Link href={routes.about} className="vvnav-link">{t("about")}</Link>
           <Link href="/contact" className="vvnav-link">{t("contact")}</Link>
         </div>
 
@@ -372,7 +375,7 @@ export function Nav({
           <NextLink href="/admin/login" prefetch={false} aria-label={t("login")} style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>
-          <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
+          <Link href={routes.quotation} className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
             {t("quotation")}
           </Link>
         </div>
@@ -392,6 +395,7 @@ export function Nav({
       </nav>
 
       {drawer && <MobileNavDrawer
+        locale={locale}
         pillars={pillars}
         regions={regions}
         sectorCards={sectorCards}
@@ -584,7 +588,7 @@ function RegioMega({
                 >
                   <div style={{ position: "relative", height: 96, overflow: "hidden", background: "linear-gradient(to bottom,#171717,#0a0a0a)" }}>
                     <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 60% 45%,rgba(255,117,0,.16),transparent 60%)" }} />
-                    <RegionMiniMap slug={region.slug} />
+                    <RegionMiniMap slug={region.id} />
                     <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 28, background: "linear-gradient(to top,#0a0a0a,transparent)" }} />
                   </div>
                   <div style={{ padding: "11px 12px 13px", display: "flex", flexDirection: "column", gap: 6 }}>

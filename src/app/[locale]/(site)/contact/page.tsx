@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: S
     title: `${copy.title} | ${settings.companyName}`,
     description: locale === "en" ? copy.description : `Neem contact op met ${settings.companyName}${place}. Vraag vrijblijvend een offerte aan of stel je vraag.`,
     path: "/contact/",
+    languagePaths: { nl: "/contact/", en: "/contact/" },
   });
 }
 
@@ -117,6 +118,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         {/* Map section */}
         <div className="mt-10">
           <ContactMap
+            locale={locale}
             embedUrl={settings.googleMapsEmbedUrl}
             latitude={settings.latitude}
             longitude={settings.longitude}

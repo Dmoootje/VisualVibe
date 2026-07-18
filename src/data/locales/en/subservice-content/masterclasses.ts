@@ -1,5 +1,6 @@
 import type { SubserviceEditorial } from "@/types";
 import type { EnglishServiceLocaleRecord } from "../services";
+import { getEnglishServicePublicHref } from "../servicePublicRoutes";
 
 type MasterclassesEditorialSlug =
   "opleiding-opnemen" | "online-cursus-video" | "workshop-filmen";
@@ -710,7 +711,7 @@ export const englishMasterclassesEditorial: Record<
     imageAlt: "Training video production produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["opleiding-opnemen"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: getEnglishServicePublicHref(href),
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -734,7 +735,7 @@ export const englishMasterclassesEditorial: Record<
     internalLinks: localizedEditorial[
       "online-cursus-video"
     ].relatedServices.map((href) => ({
-      href: `/en/services/${href}/`,
+      href: getEnglishServicePublicHref(href),
       label: href
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -755,7 +756,7 @@ export const englishMasterclassesEditorial: Record<
     imageAlt: "Workshop video production produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["workshop-filmen"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: getEnglishServicePublicHref(href),
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

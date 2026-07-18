@@ -16,10 +16,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: "About VisualVibe and Jens Hardy | Media agency in Limburg",
     description: "Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.",
     path: "/about/", locale: "en",
+    languagePaths: { nl: "/over-ons/", en: "/about/" },
   } : {
     title: `Over ons | ${businessConfig.displayName}`,
     description: "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
     path: "/over-ons/",
+    languagePaths: { nl: "/over-ons/", en: "/about/" },
   });
 }
 
@@ -111,7 +113,7 @@ function EnglishAboutPage() {
       <p style={eyebrow}>The person behind VisualVibe</p>
       <h1 className="mt-5 max-w-4xl font-sora text-4xl font-extrabold sm:text-6xl">One partner for digital experiences and visual stories</h1>
       <p className="mt-7 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe is a creative media agency based in Limburg, Belgium. We bring web design, SEO, photography, video production, drone and FPV, 3D, VR and AR, and podcasting together under one roof. This gives SMEs one point of contact for a consistent online presence.</p>
-      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/70">Wedding photography has its own dedicated label: WeddingVibe. <NextLink href="/en/trouwfotograaf-limburg/" className="font-semibold text-amber-400">Discover WeddingVibe</NextLink>.</p>
+      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/70">Wedding photography has its own dedicated label: WeddingVibe.</p>
       <div className="mt-8 flex flex-wrap gap-4"><QuoteButton mode="kennis" className="vvov-btn">Start a conversation</QuoteButton><NextLink href="/en/realisaties/" className="vvov-btn rounded-xl border border-white/15 px-6 py-3">View our case studies</NextLink></div>
     </section>
     <section className={`${SECTION} py-16`}><p style={eyebrow}>VisualVibe in brief</p><div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Since 2020","Creative media agency in Limburg"],["7 disciplines","Under one roof"],["1 point of contact","From idea to delivery"],["3 partners","Google · Meta · Leadinfo"]].map(([big,label]) => <div key={big} className="rounded-2xl border border-white/10 bg-white/[.03] p-6"><strong className="text-2xl">{big}</strong><p className="mt-2 text-white/60">{label}</p></div>)}</div></section>

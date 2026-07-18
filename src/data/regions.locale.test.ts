@@ -26,7 +26,8 @@ describe("English region localisation", () => {
       expect(record.seo.description.trim()).not.toBe("");
       expect(record.imageAlt.trim()).not.toBe("");
       expect(record.internalLinks.length).toBeGreaterThan(0);
-      expect(record.internalLinks.every(({ href }) => href.startsWith("/en/"))).toBe(true);
+      expect(record.internalLinks.every(({ href }) => href.startsWith("/"))).toBe(true);
+      expect(record.internalLinks.every(({ href }) => !href.startsWith("/en/"))).toBe(true);
       expect(JSON.stringify(record)).not.toMatch(prohibitedTypography);
     }
   });
@@ -54,7 +55,7 @@ describe("English region localisation", () => {
     const records = [englishRegionHub, englishSectorHub, ...Object.values(englishRegionEditorial)];
     for (const record of records) {
       for (const { href } of record.internalLinks) {
-        const root = href.replace(/^\/en\//u, "").split("/")[0];
+        const root = href.replace(/^\/(?:en\/)?/u, "").split("/")[0];
         expect(["diensten", "sectoren", "regio", "realisaties", "request-a-quotation"]).toContain(root);
       }
     }

@@ -58,6 +58,8 @@ export async function generateMetadata({
   const { category, locale } = await params;
   const categoryDef = getRealisatieCategoryByLocalizedSlug(category, locale);
   if (!categoryDef || categoryDef.id === "applicaties") return {};
+  const dutchCategory = getLocalizedRealisatieCategoryById(categoryDef.id, "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById(categoryDef.id, "en");
 
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const fotoGalleryCount =
@@ -73,9 +75,14 @@ export async function generateMetadata({
     items.length > 0 ||
     shouldIndexRealisatieCategoryWithoutCases(categoryDef);
   return pageMetadata({
+    locale,
     title: categoryDef.seoTitle,
     description: categoryDef.seoDescription,
     path: `/realisaties/${categoryDef.slug}/`,
+    languagePaths: {
+      nl: `/realisaties/${dutchCategory.slug}/`,
+      en: `/realisaties/${englishCategory.slug}/`,
+    },
     noindex: !hasContent,
   });
 }
@@ -103,7 +110,7 @@ export default async function RealisatieCategoryPage({
   const mappedService = mappedServiceSlug ? getLocalizedServiceById(mappedServiceSlug, locale).service : undefined;
 
   const [webdesignImages, webdesignProjects] = isWebdesign
-    ? await Promise.all([getWebdesignImages(), getWebdesignProjects(locale)])
+    ? await Promise.all([getWebdesignImages(), getWebdesignProjects("nl")])
     : [null, null];
   const localizedWebdesignProjects = (webdesignProjects?.flatMap((project) => {
     try {
@@ -118,7 +125,7 @@ export default async function RealisatieCategoryPage({
   const gridProjects =
     localizedWebdesignProjects.filter((project) => project.id !== featured?.id);
 
-  const fotoGalleries = isFotografie
+  const fotoGalleries = isFotografie && locale === "nl"
     ? (await getFotografieGalleries(locale)).filter((gallery) => gallery.images.length > 0)
     : [];
   const smugGalleries = isFotografie && locale === "nl" ? await getSmugMugGalleries() : [];
@@ -146,6 +153,7 @@ export default async function RealisatieCategoryPage({
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Case studies" : "Realisaties", path: "/realisaties" },
@@ -216,12 +224,13 @@ export default async function RealisatieCategoryPage({
                     {en ? `Learn more about ${mappedService.title}` : `Meer weten over onze dienst ${mappedService.title}?`}
                   </h2>
                   <p className="mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/60">
-                    Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde
-                    vragen.
+                    {en
+                      ? "Explore our approach, what we do for you and answers to frequently asked questions."
+                      : "Ontdek onze aanpak, wat we voor je doen en de antwoorden op veelgestelde vragen."}
                   </p>
                 </div>
                 <Link
-                  href={`${en ? `/services/${mappedService.slug}` : serviceHref(mappedService)}/`}
+                  href={`${serviceHref(mappedService)}/`}
                   className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
                 >
                   {en ? "Explore the service" : "Bekijk de dienst"}

@@ -11,6 +11,13 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 vi.mock("@/lib/firestore/applicationCases", () => ({ getApplicationCases: vi.fn(async () => []) }));
+vi.mock("@/lib/seo/siteUrls", () => ({
+  getSitemapEntries: vi.fn(async () => [
+    { url: "https://visualvibe.media/en/" },
+    { url: "https://visualvibe.media/en/about/" },
+    { url: "https://visualvibe.media/en/kennisbank/" },
+  ]),
+}));
 vi.mock("@/features/home", () => ({
   Hero: () => null, Features: () => null, RegionIntro: () => null, SectorIntro: () => null,
   HowItWorks: () => null, Testimonials: () => null, BlogPreview: () => <div>REAL_ENGLISH_BLOG_PREVIEW</div>, Cta: () => null,
@@ -33,6 +40,8 @@ describe("English core commercial pages", () => {
     const { getGoogleReviews } = await import("@/lib/reviews/google");
     expect(getGoogleReviews).toHaveBeenCalledWith("en");
     expect(html).not.toContain("Wat doet VisualVibe?");
+    expect(html).toContain('"inLanguage":"en-BE"');
+    expect(html).not.toContain('"inLanguage":"nl-BE"');
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Creative media agency") });
     expect(metadata.alternates?.canonical).toContain("/en/");
   });
@@ -44,8 +53,17 @@ describe("English core commercial pages", () => {
 
     expect(html).toContain("The person behind VisualVibe");
     expect(html).toContain("One partner for digital experiences and visual stories");
+    expect(html).not.toContain('href="/en/trouwfotograaf-limburg/"');
     expect(html).not.toContain("Het gezicht achter VisualVibe");
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("About VisualVibe") });
+  });
+
+  it("uses the canonical English quotation route on the services page", async () => {
+    const page = await import("./diensten/page");
+    const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ locale: "en" }) }));
+
+    expect(html).toContain('href="/request-a-quotation"');
+    expect(html).not.toContain('href="/offerte-aanvragen"');
   });
 
   it("renders an English sitemap without Dutch knowledge-base fallbacks", async () => {

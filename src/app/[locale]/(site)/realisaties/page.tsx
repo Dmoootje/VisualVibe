@@ -29,7 +29,7 @@ import { getLocalizedServiceById } from "@/data/services";
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const en = locale === "en";
-  return pageMetadata({ title: en ? "Case studies in web, software and visual media | VisualVibe" : "Realisaties in applicaties, webdesign, foto & video | VisualVibe", description: en ? "Explore VisualVibe case studies in applications, SaaS, web design, SEO, photography, videography, drone and FPV, 3D, VR, AR and podcasting." : "Bekijk realisaties van VisualVibe in applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.", path: "/realisaties/" });
+  return pageMetadata({ locale, title: en ? "Case studies in web, software and visual media | VisualVibe" : "Realisaties in applicaties, webdesign, foto & video | VisualVibe", description: en ? "Explore VisualVibe case studies in applications, SaaS, web design, SEO, photography, videography, drone and FPV, 3D, VR, AR and podcasting." : "Bekijk realisaties van VisualVibe in applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.", path: "/realisaties/", languagePaths: { nl: "/realisaties/", en: "/realisaties/" } });
 }
 
 // De hub toont Firestore-content (admin-beheerd): net als de categoriepagina's
@@ -150,6 +150,7 @@ export default async function RealisatiesHubPage({ params }: { params: Promise<{
   return (
     <div className="min-h-screen pb-16 text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Case studies" : "Realisaties", path: "/realisaties" },
@@ -249,7 +250,7 @@ export default async function RealisatiesHubPage({ params }: { params: Promise<{
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
-                href={en ? "/services" : "/diensten"}
+                href="/diensten"
                 className="inline-flex w-full items-center justify-center rounded-full border border-white/[0.16] px-6 py-3 font-medium text-white transition-colors hover:border-[rgba(255,117,0,0.5)] sm:w-auto"
               >
                 {en ? "Explore our services" : "Bekijk onze diensten"}

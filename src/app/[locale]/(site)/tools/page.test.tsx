@@ -43,6 +43,8 @@ describe("ToolsPage", () => {
     expect(html).toContain("Free tools for your website");
     expect(html).toContain("Website analysis");
     expect(html).not.toContain("Gratis tools");
+    expect(html).toContain('"inLanguage":"en-BE"');
+    expect(html).not.toContain('"inLanguage":"nl-BE"');
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Free website") });
   });
 });

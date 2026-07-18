@@ -93,6 +93,7 @@ export function KennisbankLandingView({
   return (
     <div>
       <KbHeroShell
+        locale={locale}
         breadcrumb={[{ label: "Home", href: "/" }, { label: labels.knowledgeBase }]}
         eyebrow={{
           icon: <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />,

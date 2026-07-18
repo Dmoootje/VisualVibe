@@ -11,6 +11,7 @@ import {
 } from "@/lib/kennisbank/posts";
 import {
   getCategoryBySlug,
+  getLocalizedKennisbankCategoryById,
   kennisbankCategories,
 } from "@/data/kennisbankCategories";
 import { kennisbankCategoryFeatured } from "@/data/kennisbankImages";
@@ -28,6 +29,8 @@ import {
   toArticleCardData,
   knowledgeBaseLabels,
 } from "@/components/kennisbank";
+import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
 
 const OPEN_GRAPH_LOCALE: Record<string, string> = {
   nl: "nl_BE",
@@ -67,6 +70,7 @@ export async function generateMetadata({
     return {};
   }
 
+  const localizedCategory = getLocalizedKennisbankCategoryById(categoryDef.slug, locale);
   const posts = getPostsByCategory(categoryDef.slug, locale);
   const empty = posts.length === 0;
   const canonical = `${businessConfig.url}${localizedPath(
@@ -75,14 +79,21 @@ export async function generateMetadata({
   )}`;
   const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
   const socialImage = featuredPost?.ogImage ?? `${businessConfig.url}/image.jpg`;
-  const localizedName = locale === "en" ? (featuredPost?.category ?? categoryDef.name) : categoryDef.name;
-  const localizedTitle = locale === "en" ? `${localizedName} guides and advice | VisualVibe` : categoryDef.seoTitle;
-  const localizedDescription = locale === "en" ? `Practical ${localizedName} guides and answers for SMEs, written by VisualVibe.` : categoryDef.seoDescription;
+  const localizedTitle = localizedCategory.seoTitle;
+  const localizedDescription = localizedCategory.seoDescription;
+  const languages =
+    getPostsByCategory(categoryDef.slug, "nl").length > 0 &&
+    getPostsByCategory(categoryDef.slug, "en").length > 0
+      ? publishedLanguageAlternates(businessConfig.url, {
+          nl: categoryHref(categoryDef.slug),
+          en: categoryHref(categoryDef.slug),
+        })
+      : undefined;
 
   return {
     title: { absolute: localizedTitle },
     description: localizedDescription,
-    alternates: { canonical },
+    alternates: { canonical, languages },
     openGraph: {
       title: localizedTitle,
       description: localizedDescription,
@@ -90,7 +101,7 @@ export async function generateMetadata({
       type: "website",
       siteName: businessConfig.displayName,
       locale: OPEN_GRAPH_LOCALE[locale],
-      images: [{ url: socialImage, alt: featuredPost?.heroImageAlt ?? categoryDef.name }],
+      images: [{ url: socialImage, alt: featuredPost?.heroImageAlt ?? localizedCategory.name }],
     },
     twitter: {
       card: "summary_large_image",
@@ -122,9 +133,10 @@ export default async function KennisbankCategoryPage({
     notFound();
   }
 
+  const localizedCategory = getLocalizedKennisbankCategoryById(categoryDef.slug, locale);
   const posts = getPostsByCategory(categoryDef.slug, locale);
   if (posts.length === 0) notFound();
-  const localizedCategoryName = locale === "en" ? posts[0].category : categoryDef.name;
+  const localizedCategoryName = localizedCategory.name;
 
   const pillarPosts = posts.filter((post) => post.pillar);
   const supportingPosts = posts.filter((post) => !post.pillar);
@@ -132,11 +144,14 @@ export default async function KennisbankCategoryPage({
 
   const otherCategories = kennisbankCategories
     .filter((c) => c.slug !== categoryDef.slug)
-    .map((c) => ({
-      slug: c.slug,
-      name: locale === "en" ? (getPostsByCategory(c.slug, locale)[0]?.category ?? c.name) : c.name,
-      count: getPostsByCategory(c.slug, locale).length,
-    }))
+    .map((c) => {
+      const localized = getLocalizedKennisbankCategoryById(c.slug, locale);
+      return {
+        slug: localized.slug,
+        name: localized.name,
+        count: getPostsByCategory(c.slug, locale).length,
+      };
+    })
     .filter((otherCategory) => otherCategory.count > 0);
 
   const { title, titleAccent } = splitCategoryName(localizedCategoryName);
@@ -169,8 +184,8 @@ export default async function KennisbankCategoryPage({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: localizedCategoryName,
-          headline: categoryDef.seoTitle,
-          description: categoryDef.seoDescription,
+          headline: localizedCategory.seoTitle,
+          description: localizedCategory.seoDescription,
           url: canonicalUrl,
           inLanguage: CONTENT_LANGUAGE[locale],
           mainEntity: {
@@ -187,6 +202,7 @@ export default async function KennisbankCategoryPage({
       />
 
       <KbHeroShell
+        locale={locale}
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: labels.knowledgeBase, href: "/kennisbank/" },
@@ -198,7 +214,7 @@ export default async function KennisbankCategoryPage({
         }}
         title={title}
         titleAccent={titleAccent}
-        subtitle={locale === "en" ? `Practical guides and clear answers about ${localizedCategoryName.toLowerCase()} for SMEs.` : categoryDef.description}
+        subtitle={localizedCategory.description}
         stats={[
           { value: String(posts.length), label: posts.length === 1 ? labels.article : labels.articles },
           { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? labels.guide : labels.guides },
@@ -273,7 +289,9 @@ export default async function KennisbankCategoryPage({
               title: locale === "en" ? `Need help with ${localizedCategoryName.toLowerCase()}?` : `Hulp nodig met ${categoryDef.name}?`,
               description: locale === "en" ? "We help SMEs achieve concrete, measurable results. Ask us for advice with no obligation." : "Wij helpen KMO's in Limburg vooruit met concrete, meetbare resultaten. Vraag vrijblijvend advies aan.",
               label: locale === "en" ? "Ask for advice" : "Vraag advies aan",
-              href: "/offerte-aanvragen/",
+              href:
+                normalizeKnowledgeBaseHref("/offerte-aanvragen/", locale) ??
+                "/offerte-aanvragen/",
             }}
           />
         </div>

@@ -31,7 +31,8 @@ describe("English regions hub route", () => {
     expect(html).toContain("Regions where VisualVibe works");
     expect(html).toContain('href="/regio/limburg-belgium"');
     expect(html).toContain('href="/regio/flanders"');
-    expect(html).toContain('data-cta-href="/en/request-a-quotation/"');
+    expect(html).toContain('data-cta-href="/request-a-quotation/"');
+    expect(html).not.toContain('data-cta-href="/en/request-a-quotation/"');
     expect(html).not.toMatch(/Ons werkgebied|Kies jouw regio|Bekijk pagina|gemeentes|Nederlands-Limburg|Offerte aanvragen/);
   });
 

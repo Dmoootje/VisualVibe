@@ -4,27 +4,23 @@ import { getPublishedLocales } from "./locales";
 const publishedLocales = getPublishedLocales();
 
 export const routing = defineRouting({
-  // Alleen Nederlands is gepubliceerd. Zolang fr/en/de hier stonden zonder echte
-  // vertalingen adverteerde elke response hreflang-alternates naar /fr en /en,
-  // waardoor crawlers honderden 404's vonden (kennisbank bestaat alleen in nl).
-  // Talen pas weer publiceren zodra er echte vertaalde content is; verwijder dan
-  // ook de bijbehorende redirects in next.config.js.
+  // Dutch and English are published. French and German stay excluded until
+  // complete translated content is ready; their redirects live in next.config.js.
   locales: publishedLocales,
   defaultLocale: "nl",
   // Dutch stays the internal locale "nl" (lang="nl", messages/nl.json) but is
-  // shown under /be (Belgium). French/English keep their own code (/fr, /en).
+  // shown under /be (Belgium). English keeps its standard /en prefix.
   localePrefix: {
     mode: "always",
     prefixes: {
       nl: "/be",
     },
   },
-  // Always land on the Dutch default instead of auto-redirecting to the
-  // browser's Accept-Language (which kept pushing dev sessions to /en).
+  // Always land on the Dutch default instead of selecting a locale from the
+  // browser's Accept-Language header.
   localeDetection: false,
-  // Geen hreflang Link-headers op elke response: de site is eentalig, dus
-  // alternates verwezen alleen naar niet-bestaande taalvarianten en waren
-  // precies hoe crawlers de 404'ende /fr- en /en-URL's bleven ontdekken.
+  // Keep automatic hreflang Link headers disabled. Route-specific metadata owns
+  // the Dutch/English partner URLs so only real bilingual pages are advertised.
   alternateLinks: false,
   // Never persist a locale in a cookie: the language is determined purely by
   // the URL, so a chosen locale can't "stick" and hijack later navigation.

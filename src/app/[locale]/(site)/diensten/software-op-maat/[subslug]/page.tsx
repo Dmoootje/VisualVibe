@@ -25,6 +25,9 @@ export async function generateMetadata({
   const service = getLocalizedSoftwareServiceBySlug(subslug, locale);
 
   if (!service) return {};
+  const dutchService = getSoftwareServices("nl").find((candidate) => candidate.id === service.id);
+  const englishService = getSoftwareServices("en").find((candidate) => candidate.id === service.id);
+  if (!dutchService || !englishService) return {};
 
   return pageMetadata({
     title: service.seo.title,
@@ -32,6 +35,10 @@ export async function generateMetadata({
     keywords: service.seo.keywords,
     path: `${softwareServiceHref(service, locale)}/`,
     locale,
+    languagePaths: {
+      nl: `${softwareServiceHref(dutchService, "nl")}/`,
+      en: `${softwareServiceHref(englishService, "en")}/`,
+    },
   });
 }
 

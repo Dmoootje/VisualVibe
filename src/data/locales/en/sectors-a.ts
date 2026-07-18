@@ -7,7 +7,7 @@ import type { EnglishSectorLocaleRecord } from "./sectorTypes";
 
 const sharedCta = {
   label: "Request a quotation",
-  href: "/en/request-a-quotation/",
+  href: "/request-a-quotation/",
 };
 
 export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> = {

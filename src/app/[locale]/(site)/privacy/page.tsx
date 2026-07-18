@@ -14,9 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const settings = await getSiteSettings(locale as SupportedLocale);
   const copy = getPrivacyCopy(locale, settings.companyName);
   return pageMetadata({
+    locale: locale as SupportedLocale,
     title: copy.metaTitle,
     description: copy.metaDescription,
     path: "/privacy/",
+    languagePaths: { nl: "/privacy/", en: "/privacy/" },
   });
 }
 
@@ -37,6 +39,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
   return (
     <div className="min-h-screen pb-20 pt-28 text-white">
       <BreadcrumbJsonLd
+        locale="nl"
         items={[{ name: "Home", path: "/" }, { name: "Privacybeleid", path: "/privacy" }]}
       />
 
@@ -218,7 +221,7 @@ function EnglishPrivacy({ settings, address }: { settings: Awaited<ReturnType<ty
   const copy = getPrivacyCopy("en", settings.companyName);
   return (
     <div className="min-h-screen pb-20 pt-28 text-white">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: copy.title, path: "/privacy" }]} />
+      <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: copy.title, path: "/privacy" }]} />
       <div className="container mx-auto">
         <article className="mx-auto max-w-[760px]">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">{copy.label}</p>

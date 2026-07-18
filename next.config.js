@@ -28,15 +28,22 @@ const nextConfig = {
         destination: '/be/',
         permanent: true,
       },
-      // fr/en/de stonden als locales aangekondigd terwijl alleen Nederlandse
-      // content bestaat; crawlers vonden daardoor honderden vertaalde URL's
-      // (grotendeels 404). Vouw ze permanent op de gepubliceerde Nederlandse
-      // pagina's tot er echte vertalingen zijn (zie src/i18n/routing.ts).
+      {
+        source: '/en/trouwfotograaf-limburg',
+        destination: '/be/trouwfotograaf-limburg/',
+        permanent: true,
+      },
+      {
+        source: '/en/diensten/webdesign/website-met-ai-functionaliteiten',
+        destination: '/en/diensten/custom-software/ai-application-development/',
+        permanent: true,
+      },
+      // Dutch and English are published. Fold the still-disabled French and
+      // German prefixes permanently onto their Dutch counterparts until those
+      // translations are complete (see src/i18n/routing.ts).
       // De kale prefix staat bewust vóór de :path*-regel (vangt het lege pad),
       // en de :path*-bestemming eindigt op een slash zodat de redirect in één
       // hop op de canonieke slashed URL landt (trailingSlash: true).
-      { source: '/en', destination: '/be/', permanent: true },
-      { source: '/en/:path+', destination: '/be/:path+/', permanent: true },
       { source: '/fr', destination: '/be/', permanent: true },
       { source: '/fr/:path+', destination: '/be/:path+/', permanent: true },
       { source: '/de', destination: '/be/', permanent: true },
@@ -49,6 +56,27 @@ const nextConfig = {
       // to the branded fallback before the old public template asset can win.
       beforeFiles: [
         { source: '/image.jpg', destination: '/api/og' },
+        { source: '/en/about', destination: '/en/over-ons' },
+        {
+          source: '/en/request-a-quotation',
+          destination: '/en/offerte-aanvragen',
+        },
+        {
+          source: '/en/website-analysis',
+          destination: '/en/website-analyse',
+        },
+        {
+          source: '/en/website-analysis/report/:token',
+          destination: '/en/website-analyse/rapport/:token',
+        },
+        {
+          source: '/en/realisaties/applications',
+          destination: '/en/realisaties/applicaties',
+        },
+        {
+          source: '/en/realisaties/applications/:slug',
+          destination: '/en/realisaties/applicaties/:slug',
+        },
         {
           source: '/en/diensten/custom-software',
           destination: '/en/diensten/software-op-maat',

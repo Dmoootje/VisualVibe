@@ -16,6 +16,7 @@ import {
   applicationCaseImageKey,
   applicationCases,
   getApplicationCaseByLocalizedSlug,
+  getLocalizedApplicationCaseById,
   type ApplicationCaseImageSlot,
 } from "@/data/applicationCases";
 import { getApplicationCaseImages } from "@/lib/firestore/applicationCases";
@@ -25,11 +26,26 @@ import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
 import type { SupportedLocale } from "@/i18n/locales";
 import { localizedPath } from "@/lib/kennisbank/urls";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
+import { localizedApplicationWebsiteUrl } from "./applicationWebsiteUrl";
 
 export const revalidate = 60;
 
 export function generateStaticParams() {
-  return applicationCases.map((project) => ({ slug: project.slug }));
+  return applicationCases.flatMap((project) => {
+    if (!project.published) return [];
+
+    const params: Array<{ locale: "nl" | "en"; slug: string }> = [
+      { locale: "nl", slug: project.slug },
+    ];
+    try {
+      const englishProject = getLocalizedApplicationCaseById(project.id, "en");
+      params.push({ locale: "en", slug: englishProject.slug });
+    } catch {
+      // Published Dutch-only cases remain absent from the English route set.
+    }
+    return params;
+  });
 }
 
 export async function generateMetadata({
@@ -41,11 +57,20 @@ export async function generateMetadata({
   let project;
   try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { return {}; }
   const images = await getApplicationCaseImages();
+  const dutchProject = getLocalizedApplicationCaseById(project.id, "nl");
+  const englishProject = getLocalizedApplicationCaseById(project.id, "en");
+  const dutchCategory = getLocalizedRealisatieCategoryById("applicaties", "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById("applicaties", "en");
 
   return pageMetadata({
+    locale,
     title: project.seoTitle,
     description: project.seoDescription,
     path: `/realisaties/${locale === "en" ? "applications" : "applicaties"}/${project.slug}/`,
+    languagePaths: {
+      nl: `/realisaties/${dutchCategory.slug}/${dutchProject.slug}/`,
+      en: `/realisaties/${englishCategory.slug}/${englishProject.slug}/`,
+    },
     ogImage: images[applicationCaseImageKey(project.id, "cover")],
   });
 }
@@ -123,6 +148,7 @@ export default async function ApplicationCasePage({
   try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { notFound(); }
   const images = await getApplicationCaseImages();
   const en = locale === "en";
+  const websiteUrl = localizedApplicationWebsiteUrl(project.websiteUrl, locale);
 
   const cover = images[applicationCaseImageKey(project.id, "cover")];
   const screenshots = APPLICATION_CASE_IMAGE_SLOTS.filter(
@@ -133,6 +159,7 @@ export default async function ApplicationCasePage({
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Case studies" : "Realisaties", path: "/realisaties/" },
@@ -145,6 +172,7 @@ export default async function ApplicationCasePage({
           project,
           canonical,
           cover,
+          locale,
         })}
       />
 
@@ -198,9 +226,9 @@ export default async function ApplicationCasePage({
                 {project.excerpt}
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                {project.websiteUrl && (
+                {websiteUrl && (
                   <a
-                    href={project.websiteUrl}
+                    href={websiteUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none"
@@ -210,7 +238,7 @@ export default async function ApplicationCasePage({
                   </a>
                 )}
                 <Link
-                  href={en ? "/services/" : "/diensten/software-op-maat/"}
+                  href={en ? "/diensten/custom-software/" : "/diensten/software-op-maat/"}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.15] px-6 py-3 font-semibold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.45)] hover:text-white"
                 >
                   {en ? "Custom software" : "Software op maat"}

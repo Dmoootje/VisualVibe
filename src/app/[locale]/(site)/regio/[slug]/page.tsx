@@ -33,7 +33,7 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   let region;
   try {
-    region = locale === "nl" ? getRegionBySlug(slug) : getRegionByLocalizedSlug(slug, locale);
+    region = getRegionByLocalizedSlug(slug, locale);
   } catch {
     return {};
   }
@@ -41,6 +41,8 @@ export async function generateMetadata({
   if (!region) {
     return {};
   }
+  const dutchRegion = getLocalizedRegionById(region.id, "nl");
+  const englishRegion = getLocalizedRegionById(region.id, "en");
 
   return pageMetadata({
     title: region.seo.title,
@@ -48,6 +50,10 @@ export async function generateMetadata({
     keywords: region.seo.keywords,
     locale,
     path: `/regio/${region.slug}/`,
+    languagePaths: {
+      nl: `/regio/${dutchRegion.slug}/`,
+      en: `/regio/${englishRegion.slug}/`,
+    },
   });
 }
 
@@ -246,7 +252,7 @@ export default async function RegionDetailPage({
         {knowledgePosts.length > 0 && (
           <section className="py-12">
             <h2 className="mb-8 text-3xl font-bold">Insights for businesses in {region.title}</h2>
-            <BlogGrid posts={knowledgePosts.map(toBlogCardPost)} />
+            <BlogGrid posts={knowledgePosts.map(toBlogCardPost)} locale="en" />
           </section>
         )}
 

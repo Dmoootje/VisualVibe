@@ -96,6 +96,75 @@ export const kennisbankCategories: KennisbankCategory[] = [
   },
 ];
 
+const englishKennisbankCategories: Record<string, Omit<KennisbankCategory, "slug">> = {
+  "seo-geo": {
+    name: "SEO & GEO",
+    description: "Practical guides to local SEO, AEO, GEO, AI search visibility and online visibility for SMEs.",
+    seoTitle: "SEO & GEO guides for SMEs | VisualVibe knowledge base",
+    seoDescription: "Learn how local SEO, AEO and GEO help SMEs become more visible in Google and AI-generated search results.",
+  },
+  webdesign: {
+    name: "Web design",
+    description: "Practical guides to professional websites, WordPress, e-commerce, performance, conversion and technology for SMEs.",
+    seoTitle: "Web design and WordPress guides for SMEs | VisualVibe",
+    seoDescription: "Practical advice about websites, WordPress, maintenance, e-commerce, performance and conversion for ambitious SMEs.",
+  },
+  "software-op-maat": {
+    name: "Apps & software",
+    description: "Practical guides to apps, web applications, AI software and tailored automation for SMEs.",
+    seoTitle: "Custom apps and software for SMEs | VisualVibe",
+    seoDescription: "Learn how to plan, build, launch and safely scale a custom app, web application, AI solution or automation.",
+  },
+  fotografie: {
+    name: "Photography",
+    description: "Tips and practical photography guides for corporate, product, event and property photography.",
+    seoTitle: "Photography guides for SMEs | VisualVibe knowledge base",
+    seoDescription: "Practical photography advice for SMEs, from corporate and product photography to events and property.",
+  },
+  videografie: {
+    name: "Videography",
+    description: "Practical guides to choosing the right video format and planning scripts, production, distribution and results.",
+    seoTitle: "Videography for SMEs: practical guides | VisualVibe",
+    seoDescription: "Learn how to plan, produce, publish and measure corporate videos, social videos, aftermovies, recruitment videos and testimonials.",
+  },
+  drone: {
+    name: "Drone & FPV",
+    description: "Practical guides to drone photography, drone video and FPV for property, construction and corporate productions.",
+    seoTitle: "Drone & FPV for businesses: practical guides | VisualVibe",
+    seoDescription: "Learn how to use drone photography, drone video and FPV safely for property, construction and corporate video.",
+  },
+  "3d-vr": {
+    name: "3D & VR",
+    description: "Practical guides to 3D tours and virtual visits for showrooms, hospitality, property and customer confidence.",
+    seoTitle: "3D tours for businesses: practical guides | VisualVibe",
+    seoDescription: "Learn how to use a 3D tour or virtual visit for showrooms, hospitality and property, including preparation, privacy and hosting.",
+  },
+  podcasting: {
+    name: "Podcasting",
+    description: "Practical guides to business podcasts, video podcasts, recording, publishing and repurposing content.",
+    seoTitle: "Podcasting for businesses: practical guides | VisualVibe",
+    seoDescription: "Learn how to plan, record, publish and repurpose a business podcast or video podcast, from format and technology to distribution.",
+  },
+  masterclasses: {
+    name: "Masterclasses",
+    description: "Practical guides to online courses, masterclasses and workshops, from learning design and recording to publication and maintenance.",
+    seoTitle: "Filming masterclasses and online courses | VisualVibe",
+    seoDescription: "Learn how to design, professionally film, publish and maintain an accessible online course, masterclass or workshop.",
+  },
+};
+
+export function getLocalizedKennisbankCategoryById(
+  id: string,
+  locale: string,
+): KennisbankCategory {
+  const source = getCategoryBySlug(id);
+  if (!source) throw new Error(`Unknown knowledge-base category ID: ${id}`);
+  if (locale !== "en") return source;
+  const translated = englishKennisbankCategories[id];
+  if (!translated) throw new Error(`Missing en translation for knowledge-base category.${id}`);
+  return { slug: source.slug, ...translated };
+}
+
 export function getCategoryBySlug(slug: string): KennisbankCategory | undefined {
   return kennisbankCategories.find((category) => category.slug === slug);
 }

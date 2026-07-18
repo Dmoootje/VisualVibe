@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { LOCALE_CONFIG } from "./i18n/locales";
+import {
+  getPublishedLocales,
+  LOCALE_CONFIG,
+  type SupportedLocale,
+} from "./i18n/locales";
 import { routing } from "./i18n/routing";
 import { SESSION_COOKIE_NAME } from "./lib/auth/constants";
 
@@ -8,9 +12,12 @@ const intlMiddleware = createMiddleware(routing);
 
 const PUBLIC_ADMIN_PATHS = ["/admin/login"];
 const INTERNAL_LOCALE_REWRITE_HEADER = "x-visualvibe-internal-locale-rewrite";
-const PUBLIC_LOCALE_PREFIXES = ["/be"];
+const publicPrefix = (locale: SupportedLocale) =>
+  locale === "nl" ? "/be" : `/${locale}`;
+const DUTCH_PUBLIC_PREFIX = publicPrefix("nl");
+const PUBLIC_LOCALE_PREFIXES = getPublishedLocales().map(publicPrefix);
 const DISABLED_LOCALE_PREFIXES = Object.entries(LOCALE_CONFIG)
-  .filter(([, config]) => config.status !== "published")
+  .filter(([, config]) => config.status === "disabled")
   .map(([locale]) => `/${locale}`);
 
 export function isPublicLocalePrefix(pathname: string): boolean {
@@ -63,8 +70,11 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 308);
   }
 
-  if (isPublicLocalePrefix(pathname)) {
-    const suffix = pathname.slice(3) || "/";
+  if (
+    pathname === DUTCH_PUBLIC_PREFIX ||
+    pathname.startsWith(`${DUTCH_PUBLIC_PREFIX}/`)
+  ) {
+    const suffix = pathname.slice(DUTCH_PUBLIC_PREFIX.length) || "/";
     // Keep the origin exactly as request.nextUrl: overriding the host (e.g.
     // with the Host header) makes the rewrite cross-origin, so Next proxies it
     // over the network to <host>:8080 and every /be page 500s with ETIMEDOUT
