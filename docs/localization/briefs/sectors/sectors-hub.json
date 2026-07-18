@@ -1,0 +1,11 @@
+{
+  "sourceRoute": "/be/sectoren/", "targetRoute": "/en/sectors/",
+  "audience": "Businesses exploring VisualVibe's experience in their sector",
+  "primaryDutchSearchIntent": "Bekijken hoe VisualVibe webdesign en visuele media per sector inzet",
+  "searchIntent": { "type": "commercial", "question": "Which sectors does VisualVibe support with web design, visual media and SEO?", "geographicContext": "Limburg, Belgium, Flanders and Dutch Limburg" },
+  "mainKeyword": "creative media services by sector", "longTailKeywords": ["sector-specific web design", "business photography by industry"], "semanticTerms": ["video production", "local SEO", "drone footage", "SME"],
+  "directAnswer": "VisualVibe works with SMEs, construction and renovation firms, hospitality businesses, property professionals, retailers, event organisers, sports clubs, training providers, wellness businesses and industrial companies.",
+  "title": "Web Design, Photography, Video and SEO by Sector | VisualVibe", "metaDescription": "Sector-specific web design, photography, video, drone and SEO for ten business sectors, from construction and hospitality to property and industry.", "h1": "Creative media services by sector", "slug": "sectors",
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/services/", "anchor": "services" }, { "sourceHref": "/be/regio/", "targetHref": "/en/regions/", "anchor": "regions" }],
+  "factsToPreserve": ["The source lists ten sectors", "VisualVibe combines web design, photography, video, drone and SEO", "Do not claim expertise or results beyond source evidence"]
+}

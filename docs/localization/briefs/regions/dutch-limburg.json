@@ -1,0 +1,11 @@
+{
+  "sourceRoute": "/be/regio/nederlands-limburg/", "targetRoute": "/en/regions/dutch-limburg/",
+  "audience": "Businesses in the Dutch province of Limburg seeking cross-border creative media support",
+  "primaryDutchSearchIntent": "Een mediapartner vinden voor websites en beelden in Nederlands-Limburg",
+  "searchIntent": { "type": "commercial", "question": "Which nearby creative media agency works with businesses in Dutch Limburg?", "geographicContext": "The Dutch province of Limburg, Netherlands" },
+  "mainKeyword": "web design Dutch Limburg", "longTailKeywords": ["business photography Dutch Limburg", "video production Dutch Limburg"], "semanticTerms": ["Maastricht", "Venlo", "Weert", "cross-border project"],
+  "directAnswer": "VisualVibe works with businesses in Dutch Limburg, from Maastricht to Venlo and Weert.",
+  "title": "Web Design and Photography in Dutch Limburg | VisualVibe", "metaDescription": "Web design, photography, video and drone footage for businesses in Dutch Limburg, from Maastricht to Venlo and Weert.", "h1": "Creative media services in Dutch Limburg", "slug": "dutch-limburg",
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/services/", "anchor": "services" }],
+  "factsToPreserve": ["Dutch Limburg is across the Belgian border", "The source names Maastricht, Venlo and Weert", "Do not conflate Dutch Limburg with Limburg, Belgium"]
+}
