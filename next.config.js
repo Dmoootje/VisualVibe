@@ -46,6 +46,19 @@ const nextConfig = {
       // to the branded fallback before the old public template asset can win.
       beforeFiles: [
         { source: '/image.jpg', destination: '/api/og' },
+        { source: '/en/about', destination: '/en/over-ons' },
+        {
+          source: '/en/request-a-quotation',
+          destination: '/en/offerte-aanvragen',
+        },
+        {
+          source: '/en/website-analysis',
+          destination: '/en/website-analyse',
+        },
+        {
+          source: '/en/website-analysis/report/:token',
+          destination: '/en/website-analyse/rapport/:token',
+        },
         {
           source: '/en/diensten/custom-software',
           destination: '/en/diensten/software-op-maat',

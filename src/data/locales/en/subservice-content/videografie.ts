@@ -1913,7 +1913,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Corporate video production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["bedrijfsvideo"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1935,7 +1935,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Promotional video production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["promovideo"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1958,7 +1958,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Social media video production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["social-media-video"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1981,7 +1981,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Event aftermovie production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["event-aftermovie"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -2003,7 +2003,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Recruitment video production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["wervingsvideo"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -2026,7 +2026,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Customer testimonial video by VisualVibe in Limburg",
     internalLinks: localizedEditorial["testimonial-video"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -2048,7 +2048,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Video podcast production by VisualVibe in Limburg",
     internalLinks: localizedEditorial["podcast-video"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -2070,7 +2070,7 @@ export const englishVideographyEditorial: Record<
     imageAlt: "Branded corporate video report by VisualVibe in Limburg",
     internalLinks: localizedEditorial["nieuwsreportage"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

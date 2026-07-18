@@ -710,7 +710,7 @@ export const englishMasterclassesEditorial: Record<
     imageAlt: "Training video production produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["opleiding-opnemen"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -734,7 +734,7 @@ export const englishMasterclassesEditorial: Record<
     internalLinks: localizedEditorial[
       "online-cursus-video"
     ].relatedServices.map((href) => ({
-      href: `/en/services/${href}/`,
+      href: `/en/diensten/${href}/`,
       label: href
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -755,7 +755,7 @@ export const englishMasterclassesEditorial: Record<
     imageAlt: "Workshop video production produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["workshop-filmen"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

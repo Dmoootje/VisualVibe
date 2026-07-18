@@ -1137,7 +1137,7 @@ export const englishXrEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt: "3D Tour by VisualVibe in Limburg",
     internalLinks: localizedEditorial["3d-tour"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1161,7 +1161,7 @@ export const englishXrEditorial: Record<string, EnglishServiceLocaleRecord> = {
     internalLinks: localizedEditorial[
       "virtuele-rondleiding"
     ].relatedServices.map((href) => ({
-      href: `/en/services/${href}/`,
+      href: `/en/diensten/${href}/`,
       label: href
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1183,7 +1183,7 @@ export const englishXrEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt: "Showroom 3D Tour by VisualVibe in Limburg",
     internalLinks: localizedEditorial["showroom-3d-tour"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1206,7 +1206,7 @@ export const englishXrEditorial: Record<string, EnglishServiceLocaleRecord> = {
     imageAlt: "Vastgoed 3D Tour by VisualVibe in Limburg",
     internalLinks: localizedEditorial["vastgoed-3d-tour"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1230,7 +1230,7 @@ export const englishXrEditorial: Record<string, EnglishServiceLocaleRecord> = {
     internalLinks: localizedEditorial[
       "horeca-virtuele-tour"
     ].relatedServices.map((href) => ({
-      href: `/en/services/${href}/`,
+      href: `/en/diensten/${href}/`,
       label: href
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

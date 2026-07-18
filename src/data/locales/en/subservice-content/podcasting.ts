@@ -1164,7 +1164,7 @@ export const englishPodcastingEditorial: Record<
     imageAlt: "Business podcast produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["bedrijfspodcast"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1186,7 +1186,7 @@ export const englishPodcastingEditorial: Record<
     imageAlt: "Video podcast produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["videopodcast"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1208,7 +1208,7 @@ export const englishPodcastingEditorial: Record<
     imageAlt: "Podcast recording produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["podcast-opname"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1230,7 +1230,7 @@ export const englishPodcastingEditorial: Record<
     imageAlt: "Podcast production programme produced by VisualVibe in Limburg",
     internalLinks: localizedEditorial["podcast-traject"].relatedServices.map(
       (href) => ({
-        href: `/en/services/${href}/`,
+        href: `/en/diensten/${href}/`,
         label: href
           .split("-")
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -1254,7 +1254,7 @@ export const englishPodcastingEditorial: Record<
     internalLinks: localizedEditorial[
       "podcast-voor-experts"
     ].relatedServices.map((href) => ({
-      href: `/en/services/${href}/`,
+      href: `/en/diensten/${href}/`,
       label: href
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
