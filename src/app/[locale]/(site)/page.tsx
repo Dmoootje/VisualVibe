@@ -175,6 +175,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         url={en ? `${businessConfig.url}/en/` : HOME_URL}
         name={en ? HOME_EN.title : HOME_TITLE}
         description={en ? HOME_EN.description : HOME_DESCRIPTION}
+        inLanguage={en ? "en-BE" : "nl-BE"}
       />
       <FaqPageJsonLd items={faq} />
       {en ? <><EnglishHomepageBody reviews={reviews} /><SectorFaq title="Frequently asked questions about VisualVibe" items={faq} /></> : <>

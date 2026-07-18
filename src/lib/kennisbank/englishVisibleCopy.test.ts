@@ -19,4 +19,24 @@ describe("English knowledge-base visible route examples", () => {
     expect(visibleCode).toContain("Request a quotation");
     expect(visibleCode).toContain("Business website design");
   });
+
+  it("uses English labels in the local SEO article's visible route example", () => {
+    const source = fs.readFileSync(
+      path.join(
+        process.cwd(),
+        "content/kennisbank/en/local-seo-for-smes-in-limburg.mdx",
+      ),
+      "utf8",
+    );
+    const visibleCode = [...source.matchAll(/```txt\s*([\s\S]*?)```/g)]
+      .map((match) => match[1])
+      .join("\n");
+
+    expect(visibleCode).not.toMatch(/(?:^|\s)\/(?:diensten|regio)\//m);
+    expect(visibleCode).not.toMatch(/\/(?:fotografie|videografie)\//);
+    expect(visibleCode).toContain("/en/diensten/web-design/");
+    expect(visibleCode).toContain("/en/diensten/photography/");
+    expect(visibleCode).toContain("/en/diensten/videography/");
+    expect(visibleCode).toContain("/en/regio/limburg-belgium/");
+  });
 });

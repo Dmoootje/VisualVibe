@@ -58,6 +58,8 @@ describe("SeoGeoChecklistPage", () => {
     expect(html).toContain("Content &amp; keywords");
     expect(html).toContain("checkpoints");
     expect(html).not.toContain("controlepunten");
+    expect(html).toContain('"inLanguage":"en-BE"');
+    expect(html).not.toContain('"inLanguage":"nl-BE"');
     expect(metadata.description).toContain("AI search");
   });
 });

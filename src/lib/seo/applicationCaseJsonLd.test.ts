@@ -44,4 +44,21 @@ describe("buildApplicationCaseJsonLd", () => {
     expect(serialized).not.toContain("aggregateRating");
     expect(serialized).not.toContain('"offers"');
   });
+
+  it("localizes English application case language and genre metadata", () => {
+    const project = applicationCases.find((item) => item.id === "pelletkachelzorg");
+    if (!project) throw new Error("Pelletkachelzorg fixture ontbreekt");
+
+    const canonical =
+      "https://visualvibe.media/en/realisaties/applications/pellet-stove-care-multisite-commerce-platform/";
+    const schema = buildApplicationCaseJsonLd({ project, canonical, locale: "en" });
+
+    expect(schema).toMatchObject({
+      inLanguage: "en-BE",
+      mainEntity: {
+        genre: "Custom software project",
+      },
+    });
+    expect(JSON.stringify(schema)).not.toMatch(/nl-BE|Maatwerk softwareproject/);
+  });
 });

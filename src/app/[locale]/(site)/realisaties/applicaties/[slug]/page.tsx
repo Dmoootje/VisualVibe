@@ -171,6 +171,7 @@ export default async function ApplicationCasePage({
           project,
           canonical,
           cover,
+          locale,
         })}
       />
 

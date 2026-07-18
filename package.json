@@ -13,6 +13,7 @@
     "validate:subservices": "node scripts/validate-subservices.mjs",
     "audit:locales": "node scripts/audit-locales.mjs",
     "audit:english-publication": "node scripts/audit-english-production.mjs",
+    "audit:english-copy": "node scripts/audit-english-copy.mjs",
     "validate:content": "npm run validate:subservices && npm run audit:locales"
   },
   "engines": {

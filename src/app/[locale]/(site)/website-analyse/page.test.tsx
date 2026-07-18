@@ -83,6 +83,7 @@ describe("WebsiteAnalysePage", () => {
     const html = renderToStaticMarkup(await WebsiteAnalysePage({ params: Promise.resolve({ locale: "en" }) }));
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Free website analysis") });
     expect(metadata.robots).toMatchObject({ index: true, follow: true });
+    expect(metadata.openGraph).toMatchObject({ locale: "en_GB" });
     expect(metadata.alternates).toMatchObject({
       canonical: "https://visualvibe.media/en/website-analysis/",
       languages: {
@@ -98,5 +99,7 @@ describe("WebsiteAnalysePage", () => {
     expect(html).not.toContain("/en/diensten/webdesign/");
     expect(html).not.toContain("Wat controleert");
     expect(html).not.toContain("/be/");
+    expect(html).toContain('"inLanguage":"en-BE"');
+    expect(html).not.toContain('"inLanguage":"nl-BE"');
   });
 });

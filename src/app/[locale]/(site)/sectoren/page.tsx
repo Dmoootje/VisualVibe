@@ -216,6 +216,7 @@ export default async function SectorenHubPage({ params }: { params: Promise<{ lo
         title={en ? "Ready to strengthen your position online?" : "Jouw sector online versterken?"}
         description={en ? "Tell us about your industry and what you want to achieve. We will propose an approach suited to your market, region and budget." : "Vertel ons in welke branche je actief bent en wat je wilt bereiken. We stellen een aanpak voor die past bij jouw sector, jouw regio en jouw budget."}
         primaryHref={en ? englishSectorHub.cta.href : "/offerte-aanvragen"}
+        primaryLabel={en ? englishSectorHub.cta.label : undefined}
       />
     </div>
   );
