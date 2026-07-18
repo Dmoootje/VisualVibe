@@ -1,0 +1,41 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/",
+  "targetRoute": "/en/knowledge-base/web-design/complete-guide-to-building-a-website-in-limburg/",
+  "audience": "Self-employed professionals and SMEs in Limburg, Belgium considering a professional new website or a complete website rebuild",
+  "primaryDutchSearchIntent": "KMO's in Limburg volledig uitleggen hoe strategie, structuur, content, media, SEO, techniek en conversie samenkomen in een professioneel websiteproject",
+  "searchIntent": { "type": "commercial", "question": "What should an SME consider when commissioning a professional website in Limburg, Belgium?", "geographicContext": "Limburg, Belgium, with relevant reach across Flanders, Antwerp province and Dutch Limburg" },
+  "mainKeyword": "website design in Limburg",
+  "longTailKeywords": ["build a website in Limburg Belgium", "web design for SMEs", "professional business website", "web designer Limburg Belgium", "SEO-ready website", "local SEO Limburg Belgium", "website with professional photography and video"],
+  "semanticTerms": ["website strategy", "site architecture", "content planning", "conversion", "Core Web Vitals", "accessibility", "corporate photography", "video production", "local landing pages", "Google Business Profile"],
+  "directAnswer": "Commissioning a website in Limburg involves far more than publishing an attractive design. A professional SME website brings strategy, structure, content, media, SEO, technology and conversion together so visitors understand the business, trust its evidence and can take an appropriate next step.",
+  "title": "Building a website in Limburg: complete guide for growing SMEs",
+  "metaDescription": "Building a website in Limburg? Learn how web design, SEO, photography, video and conversion create a professional platform that supports SME growth.",
+  "h1": "Building a website in Limburg: complete guide for SMEs ready to grow online",
+  "slug": "complete-guide-to-building-a-website-in-limburg",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-kosten/", "targetHref": "/en/knowledge-base/web-design/how-much-does-a-website-cost/", "anchor": "how much a professional website costs" },
+    { "sourceHref": "/be/kennisbank/webdesign/onepager-of-volledige-website/", "targetHref": "/en/knowledge-base/web-design/one-page-or-full-website/", "anchor": "one-page or full website" },
+    { "sourceHref": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/", "targetHref": "/en/knowledge-base/web-design/building-an-online-shop-for-an-sme/", "anchor": "building an online shop for an SME" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/knowledge-base/web-design/why-a-fast-website-can-rank-better/", "anchor": "why a fast website can rank better" },
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/knowledge-base/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/google-business-profiel-optimaliseren/", "targetHref": "/en/knowledge-base/seo-geo/optimise-google-business-profile/", "anchor": "optimising your Google Business Profile" },
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/knowledge-base/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "appearing in AI search results with GEO and AEO" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-vernieuwen-wanneer/", "targetHref": "/en/knowledge-base/web-design/when-to-redesign-your-website/", "anchor": "when to redesign your website" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/services/web-design/", "anchor": "web design" },
+    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/services/web-design/website-development/", "anchor": "website development" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/knowledge-base/web-design/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your website project" }
+  ],
+  "factsToPreserve": [
+    "The geographical context is Limburg, Belgium, with services also relevant to Flanders, Antwerp province and Dutch Limburg",
+    "A professional website is presented as a combination of strategy, structure, copy, SEO, media, conversion and technology, not merely design",
+    "SEO should inform site structure from the beginning rather than be added after design",
+    "Core Web Vitals are experience signals and do not provide a ranking guarantee",
+    "Regional pages should be created only when they contain unique local context, cases and search intent",
+    "Google describes local results through relevance, distance and prominence",
+    "Photography and video can support trust but do not guarantee conversions",
+    "A one-page site and a full website suit different scopes",
+    "A professional website should provide an SEO foundation, while ongoing content strategy and monthly optimisation are normally separate work",
+    "WCAG 2.2 is a testing framework; concrete legal obligations require assessment for the individual business"
+  ]
+}
