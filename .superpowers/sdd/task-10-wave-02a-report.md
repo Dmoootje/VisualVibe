@@ -3,6 +3,7 @@
 | translationKey | Source | English partner | Brief | Result |
 | --- | --- | --- | --- | --- |
 | `seo-voor-websites-in-limburg` | `content/kennisbank/seo-voor-websites-in-limburg.mdx` | `content/kennisbank/en/seo-for-websites-in-limburg.mdx` | `docs/localization/briefs/knowledge-base/seo-voor-websites-in-limburg.json` | Complete |
+| `website-vernieuwen-wanneer` | `content/kennisbank/website-vernieuwen-wanneer.mdx` | `content/kennisbank/en/when-to-redesign-your-website.mdx` | `docs/localization/briefs/knowledge-base/website-vernieuwen-wanneer.json` | Complete |
 
 ## Editorial review
 
