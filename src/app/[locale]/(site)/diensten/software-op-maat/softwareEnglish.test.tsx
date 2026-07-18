@@ -19,6 +19,8 @@ describe("English custom software pages", () => {
     expect(metadata.alternates?.canonical).toContain("/en/diensten/custom-software/");
     expect(html).toContain("Custom apps and software built around your business");
     expect(html).toContain('href="/diensten/custom-software/app-development/"');
+    expect(html).toContain('href="/diensten/web-design/"');
+    expect(html).not.toContain("website-with-ai-features");
     expect(html).toContain("https://visualvibe.media/en/diensten/custom-software/");
     expect(html).toContain("Request a quotation");
     expect(html).not.toMatch(/Software op maat|Welke digitale|Bekijk deze dienst|Veelgestelde vragen|Bedrijven, kmo|Vlaanderen|Offerte aanvragen/);
