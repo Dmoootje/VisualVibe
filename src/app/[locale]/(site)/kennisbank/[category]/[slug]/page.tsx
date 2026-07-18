@@ -153,7 +153,9 @@ export async function generateMetadata({
   if (!post) return {};
 
   const canonical = `${businessConfig.url}${localizedPath(locale, postHref(post))}`;
-  const translations = getPostTranslations(post);
+  const translations = Object.values(getPostTranslations(post.translationKey)).filter(
+    (translation): translation is BlogPost => Boolean(translation),
+  );
   const languageAlternates =
     translations.length > 1
       ? Object.fromEntries(

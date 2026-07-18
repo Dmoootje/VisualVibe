@@ -14,6 +14,15 @@ export function postHref(post: { categorySlug: string; slug: string }): string {
   return `/kennisbank/${post.categorySlug}/${post.slug}/`;
 }
 
+/** Uses the translated post's own locale, category and slug. */
+export function localizedPostHref(post: {
+  locale: BlogLocale;
+  categorySlug: string;
+  slug: string;
+}): string {
+  return localizedPath(post.locale, postHref(post));
+}
+
 export function categoryHref(categorySlug: string): string {
   return `/kennisbank/${categorySlug}/`;
 }

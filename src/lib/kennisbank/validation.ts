@@ -8,11 +8,14 @@ import type { BlogPost } from "@/types/blog";
 export type KennisbankValidationIssue = {
   code:
     | "duplicate-slug"
+    | "duplicate-translation-key"
     | "invalid-category"
     | "invalid-category-slug"
     | "invalid-pillar"
     | "invalid-pillar-relation"
     | "invalid-translation"
+    | "missing-english-partner"
+    | "cross-locale-link"
     | "missing-related-post"
     | "missing-related-service"
     | "missing-related-region"
@@ -45,31 +48,41 @@ function isLive(post: BlogPost, now: Date): boolean {
  */
 export function validateKennisbankPosts(
   posts: BlogPost[],
-  now: Date = new Date()
+  now: Date = new Date(),
+  options?: { requireEnglishPartners?: boolean },
 ): KennisbankValidationIssue[] {
   const issues: KennisbankValidationIssue[] = [];
   const postsBySlug = new Map<string, BlogPost[]>();
 
   for (const post of posts) {
-    const matching = postsBySlug.get(post.slug) ?? [];
+    const localeSlug = `${post.locale}:${post.slug}`;
+    const matching = postsBySlug.get(localeSlug) ?? [];
     matching.push(post);
-    postsBySlug.set(post.slug, matching);
+    postsBySlug.set(localeSlug, matching);
   }
 
-  for (const [slug, matching] of postsBySlug) {
+  for (const matching of postsBySlug.values()) {
     if (matching.length > 1) {
+      const slug = matching[0].slug;
       issues.push({
         code: "duplicate-slug",
         field: "slug",
         postSlug: slug,
-        message: `Slug "${slug}" occurs ${matching.length} times. Every kennisbank slug must be globally unique, including drafts and translations.`,
+        message: `Slug "${slug}" occurs ${matching.length} times for locale ${matching[0].locale}. Every kennisbank slug must be unique within its locale, including drafts.`,
       });
     }
   }
 
   const translationGroups = new Map<string, BlogPost[]>();
   for (const post of posts) {
-    if (!post.translationKey) continue;
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.translationKey)) {
+      issues.push({
+        code: "invalid-translation",
+        field: "translationKey",
+        postSlug: post.slug,
+        message: `translationKey "${post.translationKey}" must be a non-empty kebab-case key.`,
+      });
+    }
     const translations = translationGroups.get(post.translationKey) ?? [];
     translations.push(post);
     translationGroups.set(post.translationKey, translations);
@@ -80,7 +93,7 @@ export function validateKennisbankPosts(
     for (const translation of translations) {
       if (locales.has(translation.locale)) {
         issues.push({
-          code: "invalid-translation",
+          code: "duplicate-translation-key",
           field: "translationKey",
           postSlug: translation.slug,
           message: `Translation group "${translationKey}" contains more than one ${translation.locale} post.`,
@@ -88,11 +101,27 @@ export function validateKennisbankPosts(
       }
       locales.add(translation.locale);
     }
+    if (options?.requireEnglishPartners && locales.has("nl") && !locales.has("en")) {
+      const dutch = translations.find((translation) => translation.locale === "nl");
+      issues.push({
+        code: "missing-english-partner",
+        field: "translationKey",
+        postSlug: dutch?.slug,
+        message: `Translation group "${translationKey}" has no English partner.`,
+      });
+    }
   }
 
-  const livePostsBySlug = new Map(
-    posts.filter((post) => isLive(post, now)).map((post) => [post.slug, post])
+  const livePosts = posts.filter((post) => isLive(post, now));
+  const livePostsByLocaleSlug = new Map(
+    livePosts.map((post) => [`${post.locale}:${post.slug}`, post])
   );
+  const livePostsBySlug = new Map<string, BlogPost[]>();
+  for (const post of livePosts) {
+    const matching = livePostsBySlug.get(post.slug) ?? [];
+    matching.push(post);
+    livePostsBySlug.set(post.slug, matching);
+  }
 
   for (const post of posts) {
     const categoryByName = getCategoryByName(post.category);
@@ -152,7 +181,10 @@ export function validateKennisbankPosts(
 
     if (post.parentPillar) {
       const parentSlug = slugFromPath(post.parentPillar);
-      const parent = livePostsBySlug.get(parentSlug);
+      const parent = livePostsByLocaleSlug.get(`${post.locale}:${parentSlug}`);
+      const otherLocaleParent = (livePostsBySlug.get(parentSlug) ?? []).find(
+        (candidate) => candidate.locale !== post.locale,
+      );
       const expectedPath = parent
         ? `/kennisbank/${parent.categorySlug}/${parent.slug}/`
         : undefined;
@@ -165,7 +197,7 @@ export function validateKennisbankPosts(
         normalizedSitePath(post.parentPillar) !== expectedPath
       ) {
         issues.push({
-          code: "invalid-pillar-relation",
+          code: !parent && otherLocaleParent ? "cross-locale-link" : "invalid-pillar-relation",
           field: "parentPillar",
           postSlug: post.slug,
           message: `parentPillar "${post.parentPillar}" must be the canonical nested path of a different, live ${post.locale} pillar in category "${post.categorySlug}".`,
@@ -179,7 +211,10 @@ export function validateKennisbankPosts(
 
     for (const relatedPath of post.relatedPosts ?? []) {
       const relatedSlug = slugFromPath(relatedPath);
-      const related = livePostsBySlug.get(relatedSlug);
+      const related = livePostsByLocaleSlug.get(`${post.locale}:${relatedSlug}`);
+      const otherLocaleRelated = (livePostsBySlug.get(relatedSlug) ?? []).find(
+        (candidate) => candidate.locale !== post.locale,
+      );
       const expectedPath = related
         ? `/kennisbank/${related.categorySlug}/${related.slug}/`
         : undefined;
@@ -190,7 +225,7 @@ export function validateKennisbankPosts(
         normalizedSitePath(relatedPath) !== expectedPath
       ) {
         issues.push({
-          code: "missing-related-post",
+          code: !related && otherLocaleRelated ? "cross-locale-link" : "missing-related-post",
           field: "relatedPosts",
           postSlug: post.slug,
           message: `relatedPosts entry "${relatedPath}" is not the canonical nested path of a different, live ${post.locale} kennisbank post.`,

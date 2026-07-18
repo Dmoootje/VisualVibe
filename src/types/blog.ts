@@ -48,7 +48,7 @@ export type BlogPost = {
   /** Content language. Existing posts default to Dutch (`nl`). */
   locale: BlogLocale;
   /** Shared key used to connect genuinely translated posts across locales. */
-  translationKey?: string;
+  translationKey: string;
   /** Display-name compatibility for existing cards and hero components. */
   author: string;
   /** Structured author data used for metadata and BlogPosting JSON-LD. */

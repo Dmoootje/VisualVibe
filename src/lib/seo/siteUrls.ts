@@ -130,8 +130,9 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(),
       })),
     ...indexablePosts.map((post) => {
-      const translations = getPostTranslations(post).filter(
-        (translation) => !translation.robots?.includes("noindex")
+      const translations = Object.values(getPostTranslations(post.translationKey)).filter(
+        (translation): translation is NonNullable<typeof translation> =>
+          Boolean(translation && !translation.robots?.includes("noindex"))
       );
       const nlTranslation = translations.find((translation) => translation.locale === "nl");
       const languageAlternates =
