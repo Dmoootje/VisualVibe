@@ -44,8 +44,8 @@ export function visibleTextOf(html) {
     .trim();
 }
 
-function hasEnglishOgLocale(head) {
-  return [...head.matchAll(/<meta\b[^>]*>/giu)].some((match) => {
+function hasEnglishOgLocale(html) {
+  return [...html.matchAll(/<meta\b[^>]*>/giu)].some((match) => {
     const tag = match[0];
     return (
       /property=["']og:locale["']/iu.test(tag) &&
@@ -56,7 +56,6 @@ function hasEnglishOgLocale(head) {
 
 export function analyzeRenderedEnglishPage(html) {
   const visible = visibleTextOf(html);
-  const head = html.match(/<head\b[\s\S]*?<\/head>/iu)?.[0] ?? "";
   const issues = [];
 
   for (const [code, pattern] of visibleChecks) {
@@ -66,7 +65,9 @@ export function analyzeRenderedEnglishPage(html) {
     if (pattern.test(html)) issues.push(`attribute:${code}`);
   }
   if (!/<html\b[^>]*lang=["']en["']/iu.test(html)) issues.push("meta:html-lang");
-  if (!hasEnglishOgLocale(head)) issues.push("meta:og-locale");
+  // Next.js may stream route metadata after the initial <head>. Crawlers and
+  // browsers still receive the meta element in the rendered HTML document.
+  if (!hasEnglishOgLocale(html)) issues.push("meta:og-locale");
   if (/"inLanguage"\s*:\s*"nl(?:-BE)?"/iu.test(html)) {
     issues.push("meta:jsonld-dutch-language");
   }

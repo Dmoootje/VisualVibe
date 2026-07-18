@@ -19,6 +19,14 @@ describe("English rendered copy audit", () => {
     expect(analyzeRenderedEnglishPage(goodPage.replace("en_BE", "en_GB"))).toEqual([]);
   });
 
+  it("accepts English Open Graph metadata streamed after the initial head", () => {
+    const streamedPage = goodPage
+      .replace('  <meta property="og:locale" content="en_BE">\n', "")
+      .replace("</body>", '  <meta property="og:locale" content="en_GB">\n</body>');
+
+    expect(analyzeRenderedEnglishPage(streamedPage)).toEqual([]);
+  });
+
   it("reports visitor copy, attributes and metadata that remain Dutch", () => {
     const issues = analyzeRenderedEnglishPage(`<!doctype html><html lang="nl"><head>
       <meta content="nl_BE" property="og:locale">
