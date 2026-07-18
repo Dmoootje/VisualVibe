@@ -1,0 +1,38 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/og-afbeelding-maken-veilige-zone-whatsapp-facebook-linkedin/",
+  "targetRoute": "/en/knowledge-base/web-design/create-open-graph-image-safe-zone/",
+  "audience": "SMEs, marketers, web designers, content managers and business owners who want shared links to look professional across platforms",
+  "primaryDutchSearchIntent": "Bedrijven en webbeheerders uitleggen hoe zij één deelafbeelding ontwerpen die bij verschillende crops op WhatsApp, Facebook, LinkedIn en X herkenbaar blijft",
+  "searchIntent": { "type": "informational", "question": "How do you design one Open Graph image that keeps its logo, subject and core message visible across WhatsApp, Facebook, LinkedIn and X crops?", "geographicContext": "International English-speaking web and social media users" },
+  "mainKeyword": "create an Open Graph image",
+  "longTailKeywords": ["WhatsApp link preview image", "Facebook sharing image", "place logo on OG image", "social media image safe zone", "OG image dimensions", "LinkedIn link preview image", "Open Graph image size", "social link preview image"],
+  "semanticTerms": ["Open Graph metadata", "1200 x 630 pixels", "1.91:1 ratio", "square crop", "safe zone", "og:image", "og:image:alt", "summary_large_image", "Sharing Debugger", "Post Inspector"],
+  "directAnswer": "Create an Open Graph image as a 1200 x 630 pixel master, but place the logo, short core message and main subject in a centred square safe area. Treat the outer left and right sections as atmosphere or decoration that can be cropped without losing meaning. This keeps the image recognisable in compact WhatsApp thumbnails and wider Facebook, LinkedIn and X cards.",
+  "title": "Create an Open Graph image that keeps your logo visible everywhere",
+  "metaDescription": "Create an Open Graph image for WhatsApp, Facebook, LinkedIn and X. Use 1200 x 630 pixels and keep the logo and core content in a centred safe zone.",
+  "h1": "Create an Open Graph image that keeps your logo visible on WhatsApp and social media",
+  "slug": "create-open-graph-image-safe-zone",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/knowledge-base/web-design/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to building a website in Limburg" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/knowledge-base/web-design/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/knowledge-base/photography/what-is-corporate-photography/", "anchor": "what corporate photography is" },
+    { "sourceHref": "/be/diensten/fotografie/brandingfotografie/", "targetHref": "/en/services/photography/brand-photography/", "anchor": "brand photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "preparing a corporate photo shoot" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/services/web-design/", "anchor": "web design" },
+    { "sourceHref": "/be/diensten/seo/", "targetHref": "/en/services/seo/", "anchor": "SEO and online visibility" },
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/services/photography/", "anchor": "professional photography" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your website" }
+  ],
+  "factsToPreserve": [
+    "1200 x 630 pixels is presented as a strong broadly supported master, not a guarantee of identical rendering",
+    "The 1200 x 630 canvas has an approximate 1.91:1 ratio",
+    "A centred 630 x 630 square starts about 285 pixels from each horizontal edge, with critical content kept within an approximate 500 x 500 area",
+    "WhatsApp crop and display can vary by device, app version and available space",
+    "Meta's documented WhatsApp Business Messaging preview specifies at least 300 pixels width, no more than 4:1 ratio and under 600 KB",
+    "LinkedIn Post Inspector refreshes previews for new posts but does not update existing posts automatically",
+    "Instagram feed posts, Stories and Reel covers require separate media rather than relying on the OG master",
+    "Open Graph image URLs must be absolute, public and accessible without login or short-lived tokens",
+    "JPEG and PNG are the safer compatibility choices when external WebP scraper support is uncertain",
+    "A visually strong preview can support distribution and click-through but is not itself a direct SEO ranking factor"
+  ]
+}
