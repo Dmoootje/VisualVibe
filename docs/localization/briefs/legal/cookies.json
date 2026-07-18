@@ -1,0 +1,17 @@
+{
+  "sourceRoute": "/be/cookies/",
+  "targetRoute": "/en/cookies/",
+  "audience": "English-speaking visitors who want to understand or change cookie preferences on the VisualVibe website",
+  "primaryDutchSearchIntent": "Begrijpen welke cookies VisualVibe gebruikt en toestemming voor analytische cookies beheren of intrekken",
+  "searchIntent": { "type": "informational", "question": "Which cookies does VisualVibe use and how can I manage consent?", "geographicContext": "Belgium and the European Economic Area" },
+  "mainKeyword": "VisualVibe cookie policy",
+  "longTailKeywords": ["VisualVibe Google Analytics consent", "manage VisualVibe cookie preferences"],
+  "semanticTerms": ["functional cookies", "analytics cookies", "Google Analytics 4", "Google Consent Mode", "cookie preferences", "third-party content"],
+  "directAnswer": "VisualVibe uses essential administrator security cookies and enables Google Analytics cookies only after a visitor accepts them; consent can be changed or withdrawn at any time.",
+  "title": "Cookie policy | VisualVibe",
+  "metaDescription": "See which essential and analytics cookies VisualVibe uses, how Google Analytics depends on your consent and how to change your preferences.",
+  "h1": "Cookie policy",
+  "slug": "cookies",
+  "internalLinks": [{ "sourceHref": "/be/privacy/", "targetHref": "/en/privacy/", "anchor": "privacy policy" }],
+  "factsToPreserve": ["Regular visitors do not receive administrator session cookies", "Analytics cookies remain disabled until consent", "Google Consent Mode governs analytics consent", "No analytics data is used for advertising or profiling", "YouTube, Google Maps and Matterport are named third-party embeds", "Visitors may change or withdraw consent at any time"]
+}

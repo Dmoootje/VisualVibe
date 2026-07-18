@@ -84,3 +84,12 @@ English visitor emails include dynamic summaries and findings only when `outputL
 - GREEN: 16 focused files and 88 tests passed.
 - TypeScript, prohibited-character scan and diff check passed.
 - Locale audit remains unchanged at the unrelated baseline documented above.
+
+## Formal review evidence
+
+- Repository inventory confirms there is no Dutch public terms and conditions route. The sitemap document lists `/be/algemene-voorwaarden/` only as recommended future content. English terms are explicitly excluded and blocked until a lawyer-approved Dutch source exists. An automated inventory assertion protects this omission from being mistaken for completed translation.
+- Privacy and cookie translation briefs were added under `docs/localization/briefs/legal/` and validated against `translation-brief.schema.json`. Both record the Dutch source intent, English search intent, metadata, internal links and legal facts that must remain unchanged.
+- Malformed top-level report output-language metadata is now ignored. Only the enum-validated nested normalized report field can populate the document field.
+- English privacy and cookie JSX was reformatted into reviewable page structure without changing rendered copy.
+
+Validation evidence: both legal briefs passed JSON Schema validation; focused tests passed; TypeScript passed; prohibited-character and diff checks passed. The locale audit remains at the unrelated baseline already documented.

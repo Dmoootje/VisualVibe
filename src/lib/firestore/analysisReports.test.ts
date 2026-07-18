@@ -66,4 +66,24 @@ describe("analysisReports", () => {
 
     await expect(getAnalysisReport("missing")).resolves.toBeNull();
   });
+
+  it("ignores malformed top-level output language and trusts only validated report metadata", async () => {
+    firestore.get.mockResolvedValue({
+      exists: true,
+      id: "legacy-report",
+      data: () => ({
+        partnerAnalysisId: "partner-id",
+        normalizedDomain: "voorbeeld.be",
+        sourceUrl: "https://voorbeeld.be/",
+        outputLanguage: "english",
+        report: { ...report, outputLanguage: undefined },
+        createdAt: "2026-07-18T00:00:00.000Z",
+        updatedAt: "2026-07-18T00:00:00.000Z",
+      }),
+    });
+
+    const loaded = await getAnalysisReport("legacy-report");
+    expect(loaded).not.toBeNull();
+    expect(loaded?.outputLanguage).toBeUndefined();
+  });
 });

@@ -35,7 +35,7 @@ function fromSnapshot(snapshot: DocumentSnapshot): AnalysisReportDocument | null
       schemaVersion: Number(data.schemaVersion ?? report.schemaVersion),
       normalizedDomain: String(data.normalizedDomain ?? ""),
       sourceUrl: String(data.sourceUrl ?? report.url),
-      ...((data.outputLanguage ?? report.outputLanguage) ? { outputLanguage: (data.outputLanguage ?? report.outputLanguage) as "nl" | "en" | "fr" } : {}),
+      ...(report.outputLanguage ? { outputLanguage: report.outputLanguage } : {}),
       report,
       createdAt: toIsoString(data.createdAt),
       updatedAt: toIsoString(data.updatedAt),
