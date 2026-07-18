@@ -373,7 +373,7 @@ export function Nav({
             <UserIcon />
           </NextLink>
           <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
-            Offerte aanvragen
+            {t("quotation")}
           </Link>
         </div>
 
