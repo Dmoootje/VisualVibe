@@ -150,6 +150,7 @@ export default async function RealisatiesHubPage({ params }: { params: Promise<{
   return (
     <div className="min-h-screen pb-16 text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Case studies" : "Realisaties", path: "/realisaties" },

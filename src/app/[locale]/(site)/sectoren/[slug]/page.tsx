@@ -117,6 +117,7 @@ export default async function SectorDetailPage({
     <div className="min-h-screen text-white">
       <SectorIconSprite />
       <BreadcrumbJsonLd
+        locale={locale}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Industries" : "Sectoren", path: "/sectoren" },
@@ -126,6 +127,7 @@ export default async function SectorDetailPage({
       {recommendedServices.map((service) => (
         <ServiceJsonLd
           key={service.slug}
+          locale={locale}
           service={{
             name: service.title,
             description: service.excerpt,

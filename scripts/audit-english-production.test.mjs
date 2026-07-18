@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   auditEnglishPublication,
   extractDocumentSignals,
+  extractVisibleSitemapPaths,
   parseSitemapUrls,
   requiredRepresentativePaths,
 } from "./audit-english-production.mjs";
@@ -39,6 +40,12 @@ function validFixtureFetch() {
       return response(url, "", { status: 308, headers: { location: "/be/" } });
     }
     if (url === `${baseUrl}/be/`) return response(url, page(url));
+    if (url === `${baseUrl}/en/sitemap/`) {
+      const links = requiredRepresentativePaths
+        .map((path) => `<a data-visible-sitemap-link href="${path}">${path}</a>`)
+        .join("");
+      return response(url, page(url, links));
+    }
     if (sitemapUrls.includes(url)) return response(url, page(url));
     return response(url, "Not found", { status: 404 });
   };
@@ -62,6 +69,11 @@ describe("English production audit parsing", () => {
       internalLinks: ["/en/contact/"],
       missingImageAltCount: 0,
     });
+    expect(extractVisibleSitemapPaths(`
+      <a data-visible-sitemap-link href="/en/">Home</a>
+      <a href="/en/not-part-of-sitemap/">Navigation</a>
+      <a href="/en/contact/" data-visible-sitemap-link>Contact</a>
+    `)).toEqual(["/en/", "/en/contact/"]);
   });
 
   it("passes a complete bilingual canonical fixture", async () => {
@@ -93,6 +105,12 @@ describe("English production audit parsing", () => {
         return response(url, "", { status: 308, headers: { location: "/be/" } });
       }
       const path = new URL(url).pathname;
+      if (path === "/en/sitemap/") {
+        const links = requiredRepresentativePaths
+          .map((item) => `<a data-visible-sitemap-link href="${item}">${item}</a>`)
+          .join("");
+        return response(url, page(`${publicOrigin}${path}`, links, publicOrigin));
+      }
       if (path === "/be/" || requiredRepresentativePaths.includes(path)) {
         return response(url, page(`${publicOrigin}${path}`, "", publicOrigin));
       }
@@ -170,5 +188,28 @@ describe("English production audit parsing", () => {
       code: "dutch_internal_link",
       target: `${baseUrl}/be/contact/`,
     }));
+  });
+
+  it("rejects drift between the visible English sitemap and XML inventory", async () => {
+    const baseFetch = validFixtureFetch();
+    const fetchImpl = async (input, options) => {
+      const url = String(input);
+      if (url === `${baseUrl}/en/sitemap/`) {
+        const links = requiredRepresentativePaths
+          .filter((path) => path !== "/en/privacy/")
+          .map((path) => `<a data-visible-sitemap-link href="${path}">${path}</a>`)
+          .join("");
+        return response(url, page(url, `${links}<a data-visible-sitemap-link href="/en/extra/">Extra</a>`));
+      }
+      return baseFetch(input, options);
+    };
+
+    const result = await auditEnglishPublication({ baseUrl, fetchImpl });
+    const sitemapIssues = result.issues.filter(({ route }) => route === "/en/sitemap/");
+
+    expect(sitemapIssues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: "visible_sitemap_missing_path", target: `${baseUrl}/en/privacy/` }),
+      expect.objectContaining({ code: "visible_sitemap_extra_path", target: `${baseUrl}/en/extra/` }),
+    ]));
   });
 });

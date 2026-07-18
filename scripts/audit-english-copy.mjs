@@ -30,6 +30,13 @@ const attributeChecks = [
   ["dutch-sector-aria", /aria-label=["'](?:kmo|bouw-renovatie|horeca|industrie|vastgoed-immo|retail-webshops|sportclubs-verenigingen|opleidingen-masterclasses|wellness-beauty)["']/iu],
 ];
 
+const elementChecks = [
+  [
+    "dutch-region-option",
+    /<option\b[^>]*value=["'](?:limburg|vlaanderen|antwerpen|nederlands-limburg)["'][^>]*>\s*(?:Limburg|Vlaanderen|Antwerpen|Nederlands-Limburg)\s*<\/option>/iu,
+  ],
+];
+
 export function visibleTextOf(html) {
   return html
     .replace(/<script\b[\s\S]*?<\/script>/giu, " ")
@@ -54,12 +61,40 @@ function hasEnglishOgLocale(html) {
   });
 }
 
+function getJsonLdNodes(html) {
+  return [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/giu)]
+    .filter(([, attributes]) => /type=["']application\/ld\+json["']/iu.test(attributes))
+    .flatMap(([, , source]) => {
+      try {
+        const parsed = JSON.parse(source);
+        const pending = Array.isArray(parsed) ? [...parsed] : [parsed];
+        const nodes = [];
+        while (pending.length > 0) {
+          const value = pending.pop();
+          if (!value || typeof value !== "object") continue;
+          nodes.push(value);
+          for (const child of Object.values(value)) {
+            if (Array.isArray(child)) pending.push(...child);
+            else if (child && typeof child === "object") pending.push(child);
+          }
+        }
+        return nodes;
+      } catch {
+        return [];
+      }
+    });
+}
+
 export function analyzeRenderedEnglishPage(html) {
   const visible = visibleTextOf(html);
+  const jsonLdNodes = getJsonLdNodes(html);
   const issues = [];
 
   for (const [code, pattern] of visibleChecks) {
     if (pattern.test(visible)) issues.push(`visible:${code}`);
+  }
+  for (const [code, pattern] of elementChecks) {
+    if (pattern.test(html)) issues.push(`visible:${code}`);
   }
   for (const [code, pattern] of attributeChecks) {
     if (pattern.test(html)) issues.push(`attribute:${code}`);
@@ -73,6 +108,18 @@ export function analyzeRenderedEnglishPage(html) {
   }
   if (/"genre"\s*:\s*"Maatwerk softwareproject"/iu.test(html)) {
     issues.push("meta:jsonld-dutch-copy");
+  }
+  if (jsonLdNodes.some((node) =>
+    node["@type"] === "BreadcrumbList" &&
+    JSON.stringify(node).includes(`${"https://visualvibe.media"}/be/`)
+  )) {
+    issues.push("meta:jsonld-dutch-breadcrumb-url");
+  }
+  if (jsonLdNodes.some((node) =>
+    node["@type"] === "Service" &&
+    node.audience?.audienceType === "Bedrijven, kmo's en zelfstandigen"
+  )) {
+    issues.push("meta:jsonld-dutch-audience-copy");
   }
   return issues;
 }

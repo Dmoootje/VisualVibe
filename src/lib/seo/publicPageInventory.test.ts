@@ -37,10 +37,15 @@ describe("public page inventory", () => {
   });
 
   it("excludes standalone, internal, token and untranslated routes", () => {
-    const serialized = JSON.stringify(getStaticPublicRoutePairs());
+    const routes = getStaticPublicRoutePairs();
+    const serialized = JSON.stringify(routes);
 
-    expect(serialized).not.toContain("trouwfotograaf-limburg");
-    expect(serialized).not.toContain("website-met-ai-functionaliteiten");
+    expect(routes).toContainEqual({ nl: "/trouwfotograaf-limburg/" });
+    expect(routes).toContainEqual({
+      nl: "/diensten/webdesign/website-met-ai-functionaliteiten/",
+    });
+    expect(routes.some(({ en }) => en?.includes("trouwfotograaf-limburg"))).toBe(false);
+    expect(routes.some(({ en }) => en?.includes("website-met-ai-functionaliteiten"))).toBe(false);
     expect(serialized).not.toContain("blog-styleguide");
     expect(serialized).not.toContain("rapport");
     expect(serialized).not.toContain("/fr/");

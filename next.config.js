@@ -28,6 +28,16 @@ const nextConfig = {
         destination: '/be/',
         permanent: true,
       },
+      {
+        source: '/en/trouwfotograaf-limburg',
+        destination: '/be/trouwfotograaf-limburg/',
+        permanent: true,
+      },
+      {
+        source: '/en/diensten/webdesign/website-met-ai-functionaliteiten',
+        destination: '/en/diensten/custom-software/ai-application-development/',
+        permanent: true,
+      },
       // Dutch and English are published. Fold the still-disabled French and
       // German prefixes permanently onto their Dutch counterparts until those
       // translations are complete (see src/i18n/routing.ts).

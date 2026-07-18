@@ -124,7 +124,7 @@ export default async function SectorenHubPage({ params }: { params: Promise<{ lo
 
   return (
     <div className="min-h-screen pb-10 pt-28 text-white">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: en ? "Industries" : "Sectoren", path: "/sectoren" }]} />
+      <BreadcrumbJsonLd locale={locale} items={[{ name: "Home", path: "/" }, { name: en ? "Industries" : "Sectoren", path: "/sectoren" }]} />
       <JsonLd
         data={{
           "@context": "https://schema.org",

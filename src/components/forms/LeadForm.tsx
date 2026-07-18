@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { services } from "@/data/services";
-import { regions } from "@/data/regions";
+import { getLocalizedRegionById, regions } from "@/data/regions";
 import { useTranslations } from "next-intl";
 import type { SupportedLocale } from "@/i18n/locales";
 
@@ -25,6 +25,10 @@ type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 // these values on submit, never during render.
 export function LeadForm({ variant, locale }: { variant: "contact" | "offerte"; locale: SupportedLocale }) {
   const t = useTranslations("leadForm");
+  const regionOptions = regions.map((region) => ({
+    id: region.slug,
+    label: getLocalizedRegionById(region.slug, locale === "en" ? "en" : "nl").title,
+  }));
   const contactSteps = [
     { name: "name", text: t("nameRequired") },
     { name: "email", text: t("emailRequired") },
@@ -267,9 +271,9 @@ export function LeadForm({ variant, locale }: { variant: "contact" | "offerte"; 
           <option value="" disabled className="bg-neutral-900 text-white">
             {t("region")}
           </option>
-          {regions.map((region) => (
-            <option key={region.slug} value={region.slug} className="bg-neutral-900 text-white">
-              {region.title}
+          {regionOptions.map((region) => (
+            <option key={region.id} value={region.id} className="bg-neutral-900 text-white">
+              {region.label}
             </option>
           ))}
         </select>

@@ -37,6 +37,7 @@ export default async function CookiesPage({ params }: { params: Promise<{ locale
   return (
     <div className="min-h-screen pb-20 pt-28 text-white">
       <BreadcrumbJsonLd
+        locale="nl"
         items={[{ name: "Home", path: "/" }, { name: "Cookiebeleid", path: "/cookies" }]}
       />
 
@@ -159,6 +160,7 @@ function EnglishCookies({ settings }: { settings: Awaited<ReturnType<typeof getS
   return (
     <div className="min-h-screen pb-20 pt-28 text-white">
       <BreadcrumbJsonLd
+        locale="en"
         items={[{ name: "Home", path: "/" }, { name: copy.title, path: "/cookies" }]}
       />
       <div className="container mx-auto">

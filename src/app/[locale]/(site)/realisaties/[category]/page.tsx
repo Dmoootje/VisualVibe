@@ -153,6 +153,7 @@ export default async function RealisatieCategoryPage({
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: en ? "Case studies" : "Realisaties", path: "/realisaties" },

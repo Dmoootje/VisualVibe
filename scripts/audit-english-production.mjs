@@ -77,6 +77,20 @@ export function extractDocumentSignals(html) {
   return { canonical, hreflangs, internalLinks, missingImageAltCount };
 }
 
+export function extractVisibleSitemapPaths(html) {
+  return [...new Set([...html.matchAll(/<a\b[^>]*>/giu)].flatMap((match) => {
+    if (!/\bdata-visible-sitemap-link(?:\s|=|>)/iu.test(match[0])) return [];
+    const href = attributesOf(match[0]).href;
+    if (!href) return [];
+    try {
+      const pathname = new URL(href, "https://visible-sitemap.invalid").pathname;
+      return pathname === "/en" || pathname.startsWith("/en/") ? [pathname] : [];
+    } catch {
+      return [];
+    }
+  }))];
+}
+
 function normalizeBaseUrl(value) {
   return value.replace(/\/+$/u, "");
 }
@@ -300,6 +314,45 @@ export async function auditEnglishPublication({
       }
     }
   });
+
+  const visibleSitemapRoute = "/en/sitemap/";
+  const visibleSitemapResult = await fetchDocument(
+    `${normalizedBaseUrl}${visibleSitemapRoute}`,
+  );
+  if (visibleSitemapResult.error || !visibleSitemapResult.response?.ok) {
+    addIssue(
+      visibleSitemapRoute,
+      "broken_visible_sitemap",
+      visibleSitemapResult.error
+        ? `Visible sitemap request failed: ${visibleSitemapResult.error.message}`
+        : `Visible sitemap returned HTTP ${visibleSitemapResult.response?.status ?? "unknown"}`,
+    );
+  } else {
+    const visiblePaths = new Set(extractVisibleSitemapPaths(visibleSitemapResult.body));
+    const publicOrigin = englishSitemapUrls[0]
+      ? new URL(englishSitemapUrls[0]).origin
+      : normalizedBaseUrl;
+    for (const pathname of englishSitemapSet) {
+      if (!visiblePaths.has(pathname)) {
+        addIssue(
+          visibleSitemapRoute,
+          "visible_sitemap_missing_path",
+          "Canonical English XML sitemap path is absent from the visible sitemap",
+          new URL(pathname, publicOrigin).href,
+        );
+      }
+    }
+    for (const pathname of visiblePaths) {
+      if (!englishSitemapSet.has(pathname)) {
+        addIssue(
+          visibleSitemapRoute,
+          "visible_sitemap_extra_path",
+          "Visible sitemap path is absent from the canonical English XML sitemap",
+          new URL(pathname, publicOrigin).href,
+        );
+      }
+    }
+  }
 
   const uniqueHreflangReferences = [...new Map(
     hreflangReferences.map((reference) => [`${reference.route}\n${reference.language}\n${reference.href}`, reference]),

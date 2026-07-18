@@ -46,6 +46,14 @@ describe("public sitemap locale boundary", () => {
     );
     expect(urls).toContain("https://visualvibe.media/be/offerte-aanvragen/");
     expect(urls).toContain("https://visualvibe.media/en/request-a-quotation/");
+    expect(urls).toContain("https://visualvibe.media/be/trouwfotograaf-limburg/");
+    expect(urls).toContain(
+      "https://visualvibe.media/be/diensten/webdesign/website-met-ai-functionaliteiten/",
+    );
+    expect(urls).not.toContain("https://visualvibe.media/en/trouwfotograaf-limburg/");
+    expect(urls).not.toContain(
+      "https://visualvibe.media/en/diensten/webdesign/website-met-ai-functionaliteiten/",
+    );
     expect(urls.some((url) => url.includes("/fr/"))).toBe(false);
     expect(urls.some((url) => url.includes("/de/"))).toBe(false);
   });

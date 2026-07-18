@@ -56,7 +56,7 @@ describe("public locale prefixes", () => {
 
     expect(
       redirects.some(
-        ({ source }) => source === "/en" || source.startsWith("/en/"),
+        ({ source }) => source === "/en" || source === "/en/:path+",
       ),
     ).toBe(false);
 

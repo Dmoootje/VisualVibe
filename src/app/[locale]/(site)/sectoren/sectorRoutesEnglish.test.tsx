@@ -5,9 +5,9 @@ vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children, ...props }: React.ComponentProps<"a">) => <a href={String(href)} {...props}>{children}</a>,
 }));
 vi.mock("@/components/seo", () => ({
-  BreadcrumbJsonLd: ({ items }: { items: unknown }) => <script data-breadcrumbs={JSON.stringify(items)} />,
+  BreadcrumbJsonLd: ({ items, locale }: { items: unknown; locale?: string }) => <script data-breadcrumb-locale={locale} data-breadcrumbs={JSON.stringify(items)} />,
   FaqPageJsonLd: ({ items }: { items: unknown }) => <script data-faq={JSON.stringify(items)} />,
-  ServiceJsonLd: ({ service }: { service: unknown }) => <script data-service={JSON.stringify(service)} />,
+  ServiceJsonLd: ({ service, locale }: { service: unknown; locale?: string }) => <script data-service-locale={locale} data-service={JSON.stringify(service)} />,
   JsonLd: ({ data }: { data: unknown }) => <script data-jsonld={JSON.stringify(data)} />,
 }));
 vi.mock("@/components/sections", () => ({
@@ -34,6 +34,7 @@ describe("English sector routes", () => {
     expect(html).toContain('data-cta-href="/request-a-quotation/"');
     expect(html).toContain('data-cta-label="Request a quotation"');
     expect(html).toContain("Sector-specific web design, photography, video, drone and SEO for ten business sectors");
+    expect(html).toContain('data-breadcrumb-locale="en"');
     expect(html).not.toContain("Sectoren waarin wij uitblinken");
     expect(html).not.toContain("bouw-renovatie");
     expect(metadata.description).toContain("web design");
@@ -76,6 +77,8 @@ describe("English sector routes", () => {
     expect(html).toContain('data-cta-label="Request a quotation"');
     expect(html).toContain('href="/request-a-quotation"');
     expect(html).toContain("Request a quotation");
+    expect(html).toContain('data-breadcrumb-locale="en"');
+    expect(html).toContain('data-service-locale="en"');
     expect(html).not.toContain('href="/offerte-aanvragen"');
     expect(html).toContain('/en/kennisbank/');
     expect(html).not.toContain('/be/kennisbank/');

@@ -26,6 +26,8 @@ import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { getSitemapEntries } from "@/lib/seo/siteUrls";
+import { getEnglishVisibleSitemap } from "@/lib/seo/visibleSitemap";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -59,7 +61,11 @@ function TreeList({ nodes, fullyPrefixed = false }: { nodes: SmNode[]; fullyPref
     <ul className="vvsm-branch">
       {nodes.map((node) => (
         <li key={node.href}>
-          <NodeLink href={node.href} className="vvsm-node">
+          <NodeLink
+            href={node.href}
+            className="vvsm-node"
+            data-visible-sitemap-link={fullyPrefixed ? "" : undefined}
+          >
             <span className="vvsm-title">{node.title}</span>
             <span className="vvsm-path">{node.href}</span>
           </NodeLink>
@@ -73,18 +79,22 @@ function TreeList({ nodes, fullyPrefixed = false }: { nodes: SmNode[]; fullyPref
 export default async function SitemapPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (locale === "en") {
-    const englishSections: SmSection[] = [
-      { icon: FileText, title: "General pages", href: "/en/about/", intro: "Company information and ways to get in touch.", nodes: [
-        { title: "About VisualVibe", href: "/en/about/" }, { title: "Contact", href: "/en/contact/" },
-        { title: "Request a quotation", href: "/en/request-a-quotation/" }, { title: "Privacy policy", href: "/en/privacy/" },
-        { title: "Cookie policy", href: "/en/cookies/" }, { title: "Sitemap", href: "/en/sitemap/" },
-      ] },
-      { icon: LayoutGrid, title: "Tools", href: "/en/tools/", intro: "Free tools to improve your website and online visibility.", nodes: [
-        { title: "Website analysis", href: "/en/website-analysis/" }, { title: "SEO and GEO checklist", href: "/en/tools/seo-geo-checklist/" },
-      ] },
-    ];
-    const total = 1 + englishSections.reduce((sum, section) => sum + section.nodes.length, 0);
-    return <div className="relative min-h-screen overflow-hidden text-white"><BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Sitemap", path: "/sitemap" }]} /><PageAmbient /><div className="relative z-10 mx-auto max-w-[980px] px-4 pb-24 pt-28 sm:px-8 sm:pt-32"><header className="mb-12 max-w-2xl"><p className="mb-3.5 font-mono text-xs font-bold uppercase tracking-[.18em] text-[#FF9A45]">Sitemap</p><h1 className="font-sora text-4xl font-extrabold sm:text-5xl">All pages at a glance</h1><p className="mt-4 text-white/60">This sitemap groups every English page currently prepared for VisualVibe. Each title is a link and the path beneath it shows where the page sits. There are {total} pages in total.</p></header><NextLink href="/en/" className="vvsm-node"><span className="vvsm-title">Home</span><span className="vvsm-path">/en/</span></NextLink><div className="mt-6 flex flex-col">{englishSections.map((section) => { const Icon = section.icon; return <section key={section.title} className="border-t border-white/[.06] py-8"><div className="mb-4 flex gap-4"><Icon className="h-6 w-6 text-[#FF9A45]"/><div><NextLink href={section.href} className="font-sora text-xl font-extrabold">{section.title}</NextLink><p className="mt-1 text-sm text-white/45">{section.intro}</p></div></div><TreeList nodes={section.nodes} fullyPrefixed /></section>; })}</div></div></div>;
+    const visibleSitemap = getEnglishVisibleSitemap(await getSitemapEntries());
+    const sectionIcons = {
+      general: FileText,
+      services: LayoutGrid,
+      regions: MapPin,
+      industries: Building2,
+      realisations: Images,
+      knowledge: BookOpen,
+      tools: LayoutGrid,
+    };
+    const englishSections: SmSection[] = visibleSitemap.sections.map((section) => ({
+      ...section,
+      icon: sectionIcons[section.id],
+      nodes: [...section.nodes],
+    }));
+    return <div className="relative min-h-screen overflow-hidden text-white"><BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Sitemap", path: "/sitemap" }]} /><PageAmbient /><div className="relative z-10 mx-auto max-w-[980px] px-4 pb-24 pt-28 sm:px-8 sm:pt-32"><header className="mb-12 max-w-2xl"><p className="mb-3.5 font-mono text-xs font-bold uppercase tracking-[.18em] text-[#FF9A45]">Sitemap</p><h1 className="font-sora text-4xl font-extrabold sm:text-5xl">All pages at a glance</h1><p className="mt-4 text-white/60">This sitemap groups every published English page from VisualVibe&apos;s canonical inventory. Each title is a link and the path beneath it shows where the page sits. There are {visibleSitemap.total} pages in total.</p></header><NextLink href={visibleSitemap.homeHref} className="vvsm-node" data-visible-sitemap-link=""><span className="vvsm-title">Home</span><span className="vvsm-path">{visibleSitemap.homeHref}</span></NextLink><div className="mt-6 flex flex-col">{englishSections.map((section) => { const Icon = section.icon; return <section key={section.title} className="border-t border-white/[.06] py-8"><div className="mb-4 flex gap-4"><Icon className="h-6 w-6 text-[#FF9A45]"/><div><NextLink href={section.href} className="font-sora text-xl font-extrabold" data-visible-sitemap-link="">{section.title}</NextLink><p className="mt-1 text-sm text-white/45">{section.intro}</p></div></div><TreeList nodes={section.nodes} fullyPrefixed /></section>; })}</div></div></div>;
   }
   const applicationProjects = (await getApplicationCases()).filter((project) => project.published);
 

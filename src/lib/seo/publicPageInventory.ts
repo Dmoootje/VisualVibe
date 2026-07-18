@@ -47,6 +47,11 @@ const coreRoutePairs: readonly LocalePathPair[] = [
   { nl: "/website-analyse/", en: "/website-analysis/" },
 ];
 
+const dutchOnlyRoutes: readonly PublicRoutePair[] = [
+  { nl: "/trouwfotograaf-limburg/" },
+  { nl: "/diensten/webdesign/website-met-ai-functionaliteiten/" },
+];
+
 function withTrailingSlash(path: string): string {
   return path === "/" ? path : `${path.replace(/\/+$/u, "")}/`;
 }
@@ -137,6 +142,7 @@ export function getStaticPublicRoutePairs(): PublicRoutePair[] {
 
   return [
     ...coreRoutePairs,
+    ...dutchOnlyRoutes,
     ...serviceRoutes,
     ...softwareRoutes,
     ...regionRoutes,

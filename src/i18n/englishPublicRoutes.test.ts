@@ -15,6 +15,31 @@ function readTree(directory: string): string {
 }
 
 describe("English public routes", () => {
+  it("redirects Dutch-only English URLs to an intentional published destination", async () => {
+    const config = require("../../next.config.js") as {
+      redirects: () => Promise<
+        Array<{ source: string; destination: string; permanent: boolean }>
+      >;
+    };
+    const redirects = await config.redirects();
+
+    expect(redirects).toEqual(expect.arrayContaining([
+      {
+        source: "/en/trouwfotograaf-limburg",
+        destination: "/be/trouwfotograaf-limburg/",
+        permanent: true,
+      },
+      {
+        source: "/en/diensten/webdesign/website-met-ai-functionaliteiten",
+        destination: "/en/diensten/custom-software/ai-application-development/",
+        permanent: true,
+      },
+    ]));
+    expect(redirects.some(({ source }) =>
+      source === "/en" || source === "/en/:path+"
+    )).toBe(false);
+  });
+
   it("rewrites approved public aliases to the established internal route tree", async () => {
     const config = require("../../next.config.js") as {
       rewrites: () => Promise<{ beforeFiles: unknown[] }>;

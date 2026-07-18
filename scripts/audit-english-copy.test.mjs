@@ -32,12 +32,15 @@ describe("English rendered copy audit", () => {
       <meta content="nl_BE" property="og:locale">
     </head><body>
       <a href="/be/contact/" aria-label="Kruimelpad">Offerte aanvragen</a>
+      <select><option value="vlaanderen">Vlaanderen</option></select>
       <code>/diensten/fotografie/</code>
-      <script type="application/ld+json">{"inLanguage":"nl-BE","genre":"Maatwerk softwareproject"}</script>
+      <script type="application/ld+json">{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://visualvibe.media/be/sectoren/construction-renovation/"}]}</script>
+      <script type="application/ld+json">{"@type":"Service","inLanguage":"nl-BE","genre":"Maatwerk softwareproject","audience":{"audienceType":"Bedrijven, kmo's en zelfstandigen"}}</script>
     </body></html>`);
 
     expect(issues).toEqual(expect.arrayContaining([
       "visible:dutch-quotation-cta",
+      "visible:dutch-region-option",
       "visible:visible-dutch-route-example",
       "attribute:dutch-breadcrumb-aria",
       "attribute:dutch-same-site-anchor",
@@ -45,6 +48,8 @@ describe("English rendered copy audit", () => {
       "meta:og-locale",
       "meta:jsonld-dutch-language",
       "meta:jsonld-dutch-copy",
+      "meta:jsonld-dutch-breadcrumb-url",
+      "meta:jsonld-dutch-audience-copy",
     ]));
   });
 

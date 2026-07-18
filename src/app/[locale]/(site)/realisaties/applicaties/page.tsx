@@ -47,10 +47,11 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
+        locale={locale === "en" ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
-          { name: "Realisaties", path: "/realisaties/" },
-          { name: category.name, path: "/realisaties/applicaties/" },
+          { name: en ? "Case studies" : "Realisaties", path: "/realisaties/" },
+          { name: category.name, path: `/realisaties/${category.slug}/` },
         ]}
       />
       <JsonLd
