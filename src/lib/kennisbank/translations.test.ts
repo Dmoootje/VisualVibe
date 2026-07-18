@@ -50,11 +50,15 @@ describe("knowledge-base translation identity", () => {
   });
 
   it("returns translations keyed by locale for a translation key", () => {
-    const dutch = getAllPosts({ includeDrafts: true, locale: "nl" })[0];
+    const english = getAllPosts({ includeDrafts: true, locale: "en" })[0];
+    const dutch = getAllPosts({ includeDrafts: true, locale: "nl" }).find(
+      (item) => item.translationKey === english.translationKey,
+    );
+    if (!dutch) throw new Error(`Missing Dutch source for ${english.translationKey}`);
     const translations = getPostTranslations(dutch.translationKey, { includeDrafts: true });
 
     expect(translations.nl).toBe(dutch);
-    expect(translations.en).toBeUndefined();
+    expect(translations.en).toBe(english);
   });
 
   it("builds an article URL from the translated post's own locale and slug", () => {
