@@ -146,6 +146,35 @@ export function getRealisatieCategoryBySlug(slug: string): RealisatieCategory | 
   return realisatieCategories.find((category) => category.slug === slug);
 }
 
+export type LocalizedRealisatieCategory = RealisatieCategory & { id: string };
+
+export function getLocalizedRealisatieCategoryById(
+  id: string,
+  locale: SupportedLocale,
+): LocalizedRealisatieCategory {
+  const source = getRealisatieCategoryBySlug(id);
+  if (!source) throw new Error(`Unknown realisation category ${id}`);
+  if (locale === "nl") return { ...source, id };
+  if (locale !== "en") throw new Error(`Missing ${locale} translation for realisation category ${id}`);
+  const translated = englishRealisatieCategories[id];
+  if (!translated) throw new Error(`Missing en translation for realisation category ${id}`);
+  const { displaySlug, ...content } = translated;
+  return { ...source, ...content, id, slug: displaySlug };
+}
+
+export function getRealisatieCategoryByLocalizedSlug(
+  slug: string,
+  locale: SupportedLocale,
+): LocalizedRealisatieCategory | undefined {
+  if (locale === "nl") {
+    const source = getRealisatieCategoryBySlug(slug);
+    return source ? { ...source, id: source.slug } : undefined;
+  }
+  if (locale !== "en") return undefined;
+  const entry = Object.entries(englishRealisatieCategories).find(([, value]) => value.displaySlug === slug);
+  return entry ? getLocalizedRealisatieCategoryById(entry[0], locale) : undefined;
+}
+
 export function shouldIndexRealisatieCategoryWithoutCases(
   category: RealisatieCategory,
 ): boolean {
@@ -170,3 +199,5 @@ export const categoryToServiceSlug: Record<string, string> = {
 export const serviceToCategorySlug: Record<string, string> = Object.fromEntries(
   Object.entries(categoryToServiceSlug).map(([category, service]) => [service, category]),
 );
+import type { SupportedLocale } from "@/i18n/locales";
+import { englishRealisatieCategories } from "./locales/en/realisatieCategories";
