@@ -125,7 +125,7 @@ export default async function RealisatieCategoryPage({
   const gridProjects =
     localizedWebdesignProjects.filter((project) => project.id !== featured?.id);
 
-  const fotoGalleries = isFotografie
+  const fotoGalleries = isFotografie && locale === "nl"
     ? (await getFotografieGalleries(locale)).filter((gallery) => gallery.images.length > 0)
     : [];
   const smugGalleries = isFotografie && locale === "nl" ? await getSmugMugGalleries() : [];

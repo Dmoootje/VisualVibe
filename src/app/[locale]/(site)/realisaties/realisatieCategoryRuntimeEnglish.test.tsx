@@ -59,7 +59,9 @@ vi.mock("@/lib/firestore/webdesignProjects", async () => {
   };
 });
 vi.mock("@/lib/firestore/fotografieGalleries", () => ({
-  getFotografieGalleries: vi.fn(async () => []),
+  getFotografieGalleries: vi.fn(async () => {
+    throw new Error("English loaded Dutch photography galleries");
+  }),
 }));
 vi.mock("@/lib/smugmug", () => ({ getSmugMugGalleries: vi.fn(async () => []) }));
 vi.mock("@/lib/youtube", () => ({
@@ -78,5 +80,21 @@ describe("English realisation category runtime", () => {
 
     expect(getWebdesignProjects).toHaveBeenCalledWith("nl");
     expect(html).toContain("English featured project");
+  });
+
+  it("keeps the empty English photography category free of Dutch gallery data", async () => {
+    const page = await import("./[category]/page");
+    const { getFotografieGalleries } = await import(
+      "@/lib/firestore/fotografieGalleries"
+    );
+    const html = renderToStaticMarkup(
+      await page.default({
+        params: Promise.resolve({ locale: "en", category: "photography" }),
+      }),
+    );
+
+    expect(getFotografieGalleries).not.toHaveBeenCalled();
+    expect(html).toContain("Photography case studies");
+    expect(html).not.toContain("Realisaties rond");
   });
 });
