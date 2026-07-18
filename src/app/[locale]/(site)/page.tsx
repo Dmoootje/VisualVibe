@@ -136,7 +136,7 @@ function HomepageReviewSignal({ locale }: { locale: string }) {
 
 function EnglishTestimonials({ reviews }: { reviews: GoogleReview[] }) {
   if (reviews.length === 0) return null;
-  return <section className="container mx-auto px-2.5 py-16 sm:px-4"><h2 className="text-3xl font-bold sm:text-4xl">What our customers say</h2><p className="mt-4 max-w-3xl text-lg text-white/65">Verified customer feedback from our Google Business Profile.</p><div className="mt-8 grid gap-4 lg:grid-cols-2">{reviews.map((review) => <blockquote key={`${review.author}-${review.quote}`} className="rounded-2xl border border-white/10 bg-white/[.03] p-7"><p lang="nl" className="text-lg leading-relaxed text-white/80">{review.quote}</p><footer className="mt-5"><strong>{review.author}</strong><span className="ml-2 text-sm text-white/50">{review.role}</span><span className="block text-amber-400" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}</span></footer></blockquote>)}</div><a href={GOOGLE_MAPS_PROFILE_URL} className="mt-6 inline-block font-semibold text-amber-400" rel="nofollow noopener noreferrer" target="_blank">Read all Google reviews</a></section>;
+  return <section className="container mx-auto px-2.5 py-16 sm:px-4"><h2 className="text-3xl font-bold sm:text-4xl">What our customers say</h2><p className="mt-4 max-w-3xl text-lg text-white/65">Verified customer feedback from our Google Business Profile.</p><div className="mt-8 grid gap-4 lg:grid-cols-2">{reviews.map((review) => <blockquote key={`${review.author}-${review.quote}`} className="rounded-2xl border border-white/10 bg-white/[.03] p-7"><p className="text-lg leading-relaxed text-white/80">{review.quote}</p><footer className="mt-5"><strong>{review.author}</strong><span className="ml-2 text-sm text-white/50">{review.role}</span><span className="block text-amber-400" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}</span></footer></blockquote>)}</div><a href={GOOGLE_MAPS_PROFILE_URL} className="mt-6 inline-block font-semibold text-amber-400" rel="nofollow noopener noreferrer" target="_blank">Read all Google reviews</a></section>;
 }
 
 function EnglishHomepageBody({ reviews }: { reviews: GoogleReview[] }) {
@@ -166,7 +166,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   const en = locale === "en";
   const faq = en ? [...HOME_EN.faq] : HOME_FAQ;
-  const reviews = await getGoogleReviews();
+  const reviews = await getGoogleReviews(en ? "en" : "nl");
 
   return (
     <div className="relative min-h-screen text-white">

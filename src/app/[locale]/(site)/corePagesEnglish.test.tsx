@@ -29,6 +29,9 @@ describe("English core commercial pages", () => {
     expect(html).toContain("REAL_ENGLISH_BLOG_PREVIEW");
     expect(html).toContain('href="/en/request-a-quotation"');
     expect(html).not.toContain('href="/en/en/');
+    expect(html).not.toContain('lang="nl"');
+    const { getGoogleReviews } = await import("@/lib/reviews/google");
+    expect(getGoogleReviews).toHaveBeenCalledWith("en");
     expect(html).not.toContain("Wat doet VisualVibe?");
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Creative media agency") });
     expect(metadata.alternates?.canonical).toContain("/en/");

@@ -140,3 +140,9 @@ All seven re-review findings were resolved:
 RED: the new re-review assertions failed on generic homepage substitutes, missing real review records and BlogPreview, three Dutch breadcrumb defaults, incomplete sitemap targets, the report restart route, Dutch address fallbacks and the old About sentence.
 
 GREEN: focused re-review and real-preview tests pass (3 files, 11 tests). The full suite passes (57 files, 220 tests), typecheck passes, the production build completes all 199 static pages, and `git diff --check` plus the U+2014/U+2015 scan are clean. The locale audit remains at the same 59 knowledge-base findings with the one pre-existing Dutch missing-alt block outside Task 7.
+
+## Locale-aware Google review evidence
+
+The homepage now passes its resolved `en` or `nl` locale into `getGoogleReviews`. Both Places search and details requests use that language code with region `BE`, so Google's returned quote and relative-date attribution match the requested page language. English mapping uses `Google user` and `Google review` fallbacks; Dutch retains `Google-gebruiker` and `Google review`. English deliberately ignores `originalText` when the requested translated `text` field is absent, preventing a Dutch original from silently entering the English page. The English testimonial renderer no longer marks the returned English quote as Dutch.
+
+RED: focused tests reproduced the hard-coded `languageCode=nl`, Dutch `originalText` fallback, missing homepage locale argument and `lang="nl"` output. GREEN: 2 focused files and 6 tests pass; full suite is 58 files and 223 tests, typecheck and the 199-page production build pass, prohibited-dash/diff scans are clean, and the locale audit remains unchanged at the documented knowledge-base findings.
