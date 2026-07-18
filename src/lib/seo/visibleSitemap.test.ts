@@ -56,4 +56,23 @@ describe("English visible sitemap inventory", () => {
       "Tools",
     ]);
   });
+
+  it("uses authored English titles instead of deriving labels from URL slugs", async () => {
+    const view = getEnglishVisibleSitemap(await getSitemapEntries());
+    const titlesByHref = new Map(
+      view.sections.flatMap((section) => [
+        [section.href, section.title] as const,
+        ...section.nodes.map(({ href, title }) => [href, title] as const),
+      ]),
+    );
+
+    expect(titlesByHref.get("/en/diensten/photography/")).toBe("Photography");
+    expect(titlesByHref.get("/en/diensten/videography/")).toBe("Videography");
+    expect(titlesByHref.get("/en/diensten/custom-software/")).toBe("Custom software");
+    expect(titlesByHref.get("/en/kennisbank/fotografie/")).toBe("Photography");
+    expect(titlesByHref.get("/en/kennisbank/webdesign/website-development-costs/")).toBe(
+      "How much does a website cost in Belgium?",
+    );
+    expect([...titlesByHref.values()]).not.toContain("Software Op Maat");
+  });
 });

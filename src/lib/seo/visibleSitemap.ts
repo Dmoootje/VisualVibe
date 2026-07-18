@@ -1,4 +1,23 @@
 import type { MetadataRoute } from "next";
+import { applicationCases, getLocalizedApplicationCaseById } from "@/data/applicationCases";
+import { blogPosts } from "@/data/blog";
+import {
+  getLocalizedKennisbankCategoryById,
+  kennisbankCategories,
+} from "@/data/kennisbankCategories";
+import {
+  getLocalizedRealisatieCategoryById,
+  realisatieCategories,
+} from "@/data/realisatieCategories";
+import { getLocalizedRegionById, regions } from "@/data/regions";
+import { getLocalizedSectorById, sectors } from "@/data/sectors";
+import { allServices, getLocalizedServiceById, serviceHref } from "@/data/services";
+import {
+  getSoftwareServices,
+  softwareServiceHref,
+  softwareServiceHubHref,
+} from "@/data/softwareServices";
+import { postHref } from "@/lib/kennisbank/posts";
 
 export type VisibleSitemapNode = Readonly<{
   title: string;
@@ -42,7 +61,69 @@ const fixedTitles: Readonly<Record<string, string>> = {
   "/en/cookies/": "Cookie policy",
   "/en/sitemap/": "Sitemap",
   "/en/website-analysis/": "Website analysis",
+  "/en/tools/seo-geo-checklist/": "SEO and GEO checklist",
 };
+
+function withTrailingSlash(pathname: string): string {
+  return pathname === "/" ? pathname : `${pathname.replace(/\/+$/u, "")}/`;
+}
+
+function englishPath(pathname: string): string {
+  return `/en${withTrailingSlash(pathname)}`;
+}
+
+function buildAuthoredEnglishTitles(): ReadonlyMap<string, string> {
+  const serviceTitles = allServices.map((source) => {
+    const translated = getLocalizedServiceById(source.slug, "en").service;
+    return [englishPath(serviceHref(translated)), translated.title] as const;
+  });
+  const softwareTitles = getSoftwareServices("en").map((service) => [
+    englishPath(softwareServiceHref(service, "en")),
+    service.title,
+  ] as const);
+  const regionTitles = regions.map((source) => {
+    const translated = getLocalizedRegionById(source.slug, "en");
+    return [englishPath(`/regio/${translated.slug}`), translated.title] as const;
+  });
+  const sectorTitles = sectors.map((source) => {
+    const translated = getLocalizedSectorById(source.slug, "en");
+    return [englishPath(`/sectoren/${translated.slug}`), translated.title] as const;
+  });
+  const realisationTitles = realisatieCategories.map((source) => {
+    const translated = getLocalizedRealisatieCategoryById(source.slug, "en");
+    return [englishPath(`/realisaties/${translated.slug}`), translated.name] as const;
+  });
+  const applicationCategory = getLocalizedRealisatieCategoryById("applicaties", "en");
+  const applicationTitles = applicationCases.map((source) => {
+    const translated = getLocalizedApplicationCaseById(source.id, "en");
+    return [
+      englishPath(`/realisaties/${applicationCategory.slug}/${translated.slug}`),
+      translated.title,
+    ] as const;
+  });
+  const knowledgeCategoryTitles = kennisbankCategories.map((source) => {
+    const translated = getLocalizedKennisbankCategoryById(source.slug, "en");
+    return [englishPath(`/kennisbank/${translated.slug}`), translated.name] as const;
+  });
+  const knowledgeArticleTitles = blogPosts
+    .filter((post) => post.locale === "en" && !post.robots?.includes("noindex"))
+    .map((post) => [englishPath(postHref(post)), post.title] as const);
+
+  return new Map<string, string>([
+    ...Object.entries(fixedTitles),
+    [englishPath(softwareServiceHubHref("en")), "Custom software"],
+    ...serviceTitles,
+    ...softwareTitles,
+    ...regionTitles,
+    ...sectorTitles,
+    ...realisationTitles,
+    ...applicationTitles,
+    ...knowledgeCategoryTitles,
+    ...knowledgeArticleTitles,
+  ]);
+}
+
+const authoredEnglishTitles = buildAuthoredEnglishTitles();
 
 function sectionIdFor(pathname: string): EnglishVisibleSitemapSection["id"] {
   if (pathname.startsWith("/en/diensten/")) return "services";
@@ -54,20 +135,11 @@ function sectionIdFor(pathname: string): EnglishVisibleSitemapSection["id"] {
   return "general";
 }
 
-function humanizePath(pathname: string): string {
-  const fixed = fixedTitles[pathname];
-  if (fixed) return fixed;
-  const slug = pathname.split("/").filter(Boolean).at(-1) ?? "Page";
-  const title = slug
-    .split("-")
-    .map((word) => {
-      const acronym = word.toUpperCase();
-      if (["3D", "AI", "API", "AR", "FPV", "GEO", "SEO", "SMES", "UI", "UX", "VR"].includes(acronym)) {
-        return acronym === "SMES" ? "SMEs" : acronym;
-      }
-      return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
-    })
-    .join(" ");
+function authoredTitleFor(pathname: string): string {
+  const title = authoredEnglishTitles.get(pathname);
+  if (!title) {
+    throw new Error(`Missing authored English visible-sitemap title for ${pathname}`);
+  }
   return title;
 }
 
@@ -95,7 +167,7 @@ export function getEnglishVisibleSitemap(
       intro: definition.intro,
       nodes: matchingPaths
         .filter((pathname) => pathname !== href)
-        .map((pathname) => ({ title: humanizePath(pathname), href: pathname })),
+        .map((pathname) => ({ title: authoredTitleFor(pathname), href: pathname })),
     }];
   });
 
