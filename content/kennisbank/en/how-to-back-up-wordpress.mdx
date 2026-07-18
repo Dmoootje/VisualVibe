@@ -1,0 +1,167 @@
+---
+title: "How to back up WordPress: build a recovery-ready backup strategy"
+slug: "how-to-back-up-wordpress"
+category: "Webdesign"
+categorySlug: "webdesign"
+pillar: false
+clusterType: "sub"
+parentPillar: "/en/knowledge-base/webdesign/wordpress-for-smes-complete-guide/"
+status: "published"
+locale: "en"
+translationKey: "wordpress-backup-maken"
+author:
+  type: "Person"
+  name: "Jens Hardy"
+  url: "/en/about/"
+  jobTitle: "Founder and creative lead at VisualVibe"
+publishedAt: "2026-07-14"
+updatedAt: "2026-07-14T11:50:00+02:00"
+readingTime: "7 min"
+excerpt: "A WordPress backup is only valuable when both the files and database are stored safely and you know how to restore the website in practice."
+focusKeyword: "back up WordPress"
+secondaryKeywords:
+  - "WordPress backup"
+  - "restore a WordPress website"
+  - "WordPress backup plugin"
+  - "website backup strategy"
+searchIntent:
+  primary: "Explain how an SME can set up a complete, recovery-ready WordPress backup strategy"
+  type: "informational"
+  audience: "Website owners and SMEs that want to avoid data loss and prolonged downtime"
+  funnelStage: "awareness"
+seoTitle: "How to back up WordPress safely | VisualVibe"
+seoDescription: "Learn how to back up WordPress: what files and database data to save, where to store copies, how often to run backups and why restore tests matter."
+ogImage: "https://firebasestorage.googleapis.com/v0/b/gen-lang-client-0235296023/o/images%2Fog-images%2Fkennisbank%2Fwebdesign%2Fblog-webdesign-wordpress-backup-maken.webp?alt=media&token=88ef28ad-d49b-44d6-aeda-a00b8cbee2c0"
+heroImageAlt: "WordPress backup strategy covering files, the database and restore testing"
+robots: "index,follow"
+cta:
+  title: "No time to manage backups and restores yourself?"
+  description: "Our website maintenance service combines updates, backups, checks and technical follow-up in one clear process."
+  label: "Request website maintenance"
+  href: "/en/request-a-quotation/"
+relatedServices:
+  - "/en/services/web-design/website-maintenance/"
+  - "/en/services/web-design/wordpress-website-development/"
+relatedRegions:
+  - "/en/regions/limburg/"
+  - "/en/regions/flanders/"
+relatedPosts:
+  - "/en/knowledge-base/webdesign/wordpress-for-smes-complete-guide/"
+  - "/en/knowledge-base/webdesign/wordpress-maintenance-checklist/"
+  - "/en/knowledge-base/webdesign/how-to-secure-a-wordpress-website/"
+---
+
+Creating a **WordPress backup** sounds straightforward: install a plugin, select a daily schedule and assume your site is protected. In reality, you only discover during an outage or attack whether that backup is complete, accessible and genuinely restorable.
+
+A WordPress website has two main parts. Its files contain WordPress itself, the theme, plugins and uploads. The database holds pages, settings, users, orders, form submissions and other dynamic content. Saving only one of the two will rarely give you a complete recovery copy.
+
+## What should a complete WordPress backup contain?
+
+At a minimum, include:
+
+- the complete database;
+- the uploads and media directory;
+- the active theme and any child theme;
+- plugins and their configuration files;
+- important server configuration, such as redirects;
+- details of the WordPress, PHP and plugin versions in use.
+
+You can download the WordPress core files again, but a full copy usually speeds up recovery and removes uncertainty about modified files.
+
+## Do not keep every copy on the same server
+
+A common mistake is to store backups only in a folder on the same hosting account. A server failure, faulty migration, ransomware incident or suspended hosting account could then take the website and every recovery copy out of reach at the same time.
+
+Use at least one external storage location. This might be cloud storage, a separate backup service or a second server environment. Give the backup storage its own account and strong security. Separation offers little protection if the same stolen login provides access to both the website and its backups.
+
+## How often should you back up WordPress?
+
+The right frequency depends on how much data changes.
+
+A straightforward service website that is updated only a few times a month may be adequately covered by a daily database backup and a weekly full backup. An online shop, membership platform or website that receives many enquiries needs more frequent restore points. New information may arrive every hour, and losing it may not be acceptable.
+
+Ask yourself one question: how much work or customer data can you afford to lose? The answer determines the frequency.
+
+### A practical guide
+
+- **Static business website:** daily or every few days, plus a backup before updates.
+- **Active knowledge base:** daily, with an additional backup before major content changes.
+- **Online shop or booking system:** several database backups each day.
+- **Major update or migration:** a manual full backup immediately before the change.
+
+## Use several retention periods
+
+Keeping only the latest backup is risky. A fault or infection may remain unnoticed for days and already be present in the most recent copies.
+
+A rotation schedule could include:
+
+- daily copies for the last seven days;
+- weekly copies for the last four weeks;
+- monthly copies for the last three to twelve months.
+
+The appropriate retention period depends on storage costs, legal obligations and the value of historical data.
+
+## A backup plugin is a tool, not a guarantee
+
+A reliable plugin can manage scheduling, compression, external storage and notifications. You still need to verify that each job actually succeeds. A message saying that a process has started does not prove that every file has been transferred.
+
+Check for issues such as:
+
+- failures caused by limited server space or execution time;
+- expired access to external storage;
+- excluded directories or uploads that are too large;
+- encryption and access controls for backup files;
+- warnings sent to an email address nobody monitors.
+
+Hosting backups and plugin backups can complement one another. Two independent systems are stronger than two copies kept within the same environment.
+
+## Test restores regularly
+
+The only way to know whether a backup is usable is to test a restore. You do not need to do this on the live website. Restore a copy in a staging or test environment and check:
+
+1. whether the website opens;
+2. whether you can log in;
+3. whether images appear;
+4. whether forms and important functions work;
+5. whether the database is recent enough;
+6. how long the recovery process actually takes.
+
+Document the steps. During an incident, you should not have to hunt for passwords, storage locations or procedures.
+
+## Protect personal data in backups
+
+A WordPress database may contain personal data. Secure backups just as carefully as the production environment. Restrict access, use encryption where possible and remove old copies in line with your retention policy.
+
+You may need to anonymise personal data before using a backup in a test environment. Never place a complete customer database on a publicly accessible test site.
+
+## Always create a backup before a risky change
+
+Create an extra restore point before:
+
+- updating WordPress, a theme or a plugin;
+- importing a large amount of content;
+- changing redirects or domain settings;
+- migrating to new hosting;
+- installing a new page builder or major plugin;
+- making custom changes to the theme or code.
+
+Combine this step with the [WordPress maintenance checklist](/en/knowledge-base/webdesign/wordpress-maintenance-checklist/), so backups become part of routine management rather than a stand-alone emergency measure.
+
+## What should an emergency recovery plan record?
+
+Keep a short recovery procedure containing:
+
+- hosting and domain details;
+- the location of external backups;
+- access to DNS and email;
+- technical support contact details;
+- the order of the recovery steps;
+- a post-recovery checklist.
+
+Decide who is authorised to restore a backup as well. Uncoordinated changes during an incident can overwrite data.
+
+## Summary
+
+A sound WordPress backup includes both files and the database, is also stored away from the web server, provides several restore points and is tested regularly. The question is not simply whether a backup exists, but whether it can return the website to working order within an acceptable time.
+
+Read our complete guide to [WordPress for SMEs](/en/knowledge-base/webdesign/wordpress-for-smes-complete-guide/) to see how hosting, updates, security, speed and ongoing management fit together.
