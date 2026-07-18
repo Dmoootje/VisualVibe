@@ -70,13 +70,13 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
   const { locale } = await params;
   if (locale === "en") {
     const englishSections: SmSection[] = [
-      { icon: FileText, title: "General pages", href: "/over-ons", intro: "Company information and ways to get in touch.", nodes: [
-        { title: "About VisualVibe", href: "/over-ons" }, { title: "Contact", href: "/contact" },
-        { title: "Request a quotation", href: "/offerte-aanvragen" }, { title: "Privacy policy", href: "/privacy" },
-        { title: "Cookie policy", href: "/cookies" }, { title: "Sitemap", href: "/sitemap" },
+      { icon: FileText, title: "General pages", href: "/en/about/", intro: "Company information and ways to get in touch.", nodes: [
+        { title: "About VisualVibe", href: "/en/about/" }, { title: "Contact", href: "/en/contact/" },
+        { title: "Request a quotation", href: "/en/request-a-quotation/" }, { title: "Privacy policy", href: "/en/privacy/" },
+        { title: "Cookie policy", href: "/en/cookies/" }, { title: "Sitemap", href: "/en/sitemap/" },
       ] },
       { icon: LayoutGrid, title: "Tools", href: "/tools", intro: "Free tools to improve your website and online visibility.", nodes: [
-        { title: "Website analysis", href: "/website-analyse" }, { title: "SEO and GEO checklist", href: "/tools/seo-geo-checklist" },
+        { title: "Website analysis", href: "/en/website-analysis/" }, { title: "SEO and GEO checklist", href: "/en/tools/seo-geo-checklist/" },
       ] },
     ];
     const total = 1 + englishSections.reduce((sum, section) => sum + section.nodes.length, 0);

@@ -8,7 +8,7 @@ import { getCommercialCopy } from "../commercialCopy";
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const copy = getCommercialCopy(locale).quotation;
-  return pageMetadata({ locale, title: `${copy.title} | ${businessConfig.displayName}`, description: copy.description, path: "/offerte-aanvragen/" });
+  return pageMetadata({ locale, title: `${copy.title} | ${businessConfig.displayName}`, description: copy.description, path: locale === "en" ? "/request-a-quotation/" : "/offerte-aanvragen/" });
 }
 
 export default async function OfferteAanvragenPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
@@ -17,7 +17,8 @@ export default async function OfferteAanvragenPage({ params }: { params: Promise
   return (
     <div className="min-h-screen text-white pt-24 pb-16">
       <BreadcrumbJsonLd
-        items={[{ name: "Home", path: "/" }, { name: copy.h1, path: "/offerte-aanvragen" }]}
+        locale={locale === "en" ? "en" : "nl"}
+        items={[{ name: "Home", path: "/" }, { name: copy.h1, path: locale === "en" ? "/request-a-quotation" : "/offerte-aanvragen" }]}
       />
 
       <div className="container mx-auto px-2.5 sm:px-4">
@@ -27,7 +28,7 @@ export default async function OfferteAanvragenPage({ params }: { params: Promise
         </p>
 
         <div className="max-w-2xl rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
-          <LeadForm variant="offerte" />
+          <LeadForm variant="offerte" locale={locale} />
         </div>
       </div>
     </div>

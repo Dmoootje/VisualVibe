@@ -23,7 +23,8 @@ async function loadPageModule() {
 
 describe("WebsiteAnalysePage", () => {
   it("is indexable with search-focused metadata", async () => {
-    const { metadata } = await loadPageModule();
+    const { generateMetadata } = await loadPageModule();
+    const metadata = await generateMetadata({ params: Promise.resolve({ locale: "nl" }) });
 
     expect(metadata.robots).toMatchObject({
       index: true,

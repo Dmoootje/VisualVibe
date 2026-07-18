@@ -460,13 +460,14 @@ const EN_FAQS: FaqItem[] = [
   { question: "What is a website analysis?", answer: "A website analysis is a focused check of your SEO, performance, technical setup, content and online visibility. It shows what works and where there is room to improve." },
   { question: "Is the website analysis free?", answer: "Yes. VisualVibe's basic website analysis is free and carries no obligation. You receive a score and practical findings that show where your website could be stronger." },
   { question: "What does the analysis check?", answer: "It covers technical SEO, Core Web Vitals, mobile performance, content structure, metadata, images, internal links, structured data and AI search visibility." },
-  { question: "Why do I need to confirm my email address?", answer: "Email verification helps prevent abuse and automated spam requests, keeping free analyses available to genuine business owners and website owners." },
+  { question: "Why do I need to confirm my email address?", answer: "Email verification helps prevent abuse and automated spam requests, keeping free analyses available to genuine businesses and website owners." },
   { question: "Can I analyse my website again?", answer: "Yes. Run another analysis after making changes to see whether your score and priorities have changed." },
   { question: "How is this different from a full SEO audit?", answer: "The free analysis is a quick snapshot of the main priorities. A full SEO audit goes deeper into strategy, keywords, competitors, content planning, technical optimisation and conversion opportunities." },
 ];
 
 function EnglishWebsiteAnalysisPage({ integration, useWidget }: { integration: Awaited<ReturnType<typeof getAnalysisIntegrationPublic>>; useWidget: boolean }) {
   return <div className="relative min-h-screen overflow-hidden text-white">
+    <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Website analysis", path: "/website-analysis" }]} />
     <WebPageJsonLd url={`${businessConfig.url}/en/website-analysis/`} name="Free website analysis" description="Free VisualVibe website analysis for SEO, performance, technical quality, content and AI search visibility." primaryImage={TOOL_PAGE_IMAGES.websiteAnalyse.url} />
     <FaqPageJsonLd items={EN_FAQS} /><PageAmbient />
     <main className="relative z-10">

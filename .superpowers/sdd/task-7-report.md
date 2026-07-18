@@ -89,3 +89,38 @@ RED evidence: `AnalyseFlow.test.tsx` had four expected failures because no Engli
 GREEN evidence: 83 analysis and website-analysis tests pass across 16 files. This includes English initial render, Dutch preservation, strict unsupported-locale rejection, validation attempt singular/plural, verification, progress, quota/reset copy, failure/retry, pending completion, privacy consent/link coverage and raw-error suppression. `npm run typecheck` passes. The production build completes all 199 static pages after retaining only the locale-aware metadata export. `git diff --check` passes, and scans find no U+2014/U+2015 characters or raw `data.error`/`data.message` render paths in the API-mode owners.
 
 The full locale audit still reports its previously documented 59 knowledge-base findings, including the existing blocking missing Dutch hero alt text in `wordpress-backup-maken.mdx`. None is owned by this API-flow sub-scope. English remains disabled.
+
+## Independent editorial correction matrix
+
+The binding second-agent review in `task-7-editorial-findings.md` was applied in full. Dutch rendering and publication state remain unchanged.
+
+| Finding | Correction | Regression evidence |
+| --- | --- | --- |
+| Homepage review leakage | Replaced the English review summary and attribution with the exact approved English wording. | `task7EditorialCorrections.test.ts` and English homepage render test |
+| Homepage metadata | Applied the exact English title, natural English keyword set and approved Open Graph alt text. | Homepage render and source-contract tests |
+| Homepage parity | Expanded the English journey to all seven disciplines and added regional, sector, testimonial, knowledge-preview, process, FAQ and CTA sections. | Full English homepage parity assertions |
+| Form locale | `LeadForm` now requires and submits an explicit supported locale; contact and quotation pass it directly. English service options no longer fall back to Dutch labels. | Form-locale source contract plus shared-message tests |
+| Firestore prose leakage | English contact hides response-time, opening-hours, appointment and urgent-contact prose until localized values exist. Neutral contact details remain visible. | No-Dutch-settings regression assertion |
+| Contact and quotation copy | Applied both exact reviewed introductions. | Exact-copy regression assertion |
+| Tools and checklist | Tool cards use link components with explicit English targets; the checklist CTA selects `/en/website-analysis/`; both exact description replacements were applied. | Tools page tests and editorial route/copy contract |
+| Structured data | Checklist JSON-LD uses the exact English URL. Website analysis now emits an English breadcrumb and route. | URL and breadcrumb assertions |
+| Private report | English metadata uses locale `en`, `/website-analysis/report/[token]/` and `noindex`; English CTA targets are consistent. | Report tests and editorial metadata contract |
+| About and WeddingVibe | Applied the exact natural metadata title, `/about/` canonical/breadcrumb, dedicated-label sentence and English WeddingVibe destination. | About render and exact-copy assertions |
+| Sitemap and slugs | English sitemap advertises `/en/about/`, `/en/request-a-quotation/` and `/en/website-analysis/`, with matching canonical, breadcrumb and internal-link targets across Task 7 owners. | Sitemap route assertions |
+| Abuse wording | Applied the exact approved email-verification sentence. | Exact-copy regression assertion |
+
+### RED
+
+The new four-case editorial suite initially failed all four categories: homepage parity and leakage, form locale and settings leakage, routes and structured data, and exact reviewed copy. The complete test suite also exposed that importing the locale-navigation client in the tools owner broke server rendering under Vitest; the tool cards now use Next's link component with explicit English destinations.
+
+### GREEN and final verification
+
+- Focused Task 7/editorial suite: 7 files, 21 tests passed.
+- Full suite: 57 files, 217 tests passed.
+- Typecheck: passed.
+- Production build: passed and generated 199 static pages.
+- `git diff --check`: passed.
+- U+2014/U+2015 scan of Task 7 owners: clean.
+- Locale audit: completed with the same 59 knowledge-base findings and one pre-existing blocking Dutch missing-alt finding in `wordpress-backup-maken.mdx`; none is introduced or owned by Task 7.
+
+The shared next-intl pathname table is deliberately not enabled piecemeal: adding only these four translated paths would make its generated `Link` type reject every other existing route. While English is disabled, middleware and permanent redirects continue to prevent public `/en` access. The approved English URLs above are now the sole advertised targets in Task 7 content and SEO output; the exhaustive four-language pathname table and removal of the publication redirects belong to the final all-route activation after the remaining service and knowledge-base destinations are complete.

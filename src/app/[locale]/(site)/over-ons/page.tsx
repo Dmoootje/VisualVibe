@@ -12,9 +12,9 @@ import { QuoteButton } from "@/components/quote";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return pageMetadata(locale === "en" ? {
-    title: "About VisualVibe and Jens Hardy | Media agency Limburg",
+    title: "About VisualVibe and Jens Hardy | Media agency in Limburg",
     description: "Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.",
-    path: "/over-ons/", locale: "en",
+    path: "/about/", locale: "en",
   } : {
     title: `Over ons | ${businessConfig.displayName}`,
     description: "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
@@ -105,12 +105,13 @@ function EnglishAboutPage() {
     ["Podcasting", "From recording to a polished, ready-to-publish podcast."],
   ];
   return <div className="vvov-anim relative overflow-hidden text-white">
-    <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/over-ons" }]} />
+    <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
     <section className={`${SECTION} pb-16 pt-32`}>
       <p style={eyebrow}>The person behind VisualVibe</p>
       <h1 className="mt-5 max-w-4xl font-sora text-4xl font-extrabold sm:text-6xl">One partner for digital experiences and visual stories</h1>
       <p className="mt-7 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe is a creative media agency based in Limburg, Belgium. We bring web design, SEO, photography, video production, drone and FPV, 3D, VR and AR, and podcasting together under one roof. This gives SMEs one point of contact for a consistent online presence.</p>
-      <div className="mt-8 flex flex-wrap gap-4"><QuoteButton mode="kennis" className="vvov-btn">Start a conversation</QuoteButton><Link href="/realisaties" className="vvov-btn rounded-xl border border-white/15 px-6 py-3">View our case studies</Link></div>
+      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/70">Wedding photography has its own dedicated label: WeddingVibe. <Link href="/en/wedding-photographer-limburg/" className="font-semibold text-amber-400">Discover WeddingVibe</Link>.</p>
+      <div className="mt-8 flex flex-wrap gap-4"><QuoteButton mode="kennis" className="vvov-btn">Start a conversation</QuoteButton><Link href="/en/case-studies/" className="vvov-btn rounded-xl border border-white/15 px-6 py-3">View our case studies</Link></div>
     </section>
     <section className={`${SECTION} py-16`}><p style={eyebrow}>VisualVibe in brief</p><div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Since 2020","Creative media agency in Limburg"],["7 disciplines","Under one roof"],["1 point of contact","From idea to delivery"],["3 partners","Google · Meta · Leadinfo"]].map(([big,label]) => <div key={big} className="rounded-2xl border border-white/10 bg-white/[.03] p-6"><strong className="text-2xl">{big}</strong><p className="mt-2 text-white/60">{label}</p></div>)}</div></section>
     <section className={`${SECTION} py-16`}><p style={eyebrow}>Founder</p><h2 style={h2} className="mt-4">Meet Jens Hardy</h2><div className="mt-8 grid gap-8 md:grid-cols-[280px_1fr] md:items-center"><Image src={IMG.portrait} alt="Jens Hardy, photographer and founder of VisualVibe" width={368} height={492} className="rounded-3xl"/><div className="space-y-4 text-lg leading-relaxed text-white/70"><p>Jens founded VisualVibe in 2020 to bring creative production, digital expertise and personal guidance together in one agency.</p><p>As a photographer, camera operator, marketer, drone pilot, web designer and adviser, he looks beyond a single deliverable. Every project starts with your goals and ends with work that fits your business.</p></div></div></section>

@@ -52,7 +52,7 @@ export default async function SeoGeoChecklistPage({ params }: { params?: Promise
         ]}
       />
       <WebPageJsonLd
-        url={PAGE_URL}
+        url={en ? `${businessConfig.url}/en/tools/seo-geo-checklist/` : PAGE_URL}
         name="SEO/GEO checklist"
         description={en ? "A practical checklist for SEO, GEO, AEO, structured data, performance and local search visibility." : "Gratis checklist voor SEO, GEO, AEO, structured data, snelheid en lokale vindbaarheid."}
         primaryImage={TOOL_PAGE_IMAGES.seoGeoChecklist.url}

@@ -46,7 +46,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
   return (
     <div className="min-h-screen pb-16 pt-24 text-white">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
+      <BreadcrumbJsonLd locale={locale === "en" ? "en" : "nl"} items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
 
       <div className="container mx-auto px-2.5 sm:px-4">
         {/* Hero */}
@@ -85,7 +85,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
               <a href={`mailto:${settings.mainEmail}`}>{settings.mainEmail}</a>
             </ContactInfoCard>
 
-            {settings.responseTimeText && (
+            {locale !== "en" && settings.responseTimeText && (
               <ContactInfoCard icon={Clock} title={copy.responseTime}>
                 {settings.responseTimeText}
               </ContactInfoCard>
@@ -105,7 +105,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             }}
           >
             <h2 className="mb-6 text-xl font-bold">{copy.formTitle}</h2>
-            <LeadForm variant="contact" />
+            <LeadForm variant="contact" locale={locale} />
           </div>
         </div>
 
@@ -122,25 +122,27 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         </div>
 
         {/* Office hours + CTA cards */}
+        {locale !== "en" && (
         <div className="mt-6">
           <ContactCTAGroup
             openingHours={settings.openingHours}
             appointment={{
-              title: locale === "en" ? copy.appointmentTitle : settings.appointmentTitle ?? copy.appointmentTitle,
+              title: settings.appointmentTitle ?? copy.appointmentTitle,
               text: settings.appointmentText ?? "",
-              buttonLabel: locale === "en" ? copy.appointmentButton : settings.appointmentButtonLabel ?? copy.appointmentButton,
+              buttonLabel: settings.appointmentButtonLabel ?? copy.appointmentButton,
               buttonUrl: settings.appointmentButtonUrl ?? "/offerte-aanvragen",
             }}
             urgent={{
-              title: locale === "en" ? copy.urgentTitle : settings.urgentContactTitle ?? copy.urgentTitle,
+              title: settings.urgentContactTitle ?? copy.urgentTitle,
               text: settings.urgentContactText ?? "",
-              buttonLabel: locale === "en" ? copy.urgentButton : settings.urgentContactButtonLabel ?? copy.urgentButton,
+              buttonLabel: settings.urgentContactButtonLabel ?? copy.urgentButton,
               buttonUrl:
                 settings.urgentContactButtonUrl ||
                 (settings.phone ? `tel:${settings.phone.replace(/\s+/g, "")}` : ""),
             }}
           />
         </div>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { services } from "@/data/services";
 import { regions } from "@/data/regions";
 import { useTranslations } from "next-intl";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const inputClasses =
   "w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-white/40 [color-scheme:dark] transition-colors focus:border-amber-500/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30";
@@ -22,7 +23,7 @@ type SubmitState = { status: "idle" | "success" | "error"; message?: string };
 // Suspense boundary on statically prerendered pages, which would blank the
 // form until client-side hydration. Not needed here since we only read
 // these values on submit, never during render.
-export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
+export function LeadForm({ variant, locale }: { variant: "contact" | "offerte"; locale: SupportedLocale }) {
   const t = useTranslations("leadForm");
   const contactSteps = [
     { name: "name", text: t("nameRequired") },
@@ -126,8 +127,6 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
     const formData = new FormData(formElement);
     const searchParams = new URLSearchParams(window.location.search);
     const serviceInterest = String(formData.get("serviceInterest") ?? "").trim();
-    const localeSegment = window.location.pathname.split("/").filter(Boolean)[0];
-    const locale = localeSegment === "fr" || localeSegment === "en" ? localeSegment : "nl";
     idempotencyKeyRef.current ??= window.crypto.randomUUID();
 
     const payload = {
@@ -254,7 +253,7 @@ export function LeadForm({ variant }: { variant: "contact" | "offerte" }) {
           </option>
           {services.map((service) => (
             <option key={service.slug} value={service.slug} className="bg-neutral-900 text-white">
-              {service.title}
+              {locale === "en" ? ({ webdesign: "Web design", seo: "SEO and GEO", fotografie: "Photography", videografie: "Video production", drone: "Drone and FPV", "3d-vr-ar": "3D, VR and AR", podcasting: "Podcast production" } as Record<string, string>)[service.slug] ?? service.title : service.title}
             </option>
           ))}
         </select>

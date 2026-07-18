@@ -2,8 +2,8 @@ import type { SeoGeoChecklistCategory, ToolCard } from "./tools";
 import { seoGeoChecklistCategories } from "./tools";
 
 export const englishToolCards: ToolCard[] = [
-  { id: "website-analyse", name: "Website analysis", href: "/website-analyse", icon: "seo", tag: "Free scan", desc: "Check your website's SEO, performance, technical setup, content and AI search visibility.", cta: "Start the free analysis", previewTitle: "A clear score out of 100", previewText: "See a clear score, findings by category and practical advice you can open straight away.", previewPoints: ["SEO and technical setup", "Core Web Vitals", "AI search visibility"] },
-  { id: "seo-geo-checklist", name: "SEO/GEO checklist", href: "/tools/seo-geo-checklist", icon: "checklist", tag: "Interactive + PDF", desc: "Review your page step by step and download your selected actions as a VisualVibe PDF.", cta: "Build your checklist", previewTitle: "A checklist for Google and AI search", previewText: "Tick off completed work, track your progress and take a branded PDF back to your team.", previewPoints: ["Technical SEO", "AEO/GEO", "Structured data"] },
+  { id: "website-analyse", name: "Website analysis", href: "/en/website-analysis/", icon: "seo", tag: "Free scan", desc: "Check your website's SEO, performance, technical setup, content and AI search visibility.", cta: "Start the free analysis", previewTitle: "A clear score out of 100", previewText: "See a clear score, findings by category and practical recommendations you can review immediately.", previewPoints: ["SEO and technical setup", "Core Web Vitals", "AI search visibility"] },
+  { id: "seo-geo-checklist", name: "SEO/GEO checklist", href: "/en/tools/seo-geo-checklist/", icon: "checklist", tag: "Interactive + PDF", desc: "Review your page step by step and download your selected actions as a VisualVibe PDF.", cta: "Build your checklist", previewTitle: "A checklist for Google and AI search", previewText: "Tick off completed work, track your progress and share a branded PDF with your team.", previewPoints: ["Technical SEO", "AEO/GEO", "Structured data"] },
 ];
 
 const categoryText: Record<string, [string, string]> = {

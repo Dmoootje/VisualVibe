@@ -150,7 +150,7 @@ export function SeoGeoChecklist({ categories, locale = "nl" }: SeoGeoChecklistPr
             {en ? "Download a VisualVibe PDF" : "Download als VisualVibe PDF"}
           </button>
           <a
-            href="/website-analyse"
+            href={locale === "en" ? "/en/website-analysis/" : "/website-analyse"}
             className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-black/20 px-5 py-3 text-sm font-bold text-white transition-colors hover:border-[rgba(255,117,0,0.48)] hover:text-[#ff9a45]"
           >
             <SearchCheck className="h-4 w-4" aria-hidden="true" />

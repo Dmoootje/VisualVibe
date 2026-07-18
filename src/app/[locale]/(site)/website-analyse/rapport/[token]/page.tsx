@@ -37,7 +37,8 @@ export async function generateMetadata({
   return pageMetadata({
     title: `${en ? "Website analysis report" : "Rapport websiteanalyse"} | ${businessConfig.displayName}`,
     description: en ? "Your private website analysis report with a score, checks and clear priorities for improvement." : "Persoonlijk rapport van je gratis websiteanalyse met score, checks, tips en concrete verbeterpunten.",
-    path: `/website-analyse/rapport/${token}/`,
+    locale: en ? "en" : "nl",
+    path: en ? `/website-analysis/report/${token}/` : `/website-analyse/rapport/${token}/`,
     noindex: true,
   });
 }
@@ -106,14 +107,14 @@ export default async function AnalyseRapportPage({
 
         <div className="mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
           <Link
-            href="/contact"
+            href={en ? "/en/contact/" : "/contact"}
             className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-sm font-medium text-white shadow-lg shadow-amber-500/20 transition-colors hover:from-red-600 hover:to-amber-600 sm:w-auto"
           >
             {en ? "Discuss the results" : "Resultaten bespreken"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
           <Link
-            href="/offerte-aanvragen"
+            href={en ? "/en/request-a-quotation/" : "/offerte-aanvragen"}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-orange-400/50 hover:bg-orange-400/[0.06] hover:text-white sm:w-auto"
           >
             {en ? "Request a quotation" : "Offerte aanvragen"}
