@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/kennisbank/fotografie/zakelijke-portretten-tips/",
+  "targetRoute": "/en/kennisbank/fotografie/corporate-portrait-tips/",
+  "audience": "Business owners, employees, HR teams and marketing leads planning professional portraits for one person or a complete team",
+  "primaryDutchSearchIntent": "Professionals en KMO's helpen een passende portretstijl, voorbereiding en consistente beeldselectie te kiezen voor website, LinkedIn, pers en teamcommunicatie",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How do you prepare professional corporate portraits that look natural, suit each person's role and remain consistent across a team?",
+    "geographicContext": "English-speaking professionals and SMEs in Limburg, Belgium and the wider Belgian market"
+  },
+  "mainKeyword": "corporate portrait tips",
+  "longTailKeywords": [
+    "professional headshot tips",
+    "corporate portraits for teams",
+    "what to wear for a corporate headshot",
+    "professional LinkedIn profile photo",
+    "consistent team headshots",
+    "corporate portrait photographer Limburg Belgium",
+    "portrait photos for website and LinkedIn"
+  ],
+  "semanticTerms": [
+    "business headshot",
+    "team photography",
+    "portrait lighting",
+    "professional profile photo",
+    "environmental portrait",
+    "image rights",
+    "usage licence",
+    "image SEO",
+    "alt text",
+    "portrait retouching"
+  ],
+  "directAnswer": "A strong corporate portrait should suit the person, their role and the organisation. Start with where the image will be used, then align expression, clothing, location, lighting, pose, crop and editing. For a team, keep the photographic system consistent without forcing every person into the same pose or expression.",
+  "title": "Corporate portraits: 12 practical tips for stronger team photos",
+  "metaDescription": "Planning corporate portraits? Choose the right style, clothing, location, lighting and poses, then build a consistent set for your website and LinkedIn.",
+  "h1": "Corporate portraits: practical tips for stronger team photos",
+  "slug": "corporate-portrait-tips",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography includes" },
+    { "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/", "targetHref": "/en/diensten/photography/business-portraits/", "anchor": "corporate portrait photography" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/kennisbank/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/diensten/photography/corporate-photography/", "anchor": "corporate photo shoot" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare a corporate photo shoot" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your portrait session" }
+  ],
+  "factsToPreserve": [
+    "The best portrait is not automatically the most formal; style should follow the person, role, organisation and intended channel",
+    "Team consistency comes mainly from lighting, framing, background family, colour treatment and selection criteria, not identical poses or expressions",
+    "A wider master image enables square, vertical and horizontal crops for different channels",
+    "LinkedIn profile photographs must represent the person's likeness and should not be replaced by a standalone logo, landscape or stock image",
+    "Alt text depends on the image's function and should not repeat adjacent information unnecessarily or contain keyword stuffing",
+    "High-resolution print masters should not be loaded directly into every web component",
+    "Consent to create an image and consent to publish or distribute it are separate issues",
+    "Copyright, file delivery and a usage licence are not automatically the same",
+    "The legal section is practical guidance and not legal advice",
+    "Retouching should remove temporary distractions without changing permanent features or body shape until the person is no longer recognisable",
+    "No portrait, expression or image alone guarantees a click, application or enquiry",
+    "Growing teams should document the photographic setup so new employees can be added consistently"
+  ]
+}

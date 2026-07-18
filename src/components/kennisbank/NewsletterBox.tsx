@@ -9,7 +9,7 @@ type Status = "idle" | "submitting" | "success" | "error";
  * Newsletter opt-in for the kennisbank sidebar. Posts the email to
  * /api/newsletter, which stores it in Firestore for the admin Nieuwsbrief list.
  */
-export function NewsletterBox() {
+export function NewsletterBox({ locale = "nl" }: { locale?: string }) {
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
   const [status, setStatus] = useState<Status>("idle");
@@ -54,10 +54,10 @@ export function NewsletterBox() {
             className="text-[15px] font-extrabold leading-tight tracking-tight text-white"
             style={{ fontFamily: "var(--font-sora), sans-serif" }}
           >
-            Blijf op de hoogte
+            {locale === "en" ? "Stay informed" : "Blijf op de hoogte"}
           </div>
           <p className="mt-0.5 text-[12.5px] leading-snug text-white/66">
-            Elke maand de beste gidsen en tips voor KMO&apos;s in je inbox.
+            {locale === "en" ? "The best guides and practical tips for SMEs in your inbox each month." : <>Elke maand de beste gidsen en tips voor KMO&apos;s in je inbox.</>}
           </p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export function NewsletterBox() {
       {done ? (
         <div className="flex items-center gap-2.5 rounded-[11px] border border-[#ff7500]/40 bg-[#ff7500]/10 px-4 py-2.5 text-sm font-semibold text-[#ff9a45]">
           <Check className="h-4 w-4" aria-hidden="true" />
-          Ingeschreven, bedankt!
+          {locale === "en" ? "You're subscribed. Thank you!" : "Ingeschreven, bedankt!"}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -75,7 +75,7 @@ export function NewsletterBox() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="jouw@email.be"
-            aria-label="E-mailadres"
+            aria-label={locale === "en" ? "Email address" : "E-mailadres"}
             className="w-full rounded-[11px] border border-white/14 bg-black/25 px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-[#ff7500]/55"
           />
           <input
@@ -92,10 +92,10 @@ export function NewsletterBox() {
             disabled={status === "submitting"}
             className="w-full rounded-[11px] bg-gradient-to-r from-red-500 to-[#ff7500] px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 disabled:opacity-70"
           >
-            {status === "submitting" ? "Bezig..." : "Inschrijven"}
+            {status === "submitting" ? (locale === "en" ? "Subscribing..." : "Bezig...") : (locale === "en" ? "Subscribe" : "Inschrijven")}
           </button>
           {status === "error" && (
-            <p className="text-xs text-red-400">Inschrijven mislukt. Probeer het later opnieuw.</p>
+            <p className="text-xs text-red-400">{locale === "en" ? "Subscription failed. Please try again later." : "Inschrijven mislukt. Probeer het later opnieuw."}</p>
           )}
         </form>
       )}

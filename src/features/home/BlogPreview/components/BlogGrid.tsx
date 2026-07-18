@@ -3,13 +3,13 @@ import { BlogCard } from "./BlogCard";
 
 const MAX_PREVIEW_POSTS = 3;
 
-export function BlogGrid({ posts }: { posts: BlogCardPost[] }) {
+export function BlogGrid({ posts, locale = "nl" }: { posts: BlogCardPost[]; locale?: "nl" | "en" }) {
   const preview = posts.slice(0, MAX_PREVIEW_POSTS);
 
   return (
     <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {preview.map((post, index) => (
-        <BlogCard key={post.slug} post={post} index={index} hideAuthor />
+        <BlogCard key={post.slug} post={post} index={index} hideAuthor locale={locale} />
       ))}
     </div>
   );

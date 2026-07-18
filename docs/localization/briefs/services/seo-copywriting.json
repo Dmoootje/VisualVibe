@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/seo/seo-copywriting/",
+  "targetRoute": "/en/services/seo/seo-copywriting/",
+  "audience": "SMEs and subject-matter experts that need useful website copy grounded in genuine search intent, approved expertise and a natural brand voice.",
+  "primaryDutchSearchIntent": "Websitecopy ontwikkelen die de echte zoekintentie beantwoordt, expertise correct weergeeft en natuurlijk naar een volgende stap leidt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional SEO copywriting support for an SME in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "SEO copywriting",
+  "longTailKeywords": [
+    "SEO copywriting for SMEs",
+    "SEO copywriting Limburg Belgium",
+    "SEO copywriting consultant"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "online visibility",
+    "website content",
+    "technical quality",
+    "VisualVibe"
+  ],
+  "directAnswer": "SEO copywriting turns verified business expertise into useful, search-led website pages with a clear structure and natural next step.",
+  "title": "SEO Copywriting Based on Search Intent | VisualVibe",
+  "metaDescription": "SEO copywriting that combines search intent, company expertise and natural language in useful pages with clear structure, metadata and internal links.",
+  "h1": "SEO copywriting that begins with a genuine customer question",
+  "slug": "seo-copywriting",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium.",
+    "No rankings, Google Maps placement, AI citation, traffic or lead result is guaranteed.",
+    "Scope, access, implementation, monitoring and deliverables depend on the agreed quotation.",
+    "The business remains responsible for the accuracy of its company details, specialist claims and authorised platform access."
+  ]
+}

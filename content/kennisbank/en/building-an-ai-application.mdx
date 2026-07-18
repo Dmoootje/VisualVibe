@@ -1,0 +1,230 @@
+---
+title: "Building an AI application: from use case and data to a reliable workflow"
+slug: "building-an-ai-application"
+category: "Webdesign"
+categorySlug: "webdesign"
+pillar: false
+clusterType: "sub"
+parentPillar: "/kennisbank/webdesign/complete-guide-to-building-an-app/"
+status: "published"
+locale: "en"
+translationKey: "ai-applicatie-laten-maken"
+author:
+  type: "Person"
+  name: "Jens Hardy"
+  url: "/en/about/"
+  jobTitle: "Founder and creative lead at VisualVibe"
+publishedAt: "2026-07-14"
+updatedAt: "2026-07-14T12:20:00+02:00"
+readingTime: "9 min"
+excerpt: "An AI application becomes valuable when its task, source data, quality controls, human approval and place in the daily workflow are clearly defined."
+focusKeyword: "build an AI application"
+secondaryKeywords:
+  - "custom AI software for SMEs"
+  - "AI application development"
+  - "AI workflow automation"
+  - "AI knowledge assistant"
+  - "AI document analysis"
+searchIntent:
+  primary: "Explain how businesses can develop a specific, controllable AI application around their own knowledge and processes"
+  type: "commercial"
+  audience: "SMEs and teams considering AI for documents, knowledge, intake, classification or guided automation"
+  funnelStage: "consideration"
+seoTitle: "Building an AI application: a practical guide | VisualVibe"
+seoDescription: "Planning an AI application? Turn a clear use case, source data, tests, human review, privacy, logging and integrations into a reliable business workflow."
+robots: "index,follow"
+cta:
+  title: "Test an AI use case with your real documents and questions?"
+  description: "We define the task, build a focused prototype and measure quality before integrating AI into a critical workflow."
+  label: "Discuss your AI use case"
+  href: "/en/request-a-quotation/"
+relatedServices:
+  - "/diensten/webdesign/website-laten-maken/"
+  - "/diensten/webdesign/website-onderhoud/"
+relatedRegions:
+  - "/regio/limburg/"
+  - "/regio/vlaanderen/"
+relatedPosts:
+  - "/kennisbank/webdesign/complete-guide-to-building-an-app/"
+  - "/kennisbank/webdesign/how-much-does-app-development-cost/"
+  - "/kennisbank/webdesign/web-app-or-mobile-app/"
+  - "/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/"
+
+---
+
+**Building an AI application** is not the same as adding a general-purpose chatbot. A business application must perform a defined task, work with information that can be checked and fit the existing workflow of employees or customers.
+
+Examples include document analysis, an internal knowledge assistant, classifying enquiries, preparing summaries or providing intelligent search. The value does not come from the model alone. It comes from the combination of data, instructions, interface, permissions, testing and human oversight.
+
+## Start with one clear use case
+
+"We want to do something with AI" is too broad. Describe the task in terms of a specific input, process and desired result.
+
+For example:
+
+- an employee uploads a document and receives a verifiable summary;
+- a customer asks a question and receives an answer based on approved company information;
+- an enquiry is assigned to a category and sent to the right team;
+- a case file is checked for missing information;
+- an employee receives a draft reply that is reviewed before it is sent.
+
+A sound use case also states what AI must not do. It might not be allowed to make a final legal decision, for example, or show customer data without the appropriate permissions.
+
+## Decide how you will measure success
+
+An impressive demo does not prove that an application is reliable enough. Define success measures before development begins.
+
+Possible criteria include:
+
+- the percentage of enquiries classified correctly;
+- time saved per document;
+- the number of answers with an accurate source reference;
+- the number of cases requiring human correction;
+- the number of unsafe or unanswered questions;
+- employee satisfaction;
+- a reduction in repetitive questions.
+
+Use a fixed evaluation set containing ordinary examples, difficult cases and exceptions. That allows you to compare changes fairly.
+
+## Source data determines quality
+
+An AI application cannot provide consistent answers from outdated, contradictory or poorly structured information.
+
+Map out:
+
+- where documents and knowledge are stored;
+- who owns the content;
+- how it is kept up to date;
+- which source takes precedence when information conflicts;
+- which information is confidential;
+- which documents must not be used;
+- how deleted information is removed from the system.
+
+Content sometimes needs to be cleaned up and structured before adding AI will deliver any real value.
+
+## Using AI with your own documents: retrieve rather than train blindly
+
+Many applications do not need a completely proprietary model. A system can retrieve relevant passages from approved documents and use them as context for an answer. This is commonly called retrieval augmented generation.
+
+Quality depends on:
+
+- how documents are divided into sections;
+- which metadata is available;
+- how the system finds relevant passages;
+- how much context the model receives;
+- how source references are presented;
+- what happens when no suitable source is found.
+
+A safe application must be able to say that it does not have enough information.
+
+## Human review often remains necessary
+
+Full automation may sound efficient, but it is not always sensible. For financial, legal, medical or customer-sensitive decisions, AI may be better used to prepare a proposal than to act independently.
+
+Possible review models include:
+
+- AI drafts the output and an employee approves it;
+- AI classifies the case and an employee handles only low-confidence results;
+- AI supplies sources and the user decides;
+- AI automatically performs only reversible actions;
+- high-risk actions require a second approval.
+
+Design the interface so that review is quick and easy to understand. Employees need to see which information was used and where uncertainty remains.
+
+## Permissions and privacy
+
+An AI layer must not bypass existing access rights. If an employee cannot access a case file, a search or chat function must not reveal information from it either.
+
+Check:
+
+- which data is sent to external models;
+- which contractual settings and retention periods apply;
+- whether prompts and answers are logged;
+- who may view those logs;
+- how personal data is deleted;
+- how test and production data are separated;
+- whether sensitive fields need to be masked in advance.
+
+Privacy is not merely a legal document. It affects the architecture, choice of supplier and interface.
+
+## Prompting is only one part of the system
+
+Good instructions help, but they do not fix unclear data, incorrect permissions or a missing workflow. A production application will usually include:
+
+- fixed system instructions;
+- input validation;
+- source selection;
+- model choice and settings;
+- output validation;
+- logging;
+- fallback behaviour when errors occur;
+- user feedback;
+- cost and performance monitoring.
+
+Treat prompts as version-controlled configuration. Test changes before releasing them to every user.
+
+## Integrate AI into existing systems
+
+The greatest time saving often appears when AI becomes part of a process instead of remaining in a separate chat window.
+
+An integrated workflow could look like this:
+
+1. an enquiry arrives through the website or by email;
+2. the data is validated;
+3. AI assigns a category and prepares a summary;
+4. an employee reviews the result;
+5. the enquiry is added to the right case file;
+6. a draft reply is prepared;
+7. actions and corrections are logged.
+
+This often requires [API integration and automation](/en/diensten/custom-software/api-integrations-and-automation/).
+
+## Model choice and supplier independence
+
+The best model may differ from one task to another. A powerful model is not always necessary for straightforward classification. Smaller models may be cheaper, faster or easier to isolate.
+
+Where practical, design an intermediate layer so that models, instructions and suppliers can change later without rebuilding the entire application. Complete independence is not always realistic, but avoid an unnecessary dependency on one particular interface.
+
+## Keep costs under control
+
+AI costs may depend on text length, request volume, the chosen model, storage and search infrastructure.
+
+Control those costs by:
+
+- sending only relevant context;
+- using lighter models for simple tasks;
+- safely reusing results where appropriate;
+- setting limits per user or organisation;
+- processing long documents in advance;
+- monitoring failed retries;
+- making costs visible for each use case.
+
+Measure more than API costs. Include the time employees save and the quality of the final result.
+
+## Build a focused prototype first
+
+A good initial test uses real examples without requiring a complete production environment.
+
+A prototype should answer questions such as:
+
+- are the documents suitable;
+- does the system find the right information;
+- which types of error occur most often;
+- how much human correction is required;
+- is the speed acceptable;
+- which interface helps employees;
+- does the use case make financial sense?
+
+Only after this test should you add extensive permissions, integrations, scale and automation.
+
+## Website feature or complete AI application?
+
+A public knowledge assistant or guided selection tool can be built as a [website with AI features](/en/diensten/web-design/website-with-ai-features/). When users log in, process internal documents, manage case files or perform actions, a [custom AI application](/en/diensten/custom-software/ai-application-development/) is the more logical choice.
+
+The dividing line is determined by data, roles and workflow, not by the word chatbot.
+
+## Summary
+
+A reliable AI application begins with a bounded task, sound source data and measurable quality. Put human review, permissions, privacy, logging and fallback routes in place before expanding automation.
+
+Read the [complete guide to building an app](/en/kennisbank/webdesign/complete-guide-to-building-an-app/) for the broader decisions around an MVP, UX, technology and launch.

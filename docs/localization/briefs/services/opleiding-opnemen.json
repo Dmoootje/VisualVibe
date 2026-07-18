@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/masterclasses/opleiding-opnemen/",
+  "targetRoute": "/en/services/masterclasses/training-video-production/",
+  "audience": "trainers and organisations that want to reuse an existing training session",
+  "primaryDutchSearchIntent": "Een opleiding, cursus of workshop professioneel laten filmen voor een duidelijk bepaalde vorm van hergebruik.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional training video production in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "training video production",
+  "longTailKeywords": [
+    "training video production Limburg Belgium",
+    "training video production for SMEs",
+    "professional training video production"
+  ],
+  "semanticTerms": [
+    "professional recording",
+    "content planning",
+    "editing",
+    "publication-ready files",
+    "VisualVibe"
+  ],
+  "directAnswer": "Training video production records a trainer, presentation and agreed interaction for later reuse, while keeping a distinction between a recorded session and purpose-built e-learning.",
+  "title": "Training video production in Limburg | VisualVibe",
+  "metaDescription": "Professional training video production in Limburg, Belgium, with clear preparation, reliable recording and deliverables shaped around their intended use.",
+  "h1": "Training video production designed for practical reuse",
+  "slug": "training-video-production",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "The exact scope, deliverables, revisions and publishing support depend on the agreed quotation.",
+    "Hosting, platform subscriptions, licences and account management are included only when explicitly agreed.",
+    "No audience reach, lead volume, learning outcome or expert status is guaranteed."
+  ]
+}

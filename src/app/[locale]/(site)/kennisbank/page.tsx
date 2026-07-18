@@ -10,7 +10,7 @@ import {
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { KennisbankLandingView } from "@/components/kennisbank";
+import { KennisbankLandingView, knowledgeBaseLabels } from "@/components/kennisbank";
 import { toArticleCardData, type KbCategoryData } from "@/components/kennisbank/data";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 
@@ -39,24 +39,26 @@ export async function generateMetadata({
   // marketing pages) the canonical stays per-locale.
   const canonical = `${businessConfig.url}${localizedPath(locale, "/kennisbank/")}`;
   const socialImage = `${businessConfig.url}/image.jpg`;
+  const metaTitle = locale === "en" ? "Knowledge base: web design, SEO and media guides | VisualVibe" : title;
+  const metaDescription = locale === "en" ? "Practical guides for SMEs about web design, SEO, GEO, photography, video and digital growth, written by VisualVibe in Limburg, Belgium." : description;
 
   return {
-    title: { absolute: title },
-    description,
+    title: { absolute: metaTitle },
+    description: metaDescription,
     alternates: { canonical },
     openGraph: {
       type: "website",
       url: canonical,
       siteName: businessConfig.displayName,
       locale: OPEN_GRAPH_LOCALE[locale],
-      title,
-      description,
-      images: [{ url: socialImage, width: 1200, height: 630, alt: title }],
+      title: metaTitle,
+      description: metaDescription,
+      images: [{ url: socialImage, width: 1200, height: 630, alt: metaTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: metaTitle,
+      description: metaDescription,
       images: [socialImage],
     },
   };
@@ -68,6 +70,7 @@ export default async function KennisbankHubPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const labels = knowledgeBaseLabels(locale);
   if (!isBlogLocale(locale)) notFound();
 
   const posts = getAllPosts({ locale });
@@ -79,8 +82,8 @@ export default async function KennisbankHubPage({
   // the subset with content drives the filter chips + sidebar.
   const allCategories: KbCategoryData[] = kennisbankCategories.map((category) => ({
     slug: category.slug,
-    name: category.name,
-    description: category.description,
+    name: locale === "en" ? (getPostsByCategory(category.slug, locale)[0]?.category ?? category.name) : category.name,
+    description: locale === "en" ? `Practical guides for SMEs about ${getPostsByCategory(category.slug, locale)[0]?.category ?? category.name}.` : category.description,
     count: getPostsByCategory(category.slug, locale).length,
   }));
   const activeCategories = allCategories.filter((category) => category.count > 0);
@@ -97,7 +100,7 @@ export default async function KennisbankHubPage({
         locale={locale}
         items={[
           { name: "Home", path: "/" },
-          { name: "Kennisbank", path: "/kennisbank/" },
+          { name: labels.knowledgeBase, path: "/kennisbank/" },
         ]}
       />
 
@@ -107,6 +110,7 @@ export default async function KennisbankHubPage({
         activeCategories={activeCategories}
         allCategories={allCategories}
         totalArticles={posts.length}
+        locale={locale}
       />
     </div>
   );

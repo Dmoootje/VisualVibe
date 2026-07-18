@@ -1,0 +1,62 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/seo-website-laten-maken/",
+  "targetRoute": "/en/services/web-design/seo-ready-website/",
+  "audience": "Independent businesses and SMEs that see organic search as a long-term channel and want search intent incorporated before website development.",
+  "primaryDutchSearchIntent": "Een SEO-website laten maken waarbij zoekwoordenonderzoek, paginastructuur, content en techniek vanaf het begin samen worden ontwikkeld.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can build an SEO-ready website whose structure, content and technology are based on search intent from the outset?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "SEO-ready website development",
+  "longTailKeywords": [
+    "SEO web design for SMEs",
+    "search-engine-friendly website development",
+    "SEO-ready website Limburg Belgium",
+    "website development with keyword research"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "keyword map",
+    "information architecture",
+    "technical SEO",
+    "content briefs",
+    "internal linking",
+    "structured data",
+    "hreflang"
+  ],
+  "directAnswer": "SEO-ready website development connects keyword and intent research to page structure, content templates, internal links and indexable technology before design and development decisions are fixed.",
+  "title": "SEO-Ready Website Development for Sustainable Growth | VisualVibe",
+  "metaDescription": "Need an SEO-ready website? VisualVibe combines keyword research, content, fast technology and clear structure into a strong foundation for organic growth.",
+  "h1": "An SEO-ready website built around search intent",
+  "slug": "seo-ready-website",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/seo/technische-seo/",
+      "targetHref": "/en/services/seo/technical-seo/",
+      "anchor": "technical SEO"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/seo-copywriting/",
+      "targetHref": "/en/services/seo/seo-copywriting/",
+      "anchor": "SEO copywriting"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/lokale-seo/",
+      "targetHref": "/en/services/seo/local-seo/",
+      "anchor": "local SEO"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-vernieuwen/",
+      "targetHref": "/en/services/web-design/website-redesign/",
+      "anchor": "website redesign"
+    }
+  ],
+  "factsToPreserve": [
+    "SEO research helps determine pages, topic allocation, navigation, URLs and internal links before development.",
+    "The technical and editorial foundation does not guarantee Google rankings or replace authority and continuing content work.",
+    "Existing organic positions can never be guaranteed during migration, although decisions are informed by URL, content and performance data.",
+    "Not every word must be final before development, but search intent, page purpose and expected content must be established early.",
+    "Research, content production, technical development and follow-up are identifiable parts of the quotation."
+  ]
+}

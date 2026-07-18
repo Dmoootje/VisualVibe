@@ -153,6 +153,19 @@ export const webdesignProjects: WebdesignProject[] = [
   },
 ];
 
+/** Localises known static/default records. Unknown admin records stay hidden in English. */
+export function getLocalizedWebdesignProject(
+  project: WebdesignProject,
+  locale: SupportedLocale,
+): WebdesignProject | undefined {
+  if (locale === "nl") return project;
+  if (locale !== "en") {
+    throw new Error(`Missing ${locale} translation for web design project ${project.id}`);
+  }
+  const translated = englishWebdesignProjects[project.id];
+  return translated ? { ...project, ...translated } : undefined;
+}
+
 /** The five image slots per project + the hero preview. */
 export type WebdesignImageSlot = "thumb" | "1" | "2" | "3" | "4";
 export const WEBDESIGN_IMAGE_SLOTS: { slot: WebdesignImageSlot; label: string }[] = [
@@ -165,3 +178,5 @@ export const WEBDESIGN_IMAGE_SLOTS: { slot: WebdesignImageSlot; label: string }[
 
 /** Firestore key for a project image slot, e.g. "gordijnenmyriam-1". */
 export const imageKey = (projectId: string, slot: WebdesignImageSlot) => `${projectId}-${slot}`;
+import type { SupportedLocale } from "@/i18n/locales";
+import { englishWebdesignProjects } from "./locales/en/webdesignShowcase";

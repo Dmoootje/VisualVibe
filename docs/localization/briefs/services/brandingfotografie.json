@@ -1,0 +1,66 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/brandingfotografie/",
+  "targetRoute": "/en/services/photography/brand-photography/",
+  "audience": "Independent professionals, personal brands, service businesses and SMEs that need a coherent original image library based on brand strategy.",
+  "primaryDutchSearchIntent": "Een strategische brandingfotoshoot plannen die positionering en contentthema's vertaalt naar een herkenbare, veelzijdige merkbeeldbank.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can translate our positioning and content plan into distinctive brand photography for several channels?",
+    "geographicContext": "Limburg, Belgium, with brand shoots across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "brand photography",
+  "longTailKeywords": [
+    "brand photographer Limburg Belgium",
+    "personal brand photography for experts",
+    "strategic brand photo shoot",
+    "brand image library for websites and social media"
+  ],
+  "semanticTerms": [
+    "personal brand photography",
+    "visual identity",
+    "content shot list",
+    "hero images",
+    "brand image library",
+    "campaign photography",
+    "content themes"
+  ],
+  "directAnswer": "Brand photography translates positioning, audience and content themes into a coherent image library of people, products, environments and details for websites, campaigns and social media.",
+  "title": "Brand Photography for Distinctive Businesses | VisualVibe",
+  "metaDescription": "Strategic brand photography with a purposeful shot list, suitable locations and a consistent image library for websites, campaigns and social content.",
+  "h1": "Brand photography that brings your story to life",
+  "slug": "brand-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/",
+      "targetHref": "/en/services/photography/corporate-photography/",
+      "anchor": "corporate photography"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/",
+      "targetHref": "/en/services/photography/business-portraits/",
+      "anchor": "business portraits"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/promovideo/",
+      "targetHref": "/en/services/videography/promotional-video/",
+      "anchor": "promotional video"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/",
+      "targetHref": "/en/services/web-design/",
+      "anchor": "web design"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/social-media-video/",
+      "targetHref": "/en/services/videography/social-media-video/",
+      "anchor": "social media video"
+    }
+  ],
+  "factsToPreserve": [
+    "Brand photography starts more explicitly from positioning and planned communication than general corporate photography.",
+    "A complete visual identity is not required, but audience, offer and intended impression need clear definition.",
+    "Several campaigns can be covered only when themes, props, clothing changes and formats are planned realistically.",
+    "An overloaded shot list can reduce variety and attention for individual scenes.",
+    "Location suitability depends on content, visual variety, lighting, clothing, props, permissions and framing space."
+  ]
+}

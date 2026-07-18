@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/seo/ai-seo-aeo-geo/",
+  "targetRoute": "/en/services/seo/ai-seo-aeo-geo/",
+  "audience": "SMEs and expert-led organisations that need clearer entities, direct answers, evidence and technical context for conventional and generative search.",
+  "primaryDutchSearchIntent": "Website-informatie duidelijk, betrouwbaar en gestructureerd maken voor klassieke zoekmachines, antwoordmachines en generatieve systemen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional AI SEO, AEO and GEO support for an SME in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "AI SEO, AEO and GEO",
+  "longTailKeywords": [
+    "AI SEO, AEO and GEO for SMEs",
+    "answer engine optimisation services",
+    "generative engine optimisation consultant"
+  ],
+  "semanticTerms": [
+    "search intent",
+    "online visibility",
+    "website content",
+    "technical quality",
+    "VisualVibe"
+  ],
+  "directAnswer": "AI SEO, AEO and GEO structure reliable facts, direct answers and technical context for conventional and generative search without guaranteeing citations or recommendations.",
+  "title": "AI SEO, AEO and GEO for Clearer Answers | VisualVibe",
+  "metaDescription": "AI SEO, AEO and GEO for clear entities, direct answers, evidence and technical structure, without unsupported promises about mentions or recommendations.",
+  "h1": "AI SEO, AEO and GEO for clear, citable expertise",
+  "slug": "ai-seo-aeo-geo",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium.",
+    "No rankings, Google Maps placement, AI citation, traffic or lead result is guaranteed.",
+    "Scope, access, implementation, monitoring and deliverables depend on the agreed quotation.",
+    "The business remains responsible for the accuracy of its company details, specialist claims and authorised platform access."
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/sport/",
+  "targetRoute": "/en/case-studies/sport/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Realisaties voor sportclubs en sportevenementen bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which projects has VisualVibe completed for sports clubs and sporting events?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "sports club media case studies",
+  "longTailKeywords": [
+    "sports club media case studies Limburg Belgium",
+    "sports club media case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe supports sports clubs and sporting events with web design, photography and video.",
+  "title": "Sports case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe web design, photography and video for sports clubs and events in Limburg, Belgium, created to connect with members, supporters and sponsors.",
+  "h1": "Sports case studies",
+  "slug": "sport",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

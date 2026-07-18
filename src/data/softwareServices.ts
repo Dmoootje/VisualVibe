@@ -9,6 +9,7 @@ export type SoftwareProcessStep = {
 };
 
 export type SoftwareService = {
+  id: string;
   title: string;
   slug: string;
   excerpt: string;
@@ -28,6 +29,7 @@ export type SoftwareService = {
 
 export const softwareServices: SoftwareService[] = [
   {
+    id: "app-laten-maken",
     title: "App laten maken",
     slug: "app-laten-maken",
     excerpt:
@@ -104,6 +106,7 @@ export const softwareServices: SoftwareService[] = [
     },
   },
   {
+    id: "webapplicatie-laten-maken",
     title: "Webapplicatie laten maken",
     slug: "webapplicatie-laten-maken",
     excerpt:
@@ -180,6 +183,7 @@ export const softwareServices: SoftwareService[] = [
     },
   },
   {
+    id: "ai-applicatie-laten-maken",
     title: "AI-applicatie laten maken",
     slug: "ai-applicatie-laten-maken",
     excerpt:
@@ -256,6 +260,7 @@ export const softwareServices: SoftwareService[] = [
     },
   },
   {
+    id: "api-koppelingen-en-automatisering",
     title: "API-koppelingen en automatisering",
     slug: "api-koppelingen-en-automatisering",
     excerpt:
@@ -332,6 +337,7 @@ export const softwareServices: SoftwareService[] = [
     },
   },
   {
+    id: "app-design-ux-ui",
     title: "App design en UX/UI",
     slug: "app-design-ux-ui",
     excerpt:
@@ -411,4 +417,26 @@ export const softwareServices: SoftwareService[] = [
 
 export function getSoftwareService(slug: string): SoftwareService | undefined {
   return softwareServices.find((service) => service.slug === slug);
+}
+
+import { englishSoftwareServices } from "./locales/en/softwareServices";
+import type { SupportedLocale } from "@/i18n/locales";
+
+export function getSoftwareServices(locale: SupportedLocale): SoftwareService[] {
+  return locale === "en" ? englishSoftwareServices : softwareServices;
+}
+
+export function getLocalizedSoftwareServiceBySlug(
+  slug: string,
+  locale: SupportedLocale,
+): SoftwareService | undefined {
+  return getSoftwareServices(locale).find((service) => service.slug === slug);
+}
+
+export function softwareServiceHubHref(locale: SupportedLocale): string {
+  return locale === "en" ? "/diensten/custom-software" : "/diensten/software-op-maat";
+}
+
+export function softwareServiceHref(service: SoftwareService, locale: SupportedLocale): string {
+  return `${softwareServiceHubHref(locale)}/${service.slug}`;
 }

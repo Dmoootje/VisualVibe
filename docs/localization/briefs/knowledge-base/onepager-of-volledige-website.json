@@ -1,0 +1,66 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/onepager-of-volledige-website/",
+  "targetRoute": "/en/kennisbank/webdesign/one-page-or-full-website/",
+  "audience": "Start-ups, self-employed professionals and SMEs planning a new website and unsure about the right scope",
+  "primaryDutchSearchIntent": "KMO's helpen kiezen tussen een onepager en een volledige website op basis van hun aanbod, doelgroep, vindbaarheid en groeiplannen",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Should an SME choose a one-page website or a full multi-page website?",
+    "geographicContext": "Belgium and the wider English-speaking market"
+  },
+  "mainKeyword": "one-page or full website",
+  "longTailKeywords": [
+    "one-page website design",
+    "one page website",
+    "full website design",
+    "one-page website or multi-page website",
+    "website for an SME",
+    "one-page vs full website",
+    "one-page website SEO",
+    "choose a website structure"
+  ],
+  "semanticTerms": [
+    "website structure",
+    "search intent",
+    "landing page",
+    "internal links",
+    "anchor links",
+    "scalability",
+    "conversion path",
+    "Core Web Vitals",
+    "responsive design",
+    "website development costs"
+  ],
+  "directAnswer": "Choose a one-page website when you have one compact offer, a largely uniform audience and one main conversion. Choose a full website when services, audiences or search intents need separate explanations, evidence and conversion paths, or when the business expects substantial content and growth.",
+  "title": "One-page or full website: which suits your SME?",
+  "metaDescription": "Choosing a one-page or full website? Compare SEO, costs, content, conversion and scalability to find the right structure for your SME.",
+  "h1": "One-page or full website: which suits your SME?",
+  "slug": "one-page-or-full-website",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to commissioning a website" },
+    { "sourceHref": "/be/diensten/webdesign/onepager-laten-maken/", "targetHref": "/en/diensten/web-design/one-page-website/", "anchor": "one-page website designed" },
+    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/diensten/web-design/business-website-design/", "anchor": "full business website" },
+    { "sourceHref": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/", "targetHref": "/en/kennisbank/webdesign/online-shop-development-for-smes/", "anchor": "online shop development for SMEs" },
+    { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-kosten/", "targetHref": "/en/kennisbank/webdesign/website-development-costs/", "anchor": "website development costs" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-vernieuwen-wanneer/", "targetHref": "/en/kennisbank/webdesign/when-to-redesign-your-website/", "anchor": "when to redesign your website" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "how website speed and SEO work together" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "complete new website checklist" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your website" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/diensten/web-design/", "anchor": "web design approach" }
+  ],
+  "factsToPreserve": [
+    "The choice is not a contest between cheap and professional; either format can be well executed",
+    "A one-page website is suitable for one compact offer, a largely uniform audience and one primary conversion",
+    "A full website is better when services, audiences, search intents or functionality need distinct routes",
+    "More pages are valuable only when each page has a unique purpose",
+    "Google does not identify page type or page count as a ranking criterion in its own right in the cited guidance",
+    "One URL has one title, description and link destination, which limits how precisely it can serve distinct intents",
+    "Anchor links remain part of the same URL and do not replace standalone landing pages",
+    "A one-page website often has a smaller scope but is not automatically simple, fast to produce or cheap",
+    "Accessibility, analytics, forms, media and testing matter for either format",
+    "A one-page website can evolve into a full website when expansion is anticipated in content and technology",
+    "Core Web Vitals matter, but format alone does not determine performance and good performance is not the only ranking factor",
+    "The recommended structure is the smallest one that can carry the complete story and expected growth"
+  ]
+}

@@ -12,6 +12,7 @@ import { FeaturedCard } from "./FeaturedCard";
 import { NewsletterBox } from "./NewsletterBox";
 import { BladerPerOnderwerp } from "./BladerPerOnderwerp";
 import { CategoryIcon } from "./CategoryIcon";
+import { knowledgeBaseLabels } from "./localization";
 
 export type KennisbankLandingViewProps = {
   articles: ArticleCardData[];
@@ -21,6 +22,7 @@ export type KennisbankLandingViewProps = {
   /** All registered categories with counts (Blader per onderwerp). */
   allCategories: KbCategoryData[];
   totalArticles: number;
+  locale?: string;
 };
 
 const ALL = "all";
@@ -31,7 +33,9 @@ export function KennisbankLandingView({
   activeCategories,
   allCategories,
   totalArticles,
+  locale = "nl",
 }: KennisbankLandingViewProps) {
+  const labels = knowledgeBaseLabels(locale);
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>(ALL);
   const [layout, setLayout] = useState<"grid" | "list">("grid");
@@ -84,23 +88,23 @@ export function KennisbankLandingView({
 
   const activeCategoryName =
     cat !== ALL ? activeCategories.find((c) => c.slug === cat)?.name : undefined;
-  const resultCount = `${results.length} ${results.length === 1 ? "artikel" : "artikels"}`;
+  const resultCount = `${results.length} ${results.length === 1 ? labels.article : labels.articles}`;
 
   return (
     <div>
       <KbHeroShell
-        breadcrumb={[{ label: "Home", href: "/" }, { label: "Kennisbank" }]}
+        breadcrumb={[{ label: "Home", href: "/" }, { label: labels.knowledgeBase }]}
         eyebrow={{
           icon: <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />,
-          label: "Kennisbank",
+          label: labels.knowledgeBase,
         }}
-        title="Slim online"
-        titleAccent="groeien als KMO"
-        subtitle="Praktische gidsen en artikels over webdesign, SEO & GEO, fotografie, video en meer, geschreven voor ondernemers in Limburg."
+        title={locale === "en" ? "Grow smarter" : "Slim online"}
+        titleAccent={locale === "en" ? "online as an SME" : "groeien als KMO"}
+        subtitle={locale === "en" ? "Practical guides about web design, SEO and GEO, photography, video and digital growth for SMEs." : "Praktische gidsen en artikels over webdesign, SEO & GEO, fotografie, video en meer, geschreven voor ondernemers in Limburg."}
         stats={[
-          { value: String(totalArticles), label: "artikels" },
-          { value: String(activeCategories.length), label: "categorieën" },
-          { value: "wekelijks", label: "nieuw" },
+          { value: String(totalArticles), label: labels.articles },
+          { value: String(activeCategories.length), label: labels.categories.toLowerCase() },
+          { value: locale === "en" ? "weekly" : "wekelijks", label: locale === "en" ? "new" : "nieuw" },
         ]}
         graphic={<TargetGraphic />}
         search={
@@ -111,7 +115,9 @@ export function KennisbankLandingView({
               document.getElementById("kb-nieuwste")?.scrollIntoView({ behavior: "smooth" })
             }
             onClear={() => setQuery("")}
-            placeholder="Zoek een gids of artikel..."
+            placeholder={locale === "en" ? "Search for a guide or article..." : "Zoek een gids of artikel..."}
+            submitLabel={labels.search}
+            clearLabel={labels.clearSearch}
           />
         }
       />
@@ -126,9 +132,9 @@ export function KennisbankLandingView({
                   className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
                   style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
                 >
-                  Uitgelicht
+                  {locale === "en" ? "Featured" : "Uitgelicht"}
                 </div>
-                <FeaturedCard article={featured} />
+                <FeaturedCard article={featured} locale={locale} />
               </div>
             )}
 
@@ -139,15 +145,15 @@ export function KennisbankLandingView({
                     className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
                     style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
                   >
-                    {filtering ? "Resultaten" : "Nieuwste artikels"}
+                    {filtering ? (locale === "en" ? "Results" : "Resultaten") : (locale === "en" ? "Latest articles" : "Nieuwste artikels")}
                   </div>
                   <h2
                     className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
                     style={{ fontFamily: "var(--font-sora), sans-serif" }}
                   >
                     {filtering
-                      ? activeCategoryName ?? "Zoekresultaten"
-                      : "Vers uit de kennisbank"}
+                      ? activeCategoryName ?? (locale === "en" ? "Search results" : "Zoekresultaten")
+                      : (locale === "en" ? "Fresh from the knowledge base" : "Vers uit de kennisbank")}
                   </h2>
                 </div>
                 <div className="flex items-center gap-3.5">
@@ -158,10 +164,10 @@ export function KennisbankLandingView({
                     {resultCount}
                   </span>
                   <div className="inline-flex gap-1 rounded-[11px] border border-white/12 bg-white/[0.03] p-1">
-                    <ToggleButton active={layout === "grid"} onClick={() => setLayout("grid")} label="Rasterweergave">
+                    <ToggleButton active={layout === "grid"} onClick={() => setLayout("grid")} label={locale === "en" ? "Grid view" : "Rasterweergave"}>
                       <LayoutGrid className="h-[17px] w-[17px]" aria-hidden="true" />
                     </ToggleButton>
-                    <ToggleButton active={layout === "list"} onClick={() => setLayout("list")} label="Lijstweergave">
+                    <ToggleButton active={layout === "list"} onClick={() => setLayout("list")} label={locale === "en" ? "List view" : "Lijstweergave"}>
                       <Rows3 className="h-[17px] w-[17px]" aria-hidden="true" />
                     </ToggleButton>
                   </div>
@@ -171,7 +177,7 @@ export function KennisbankLandingView({
               {/* Filter chips */}
               <div className="mb-6 flex flex-wrap gap-2.5">
                 <Chip active={cat === ALL} onClick={() => pickCategory(ALL)}>
-                  Alle
+                  {locale === "en" ? "All" : "Alle"}
                 </Chip>
                 {activeCategories.map((category) => (
                   <Chip key={category.slug} active={cat === category.slug} onClick={() => pickCategory(category.slug)}>
@@ -184,13 +190,13 @@ export function KennisbankLandingView({
                 layout === "grid" ? (
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     {results.map((article, i) => (
-                      <ArticleCard key={article.id} article={article} variant="grid" index={i} />
+                        <ArticleCard key={article.id} article={article} variant="grid" index={i} locale={locale} />
                     ))}
                   </div>
                 ) : (
                   <div className="flex flex-col gap-4">
                     {results.map((article, i) => (
-                      <ArticleCard key={article.id} article={article} variant="list" index={i} />
+                        <ArticleCard key={article.id} article={article} variant="list" index={i} locale={locale} />
                     ))}
                   </div>
                 )
@@ -201,15 +207,15 @@ export function KennisbankLandingView({
                     className="mb-1.5 text-lg font-bold text-white"
                     style={{ fontFamily: "var(--font-sora), sans-serif" }}
                   >
-                    Geen artikels gevonden
+                    {locale === "en" ? "No articles found" : "Geen artikels gevonden"}
                   </div>
-                  <p className="mb-5 text-sm text-white/55">Probeer een andere zoekterm of categorie.</p>
+                  <p className="mb-5 text-sm text-white/55">{locale === "en" ? "Try another search term or category." : "Probeer een andere zoekterm of categorie."}</p>
                   <button
                     type="button"
                     onClick={reset}
                     className="rounded-[11px] border border-[#ff7500]/40 bg-[#ff7500]/10 px-5 py-2.5 text-[13.5px] font-bold text-[#ff9a45] transition-colors hover:bg-[#ff7500]/20"
                   >
-                    Filters wissen
+                    {locale === "en" ? "Clear filters" : "Filters wissen"}
                   </button>
                 </div>
               )}
@@ -223,7 +229,8 @@ export function KennisbankLandingView({
                 value={query}
                 onChange={setQuery}
                 onClear={() => setQuery("")}
-                placeholder="Zoeken in kennisbank..."
+                placeholder={labels.searchPlaceholder}
+                clearLabel={labels.clearSearch}
                 size="sidebar"
               />
             </div>
@@ -233,12 +240,12 @@ export function KennisbankLandingView({
                 className="mb-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45"
                 style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
               >
-                Categorieën
+                {labels.categories}
               </div>
               <div className="flex flex-col gap-0.5">
                 <CategoryRow
                   slug="all"
-                  label="Alle artikels"
+                  label={locale === "en" ? "All articles" : "Alle artikels"}
                   count={totalArticles}
                   active={cat === ALL}
                   onClick={() => pickCategory(ALL)}
@@ -256,7 +263,7 @@ export function KennisbankLandingView({
               </div>
             </div>
 
-            <NewsletterBox />
+            <NewsletterBox locale={locale} />
           </aside>
         </div>
       </section>
@@ -268,15 +275,15 @@ export function KennisbankLandingView({
             className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
             style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
           >
-            Categorieën
+            {labels.categories}
           </div>
           <h2
             className="mb-6 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
             style={{ fontFamily: "var(--font-sora), sans-serif" }}
           >
-            Blader per onderwerp
+            {locale === "en" ? "Browse by topic" : "Blader per onderwerp"}
           </h2>
-          <BladerPerOnderwerp categories={allCategories} />
+          <BladerPerOnderwerp categories={allCategories} locale={locale} />
         </div>
       </section>
     </div>

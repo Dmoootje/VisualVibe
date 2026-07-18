@@ -1,0 +1,62 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/wordpress-website-beveiligen/",
+  "targetRoute": "/en/kennisbank/webdesign/securing-a-wordpress-website/",
+  "audience": "Belgian SMEs, self-employed professionals and website administrators who want to reduce WordPress security risks and prepare for incidents",
+  "primaryDutchSearchIntent": "KMO's een praktische en gelaagde aanpak geven om een WordPress-website veiliger te beheren",
+  "searchIntent": {
+    "type": "informational",
+    "question": "How can an SME secure a WordPress website and limit the impact of an incident?",
+    "geographicContext": "Belgian SMEs"
+  },
+  "mainKeyword": "secure a WordPress website",
+  "longTailKeywords": [
+    "WordPress security for SMEs",
+    "prevent a WordPress website hack",
+    "make WordPress more secure",
+    "WordPress incident response plan"
+  ],
+  "semanticTerms": [
+    "multi-factor authentication",
+    "minimal permissions",
+    "off-site backups",
+    "security monitoring",
+    "WordPress updates",
+    "incident response"
+  ],
+  "directAnswer": "Secure a WordPress website with several coordinated layers: current software, strong personal accounts, minimal permissions, trusted hosting, off-site backups, monitoring and a tested incident response plan. No single setting or plugin removes every risk.",
+  "title": "Securing a WordPress website: practical steps for SMEs",
+  "metaDescription": "Secure your WordPress website with updates, strong accounts, minimal permissions, trusted plugins, backups and a recovery plan that limits risk.",
+  "h1": "Securing a WordPress website: practical steps for SMEs",
+  "slug": "securing-a-wordpress-website",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/",
+      "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/",
+      "anchor": "WordPress maintenance checklist"
+    },
+    {
+      "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/",
+      "targetHref": "/en/kennisbank/webdesign/how-to-back-up-wordpress/",
+      "anchor": "How to back up WordPress"
+    },
+    {
+      "sourceHref": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/",
+      "targetHref": "/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/",
+      "anchor": "WordPress for SMEs"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "Request a maintenance quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "No website is entirely free from risk",
+    "Security requires several layers rather than one setting or plugin",
+    "Account access should be reviewed at least quarterly",
+    "Major updates should be tested on staging after creating a recent backup",
+    "At least one backup copy should be stored outside the web server under a separate account",
+    "HTTPS encrypts traffic but does not prove that plugins, accounts or server configuration are secure",
+    "Incident files should not be deleted at random because that can hinder investigation and recovery"
+  ]
+}

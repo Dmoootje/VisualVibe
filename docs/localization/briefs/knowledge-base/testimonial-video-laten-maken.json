@@ -1,0 +1,60 @@
+{
+  "sourceRoute": "/be/kennisbank/videografie/testimonial-video-laten-maken/",
+  "targetRoute": "/en/kennisbank/videografie/creating-a-testimonial-video/",
+  "audience": "SME owners, marketers, sales leads and communications professionals who want to use customer evidence in video",
+  "primaryDutchSearchIntent": "KMO's helpen een geloofwaardige testimonial video voor te bereiden, opnemen en publiceren met een passende klant, concrete vragen, controleerbare claims en duidelijke gebruiksafspraken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How do you create a credible customer testimonial video with the right customer, concrete interview questions, verifiable claims and clear usage agreements?",
+    "geographicContext": "English-speaking SMEs in Belgium, with Belgian and EU advertising, image-rights and data-protection context"
+  },
+  "mainKeyword": "creating a testimonial video",
+  "longTailKeywords": [
+    "customer testimonial video production",
+    "testimonial video interview questions",
+    "how to film a customer testimonial",
+    "customer case study video",
+    "testimonial video consent Belgium",
+    "testimonial video for SMEs"
+  ],
+  "semanticTerms": [
+    "customer story",
+    "social proof",
+    "open interview questions",
+    "verifiable claims",
+    "image rights",
+    "usage agreement",
+    "customer approval",
+    "captions",
+    "video SEO",
+    "testimonial editing"
+  ],
+  "directAnswer": "Creating a credible testimonial video starts with a customer whose real experience is relevant to the intended viewer. Prepare open questions and verifiable context without scripting praise, agree every intended use before filming, and edit for meaning rather than superlatives.",
+  "title": "Creating a testimonial video: from real customer experience to credible evidence",
+  "metaDescription": "Creating a testimonial video? Choose the right customer and plan open questions, claims, consent, editing, captions and publication with care.",
+  "h1": "Creating a testimonial video: from real customer experience to credible evidence",
+  "slug": "creating-a-testimonial-video",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why to invest in a corporate video" },
+    { "sourceHref": "/be/diensten/videografie/testimonial-video/", "targetHref": "/en/diensten/videography/testimonial-video/", "anchor": "customer testimonial video production" },
+    { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/kennisbank/fotografie/corporate-portrait-tips/", "anchor": "corporate portrait tips" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your customer story" }
+  ],
+  "factsToPreserve": [
+    "A testimonial is one customer's perspective and never a guarantee that every customer will achieve the same result",
+    "Choose customers for relevance and direct experience rather than name recognition alone",
+    "Participation must be voluntary and a customer must be able to refuse without disadvantage",
+    "Benefits, discounts or other compensation may affect how the commercial communication should be assessed and disclosed",
+    "Prepare topics and open questions but do not script praise or exaggerate results",
+    "A genuine customer quote used commercially is still subject to advertising and unfair-commercial-practices rules",
+    "Editing must not remove a condition in a way that makes a result appear more general than it was",
+    "Permission to record an image is distinct from permission to publish or distribute it",
+    "One agreed use is not a blank cheque for later advertising, exhibition films or edits with a new meaning",
+    "The article is practical production information and not legal advice",
+    "Automatic captions require human review, especially for names, company names and specialist terms",
+    "Video SEO preparation does not guarantee a rich result or ranking",
+    "Every version and publication location should be registered and reviewed for consent, claims and current accuracy"
+  ]
+}

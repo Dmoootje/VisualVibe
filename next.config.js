@@ -28,8 +28,8 @@ const nextConfig = {
         destination: '/be/',
         permanent: true,
       },
-      // fr/en stonden als locales aangekondigd terwijl alleen Nederlandse
-      // content bestaat; crawlers vonden daardoor honderden /fr- en /en-URL's
+      // fr/en/de stonden als locales aangekondigd terwijl alleen Nederlandse
+      // content bestaat; crawlers vonden daardoor honderden vertaalde URL's
       // (grotendeels 404). Vouw ze permanent op de gepubliceerde Nederlandse
       // pagina's tot er echte vertalingen zijn (zie src/i18n/routing.ts).
       // De kale prefix staat bewust vóór de :path*-regel (vangt het lege pad),
@@ -39,13 +39,25 @@ const nextConfig = {
       { source: '/en/:path+', destination: '/be/:path+/', permanent: true },
       { source: '/fr', destination: '/be/', permanent: true },
       { source: '/fr/:path+', destination: '/be/:path+/', permanent: true },
+      { source: '/de', destination: '/be/', permanent: true },
+      { source: '/de/:path+', destination: '/be/:path+/', permanent: true },
     ];
   },
   async rewrites() {
     return {
       // A few legacy metadata paths still mention /image.jpg. Resolve that path
       // to the branded fallback before the old public template asset can win.
-      beforeFiles: [{ source: '/image.jpg', destination: '/api/og' }],
+      beforeFiles: [
+        { source: '/image.jpg', destination: '/api/og' },
+        {
+          source: '/en/diensten/custom-software',
+          destination: '/en/diensten/software-op-maat',
+        },
+        {
+          source: '/en/diensten/custom-software/:subslug',
+          destination: '/en/diensten/software-op-maat/:subslug',
+        },
+      ],
       // IndexNow verifieert de eigenaar via een sleutelbestand op /{sleutel}.txt.
       // De sleutel is dynamisch (beheerbaar in de admin), dus we kunnen geen
       // statisch bestand plaatsen: schrijf /{sleutel}.txt door naar de route die

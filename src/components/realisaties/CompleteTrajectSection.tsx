@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { HubData } from "@/lib/realisaties/hubData";
+import type { SupportedLocale } from "@/i18n/locales";
 
 /**
  * "Van website tot volledige beeldvorming": één echt project waarin meerdere
@@ -11,10 +12,13 @@ import type { HubData } from "@/lib/realisaties/hubData";
 export function CompleteTrajectSection({
   traject,
   ctaHref = "#recent-werk",
+  locale = "nl",
 }: {
   traject: HubData["traject"];
   ctaHref?: string;
+  locale?: SupportedLocale;
 }) {
+  const en = locale === "en";
   if (!traject || traject.screenshots.length === 0) return null;
   const stack = [...traject.screenshots.slice(0, 3), ...(traject.galleryCover ? [traject.galleryCover] : [])];
   const [front, ...behind] = stack;
@@ -26,23 +30,20 @@ export function CompleteTrajectSection({
           <div>
             <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
               <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
-              Complete trajecten
+              {en ? "Integrated projects" : "Complete trajecten"}
             </p>
-            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">Van website tot volledige beeldvorming</h2>
+            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">{en ? "From website to a complete visual identity" : "Van website tot volledige beeldvorming"}</h2>
             <p className="mb-4 max-w-[560px] text-[15.5px] leading-relaxed text-white/65">
-              Voor veel klanten combineren we webdesign, fotografie, video, dronebeelden en digitale
-              content binnen één traject. Zo sluiten techniek, uitstraling en communicatie perfect
-              op elkaar aan.
+              {en ? "For many clients, we combine web design, photography, video, drone imagery and digital content in one programme. This keeps the technology, visual identity and communication aligned." : "Voor veel klanten combineren we webdesign, fotografie, video, dronebeelden en digitale content binnen één traject. Zo sluiten techniek, uitstraling en communicatie perfect op elkaar aan."}
             </p>
             <p className="mb-8 max-w-[560px] text-[14px] leading-relaxed text-white/50">
-              Zoals bij {traject.project.title}: één huisstijl, een snelle website en eigen
-              bedrijfsfotografie die overal dezelfde uitstraling dragen.
+              {en ? `As with ${traject.project.title}: one visual identity, a fast website and original corporate photography with a consistent look across every channel.` : <>Zoals bij {traject.project.title}: één huisstijl, een snelle website en eigen bedrijfsfotografie die overal dezelfde uitstraling dragen.</>}
             </p>
             <a
               href={ctaHref}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-6 py-3 font-semibold text-white transition-colors hover:bg-[rgba(255,122,0,0.2)] sm:w-auto"
             >
-              Bekijk complete trajecten
+              {en ? "View integrated projects" : "Bekijk complete trajecten"}
               <ArrowRight className="h-4 w-4 text-[#FF9A45]" aria-hidden="true" />
             </a>
           </div>

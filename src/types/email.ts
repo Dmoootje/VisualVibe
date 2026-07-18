@@ -1,5 +1,7 @@
+import type { SupportedLocale } from "@/i18n/locales";
+
 export const EMAIL_LOCALES = ["nl", "fr", "en"] as const;
-export type EmailLocale = (typeof EMAIL_LOCALES)[number];
+export type EmailLocale = Exclude<SupportedLocale, "de">;
 
 export const EMAIL_FORM_TYPES = [
   "contact",

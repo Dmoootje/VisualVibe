@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/projecten/",
+  "targetRoute": "/en/case-studies/construction-interiors/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Bouw-, renovatie- en interieurprojecten bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How has VisualVibe documented construction, renovation and interior projects?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "construction photography case studies",
+  "longTailKeywords": [
+    "construction photography case studies Limburg Belgium",
+    "construction photography case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe documents construction, renovation and interior projects with professional photography and drone imagery.",
+  "title": "Construction and interior case studies | VisualVibe",
+  "metaDescription": "Explore construction, renovation and interior projects documented by VisualVibe with photography and drone imagery for contractors in Limburg, Belgium.",
+  "h1": "Construction and interior case studies",
+  "slug": "construction-interiors",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

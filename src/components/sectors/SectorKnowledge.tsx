@@ -15,10 +15,12 @@ import type { BlogPost } from "@/types";
 export function SectorKnowledge({
   posts,
   authorImages,
+  locale = "nl",
 }: {
   posts: BlogPost[];
   /** Auteursnaam -> profielfoto-URL (admin-profielen). */
   authorImages?: Record<string, string>;
+  locale?: "nl" | "en";
 }) {
   if (posts.length === 0) return null;
   return (
@@ -28,17 +30,17 @@ export function SectorKnowledge({
           <div>
             <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
               <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
-              Kennisbank
+              {locale === "en" ? "Knowledge base" : "Kennisbank"}
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold">
-              Lees meer over online groeien in jouw sector
+              {locale === "en" ? "Learn more about growing online in your industry" : "Lees meer over online groeien in jouw sector"}
             </h2>
           </div>
           <Link
             href="/kennisbank"
             className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-end"
           >
-            Alle artikels
+            {locale === "en" ? "All articles" : "Alle artikels"}
             <ArrowRight className="h-[15px] w-[15px]" />
           </Link>
         </div>

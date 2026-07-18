@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/3d-vr-ar/3d-tour/",
+  "targetRoute": "/en/services/3d-vr-ar/3d-tour/",
+  "audience": "businesses and location owners who want visitors to explore a space online",
+  "primaryDutchSearchIntent": "Een professionele interactieve tour laten maken die ruimte, route en relevante informatie online begrijpelijk presenteert.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional 3d tour services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "3D tour Limburg",
+  "longTailKeywords": [
+    "3D tour Limburg Limburg Belgium",
+    "professional 3D tour Limburg for SMEs",
+    "3D tour Limburg VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "A 3D tour creates a connected, navigable view of a real space for websites and sharing, with clear hosting and publication arrangements.",
+  "title": "3D tour in Limburg | VisualVibe",
+  "metaDescription": "Professional 3d tour for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "3D tour shaped around a clear purpose",
+  "slug": "3d-tour",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

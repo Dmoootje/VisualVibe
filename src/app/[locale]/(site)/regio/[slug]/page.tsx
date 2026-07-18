@@ -6,25 +6,37 @@ import { Container } from "@/components/ui";
 import { BlogGrid, CTASection } from "@/components/sections";
 import { RegionAmbient, RegionDetailHero, RegionGeo, RegionServicesGrid } from "@/components/regio";
 import { SectorMarquee } from "@/components/sectors";
-import { regions, getRegionBySlug } from "@/data/regions";
-import { getServiceBySlug, serviceHref } from "@/data/services";
+import { regions, getRegionBySlug, getRegionByLocalizedSlug, getLocalizedRegionById } from "@/data/regions";
+import { getServiceBySlug, getLocalizedServiceById, serviceHref } from "@/data/services";
 import { getAllPosts, localizedPath, slugFromPath } from "@/lib/kennisbank/posts";
 import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo";
+import type { SupportedLocale } from "@/i18n/locales";
+import { regionMunicipalities } from "@/data/regionMunicipalities";
+import type { EnglishRegionLocaleRecord } from "@/data/locales/en/regions";
+import type { LocalizedRegionRecord } from "@/data/regions";
+import { getPublishedLocales } from "@/i18n/locales";
 
 export function generateStaticParams() {
-  return regions.map((region) => ({ slug: region.slug }));
+  return getPublishedLocales().flatMap((locale) =>
+    regions.map((region) => ({ locale, slug: getLocalizedRegionById(region.slug, locale).slug })),
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: SupportedLocale; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const region = getRegionBySlug(slug);
+  const { locale, slug } = await params;
+  let region;
+  try {
+    region = locale === "nl" ? getRegionBySlug(slug) : getRegionByLocalizedSlug(slug, locale);
+  } catch {
+    return {};
+  }
 
   if (!region) {
     return {};
@@ -34,11 +46,12 @@ export async function generateMetadata({
     title: region.seo.title,
     description: region.seo.description,
     keywords: region.seo.keywords,
+    locale,
     path: `/regio/${region.slug}/`,
   });
 }
 
-export default async function RegionDetailPage({
+async function DutchRegionDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -167,8 +180,84 @@ export default async function RegionDetailPage({
         </section>
       )}
 
-      <CTASection className="bg-transparent" title={`Actief in ${region.title}? Laten we kennismaken.`} />
+      <CTASection
+        className="bg-transparent"
+        title={`Actief in ${region.title}? Laten we kennismaken.`}
+        primaryHref="/offerte-aanvragen"
+      />
       </div>
+    </div>
+  );
+}
+
+export default async function RegionDetailPage({
+  params,
+}: {
+  params: Promise<{ locale: SupportedLocale; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+  if (locale === "nl") return DutchRegionDetailPage({ params: Promise.resolve({ slug }) });
+  if (locale !== "en") notFound();
+
+  let region;
+  try {
+    region = getRegionByLocalizedSlug(slug, locale) as LocalizedRegionRecord & EnglishRegionLocaleRecord;
+  } catch {
+    notFound();
+  }
+
+  const services = region.localServices.map((id) => getLocalizedServiceById(id, locale).service);
+  const municipalities = regionMunicipalities[region.id] ?? [];
+  const knowledgePosts = getAllPosts({ locale: "en" })
+    .filter((post) => post.relatedRegions?.some((path) => slugFromPath(path) === region.id))
+    .slice(0, 3);
+
+  return (
+    <div className="relative min-h-screen overflow-hidden pb-16 pt-28 text-white">
+      <RegionAmbient />
+      <main className="container relative z-10 mx-auto">
+        <nav className="text-sm text-white/50">
+          <Link href="/regio">Regions</Link> / <span className="text-white/75">{region.title}</span>
+        </nav>
+        <header className="mt-8 max-w-3xl">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">Service area</p>
+          <h1 className="mt-3 text-4xl font-bold sm:text-6xl">{region.title}</h1>
+          <p className="mt-5 text-lg leading-relaxed text-white/70">{region.intro}</p>
+          <p className="mt-4 leading-relaxed text-white/65">{region.body}</p>
+          <p className="mt-4 font-semibold text-white/85">{region.directAnswer}</p>
+        </header>
+
+        {services.length > 0 && (
+          <section className="py-16">
+            <h2 className="mb-8 text-3xl font-bold">Creative services in {region.title}</h2>
+            <RegionServicesGrid services={services} />
+          </section>
+        )}
+
+        {municipalities.length > 0 && (
+          <section className="py-12">
+            <h2 className="text-3xl font-bold">Places we serve in {region.title}</h2>
+            <ul className="mt-7 flex flex-wrap gap-2.5">
+              {municipalities.map((name) => <li key={name} className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/75">{name}</li>)}
+            </ul>
+          </section>
+        )}
+
+        {knowledgePosts.length > 0 && (
+          <section className="py-12">
+            <h2 className="mb-8 text-3xl font-bold">Insights for businesses in {region.title}</h2>
+            <BlogGrid posts={knowledgePosts.map(toBlogCardPost)} />
+          </section>
+        )}
+
+        <CTASection
+          className="bg-transparent"
+          title={region.cta.title}
+          description={region.cta.description}
+          primaryLabel={region.cta.label}
+          primaryHref={region.cta.href}
+        />
+      </main>
     </div>
   );
 }

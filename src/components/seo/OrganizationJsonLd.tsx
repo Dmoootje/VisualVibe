@@ -1,5 +1,6 @@
 import { businessConfig } from "@/config/business.config";
 import { JsonLd } from "./JsonLd";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const KNOWS_ABOUT = [
   "Webdesign",
@@ -13,7 +14,22 @@ const KNOWS_ABOUT = [
   "Webapplicaties op maat",
 ];
 
-export function OrganizationJsonLd() {
+const ENGLISH_KNOWS_ABOUT = [
+  "Web design",
+  "Search engine optimisation (SEO)",
+  "Generative Engine Optimisation (GEO)",
+  "Corporate photography",
+  "Video production",
+  "Drone and FPV filming",
+  "3D, VR and AR experiences",
+  "Podcast production",
+  "Custom web applications",
+];
+
+export function OrganizationJsonLd({ locale = "nl" }: { locale?: SupportedLocale }) {
+  const en = locale === "en";
+  const homeUrl = en ? `${businessConfig.url}/en/` : businessConfig.url;
+  const areaServed = en ? ["Limburg", "Flanders", "Antwerp Province", "Dutch Limburg"] : businessConfig.serviceArea;
   return (
     <JsonLd
       data={{
@@ -22,13 +38,13 @@ export function OrganizationJsonLd() {
         "@id": `${businessConfig.url}/#organization`,
         name: businessConfig.displayName,
         legalName: businessConfig.legalName,
-        url: businessConfig.url,
+        url: homeUrl,
         logo: {
           "@type": "ImageObject",
           url: businessConfig.logo,
         },
         image: `${businessConfig.url}/api/og`,
-        description: businessConfig.description,
+        description: en ? "Creative media agency in Limburg, Belgium, for web design, SEO, photography, video, drone, immersive media, podcasts and custom software." : businessConfig.description,
         telephone: businessConfig.telephone,
         email: businessConfig.email,
         vatID: businessConfig.vatID,
@@ -47,7 +63,7 @@ export function OrganizationJsonLd() {
           "@type": "Person",
           "@id": `${businessConfig.url}/#founder`,
           name: businessConfig.founder,
-          jobTitle: "Zaakvoerder",
+          jobTitle: en ? "Managing director" : "Zaakvoerder",
           worksFor: { "@id": `${businessConfig.url}/#organization` },
         },
         contactPoint: {
@@ -55,11 +71,11 @@ export function OrganizationJsonLd() {
           telephone: businessConfig.telephone,
           email: businessConfig.email,
           contactType: "customer service",
-          areaServed: businessConfig.serviceArea,
-          availableLanguage: ["Dutch"],
+          areaServed,
+          availableLanguage: [en ? "English" : "Dutch"],
         },
         department: { "@id": `${businessConfig.url}/#localbusiness` },
-        knowsAbout: KNOWS_ABOUT,
+        knowsAbout: en ? ENGLISH_KNOWS_ABOUT : KNOWS_ABOUT,
         sameAs: businessConfig.sameAs.length > 0 ? businessConfig.sameAs : undefined,
       }}
     />

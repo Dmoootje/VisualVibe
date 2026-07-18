@@ -1,12 +1,15 @@
 import { defineRouting } from "next-intl/routing";
+import { getPublishedLocales } from "./locales";
+
+const publishedLocales = getPublishedLocales();
 
 export const routing = defineRouting({
-  // Alleen Nederlands is gepubliceerd. Zolang fr/en hier stonden zonder echte
+  // Alleen Nederlands is gepubliceerd. Zolang fr/en/de hier stonden zonder echte
   // vertalingen adverteerde elke response hreflang-alternates naar /fr en /en,
   // waardoor crawlers honderden 404's vonden (kennisbank bestaat alleen in nl).
-  // fr/en pas weer toevoegen zodra er echte vertaalde content is; verwijder dan
-  // ook de /en- en /fr-redirects in next.config.js.
-  locales: ["nl"],
+  // Talen pas weer publiceren zodra er echte vertaalde content is; verwijder dan
+  // ook de bijbehorende redirects in next.config.js.
+  locales: publishedLocales,
   defaultLocale: "nl",
   // Dutch stays the internal locale "nl" (lang="nl", messages/nl.json) but is
   // shown under /be (Belgium). French/English keep their own code (/fr, /en).

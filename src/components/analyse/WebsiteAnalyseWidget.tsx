@@ -12,9 +12,11 @@ import { useEffect, useRef } from "react";
 export function WebsiteAnalyseWidget({
   scriptSrc,
   siteKey,
+  locale,
 }: {
   scriptSrc: string;
   siteKey: string;
+  locale: "nl" | "en" | "fr";
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,5 +32,5 @@ export function WebsiteAnalyseWidget({
     };
   }, [scriptSrc]);
 
-  return <div ref={ref} data-seo-analysis-widget="" data-site-key={siteKey} data-locale="nl" />;
+  return <div ref={ref} data-seo-analysis-widget="" data-site-key={siteKey} data-locale={locale} />;
 }

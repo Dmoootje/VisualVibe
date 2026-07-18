@@ -1,7 +1,8 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { services, getServiceBySlug, serviceHref } from "@/data/services";
+import { services, getServiceBySlug, getLocalizedServiceById, serviceHref } from "@/data/services";
 import { regions } from "@/data/regions";
 import { FG_HERO_IMAGE, FG_SLIDES } from "@/data/fotografieShowcase";
 import { dronePhotos } from "@/data/droneShowcase";
@@ -17,7 +18,7 @@ import { RegionServicesGrid, type FeaturedWork } from "@/components/regio";
 import type { Sector } from "@/types";
 
 // Title: 57 chars incl. " | VisualVibe" (55-60 target).
-export const metadata = pageMetadata({
+const dutchMetadata = pageMetadata({
   title: "Diensten: webdesign, fotografie, video & SEO | VisualVibe",
   description:
     "Diensten van VisualVibe: webdesign, SEO, fotografie, video, drone, 3D-tours, podcasting en masterclasses. Eén team voor bedrijven in Limburg en Vlaanderen.",
@@ -33,6 +34,19 @@ export const metadata = pageMetadata({
   ],
   path: "/diensten/",
 });
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  if (locale === "en") {
+    return pageMetadata({
+      locale: "en",
+      title: "Services for ambitious businesses | VisualVibe",
+      description: "Explore VisualVibe's web design, SEO, photography, video, drone, 3D, podcast and masterclass production services in Limburg, Belgium.",
+      path: "/diensten/",
+    });
+  }
+  return dutchMetadata;
+}
 
 // Uitgelicht werk per dienst: echte projecten/producties uit de bestaande
 // showcase-data (geen verzonnen cases). Beelden zijn Firebase/YouTube-URL's.
@@ -197,7 +211,9 @@ const marqueeSubdiensten = Array.from(
 const proseLink =
   "font-semibold text-[#FF9A45] underline decoration-[rgba(255,122,0,0.35)] underline-offset-4 transition-colors hover:text-[#ff7500]";
 
-export default function DienstenPage() {
+export default async function DienstenPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (locale === "en") return <EnglishServicesPage />;
   const baseUrl = `${businessConfig.url}${localizedPath("nl", "/diensten/")}`;
   const areaServed = regions.map((region) => region.title);
   // Dupliceren zodat de -50% marquee-keyframe naadloos doorloopt.
@@ -522,6 +538,44 @@ export default function DienstenPage() {
           description="Vertel ons wat je wilt bereiken en we stellen de juiste combinatie voor: passend bij jouw doel, jouw sector en jouw budget."
         />
       </div>
+    </div>
+  );
+}
+
+function EnglishServicesPage() {
+  const englishServices = services.map((service) => getLocalizedServiceById(service.slug, "en"));
+  return (
+    <div className="relative min-h-screen overflow-hidden text-white">
+      <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Services", path: "/diensten" }]} />
+      <PageAmbient />
+      <main className="relative z-10">
+        <section className="pb-14 pt-32">
+          <Container>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">Services</p>
+            <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">Creative services for businesses that want to stand out</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe brings web design, SEO, photography, video production, drone footage, immersive 3D experiences, podcasting and masterclass production together in one team. Strategy, technology and visual content therefore support the same business goal.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/offerte-aanvragen" className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black">Request a quotation <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/realisaties" className="rounded-full border border-white/15 px-6 py-3 font-semibold">View our work</Link>
+            </div>
+          </Container>
+        </section>
+        <section className="pb-20">
+          <Container>
+            <h2 className="mb-8 text-3xl font-bold">Eight services, one consistent direction</h2>
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {englishServices.map(({ id, slug, service }) => (
+                <Link key={id} href={`/diensten/${slug}`} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-[#ff7500]/50">
+                  <h3 className="text-xl font-bold">{service.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/65">{service.excerpt}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 font-semibold text-[#ff9a45]">Explore this service <ArrowRight className="h-4 w-4" /></span>
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </section>
+        <CTASection title="Ready to bring your project to life?" description="Tell us what you want to achieve. We will recommend a practical combination of services and prepare a tailored quotation." primaryLabel="Discuss your project" primaryHref="/offerte-aanvragen" />
+      </main>
     </div>
   );
 }

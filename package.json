@@ -10,7 +10,9 @@
     "lint": "eslint src",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "validate:subservices": "node scripts/validate-subservices.mjs"
+    "validate:subservices": "node scripts/validate-subservices.mjs",
+    "audit:locales": "node scripts/audit-locales.mjs",
+    "validate:content": "npm run validate:subservices && npm run audit:locales"
   },
   "engines": {
     "node": ">=20.0.0"

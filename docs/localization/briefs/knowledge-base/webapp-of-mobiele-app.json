@@ -1,0 +1,57 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/webapp-of-mobiele-app/",
+  "targetRoute": "/en/kennisbank/webdesign/web-app-or-mobile-app/",
+  "audience": "SMEs and entrepreneurs who know what their digital product must do but have not yet chosen the right platform",
+  "primaryDutchSearchIntent": "Bedrijven helpen kiezen tussen een webapp, PWA en mobiele app op basis van echte gebruikssituaties",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Should my business build a web app, PWA or mobile app?",
+    "geographicContext": "International English-speaking business audience, with VisualVibe serving Belgium and nearby regions"
+  },
+  "mainKeyword": "web app or mobile app",
+  "longTailKeywords": [
+    "web app vs mobile app for business",
+    "PWA or native app",
+    "build a mobile app",
+    "build a web application"
+  ],
+  "semanticTerms": [
+    "offline functionality",
+    "device hardware",
+    "push notifications",
+    "app store distribution",
+    "cross-platform development",
+    "progressive web app",
+    "application maintenance"
+  ],
+  "directAnswer": "Choose a web app when broad access, desktop use, immediate updates and central business processes matter most. Choose a mobile app when reliable offline use, device hardware, push notifications and frequent use on the move are central to the product.",
+  "title": "Web app or mobile app: which is right for your business?",
+  "metaDescription": "Web app or mobile app? Compare reach, offline use, camera access, push notifications, app stores, maintenance and budget to choose the right platform.",
+  "h1": "Web app or mobile app: which is right for your business?",
+  "slug": "web-app-or-mobile-app",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/",
+      "targetHref": "/en/diensten/custom-software/web-application-development/",
+      "anchor": "custom web application development"
+    },
+    {
+      "sourceHref": "/be/kennisbank/webdesign/wat-kost-een-app-laten-maken/",
+      "targetHref": "/en/kennisbank/webdesign/how-much-does-app-development-cost/",
+      "anchor": "how much app development costs"
+    },
+    {
+      "sourceHref": "/be/kennisbank/webdesign/app-laten-maken-complete-gids/",
+      "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-an-app/",
+      "anchor": "complete guide to building an app"
+    }
+  ],
+  "factsToPreserve": [
+    "A web app runs in a browser and provides one centrally updated version.",
+    "A mobile app can provide deeper hardware integration and stronger support for prolonged offline use.",
+    "PWA capabilities and support vary by browser and operating system.",
+    "Offline workflows must define local storage, synchronisation and conflict resolution.",
+    "Cross-platform technology reduces some work but does not eliminate platform differences.",
+    "A web app can be a sensible MVP, provided the architecture anticipates possible additional clients."
+  ]
+}

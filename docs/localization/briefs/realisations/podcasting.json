@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/podcasting/",
+  "targetRoute": "/en/case-studies/podcasting/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Podcastrealisaties bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which corporate podcasts and video podcasts has VisualVibe produced?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "corporate podcast case studies",
+  "longTailKeywords": [
+    "corporate podcast case studies Limburg Belgium",
+    "corporate podcast case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe records and produces corporate podcasts and video podcasts for experts and businesses.",
+  "title": "Podcasting case studies | VisualVibe",
+  "metaDescription": "Explore business and video podcasts by VisualVibe for experts and companies in Limburg, Belgium, from recording and editing to publication-ready delivery.",
+  "h1": "Podcasting case studies",
+  "slug": "podcasting",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

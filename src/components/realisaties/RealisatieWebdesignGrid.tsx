@@ -6,6 +6,7 @@ import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "@/components/webdesign/ShowcaseImage";
 import { RealisatieModal } from "@/components/webdesign/RealisatieModal";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const ArrowUpRight = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -35,9 +36,11 @@ const CartIcon = ({ size = 15 }: { size?: number }) => (
 export function RealisatieWebdesignGrid({
   projects,
   images,
+  locale = "nl",
 }: {
   projects: WebdesignProject[];
   images: WebdesignImages;
+  locale?: SupportedLocale;
 }) {
   const [soort, setSoort] = useState<"website" | "webshop">("website");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -54,10 +57,10 @@ export function RealisatieWebdesignGrid({
       <div className="mb-8 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <div className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#FF9A45]">
-            MEER REALISATIES
+            {locale === "en" ? "MORE PROJECTS" : "MEER REALISATIES"}
           </div>
           <h2 className="font-sora text-[34px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white">
-            Websites die we voor KMO&apos;s bouwden
+            {locale === "en" ? "Websites built for SMEs" : <>Websites die we voor KMO&apos;s bouwden</>}
           </h2>
         </div>
 
@@ -77,7 +80,7 @@ export function RealisatieWebdesignGrid({
             className={`${segBase} ${soort === "webshop" ? activeSeg : idleSeg}`}
           >
             <CartIcon />
-            Webshops
+            {locale === "en" ? "Online shops" : "Webshops"}
           </button>
         </div>
       </div>
@@ -89,7 +92,7 @@ export function RealisatieWebdesignGrid({
               key={c.id}
               type="button"
               onClick={() => setOpenId(c.id)}
-              aria-label={`${c.name} openen`}
+              aria-label={locale === "en" ? `Open ${c.name}` : `${c.name} openen`}
               className="rwcard vvw-caseRow relative flex flex-col overflow-hidden rounded-[17px] border border-white/[0.09] bg-white/[0.02] text-left"
               style={{ ["--i" as string]: i } as React.CSSProperties}
             >
@@ -119,7 +122,7 @@ export function RealisatieWebdesignGrid({
                 <div className="font-sora mb-[7px] text-[19px] font-bold text-white">{c.name}</div>
                 <p className="mb-[18px] text-[13.5px] leading-[1.55] text-white/55">{c.teaser}</p>
                 <span className="rwcard-go mt-auto inline-flex items-center gap-[7px] font-mono text-[11.5px] font-bold tracking-[0.08em] text-white/75">
-                  BEKIJK REALISATIE
+                  {locale === "en" ? "VIEW PROJECT" : "BEKIJK REALISATIE"}
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M5 12h14" />
                     <path d="m12 5 7 7-7 7" />
@@ -134,19 +137,19 @@ export function RealisatieWebdesignGrid({
           <span className="mb-[22px] inline-flex h-[60px] w-[60px] items-center justify-center rounded-2xl border border-[rgba(255,122,0,0.25)] bg-[rgba(255,122,0,0.1)] text-[#FF9A45]">
             <CartIcon size={28} />
           </span>
-          <h3 className="font-sora mb-3 text-[26px] font-bold text-white">Binnenkort webshops in de kijker</h3>
+          <h3 className="font-sora mb-3 text-[26px] font-bold text-white">{locale === "en" ? "Online shops coming soon" : "Binnenkort webshops in de kijker"}</h3>
           <p className="mx-auto mb-[26px] max-w-[440px] text-[15.5px] leading-[1.6] text-white/55">
-            We voegen hier binnenkort onze webshop-realisaties toe. Zin om zelf een webshop te laten bouwen?
+            {locale === "en" ? "We will add selected online shops here soon. Planning an ecommerce project of your own?" : "We voegen hier binnenkort onze webshop-realisaties toe. Zin om zelf een webshop te laten bouwen?"}
           </p>
           <Link
-            href="/offerte-aanvragen"
+            href={locale === "en" ? "/request-a-quotation" : "/offerte-aanvragen"}
             className="vvw-btn inline-flex items-center gap-2.5 rounded-xl px-[26px] py-3.5 text-[15px] font-bold text-white"
             style={{
               background: "linear-gradient(90deg,#FF3B2E,#FF7A00)",
               boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)",
             }}
           >
-            Offerte aanvragen
+            {locale === "en" ? "Request a quotation" : "Offerte aanvragen"}
             <svg className="vvw-ar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
@@ -155,7 +158,7 @@ export function RealisatieWebdesignGrid({
         </div>
       )}
 
-      {open && <RealisatieModal project={open} images={images} onClose={() => setOpenId(null)} />}
+      {open && <RealisatieModal project={open} images={images} onClose={() => setOpenId(null)} locale={locale} />}
     </section>
   );
 }

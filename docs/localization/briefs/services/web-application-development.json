@@ -1,0 +1,17 @@
+{
+  "sourceRoute": "/be/diensten/software-op-maat/webapplicatie-laten-maken/",
+  "targetRoute": "/en/diensten/custom-software/web-application-development/",
+  "audience": "Operations teams replacing spreadsheets or building dashboards, planning tools and secure portals",
+  "primaryDutchSearchIntent": "Een webapplicatie laten maken voor dashboards, planning, offertes, portalen of interne processen.",
+  "searchIntent": { "type": "commercial", "question": "How can a custom browser-based application improve our workflow and centralise business data?", "geographicContext": "English-speaking SMEs and organisations in Belgium" },
+  "mainKeyword": "web application development",
+  "longTailKeywords": ["custom web application Belgium", "business dashboard development", "customer portal development"],
+  "semanticTerms": ["responsive web app", "permissions", "data migration", "dashboard", "PWA"],
+  "directAnswer": "A custom web application lets authorised users manage data and complete workflows in a modern browser. Define roles, information, exceptions and integrations first, then build usable modules and migrate existing data carefully.",
+  "title": "Web application development for SMEs in Belgium | VisualVibe",
+  "metaDescription": "Custom web application development for planning, dashboards, quotations and customer portals. Secure, scalable browser-based software for SMEs in Belgium.",
+  "h1": "Web application development",
+  "slug": "web-application-development",
+  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/diensten/custom-software/app-development/", "anchor": "app development" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your web application" }],
+  "factsToPreserve": ["A web application runs in a browser across desktop, tablet and mobile", "Roles can have different permissions", "Existing data can often be migrated after quality assessment", "A PWA or mobile app is considered only when intensive mobile use justifies it"]
+}

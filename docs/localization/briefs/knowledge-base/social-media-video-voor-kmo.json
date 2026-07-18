@@ -1,0 +1,59 @@
+{
+  "sourceRoute": "/be/kennisbank/videografie/social-media-video-voor-kmo/",
+  "targetRoute": "/en/kennisbank/videografie/social-media-video-for-smes/",
+  "audience": "Business owners, marketers and communications leads at SMEs that want to publish professional video regularly on LinkedIn, Instagram, YouTube or TikTok",
+  "primaryDutchSearchIntent": "KMO's helpen een herhaalbaar social-videosysteem te bouwen dat doelen, formats, productie, platformversies, toegankelijkheid, publicatie en meting met elkaar verbindt",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How can an SME plan, produce and measure a sustainable series of social media videos?",
+    "geographicContext": "English-speaking SMEs in Belgium, particularly Limburg and Flanders, publishing across major social platforms"
+  },
+  "mainKeyword": "social media video for SMEs",
+  "longTailKeywords": [
+    "social media video strategy for small businesses",
+    "how to create social media videos for business",
+    "vertical video for SMEs",
+    "LinkedIn video for SMEs",
+    "Instagram Reels for businesses",
+    "YouTube Shorts for businesses",
+    "social video content plan"
+  ],
+  "semanticTerms": [
+    "video content series",
+    "content formats",
+    "vertical video",
+    "content production day",
+    "captions",
+    "audience retention",
+    "platform specifications",
+    "video metrics",
+    "content repurposing"
+  ],
+  "directAnswer": "Social media video works for an SME when each clip answers one recognisable audience question, serves a defined business goal and is adapted to its channel. Plan repeatable formats, record modular material in one focused production day, create platform-specific versions and measure the next action rather than views alone.",
+  "title": "Social media video for SMEs: from content plan to measurable series",
+  "metaDescription": "Plan social media video for your SME: choose goals, formats and channels, then turn one production day into a measurable series of vertical videos.",
+  "h1": "Social media video for SMEs: from content plan to measurable series",
+  "slug": "social-media-video-for-smes",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
+    { "sourceHref": "/be/diensten/videografie/social-media-video/", "targetHref": "/en/diensten/videography/social-media-video/", "anchor": "professional social media video production" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "broader corporate video production" },
+    { "sourceHref": "/be/kennisbank/videografie/bedrijfsvideo-script-opbouwen/", "targetHref": "/en/kennisbank/videografie/how-to-structure-a-corporate-video-script/", "anchor": "structuring a corporate video script" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "preparing a corporate photo shoot" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your social video series" }
+  ],
+  "factsToPreserve": [
+    "A social clip is a complete idea designed for a specific viewing moment, not merely a shortened corporate film",
+    "Professional quality chiefly requires intelligible sound, reliable images, a clear message, suitable rights and a publication-ready version",
+    "Platform limits change and official specifications must be checked for each campaign",
+    "The platform specifications cited are dated 12 July 2026",
+    "Instagram Reels accepts upload ratios from 1.91:1 to 9:16 with at least 720 pixels and 30 frames per second according to the cited Meta guidance",
+    "LinkedIn ordinary uploads are cited as supporting ratios from 1:2.4 to 2.4:1, resolutions from 256 by 144 to 4096 by 2304 and a maximum duration of 15 minutes",
+    "Square or vertical YouTube uploads up to three minutes have been categorised as Shorts since 15 October 2024, subject to exceptions and music rights",
+    "TikTok ratios cited come from advertising documentation and are not a universal promise for every organic feature",
+    "Automatic captions require review, particularly for names, dialect, specialist terms and figures",
+    "Platform view definitions differ and views alone must not be treated as a business outcome",
+    "No publishing frequency, format, duration or result is presented as universally correct or guaranteed"
+  ]
+}

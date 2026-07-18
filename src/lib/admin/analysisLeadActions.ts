@@ -76,6 +76,7 @@ export async function rerunAnalysisAction(analysisLeadId: string): Promise<void>
         safeUrl: normalized.safeUrl,
         normalizedDomain: analysisLead.normalizedDomain,
         idempotencyKey: runId,
+        locale: analysisLead.locale ?? "nl",
       })
     : { status: "failed", errorCode: "invalid_url" };
 

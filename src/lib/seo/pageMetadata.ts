@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { businessConfig } from "@/config/business.config";
-import { localizedPath } from "@/lib/kennisbank/posts";
 import { ogImageForPath } from "@/data/ogImages";
 import { MANUAL_PAGE_OG_IMAGES } from "@/data/manualOgImages";
+import type { SupportedLocale } from "@/i18n/locales";
 
 // One builder for complete per-page metadata so every indexable page emits a
 // self-referencing canonical, a page-specific OpenGraph + Twitter card (never
@@ -15,6 +15,7 @@ const DEFAULT_OG_IMAGE = "/api/og";
 const DEFAULT_OG_DIMENSIONS = { width: 1200, height: 630 };
 
 export type PageMetadataInput = {
+  locale?: SupportedLocale;
   /** Absolute title (rendered as-is, not run through the "%s | VisualVibe" template). */
   title: string;
   description: string;
@@ -30,6 +31,7 @@ export type PageMetadataInput = {
 };
 
 export function pageMetadata({
+  locale = "nl",
   title,
   description,
   keywords,
@@ -38,11 +40,8 @@ export function pageMetadata({
   ogImageAlt,
   noindex,
 }: PageMetadataInput): Metadata {
-  // Marketing pages exist in Dutch only: the /fr and /en routes render the
-  // same Dutch content, and the locale-less URL 308-redirects to /be. So the
-  // canonical (and OG url) always points at the real published nl URL under
-  // /be, for every locale.
-  const url = `${businessConfig.url}${localizedPath("nl", path)}`;
+  const prefix = locale === "nl" ? "/be" : `/${locale}`;
+  const url = `${businessConfig.url}${prefix}${path.startsWith("/") ? path : `/${path}`}`;
 
   // Voorrang: een reeds handmatig geüploade pagina-OG > de gegenereerde map >
   // een expliciet meegegeven ogImage > de branded site-fallback. De handmatige
@@ -86,7 +85,7 @@ export function pageMetadata({
       type: "website",
       url,
       siteName: businessConfig.displayName,
-      locale: "nl_BE",
+      locale: locale === "nl" ? "nl_BE" : locale === "en" ? "en_GB" : locale === "fr" ? "fr_BE" : "de_DE",
       title,
       description,
       images: [{ url: image, width, height, alt: imageAlt }],

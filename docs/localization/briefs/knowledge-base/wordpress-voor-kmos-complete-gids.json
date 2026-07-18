@@ -1,0 +1,32 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/",
+  "targetRoute": "/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/",
+  "audience": "Self-employed professionals and SMEs considering a WordPress website or seeking to manage an existing site more effectively.",
+  "primaryDutchSearchIntent": "KMO's helpen beoordelen wanneer WordPress geschikt is en hoe ze beheer, onderhoud, beveiliging en groei professioneel organiseren.",
+  "searchIntent": { "type": "commercial", "question": "When is WordPress suitable for an SME, and how should hosting, ownership, updates, backups, security and maintenance be organised?", "geographicContext": "English-speaking SMEs, with VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "WordPress for SMEs",
+  "longTailKeywords": ["commission a WordPress website", "WordPress maintenance", "WordPress backups", "WordPress security", "WordPress hosting for SMEs"],
+  "semanticTerms": ["content management system", "technical ownership", "staging environment", "restore test", "multi-factor authentication", "plugin licences", "website maintenance", "custom web application"],
+  "directAnswer": "WordPress suits SMEs that need to manage and regularly publish website content. It remains a strong choice only when the business clearly organises hosting, account ownership, controlled updates, recoverable backups, security, performance, plugin licences and ongoing maintenance.",
+  "title": "WordPress for SMEs: complete guide to building and maintenance",
+  "metaDescription": "Using WordPress for your SME? Learn when it fits and how to manage hosting, updates, backups, security, performance and ownership professionally.",
+  "slug": "wordpress-for-smes-complete-guide",
+  "internalLinks": [
+    { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/web-application-development/", "anchor": "custom web application" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-backup-maken/", "targetHref": "/en/kennisbank/webdesign/how-to-back-up-wordpress/", "anchor": "creating a WordPress backup" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-website-beveiligen/", "targetHref": "/en/kennisbank/webdesign/securing-a-wordpress-website/", "anchor": "securing a WordPress website" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },
+    { "sourceHref": "/be/diensten/webdesign/wordpress-website-laten-maken/", "targetHref": "/en/diensten/web-design/wordpress-website/", "anchor": "WordPress website service" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your WordPress project" }
+  ],
+  "factsToPreserve": [
+    "WordPress is not suitable for every complex application or workflow.",
+    "Plugins add code, update obligations and possible conflicts.",
+    "The SME should control its domain, hosting and administrative accounts.",
+    "Updating everything without testing can cause problems, while never updating is riskier.",
+    "A backup is useful only when its location, retention and restore process are known and tested.",
+    "A security plugin does not replace sound account, access, update and hosting practices.",
+    "An SEO plugin does not compensate automatically for weak content or structure.",
+    "Total cost includes recovery, migrations, maintenance, licences and performance work, not hosting price alone."
+  ]
+}

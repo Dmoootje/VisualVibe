@@ -1,0 +1,32 @@
+{
+  "sourceRoute": "/be/kennisbank/3d-vr/hoe-verhoogt-een-virtuele-tour-vertrouwen/",
+  "targetRoute": "/en/kennisbank/3d-vr/how-a-virtual-tour-builds-trust/",
+  "audience": "SMEs, showrooms, hospitality businesses, property professionals and location managers seeking to use an interactive tour credibly on their website.",
+  "primaryDutchSearchIntent": "Bedrijven helpen begrijpen onder welke voorwaarden een virtuele tour vertrouwen kan ondersteunen en hoe zij transparantie, UX, privacy, toegankelijkheid, GEO-context en resultaatmeting organiseren.",
+  "searchIntent": { "type": "commercial", "question": "Under which conditions can a virtual tour support trust before a visit, and how should transparency, UX, privacy, accessibility and measurement be organised?", "geographicContext": "International English-speaking readers, with Belgian and EU privacy context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "virtual tour trust",
+  "longTailKeywords": ["trust through a virtual tour", "3D tour customer trust", "virtual tour website", "Matterport website integration", "accessible 3D tour", "virtual tour load time"],
+  "semanticTerms": ["expectation management", "transparent imagery", "interactive viewer", "hotspots", "privacy", "WCAG", "load time", "GEO context", "measurement plan"],
+  "directAnswer": "A virtual tour can support trust when its imagery, copy and on-site reality align. A credible implementation uses representative capture, clear routes and labels, visible limitations, privacy controls, accessible alternatives, manageable load time, current information and a relevant next step outside the viewer.",
+  "title": "Virtual tours and trust: what works before a visit?",
+  "metaDescription": "Learn how virtual tours support trust through honest imagery, clear copy, a fast website, privacy, accessible alternatives and a measurement plan.",
+  "h1": "Virtual tours and trust: what works before a visit?",
+  "slug": "how-a-virtual-tour-builds-trust",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what is a 3D tour" },
+    { "sourceHref": "/be/kennisbank/3d-vr/virtuele-rondleiding-voor-showroom/", "targetHref": "/en/kennisbank/3d-vr/virtual-tour-for-a-showroom/", "anchor": "virtual showroom tour" },
+    { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-horeca/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-hospitality/", "anchor": "3D tour for hospitality" },
+    { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-vastgoed/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-real-estate/", "anchor": "3D tour for real estate" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your virtual tour" }
+  ],
+  "factsToPreserve": [
+    "A virtual tour does not automatically create credibility, trust or conversion.",
+    "Trust depends on agreement between the online representation and on-site reality.",
+    "Labels should provide verifiable context rather than unsupported claims.",
+    "Privacy must be addressed before capture and reviewed at every viewpoint.",
+    "Cloud hosting, account ownership, current information and removal dates require ongoing management.",
+    "Loading time and third-party consent affect whether visitors use the tour.",
+    "Essential information and actions need accessible alternatives outside the viewer.",
+    "Tour analytics do not prove trust or business causality on their own."
+  ]
+}

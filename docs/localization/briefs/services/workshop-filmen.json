@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/masterclasses/workshop-filmen/",
+  "targetRoute": "/en/services/masterclasses/workshop-video-production/",
+  "audience": "organisers who need a full workshop recording, content-led summary or event aftermovie",
+  "primaryDutchSearchIntent": "Een opleiding, cursus of workshop professioneel laten filmen voor een duidelijk bepaalde vorm van hergebruik.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional workshop video production in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "workshop video production",
+  "longTailKeywords": [
+    "workshop video production Limburg Belgium",
+    "workshop video production for SMEs",
+    "professional workshop video production"
+  ],
+  "semanticTerms": [
+    "professional recording",
+    "content planning",
+    "editing",
+    "publication-ready files",
+    "VisualVibe"
+  ],
+  "directAnswer": "Workshop video production captures selected speakers, demonstrations and interaction in a format defined by how the material will be reused.",
+  "title": "Workshop video production in Limburg | VisualVibe",
+  "metaDescription": "Professional workshop video production in Limburg, Belgium, with clear preparation, reliable recording and deliverables shaped around their intended use.",
+  "h1": "Workshop video production designed for practical reuse",
+  "slug": "workshop-video-production",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "The exact scope, deliverables, revisions and publishing support depend on the agreed quotation.",
+    "Hosting, platform subscriptions, licences and account management are included only when explicitly agreed.",
+    "No audience reach, lead volume, learning outcome or expert status is guaranteed."
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/bedrijven/",
+  "targetRoute": "/en/case-studies/businesses/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Volledige trajecten voor bedrijven bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How does VisualVibe combine web design, photography and video for businesses?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "creative media case studies for businesses",
+  "longTailKeywords": [
+    "creative media case studies for businesses Limburg Belgium",
+    "creative media case studies for businesses VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe delivers integrated business projects that can combine a website, photography, video and digital media.",
+  "title": "Business case studies | VisualVibe",
+  "metaDescription": "Explore integrated VisualVibe projects combining web design, photography and video for SMEs in Limburg, Belgium.",
+  "h1": "Integrated projects for businesses",
+  "slug": "businesses",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

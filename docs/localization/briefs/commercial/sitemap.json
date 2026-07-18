@@ -1,0 +1,41 @@
+{
+  "sourceRoute": "/be/sitemap/",
+  "targetRoute": "/en/sitemap/",
+  "audience": "Visitors looking for an overview of VisualVibe's public English pages",
+  "primaryDutchSearchIntent": "Een overzicht vinden van alle belangrijke pagina's op de website.",
+  "searchIntent": {
+    "type": "navigational",
+    "question": "Where can I find an overview of the VisualVibe website?",
+    "geographicContext": "VisualVibe website"
+  },
+  "mainKeyword": "VisualVibe sitemap",
+  "longTailKeywords": ["VisualVibe website page overview"],
+  "semanticTerms": [
+    "services",
+    "case studies",
+    "regions",
+    "sectors",
+    "knowledge base"
+  ],
+  "directAnswer": "The VisualVibe sitemap groups the website's main pages, services, case studies, sectors, regions and resources in one overview.",
+  "title": "Sitemap | VisualVibe",
+  "metaDescription": "Browse the VisualVibe sitemap for a clear overview of services, case studies, sectors, regions, tools, company information and contact pages.",
+  "h1": "Sitemap",
+  "slug": "sitemap",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten",
+      "targetHref": "/en/diensten/",
+      "anchor": "Services"
+    },
+    {
+      "sourceHref": "/be/contact",
+      "targetHref": "/en/contact/",
+      "anchor": "Contact"
+    }
+  ],
+  "factsToPreserve": [
+    "Only available English destinations may be listed",
+    "Internal and admin routes must remain excluded"
+  ]
+}

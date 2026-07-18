@@ -1,0 +1,36 @@
+{
+  "sourceRoute": "/be/kennisbank/3d-vr/3d-tour-voor-horeca/",
+  "targetRoute": "/en/kennisbank/3d-vr/3d-tour-for-hospitality/",
+  "audience": "Restaurant, hotel, café, banquet hall and event venue operators considering an interactive tour to help guests understand their spaces before booking.",
+  "primaryDutchSearchIntent": "Horeca-uitbaters helpen beoordelen hoe een 3D-tour sfeer, indeling en praktische verwachtingen verduidelijkt en hoe zij capture, privacy, toegankelijkheid, hosting en reservatieroute voorbereiden.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How should a hospitality business prepare, publish and manage a 3D tour that supports guest expectations and booking decisions?",
+    "geographicContext": "International English-speaking readers, with Belgian and EU privacy context and VisualVibe services based in Limburg, Belgium."
+  },
+  "mainKeyword": "3D tour for hospitality",
+  "longTailKeywords": ["virtual restaurant tour", "3D tour for hotels", "virtual banquet hall tour", "Matterport restaurant tour", "360-degree hospitality tour", "virtual event venue tour"],
+  "semanticTerms": ["guest journey", "space preparation", "3D capture", "booking journey", "cloud hosting", "GDPR", "WCAG", "accessible alternative", "recapture"],
+  "directAnswer": "A 3D tour for hospitality lets prospective guests explore a restaurant, hotel, café, banquet hall or event venue before booking. It is most useful when atmosphere, layout and routes influence the decision, provided the venue plans representative capture, privacy, accessible alternatives, hosting, website integration and ongoing updates.",
+  "title": "3D tour for hospitality: from space preparation to booking",
+  "metaDescription": "Planning a hospitality 3D tour? Prepare spaces, capture, privacy, accessible alternatives, hosting, website integration and the booking journey.",
+  "h1": "3D tour for hospitality: from space preparation to booking",
+  "slug": "3d-tour-for-hospitality",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what is a 3D tour" },
+    { "sourceHref": "/be/diensten/3d-vr-ar/horeca-virtuele-tour/", "targetHref": "/en/diensten/3d-vr-ar/hospitality-virtual-tour/", "anchor": "virtual hospitality tour service" },
+    { "sourceHref": "/be/kennisbank/fotografie/eventfotografie-checklist/", "targetHref": "/en/kennisbank/fotografie/event-photography-checklist/", "anchor": "event photography checklist" },
+    { "sourceHref": "/be/kennisbank/videografie/aftermovie-van-bedrijfsevent/", "targetHref": "/en/kennisbank/videografie/corporate-event-aftermovie/", "anchor": "corporate event aftermovie" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your hospitality tour" }
+  ],
+  "factsToPreserve": [
+    "A tour is a snapshot of the space and setup at the time of capture.",
+    "Availability, prices, menus, packages and conditions belong in managed pages and booking systems.",
+    "Platform and plan determine which views, tags, links and measurement functions are available.",
+    "A marketing tour is not a certified measurement document or formal accessibility assessment.",
+    "Privacy must be planned before capture; blurring is a fallback rather than a complete preparation plan.",
+    "Essential information and booking actions require accessible text, images and contact alternatives.",
+    "Cloud hosting, account ownership, recurring costs, exports and recapture triggers must be agreed.",
+    "A virtual tour does not automatically cause more bookings."
+  ]
+}

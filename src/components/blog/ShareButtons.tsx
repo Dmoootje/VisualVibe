@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { Check, Link2 } from "lucide-react";
+import { knowledgeBaseLabels } from "@/components/kennisbank/localization";
 
 /** LinkedIn / Facebook / copy-link share row for the article hero. */
-export function ShareButtons({ url, title }: { url: string; title: string }) {
+export function ShareButtons({ url, title, locale = "nl" }: { url: string; title: string; locale?: string }) {
+  const labels = knowledgeBaseLabels(locale);
   const [copied, setCopied] = useState(false);
 
   const linkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
@@ -29,14 +31,14 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
         className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40"
         style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
       >
-        Delen
+        {labels.share}
       </span>
       <div className="flex gap-2">
         <a
           href={linkedIn}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Deel op LinkedIn: ${title}`}
+          aria-label={`${labels.shareLinkedIn}: ${title}`}
           className={btn}
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -49,14 +51,14 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
           href={facebook}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Deel op Facebook: ${title}`}
+          aria-label={`${labels.shareFacebook}: ${title}`}
           className={btn}
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
           </svg>
         </a>
-        <button type="button" onClick={copy} aria-label="Link kopiëren" className={btn}>
+        <button type="button" onClick={copy} aria-label={labels.copyLink} className={btn}>
           {copied ? (
             <Check className="h-[17px] w-[17px] text-[#ff9a45]" aria-hidden="true" />
           ) : (

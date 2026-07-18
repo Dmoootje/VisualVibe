@@ -3,6 +3,7 @@ import { ArrowRight, FolderOpen } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { RealisatieCategory } from "@/data/realisatieCategories";
 import type { HubStackImage } from "@/lib/realisaties/hubData";
+import type { SupportedLocale } from "@/i18n/locales";
 
 export type HubCategoryItem = {
   category: RealisatieCategory;
@@ -20,7 +21,7 @@ export type HubCategoryItem = {
  * niets van hover afhankelijk). Categorieën zonder eigen beeldmateriaal
  * (3D/VR-tours, podcasting) behouden de bestaande cover-stijl.
  */
-function HubCategoryCard({ item }: { item: HubCategoryItem }) {
+function HubCategoryCard({ item, locale }: { item: HubCategoryItem; locale: SupportedLocale }) {
   const { category, images, count, subdisciplines } = item;
   const hasStack = images.length > 0;
 
@@ -72,7 +73,7 @@ function HubCategoryCard({ item }: { item: HubCategoryItem }) {
         <div className="flex items-baseline justify-between gap-2">
           <h3 className="font-sora text-lg font-bold text-white">{category.name}</h3>
           <span className="whitespace-nowrap font-mono text-[11px] font-bold text-white/45">
-            {count > 0 ? `${count} realisaties` : "Binnenkort meer"}
+            {count > 0 ? `${count} ${locale === "en" ? "case studies" : "realisaties"}` : locale === "en" ? "More soon" : "Binnenkort meer"}
           </span>
         </div>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-white/65">{category.description}</p>
@@ -86,7 +87,7 @@ function HubCategoryCard({ item }: { item: HubCategoryItem }) {
           </div>
         )}
         <span className="mt-4 inline-flex items-center gap-[7px] font-mono text-[11px] font-bold tracking-[0.06em] text-white/80">
-          BEKIJK REALISATIES
+          {locale === "en" ? "VIEW CASE STUDIES" : "BEKIJK REALISATIES"}
           <ArrowRight className="h-3.5 w-3.5 text-[#FF9A45] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden="true" />
         </span>
       </div>
@@ -95,7 +96,7 @@ function HubCategoryCard({ item }: { item: HubCategoryItem }) {
 }
 
 /** "Ontdek realisaties per discipline": de zes primaire disciplines, groot. */
-export function RealisatieHubCategoryGrid({ items }: { items: HubCategoryItem[] }) {
+export function RealisatieHubCategoryGrid({ items, locale = "nl" }: { items: HubCategoryItem[]; locale?: SupportedLocale }) {
   return (
     <section id="disciplines" className="relative scroll-mt-24 py-10 sm:py-14">
       <div className="container mx-auto px-2.5 sm:px-4">
@@ -104,15 +105,14 @@ export function RealisatieHubCategoryGrid({ items }: { items: HubCategoryItem[] 
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
             Disciplines
           </p>
-          <h2 className="text-2xl font-bold sm:text-3xl">Ontdek realisaties per discipline</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">{locale === "en" ? "Explore case studies by discipline" : "Ontdek realisaties per discipline"}</h2>
           <p className="mt-4 max-w-3xl text-[15.5px] leading-relaxed text-white/65">
-            Bekijk ons werk per specialisatie en ontdek welke diensten binnen één project
-            gecombineerd kunnen worden.
+            {locale === "en" ? "Browse our work by specialism and see which services can be combined in one project." : "Bekijk ons werk per specialisatie en ontdek welke diensten binnen één project gecombineerd kunnen worden."}
           </p>
         </div>
         <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <HubCategoryCard key={item.category.slug} item={item} />
+            <HubCategoryCard key={item.category.slug} item={item} locale={locale} />
           ))}
         </div>
       </div>

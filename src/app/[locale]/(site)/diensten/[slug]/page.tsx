@@ -32,6 +32,7 @@ import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getVideografieVideos } from "@/lib/youtube";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
+import type { SupportedLocale } from "@/i18n/locales";
 
 export function generateStaticParams() {
   // Flat route serves hoofddiensten only; sub-services live at /diensten/<parent>/<sub>.
@@ -67,7 +68,8 @@ export default async function ServiceDetailPage({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { locale, slug } = await params;
+  const { locale: localeParam, slug } = await params;
+  const locale = localeParam as SupportedLocale;
   const service = getServiceBySlug(slug);
 
   if (!service) {
@@ -104,7 +106,7 @@ export default async function ServiceDetailPage({
   const is3dVrAr = service.slug === "3d-vr-ar";
   const [webdesignImages, webdesignProjects] =
     isWebdesign || isSeo
-      ? await Promise.all([getWebdesignImages(), getWebdesignProjects()])
+      ? await Promise.all([getWebdesignImages(), getWebdesignProjects(locale)])
       : [null, null];
 
   // Videografie: YouTube-fed video gallery (playlists -> filter tabs).
@@ -255,6 +257,7 @@ export default async function ServiceDetailPage({
       <div className="min-h-screen text-white">
         {jsonLd}
         <DroneFpvService
+          locale={locale}
           service={service}
           subServices={childServices}
           relatedServices={relatedServices}

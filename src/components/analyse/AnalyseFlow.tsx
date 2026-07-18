@@ -5,6 +5,7 @@ import { AlertTriangle, ArrowRight, CheckCircle2, MailCheck } from "lucide-react
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { AnalysisLimitState } from "@/components/analyse/AnalysisLimitState";
+import { analysisLocale } from "@/lib/analyse/locale";
 import type {
   AnalysisQuotaDecision,
   AnalysisResendRequest,
@@ -25,12 +26,33 @@ const gradientButtonClasses =
   "h-[50px] w-full shrink-0 gap-2 rounded-xl border-0 bg-gradient-to-r from-[#ff4b3a] to-[#ff9124] px-7 text-[15px] font-bold text-white shadow-[0_10px_30px_-8px_rgba(255,110,30,0.55)] transition hover:brightness-110 sm:w-auto";
 
 /** Letterlijke nieuwsbrief-consenttekst; gaat mee als newsletterConsentTextVersion. */
-const NEWSLETTER_CONSENT_TEXT =
-  "Ja, ik ontvang graag de VisualVibe-nieuwsbrief met praktische tips over websites, SEO en online zichtbaarheid. Uitschrijven kan op elk moment.";
+const FLOW_COPY = {
+  nl: {
+    step1: "STAP 1 VAN 3", urlHeading: "Jouw website-URL", urlIntro: "Start hier. Binnen een minuut weet je waar je staat.", urlPlaceholder: "www.jouwwebsite.be", start: "Gratis analyse starten", freeNote: "Gratis en vrijblijvend. Je ontvangt een score en concrete verbeterpunten.", stats: ["score op basis van kernsignalen", "gratis analyses per 24 uur", "techniek, content en snelheid"],
+    step2: "STAP 2 VAN 3", detailsHeading: "Bijna klaar - waar mogen we het rapport naartoe?", firstName: "Voornaam*", email: "E-mailadres*", company: "Bedrijfsnaam (optioneel)", websiteUrl: "Website-URL*", privacyConsent: "Ik ga akkoord met de verwerking van mijn gegevens volgens het", privacyLink: "privacybeleid", newsletterConsent: "Ja, ik ontvang graag de VisualVibe-nieuwsbrief met praktische tips over websites, SEO en online zichtbaarheid. Uitschrijven kan op elk moment.", privacyUsage: "We gebruiken je gegevens om de analyse uit te voeren, het rapport te bezorgen, misbruik te voorkomen en contact over je aanvraag mogelijk te maken.", sending: "Bezig met versturen...", sendCode: "Verstuur verificatiecode", back: "Terug",
+    step3: "STAP 3 VAN 3", verifyHeading: "Bevestig je e-mailadres", verifyIntro: (email: string) => `We stuurden een 6-cijferige code naar ${email}. Vul die hieronder in om de analyse te starten.`, verifyCode: "Verificatiecode", confirm: "Code bevestigen en analyseren", resend: "Code opnieuw versturen", resendCooldown: (seconds: number) => `Opnieuw versturen kan over ${seconds}s`, noEmail: "Geen mail ontvangen? Kijk even in je spamfolder of vraag een nieuwe code aan.", resendSuccess: "Nieuwe code verstuurd. Kijk ook even in je spamfolder.",
+    loadingPhases: ["Pagina ophalen en renderen", "Snelheid & Core Web Vitals meten", "Techniek & structuur controleren", "Content & zoekintentie analyseren", "AI-vindbaarheid beoordelen"], progressHeading: "We analyseren je website", busySlow: "Dit duurt iets langer dan gewoonlijk. Sommige moderne sites vragen een diepere crawl. Laat deze pagina open staan - lukt het niet meteen, dan sturen we het rapport naar je e-mailadres.", usualTime: "Dit duurt meestal 30 tot 45 seconden. Laat deze pagina open staan.",
+    failedHeading: "De analyse is niet gelukt", retry: "Analyse opnieuw proberen", retrySending: "Nieuwe code versturen...", pendingHeading: "Je analyse loopt nog even door", pendingText: (email: string) => `Deze website vraagt een wat diepere crawl, bijvoorbeeld door JavaScript of server-side rendering. Daarom duurt de analyse langer dan gewoonlijk. Ze loopt op de achtergrond verder en je ontvangt het volledige rapport op ${email} zodra het klaar is. Je kunt dit venster sluiten.`,
+    genericError: "Er ging iets mis. Probeer het opnieuw.", connectionError: "Er ging iets mis. Controleer je verbinding en probeer het opnieuw.", analysisConnectionError: "De verbinding viel weg tijdens de analyse. Probeer het opnieuw.", resendError: "Versturen mislukt. Probeer het zo opnieuw.", resendConnectionError: "Versturen mislukt. Controleer je verbinding en probeer het opnieuw.", failedError: "De analyse is niet gelukt. Probeer het opnieuw.", completeCode: "Vul de volledige 6-cijferige code in.", expiredCode: "Deze code is verlopen. Vraag hieronder een nieuwe code aan.", invalidCode: (attempts: number) => attempts > 0 ? `De code klopt niet. Je hebt nog ${attempts} ${attempts === 1 ? "poging" : "pogingen"}.` : "De code klopt niet en je pogingen zijn op. Vraag hieronder een nieuwe code aan.",
+  },
+  en: {
+    step1: "STEP 1 OF 3", urlHeading: "Your website URL", urlIntro: "Start here. In under a minute, you will have a clearer picture of your website.", urlPlaceholder: "www.yourwebsite.com", start: "Start free analysis", freeNote: "Free, with no obligation. You receive a score and practical improvements.", stats: ["score based on key signals", "free analyses every 24 hours", "technical quality, content and speed"],
+    step2: "STEP 2 OF 3", detailsHeading: "Almost there. Where should we send your report?", firstName: "First name*", email: "Email address*", company: "Company name (optional)", websiteUrl: "Website URL*", privacyConsent: "I agree to the processing of my personal data in accordance with the", privacyLink: "privacy policy", newsletterConsent: "Yes, I would like to receive the VisualVibe newsletter with practical advice on websites, SEO and online visibility. I can unsubscribe at any time.", privacyUsage: "We use your details to run the analysis, deliver the report, prevent misuse and contact you about your request.", sending: "Sending...", sendCode: "Send verification code", back: "Back",
+    step3: "STEP 3 OF 3", verifyHeading: "Confirm your email address", verifyIntro: (email: string) => `We sent a 6-digit code to ${email}. Enter it below to start the analysis.`, verifyCode: "Verification code", confirm: "Confirm code and start analysis", resend: "Resend code", resendCooldown: (seconds: number) => `You can resend the code in ${seconds}s`, noEmail: "No email yet? Check your spam folder or request a new code.", resendSuccess: "We sent a new code. Please check your spam folder too.",
+    loadingPhases: ["Loading and rendering the page", "Measuring speed and Core Web Vitals", "Checking technical quality and structure", "Reviewing content and search intent", "Assessing AI search visibility"], progressHeading: "We are analysing your website", busySlow: "This is taking a little longer than usual. Some modern websites require a deeper crawl. Keep this page open. If the analysis cannot finish here, we will email you the report.", usualTime: "This usually takes 30 to 45 seconds. Keep this page open.",
+    failedHeading: "We could not complete the analysis", retry: "Try the analysis again", retrySending: "Sending a new code...", pendingHeading: "Your analysis is still running", pendingText: (email: string) => `This website requires a deeper crawl, for example because it uses JavaScript or server-side rendering, so the analysis is taking longer than usual. It will continue in the background, and we will send the full report to ${email} as soon as it is ready. You can close this window.`,
+    genericError: "Something went wrong. Please try again.", connectionError: "Something went wrong. Check your connection and try again.", analysisConnectionError: "The connection was interrupted during the analysis. Please try again.", resendError: "We could not resend the code. Please try again shortly.", resendConnectionError: "We could not resend the code. Check your connection and try again.", failedError: "We could not complete the analysis. Please try again.", completeCode: "Enter the complete 6-digit code.", expiredCode: "This code has expired. Request a new code below.", invalidCode: (attempts: number) => attempts > 0 ? `That code is not correct. You have ${attempts} ${attempts === 1 ? "attempt" : "attempts"} left.` : "That code is not correct, and you have no attempts left. Request a new code below.",
+  },
+} as const;
 
-/** Letterlijke privacytekst direct onder het gegevensformulier (vereist). */
-const PRIVACY_USAGE_TEXT =
-  "We gebruiken je gegevens om de analyse uit te voeren, het rapport te bezorgen, misbruik te voorkomen en contact over je aanvraag mogelijk te maken.";
+export function getAnalyseFlowCopy(locale: unknown) {
+  return locale === "nl" || locale === "en" ? FLOW_COPY[locale] : null;
+}
+
+export function getSafeAnalyseError(locale: "nl" | "en", _raw: unknown, kind: "start" | "verify" | "resend") {
+  const copy = FLOW_COPY[locale];
+  return kind === "resend" ? copy.resendError : copy.genericError;
+}
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
@@ -44,14 +66,6 @@ const BUSY_SLOW_AFTER_MS = 60_000;
 const CLIENT_VERIFY_TIMEOUT_MS = 90_000;
 
 const LOADING_TARGET_MS = 45_000;
-
-const LOADING_PHASES = [
-  "Pagina ophalen en renderen",
-  "Snelheid & Core Web Vitals meten",
-  "Techniek & structuur controleren",
-  "Content & zoekintentie analyseren",
-  "AI-vindbaarheid beoordelen",
-] as const;
 
 type FlowState =
   | { step: "url" }
@@ -81,7 +95,7 @@ export function getReportRedirectTarget(response: unknown): string | null {
 }
 
 function phaseStatus(progress: number, index: number): "done" | "active" | "pending" {
-  const phaseSize = 100 / LOADING_PHASES.length;
+  const phaseSize = 100 / 5;
   if (progress >= (index + 1) * phaseSize - 1) return "done";
   if (progress >= index * phaseSize) return "active";
   return "pending";
@@ -93,7 +107,8 @@ function phaseStatus(progress: number, index: number): "done" | "active" | "pend
  * naar het bestaande rapport.
  * Praat met /api/analyse/* volgens het contract in src/types/analysis.ts.
  */
-export function AnalyseFlow() {
+export function AnalyseFlow({ locale = "nl" }: { locale?: "nl" | "en" }) {
+  const copy = FLOW_COPY[locale];
   const [flow, setFlow] = useState<FlowState>({ step: "url" });
 
   // Formuliervelden (controlled, zodat de URL uit stap 1 voorgevuld blijft).
@@ -169,8 +184,9 @@ export function AnalyseFlow() {
       url: url.trim(),
       privacyAccepted,
       newsletterOptIn,
+      locale: analysisLocale(window.location.pathname.split("/").filter(Boolean)[0]),
       // Letterlijke consenttekst op moment van aanvinken (contract: AnalysisLead).
-      ...(newsletterOptIn ? { newsletterConsentTextVersion: NEWSLETTER_CONSENT_TEXT } : {}),
+      ...(newsletterOptIn ? { newsletterConsentTextVersion: copy.newsletterConsent } : {}),
       sourcePage: window.location.pathname,
       referrer: document.referrer || undefined,
       utmSource: searchParams.get("utm_source") || undefined,
@@ -191,7 +207,7 @@ export function AnalyseFlow() {
       if (data.status === "limit_reached") {
         setFlow({
           step: "limit",
-          message: data.message,
+          message: copy.genericError,
           quotaDecision: data.quotaDecision,
           resetsAt: data.resetsAt,
         });
@@ -200,9 +216,7 @@ export function AnalyseFlow() {
       }
 
       if (!response.ok || data.status !== "code_sent") {
-        setStartError(
-          data.status === "error" ? data.error : "Er ging iets mis. Probeer het opnieuw.",
-        );
+        setStartError(getSafeAnalyseError(locale, data, "start"));
         setIsPending(false);
         return;
       }
@@ -214,7 +228,7 @@ export function AnalyseFlow() {
       setFlow({ step: "code" });
       setIsPending(false);
     } catch {
-      setStartError("Er ging iets mis. Controleer je verbinding en probeer het opnieuw.");
+      setStartError(copy.connectionError);
       setIsPending(false);
     }
   }
@@ -251,7 +265,7 @@ export function AnalyseFlow() {
         case "limit_reached":
           setFlow({
             step: "limit",
-            message: data.message,
+            message: copy.genericError,
             quotaDecision: data.quotaDecision,
             resetsAt: data.resetsAt,
           });
@@ -260,27 +274,21 @@ export function AnalyseFlow() {
         case "failed":
           setFlow({
             step: "failed",
-            message: data.message || "De analyse is niet gelukt. Probeer het opnieuw.",
+            message: copy.failedError,
           });
           return;
         case "invalid_code":
           setCode("");
-          setCodeError(
-            data.attemptsLeft > 0
-              ? `De code klopt niet. Je hebt nog ${data.attemptsLeft} ${
-                  data.attemptsLeft === 1 ? "poging" : "pogingen"
-                }.`
-              : "De code klopt niet en je pogingen zijn op. Vraag hieronder een nieuwe code aan.",
-          );
+          setCodeError(copy.invalidCode(data.attemptsLeft));
           setFlow({ step: "code" });
           return;
         case "code_expired":
           setCode("");
-          setCodeError("Deze code is verlopen. Vraag hieronder een nieuwe code aan.");
+          setCodeError(copy.expiredCode);
           setFlow({ step: "code" });
           return;
         default:
-          setCodeError(data.status === "error" ? data.error : "Er ging iets mis. Probeer het opnieuw.");
+          setCodeError(getSafeAnalyseError(locale, data, "verify"));
           setFlow({ step: "code" });
           return;
       }
@@ -292,7 +300,7 @@ export function AnalyseFlow() {
       } else {
         setFlow({
           step: "failed",
-          message: "De verbinding viel weg tijdens de analyse. Probeer het opnieuw.",
+          message: copy.analysisConnectionError,
         });
       }
     } finally {
@@ -304,7 +312,7 @@ export function AnalyseFlow() {
     event.preventDefault();
     const clean = code.trim();
     if (!/^\d{6}$/.test(clean)) {
-      setCodeError("Vul de volledige 6-cijferige code in.");
+      setCodeError(copy.completeCode);
       return;
     }
     setCodeError(null);
@@ -335,12 +343,11 @@ export function AnalyseFlow() {
 
       if (response.ok && data.status === "code_sent") {
         setCode("");
-        setResendNotice("Nieuwe code verstuurd. Kijk ook even in je spamfolder.");
+        setResendNotice(copy.resendSuccess);
         setResendCooldown(RESEND_COOLDOWN_SECONDS);
         if (fromFailure) setFlow({ step: "code" });
       } else {
-        const message =
-          data.status === "error" ? data.error : "Versturen mislukt. Probeer het zo opnieuw.";
+        const message = getSafeAnalyseError(locale, data, "resend");
         if (fromFailure) {
           setFlow({ step: "failed", message });
         } else {
@@ -348,7 +355,7 @@ export function AnalyseFlow() {
         }
       }
     } catch {
-      const message = "Versturen mislukt. Controleer je verbinding en probeer het opnieuw.";
+      const message = copy.resendConnectionError;
       if (fromFailure) {
         setFlow({ step: "failed", message });
       } else {
@@ -368,13 +375,13 @@ export function AnalyseFlow() {
           {flow.step === "url" && (
             <form onSubmit={handleUrlSubmit} className="vvaf-step text-center">
               <p className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-[#ff8a2a]">
-                STAP 1 VAN 3
+                {copy.step1}
               </p>
               <h2 className="mt-3 text-[28px] font-bold tracking-[-0.02em] text-white">
-                Jouw website-URL
+                {copy.urlHeading}
               </h2>
               <p className="mt-1 text-[15px] text-[#8f8880]">
-                Start hier. Binnen een minuut weet je waar je staat.
+                {copy.urlIntro}
               </p>
 
               <div className="mx-auto mt-7 flex max-w-[620px] flex-col gap-3 sm:flex-row">
@@ -387,24 +394,25 @@ export function AnalyseFlow() {
                   required
                   value={url}
                   onChange={(event) => setUrl(event.target.value)}
-                  placeholder="www.jouwwebsite.be"
+                  placeholder={copy.urlPlaceholder}
+                  aria-label={copy.websiteUrl}
                   className={`${inputClasses} ${urlInputClasses} sm:flex-1`}
                 />
                 <Button type="submit" className={`${gradientButtonClasses} h-[58px]`}>
-                  Gratis analyse starten
+                  {copy.start}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
 
               <p className="mt-5 text-[13px] text-[#6b6259]">
-                Gratis en vrijblijvend. Je ontvangt een score en concrete verbeterpunten.
+                {copy.freeNote}
               </p>
 
               <div className="mt-8 grid gap-3.5 text-center sm:grid-cols-3">
                 {[
-                  { value: "100", label: "score op basis van kernsignalen" },
-                  { value: "3", label: "gratis analyses per 24 uur" },
-                  { value: "SEO", label: "techniek, content en snelheid" },
+                  { value: "100", label: copy.stats[0] },
+                  { value: "3", label: copy.stats[1] },
+                  { value: "SEO", label: copy.stats[2] },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -424,10 +432,10 @@ export function AnalyseFlow() {
               <form onSubmit={handleStartSubmit} className="flex flex-col gap-5">
                 <div>
                   <p className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-[#ff8a2a]">
-                    STAP 2 VAN 3
+                    {copy.step2}
                   </p>
                   <h2 className="mt-3 text-[22px] font-bold tracking-[-0.02em] text-white">
-                    Bijna klaar - waar mogen we het rapport naartoe?
+                    {copy.detailsHeading}
                   </h2>
                 </div>
 
@@ -445,7 +453,7 @@ export function AnalyseFlow() {
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2 sm:gap-x-5">
-                  <FormField label="Voornaam*" htmlFor="analyse-firstname">
+                  <FormField label={copy.firstName} htmlFor="analyse-firstname">
                     <input
                       id="analyse-firstname"
                       name="firstName"
@@ -456,7 +464,7 @@ export function AnalyseFlow() {
                       className={`${inputClasses} h-12`}
                     />
                   </FormField>
-                  <FormField label="E-mailadres*" htmlFor="analyse-email">
+                  <FormField label={copy.email} htmlFor="analyse-email">
                     <input
                       id="analyse-email"
                       name="email"
@@ -468,7 +476,7 @@ export function AnalyseFlow() {
                       className={`${inputClasses} h-12`}
                     />
                   </FormField>
-                  <FormField label="Bedrijfsnaam (optioneel)" htmlFor="analyse-company">
+                  <FormField label={copy.company} htmlFor="analyse-company">
                     <input
                       id="analyse-company"
                       name="companyName"
@@ -478,7 +486,7 @@ export function AnalyseFlow() {
                       className={`${inputClasses} h-12`}
                     />
                   </FormField>
-                  <FormField label="Website-URL*" htmlFor="analyse-url-edit">
+                  <FormField label={copy.websiteUrl} htmlFor="analyse-url-edit">
                     <input
                       id="analyse-url-edit"
                       name="url"
@@ -502,9 +510,9 @@ export function AnalyseFlow() {
                     className="mt-1 h-4 w-4 shrink-0 accent-[#ff8a2a]"
                   />
                   <span>
-                    Ik ga akkoord met de verwerking van mijn gegevens volgens het{" "}
+                    {copy.privacyConsent}{" "}
                     <Link href="/privacy" className="text-[#ff9a4d] underline underline-offset-2 hover:text-[#ffb066]">
-                      privacybeleid
+                      {copy.privacyLink}
                     </Link>
                     .*
                   </span>
@@ -518,7 +526,7 @@ export function AnalyseFlow() {
                     onChange={(event) => setNewsletterOptIn(event.target.checked)}
                     className="mt-1 h-4 w-4 shrink-0 accent-[#ff8a2a]"
                   />
-                  <span>{NEWSLETTER_CONSENT_TEXT}</span>
+                  <span>{copy.newsletterConsent}</span>
                 </label>
 
                 {startError && (
@@ -529,7 +537,7 @@ export function AnalyseFlow() {
 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                   <Button type="submit" disabled={isPending} className={gradientButtonClasses}>
-                    {isPending ? "Bezig met versturen..." : "Verstuur verificatiecode"}
+                    {isPending ? copy.sending : copy.sendCode}
                     {!isPending && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
                   </Button>
                   <button
@@ -537,12 +545,12 @@ export function AnalyseFlow() {
                     onClick={() => setFlow({ step: "url" })}
                     className="w-full text-sm font-semibold text-[#e8e2db] transition-colors hover:text-[#ffb066] sm:w-auto"
                   >
-                    Terug
+                    {copy.back}
                   </button>
                 </div>
               </form>
 
-              <p className="mt-4 text-[13px] leading-relaxed text-[#6b6259]">{PRIVACY_USAGE_TEXT}</p>
+              <p className="mt-4 text-[13px] leading-relaxed text-[#6b6259]">{copy.privacyUsage}</p>
             </div>
           )}
 
@@ -550,23 +558,22 @@ export function AnalyseFlow() {
           {flow.step === "code" && (
             <form onSubmit={handleCodeSubmit} className="vvaf-step flex flex-col gap-5">
               <p className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-[#ff8a2a]">
-                STAP 3 VAN 3
+                {copy.step3}
               </p>
 
               <div className="flex items-center gap-3.5 text-left">
                 <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-[#ff8a2a]/50 bg-[#ff8a2a]/12 text-[#FF9A45]">
                   <MailCheck className="h-[18px] w-[18px]" aria-hidden="true" />
                 </span>
-                <h2 className="text-xl font-bold text-white">Bevestig je e-mailadres</h2>
+                <h2 className="text-xl font-bold text-white">{copy.verifyHeading}</h2>
               </div>
 
               <p className="text-sm leading-relaxed text-white/62">
-                We stuurden een 6-cijferige code naar <strong className="text-white">{email}</strong>.
-                Vul die hieronder in om de analyse te starten.
+                {copy.verifyIntro(email)}
               </p>
 
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
-                <FormField label="Verificatiecode" htmlFor="analyse-code" className="lg:w-[220px]">
+                <FormField label={copy.verifyCode} htmlFor="analyse-code" className="lg:w-[220px]">
                   <input
                     id="analyse-code"
                     name="code"
@@ -585,7 +592,7 @@ export function AnalyseFlow() {
                 </FormField>
 
                 <Button type="submit" disabled={isPending} className={`${gradientButtonClasses} h-[54px]`}>
-                  Code bevestigen en analyseren
+                  {copy.confirm}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
 
@@ -596,8 +603,8 @@ export function AnalyseFlow() {
                   className="inline-flex h-[54px] items-center justify-center text-sm font-semibold text-[#e8e2db] transition-colors hover:text-[#ffb066] disabled:cursor-not-allowed disabled:text-white/40"
                 >
                   {resendCooldown > 0
-                    ? `Opnieuw versturen kan over ${resendCooldown}s`
-                    : "Code opnieuw versturen"}
+                    ? copy.resendCooldown(resendCooldown)
+                    : copy.resend}
                 </button>
               </div>
 
@@ -613,14 +620,14 @@ export function AnalyseFlow() {
               )}
 
               <p className="text-[13px] text-[#6b6259]">
-                Geen mail ontvangen? Kijk even in je spamfolder of vraag een nieuwe code aan.
+                {copy.noEmail}
               </p>
             </form>
           )}
 
           {/* Laadfase: analyse loopt. Geen tussen-resultaat; daarna direct naar rapport. */}
           {flow.step === "bezig" && (
-            <LoadingState progress={analysisProgress} busySlow={busySlow} />
+            <LoadingState progress={analysisProgress} busySlow={busySlow} copy={copy} />
           )}
 
           {/* Eindstate: quotum bereikt */}
@@ -630,6 +637,7 @@ export function AnalyseFlow() {
                 message={flow.message}
                 decision={flow.quotaDecision}
                 resetsAt={flow.resetsAt}
+                locale={locale}
               />
             </div>
           )}
@@ -644,7 +652,7 @@ export function AnalyseFlow() {
                   <AlertTriangle className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <h2 className="text-xl font-bold">De analyse is niet gelukt</h2>
+                  <h2 className="text-xl font-bold">{copy.failedHeading}</h2>
                   <p className="mt-1 text-sm text-white/60" role="alert">
                     {flow.message}
                   </p>
@@ -656,7 +664,7 @@ export function AnalyseFlow() {
                 disabled={!analysisLeadId || isPending}
                 className={gradientButtonClasses}
               >
-                {isPending ? "Nieuwe code versturen..." : "Analyse opnieuw proberen"}
+                {isPending ? copy.retrySending : copy.retry}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
@@ -672,13 +680,9 @@ export function AnalyseFlow() {
                   <MailCheck className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <h2 className="text-xl font-bold">Je analyse loopt nog even door</h2>
+                  <h2 className="text-xl font-bold">{copy.pendingHeading}</h2>
                   <p className="mt-1 text-sm leading-relaxed text-white/60">
-                    Deze website vraagt een wat diepere crawl (bijvoorbeeld door JavaScript of
-                    server-side rendering), dus de analyse duurt langer dan gewoonlijk. Ze loopt op
-                    de achtergrond af en je ontvangt het volledige rapport op{" "}
-                    <strong className="text-white/85">{email}</strong> zodra het klaar is. Je kunt
-                    dit venster sluiten.
+                    {copy.pendingText(email)}
                   </p>
                 </div>
               </div>
@@ -711,7 +715,7 @@ function FormField({
   );
 }
 
-function LoadingState({ progress, busySlow }: { progress: number; busySlow: boolean }) {
+function LoadingState({ progress, busySlow, copy }: { progress: number; busySlow: boolean; copy: (typeof FLOW_COPY)["nl" | "en"] }) {
   const roundedProgress = Math.min(100, Math.max(0, Math.round(progress)));
 
   return (
@@ -745,9 +749,9 @@ function LoadingState({ progress, busySlow }: { progress: number; busySlow: bool
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-white">We analyseren je website</h2>
+        <h2 className="text-2xl font-bold text-white">{copy.progressHeading}</h2>
         <div className="mt-5 flex flex-col gap-3">
-          {LOADING_PHASES.map((phase, index) => (
+          {copy.loadingPhases.map((phase, index) => (
             <LoadingPhase key={phase} label={phase} status={phaseStatus(roundedProgress, index)} />
           ))}
         </div>
@@ -761,12 +765,11 @@ function LoadingState({ progress, busySlow }: { progress: number; busySlow: bool
 
         {busySlow ? (
           <p className="mt-4 max-w-xl text-[13px] leading-relaxed text-amber-300/80">
-            Dit duurt iets langer dan gewoonlijk. Sommige moderne sites vragen een diepere crawl.
-            Laat deze pagina open staan - lukt het niet meteen, dan sturen we het rapport naar je e-mailadres.
+            {copy.busySlow}
           </p>
         ) : (
           <p className="mt-4 text-[13px] text-[#6b6259]">
-            Dit duurt meestal 30 tot 45 seconden. Laat deze pagina open staan.
+            {copy.usualTime}
           </p>
         )}
       </div>

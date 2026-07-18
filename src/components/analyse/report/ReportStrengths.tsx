@@ -1,9 +1,10 @@
 import { CheckCircle2 } from "lucide-react";
 import type { NormalizedPartnerAuditStrength } from "@/types/analysis";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportStrengths({ strengths }: { strengths: NormalizedPartnerAuditStrength[] }) {
+export function ReportStrengths({ strengths, locale = "nl" }: { strengths: NormalizedPartnerAuditStrength[]; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
   if (strengths.length === 0) return null;
   return (
     <section>

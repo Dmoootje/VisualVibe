@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/website-laten-maken/",
+  "targetRoute": "/en/services/web-design/business-website-design/",
+  "audience": "Independent businesses and SMEs in Limburg, Belgium, seeking a professional website aligned with their goals, audience and day-to-day operations.",
+  "primaryDutchSearchIntent": "Een professionele website laten maken die aanbod verduidelijkt, vertrouwen opbouwt en bezoekers naar contact of aankoop leidt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can design and build a professional, search-friendly website for our SME?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "website design for SMEs",
+  "longTailKeywords": [
+    "professional website design for SMEs",
+    "business website development Limburg Belgium",
+    "bespoke website for a small business",
+    "mobile-friendly business website design"
+  ],
+  "semanticTerms": [
+    "web strategy",
+    "responsive web design",
+    "technical SEO",
+    "conversion paths",
+    "content management",
+    "website maintenance",
+    "corporate photography"
+  ],
+  "directAnswer": "A professional SME website combines clear strategy, responsive design, reliable technology, SEO and useful content to explain the offer, build trust and guide visitors towards an enquiry, appointment or purchase.",
+  "title": "Website Design for SMEs in Limburg | VisualVibe",
+  "metaDescription": "Need a professional website for your SME? VisualVibe combines strategy, fast web design, SEO and original content in one clearly defined project.",
+  "h1": "A website designed to do a clear job",
+  "slug": "business-website-design",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/",
+      "targetHref": "/en/services/web-design/online-shop-development/",
+      "anchor": "online shop development"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/onepager-laten-maken/",
+      "targetHref": "/en/services/web-design/one-page-website/",
+      "anchor": "one-page website design"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-vernieuwen/",
+      "targetHref": "/en/services/web-design/website-redesign/",
+      "anchor": "website redesign"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/",
+      "targetHref": "/en/services/seo/",
+      "anchor": "SEO services"
+    }
+  ],
+  "factsToPreserve": [
+    "The website project may combine strategy, web design, technology, SEO, copywriting, photography and video.",
+    "The exact scope, functionality, content work, delivery stages and price are defined in a quotation.",
+    "Timelines depend on pages, features, feedback and available content, and no unconditional launch date is guaranteed.",
+    "Advanced keyword research, local landing pages, SEO copywriting and ongoing SEO require additional editorial work when included.",
+    "VisualVibe is based in Limburg, Belgium, and serves Limburg, Flanders, Antwerp and Dutch Limburg."
+  ]
+}

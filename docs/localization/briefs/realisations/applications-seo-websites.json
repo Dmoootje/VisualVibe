@@ -1,0 +1,21 @@
+{
+  "sourceRoute": "/be/realisaties/applicaties/seo-websites-saas-platform/",
+  "targetRoute": "/en/case-studies/applications/seo-websites-ai-seo-geo-saas-platform/",
+  "audience": "SEO professionals and agencies evaluating modular AI-assisted SEO software",
+  "primaryDutchSearchIntent": "Bekijken hoe een AI SEO- en GEO-SaaS analyse, contentgeneratie, projecten, betalingen en publicatie samenbrengt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How does an AI SEO and GEO SaaS platform combine analysis, generation, projects, payments and publishing?",
+    "geographicContext": "International"
+  },
+  "mainKeyword": "AI SEO and GEO SaaS platform",
+  "longTailKeywords": ["AI SEO content platform", "website analysis and content generation software", "multilingual SEO SaaS platform"],
+  "semanticTerms": ["SERP tools", "AI search visibility", "CMS integration", "prerendering", "structured data"],
+  "directAnswer": "SEO Websites combines website analysis, AI-assisted content, product copy, SERP tools, workspaces, payments and CMS integrations in one multilingual SaaS platform.",
+  "title": "SEO Websites AI SEO and GEO SaaS platform | VisualVibe",
+  "metaDescription": "Explore the SEO Websites SaaS platform for AI content, product copy, website analysis, workspaces, payments, CMS plugins and server-side prerendering.",
+  "h1": "SEO Websites",
+  "slug": "seo-websites-ai-seo-geo-saas-platform",
+  "internalLinks": [],
+  "factsToPreserve": ["React 19 and Vite", "Express and PostgreSQL", "Gemini, OpenAI and Anthropic", "Stripe", "WordPress and Drupal plugins", "Four public marketing languages"]
+}

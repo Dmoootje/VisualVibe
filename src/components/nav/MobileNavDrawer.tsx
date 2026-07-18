@@ -8,6 +8,7 @@ import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { Link } from "@/i18n/navigation";
 import { NavIcon } from "./nav-icons";
 import type { NavCard, NavPillar } from "./navData";
+import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
   () =>
@@ -216,6 +217,7 @@ function Logo({ size = 20 }: { size?: number }) {
 }
 
 function WeddingCtaCard({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("nav");
   return (
     <Link
       href="/trouwfotograaf-limburg"
@@ -262,7 +264,7 @@ function WeddingCtaCard({ onClick }: { onClick: () => void }) {
             color: "#B8860B",
           }}
         >
-          Ook voor je mooiste dag
+          {t("weddingEyebrow")}
         </span>
         <span
           style={{
@@ -274,7 +276,7 @@ function WeddingCtaCard({ onClick }: { onClick: () => void }) {
             paddingRight: 44,
           }}
         >
-          Trouwfotografie &amp; huwelijksvideo
+          {t("weddingTitle")}
         </span>
       </span>
       <span
@@ -320,6 +322,7 @@ export function MobileNavDrawer({
   kennisbankPostCount,
   onClose,
 }: MobileNavDrawerProps) {
+  const t = useTranslations("nav");
   const [view, setView] = useState<DrawerView>("root");
   const [serviceIndex, setServiceIndex] = useState<number | null>(null);
   const currentPillar =
@@ -436,7 +439,7 @@ export function MobileNavDrawer({
             whiteSpace: "nowrap",
           }}
         >
-          Alle <ArrowRight />
+          {t("all")} <ArrowRight />
         </Link>
       )}
     </div>
@@ -592,7 +595,7 @@ export function MobileNavDrawer({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Sluiten"
+            aria-label={t("closeMenu")}
             style={{
               width: 42,
               height: 42,
@@ -623,53 +626,53 @@ export function MobileNavDrawer({
 
         <div className="vvnav-mvView">
           <div className="vvnav-mvPanel" style={panelStyle("root")}>
-            <div style={eyebrowStyle}>Menu</div>
-            {linkRow("/", "Home")}
+            <div style={eyebrowStyle}>{t("menu")}</div>
+            {linkRow("/", t("home"))}
             {appRow(
               <GridGlyph />,
-              "Diensten",
-              `${pillars.length} disciplines`,
+              t("services"),
+              t("disciplineCount", { count: pillars.length }),
               () => setView("diensten"),
             )}
             {appRow(
               <PinGlyph />,
-              "Regio",
-              `${regions.length} werkgebieden`,
+            t("regions"),
+            t("workAreas", { count: regions.length }),
               () => setView("regio"),
             )}
             {appRow(
               <NavIcon id="layers" size={20} />,
-              "Realisaties",
-              `${realisatieCards.length} categorieën`,
+              t("caseStudies"),
+              t("categoryCount", { count: realisatieCards.length }),
               () => setView("realisaties"),
             )}
             {appRow(
               <NavIcon id="briefcase" size={20} />,
-              "Sectoren",
-              `${sectorCards.length} sectoren`,
+              t("sectors"),
+              t("sectorCount", { count: sectorCards.length }),
               () => setView("sectoren"),
             )}
             {appRow(
               <NavIcon id="tools" size={20} />,
-              "Tools",
-              `${toolsCards.length} gratis tools`,
+              t("tools"),
+              t("freeToolCount", { count: toolsCards.length }),
               () => setView("tools"),
             )}
             {kennisbankItems.length > 0 &&
               appRow(
                 <NavIcon id="book" size={20} />,
-                "Kennisbank",
+                t("knowledgeBase"),
                 kennisbankPostCount > 0
-                  ? `${kennisbankItems.length} categorieën · ${kennisbankPostCount} artikels`
-                  : `${kennisbankItems.length} categorieën`,
+                  ? t("knowledgeCounts", { categories: kennisbankItems.length, articles: kennisbankPostCount })
+                  : t("categoryCount", { count: kennisbankItems.length }),
                 () => setView("kennisbank"),
               )}
-            {linkRow("/over-ons", "Over ons")}
-            {linkRow("/contact", "Contact")}
+            {linkRow("/over-ons", t("about"))}
+            {linkRow("/contact", t("contact"))}
           </div>
 
           <div className="vvnav-mvPanel" style={panelStyle("diensten")}>
-            {pushHead("Diensten", "/diensten")}
+            {pushHead(t("services"), "/diensten")}
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {pillars.map((pillar, index) => (
                 <div
@@ -732,7 +735,7 @@ export function MobileNavDrawer({
                         setServiceIndex(index);
                         setView("service");
                       }}
-                      aria-label={`Toon onderdelen van ${pillar.name}`}
+                      aria-label={t("showServiceParts", { service: pillar.name })}
                       className="vvnav-mSubBtn"
                       style={{
                         flex: "none",
@@ -839,7 +842,7 @@ export function MobileNavDrawer({
                           color: "#fff",
                         }}
                       >
-                        Klaar voor {currentPillar.name.toLowerCase()}?
+                         {t("readyFor", { service: currentPillar.name.toLowerCase() })}
                       </span>
                       <span
                         style={{
@@ -849,7 +852,7 @@ export function MobileNavDrawer({
                           marginTop: 2,
                         }}
                       >
-                        Vraag vrijblijvend een voorstel aan.
+                         {t("mobileProposal")}
                       </span>
                     </span>
                     <span
@@ -877,8 +880,8 @@ export function MobileNavDrawer({
           </div>
 
           <div className="vvnav-mvPanel" style={panelStyle("regio")}>
-            {pushHead("Regio", "/regio")}
-            <div style={eyebrowStyle}>Onze regio&apos;s</div>
+            {pushHead(t("regions"), "/regio")}
+            <div style={eyebrowStyle}>{t("ourRegions")}</div>
             <div
               style={{
                 display: "grid",
@@ -960,7 +963,7 @@ export function MobileNavDrawer({
                             : "rgba(255,255,255,.6)",
                         }}
                       >
-                        {isHome ? "Thuisregio" : "Regio"}
+                         {isHome ? t("homeRegion") : t("region")}
                       </span>
                       <span
                         style={{
@@ -983,7 +986,7 @@ export function MobileNavDrawer({
                           color: "#FF9A45",
                         }}
                       >
-                        Ontdek <ArrowRight />
+                        {t("discover")} <ArrowRight />
                       </span>
                     </div>
                   </Link>
@@ -994,17 +997,17 @@ export function MobileNavDrawer({
 
           {cardPanel(
             "realisaties",
-            "Realisaties",
+            t("caseStudies"),
             "/realisaties",
             realisatieCards,
             <WeddingCtaCard onClick={onClose} />,
           )}
-          {cardPanel("sectoren", "Sectoren", "/sectoren", sectorCards)}
-          {cardPanel("tools", "Tools", "/tools", toolsCards)}
+          {cardPanel("sectoren", t("sectors"), "/sectoren", sectorCards)}
+          {cardPanel("tools", t("tools"), "/tools", toolsCards)}
           {kennisbankItems.length > 0 &&
             cardPanel(
               "kennisbank",
-              "Kennisbank",
+              t("knowledgeBase"),
               "/kennisbank",
               kennisbankItems,
             )}
@@ -1037,7 +1040,7 @@ export function MobileNavDrawer({
               boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)",
             }}
           >
-            Offerte aanvragen <ArrowRight size={16} />
+             {t("quotation")} <ArrowRight size={16} />
           </Link>
           <NextLink
             href="/admin/login"
@@ -1057,7 +1060,7 @@ export function MobileNavDrawer({
               border: "1px solid rgba(255,255,255,.12)",
             }}
           >
-            <UserIcon size={17} /> Inloggen
+            <UserIcon size={17} /> {t("login")}
           </NextLink>
         </div>
       </aside>

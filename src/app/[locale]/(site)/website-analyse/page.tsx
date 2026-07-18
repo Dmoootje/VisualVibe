@@ -9,11 +9,12 @@ import { getAnalysisIntegrationPublic } from "@/lib/analyse/integration";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { TOOL_PAGE_IMAGES } from "@/data/toolPageImages";
+import { analysisLocale } from "@/lib/analyse/locale";
 
 const PAGE_PATH = "/website-analyse/";
 const PAGE_URL = `${businessConfig.url}${localizedPath("nl", PAGE_PATH)}`;
 
-export const metadata = pageMetadata({
+const nlMetadata = pageMetadata({
   title: `Gratis website analyse: SEO, snelheid en techniek | ${businessConfig.displayName}`,
   description:
     "Doe een gratis website analyse en ontdek hoe je website scoort op SEO, snelheid, techniek en AI-vindbaarheid. Ontvang concrete verbeterpunten.",
@@ -32,6 +33,19 @@ export const metadata = pageMetadata({
   ogImage: TOOL_PAGE_IMAGES.websiteAnalyse.url,
   ogImageAlt: TOOL_PAGE_IMAGES.websiteAnalyse.alt,
 });
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (locale !== "en") return nlMetadata;
+  return pageMetadata({
+    title: `Free website analysis for SEO and performance | ${businessConfig.displayName}`,
+    description: "Run a free website analysis for SEO, speed, technical issues, content and AI search visibility. Get clear priorities from VisualVibe's online tool.",
+    keywords: ["free website analysis", "free SEO website analysis", "website performance analysis", "AI search visibility"],
+    path: "/website-analysis/", locale: "en", noindex: true,
+    ogImage: TOOL_PAGE_IMAGES.websiteAnalyse.url,
+    ogImageAlt: "VisualVibe free website analysis for SEO, performance, technical quality and AI search visibility",
+  });
+}
 
 // De modus en sleutels worden live uit de admin-config gelezen, dus per request
 // renderen zodat een wijziging in /admin/settings/analyse meteen zichtbaar is.
@@ -153,9 +167,13 @@ function SectionHeader({
   );
 }
 
-export default async function WebsiteAnalysePage() {
+export default async function WebsiteAnalysePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = analysisLocale(routeLocale);
   const integration = await getAnalysisIntegrationPublic();
   const useWidget = integration.mode === "widget";
+
+  if (locale === "en") return <EnglishWebsiteAnalysisPage integration={integration} useWidget={useWidget} />;
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
@@ -208,9 +226,10 @@ export default async function WebsiteAnalysePage() {
                 <WebsiteAnalyseWidget
                   scriptSrc={integration.widgetScriptUrl}
                   siteKey={integration.publicKey}
+                  locale={locale}
                 />
               ) : (
-                <AnalyseFlow />
+                <AnalyseFlow locale="nl" />
               )}
             </div>
 
@@ -426,4 +445,37 @@ export default async function WebsiteAnalysePage() {
       </main>
     </div>
   );
+}
+
+const EN_CHECKS = [
+  ["Technical SEO", "We review indexability, canonical tags, redirects, robots directives, structured data and the technical signals search engines rely on."],
+  ["Performance and Core Web Vitals", "See how loading speed, mobile performance and render-blocking resources affect usability and search visibility."],
+  ["Content and search intent", "We check titles, meta descriptions, headings, content structure and how clearly the page answers what visitors are looking for."],
+  ["AI search visibility", "The analysis assesses whether your content is clear and structured enough for AI answers, AEO, GEO and modern search experiences."],
+  ["Images and accessibility", "We flag missing alt text, oversized images and elements that weaken accessibility or remove useful context."],
+  ["Internal links", "We check whether important pages are easy to reach and whether visitors and crawlers have clear routes through your website."],
+] as const;
+
+const EN_FAQS: FaqItem[] = [
+  { question: "What is a website analysis?", answer: "A website analysis is a focused check of your SEO, performance, technical setup, content and online visibility. It shows what works and where there is room to improve." },
+  { question: "Is the website analysis free?", answer: "Yes. VisualVibe's basic website analysis is free and carries no obligation. You receive a score and practical findings that show where your website could be stronger." },
+  { question: "What does the analysis check?", answer: "It covers technical SEO, Core Web Vitals, mobile performance, content structure, metadata, images, internal links, structured data and AI search visibility." },
+  { question: "Why do I need to confirm my email address?", answer: "Email verification helps prevent abuse and automated spam requests, keeping free analyses available to genuine businesses and website owners." },
+  { question: "Can I analyse my website again?", answer: "Yes. Run another analysis after making changes to see whether your score and priorities have changed." },
+  { question: "How is this different from a full SEO audit?", answer: "The free analysis is a quick snapshot of the main priorities. A full SEO audit goes deeper into strategy, keywords, competitors, content planning, technical optimisation and conversion opportunities." },
+];
+
+function EnglishWebsiteAnalysisPage({ integration, useWidget }: { integration: Awaited<ReturnType<typeof getAnalysisIntegrationPublic>>; useWidget: boolean }) {
+  return <div className="relative min-h-screen overflow-hidden text-white">
+    <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Website analysis", path: "/website-analysis" }]} />
+    <WebPageJsonLd url={`${businessConfig.url}/en/website-analysis/`} name="Free website analysis" description="Free VisualVibe website analysis for SEO, performance, technical quality, content and AI search visibility." primaryImage={TOOL_PAGE_IMAGES.websiteAnalyse.url} />
+    <FaqPageJsonLd items={EN_FAQS} /><PageAmbient />
+    <main className="relative z-10">
+      <section className="pb-12 pt-28 sm:pt-32"><div className="container mx-auto px-2.5 sm:px-4"><header className="mx-auto grid max-w-[1120px] items-center gap-8 lg:grid-cols-2"><div><p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-[#ff8a2a]">Website analysis</p><h1 className="text-4xl font-extrabold sm:text-5xl">Free website analysis</h1><p className="mt-5 text-lg leading-relaxed text-white/68">Enter your website to see how it performs across SEO, speed, technical quality, content and AI search visibility. You receive clear priorities, not a vague automated score.</p></div><div className="relative aspect-[1200/630] overflow-hidden rounded-[24px]"><Image src={TOOL_PAGE_IMAGES.websiteAnalyse.url} alt="VisualVibe free website analysis for SEO, performance, technical quality and AI search visibility" fill priority sizes="(max-width: 1023px) 100vw, 600px" className="object-cover" /></div></header><div className="mx-auto mt-11 max-w-[1120px]">{useWidget ? <WebsiteAnalyseWidget scriptSrc={integration.widgetScriptUrl} siteKey={integration.publicKey} locale="en" /> : <AnalyseFlow locale="en" />}</div></div></section>
+      <section className="py-12" id="analysis-checks"><div className="container mx-auto px-2.5 sm:px-4"><SectionHeader eyebrow="Checks" title="What does our website analysis check?" intro="The scan looks beyond a handful of SEO tags. It combines technical signals, content quality, performance, accessibility and AI search visibility in one practical report." /><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{EN_CHECKS.map(([title,text]) => <article key={title} className="rounded-[22px] border border-white/[0.09] bg-white/[0.025] p-6"><h3 className="text-lg font-bold">{title}</h3><p className="mt-3 text-sm leading-relaxed text-white/62">{text}</p></article>)}</div></div></section>
+      <section className="py-12"><div className="container mx-auto px-2.5 sm:px-4"><SectionHeader eyebrow="Your report" title="A score with priorities you can act on" intro="The report combines a score out of 100 with checks, strengths and recommendations, helping you separate urgent issues from worthwhile refinements." /><div className="rounded-[26px] border border-white/10 bg-white/[0.025] p-7"><p className="text-5xl font-bold text-green-400">92 <span className="text-xl text-white/45">/ 100</span></p><ul className="mt-5 grid gap-3 sm:grid-cols-2"><li>Clear checks and practical recommendations</li><li>Priorities for SEO, performance, content and AI visibility</li><li>Technical and accessibility signals in one view</li><li>A useful starting point for your next improvements</li></ul></div></div></section>
+      <section className="py-12"><div className="container mx-auto px-2.5 sm:px-4"><SectionHeader eyebrow="Next step" title="Free analysis or a full SEO audit?" intro="The free analysis quickly identifies likely obstacles. A full audit goes deeper into keywords, competitors, content, technical architecture, conversion and a prioritised roadmap." /><div className="flex flex-wrap gap-3"><a href="/en/diensten/seo/" className="rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black">Explore our SEO service</a><a href="/en/diensten/webdesign/" className="rounded-full border border-white/15 px-6 py-3">Improve your website</a><a href="/en/request-a-quotation/" className="rounded-full border border-white/15 px-6 py-3">Discuss your report</a></div></div></section>
+      <section className="py-12"><div className="container mx-auto px-2.5 sm:px-4"><SectionHeader eyebrow="FAQ" title="Frequently asked questions" intro="Straight answers to common questions before you run the analysis." /><div className="grid gap-3 lg:grid-cols-2">{EN_FAQS.map(item => <article key={item.question} className="rounded-2xl border border-white/10 p-5"><h3 className="font-bold">{item.question}</h3><p className="mt-2 text-sm leading-6 text-white/62">{item.answer}</p></article>)}</div></div></section>
+    </main>
+  </div>;
 }

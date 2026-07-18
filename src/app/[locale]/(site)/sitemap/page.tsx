@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
+import NextLink from "next/link";
 import "./sitemap.css";
 import {
   Home,
@@ -26,12 +27,18 @@ import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = pageMetadata({
-  title: `Sitemap | ${businessConfig.displayName}`,
-  description:
-    "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
-  path: "/sitemap/",
-});
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return pageMetadata(locale === "en" ? {
+    title: `Sitemap | ${businessConfig.displayName}`,
+    description: "Browse the VisualVibe sitemap for a clear overview of services, case studies, sectors and regions, plus tools, company information and contact pages.",
+    path: "/sitemap/", locale: "en",
+  } : {
+    title: `Sitemap | ${businessConfig.displayName}`,
+    description: "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
+    path: "/sitemap/",
+  });
+}
 
 export const revalidate = 60;
 
@@ -44,23 +51,39 @@ type SmSection = {
   nodes: SmNode[];
 };
 
-function TreeList({ nodes }: { nodes: SmNode[] }) {
+function TreeList({ nodes, fullyPrefixed = false }: { nodes: SmNode[]; fullyPrefixed?: boolean }) {
+  const NodeLink = fullyPrefixed ? NextLink : Link;
   return (
     <ul className="vvsm-branch">
       {nodes.map((node) => (
         <li key={node.href}>
-          <Link href={node.href} className="vvsm-node">
+          <NodeLink href={node.href} className="vvsm-node">
             <span className="vvsm-title">{node.title}</span>
             <span className="vvsm-path">{node.href}</span>
-          </Link>
-          {node.children && node.children.length > 0 && <TreeList nodes={node.children} />}
+          </NodeLink>
+          {node.children && node.children.length > 0 && <TreeList nodes={node.children} fullyPrefixed={fullyPrefixed} />}
         </li>
       ))}
     </ul>
   );
 }
 
-export default async function SitemapPage() {
+export default async function SitemapPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (locale === "en") {
+    const englishSections: SmSection[] = [
+      { icon: FileText, title: "General pages", href: "/en/about/", intro: "Company information and ways to get in touch.", nodes: [
+        { title: "About VisualVibe", href: "/en/about/" }, { title: "Contact", href: "/en/contact/" },
+        { title: "Request a quotation", href: "/en/request-a-quotation/" }, { title: "Privacy policy", href: "/en/privacy/" },
+        { title: "Cookie policy", href: "/en/cookies/" }, { title: "Sitemap", href: "/en/sitemap/" },
+      ] },
+      { icon: LayoutGrid, title: "Tools", href: "/en/tools/", intro: "Free tools to improve your website and online visibility.", nodes: [
+        { title: "Website analysis", href: "/en/website-analysis/" }, { title: "SEO and GEO checklist", href: "/en/tools/seo-geo-checklist/" },
+      ] },
+    ];
+    const total = 1 + englishSections.reduce((sum, section) => sum + section.nodes.length, 0);
+    return <div className="relative min-h-screen overflow-hidden text-white"><BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Sitemap", path: "/sitemap" }]} /><PageAmbient /><div className="relative z-10 mx-auto max-w-[980px] px-4 pb-24 pt-28 sm:px-8 sm:pt-32"><header className="mb-12 max-w-2xl"><p className="mb-3.5 font-mono text-xs font-bold uppercase tracking-[.18em] text-[#FF9A45]">Sitemap</p><h1 className="font-sora text-4xl font-extrabold sm:text-5xl">All pages at a glance</h1><p className="mt-4 text-white/60">This sitemap groups every English page currently prepared for VisualVibe. Each title is a link and the path beneath it shows where the page sits. There are {total} pages in total.</p></header><NextLink href="/en/" className="vvsm-node"><span className="vvsm-title">Home</span><span className="vvsm-path">/en/</span></NextLink><div className="mt-6 flex flex-col">{englishSections.map((section) => { const Icon = section.icon; return <section key={section.title} className="border-t border-white/[.06] py-8"><div className="mb-4 flex gap-4"><Icon className="h-6 w-6 text-[#FF9A45]"/><div><NextLink href={section.href} className="font-sora text-xl font-extrabold">{section.title}</NextLink><p className="mt-1 text-sm text-white/45">{section.intro}</p></div></div><TreeList nodes={section.nodes} fullyPrefixed /></section>; })}</div></div></div>;
+  }
   const applicationProjects = (await getApplicationCases()).filter((project) => project.published);
 
   const dienstenNodes: SmNode[] = [

@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/kennisbank/3d-vr/3d-tour-voor-vastgoed/",
+  "targetRoute": "/en/kennisbank/3d-vr/3d-tour-for-real-estate/",
+  "audience": "Estate agents, property developers, landlords, managers and owners who want to present a property's spatial layout online.",
+  "primaryDutchSearchIntent": "Makelaars, verhuurders en vastgoedeigenaars helpen bepalen wanneer een 3D-tour past en hoe zij capture, privacy, hosting, metingen, website-integratie en opvolging professioneel plannen.",
+  "searchIntent": { "type": "commercial", "question": "When does a real estate 3D tour add value, and how should capture, privacy, hosting, measurement limits and website publication be planned?", "geographicContext": "International English-speaking readers, with Belgian and EU privacy context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "3D tour for real estate",
+  "longTailKeywords": ["virtual real estate tour", "3D house tour", "Matterport real estate", "virtual property viewing", "3D tour for estate agents", "real estate 3D tour Limburg"],
+  "semanticTerms": ["virtual viewing", "spatial model", "floor plan", "technical measurement", "hosting", "retention", "GDPR", "accessible alternative", "property listing"],
+  "directAnswer": "A real estate 3D tour lets prospective buyers or tenants explore how a property's spaces connect. It is useful when layout and circulation influence pre-selection, provided the property, route, privacy, hosting, measurement limits, accessible alternatives and removal date are planned before publication.",
+  "title": "3D tour for real estate: from online exploration to viewing",
+  "metaDescription": "Planning a real estate 3D tour? Compare photos, video and virtual tours, then arrange routes, privacy, hosting, accessibility and measurements in advance.",
+  "h1": "3D tour for real estate: from online exploration to viewing",
+  "slug": "3d-tour-for-real-estate",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what is a 3D tour" },
+    { "sourceHref": "/be/diensten/3d-vr-ar/vastgoed-3d-tour/", "targetHref": "/en/diensten/3d-vr-ar/real-estate-3d-tour/", "anchor": "real estate 3D tour service" },
+    { "sourceHref": "/be/kennisbank/fotografie/vastgoedfotografie-tips/", "targetHref": "/en/kennisbank/fotografie/real-estate-photography-tips/", "anchor": "real estate photography tips" },
+    { "sourceHref": "/be/kennisbank/drone/dronefotografie-voor-vastgoed/", "targetHref": "/en/kennisbank/drone/real-estate-drone-photography/", "anchor": "drone photography for real estate" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete website guide" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your property tour" }
+  ],
+  "factsToPreserve": [
+    "A tour does not replace an honest description, photography, floor plan, technical inspection or physical viewing.",
+    "US housing research provides context and is not a Belgian guarantee of faster sales.",
+    "Marketing capture and technical measurement are separate outputs unless explicitly specified and validated.",
+    "A device accuracy specification does not guarantee every viewer measurement or derived file.",
+    "Automatic blurring is not a complete privacy control.",
+    "Cloud tours may depend on an active platform account and subscription.",
+    "The hosting owner, costs, transfer, retention and removal date must be agreed.",
+    "Interactive viewers need text, photographs, floor plans and contact as accessible alternatives.",
+    "A 3D tour cannot generally be guaranteed to sell or rent property faster."
+  ]
+}

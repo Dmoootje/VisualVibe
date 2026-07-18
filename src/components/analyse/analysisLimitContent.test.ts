@@ -34,4 +34,17 @@ describe("analysis limit content", () => {
     expect(PAGE_ANALYZER_URL).toBe("https://seowebsites.be/nl/seo-website-analyse");
     expect(COMPLETE_AUDIT_URL).toBe("https://seowebsites.be/AIGEOprofiler/");
   });
+
+  it("renders safe English quota and reset copy without exposing API messages", () => {
+    const content = getAnalysisLimitContent({
+      locale: "en",
+      decision: "limit_ip_monthly",
+      message: "Interne quotumfout met geheim pad",
+      resetsAt: "2026-07-20T18:30:00.000Z",
+    });
+
+    expect(content.heading).toBe("The request limit has been reached");
+    expect(content.description).toContain("Monday 20 July");
+    expect(content.description).not.toContain("geheim");
+  });
 });

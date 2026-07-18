@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/videografie/",
+  "targetRoute": "/en/case-studies/videography/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Videorealisaties van VisualVibe bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which corporate films, promotional videos and event highlight films has VisualVibe produced?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "video production case studies",
+  "longTailKeywords": [
+    "video production case studies Limburg Belgium",
+    "video production case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe produces corporate films, promotional videos, event highlight films and social videos for businesses.",
+  "title": "Videography case studies | VisualVibe",
+  "metaDescription": "Explore corporate films, promotional videos and event highlight films shot and edited in 4K by VisualVibe for businesses in Limburg, Belgium.",
+  "h1": "Videography case studies",
+  "slug": "videography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

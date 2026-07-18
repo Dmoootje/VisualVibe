@@ -10,6 +10,7 @@ import type {
   BlogSearchIntent,
   BlogSource,
 } from "@/types/blog";
+import type { SupportedLocale } from "@/i18n/locales";
 import { getCategoryByName } from "@/data/kennisbankCategories";
 import { KENNISBANK_OG, kennisbankFeatured } from "@/data/kennisbankImages";
 import {
@@ -296,7 +297,7 @@ function readPostFile(filename: string): BlogPost {
     pillar: data.pillar === true,
     status: parseStatus(data, filename),
     locale: parseLocale(data.locale, filename),
-    translationKey: optionalString(data.translationKey, "translationKey", filename),
+    translationKey: requiredString(data, "translationKey", filename),
     author: authorProfile.name,
     authorProfile,
     publishedAt: dateString(data.publishedAt, "publishedAt", filename),
@@ -330,6 +331,18 @@ function readPostFile(filename: string): BlogPost {
   };
 }
 
+export function listPostFiles(directory: string = CONTENT_DIR, prefix = ""): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = path.join(prefix, entry.name);
+    if (entry.isDirectory()) {
+      return entry.name.startsWith("_")
+        ? []
+        : listPostFiles(path.join(directory, entry.name), relativePath);
+    }
+    return entry.isFile() && entry.name.endsWith(".mdx") ? [relativePath] : [];
+  });
+}
+
 let cachedAuthoredPosts: BlogPost[] | null = null;
 let cachedValidationIssues: KennisbankValidationIssue[] | null = null;
 
@@ -342,7 +355,7 @@ function getAuthoredPosts(): BlogPost[] {
     return cachedAuthoredPosts;
   }
 
-  const files = fs.readdirSync(CONTENT_DIR).filter((file) => file.endsWith(".mdx"));
+  const files = listPostFiles();
   const authoredPosts = files
     .map(readPostFile)
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
@@ -351,6 +364,7 @@ function getAuthoredPosts(): BlogPost[] {
   const structuralIssues = validationIssues.filter((issue) =>
     [
       "duplicate-slug",
+      "duplicate-translation-key",
       "invalid-category",
       "invalid-category-slug",
       "invalid-pillar",
@@ -405,10 +419,16 @@ export function getPostsByCategory(
   return getAllPosts({ locale }).filter((post) => post.categorySlug === categorySlug);
 }
 
-/** Returns only live translations explicitly connected through translationKey. */
-export function getPostTranslations(post: BlogPost): BlogPost[] {
-  if (!post.translationKey) return [post];
-  return getAllPosts().filter((candidate) => candidate.translationKey === post.translationKey);
+/** Returns translations explicitly connected through a stable translation key. */
+export function getPostTranslations(
+  translationKey: string,
+  options?: { includeDrafts?: boolean },
+): Partial<Record<SupportedLocale, BlogPost>> {
+  return Object.fromEntries(
+    getAllPosts(options)
+      .filter((candidate) => candidate.translationKey === translationKey)
+      .map((candidate) => [candidate.locale, candidate]),
+  );
 }
 
 export function getKennisbankValidationIssues(): KennisbankValidationIssue[] {
@@ -417,12 +437,16 @@ export function getKennisbankValidationIssues(): KennisbankValidationIssue[] {
 }
 
 /** CI/build hook: fails with a complete, actionable list of invalid live references. */
-export function assertValidKennisbankContent(): void {
-  assertValidKennisbankPosts(getAuthoredPosts());
+export function assertValidKennisbankContent(locales?: readonly SupportedLocale[]): void {
+  const authoredPosts = getAuthoredPosts();
+  const posts = locales
+    ? authoredPosts.filter((post) => locales.includes(post.locale as SupportedLocale))
+    : authoredPosts;
+  assertValidKennisbankPosts(posts);
 }
 
 // Pure URL helpers live in ./urls (no fs) so client components can use them too.
-export { postHref, categoryHref, localizedPath } from "./urls";
+export { postHref, localizedPostHref, categoryHref, localizedPath } from "./urls";
 
 /** Extracts the last non-empty path segment from an absolute site path. */
 export function slugFromPath(sitePath: string): string {

@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/drone-fpv/realisatie-dronebeelden/",
+  "targetRoute": "/en/services/drone-fpv/construction-project-drone-footage/",
+  "audience": "contractors and project teams documenting construction progress or a completed project",
+  "primaryDutchSearchIntent": "Professionele dronebeelden laten maken met duidelijke afspraken over doel, locatie, veiligheid, luchtruim, weer en oplevering.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional construction project drone footage services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "construction progress drone footage",
+  "longTailKeywords": [
+    "construction progress drone footage Limburg Belgium",
+    "professional construction progress drone footage for SMEs",
+    "construction progress drone footage VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "Construction project drone footage records scale, progress and spatial coherence through planned aerial viewpoints, without replacing technical inspection.",
+  "title": "Construction project drone footage in Limburg | VisualVibe",
+  "metaDescription": "Professional construction project drone footage for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "Construction project drone footage shaped around a clear purpose",
+  "slug": "construction-project-drone-footage",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

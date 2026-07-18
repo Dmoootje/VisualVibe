@@ -1,0 +1,24 @@
+{
+  "sourceRoute": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/",
+  "targetRoute": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/",
+  "audience": "Business owners and marketing or communications managers organising corporate photography or a combined photo and video production day.",
+  "primaryDutchSearchIntent": "KMO's een uitvoerbaar draaiboek geven om briefing, shotlist, planning, toestemming, logistiek, productie, selectie en oplevering van een bedrijfsshoot voor te bereiden.",
+  "searchIntent": { "type": "commercial", "question": "How should we prepare the brief, shot list, people, location and delivery for a productive corporate photo shoot?", "geographicContext": "International English-speaking readers, with VisualVibe production support based in Limburg, Belgium." },
+  "mainKeyword": "prepare a corporate photo shoot",
+  "longTailKeywords": ["corporate photo shoot checklist", "corporate photography shot list", "how to brief a corporate photographer", "plan business website photography"],
+  "semanticTerms": ["photography brief", "call sheet", "image rights", "location recce", "photo selection", "usage licence", "alt text"],
+  "directAnswer": "Prepare a corporate photo shoot by linking every required image to a real communication use, then turn those priorities into a brief, shot list, call sheet and realistic schedule. Confirm participants, consent, location, safety, formats, selection and usage rights before production day.",
+  "title": "How to prepare a corporate photo shoot: a practical plan",
+  "metaDescription": "Preparing a corporate photo shoot? Plan the brief, shot list, schedule, location, employees, consent, styling, image selection and delivery in advance.",
+  "h1": "How to prepare a corporate photo shoot: a practical plan",
+  "slug": "how-to-prepare-a-corporate-photo-shoot",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography is" },
+    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/diensten/photography/corporate-photography/", "anchor": "on-location corporate photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/kennisbank/fotografie/corporate-portrait-tips/", "anchor": "corporate portrait tips" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why businesses invest in corporate video" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "plan your corporate photo shoot" }
+  ],
+  "factsToPreserve": ["Every image should be linked to a real use and prioritised as essential, desirable or reserve.", "The schedule must account for people, daylight, operations, safety, setup, movement and interruptions.", "Consent to take an image does not automatically cover every publication or reuse.", "Photography and video can share a day but require separate priorities and realistic time.", "Receiving files does not automatically transfer unrestricted copyright.", "Meaningful images need purpose-based alt text, while decorative images may use an empty alt attribute."]
+}

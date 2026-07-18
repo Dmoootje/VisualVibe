@@ -1,0 +1,41 @@
+{
+  "sourceRoute": "/be/kennisbank/seo-geo/wat-is-aeo/",
+  "targetRoute": "/en/kennisbank/seo-geo/what-is-aeo/",
+  "audience": "Self-employed professionals, SMEs and marketing teams that want service and knowledge content to answer concrete customer questions more clearly",
+  "primaryDutchSearchIntent": "Een KMO leren hoe echte zoekvragen worden omgezet in heldere antwoordformaten die bruikbaar, vindbaar en meetbaar zijn",
+  "searchIntent": { "type": "informational", "question": "What is AEO and how can an SME turn real customer questions into clear, useful and measurable website answers?", "geographicContext": "English-speaking SMEs in Limburg, Belgium and the wider web market" },
+  "mainKeyword": "what is AEO",
+  "longTailKeywords": ["Answer Engine Optimisation", "AEO for SMEs", "content for direct answers", "answer customer questions on a website", "featured snippet optimisation", "write useful FAQ content", "AEO vs SEO", "answer-focused content"],
+  "semanticTerms": ["question mapping", "search intent", "direct answer", "featured snippet", "FAQ", "structured data", "snippet controls", "task completion", "answer quality", "generative search"],
+  "directAnswer": "AEO stands for Answer Engine Optimisation: organising content so a specific question receives a clear, accurate and useful answer quickly. It helps visitors, traditional search results and systems that summarise answers. AEO is an editorial discipline within strong SEO, not a separate trick or a guarantee of a featured snippet or AI mention.",
+  "title": "What is AEO? Building content that answers direct questions clearly",
+  "metaDescription": "What is AEO? Learn to analyse questions, write direct answers, understand snippets and measure answer-focused content without AI tricks or guarantees.",
+  "h1": "What is AEO? Building content that answers direct questions clearly",
+  "slug": "what-is-aeo",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "GEO and AEO for SMEs" },
+    { "sourceHref": "/be/kennisbank/seo-geo/wat-is-geo-generative-engine-optimization/", "targetHref": "/en/kennisbank/seo-geo/what-is-generative-engine-optimisation/", "anchor": "GEO" },
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/kennisbank/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-voor-websites-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/seo-for-websites-in-limburg/", "anchor": "SEO for websites in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "fast website" },
+    { "sourceHref": "/be/diensten/seo/seo-copywriting/", "targetHref": "/en/diensten/seo/seo-copywriting/", "anchor": "SEO copywriting" },
+    { "sourceHref": "/be/diensten/seo/ai-seo-aeo-geo/", "targetHref": "/en/diensten/seo/ai-seo-aeo-geo/", "anchor": "AI SEO, AEO and GEO" },
+    { "sourceHref": "/be/diensten/webdesign/seo-website-laten-maken/", "targetHref": "/en/diensten/web-design/seo-ready-website/", "anchor": "SEO-ready website" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your AEO content" }
+  ],
+  "factsToPreserve": [
+    "AEO does not guarantee a featured snippet, citation, AI mention or fixed answer position",
+    "AEO does not impose a universal word limit on direct answers",
+    "SEO remains the technical and content foundation, while AEO emphasises question analysis and answer format",
+    "Google says the same SEO foundations apply to AI Overviews and AI Mode and there are no extra technical requirements",
+    "Google primarily creates snippets from page content and may use the meta description when it fits better",
+    "Structured data must describe visible page content and does not improve a weak answer or guarantee a result",
+    "Google stopped showing FAQ rich results from 7 May 2026; this claim was reverified against official Google documentation on 18 July 2026",
+    "Answer quality requires accuracy, completeness, standalone clarity, audience fit and a useful next step",
+    "No single metric provides a universal AEO score",
+    "Citations and referrals do not by themselves establish authority, causality or business value"
+  ]
+}

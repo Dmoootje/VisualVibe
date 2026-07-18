@@ -5,6 +5,8 @@ import {
   webdesignProjects as defaultWebdesignProjects,
   type WebdesignProject,
 } from "@/data/webdesignShowcase";
+import type { SupportedLocale } from "@/i18n/locales";
+import { mergeDutchRecords, readLocalizedOptional, readLocalizedRequired } from "./localizedContent";
 
 // Admin-managed project listings for the Webdesign service showcase. Stored as a
 // `projects` array in the same Firestore doc that holds the images
@@ -15,14 +17,25 @@ import {
 const COLLECTION = "site_content";
 const DOC_ID = "webdesign_showcase";
 
-async function readWebdesignProjects(): Promise<WebdesignProject[]> {
+const VISITOR_FIELDS = ["name", "client", "tags", "teaser", "text", "features", "terms"] as const;
+
+export function localizeWebdesignProject(raw: Record<string, unknown>, locale: SupportedLocale): WebdesignProject {
+  const result = { ...raw } as unknown as WebdesignProject;
+  for (const field of VISITOR_FIELDS) {
+    (result as unknown as Record<string, unknown>)[field] = readLocalizedRequired(raw[field] as never, locale, `webdesignProject.${String(raw.id)}.${field}`);
+  }
+  result.sectors = readLocalizedOptional(raw.sectors as never, locale, `webdesignProject.${String(raw.id)}.sectors`);
+  return result;
+}
+
+async function readWebdesignProjects(locale: SupportedLocale = "nl"): Promise<WebdesignProject[]> {
   try {
     const doc = await withTimeout(adminDb.collection(COLLECTION).doc(DOC_ID).get());
     const stored = doc.exists ? (doc.data()?.projects as WebdesignProject[] | undefined) : undefined;
-    if (Array.isArray(stored) && stored.length > 0) return stored;
-    return defaultWebdesignProjects;
+    if (Array.isArray(stored) && stored.length > 0) return (stored as unknown as Record<string, unknown>[]).map((project) => localizeWebdesignProject(project, locale));
+    return (defaultWebdesignProjects as unknown as Record<string, unknown>[]).map((project) => localizeWebdesignProject(project, locale));
   } catch {
-    return defaultWebdesignProjects;
+    return (defaultWebdesignProjects as unknown as Record<string, unknown>[]).map((project) => localizeWebdesignProject(project, locale));
   }
 }
 
@@ -34,5 +47,8 @@ export async function setWebdesignProjects(projects: WebdesignProject[]): Promis
   const ref = adminDb.collection(COLLECTION).doc(DOC_ID);
   // `merge: true` keeps the sibling `images` map; arrays are replaced whole,
   // which is exactly what reorder/delete need.
-  await ref.set({ projects, updatedAt: new Date() }, { merge: true });
+  const snapshot = await ref.get();
+  const stored = snapshot.exists ? snapshot.data()?.projects as Record<string, unknown>[] | undefined : undefined;
+  const merged = mergeDutchRecords(stored, projects as unknown as Record<string, unknown>[], VISITOR_FIELDS);
+  await ref.set({ projects: merged, updatedAt: new Date() }, { merge: true });
 }

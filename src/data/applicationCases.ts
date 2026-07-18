@@ -1,3 +1,9 @@
+import type { SupportedLocale } from "@/i18n/locales";
+import {
+  englishApplicationCaseEditorial,
+  type EnglishApplicationCaseLocaleRecord,
+} from "./locales/en/applicationCases";
+
 export type ApplicationCaseStatus = "live" | "in-development";
 
 export type ApplicationCaseSsr = {
@@ -294,3 +300,50 @@ export const applicationCases: ApplicationCase[] = [
       "Bekijk het Pelletkachelzorg-platform in ontwikkeling: multi-site CMS, catalogus, voorraad, Mollie, server-side checkout, builders en communicatiecentrum.",
   },
 ];
+
+export type LocalizedApplicationCaseRecord = ApplicationCase & {
+  id: string;
+  imageAlts?: EnglishApplicationCaseLocaleRecord["imageAlts"];
+};
+
+/**
+ * Resolves the checked-in default records only. Firestore can replace the Dutch
+ * project array at runtime, but its legacy free-text records do not yet carry
+ * locale-keyed editorial fields. Callers must not treat those records as English.
+ */
+export function getLocalizedApplicationCaseById(
+  id: string,
+  locale: SupportedLocale,
+): LocalizedApplicationCaseRecord {
+  const source = applicationCases.find((project) => project.id === id);
+  if (!source) throw new Error(`Unknown application case ID: ${id}`);
+  if (locale === "nl") return { ...source, id };
+  if (locale !== "en") {
+    throw new Error(`Missing ${locale} translation for applicationCase.${id}`);
+  }
+  const translated = englishApplicationCaseEditorial[id];
+  if (!translated) throw new Error(`Missing en translation for applicationCase.${id}`);
+  return {
+    ...source,
+    ...translated,
+    id,
+    slug: translated.displaySlug,
+  };
+}
+
+export function getApplicationCaseByLocalizedSlug(
+  slug: string,
+  locale: SupportedLocale,
+): LocalizedApplicationCaseRecord {
+  if (locale === "nl") {
+    const source = applicationCases.find((project) => project.slug === slug);
+    if (!source) throw new Error(`Unknown nl application case slug: ${slug}`);
+    return { ...source, id: source.id };
+  }
+  if (locale !== "en") throw new Error(`Missing ${locale} translation for application cases`);
+  const entry = Object.entries(englishApplicationCaseEditorial).find(
+    ([, record]) => record.displaySlug === slug,
+  );
+  if (!entry) throw new Error(`Unknown ${locale} application case slug: ${slug}`);
+  return getLocalizedApplicationCaseById(entry[0], locale);
+}

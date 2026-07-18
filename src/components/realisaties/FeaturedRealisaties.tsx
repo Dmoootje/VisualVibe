@@ -2,11 +2,13 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { HubProject } from "@/lib/realisaties/hubData";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
 
-function FeaturedCard({ project, big }: { project: HubProject; big?: boolean }) {
+function FeaturedCard({ project, big, locale }: { project: HubProject; big?: boolean; locale: SupportedLocale }) {
   return (
     <Link
-      href={`/realisaties/${project.categorySlug}`}
+      href={`/realisaties/${getLocalizedRealisatieCategoryById(project.categorySlug, locale).slug}`}
       className={`group relative block overflow-hidden rounded-[20px] border border-white/[0.09] bg-[#141210] transition-colors hover:border-[rgba(255,122,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] ${
         big ? "aspect-[16/10] lg:col-span-2 lg:row-span-2 lg:aspect-auto lg:h-full lg:min-h-[420px]" : "aspect-[16/10] lg:aspect-[4/3]"
       }`}
@@ -36,7 +38,7 @@ function FeaturedCard({ project, big }: { project: HubProject; big?: boolean }) 
           </p>
         )}
         <span className="mt-3 inline-flex items-center gap-[7px] font-mono text-[11px] font-bold tracking-[0.06em] text-white/80">
-          BEKIJK DE REALISATIE
+          {locale === "en" ? "VIEW CASE STUDY" : "BEKIJK DE REALISATIE"}
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden="true" />
         </span>
       </div>
@@ -49,7 +51,7 @@ function FeaturedCard({ project, big }: { project: HubProject; big?: boolean }) 
  * component). Eén grote hoofdcase links, kleinere cases rechts. Kaarten linken
  * naar de bestaande categoriepagina waar het project volledig te bekijken is.
  */
-export function FeaturedRealisaties({ featured }: { featured: HubProject[] }) {
+export function FeaturedRealisaties({ featured, locale = "nl" }: { featured: HubProject[]; locale?: SupportedLocale }) {
   if (featured.length === 0) return null;
   const [main, ...rest] = featured;
 
@@ -59,18 +61,18 @@ export function FeaturedRealisaties({ featured }: { featured: HubProject[] }) {
         <div className="mb-8">
           <p className="mb-3.5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
-            Uitgelicht
+            {locale === "en" ? "Featured" : "Uitgelicht"}
           </p>
-          <h2 className="text-2xl font-bold sm:text-3xl">Uitgelichte realisaties</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">{locale === "en" ? "Featured case studies" : "Uitgelichte realisaties"}</h2>
           <p className="mt-4 max-w-3xl text-[15.5px] leading-relaxed text-white/65">
-            Een selectie van projecten waarin strategie, ontwerp en visuele content samenkomen.
+            {locale === "en" ? "A selection of projects that bring strategy, design and visual content together." : "Een selectie van projecten waarin strategie, ontwerp en visuele content samenkomen."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-[18px] lg:grid-cols-3">
-          <FeaturedCard project={main} big />
+          <FeaturedCard project={main} big locale={locale} />
           {rest.slice(0, 2).map((project) => (
-            <FeaturedCard key={project.id} project={project} />
+            <FeaturedCard key={project.id} project={project} locale={locale} />
           ))}
         </div>
       </div>

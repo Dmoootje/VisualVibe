@@ -15,6 +15,7 @@ export function BlogHeroImage({
   caption,
   category,
   readingTime,
+  locale = "nl",
 }: {
   src: string;
   alt: string;
@@ -22,6 +23,7 @@ export function BlogHeroImage({
   caption?: string;
   category: string;
   readingTime?: string;
+  locale?: string;
 }) {
   const dialogTitle = title ?? alt;
   return (
@@ -66,7 +68,7 @@ export function BlogHeroImage({
           <Dialog.Trigger asChild>
             <button
               type="button"
-              aria-label={`Vergroot afbeelding: ${dialogTitle}`}
+              aria-label={`${locale === "en" ? "Enlarge image" : "Vergroot afbeelding"}: ${dialogTitle}`}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/16 bg-black/60 text-white backdrop-blur-sm transition-colors hover:border-[#ff7500]/60 hover:text-[#ff9a45] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500]"
             >
               <ZoomIn className="h-5 w-5" aria-hidden="true" />
@@ -81,7 +83,7 @@ export function BlogHeroImage({
           <Dialog.Close asChild>
             <button
               type="button"
-              aria-label="Afbeelding sluiten"
+              aria-label={locale === "en" ? "Close image" : "Afbeelding sluiten"}
               className="absolute right-4 top-4 z-10 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-white/20 bg-black/75 text-white/80 shadow-lg backdrop-blur-sm transition-colors hover:border-[#ff7500]/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500]"
             >
               <X className="h-5 w-5" aria-hidden="true" />
@@ -97,7 +99,7 @@ export function BlogHeroImage({
             <Dialog.Description
               className={caption ? "mt-1.5 max-w-4xl text-sm leading-relaxed text-white/60 sm:text-base" : "sr-only"}
             >
-              {caption ?? `Vergrote weergave van ${dialogTitle}.`}
+              {caption ?? (locale === "en" ? `Enlarged view of ${dialogTitle}.` : `Vergrote weergave van ${dialogTitle}.`)}
             </Dialog.Description>
           </div>
         </Dialog.Content>

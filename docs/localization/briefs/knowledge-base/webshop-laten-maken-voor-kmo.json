@@ -1,0 +1,50 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/",
+  "targetRoute": "/en/kennisbank/webdesign/online-shop-development-for-smes/",
+  "audience": "Belgian SMEs and retailers planning a new online sales channel or a professional redevelopment of an existing online shop.",
+  "primaryDutchSearchIntent": "Belgische KMO's helpen bepalen welke inhoud, processen, techniek en begeleiding een professionele webshop nodig heeft.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "What does professional online shop development require for product data, checkout, payments, fulfilment, SEO and daily management?",
+    "geographicContext": "Belgian SMEs, particularly in Limburg and Flanders, with cross-border EU considerations where relevant."
+  },
+  "mainKeyword": "online shop development for SMEs",
+  "longTailKeywords": [
+    "professional online shop development Belgium",
+    "e-commerce website development for SMEs",
+    "online shop checkout and payment integration",
+    "online shop product data and stock integration",
+    "online shop development cost"
+  ],
+  "semanticTerms": [
+    "product catalogue",
+    "product variants",
+    "payment provider",
+    "VAT",
+    "delivery and returns",
+    "product photography",
+    "technical SEO",
+    "faceted navigation",
+    "order management"
+  ],
+  "directAnswer": "Professional online shop development connects dependable product data, a clear mobile checkout, payment and delivery rules, practical order management, legal information and an SEO-ready technical foundation around the SME's actual sales process.",
+  "title": "Online shop development for SMEs: from product data to checkout",
+  "metaDescription": "Planning an online shop for your SME? Understand product data, checkout, payments, logistics, VAT, SEO, media and daily management.",
+  "h1": "Online shop development for SMEs: from product data to checkout",
+  "slug": "online-shop-development-for-smes",
+  "internalLinks": [
+    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/diensten/web-design/online-shop-development/", "anchor": "online shop development" },
+    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/diensten/photography/product-photography/", "anchor": "product photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-online-shops/", "anchor": "product photography for online shops" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/diensten/web-design/", "anchor": "web design" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your online shop" }
+  ],
+  "factsToPreserve": [
+    "The platform choice depends on the range, data, management team, integrations, markets, budget and desired independence.",
+    "Payment rules and transaction costs depend on the external provider.",
+    "Legal and tax configuration depends on the business, products, customers and target markets and requires qualified review.",
+    "Stock, delivery, returns and integration exception paths are part of the customer promise.",
+    "Technical SEO and good Core Web Vitals do not guarantee rankings, traffic or sales.",
+    "One-off development costs must be distinguished from hosting, platform, app, transaction, maintenance and support costs."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "sourceRoute": "/be/kennisbank/seo-geo/wat-is-geo-generative-engine-optimization/",
+  "targetRoute": "/en/kennisbank/seo-geo/what-is-generative-engine-optimisation/",
+  "audience": "Self-employed professionals, SMEs and marketing teams preparing their websites to become trustworthy sources for generative search experiences",
+  "primaryDutchSearchIntent": "Een KMO uitleggen hoe retrieval, bronwaardigheid, citeerbare informatie en platformtoegang de zichtbaarheid in generatieve antwoorden kunnen beïnvloeden",
+  "searchIntent": {
+    "type": "informational",
+    "question": "What is Generative Engine Optimisation and how can an SME make its website retrievable, understandable and citeable in generative answers?",
+    "geographicContext": "English-speaking SMEs in Limburg, Belgium and the wider international web market"
+  },
+  "mainKeyword": "what is Generative Engine Optimisation",
+  "longTailKeywords": [
+    "GEO for SMEs",
+    "how to get cited in AI answers",
+    "optimise content for generative search",
+    "measure AI citations",
+    "OAI-SearchBot and GPTBot",
+    "Bing AI Performance",
+    "source quality for AI search"
+  ],
+  "semanticTerms": [
+    "GEO",
+    "retrieval",
+    "query fan-out",
+    "source citations",
+    "grounding queries",
+    "crawlers",
+    "snippet controls",
+    "structured data",
+    "entity consistency",
+    "AI referral traffic"
+  ],
+  "directAnswer": "GEO stands for Generative Engine Optimisation: preparing a website so generative systems can retrieve relevant pages, understand their information and potentially cite them as sources. It builds on SEO while adding attention to retrieval, source quality, citeable claims, entities and platform access. GEO cannot buy or guarantee a citation.",
+  "title": "What is GEO? Becoming retrievable and citeable in generative answers",
+  "metaDescription": "What is GEO? Learn how retrieval, source quality, platform crawlers, citations and measurement support citeable AI content without hacks or guarantees.",
+  "h1": "What is GEO? Becoming retrievable and citeable in generative answers",
+  "slug": "what-is-generative-engine-optimisation",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "appearing in Google, ChatGPT and AI search results" },
+    { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
+    { "sourceHref": "/be/kennisbank/seo-geo/wat-is-aeo/", "targetHref": "/en/kennisbank/seo-geo/what-is-aeo/", "anchor": "AEO" },
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-voor-websites-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/seo-for-websites-in-limburg/", "anchor": "SEO for websites in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/google-business-profiel-optimaliseren/", "targetHref": "/en/kennisbank/seo-geo/optimise-google-business-profile/", "anchor": "well-managed Google Business Profile" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/kennisbank/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to building a website" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "website speed" },
+    { "sourceHref": "/be/diensten/seo/technische-seo/", "targetHref": "/en/diensten/seo/technical-seo/", "anchor": "technical SEO" },
+    { "sourceHref": "/be/diensten/seo/seo-copywriting/", "targetHref": "/en/diensten/seo/seo-copywriting/", "anchor": "SEO copywriting" },
+    { "sourceHref": "/be/diensten/seo/ai-seo-aeo-geo/", "targetHref": "/en/diensten/seo/ai-seo-aeo-geo/", "anchor": "AI SEO, AEO and GEO" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your GEO approach" }
+  ],
+  "factsToPreserve": [
+    "GEO cannot buy, force or guarantee a citation on any generative platform",
+    "The GEO paper was submitted in November 2023 and accepted at KDD 2024; its reported improvements of up to 40 percent belong to a specific experimental benchmark and are not a general promise",
+    "Google may use query fan-out in AI Overviews and AI Mode",
+    "A Google supporting-link candidate must be indexed and allowed to show a Search snippet, but inclusion is not guaranteed and no extra AI technical requirement exists",
+    "Google says no special AI schema or machine-readable AI file is required for its AI features",
+    "OAI-SearchBot and GPTBot are independent controls for ChatGPT Search and potential model training respectively",
+    "OpenAI says a Search robots change may take about 24 hours to process",
+    "Robots.txt may not apply to user-initiated ChatGPT-User actions",
+    "Bing AI Performance metrics do not establish the position, authority or role a page had in one answer",
+    "No available dashboard captures the complete generative landscape, and no metric is a universal GEO score",
+    "This content distinguishes citations from authority, rankings, traffic, conversions and revenue"
+  ]
+}

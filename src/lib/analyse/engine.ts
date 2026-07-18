@@ -12,6 +12,7 @@ export async function runWebsiteAnalysis(input: {
   safeUrl: string;
   normalizedDomain: string;
   idempotencyKey?: string;
+  locale?: "nl" | "en" | "fr";
 }): Promise<AnalysisRunResult> {
   const integration = await getAnalysisIntegrationRuntime();
   if (
@@ -30,5 +31,6 @@ export async function runWebsiteAnalysis(input: {
     safeUrl: input.safeUrl,
     externalReference: reference,
     idempotencyKey: reference,
+    locale: input.locale ?? "nl",
   });
 }

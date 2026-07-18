@@ -14,11 +14,14 @@ export function RelatedServices({
   items,
   title = "Gerelateerde diensten",
   className,
+  locale = "nl",
 }: {
   items: RelatedService[];
   title?: string;
   className?: string;
+  locale?: string;
 }) {
+  if (locale === "en" && title === "Gerelateerde diensten") title = "Related services";
   return (
     <section className={cn("my-8", className)}>
       <h2 className="mb-4 text-xl font-bold text-white">{title}</h2>

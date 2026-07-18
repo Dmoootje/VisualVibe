@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
+import { LOCALE_CONFIG } from "./i18n/locales";
 import { routing } from "./i18n/routing";
 import { SESSION_COOKIE_NAME } from "./lib/auth/constants";
 
@@ -7,6 +8,16 @@ const intlMiddleware = createMiddleware(routing);
 
 const PUBLIC_ADMIN_PATHS = ["/admin/login"];
 const INTERNAL_LOCALE_REWRITE_HEADER = "x-visualvibe-internal-locale-rewrite";
+const PUBLIC_LOCALE_PREFIXES = ["/be"];
+const DISABLED_LOCALE_PREFIXES = Object.entries(LOCALE_CONFIG)
+  .filter(([, config]) => config.status !== "published")
+  .map(([locale]) => `/${locale}`);
+
+export function isPublicLocalePrefix(pathname: string): boolean {
+  return PUBLIC_LOCALE_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -41,7 +52,18 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/be" || pathname.startsWith("/be/")) {
+  const disabledPrefix = DISABLED_LOCALE_PREFIXES.find(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+  if (disabledPrefix) {
+    const suffix = pathname.slice(disabledPrefix.length);
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `/be${suffix || "/"}`;
+    if (!redirectUrl.pathname.endsWith("/")) redirectUrl.pathname += "/";
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
+  if (isPublicLocalePrefix(pathname)) {
     const suffix = pathname.slice(3) || "/";
     // Keep the origin exactly as request.nextUrl: overriding the host (e.g.
     // with the Host header) makes the rewrite cross-origin, so Next proxies it

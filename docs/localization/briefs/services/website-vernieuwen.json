@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/website-vernieuwen/",
+  "targetRoute": "/en/services/web-design/website-redesign/",
+  "audience": "Independent businesses and SMEs whose existing website no longer matches their brand, offer, technology or customer needs.",
+  "primaryDutchSearchIntent": "Een verouderde website zorgvuldig vernieuwen zonder waardevolle content, URL's, functies en opgebouwde SEO-signalen achteloos te verliezen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can redesign and migrate our existing website while carefully handling content, URLs, integrations and SEO?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "website redesign",
+  "longTailKeywords": [
+    "website redesign with SEO migration",
+    "redesign an outdated business website",
+    "website migration and redesign Belgium",
+    "business website rebuild Limburg"
+  ],
+  "semanticTerms": [
+    "content inventory",
+    "URL migration",
+    "redirect plan",
+    "technical SEO",
+    "responsive redesign",
+    "information architecture",
+    "post-launch checks"
+  ],
+  "directAnswer": "A controlled website redesign audits the existing site first, retains useful content and functions, maps changed URLs to redirects, rebuilds the user experience and verifies indexability after launch.",
+  "title": "Website Redesign with SEO Migration | VisualVibe",
+  "metaDescription": "Redesign your website without discarding valuable content or SEO signals. VisualVibe manages the audit, redesign, migration and technical launch checks.",
+  "h1": "Redesign your website without blindly starting again",
+  "slug": "website-redesign",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/website-laten-maken/",
+      "targetHref": "/en/services/web-design/business-website-design/",
+      "anchor": "business website design"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/seo-website-laten-maken/",
+      "targetHref": "/en/services/web-design/seo-ready-website/",
+      "anchor": "SEO-ready website development"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/technische-seo/",
+      "targetHref": "/en/services/seo/technical-seo/",
+      "anchor": "technical SEO"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-onderhoud/",
+      "targetHref": "/en/services/web-design/website-maintenance/",
+      "anchor": "website maintenance"
+    }
+  ],
+  "factsToPreserve": [
+    "Changes to URLs, content and internal links can affect search visibility, and rankings are never guaranteed.",
+    "A content and URL inventory plus redirect plan are prepared before migration.",
+    "Existing integrations can only be retained when their technology, licences, documentation and support allow it.",
+    "The current site usually remains available during development, but any interruption or DNS change depends on the existing infrastructure.",
+    "The audit determines what is retained, rewritten or replaced and precedes the specific quotation."
+  ]
+}

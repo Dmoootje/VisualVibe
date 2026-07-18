@@ -106,6 +106,7 @@ export async function runPartnerAnalysis(
     safeUrl: string;
     externalReference: string;
     idempotencyKey: string;
+    locale: "nl" | "en" | "fr";
   },
   dependencies: PartnerApiDependencies = {},
 ): Promise<AnalysisRunResult> {
@@ -125,7 +126,7 @@ export async function runPartnerAnalysis(
   const body = JSON.stringify({
     siteId: input.partnerSiteId,
     url: input.safeUrl,
-    language: "nl",
+    language: input.locale,
     resultMode: "extended",
     externalReference: input.externalReference,
     idempotencyKey: input.idempotencyKey,

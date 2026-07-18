@@ -13,6 +13,7 @@ export function SearchBar({
   placeholder = "Zoek een gids of artikel...",
   size = "hero",
   submitLabel = "Zoeken",
+  clearLabel = "Zoekopdracht wissen",
   autoFocus,
   className,
 }: {
@@ -23,6 +24,7 @@ export function SearchBar({
   placeholder?: string;
   size?: "hero" | "sidebar";
   submitLabel?: string;
+  clearLabel?: string;
   autoFocus?: boolean;
   className?: string;
 }) {
@@ -60,7 +62,7 @@ export function SearchBar({
         <button
           type="button"
           onClick={onClear}
-          aria-label="Zoekopdracht wissen"
+          aria-label={clearLabel}
           className={cn(
             "flex shrink-0 items-center justify-center rounded-[9px] bg-white/[0.06] text-white/70 transition-colors hover:bg-white/10 hover:text-white",
             hero ? "h-[34px] w-[34px]" : "h-[30px] w-[30px]"

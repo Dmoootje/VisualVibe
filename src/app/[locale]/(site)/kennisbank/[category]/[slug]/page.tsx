@@ -25,7 +25,9 @@ import { Section, Container } from "@/components/ui";
 import { Breadcrumbs, CTASection, ServiceGrid, RegionGrid, BlogGrid } from "@/components/sections";
 import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/seo";
 import { BlogHero, MdxContent, StickyBlogSidebar } from "@/components/blog";
+import { knowledgeBaseLabels } from "@/components/kennisbank";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
+import { getPublishedLocales } from "@/i18n/locales";
 
 const HREFLANG: Record<BlogLocale, string> = {
   nl: "nl-BE",
@@ -132,7 +134,8 @@ function absoluteAuthorUrl(post: BlogPost): string | undefined {
 }
 
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({
+  const publishedLocales = getPublishedLocales();
+  return getAllPosts().filter((post) => publishedLocales.includes(post.locale)).map((post) => ({
     locale: post.locale,
     category: post.categorySlug,
     slug: post.slug,
@@ -153,7 +156,9 @@ export async function generateMetadata({
   if (!post) return {};
 
   const canonical = `${businessConfig.url}${localizedPath(locale, postHref(post))}`;
-  const translations = getPostTranslations(post);
+  const translations = Object.values(getPostTranslations(post.translationKey)).filter(
+    (translation): translation is BlogPost => Boolean(translation),
+  );
   const languageAlternates =
     translations.length > 1
       ? Object.fromEntries(
@@ -221,6 +226,7 @@ export default async function KennisbankPostPage({
   params: Promise<{ locale: string; category: string; slug: string }>;
 }) {
   const { locale, category, slug } = await params;
+  const labels = knowledgeBaseLabels(locale);
 
   if (!isBlogLocale(locale)) {
     notFound();
@@ -288,7 +294,7 @@ export default async function KennisbankPostPage({
         locale={post.locale}
         items={[
           { name: "Home", path: "/" },
-          { name: "Kennisbank", path: "/kennisbank/" },
+          { name: labels.knowledgeBase, path: "/kennisbank/" },
           {
             name: categoryName,
             path: categoryHref(post.categorySlug),
@@ -327,7 +333,7 @@ export default async function KennisbankPostPage({
             className="mb-6"
             items={[
               { name: "Home", href: "/" },
-              { name: "Kennisbank", href: "/kennisbank/" },
+              { name: labels.knowledgeBase, href: "/kennisbank/" },
               { name: categoryName, href: categoryHref(post.categorySlug) },
               { name: post.title },
             ]}
@@ -349,6 +355,7 @@ export default async function KennisbankPostPage({
             imageCaption={post.heroImageCaption}
             shareUrl={canonical}
             toc={toc}
+            locale={post.locale}
           />
         </Container>
       </Section>
@@ -360,13 +367,14 @@ export default async function KennisbankPostPage({
         <Container>
           <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-14">
             <article id="artikel" className="min-w-0 scroll-mt-24">
-              <MdxContent source={post.content} />
+              <MdxContent source={post.content} locale={post.locale} />
             </article>
 
             <aside className="hidden min-w-0 self-stretch xl:block">
               <StickyBlogSidebar
                 className="hidden xl:flex"
                 toc={toc}
+                locale={post.locale}
                 cta={{
                   title: cta.title,
                   description: cta.description,
@@ -380,7 +388,7 @@ export default async function KennisbankPostPage({
                         description: sidebarService.excerpt,
                         href: `${serviceHref(sidebarService)}/`,
                         icon: <BookOpen className="h-5 w-5" aria-hidden="true" />,
-                        linkLabel: "Bekijk dienst",
+                        linkLabel: labels.viewService,
                       }
                     : undefined
                 }
@@ -395,13 +403,13 @@ export default async function KennisbankPostPage({
           <Container className="flex flex-col gap-10">
             {relatedServices.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Gerelateerde diensten</h2>
+                <h2 className="text-2xl font-bold mb-4">{labels.relatedServices}</h2>
                 <ServiceGrid services={relatedServices} />
               </div>
             )}
             {relatedRegions.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Gerelateerde regio&apos;s</h2>
+                <h2 className="text-2xl font-bold mb-4">{labels.relatedRegions}</h2>
                 <RegionGrid regions={relatedRegions} showIntro={false} />
               </div>
             )}
@@ -412,7 +420,7 @@ export default async function KennisbankPostPage({
       {clusterPosts.length > 0 && (
         <Section orbs="none" className="!bg-transparent">
           <Container>
-            <h2 className="text-2xl font-bold mb-4">Artikels in deze reeks</h2>
+            <h2 className="text-2xl font-bold mb-4">{labels.articlesInSeries}</h2>
             <BlogGrid posts={clusterPosts.map(toBlogCardPost)} />
           </Container>
         </Section>
@@ -421,7 +429,7 @@ export default async function KennisbankPostPage({
       {(relatedOutsideCluster.length > 0 || fallbackRelated.length > 0) && (
         <Section orbs="none" className="!bg-transparent">
           <Container>
-            <h2 className="text-2xl font-bold mb-4">Gerelateerde artikels</h2>
+            <h2 className="text-2xl font-bold mb-4">{labels.relatedArticles}</h2>
             <BlogGrid posts={(relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated).map(toBlogCardPost)} />
           </Container>
         </Section>

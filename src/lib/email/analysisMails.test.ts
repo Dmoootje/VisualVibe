@@ -189,4 +189,13 @@ describe("sendAnalysisReportMail", () => {
     expect(sentMail.html).toContain("seo");
     expect(sentMail.html).toContain("1.72%");
   });
+
+  it("uses the validated English analysis lead locale for the visitor email and history", async () => {
+    const lead = { ...analysisLead(), locale: "en" as const, analysisSummary: "English summary", reportId: undefined };
+    await sendAnalysisReportMail({ analysisLead: lead, reportUrl: "https://visualvibe.media/en/report/token" });
+    const sentMail = mocks.sendSmtpMail.mock.calls[0]?.[1];
+    expect(sentMail.subject).toBe("Sofie, your website analysis is ready");
+    expect(sentMail.html).toContain('<html lang="en">');
+    expect(mocks.claimAutomaticMailDispatch).toHaveBeenCalledWith(expect.objectContaining({ locale: "en" }));
+  });
 });

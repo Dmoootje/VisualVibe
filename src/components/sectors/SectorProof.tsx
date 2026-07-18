@@ -10,15 +10,17 @@ import { SectorSectionHeader } from "./SectorSectionHeader";
 export function SectorProof({
   title,
   points,
+  locale = "nl",
 }: {
   title?: string;
   points: SectorHighlight[];
+  locale?: "nl" | "en";
 }) {
   if (points.length === 0) return null;
   return (
     <Section className="py-10 sm:py-14 md:py-16">
       <Container>
-        <SectorSectionHeader eyebrow="Waarom VisualVibe" title={title ?? "Waarom kiezen voor VisualVibe"} />
+        <SectorSectionHeader eyebrow={locale === "en" ? "Why VisualVibe" : "Waarom VisualVibe"} title={title ?? (locale === "en" ? "Why choose VisualVibe" : "Waarom kiezen voor VisualVibe")} />
         <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {points.map((point) => (
             <div key={point.title} className="flex items-start gap-3.5">

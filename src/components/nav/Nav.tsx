@@ -11,6 +11,7 @@ import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { toolCards as toolPreviewCards } from "@/data/toolCards";
 import { NavIcon } from "./nav-icons";
 import type { NavCard, NavPillar } from "./navData";
+import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
   () => import("@/features/home/RegionIntro/components/RegionMiniMap").then((module) => module.RegionMiniMap),
@@ -39,6 +40,7 @@ function CardIcon({ icon, iconKind, size = 20 }: { icon: string; iconKind?: "nav
  * in de stijl van de bestaande cross-promo cards op /over-ons en /diensten/fotografie.
  */
 function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
+  const t = useTranslations("nav");
   return (
     <Link
       href="/trouwfotograaf-limburg"
@@ -49,8 +51,8 @@ function WeddingCtaCard({ onClick }: { onClick?: () => void }) {
       <WeddingVibeLogo style={{ height: 20, width: "auto", flex: "none" }} />
       <span style={{ flex: "none", width: 1, alignSelf: "stretch", background: "linear-gradient(180deg,transparent,rgba(201,162,75,.55),transparent)" }} />
       <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#B8860B" }}>Ook voor je mooiste dag</span>
-        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320", paddingRight: 44 }}>Trouwfotografie &amp; huwelijksvideo</span>
+        <span style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#B8860B" }}>{t("weddingEyebrow")}</span>
+        <span style={{ fontFamily: CORM, fontWeight: 600, fontSize: 19, lineHeight: 1.1, color: "#2A2320", paddingRight: 44 }}>{t("weddingTitle")}</span>
       </span>
       <span style={{ position: "absolute", right: 15, bottom: 13, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: 9999, background: "linear-gradient(135deg,#EED89A,#C9A24B)", color: "#fff", boxShadow: "0 5px 14px -5px rgba(201,162,75,.8)" }}>
         <ArrowRight />
@@ -108,12 +110,14 @@ export type NavGoogleRating = { rating: number; count: number; url: string };
 
 /** Small, real (never fabricated) Google-rating pill for the desktop nav bar. */
 function GoogleRatingBadge({ rating, count, url }: NavGoogleRating) {
+  const t = useTranslations("nav");
+  const formattedRating = rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer nofollow"
-      aria-label={`VisualVibe op Google: ${rating.toLocaleString("nl-BE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} van 5 sterren, ${count} reviews`}
+      aria-label={t("googleRating", { rating: formattedRating, count })}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -170,6 +174,7 @@ export function Nav({
   kennisbankPostCount?: number;
   googleRating?: NavGoogleRating | null;
 }) {
+  const t = useTranslations("nav");
   const pathname = usePathname();
 
   // Desktop
@@ -243,7 +248,7 @@ export function Nav({
 
         {/* ===== desktop center ===== */}
         <div className="vvnav-center" style={{ alignItems: "center", gap: 26, fontWeight: 600, fontSize: 15, color: "rgba(255,255,255,.85)" }}>
-          <Link href="/" aria-label="Home" className="vvnav-link" style={{ display: "inline-flex" }}>
+          <Link href="/" aria-label={t("home")} className="vvnav-link" style={{ display: "inline-flex" }}>
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="m3 10 9-7 9 7" /><path d="M5 9v11h14V9" />
             </svg>
@@ -261,7 +266,7 @@ export function Nav({
               style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "#fff", padding: "8px 0" }}
               aria-expanded={menu === "diensten"}
             >
-              Diensten <ChevDown className="vvnav-navChev" />
+              {t("services")} <ChevDown className="vvnav-navChev" />
             </Link>
 
             {menu === "diensten" && (
@@ -270,7 +275,7 @@ export function Nav({
                 {/* left rail */}
                 <div style={{ width: 322, flex: "none", padding: 16, borderRight: "1px solid rgba(255,255,255,.07)" }}>
                   <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)", padding: "6px 12px 12px" }}>
-                    Onze diensten
+                    {t("ourServices")}
                   </div>
                   {pillars.map((p, i) => {
                     const on = i === active;
@@ -310,7 +315,7 @@ export function Nav({
                             <div style={{ fontSize: 12.5, color: "rgba(255,255,255,.5)", marginTop: 2 }}>{ap.tag}</div>
                           </div>
                           <Link href={ap.href} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
-                            Overzicht <ArrowRight />
+                            {t("overview")} <ArrowRight />
                           </Link>
                         </div>
 
@@ -331,8 +336,8 @@ export function Nav({
                             <NavIcon id={ap.icon} size={26} strokeWidth={1.6} />
                           </span>
                           <span style={{ flex: 1, minWidth: 0 }}>
-                            <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15 }}>Klaar voor {ap.name.toLowerCase()}?</span>
-                            <span style={{ display: "block", fontSize: 12.5, color: "rgba(255,255,255,.55)", marginTop: 2 }}>Vraag vrijblijvend een voorstel en vaste prijs aan.</span>
+                            <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15 }}>{t("readyFor", { service: ap.name.toLowerCase() })}</span>
+                            <span style={{ display: "block", fontSize: 12.5, color: "rgba(255,255,255,.55)", marginTop: 2 }}>{t("fixedPrice")}</span>
                           </span>
                           <span style={{ flex: "none", display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, fontSize: 13, color: "#fff", padding: "10px 16px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 28px -12px rgba(255,90,0,.8)", whiteSpace: "nowrap" }}>
                             Offerte <ArrowRight />
@@ -351,24 +356,24 @@ export function Nav({
 
           {/* Regio mega-menu with region map cards */}
           <RegioMega regions={regions} open={menu === "regio"} onOpen={() => setMenu("regio")} onClose={closeMenu} />
-          <DesktopDropdown label="Realisaties" allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
-          <DesktopDropdown label="Sectoren" allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
+          <DesktopDropdown label={t("caseStudies")} allHref="/realisaties" items={realisatieCards} open={menu === "realisaties"} onOpen={() => setMenu("realisaties")} onClose={closeMenu} cta={<WeddingCtaCard onClick={closeMenu} />} />
+          <DesktopDropdown label={t("sectors")} allHref="/sectoren" items={sectorCards} open={menu === "sectoren"} onOpen={() => setMenu("sectoren")} onClose={closeMenu} />
           <ToolsMega items={toolsCards} open={menu === "tools"} onOpen={() => setMenu("tools")} onClose={closeMenu} />
           {kennisbankItems.length > 0 && (
-            <DesktopDropdown label="Kennisbank" allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
+            <DesktopDropdown label={t("knowledgeBase")} allHref="/kennisbank" items={kennisbankItems} open={menu === "kennisbank"} onOpen={() => setMenu("kennisbank")} onClose={closeMenu} />
           )}
-          <Link href="/over-ons" className="vvnav-link">Over ons</Link>
-          <Link href="/contact" className="vvnav-link">Contact</Link>
+          <Link href="/over-ons" className="vvnav-link">{t("about")}</Link>
+          <Link href="/contact" className="vvnav-link">{t("contact")}</Link>
         </div>
 
         {/* ===== desktop right ===== */}
         <div className="vvnav-right" style={{ alignItems: "center", gap: 18 }}>
           {googleRating && <GoogleRatingBadge {...googleRating} />}
-          <NextLink href="/admin/login" prefetch={false} aria-label="Inloggen" style={{ display: "inline-flex" }}>
+          <NextLink href="/admin/login" prefetch={false} aria-label={t("login")} style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>
           <Link href="/offerte-aanvragen" className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
-            Offerte aanvragen
+            {t("quotation")}
           </Link>
         </div>
 
@@ -377,7 +382,7 @@ export function Nav({
           type="button"
           className="vvnav-mbBtn"
           onClick={openDrawer}
-          aria-label="Menu openen"
+          aria-label={t("openMenu")}
           style={{ alignItems: "center", justifyContent: "center", width: 46, height: 46, borderRadius: 12, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)", cursor: "pointer", padding: 0 }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -550,20 +555,21 @@ function RegioMega({
   onOpen: () => void;
   onClose: () => void;
 }) {
+  const t = useTranslations("nav");
   return (
     <div className={`vvnav-wrap ${open ? "is-on" : ""}`} style={{ position: "relative" }} onMouseEnter={onOpen} onMouseLeave={onClose}>
       <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", color: "inherit" }}>
-        Regio <ChevDown className="vvnav-navChev" color="currentColor" />
+            {t("regions")} <ChevDown className="vvnav-navChev" color="currentColor" />
       </Link>
       {open && (
       <div className="vvnav-mega vvnav-megaC is-open">
         <div style={{ width: "min(760px, calc(100vw - 32px))", padding: 16, borderRadius: 18, border: "1px solid rgba(255,255,255,.1)", background: "rgba(16,14,13,.96)", backdropFilter: "blur(16px)", boxShadow: "0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,122,0,.05)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "2px 6px 12px" }}>
             <span style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "rgba(255,255,255,.4)" }}>
-              Onze regio&apos;s
+                  {t("ourRegions")}
             </span>
             <Link href="/regio" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700, fontSize: 12.5, color: "#FF9A45", whiteSpace: "nowrap" }}>
-              Alle regio&apos;s <ArrowRight />
+                  {t("allRegions")} <ArrowRight />
             </Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
@@ -589,7 +595,7 @@ function RegioMega({
                           : { alignSelf: "flex-start", borderRadius: 9999, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.05)", padding: "2px 9px", fontSize: 9.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }
                       }
                     >
-                      {isHome ? "Thuisregio" : "Regio"}
+                        {isHome ? t("homeRegion") : t("region")}
                     </span>
                     <span style={{ fontFamily: SORA, fontWeight: 700, fontSize: 14.5, color: "#fff", lineHeight: 1.15 }}>{region.title}</span>
                   </div>

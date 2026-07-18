@@ -25,6 +25,8 @@ import {
   postHref,
 } from "@/lib/kennisbank/posts";
 import type { BlogLocale } from "@/types/blog";
+import { getPublishedLocales } from "@/i18n/locales";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const staticPaths = [
   "",
@@ -42,7 +44,11 @@ const staticPaths = [
   "diensten/webdesign/website-met-ai-functionaliteiten",
 ];
 
-const indexablePosts = blogPosts.filter((post) => !post.robots?.includes("noindex"));
+const publishedLocales = getPublishedLocales();
+const publishedLocaleSet = new Set<SupportedLocale>(publishedLocales);
+const indexablePosts = blogPosts.filter(
+  (post) => publishedLocaleSet.has(post.locale) && !post.robots?.includes("noindex"),
+);
 const activeCategorySlugs = new Set(
   indexablePosts.filter((post) => post.locale === "nl").map((post) => post.categorySlug)
 );
@@ -78,7 +84,7 @@ function withSlash(path: string): string {
  * Yandex and the other IndexNow engines get pinged about.
  */
 export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
-  assertValidKennisbankContent();
+  assertValidKennisbankContent(publishedLocales);
 
   const { url } = businessConfig;
   const [fotoGalleries, applicationProjects] = await Promise.all([
@@ -130,8 +136,13 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(),
       })),
     ...indexablePosts.map((post) => {
-      const translations = getPostTranslations(post).filter(
-        (translation) => !translation.robots?.includes("noindex")
+      const translations = Object.values(getPostTranslations(post.translationKey)).filter(
+        (translation): translation is NonNullable<typeof translation> =>
+          Boolean(
+            translation &&
+              publishedLocaleSet.has(translation.locale) &&
+              !translation.robots?.includes("noindex"),
+          )
       );
       const nlTranslation = translations.find((translation) => translation.locale === "nl");
       const languageAlternates =

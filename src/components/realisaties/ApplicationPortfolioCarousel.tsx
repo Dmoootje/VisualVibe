@@ -8,14 +8,18 @@ import {
   type ApplicationCase,
 } from "@/data/applicationCases";
 import type { ApplicationCaseImages } from "@/lib/firestore/applicationCases";
+import type { SupportedLocale } from "@/i18n/locales";
 
 export function ApplicationPortfolioCarousel({
   projects,
   images,
+  locale = "nl",
 }: {
   projects: ApplicationCase[];
   images: ApplicationCaseImages;
+  locale?: SupportedLocale;
 }) {
+  const en = locale === "en";
   const railRef = useRef<HTMLDivElement>(null);
 
   if (projects.length === 0) return null;
@@ -35,13 +39,13 @@ export function ApplicationPortfolioCarousel({
         <div className="mb-7 flex items-end justify-between gap-5">
           <div className="max-w-3xl">
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Andere applicatiecases
+              {en ? "Other application case studies" : "Andere applicatiecases"}
             </p>
             <h2 className="font-sora text-2xl font-extrabold tracking-tight sm:text-3xl">
-              Meer apps uit ons portfolio
+              {en ? "More applications from our portfolio" : "Meer apps uit ons portfolio"}
             </h2>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/60">
-              Ontdek hoe we websites, dashboards, SaaS-platformen en krachtige backends tot één werkende toepassing combineren.
+              {en ? "See how we combine websites, dashboards, SaaS platforms and robust backends in one working application." : "Ontdek hoe we websites, dashboards, SaaS-platformen en krachtige backends tot één werkende toepassing combineren."}
             </p>
           </div>
 
@@ -50,7 +54,7 @@ export function ApplicationPortfolioCarousel({
               type="button"
               onClick={() => move(-1)}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.035] text-white/70 transition-colors hover:border-[rgba(255,122,0,0.4)] hover:text-[#ff9a45]"
-              aria-label="Vorige applicatiecases"
+              aria-label={en ? "Previous application case studies" : "Vorige applicatiecases"}
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -58,7 +62,7 @@ export function ApplicationPortfolioCarousel({
               type="button"
               onClick={() => move(1)}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.035] text-white/70 transition-colors hover:border-[rgba(255,122,0,0.4)] hover:text-[#ff9a45]"
-              aria-label="Volgende applicatiecases"
+              aria-label={en ? "Next application case studies" : "Volgende applicatiecases"}
             >
               <ArrowRight className="h-5 w-5" />
             </button>
@@ -74,7 +78,7 @@ export function ApplicationPortfolioCarousel({
             return (
               <Link
                 key={project.id}
-                href={`/realisaties/applicaties/${project.slug}`}
+                href={`/realisaties/${en ? "applications" : "applicaties"}/${project.slug}`}
                 className="group min-w-[84vw] max-w-[420px] snap-start overflow-hidden rounded-[22px] border border-white/[0.09] bg-white/[0.025] transition-all hover:-translate-y-1 hover:border-[rgba(255,122,0,0.42)] hover:bg-white/[0.04] motion-reduce:transform-none sm:min-w-[360px] lg:min-w-[390px]"
               >
                 <div className="relative aspect-[16/9] overflow-hidden border-b border-white/[0.07] bg-[#100e0d]">
@@ -84,7 +88,7 @@ export function ApplicationPortfolioCarousel({
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={cover}
-                      alt={`${project.title} applicatiecase`}
+                      alt={en ? `${project.title} application case study` : `${project.title} applicatiecase`}
                       loading="lazy"
                       decoding="async"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025] motion-reduce:transition-none"
@@ -108,7 +112,7 @@ export function ApplicationPortfolioCarousel({
                         : "border-amber-400/30 bg-amber-950/70 text-amber-300"
                     }`}
                   >
-                    {project.status === "live" ? "Live" : "In ontwikkeling"}
+                    {project.status === "live" ? "Live" : en ? "In development" : "In ontwikkeling"}
                   </span>
                 </div>
 
@@ -137,7 +141,7 @@ export function ApplicationPortfolioCarousel({
                     </span>
                   </div>
                   <span className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-white/80">
-                    Bekijk deze case
+                    {en ? "View this case study" : "Bekijk deze case"}
                     <ArrowRight className="h-4 w-4 text-[#ff9a45] transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
                   </span>
                 </div>
@@ -148,10 +152,10 @@ export function ApplicationPortfolioCarousel({
 
         <div className="mt-5 flex justify-center sm:justify-start">
           <Link
-            href="/realisaties/applicaties/"
+            href={`/realisaties/${en ? "applications" : "applicaties"}/`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-white/65 transition-colors hover:text-[#ff9a45]"
           >
-            Bekijk alle applicatierealisaties
+            {en ? "View all application case studies" : "Bekijk alle applicatierealisaties"}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

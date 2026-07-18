@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/buitenland/",
+  "targetRoute": "/en/case-studies/case-studies-abroad/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Projecten buiten België bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which projects has VisualVibe completed outside Belgium?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "international creative media case studies",
+  "longTailKeywords": [
+    "international creative media case studies Limburg Belgium",
+    "international creative media case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe has completed selected web, photography and video projects outside Belgium, including work in the Netherlands and the Alps.",
+  "title": "International case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe web, photography and video projects abroad, from drone shoots in the Alps to client work in the Netherlands.",
+  "h1": "Projects abroad",
+  "slug": "case-studies-abroad",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

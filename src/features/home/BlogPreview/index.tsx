@@ -17,6 +17,7 @@ export default async function BlogPreview() {
   if (blogPosts.length === 0) {
     return null;
   }
+  const copyLocale = locale === "en" ? "en" : "nl";
 
   return (
     <section
@@ -24,8 +25,8 @@ export default async function BlogPreview() {
       aria-labelledby="blog-heading"
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">
-        <BlogHeader />
-        <BlogGrid posts={blogPosts} />
+        <BlogHeader locale={copyLocale} />
+        <BlogGrid posts={blogPosts} locale={copyLocale} />
       </div>
     </section>
   );
