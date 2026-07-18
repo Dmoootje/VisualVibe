@@ -5,7 +5,7 @@
   "primaryDutchSearchIntent": "leden informeren, nieuwe leden aantrekken en de clubsfeer professioneel tonen",
   "searchIntent": {
     "type": "commercial",
-    "question": "Which web design and visual content services help sports clubs and club administrators build trust and attract customers?",
+    "question": "Which web design and visual content services help sports clubs inform their community and attract new members?",
     "geographicContext": "Limburg, Belgium and the wider Flanders region"
   },
   "mainKeyword": "sports club website design",
@@ -19,7 +19,7 @@
     "local SEO",
     "online visibility"
   ],
-  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for sports clubs and club administrators.",
+  "directAnswer": "VisualVibe helps sports clubs attract members and inform their community with a clear website, authentic photography, video and stronger local visibility.",
   "title": "Web design and photography for sports clubs | VisualVibe",
   "metaDescription": "Web design, sports photography and video for sports clubs in Limburg and Flanders.",
   "h1": "Web design, photography and video for sports clubs",
@@ -27,8 +27,13 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/sportclubs",
-      "targetHref": "/en/contact",
-      "anchor": "discuss your project"
+      "targetHref": "/en/services/web-design",
+      "anchor": "web design for sports clubs"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie",
+      "targetHref": "/en/services/photography",
+      "anchor": "sports photography"
     }
   ],
   "factsToPreserve": [

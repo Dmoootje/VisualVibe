@@ -27,8 +27,13 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/retail-webshops",
-      "targetHref": "/en/contact",
-      "anchor": "discuss your project"
+      "targetHref": "/en/services/web-design",
+      "anchor": "ecommerce web design"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie",
+      "targetHref": "/en/services/photography",
+      "anchor": "professional product photography"
     }
   ],
   "factsToPreserve": [

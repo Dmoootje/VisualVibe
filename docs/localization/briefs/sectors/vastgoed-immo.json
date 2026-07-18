@@ -27,8 +27,13 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/vastgoed-immo",
-      "targetHref": "/en/contact",
-      "anchor": "discuss your project"
+      "targetHref": "/en/services/photography",
+      "anchor": "property photography"
+    },
+    {
+      "sourceHref": "/be/diensten/3d-vr",
+      "targetHref": "/en/services/immersive-media",
+      "anchor": "3D virtual tours"
     }
   ],
   "factsToPreserve": [
