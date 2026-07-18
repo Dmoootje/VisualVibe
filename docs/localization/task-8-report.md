@@ -169,3 +169,36 @@ Several literal Dutch photography terms were also localised. `Event reportage` a
 ### Photography review decision
 
 Approved after correction for factual scope, natural photography terminology, SEO intent, internal destinations and typography. No open finding remains within the seven photography editorials or briefs.
+
+## Addendum: sectors, regions and municipalities
+
+### Inventory and architecture
+
+This sub-scope covers every current indexable sector and region owner without creating thin municipality pages:
+
+- 10 sectors: `kmo`, `bouw-renovatie`, `horeca`, `vastgoed-immo`, `retail-webshops`, `events`, `sportclubs`, `opleidingen-masterclasses`, `wellness-beauty`, `industrie`
+- 4 region hubs: `limburg`, `vlaanderen`, `antwerpen`, `nederlands-limburg`
+- the sectors overview and regions overview
+- every municipality name in `regionMunicipalities.ts`, preserved as a proper name under its stable region ID
+- 16 validated-shape translation briefs: one for each detail page and one for each overview
+
+English sector and region records are strict overlays keyed by the existing stable Dutch IDs. Their public display slugs are separate and locale-safe. `getLocalizedSectorById`, `getSectorByLocalizedSlug`, `getLocalizedRegionById` and `getRegionByLocalizedSlug` throw when a requested non-Dutch translation is absent. No Dutch fallback was added. English remains disabled and no sitemap, hreflang or public locale switcher setting changed.
+
+Municipalities remain part of the GEO sections and marquee data. They are not promoted to indexable city pages because the Dutch source explicitly requires unique project evidence before such pages are created.
+
+### Translation and review evidence
+
+The complete Dutch records were used as the factual owners. The English overlays cover titles, card and hero copy, direct answers, challenges, services, project and media sections, process steps, proof points, local sections, FAQs, CTAs, metadata, image alt text and English internal links wherever the Dutch owner defines them.
+
+- Set A authorship: `e25866f` (`bouw-renovatie`, `events`, `horeca`, `industrie`, `kmo`)
+- Set A independent review correction: `60a30db`, narrowing `bedrijfsfeesten` to the accurate `company parties`
+- Set B initial authorship: `3c4e687`
+- Set B parity completion: `e78b408`, restoring every source-owned section for all five records
+- Set B independent review correction: `436f5ab`, replacing generic retail, real-estate and wellness brief language with page-specific English search intent
+- Region independent review removed unsupported city lists and an unsupported expansion-area claim from the English overlay and briefs before acceptance
+
+The independent reviewers compared each English record with the complete Dutch source and its brief. Final approval covers factual limits, geographic distinctions, natural language, terminology, SEO and GEO intent, metadata, links and prohibited typography. Belgian Limburg remains explicit as `Limburg, Belgium`; `Dutch Limburg` always refers to the province in the Netherlands.
+
+### Boundaries
+
+This sub-scope does not modify or translate realizations or case studies, which remain owned by Task 8C. It does not create municipality detail routes, alter Firestore content or publish English. Existing image files and URLs remain unchanged.
