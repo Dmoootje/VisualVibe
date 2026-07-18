@@ -31,7 +31,20 @@ import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories"
 export const revalidate = 60;
 
 export function generateStaticParams() {
-  return applicationCases.map((project) => ({ slug: project.slug }));
+  return applicationCases.flatMap((project) => {
+    if (!project.published) return [];
+
+    const params: Array<{ locale: "nl" | "en"; slug: string }> = [
+      { locale: "nl", slug: project.slug },
+    ];
+    try {
+      const englishProject = getLocalizedApplicationCaseById(project.id, "en");
+      params.push({ locale: "en", slug: englishProject.slug });
+    } catch {
+      // Published Dutch-only cases remain absent from the English route set.
+    }
+    return params;
+  });
 }
 
 export async function generateMetadata({
