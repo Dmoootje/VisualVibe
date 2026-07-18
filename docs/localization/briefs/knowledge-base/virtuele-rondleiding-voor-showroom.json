@@ -1,0 +1,32 @@
+{
+  "sourceRoute": "/be/kennisbank/3d-vr/virtuele-rondleiding-voor-showroom/",
+  "targetRoute": "/en/kennisbank/3d-vr/virtual-tour-for-a-showroom/",
+  "audience": "SMEs, retailers, interior specialists, building suppliers and brands seeking to make a physical showroom accessible online.",
+  "primaryDutchSearchIntent": "Showroomeigenaars helpen bepalen hoe een virtuele rondleiding bezoekers oriënteert en hoe zij route, inhoud, privacy, hosting, toegankelijkheid en website-integratie professioneel voorbereiden.",
+  "searchIntent": { "type": "commercial", "question": "How should a business plan, capture, publish and maintain a useful virtual showroom tour?", "geographicContext": "International English-speaking readers, with Belgian and EU privacy context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "virtual showroom tour",
+  "longTailKeywords": ["3D showroom tour", "visit a showroom virtually", "commission a virtual showroom", "Matterport showroom", "360-degree showroom tour", "interactive showroom website"],
+  "semanticTerms": ["showroom zones", "product tags", "guided route", "capture", "current product information", "privacy", "accessible alternative", "cloud hosting", "website embed"],
+  "directAnswer": "A virtual showroom tour lets prospective customers explore zones, displays and products before visiting. It works best with a clear visitor question, logical route, representative and current displays, restrained product tags, privacy controls, accessible alternatives, managed hosting and a clear next step outside the viewer.",
+  "title": "Virtual showroom tour: from capture to customer visit",
+  "metaDescription": "Planning a virtual showroom tour? Prepare the route, capture, product tags, privacy, accessible alternatives, hosting, website integration and follow-up.",
+  "h1": "Virtual showroom tour: from capture to customer visit",
+  "slug": "virtual-tour-for-a-showroom",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what is a 3D tour" },
+    { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-horeca/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-hospitality/", "anchor": "3D tour for hospitality" },
+    { "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-vastgoed/", "targetHref": "/en/kennisbank/3d-vr/3d-tour-for-real-estate/", "anchor": "3D tour for real estate" },
+    { "sourceHref": "/be/kennisbank/3d-vr/hoe-verhoogt-een-virtuele-tour-vertrouwen/", "targetHref": "/en/kennisbank/3d-vr/how-a-virtual-tour-builds-trust/", "anchor": "how a virtual tour builds trust" },
+    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-webshops/", "anchor": "product photography for webshops" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your showroom tour" }
+  ],
+  "factsToPreserve": [
+    "A virtual tour should answer a visitor question rather than scan every possible area.",
+    "Prices, stock, specifications and promotions should link to managed current web information.",
+    "The captured showroom state can become outdated as displays and products change.",
+    "Privacy should be planned before capture and reviewed at every viewpoint.",
+    "Essential product and contact information needs accessible alternatives outside the viewer.",
+    "Cloud hosting, account ownership, recurring costs, updates and removal require explicit management.",
+    "Tour starts and interactions do not by themselves prove trust, sales or conversion causality."
+  ]
+}
