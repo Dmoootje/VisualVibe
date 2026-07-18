@@ -37,7 +37,7 @@ export const englishApplicationCaseEditorial: Record<
     tags: ["Rental platform", "Bookings", "React SSR"],
     tagline: "A multilingual rental platform bringing the website, planning and administration together.",
     excerpt:
-      "BM Jumpfun combines a fast public rental website with live availability, bookings, route calculations, calendar integration, invoicing and a comprehensive management environment.",
+      "BM Jumpfun combines a fast public rental website with availability, bookings, route calculations, calendar integration, invoicing and a comprehensive management environment.",
     challenge:
       "Running a rental business involves far more than maintaining a product catalogue. Availability, product combinations, delivery distances, time slots, customer details, schedules, pricing and communication all need to work together without errors. Separate forms and calendars make double bookings and repetitive manual work almost inevitable.",
     solution:
@@ -88,17 +88,17 @@ export const englishApplicationCaseEditorial: Record<
     title: "SEO Websites",
     client: "SEO WEBSITES · AI SEO AND GEO SAAS",
     tags: ["SaaS", "AI, SEO and GEO", "Prerendering"],
-    tagline: "A modular SaaS platform for audits, content, products and visibility in AI search.",
+    tagline: "A modular SaaS platform for analysis, content, products and visibility in AI-assisted search.",
     excerpt:
-      "SEO Websites brings website audits, AI-assisted content, product copy, SERP tools, workspaces, payments and CMS integrations together in one multilingual platform.",
+      "SEO Websites brings website analysis, AI-assisted content, product copy, SERP tools, workspaces, payments and CMS integrations together in one multilingual platform.",
     challenge:
       "SEO work often depends on dozens of disconnected tools, spreadsheets and recurring checks. Users need more than a text generator. They also need projects, credits, analysis, publishing channels, quality controls and a clear management workflow.",
     solution:
       "We developed a SaaS environment in which every tool is part of a wider project and account model. Analysis, AI generation, payments, plugins and administration share the same user, tenant and quality logic. Public landing pages are prerendered, so the marketing site does not depend on client-side JavaScript.",
     capabilities: [
       "AI article and product copy generators",
-      "Website and page audits with clear recommendations",
-      "SERP, sitemap, brand and product feed tools",
+      "Website and page analysis with clear recommendations",
+      "SERP, sitemap, branding and product map tools",
       "Projects and site workspaces with shared data",
       "Credit wallet, Stripe payments and subscription logic",
       "WordPress and Drupal integrations",
@@ -133,7 +133,7 @@ export const englishApplicationCaseEditorial: Record<
     },
     seoTitle: "SEO Websites AI SEO and GEO SaaS platform | VisualVibe",
     seoDescription:
-      "Explore the SEO Websites SaaS platform for AI content, product copy, website audits, workspaces, payments, CMS plugins and server-side prerendering.",
+      "Explore the SEO Websites SaaS platform for AI content, product copy, website analysis, workspaces, payments, CMS plugins and server-side prerendering.",
     imageAlts: imageAlts("SEO Websites"),
   },
   visualvibe: {

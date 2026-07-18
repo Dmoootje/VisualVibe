@@ -1,14 +1,21 @@
 {
-  "translationKey": "visualvibe",
   "sourceRoute": "/be/realisaties/applicaties/visualvibe-website-contentplatform/",
   "targetRoute": "/en/case-studies/applications/visualvibe-website-content-platform/",
   "audience": "Businesses assessing VisualVibe's ability to design and build content-rich marketing websites",
-  "searchIntent": "Review VisualVibe's own server-rendered website, knowledge base and portfolio platform as a technical case study",
+  "primaryDutchSearchIntent": "De eigen servergerenderde website, kennisbank en het portfolioplatform van VisualVibe als technische case bekijken.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How does VisualVibe structure its own server-rendered website, knowledge base and portfolio platform?",
+    "geographicContext": "Belgium"
+  },
   "mainKeyword": "server-rendered content platform",
   "longTailKeywords": ["Next.js marketing website case study", "website with knowledge base and portfolio", "Firestore portfolio management platform"],
   "semanticTerms": ["Next.js Server Components", "incremental static regeneration", "technical SEO", "structured data", "MDX"],
+  "directAnswer": "VisualVibe uses a server-rendered Next.js platform to connect its services, knowledge base, case studies, lead handling, email and managed portfolio content.",
   "title": "VisualVibe website and server-rendered content platform",
   "metaDescription": "See how VisualVibe built its Next.js platform with SSR, ISR, a topic-based knowledge base, case studies, Firestore management, lead handling, email and technical SEO.",
-  "factsToPreserve": ["Next.js App Router", "React 19 Server Components", "Firebase Auth, Firestore and Storage", "MDX", "next-intl", "IMAP and SMTP mailbox"],
-  "editorialNotes": "Write in a confident first-party agency tone without turning the case into a sales claim. Spell out concepts naturally before relying on abbreviations where context benefits."
+  "h1": "VisualVibe",
+  "slug": "visualvibe-website-content-platform",
+  "internalLinks": [],
+  "factsToPreserve": ["Next.js App Router", "React 19 Server Components", "Firebase Auth, Firestore and Storage", "MDX", "next-intl", "IMAP and SMTP mailbox"]
 }

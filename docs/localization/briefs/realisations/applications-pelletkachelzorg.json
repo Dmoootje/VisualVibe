@@ -1,14 +1,21 @@
 {
-  "translationKey": "pelletkachelzorg",
   "sourceRoute": "/be/realisaties/applicaties/pelletkachelzorg-multisite-commerce-platform/",
   "targetRoute": "/en/case-studies/applications/pelletkachelzorg-multisite-commerce-platform/",
   "audience": "Multibrand retailers assessing custom multisite CMS and ecommerce architecture",
-  "searchIntent": "Understand a multisite ecommerce platform that separates site-specific presentation while sharing suitable core data",
+  "primaryDutchSearchIntent": "Begrijpen hoe een multi-site platform gedeelde kerngegevens combineert met afzonderlijke websites, shops en instellingen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How can a multisite ecommerce platform share suitable core data while keeping each site distinct?",
+    "geographicContext": "Belgium"
+  },
   "mainKeyword": "multisite CMS and ecommerce platform",
   "longTailKeywords": ["multibrand ecommerce platform", "Next.js multisite CMS", "server-side ecommerce checkout platform"],
   "semanticTerms": ["stock management", "Mollie payments", "VAT", "VIES", "visual page builder", "multisite architecture"],
+  "directAnswer": "Pelletkachelzorg is developing a multisite CMS and ecommerce platform that combines shared core data with site-specific domains, presentation, shop settings and communication.",
   "title": "Pelletkachelzorg multisite CMS and ecommerce platform",
   "metaDescription": "Explore the Pelletkachelzorg platform in development, including multisite CMS, catalogue, stock, Mollie payments, server-side checkout, visual builders and a communication centre.",
-  "factsToPreserve": ["The platform is still in development", "Next.js 16 App Router", "Firebase", "Mollie", "server-side validation of prices, options and stock", "site-specific domains and settings"],
-  "editorialNotes": "Maintain the in-development qualification throughout. Use ecommerce consistently without a hyphen, and do not present planned functionality as an already measured result."
+  "h1": "Pelletkachelzorg",
+  "slug": "pelletkachelzorg-multisite-commerce-platform",
+  "internalLinks": [],
+  "factsToPreserve": ["The platform is still in development", "Next.js 16 App Router", "Firebase", "Mollie", "Server-side validation of prices, options and stock", "Site-specific domains and settings"]
 }

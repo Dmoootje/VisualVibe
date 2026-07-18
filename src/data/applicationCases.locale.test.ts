@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import {
   APPLICATION_CASE_IMAGE_SLOTS,
   applicationCases,
@@ -9,6 +11,15 @@ import { englishApplicationCaseEditorial } from "./locales/en/applicationCases";
 
 const prohibitedTypography = /[\u2014\u2015]/u;
 const obviousDutch = /\b(een|het|voor|met|bekijk|ontwikkeling|reservaties|websiteanalyse)\b/iu;
+const mojibake = /Â/u;
+
+const briefIds = ["bm-jumpfun", "pelletkachelzorg", "seo-websites", "visualvibe"];
+const requiredBriefKeys = [
+  "sourceRoute", "targetRoute", "audience", "primaryDutchSearchIntent",
+  "searchIntent", "mainKeyword", "longTailKeywords", "semanticTerms",
+  "directAnswer", "title", "metaDescription", "h1", "slug",
+  "internalLinks", "factsToPreserve",
+];
 
 describe("English application case localisation", () => {
   it("covers every stable Dutch application case ID", () => {
@@ -39,6 +50,7 @@ describe("English application case localisation", () => {
       expect(Object.values(record.imageAlts).every((alt) => alt.trim().length > 0)).toBe(true);
       expect(JSON.stringify(record)).not.toMatch(prohibitedTypography);
       expect(JSON.stringify(record)).not.toMatch(obviousDutch);
+      expect(JSON.stringify(record)).not.toMatch(mojibake);
     }
   });
 
@@ -60,5 +72,21 @@ describe("English application case localisation", () => {
     expect(() => getApplicationCaseByLocalizedSlug("visualvibe-content-platform", "de")).toThrow(
       "Missing de translation for application cases",
     );
+  });
+
+  it("keeps every application-case brief aligned with the strict translation schema", () => {
+    for (const id of briefIds) {
+      const brief = JSON.parse(readFileSync(resolve(
+        `docs/localization/briefs/realisations/applications-${id}.json`,
+      ), "utf8")) as Record<string, unknown>;
+      expect(Object.keys(brief).sort(), id).toEqual([...requiredBriefKeys].sort());
+      expect(brief.searchIntent, id).toMatchObject({
+        type: expect.any(String),
+        question: expect.any(String),
+        geographicContext: expect.any(String),
+      });
+      expect(brief.slug, id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u);
+      expect(Array.isArray(brief.internalLinks), id).toBe(true);
+    }
   });
 });
