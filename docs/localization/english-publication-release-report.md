@@ -30,7 +30,7 @@ An exploratory rendered-copy scan initially reported 83 flags across 77 routes. 
 
 ## Final automated evidence
 
-- `npm test`: 102 test files passed, 389 tests passed, 0 failures.
+- `npm test`: 102 test files passed, 390 tests passed, 0 failures.
 - `npm run typecheck`: passed.
 - `npm run lint`: 0 errors and 6 known warnings.
 - `npm run validate:content`: passed; 46 unique subservice pages, word range 965 to 1426, knowledge base 45 direct and 1 parent fallback, locale audit 0 issues and 0 blocking.
@@ -56,3 +56,4 @@ The root coordinator performed release browser QA against the fresh production s
 - `fef4fd0` through `f3f8ca6` - English route publication, source isolation, shared copy and canonical-link corrections
 - `de41940` - permanent rendered English copy audit plus JSON-LD, CTA and article corrections
 - `fce83fc` - removal of the final obsolete visible route example
+- `68699dc` - support for valid Next.js streamed metadata in the rendered-copy audit

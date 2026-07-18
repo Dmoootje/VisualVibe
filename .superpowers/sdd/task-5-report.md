@@ -15,7 +15,7 @@ Complete locally on `feat/english-publication-release`. English is fully represe
 
 - Focused copy and metadata regressions: 8 test files, 24 tests passed.
 - Follow-up article and audit regressions: 2 test files, 5 tests passed.
-- Full suite: 102 test files, 389 tests passed.
+- Full suite: 102 test files, 390 tests passed.
 - Typecheck: passed.
 - Lint: 0 errors, 6 known warnings.
 - Content validation: passed; locale audit 0 issues and 0 blocking.
@@ -42,6 +42,7 @@ The root coordinator checked the fresh production artifact on desktop and at 390
 
 - `de41940 fix: audit rendered English copy and metadata`
 - `fce83fc fix: remove obsolete English route example`
+- `68699dc fix: support streamed metadata in English copy audit`
 - Earlier Task 5 implementation commits run from `f9710ed` through `f3f8ca6`.
 
 ## Concerns
