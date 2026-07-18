@@ -1,1 +1,47 @@
-{"sourceRoute":"/be/over-ons/","targetRoute":"/en/about/","audience":"English-speaking decision-makers evaluating VisualVibe's team, background and breadth","primaryDutchSearchIntent":"Kennismaken met VisualVibe, oprichter Jens Hardy en de werkwijze van het mediabureau.","searchIntent":{"type":"commercial","question":"Who is behind VisualVibe and what services does the agency combine?","geographicContext":"Limburg, Belgium"},"mainKeyword":"about VisualVibe","longTailKeywords":["creative media agency founder Limburg","Jens Hardy VisualVibe"],"semanticTerms":["creative media agency","founder","web design","SEO","photography","video production"],"directAnswer":"VisualVibe is a Limburg-based creative media agency founded by Jens Hardy. It combines seven creative and technical disciplines through one point of contact.","title":"About VisualVibe and Jens Hardy | Media agency Limburg","metaDescription":"Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.","h1":"One partner for digital experiences and visual stories","slug":"about","internalLinks":[{"sourceHref":"/be/diensten","targetHref":"/en/services","anchor":"View all services"},{"sourceHref":"/be/contact","targetHref":"/en/contact","anchor":"Start a conversation"}],"factsToPreserve":["VisualVibe was founded in 2020","The source states seven disciplines and three partners","Jens Hardy is the founder","WeddingVibe is presented as a separate wedding label"]}
+{
+  "sourceRoute": "/be/over-ons/",
+  "targetRoute": "/en/about/",
+  "audience": "English-speaking decision-makers evaluating VisualVibe's team, background and breadth",
+  "primaryDutchSearchIntent": "Kennismaken met VisualVibe, oprichter Jens Hardy en de werkwijze van het mediabureau.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who is behind VisualVibe and what services does the agency combine?",
+    "geographicContext": "Limburg, Belgium"
+  },
+  "mainKeyword": "about VisualVibe",
+  "longTailKeywords": [
+    "creative media agency founder Limburg",
+    "Jens Hardy VisualVibe"
+  ],
+  "semanticTerms": [
+    "creative media agency",
+    "founder",
+    "web design",
+    "SEO",
+    "photography",
+    "video production"
+  ],
+  "directAnswer": "VisualVibe is a Limburg-based creative media agency founded by Jens Hardy. It combines seven creative and technical disciplines through one point of contact.",
+  "title": "About VisualVibe and Jens Hardy | Media agency in Limburg",
+  "metaDescription": "Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.",
+  "h1": "One partner for digital experiences and visual stories",
+  "slug": "about",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten",
+      "targetHref": "/en/diensten/",
+      "anchor": "View all services"
+    },
+    {
+      "sourceHref": "/be/contact",
+      "targetHref": "/en/contact/",
+      "anchor": "Start a conversation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe was founded in 2020",
+    "The source states seven disciplines and three partners",
+    "Jens Hardy is the founder",
+    "WeddingVibe is presented as a separate wedding label"
+  ]
+}

@@ -146,3 +146,9 @@ GREEN: focused re-review and real-preview tests pass (3 files, 11 tests). The fu
 The homepage now passes its resolved `en` or `nl` locale into `getGoogleReviews`. Both Places search and details requests use that language code with region `BE`, so Google's returned quote and relative-date attribution match the requested page language. English mapping uses `Google user` and `Google review` fallbacks; Dutch retains `Google-gebruiker` and `Google review`. English deliberately ignores `originalText` when the requested translated `text` field is absent, preventing a Dutch original from silently entering the English page. The English testimonial renderer no longer marks the returned English quote as Dutch.
 
 RED: focused tests reproduced the hard-coded `languageCode=nl`, Dutch `originalText` fallback, missing homepage locale argument and `lang="nl"` output. GREEN: 2 focused files and 6 tests pass; full suite is 58 files and 223 tests, typecheck and the 199-page production build pass, prohibited-dash/diff scans are clean, and the locale audit remains unchanged at the documented knowledge-base findings.
+
+## Formal route integrity correction
+
+Task 7 now links only to destinations that exist in the current shared route tree: `/en/diensten/`, `/en/regio/`, `/en/sectoren/`, `/en/realisaties/`, `/en/diensten/seo/`, `/en/diensten/webdesign/` and `/en/trouwfotograaf-limburg/`. The invented English route names were removed. The analysis restart button resolves to `/be/website-analyse/` in Dutch and `/en/website-analysis/` in English. The commercial translation briefs use the same implemented destinations.
+
+`website-analysis-report.json` is a supplemental brief for the private, noindex analysis result. It is not an indexable public landing page and is not counted among the eight required indexable commercial briefs.

@@ -85,7 +85,7 @@ describe("WebsiteAnalysePage", () => {
     expect(metadata.robots).toMatchObject({ index: false, follow: true });
     expect(html).toContain("What does our website analysis check?");
     expect(html).toContain("Is the website analysis free?");
-    expect(html).toContain("/en/services/seo/");
+    expect(html).toContain("/en/diensten/seo/");
     expect(html).not.toContain("Wat controleert");
     expect(html).not.toContain("/be/");
   });

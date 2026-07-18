@@ -1,1 +1,46 @@
-{"sourceRoute":"/be/","targetRoute":"/en/","audience":"English-speaking SMEs and organisations looking for one creative and technical media partner in Belgium","primaryDutchSearchIntent":"Een creatief mediabureau in Limburg vinden dat webdesign, SEO, foto, video en digitale toepassingen combineert.","searchIntent":{"type":"commercial","question":"Which creative media agency in Limburg can combine web design, SEO, photography, video and digital applications?","geographicContext":"Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg"},"mainKeyword":"creative media agency Limburg","longTailKeywords":["web design photography and video agency Limburg","creative agency Limburg Belgium"],"semanticTerms":["web design","SEO","GEO","business photography","video production","digital applications"],"directAnswer":"VisualVibe is a creative media agency in Tongeren-Borgloon, Limburg, Belgium. One team combines web design, SEO and GEO, photography, video production and digital applications for businesses.","title":"Creative media agency Limburg | VisualVibe","metaDescription":"VisualVibe is a creative media agency in Limburg for web design, SEO, photography, video, drone and apps. One team for strategy and production.","h1":"Creative media agency in Limburg","slug":"home","internalLinks":[{"sourceHref":"/be/diensten","targetHref":"/en/diensten","anchor":"Explore our services"},{"sourceHref":"/be/offerte-aanvragen","targetHref":"/en/request-a-quotation","anchor":"Request a quotation"}],"factsToPreserve":["VisualVibe is based at Ziegelsmeer 14 in 3700 Tongeren-Borgloon","The agency works across Limburg, Flanders, Antwerp and Dutch Limburg","The stated disciplines must not be broadened"]}
+{
+  "sourceRoute": "/be/",
+  "targetRoute": "/en/",
+  "audience": "English-speaking SMEs and organisations looking for one creative and technical media partner in Belgium",
+  "primaryDutchSearchIntent": "Een creatief mediabureau in Limburg vinden dat webdesign, SEO, foto, video en digitale toepassingen combineert.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which creative media agency in Limburg can combine web design, SEO, photography, video and digital applications?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "creative media agency Limburg",
+  "longTailKeywords": [
+    "web design photography and video agency Limburg",
+    "creative agency Limburg Belgium"
+  ],
+  "semanticTerms": [
+    "web design",
+    "SEO",
+    "GEO",
+    "business photography",
+    "video production",
+    "digital applications"
+  ],
+  "directAnswer": "VisualVibe is a creative media agency in Tongeren-Borgloon, Limburg, Belgium. One team combines web design, SEO and GEO, photography, video production and digital applications for businesses.",
+  "title": "Creative media agency in Limburg | VisualVibe",
+  "metaDescription": "VisualVibe is a creative media agency in Limburg for web design, SEO, photography, video, drone and apps. One team for strategy and production.",
+  "h1": "Creative media agency in Limburg",
+  "slug": "home",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten",
+      "targetHref": "/en/diensten/",
+      "anchor": "Explore our services"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "Request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based at Ziegelsmeer 14 in 3700 Tongeren-Borgloon",
+    "The agency works across Limburg, Flanders, Antwerp and Dutch Limburg",
+    "The stated disciplines must not be broadened"
+  ]
+}

@@ -93,4 +93,20 @@ describe("Task 7 editorial corrections", () => {
     expect(card).toContain('`/en/knowledge-base/${post.categorySlug}/${post.slug}/`');
     expect(card).toContain('en ? "Read the full article"');
   });
+
+  it("keeps Task 7 links on current route-tree destinations or owned aliases", () => {
+    const files = [
+      read("src/app/[locale]/(site)/page.tsx"),
+      read("src/app/[locale]/(site)/over-ons/page.tsx"),
+      read("src/app/[locale]/(site)/website-analyse/page.tsx"),
+      read("src/app/[locale]/(site)/sitemap/page.tsx"),
+    ].join("\n");
+    for (const href of [
+      "/en/diensten/", "/en/regio/", "/en/sectoren/", "/en/realisaties/",
+      "/en/diensten/seo/", "/en/diensten/webdesign/", "/en/trouwfotograaf-limburg/",
+    ]) expect(files).toContain(href);
+    for (const invented of ["/en/services/", "/en/regions/", "/en/sectors/", "/en/case-studies/", "/en/wedding-photographer-limburg/"]) {
+      expect(files).not.toContain(invented);
+    }
+  });
 });

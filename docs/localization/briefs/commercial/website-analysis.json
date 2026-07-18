@@ -1,1 +1,45 @@
-{"sourceRoute":"/be/website-analyse/","targetRoute":"/en/website-analysis/","audience":"Business website owners seeking a quick first diagnosis of technical and content issues","primaryDutchSearchIntent":"Een gratis websiteanalyse uitvoeren voor SEO, snelheid, techniek, content en AI-vindbaarheid.","searchIntent":{"type":"transactional","question":"Where can I run a free website analysis for SEO, performance and AI search visibility?","geographicContext":"English-speaking website owners"},"mainKeyword":"free website analysis","longTailKeywords":["free SEO website analysis","website performance and AI visibility analysis"],"semanticTerms":["technical SEO","Core Web Vitals","structured data","accessibility","GEO"],"directAnswer":"VisualVibe's free website analysis checks SEO, performance, technical signals, content structure and AI search visibility, then highlights practical priorities.","title":"Free website analysis for SEO and performance | VisualVibe","metaDescription":"Run a free website analysis for SEO, speed, technical issues, content and AI search visibility. Get clear priorities from VisualVibe's online tool.","h1":"Free website analysis","slug":"website-analysis","internalLinks":[{"sourceHref":"/be/diensten/seo","targetHref":"/en/services/seo","anchor":"professional SEO support"},{"sourceHref":"/be/offerte-aanvragen","targetHref":"/en/request-a-quotation","anchor":"request a quotation"}],"factsToPreserve":["The tool is free","Email confirmation is required before the result is sent","The scan is not presented as a full SEO audit"]}
+{
+  "sourceRoute": "/be/website-analyse/",
+  "targetRoute": "/en/website-analysis/",
+  "audience": "Business website owners seeking a quick first diagnosis of technical and content issues",
+  "primaryDutchSearchIntent": "Een gratis websiteanalyse uitvoeren voor SEO, snelheid, techniek, content en AI-vindbaarheid.",
+  "searchIntent": {
+    "type": "transactional",
+    "question": "Where can I run a free website analysis for SEO, performance and AI search visibility?",
+    "geographicContext": "English-speaking website owners"
+  },
+  "mainKeyword": "free website analysis",
+  "longTailKeywords": [
+    "free SEO website analysis",
+    "website performance and AI visibility analysis"
+  ],
+  "semanticTerms": [
+    "technical SEO",
+    "Core Web Vitals",
+    "structured data",
+    "accessibility",
+    "GEO"
+  ],
+  "directAnswer": "VisualVibe's free website analysis checks SEO, performance, technical signals, content structure and AI search visibility, then highlights practical priorities.",
+  "title": "Free website analysis for SEO and performance | VisualVibe",
+  "metaDescription": "Run a free website analysis for SEO, speed, technical issues, content and AI search visibility. Get clear priorities from VisualVibe's online tool.",
+  "h1": "Free website analysis",
+  "slug": "website-analysis",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/seo",
+      "targetHref": "/en/diensten/seo/",
+      "anchor": "professional SEO support"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "The tool is free",
+    "Email confirmation is required before the result is sent",
+    "The scan is not presented as a full SEO audit"
+  ]
+}
