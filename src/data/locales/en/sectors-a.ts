@@ -7,7 +7,7 @@ import type { EnglishSectorLocaleRecord } from "./sectorTypes";
 
 const sharedCta = {
   label: "Request a quotation",
-  href: "/en/request-a-quotation",
+  href: "/en/request-a-quotation/",
 };
 
 export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> = {
@@ -75,7 +75,7 @@ export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> 
     ctaText: "Tell us about your company and projects. You will receive a clear, tailored quotation with no obligation.",
     cta: { ...sharedCta, title: "Show your craftsmanship online", description: "Tell us about your company and projects." },
     imageAlt: "Construction professional reviewing a completed renovation project",
-    internalLinks: [{ href: "/en/services/web-design", label: "web design" }, { href: "/en/services/photography", label: "project photography" }, { href: "/en/region/limburg", label: "Limburg" }],
+    internalLinks: [{ href: "/en/diensten/web-design/", label: "web design" }, { href: "/en/diensten/photography/project-photography/", label: "project photography" }, { href: "/en/regio/limburg-belgium/", label: "Limburg" }],
   },
 
   events: {
@@ -141,7 +141,7 @@ export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> 
     ctaText: "Tell us about your event and plans. You will receive a clear, tailored quotation with no obligation.",
     cta: { ...sharedCta, title: "Promote your next event", description: "Tell us about your event and the content you need." },
     imageAlt: "Guests enjoying a professionally photographed corporate event",
-    internalLinks: [{ href: "/en/services/photography", label: "event photography" }, { href: "/en/services/videography", label: "aftermovie production" }, { href: "/en/region/limburg", label: "Limburg" }],
+    internalLinks: [{ href: "/en/diensten/photography/event-photography/", label: "event photography" }, { href: "/en/diensten/videography/event-aftermovie/", label: "aftermovie production" }, { href: "/en/regio/limburg-belgium/", label: "Limburg" }],
   },
 
   horeca: {
@@ -205,7 +205,7 @@ export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> 
     ctaText: "Tell us about your venue and plans. You will receive a clear, tailored quotation with no obligation.",
     cta: { ...sharedCta, title: "Bring more guests to your venue", description: "Tell us about your hospitality business and plans." },
     imageAlt: "Professionally photographed restaurant interior ready for guests",
-    internalLinks: [{ href: "/en/services/photography", label: "food and interior photography" }, { href: "/en/services/virtual-tours", label: "virtual tours" }, { href: "/en/region/limburg", label: "Limburg" }],
+    internalLinks: [{ href: "/en/diensten/photography/brand-photography/", label: "food and interior photography" }, { href: "/en/diensten/3d-vr-ar/hospitality-virtual-tour/", label: "virtual tours" }, { href: "/en/regio/limburg-belgium/", label: "Limburg" }],
   },
 
   industrie: {
@@ -271,7 +271,7 @@ export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> 
     ctaText: "Tell us about your company, workplace and plans. You will receive a clear, tailored quotation with no obligation.",
     cta: { ...sharedCta, title: "Strengthen your industrial presentation", description: "Tell us about your workplace and communications goals." },
     imageAlt: "Industrial team working beside production machinery",
-    internalLinks: [{ href: "/en/services/photography", label: "industrial photography" }, { href: "/en/services/videography", label: "recruitment video" }, { href: "/en/region/limburg", label: "Limburg" }],
+    internalLinks: [{ href: "/en/diensten/photography/brand-photography/", label: "industrial photography" }, { href: "/en/diensten/videography/recruitment-video/", label: "recruitment video" }, { href: "/en/regio/limburg-belgium/", label: "Limburg" }],
   },
 
   kmo: {
@@ -339,6 +339,6 @@ export const englishSectorEditorialA: Record<string, EnglishSectorLocaleRecord> 
     ctaText: "Tell us about your business and plans. You will receive a clear, tailored quotation with no obligation.",
     cta: { ...sharedCta, title: "Make your local business stand out", description: "Tell us what your business needs online." },
     imageAlt: "Local business owner working with a customer",
-    internalLinks: [{ href: "/en/services/web-design", label: "web design" }, { href: "/en/services/local-seo", label: "local SEO" }, { href: "/en/region/limburg", label: "Limburg" }],
+    internalLinks: [{ href: "/en/diensten/web-design/", label: "web design" }, { href: "/en/diensten/seo/local-seo/", label: "local SEO" }, { href: "/en/regio/limburg-belgium/", label: "Limburg" }],
   },
 };

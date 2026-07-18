@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/sectoren/retail-webshops",
-  "targetRoute": "/en/sectors/retail-ecommerce",
+  "targetRoute": "/en/sectoren/retail-ecommerce",
   "audience": "retailers and ecommerce businesses",
   "primaryDutchSearchIntent": "producten professioneel presenteren en online en in de winkel meer verkopen",
   "searchIntent": {
@@ -27,12 +27,12 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/retail-webshops",
-      "targetHref": "/en/services/web-design",
+      "targetHref": "/en/diensten/web-design/",
       "anchor": "ecommerce web design"
     },
     {
       "sourceHref": "/be/diensten/fotografie",
-      "targetHref": "/en/services/photography",
+      "targetHref": "/en/diensten/photography/",
       "anchor": "professional product photography"
     }
   ],

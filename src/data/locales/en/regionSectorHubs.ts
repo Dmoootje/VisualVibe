@@ -19,9 +19,9 @@ export const englishRegionHub = {
     href: "/en/request-a-quotation/",
   },
   internalLinks: [
-    { href: "/en/services/", label: "services" },
-    { href: "/en/sectors/", label: "sectors" },
-    { href: "/en/case-studies/", label: "case studies" },
+    { href: "/en/diensten/", label: "services" },
+    { href: "/en/sectoren/", label: "sectors" },
+    { href: "/en/realisaties/", label: "case studies" },
   ],
 } as const;
 
@@ -46,8 +46,8 @@ export const englishSectorHub = {
     href: "/en/request-a-quotation/",
   },
   internalLinks: [
-    { href: "/en/services/", label: "services" },
-    { href: "/en/regions/", label: "regions" },
-    { href: "/en/case-studies/", label: "case studies" },
+    { href: "/en/diensten/", label: "services" },
+    { href: "/en/regio/", label: "regions" },
+    { href: "/en/realisaties/", label: "case studies" },
   ],
 } as const;

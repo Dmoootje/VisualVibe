@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/sectoren/sportclubs",
-  "targetRoute": "/en/sectors/sports-clubs",
+  "targetRoute": "/en/sectoren/sports-clubs",
   "audience": "sports clubs and club administrators",
   "primaryDutchSearchIntent": "leden informeren, nieuwe leden aantrekken en de clubsfeer professioneel tonen",
   "searchIntent": {
@@ -27,12 +27,12 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/sportclubs",
-      "targetHref": "/en/services/web-design",
+      "targetHref": "/en/diensten/web-design/",
       "anchor": "web design for sports clubs"
     },
     {
       "sourceHref": "/be/diensten/fotografie",
-      "targetHref": "/en/services/photography",
+      "targetHref": "/en/diensten/photography/",
       "anchor": "sports photography"
     }
   ],

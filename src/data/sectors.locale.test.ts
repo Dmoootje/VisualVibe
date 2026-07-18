@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { sectors, getLocalizedSectorById, getSectorByLocalizedSlug } from "./sectors";
 import { englishSectorEditorial } from "./locales/en/sectors";
+import { getServiceByLocalizedSlug } from "./services";
+import { getRegionByLocalizedSlug } from "./regions";
 
 const prohibitedTypography = /[\u2014\u2015]/u;
 
@@ -50,5 +52,21 @@ describe("English sector localisation", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
     expect(getLocalizedSectorById("bouw-renovatie", "en").slug).toBe("construction-renovation");
     expect(getSectorByLocalizedSlug("construction-renovation", "en").id).toBe("bouw-renovatie");
+  });
+
+  it("resolves every English internal link against the current route tree", () => {
+    for (const record of Object.values(englishSectorEditorial)) {
+      for (const { href } of record.internalLinks) {
+        const segments = href.replace(/^\/en\//u, "").replace(/\/$/u, "").split("/");
+        if (segments[0] === "diensten") {
+          const service = getServiceByLocalizedSlug(segments.at(-1) ?? "", "en");
+          expect(segments.length).toBe(service.service.parentSlug ? 3 : 2);
+        } else if (segments[0] === "regio") {
+          expect(getRegionByLocalizedSlug(segments[1] ?? "", "en").id).not.toBe("");
+        } else {
+          expect(["contact", "request-a-quotation", "sectoren", "realisaties"]).toContain(segments[0]);
+        }
+      }
+    }
   });
 });

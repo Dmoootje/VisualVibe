@@ -1,11 +1,11 @@
 {
-  "sourceRoute": "/be/regio/vlaanderen/", "targetRoute": "/en/regions/flanders/",
+  "sourceRoute": "/be/regio/vlaanderen/", "targetRoute": "/en/regio/flanders/",
   "audience": "Businesses across Flanders seeking one team for web design and visual media",
   "primaryDutchSearchIntent": "Een creatief mediabureau vinden voor projecten in Vlaanderen",
   "searchIntent": { "type": "commercial", "question": "Which creative media agency works with businesses across Flanders?", "geographicContext": "Flanders, Belgium" },
   "mainKeyword": "creative media agency Flanders", "longTailKeywords": ["web design agency Flanders", "business photography Flanders"], "semanticTerms": ["SEO", "videography", "regional audience"],
   "directAnswer": "From its base in Limburg, VisualVibe works with businesses throughout Flanders.",
   "title": "Creative Media Agency in Flanders | VisualVibe", "metaDescription": "VisualVibe supports businesses across Flanders with web design, SEO, photography and video tailored to their region, sector and audience.", "h1": "Creative media services across Flanders", "slug": "flanders",
-  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/services/", "anchor": "services" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/diensten/", "anchor": "services" }],
   "factsToPreserve": ["VisualVibe works from Limburg", "The work area is all of Flanders", "The named services are web design, SEO, photography and video"]
 }

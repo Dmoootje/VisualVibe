@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/sectoren/opleidingen-masterclasses",
-  "targetRoute": "/en/sectors/training-courses-masterclasses",
+  "targetRoute": "/en/sectoren/training-courses-masterclasses",
   "audience": "trainers and masterclass organisers",
   "primaryDutchSearchIntent": "opleidingen en masterclasses professioneel presenteren en meer inschrijvingen aantrekken",
   "searchIntent": {
@@ -27,7 +27,7 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/opleidingen-masterclasses",
-      "targetHref": "/en/services/video-production",
+      "targetHref": "/en/diensten/videography/",
       "anchor": "professional video production"
     },
     {

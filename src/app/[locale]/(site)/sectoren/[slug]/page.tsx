@@ -120,7 +120,7 @@ export default async function SectorDetailPage({
             name: service.title,
             description: service.excerpt,
             url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service)}/`)}`,
-            areaServed: ["Limburg"],
+            areaServed: [en ? "Limburg, Belgium" : "Limburg"],
           }}
         />
       ))}
@@ -143,7 +143,7 @@ export default async function SectorDetailPage({
         />
       )}
 
-      <SectorDetailHero sector={sector} />
+      <SectorDetailHero sector={sector} locale={locale} />
 
       {/* Andere sectoren marquee. Pulled up on desktop so it tucks into the
           space the large hero emblem leaves below it. */}
@@ -206,10 +206,10 @@ export default async function SectorDetailPage({
 
       {sector.faq && sector.faq.length > 0 && <SectorFaq items={sector.faq} locale={en ? "en" : "nl"} />}
 
-      <SectorKnowledge posts={kennisbankPosts} authorImages={authorImages} />
+      <SectorKnowledge posts={kennisbankPosts} authorImages={authorImages} locale={locale} />
 
       <CTASection
-        title={sector.ctaTitle ?? `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`}
+        title={sector.ctaTitle ?? (en ? `Working in ${sector.title.toLowerCase()}? Let's talk.` : `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`)}
         description={sector.ctaText}
       />
     </div>

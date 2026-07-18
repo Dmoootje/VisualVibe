@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { regions, getLocalizedRegionById, getRegionByLocalizedSlug } from "./regions";
 import { englishRegionEditorial } from "./locales/en/regions";
 import { regionMunicipalities } from "./regionMunicipalities";
+import { englishRegionHub, englishSectorHub } from "./locales/en/regionSectorHubs";
 
 const prohibitedTypography = /[\u2014\u2015]/u;
 
@@ -46,6 +47,16 @@ describe("English region localisation", () => {
       expect(new Set(regionMunicipalities[region.slug]).size).toBe(
         regionMunicipalities[region.slug].length,
       );
+    }
+  });
+
+  it("uses only owned current-tree links in region and hub overlays", () => {
+    const records = [englishRegionHub, englishSectorHub, ...Object.values(englishRegionEditorial)];
+    for (const record of records) {
+      for (const { href } of record.internalLinks) {
+        const root = href.replace(/^\/en\//u, "").split("/")[0];
+        expect(["diensten", "sectoren", "regio", "realisaties", "request-a-quotation"]).toContain(root);
+      }
     }
   });
 });

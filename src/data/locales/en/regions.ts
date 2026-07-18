@@ -44,7 +44,7 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Limburg, Belgium"),
     imageAlt: "Map highlighting VisualVibe's service area in Limburg, Belgium",
     internalLinks: [
-      { href: "/en/services/", label: "services" },
+      { href: "/en/diensten/", label: "services" },
       { href: "/en/request-a-quotation/", label: "request a quotation" },
     ],
   },
@@ -72,7 +72,7 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Flanders"),
     imageAlt: "Map highlighting VisualVibe's service area across Flanders",
     internalLinks: [
-      { href: "/en/services/", label: "services" },
+      { href: "/en/diensten/", label: "services" },
       { href: "/en/request-a-quotation/", label: "request a quotation" },
     ],
   },
@@ -100,7 +100,7 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Antwerp province"),
     imageAlt: "Map highlighting VisualVibe's service area in Antwerp province",
     internalLinks: [
-      { href: "/en/services/", label: "services" },
+      { href: "/en/diensten/", label: "services" },
       { href: "/en/request-a-quotation/", label: "request a quotation" },
     ],
   },
@@ -128,7 +128,7 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Dutch Limburg"),
     imageAlt: "Map highlighting VisualVibe's service area in Dutch Limburg",
     internalLinks: [
-      { href: "/en/services/", label: "services" },
+      { href: "/en/diensten/", label: "services" },
       { href: "/en/request-a-quotation/", label: "request a quotation" },
     ],
   },

@@ -32,5 +32,8 @@ describe("realisation category localisation", () => {
     expect(() => getLocalizedRealisatieCategoryById("webdesign", "fr")).toThrow(
       "Missing fr translation for realisation category webdesign",
     );
+    expect(() => getRealisatieCategoryByLocalizedSlug("webdesign", "fr")).toThrow(
+      "Missing fr realisation category slug: webdesign",
+    );
   });
 });

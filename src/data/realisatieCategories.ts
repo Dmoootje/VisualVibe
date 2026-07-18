@@ -170,7 +170,9 @@ export function getRealisatieCategoryByLocalizedSlug(
     const source = getRealisatieCategoryBySlug(slug);
     return source ? { ...source, id: source.slug } : undefined;
   }
-  if (locale !== "en") return undefined;
+  if (locale !== "en") {
+    throw new Error(`Missing ${locale} realisation category slug: ${slug}`);
+  }
   const entry = Object.entries(englishRealisatieCategories).find(([, value]) => value.displaySlug === slug);
   return entry ? getLocalizedRealisatieCategoryById(entry[0], locale) : undefined;
 }

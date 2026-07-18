@@ -197,13 +197,15 @@ The complete Dutch records were used as the factual owners. The English overlays
 - Set B independent review correction: `436f5ab`, replacing generic retail, real-estate and wellness brief language with page-specific English search intent
 - Region independent review removed unsupported city lists and an unsupported expansion-area claim from the English overlay and briefs before acceptance
 
-The independent reviewers compared each English record with the complete Dutch source and its brief. Final approval covers factual limits, geographic distinctions, natural language, terminology, SEO and GEO intent, metadata, links and prohibited typography. Belgian Limburg remains explicit as `Limburg, Belgium`; `Dutch Limburg` always refers to the province in the Netherlands.
+The independent reviewers compared each English record with the complete Dutch source and its brief. This editorial approval covers factual limits, geographic distinctions, natural language, terminology, SEO and GEO intent, metadata, intended links and prohibited typography. It did not, by itself, prove that the public route owners consumed the overlays. Belgian Limburg remains explicit as `Limburg, Belgium`; `Dutch Limburg` always refers to the province in the Netherlands.
 
 ### Boundaries
 
 This sub-scope does not modify or translate realizations or case studies, which remain owned by Task 8C. It does not create municipality detail routes, alter Firestore content or publish English. Existing image files and URLs remain unchanged.
 
-### Final verification
+### Data-layer verification before route integration
+
+The checks below validated the overlay inventory but did not render the English sector and region routes. A later integration review correctly found that the route owners still rendered Dutch data and unresolved invented paths. These results must not be read as route-level approval.
 
 - `npm test`: 62 test files and 240 tests passed. One initial full-suite run hit the existing five-second homepage test timeout; the isolated test passed in 3.77 seconds and the fresh full rerun passed completely.
 - `npm run typecheck`: passed.
@@ -211,6 +213,36 @@ This sub-scope does not modify or translate realizations or case studies, which 
 - `npm run build`: passed and generated only the currently published Dutch routes. Existing unrelated lint warnings remain non-blocking.
 - `npm run audit:locales`: completed with the pre-existing Dutch knowledge-base alt-text blocker in `wordpress-backup-maken.mdx` and informational missing English knowledge-base partners. Neither belongs to this sector and region sub-scope.
 - Repository-wide U+2014/U+2015 scan and `git diff --check`: clean.
+
+### Critical route-integration correction
+
+A full Task 8 review found that the earlier sector and region approval stopped at the data layer. The four public route owners still consumed Dutch records and several overlay links pointed to invented English route families. This was a critical integration gap. It was reproduced with route-render tests before correction and is now fixed.
+
+The corrected route inventory is:
+
+- `/en/sectoren/` plus all 10 reviewed English sector display slugs
+- `/en/regio/` plus `limburg-belgium`, `flanders`, `antwerp-province` and `dutch-limburg`
+
+Hub and detail metadata, canonical URLs, Open Graph data, breadcrumbs and visible copy now derive from the requested locale. Detail slugs resolve through stable IDs, recommended services resolve through the Task 8A locale selectors, and regional links use the reviewed English display slugs. English knowledge-base selection requests only `locale: "en"`.
+
+English sector routes do not request Firestore projects, Firestore images or galleries, profile images, YouTube videos or other Dutch dynamic showcase records. Those sections stay hidden until their public fields have explicit reviewed English localization. Dutch routes retain their existing dynamic behavior.
+
+All sector and region overlay links and briefs now use the actual route tree: `/en/diensten/`, `/en/sectoren/`, `/en/regio/`, `/en/realisaties/`, `/en/contact/` and `/en/request-a-quotation/`. Nested service links resolve through the localized service selector. Invented `/en/services`, `/en/regions`, `/en/sectors`, `/en/case-studies` and `/en/region/limburg` paths were removed.
+
+`getRealisatieCategoryByLocalizedSlug` now rejects unsupported locales consistently with the ID selector instead of returning `undefined` and allowing a caller to continue silently.
+
+### Route RED and GREEN evidence
+
+- RED: the new English sector and region render tests initially failed because the route components had no locale-aware API and rendered Dutch owners.
+- GREEN: route integration commits `591049c` and `5d9627f` made hub and detail render tests pass with English slugs, copy, metadata and localized relations while mocked dynamic sources throw if touched.
+- RED: an expanded sector detail assertion still found the Dutch hero labels `Sectoren` and `Bekijk cases`.
+- GREEN: the hero and knowledge-base chrome now accept the locale; the six focused route and selector test files pass 16 tests.
+- `npm test`: 72 test files and 272 tests passed.
+- `npm run typecheck`: passed.
+- `npm run validate:subservices`: passed for all 46 subservice pages.
+- `npm run build`: compiled successfully and kept English disabled in the publication registry.
+- `npm run audit:locales`: still reports the pre-existing Dutch `wordpress-backup-maken.mdx` alt-text blocker and informational missing English knowledge-base partners. These are outside this sector and region correction.
+- Actual-route link scan, repository-wide U+2014/U+2015 scan and `git diff --check`: clean.
 
 ## Addendum: realisation and application content inventory
 

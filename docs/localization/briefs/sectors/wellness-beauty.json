@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/sectoren/wellness-beauty",
-  "targetRoute": "/en/sectors/wellness-beauty",
+  "targetRoute": "/en/sectoren/wellness-beauty",
   "audience": "wellness centres, beauty salons and practices",
   "primaryDutchSearchIntent": "de sfeer van de zaak online overbrengen en meer lokale afspraken aantrekken",
   "searchIntent": {
@@ -27,12 +27,12 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/wellness-beauty",
-      "targetHref": "/en/services/web-design",
+      "targetHref": "/en/diensten/web-design/",
       "anchor": "web design for wellness businesses"
     },
     {
       "sourceHref": "/be/diensten/fotografie",
-      "targetHref": "/en/services/photography",
+      "targetHref": "/en/diensten/photography/",
       "anchor": "interior and lifestyle photography"
     }
   ],

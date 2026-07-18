@@ -50,6 +50,8 @@ describe("English sector routes", () => {
     expect(html).toContain("Limburg, Belgium");
     expect(html).toContain("/regio/limburg-belgium");
     expect(html).not.toContain("Andere sectoren");
+    expect(html).not.toContain(">Sectoren<");
+    expect(html).not.toContain("Bekijk cases");
     expect(html).not.toContain("Aanbevolen diensten");
     expect(html).not.toContain("Webdesignprojecten");
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("construction") });

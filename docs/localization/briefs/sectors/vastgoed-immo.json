@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/sectoren/vastgoed-immo",
-  "targetRoute": "/en/sectors/real-estate",
+  "targetRoute": "/en/sectoren/real-estate",
   "audience": "estate agents, property agencies and landlords",
   "primaryDutchSearchIntent": "panden professioneel presenteren en sneller geschikte kopers of huurders bereiken",
   "searchIntent": {
@@ -27,12 +27,12 @@
   "internalLinks": [
     {
       "sourceHref": "/be/sectoren/vastgoed-immo",
-      "targetHref": "/en/services/photography",
+      "targetHref": "/en/diensten/photography/",
       "anchor": "property photography"
     },
     {
       "sourceHref": "/be/diensten/3d-vr",
-      "targetHref": "/en/services/immersive-media",
+      "targetHref": "/en/diensten/3d-vr-ar/",
       "anchor": "3D virtual tours"
     }
   ],
