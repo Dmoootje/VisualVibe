@@ -372,7 +372,7 @@ git commit -m "feat: publish complete English sitemap"
 
 **Interfaces:**
 - Consumes: a running production server base URL and `/sitemap.xml`.
-- Produces: a nonzero exit code for any broken sitemap target, Dutch redirect, missing self-canonical, invalid hreflang target, missing meaningful image alt or broken internal `/en/` link.
+- Produces: a nonzero exit code for any broken sitemap target, Dutch redirect, missing self-canonical, invalid hreflang target, missing `alt` attribute or broken internal `/en/` link.
 
 - [ ] **Step 1: Write the release audit before changing its targets**
 
@@ -395,7 +395,7 @@ const requiredRepresentativePaths = [
 ];
 ```
 
-Fetch the sitemap, crawl every English sitemap URL, parse HTML links, canonicals, hreflang and non-empty image `alt` attributes, and fail with a grouped route report. Fetch `/fr/` and `/de/` without following redirects and require `308` to `/be/`. Fetch `/en/` without following redirects and require `200`.
+Fetch the sitemap, crawl every English sitemap URL, parse HTML links, canonicals, hreflang and image `alt` attributes, and fail with a grouped route report. Every image must have an `alt` attribute; an empty value remains valid for a decorative image. Fetch `/fr/` and `/de/` without following redirects and require `308` to `/be/`. Fetch `/en/` without following redirects and require `200`.
 
 - [ ] **Step 2: Run complete static verification**
 
