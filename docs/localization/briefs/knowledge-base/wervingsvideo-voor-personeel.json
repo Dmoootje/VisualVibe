@@ -1,0 +1,47 @@
+{
+  "sourceRoute": "/be/kennisbank/videografie/wervingsvideo-voor-personeel/",
+  "targetRoute": "/en/knowledge-base/videography/recruitment-video-for-employers/",
+  "audience": "Business owners, HR teams, recruiters and communications managers at SMEs that want to use honest video in recruitment.",
+  "primaryDutchSearchIntent": "Werkgevers helpen een geloofwaardige wervingsvideo plannen die functie, werkomgeving, mensen en verwachtingen duidelijk toont en kandidaten naar volledige vacature-informatie leidt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How do we produce a credible recruitment video that shows the role, workplace and expectations and supports suitable candidates?",
+    "geographicContext": "Employers in Belgium and international English-speaking candidates, with production available from Limburg, Belgium."
+  },
+  "mainKeyword": "recruitment video for employers",
+  "longTailKeywords": [
+    "professional recruitment video production",
+    "recruitment video for SMEs",
+    "job vacancy video with real employees",
+    "employer branding video production",
+    "recruitment video Limburg Belgium"
+  ],
+  "semanticTerms": [
+    "candidate questions",
+    "employee interviews",
+    "workplace footage",
+    "equal treatment",
+    "inclusive recruitment",
+    "image rights",
+    "video captions",
+    "recruitment metrics"
+  ],
+  "directAnswer": "A credible recruitment video shows representative work, real colleagues, the working environment and clear expectations. It complements a complete vacancy, uses voluntary informed participation, supports accessible viewing and directs candidates to an up-to-date application route.",
+  "title": "Recruitment video for employers: show the work, culture and expectations",
+  "metaDescription": "Planning a recruitment video? Show the role, colleagues and workplace honestly, and prepare interviews, inclusion, rights, versions and measurement.",
+  "h1": "Recruitment video for employers: show the work, culture and expectations",
+  "slug": "recruitment-video-for-employers",
+  "internalLinks": [
+    { "sourceHref": "/be/diensten/videografie/wervingsvideo/", "targetHref": "/en/services/videography/recruitment-video/", "anchor": "recruitment video production" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/services/videography/corporate-video/", "anchor": "corporate video production" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your recruitment video" }
+  ],
+  "factsToPreserve": [
+    "The video complements rather than replaces complete and current written vacancy information.",
+    "Representative tasks and working conditions should be shown honestly without staging unsafe behaviour.",
+    "Employee participation should be voluntary, informed and without disadvantage, with particular care in an employment relationship.",
+    "Belgian equal-treatment, recruitment and image-rights guidance remains relevant and the article is not legal advice.",
+    "Captions, readable on-screen text and an accessible application route are part of the production scope.",
+    "Views alone do not prove recruitment value, and no applications or hires are guaranteed."
+  ]
+}

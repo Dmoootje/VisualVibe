@@ -1,0 +1,52 @@
+{
+  "sourceRoute": "/be/kennisbank/fotografie/productfotografie-voor-webshops/",
+  "targetRoute": "/en/knowledge-base/photography/product-photography-for-online-shops/",
+  "audience": "Online shop owners, e-commerce managers, marketers and manufacturers that need a consistent, scalable product image library.",
+  "primaryDutchSearchIntent": "Webshopeigenaars helpen een volledige en herhaalbare productfotografieproductie voor SKU's en varianten plannen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "How should we plan repeatable product photography for all SKUs and variants, from shot list and colour control to feeds and accessible publication?",
+    "geographicContext": "Online shops and brands, with professional production available from Limburg, Belgium."
+  },
+  "mainKeyword": "product photography for online shops",
+  "longTailKeywords": [
+    "e-commerce product photography workflow",
+    "product photography shot list for SKUs",
+    "professional packshot photography",
+    "photographing product colour variants",
+    "product photography Limburg Belgium"
+  ],
+  "semanticTerms": [
+    "packshot",
+    "context image",
+    "product detail",
+    "SKU",
+    "product variant",
+    "colour reference",
+    "image rights",
+    "responsive images",
+    "alt text",
+    "product feed"
+  ],
+  "directAnswer": "Product photography for online shops works best as a repeatable catalogue process: define the question each image answers, create a tested specification by product family, track every view against its SKU and publish accurate responsive images with suitable alt text and product data.",
+  "title": "Product photography for online shops: from shot list to product feed",
+  "metaDescription": "Plan product photography with a repeatable shot list, consistent variants, accurate colour, clear naming and fast, accessible online shop images.",
+  "h1": "Product photography for online shops: from shot list to product feed",
+  "slug": "product-photography-for-online-shops",
+  "internalLinks": [
+    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/services/photography/product-photography/", "anchor": "professional product photography" },
+    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/services/web-design/online-shop-development/", "anchor": "online shop development" },
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/knowledge-base/photography/what-is-corporate-photography/", "anchor": "what is corporate photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/vastgoedfotografie-tips/", "targetHref": "/en/knowledge-base/photography/property-photography-tips/", "anchor": "property photography tips" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your product shoot" }
+  ],
+  "factsToPreserve": [
+    "Image types should answer distinct purchase questions and exact dimensions and compatibility remain product data rather than photographic claims.",
+    "Google Merchant Center main-image rules can change and should be checked for current feeds.",
+    "No photographer can guarantee identical colour on every screen.",
+    "Physical samples, image files and product records should use the same exact SKU.",
+    "Usage rights, model publication and third-party props require explicit scope and the article is not legal advice.",
+    "Alt text depends on image meaning and function, while redundant or decorative images may require empty alt text.",
+    "Clear images may support expectations but cannot guarantee fewer returns or higher sales."
+  ]
+}
