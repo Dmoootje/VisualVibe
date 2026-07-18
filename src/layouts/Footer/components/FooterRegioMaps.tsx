@@ -1,14 +1,14 @@
 import { Link } from "@/i18n/navigation";
-import { regions } from "@/data/regions";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import { useTranslations } from "next-intl";
+import type { NavRegion } from "@/components/nav/navData";
 
 /**
  * Regio-kolom in de footer: de vier regio's als mini-kaartjes (2x2) met de
  * echte provincie-silhouetten en marker, in plaats van kale tekstlinks.
  * Pure SVG (RegionMiniMap), dus server-safe.
  */
-export function FooterRegioMaps() {
+export function FooterRegioMaps({ regions }: { regions: NavRegion[] }) {
   const t = useTranslations("footer");
   return (
     <div className="col-span-2 sm:col-span-1">
@@ -22,7 +22,7 @@ export function FooterRegioMaps() {
             className="group flex flex-col items-center gap-1.5 rounded-[14px] border border-white/[0.08] bg-white/[0.02] p-2.5 transition-colors hover:border-[rgba(255,122,0,0.4)] hover:bg-[rgba(255,122,0,0.05)]"
           >
             <span className="block h-[76px] w-full">
-              <RegionMiniMap slug={region.slug} />
+              <RegionMiniMap slug={region.id} />
             </span>
             <span className="text-center text-[12px] font-semibold leading-tight text-white/70 transition-colors group-hover:text-white">
               {region.title}

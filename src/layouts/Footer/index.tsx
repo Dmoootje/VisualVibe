@@ -1,20 +1,24 @@
 import { Link } from "@/i18n/navigation";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialLinks, FooterNav, FooterPartners, FooterRegioMaps } from "./components";
-import { footerConfig } from "./config/footer.config";
+import { footerConfig, getFooterLinkGroups } from "./config/footer.config";
 import { businessConfig } from "@/config/business.config";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getNavRegions } from "@/components/nav/navData";
+import { getChromeRoutes } from "@/components/nav/chromeRoutes";
 
 export async function Footer() {
+  const locale = (await getLocale()) === "en" ? "en" : "nl";
   const t = await getTranslations("footer");
-  const footerGroups = footerConfig.linkGroups.map((group, index) => ({
+  const routes = getChromeRoutes(locale);
+  const footerGroups = getFooterLinkGroups(locale).map((group, index) => ({
     ...group,
     title: index === 0 ? t("services") : t("company"),
     links: index === 0 ? group.links : group.links.map((link) => ({
       ...link,
       label: ({
-        "/over-ons": t("about"),
+        [routes.about]: t("about"),
         "/realisaties": t("caseStudies"),
         "/kennisbank": t("knowledgeBase"),
         "/sectoren": t("sectors"),
@@ -54,14 +58,16 @@ export async function Footer() {
               <img src="/logo.svg" alt="VisualVibe" className="h-7 w-auto sm:h-8" width={165} height={32} />
             </Link>
             {/* Zusterlabel: klein WeddingVibe-logo onder het VisualVibe-logo. */}
-            <Link
-              href="/trouwfotograaf-limburg"
-              aria-label={t("weddingLabel")}
-              className="mt-3 block w-fit opacity-70 transition-opacity hover:opacity-100"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/weddingvibe-logo-licht.svg" alt="WeddingVibe" className="h-[18px] w-auto" width={79} height={18} />
-            </Link>
+            {routes.wedding && (
+              <Link
+                href={routes.wedding}
+                aria-label={t("weddingLabel")}
+                className="mt-3 block w-fit opacity-70 transition-opacity hover:opacity-100"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/weddingvibe-logo-licht.svg" alt="WeddingVibe" className="h-[18px] w-auto" width={79} height={18} />
+              </Link>
+            )}
             <p className="mt-[18px] max-w-[340px] text-[15px] leading-relaxed text-white/55">
               {t("description")}
             </p>
@@ -102,7 +108,7 @@ export async function Footer() {
           <FooterNav linkGroups={footerGroups} />
 
           {/* Regio: mini-kaartjes in plaats van tekstlinks */}
-          <FooterRegioMaps />
+          <FooterRegioMaps regions={getNavRegions(locale)} />
         </div>
 
         {/* Partners / certifications */}

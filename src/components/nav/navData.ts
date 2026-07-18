@@ -1,11 +1,20 @@
-import { services } from "@/data/services";
+import {
+  getLocalizedServiceById,
+  serviceHref,
+  services,
+} from "@/data/services";
 import { getSubservicesByParent } from "@/data/subservices";
-import { softwareServices } from "@/data/softwareServices";
-import { regions } from "@/data/regions";
+import {
+  getSoftwareServices,
+  softwareServiceHref,
+  softwareServiceHubHref,
+} from "@/data/softwareServices";
+import { getLocalizedRegionById, regions } from "@/data/regions";
 import { sectors } from "@/data/sectors";
 import { kennisbankCategories } from "@/data/kennisbankCategories";
 import { realisatieCategories } from "@/data/realisatieCategories";
 import { toolCards } from "@/data/tools";
+import type { PublicChromeLocale } from "./chromeRoutes";
 
 export type NavLink = { name: string; href: string };
 /** A richer nav row: icon + name + a one-line subtitle (used in the dropdowns/submenus). */
@@ -25,6 +34,14 @@ export type NavPillar = {
   icon: string;
   href: string;
   subs: NavSub[];
+};
+export type NavRegion = {
+  /** Stable registry ID used by the province map artwork. */
+  id: string;
+  /** Locale-specific public route slug. */
+  slug: string;
+  title: string;
+  type: string;
 };
 
 // Pillar icon (nav-icons id) + short tagline per hoofddienst (tags from handoff).
@@ -70,60 +87,89 @@ const SOFTWARE_SUB_ICON: Record<string, string> = {
   "app-design-ux-ui": "ux",
 };
 
-const servicePillars: NavPillar[] = services.map((service) => {
-  const pillarIcon = PILLAR_ICON[service.slug] ?? "website";
-  const catalogSubs = getSubservicesByParent(service.slug).map((sub) => ({
-    name: sub.title,
-    href: `/diensten/${service.slug}/${sub.slug}`,
-    icon:
-      service.slug === "webdesign"
-        ? WEBDESIGN_SUB_ICON[sub.slug] ?? "website"
-        : pillarIcon,
-  }));
-
-  return {
-    id: service.slug,
-    name: service.title,
-    tag: PILLAR_TAG[service.slug] ?? "",
-    icon: pillarIcon,
-    href: `/diensten/${service.slug}`,
-    subs:
-      service.slug === "webdesign"
-        ? [
-            ...catalogSubs,
-            {
-              name: "Website met AI-functionaliteiten",
-              href: "/diensten/webdesign/website-met-ai-functionaliteiten",
-              icon: "ai-website",
-            },
-          ]
-        : catalogSubs,
-  };
-});
-
-const softwarePillar: NavPillar = {
-  id: "software-op-maat",
-  name: "Apps & software",
-  tag: "Webapps, AI & automatisering",
-  icon: "software",
-  href: "/diensten/software-op-maat",
-  subs: softwareServices.map((service) => ({
-    name: service.title,
-    href: `/diensten/software-op-maat/${service.slug}`,
-    icon: SOFTWARE_SUB_ICON[service.slug] ?? "software",
-  })),
-};
-
 // Apps & software staat bewust direct na Webdesign. Dezelfde bron voedt het
 // desktop-megamenu en de mobiele pushnavigatie, zodat beide altijd gelijk lopen.
-export const pillars: NavPillar[] = servicePillars.flatMap((pillar) =>
-  pillar.id === "webdesign" ? [pillar, softwarePillar] : [pillar]
-);
+export function getNavPillars(locale: PublicChromeLocale): NavPillar[] {
+  const servicePillars = services.map((sourceService) => {
+    const localizedService = getLocalizedServiceById(sourceService.slug, locale).service;
+    const pillarIcon = PILLAR_ICON[sourceService.slug] ?? "website";
+    const catalogSubs = getSubservicesByParent(sourceService.slug).map((sourceSub) => {
+      const localizedSub = getLocalizedServiceById(sourceSub.slug, locale).service;
+      return {
+        name: localizedSub.title,
+        href: serviceHref(localizedSub),
+        icon:
+          sourceService.slug === "webdesign"
+            ? WEBDESIGN_SUB_ICON[sourceSub.slug] ?? "website"
+            : pillarIcon,
+      };
+    });
+
+    return {
+      id: sourceService.slug,
+      name: localizedService.title,
+      tag:
+        locale === "en"
+          ? localizedService.excerpt
+          : PILLAR_TAG[sourceService.slug] ?? "",
+      icon: pillarIcon,
+      href: serviceHref(localizedService),
+      subs:
+        sourceService.slug === "webdesign" && locale === "nl"
+          ? [
+              ...catalogSubs,
+              {
+                name: "Website met AI-functionaliteiten",
+                href: "/diensten/webdesign/website-met-ai-functionaliteiten",
+                icon: "ai-website",
+              },
+            ]
+          : catalogSubs,
+    };
+  });
+
+  const softwarePillar: NavPillar = {
+    id: "software-op-maat",
+    name: locale === "en" ? "Custom software" : "Apps & software",
+    tag:
+      locale === "en"
+        ? "Web applications, AI and automation"
+        : "Webapps, AI & automatisering",
+    icon: "software",
+    href: softwareServiceHubHref(locale),
+    subs: getSoftwareServices(locale).map((service) => ({
+      name: service.title,
+      href: softwareServiceHref(service, locale),
+      icon: SOFTWARE_SUB_ICON[service.id] ?? "software",
+    })),
+  };
+
+  return servicePillars.flatMap((pillar) =>
+    pillar.id === "webdesign" ? [pillar, softwarePillar] : [pillar],
+  );
+}
+
+export const pillars: NavPillar[] = getNavPillars("nl");
+
+export function getNavRegions(locale: PublicChromeLocale): NavRegion[] {
+  return regions.map((sourceRegion) => {
+    const localizedRegion = getLocalizedRegionById(sourceRegion.slug, locale);
+    return {
+      id: sourceRegion.slug,
+      slug: localizedRegion.slug,
+      title: localizedRegion.title,
+      type: localizedRegion.type,
+    };
+  });
+}
 
 // Regio dropdown (hub + the 4 regiohubs).
 export const regioItems: NavLink[] = [
   { name: "Alle regio's", href: "/regio" },
-  ...regions.map((region) => ({ name: region.title, href: `/regio/${region.slug}` })),
+  ...getNavRegions("nl").map((region) => ({
+    name: region.title,
+    href: `/regio/${region.slug}`,
+  })),
 ];
 
 // Realisatie-categorie glyph per slug (reuse service glyphs; extra ones for the

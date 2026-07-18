@@ -1,5 +1,13 @@
-import { services } from "@/data/services";
+import {
+  getLocalizedServiceById,
+  serviceHref,
+  services,
+} from "@/data/services";
 import { businessConfig } from "@/config/business.config";
+import {
+  getChromeRoutes,
+  type PublicChromeLocale,
+} from "@/components/nav/chromeRoutes";
 
 export interface FooterLinkGroup {
   title: string;
@@ -13,28 +21,41 @@ export interface FooterPartner {
   href?: string;
 }
 
-export const footerConfig = {
-  description: businessConfig.description,
-
-  linkGroups: [
+export function getFooterLinkGroups(
+  locale: PublicChromeLocale,
+): FooterLinkGroup[] {
+  const routes = getChromeRoutes(locale);
+  return [
     {
       title: "Diensten",
-      links: services.map((service) => ({
-        label: service.title,
-        href: `/diensten/${service.slug}`,
-      })),
+      links: services.map((sourceService) => {
+        const localizedService = getLocalizedServiceById(
+          sourceService.slug,
+          locale,
+        ).service;
+        return {
+          label: localizedService.title,
+          href: serviceHref(localizedService),
+        };
+      }),
     },
     {
       title: "Bedrijf",
       links: [
-        { label: "Over ons", href: "/over-ons" },
+        { label: "Over ons", href: routes.about },
         { label: "Realisaties", href: "/realisaties" },
         { label: "Kennisbank", href: "/kennisbank" },
         { label: "Sectoren", href: "/sectoren" },
         { label: "Contact", href: "/contact" },
       ],
     },
-  ] as FooterLinkGroup[],
+  ];
+}
+
+export const footerConfig = {
+  description: businessConfig.description,
+
+  linkGroups: getFooterLinkGroups("nl"),
 
   legalLinks: [
     { label: "Privacybeleid", href: "/privacy" },

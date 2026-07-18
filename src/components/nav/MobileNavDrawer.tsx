@@ -7,7 +7,11 @@ import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { Link } from "@/i18n/navigation";
 import { NavIcon } from "./nav-icons";
-import type { NavCard, NavPillar } from "./navData";
+import type { NavCard, NavPillar, NavRegion } from "./navData";
+import {
+  getChromeRoutes,
+  type PublicChromeLocale,
+} from "./chromeRoutes";
 import { useTranslations } from "next-intl";
 
 const RegionMiniMap = dynamic(
@@ -17,12 +21,6 @@ const RegionMiniMap = dynamic(
     ),
   { ssr: false },
 );
-
-type NavRegion = {
-  slug: string;
-  title: string;
-  type: string;
-};
 
 type DrawerView =
   | "root"
@@ -216,11 +214,11 @@ function Logo({ size = 20 }: { size?: number }) {
   );
 }
 
-function WeddingCtaCard({ onClick }: { onClick: () => void }) {
+function WeddingCtaCard({ href, onClick }: { href: string; onClick: () => void }) {
   const t = useTranslations("nav");
   return (
     <Link
-      href="/trouwfotograaf-limburg"
+      href={href}
       onClick={onClick}
       className="vvnav-wedCard"
       style={{
@@ -302,6 +300,7 @@ function WeddingCtaCard({ onClick }: { onClick: () => void }) {
 }
 
 type MobileNavDrawerProps = {
+  locale: PublicChromeLocale;
   pillars: NavPillar[];
   regions: NavRegion[];
   sectorCards: NavCard[];
@@ -313,6 +312,7 @@ type MobileNavDrawerProps = {
 };
 
 export function MobileNavDrawer({
+  locale,
   pillars,
   regions,
   sectorCards,
@@ -323,6 +323,7 @@ export function MobileNavDrawer({
   onClose,
 }: MobileNavDrawerProps) {
   const t = useTranslations("nav");
+  const routes = getChromeRoutes(locale);
   const [view, setView] = useState<DrawerView>("root");
   const [serviceIndex, setServiceIndex] = useState<number | null>(null);
   const currentPillar =
@@ -667,7 +668,7 @@ export function MobileNavDrawer({
                   : t("categoryCount", { count: kennisbankItems.length }),
                 () => setView("kennisbank"),
               )}
-            {linkRow("/over-ons", t("about"))}
+            {linkRow(routes.about, t("about"))}
             {linkRow("/contact", t("contact"))}
           </div>
 
@@ -797,7 +798,7 @@ export function MobileNavDrawer({
                     </Link>
                   ))}
                   <Link
-                    href="/offerte-aanvragen"
+                    href={routes.quotation}
                     onClick={onClose}
                     style={{
                       marginTop: 4,
@@ -871,8 +872,8 @@ export function MobileNavDrawer({
                       <ArrowRight />
                     </span>
                   </Link>
-                  {currentPillar.id === "fotografie" && (
-                    <WeddingCtaCard onClick={onClose} />
+                  {currentPillar.id === "fotografie" && routes.wedding && (
+                    <WeddingCtaCard href={routes.wedding} onClick={onClose} />
                   )}
                 </div>
               </>
@@ -923,7 +924,7 @@ export function MobileNavDrawer({
                             "radial-gradient(circle at 60% 45%,rgba(255,117,0,.16),transparent 60%)",
                         }}
                       />
-                      <RegionMiniMap slug={region.slug} />
+                      <RegionMiniMap slug={region.id} />
                       <div
                         style={{
                           position: "absolute",
@@ -1000,7 +1001,9 @@ export function MobileNavDrawer({
             t("caseStudies"),
             "/realisaties",
             realisatieCards,
-            <WeddingCtaCard onClick={onClose} />,
+            routes.wedding ? (
+              <WeddingCtaCard href={routes.wedding} onClick={onClose} />
+            ) : undefined,
           )}
           {cardPanel("sectoren", t("sectors"), "/sectoren", sectorCards)}
           {cardPanel("tools", t("tools"), "/tools", toolsCards)}
@@ -1024,7 +1027,7 @@ export function MobileNavDrawer({
           }}
         >
           <Link
-            href="/offerte-aanvragen"
+            href={routes.quotation}
             onClick={onClose}
             style={{
               display: "flex",
