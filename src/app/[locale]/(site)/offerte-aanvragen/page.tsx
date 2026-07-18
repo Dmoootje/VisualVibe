@@ -8,7 +8,7 @@ import { getCommercialCopy } from "../commercialCopy";
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const copy = getCommercialCopy(locale).quotation;
-  return pageMetadata({ locale, title: `${copy.title} | ${businessConfig.displayName}`, description: copy.description, path: locale === "en" ? "/request-a-quotation/" : "/offerte-aanvragen/" });
+  return pageMetadata({ locale, title: `${copy.title} | ${businessConfig.displayName}`, description: copy.description, path: locale === "en" ? "/request-a-quotation/" : "/offerte-aanvragen/", languagePaths: { nl: "/offerte-aanvragen/", en: "/request-a-quotation/" } });
 }
 
 export default async function OfferteAanvragenPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {

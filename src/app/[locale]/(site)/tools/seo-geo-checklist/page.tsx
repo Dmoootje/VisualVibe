@@ -27,13 +27,14 @@ const nlMetadata = pageMetadata({
     "technische SEO checklist",
   ],
   path: PAGE_PATH,
+  languagePaths: { nl: PAGE_PATH, en: PAGE_PATH },
   ogImage: TOOL_PAGE_IMAGES.seoGeoChecklist.url,
   ogImageAlt: TOOL_PAGE_IMAGES.seoGeoChecklist.alt,
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
-  return locale === "en" ? pageMetadata({ locale, title: `SEO/GEO checklist for Google and AI search | ${businessConfig.displayName}`, description: "Review technical SEO, content, structured data, speed, images and local visibility with VisualVibe's practical SEO/GEO checklist for AI search.", path: PAGE_PATH, ogImage: TOOL_PAGE_IMAGES.seoGeoChecklist.url, ogImageAlt: "VisualVibe SEO/GEO checklist for Google and AI search visibility" }) : nlMetadata;
+  return locale === "en" ? pageMetadata({ locale, title: `SEO/GEO checklist for Google and AI search | ${businessConfig.displayName}`, description: "Review technical SEO, content, structured data, speed, images and local visibility with VisualVibe's practical SEO/GEO checklist for AI search.", path: PAGE_PATH, languagePaths: { nl: PAGE_PATH, en: PAGE_PATH }, ogImage: TOOL_PAGE_IMAGES.seoGeoChecklist.url, ogImageAlt: "VisualVibe SEO/GEO checklist for Google and AI search visibility" }) : nlMetadata;
 }
 
 export default async function SeoGeoChecklistPage({ params }: { params?: Promise<{ locale: SupportedLocale }> }) {

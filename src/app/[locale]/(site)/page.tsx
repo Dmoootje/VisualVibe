@@ -85,6 +85,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       "applicaties op maat Limburg",
     ],
     path: "/", locale: locale === "en" ? "en" : "nl",
+    languagePaths: { nl: "/", en: "/" },
     ogImageAlt: locale === "en"
       ? "VisualVibe, a creative media agency in Limburg for web design, SEO, photography and video production"
       : "VisualVibe, creatief mediabureau in Limburg voor webdesign, SEO, fotografie en video",

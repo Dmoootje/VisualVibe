@@ -10,11 +10,11 @@ import Link from "next/link";
 
 const PAGE_PATH = "/tools/";
 const PAGE_URL = `${businessConfig.url}/be/tools/`;
-const nlMetadata = pageMetadata({ title: `Gratis tools voor je website | ${businessConfig.displayName}`, description: "Gebruik gratis VisualVibe tools zoals een website analyse en SEO/GEO checklist om je website, vindbaarheid en AI-vindbaarheid te verbeteren.", keywords: ["gratis tools website", "website analyse", "SEO/GEO checklist"], path: PAGE_PATH });
+const nlMetadata = pageMetadata({ title: `Gratis tools voor je website | ${businessConfig.displayName}`, description: "Gebruik gratis VisualVibe tools zoals een website analyse en SEO/GEO checklist om je website, vindbaarheid en AI-vindbaarheid te verbeteren.", keywords: ["gratis tools website", "website analyse", "SEO/GEO checklist"], path: PAGE_PATH, languagePaths: { nl: PAGE_PATH, en: PAGE_PATH } });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
-  return locale === "en" ? pageMetadata({ locale, title: `Free website SEO and GEO tools | ${businessConfig.displayName}`, description: "Use VisualVibe's free website analysis and SEO/GEO checklist to review technical SEO, content, performance and visibility in AI search.", keywords: ["free website SEO tools", "website analysis", "SEO GEO checklist"], path: PAGE_PATH }) : nlMetadata;
+  return locale === "en" ? pageMetadata({ locale, title: `Free website SEO and GEO tools | ${businessConfig.displayName}`, description: "Use VisualVibe's free website analysis and SEO/GEO checklist to review technical SEO, content, performance and visibility in AI search.", keywords: ["free website SEO tools", "website analysis", "SEO GEO checklist"], path: PAGE_PATH, languagePaths: { nl: PAGE_PATH, en: PAGE_PATH } }) : nlMetadata;
 }
 
 export default async function ToolsPage({ params }: { params?: Promise<{ locale: SupportedLocale }> }) {

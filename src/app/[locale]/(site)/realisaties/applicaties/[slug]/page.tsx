@@ -16,6 +16,7 @@ import {
   applicationCaseImageKey,
   applicationCases,
   getApplicationCaseByLocalizedSlug,
+  getLocalizedApplicationCaseById,
   type ApplicationCaseImageSlot,
 } from "@/data/applicationCases";
 import { getApplicationCaseImages } from "@/lib/firestore/applicationCases";
@@ -25,6 +26,7 @@ import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
 import type { SupportedLocale } from "@/i18n/locales";
 import { localizedPath } from "@/lib/kennisbank/urls";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
 
 export const revalidate = 60;
 
@@ -41,11 +43,20 @@ export async function generateMetadata({
   let project;
   try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { return {}; }
   const images = await getApplicationCaseImages();
+  const dutchProject = getLocalizedApplicationCaseById(project.id, "nl");
+  const englishProject = getLocalizedApplicationCaseById(project.id, "en");
+  const dutchCategory = getLocalizedRealisatieCategoryById("applicaties", "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById("applicaties", "en");
 
   return pageMetadata({
+    locale,
     title: project.seoTitle,
     description: project.seoDescription,
     path: `/realisaties/${locale === "en" ? "applications" : "applicaties"}/${project.slug}/`,
+    languagePaths: {
+      nl: `/realisaties/${dutchCategory.slug}/${dutchProject.slug}/`,
+      en: `/realisaties/${englishCategory.slug}/${englishProject.slug}/`,
+    },
     ogImage: images[applicationCaseImageKey(project.id, "cover")],
   });
 }

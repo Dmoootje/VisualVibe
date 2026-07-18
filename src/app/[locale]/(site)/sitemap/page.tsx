@@ -33,10 +33,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `Sitemap | ${businessConfig.displayName}`,
     description: "Browse the VisualVibe sitemap for a clear overview of services, case studies, sectors and regions, plus tools, company information and contact pages.",
     path: "/sitemap/", locale: "en",
+    languagePaths: { nl: "/sitemap/", en: "/sitemap/" },
   } : {
     title: `Sitemap | ${businessConfig.displayName}`,
     description: "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
     path: "/sitemap/",
+    languagePaths: { nl: "/sitemap/", en: "/sitemap/" },
   });
 }
 

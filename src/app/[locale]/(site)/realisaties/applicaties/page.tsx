@@ -22,7 +22,9 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const category = getLocalizedRealisatieCategoryById("applicaties", locale);
-  return pageMetadata({ title: category.seoTitle, description: category.seoDescription, path: `/realisaties/${category.slug}/` });
+  const dutchCategory = getLocalizedRealisatieCategoryById(category.id, "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById(category.id, "en");
+  return pageMetadata({ locale, title: category.seoTitle, description: category.seoDescription, path: `/realisaties/${category.slug}/`, languagePaths: { nl: `/realisaties/${dutchCategory.slug}/`, en: `/realisaties/${englishCategory.slug}/` } });
 }
 
 export default async function ApplicatieRealisatiesPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {

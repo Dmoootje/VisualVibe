@@ -30,6 +30,7 @@ const dutchMetadata = pageMetadata({
     "webdesign Nederlands-Limburg",
   ],
   path: "/regio/",
+  languagePaths: { nl: "/regio/", en: "/regio/" },
 });
 
 // Antwoord-eerst blok (AEO/GEO), zelfde vorm als op de sectorenhub.
@@ -419,7 +420,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (locale === "nl") return dutchMetadata;
   if (locale !== "en") throw new Error(`Missing ${locale} regions hub translation`);
-  return pageMetadata({ locale, ...englishRegionHub.seo, path: "/regio/" });
+  return pageMetadata({ locale, ...englishRegionHub.seo, path: "/regio/", languagePaths: { nl: "/regio/", en: "/regio/" } });
 }
 
 export default async function RegioHubPage({

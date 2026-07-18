@@ -29,7 +29,7 @@ import { getLocalizedServiceById } from "@/data/services";
 export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
   const { locale } = await params;
   const en = locale === "en";
-  return pageMetadata({ title: en ? "Case studies in web, software and visual media | VisualVibe" : "Realisaties in applicaties, webdesign, foto & video | VisualVibe", description: en ? "Explore VisualVibe case studies in applications, SaaS, web design, SEO, photography, videography, drone and FPV, 3D, VR, AR and podcasting." : "Bekijk realisaties van VisualVibe in applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.", path: "/realisaties/" });
+  return pageMetadata({ locale, title: en ? "Case studies in web, software and visual media | VisualVibe" : "Realisaties in applicaties, webdesign, foto & video | VisualVibe", description: en ? "Explore VisualVibe case studies in applications, SaaS, web design, SEO, photography, videography, drone and FPV, 3D, VR, AR and podcasting." : "Bekijk realisaties van VisualVibe in applicaties, SaaS, webdesign, SEO, fotografie, videografie, drone & FPV, 3D/VR/AR en podcasting.", path: "/realisaties/", languagePaths: { nl: "/realisaties/", en: "/realisaties/" } });
 }
 
 // De hub toont Firestore-content (admin-beheerd): net als de categoriepagina's

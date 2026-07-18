@@ -15,9 +15,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const settings = await getSiteSettings(locale as SupportedLocale);
   const copy = getCookieCopy(locale, settings.companyName);
   return pageMetadata({
+    locale: locale as SupportedLocale,
     title: copy.metaTitle,
     description: copy.metaDescription,
     path: "/cookies/",
+    languagePaths: { nl: "/cookies/", en: "/cookies/" },
   });
 }
 

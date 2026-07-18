@@ -22,7 +22,14 @@ import { XrService } from "@/components/xr";
 import { SubdienstenGrid } from "@/components/subdiensten";
 import { webdesignSubdiensten } from "@/data/webdesignSubdiensten";
 import { seoCases } from "@/data/seoShowcase";
-import { allServices, services, getServiceBySlug, serviceHref } from "@/data/services";
+import {
+  allServices,
+  services,
+  getLocalizedServiceById,
+  getServiceByLocalizedSlug,
+  getServiceBySlug,
+  serviceHref,
+} from "@/data/services";
 import { regions } from "@/data/regions";
 import { getRealisatieCategoryBySlug, serviceToCategorySlug } from "@/data/realisatieCategories";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
@@ -45,20 +52,29 @@ export const revalidate = 60;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: SupportedLocale; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
-
-  if (!service) {
+  const { locale, slug } = await params;
+  let localizedService;
+  try {
+    localizedService = getServiceByLocalizedSlug(slug, locale);
+  } catch {
     return {};
   }
+  const service = localizedService.service;
+  const dutchService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const englishService = getLocalizedServiceById(localizedService.id, "en").service;
 
   return pageMetadata({
+    locale,
     title: service.seo.title,
     description: service.seo.description,
     keywords: service.seo.keywords,
     path: `${serviceHref(service)}/`,
+    languagePaths: {
+      nl: `${serviceHref(dutchService)}/`,
+      en: `${serviceHref(englishService)}/`,
+    },
     ogImage: service.seo.ogImage,
   });
 }

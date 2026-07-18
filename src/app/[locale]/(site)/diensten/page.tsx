@@ -33,6 +33,7 @@ const dutchMetadata = pageMetadata({
     "podcast opnemen Limburg",
   ],
   path: "/diensten/",
+  languagePaths: { nl: "/diensten/", en: "/diensten/" },
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -43,6 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: "Services for ambitious businesses | VisualVibe",
       description: "Explore VisualVibe's web design, SEO, photography, video, drone, 3D, podcast and masterclass production services in Limburg, Belgium.",
       path: "/diensten/",
+      languagePaths: { nl: "/diensten/", en: "/diensten/" },
     });
   }
   return dutchMetadata;

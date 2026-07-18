@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: S
     title: `${copy.title} | ${settings.companyName}`,
     description: locale === "en" ? copy.description : `Neem contact op met ${settings.companyName}${place}. Vraag vrijblijvend een offerte aan of stel je vraag.`,
     path: "/contact/",
+    languagePaths: { nl: "/contact/", en: "/contact/" },
   });
 }
 

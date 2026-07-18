@@ -60,6 +60,8 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   let sector;
   try { sector = getSectorByLocalizedSlug(slug, locale); } catch { return {}; }
+  const dutchSector = getLocalizedSectorById(sector.id, "nl");
+  const englishSector = getLocalizedSectorById(sector.id, "en");
 
   return pageMetadata({
     locale,
@@ -67,6 +69,10 @@ export async function generateMetadata({
     description: sector.seo.description,
     keywords: sector.seo.keywords,
     path: `/sectoren/${sector.slug}/`,
+    languagePaths: {
+      nl: `/sectoren/${dutchSector.slug}/`,
+      en: `/sectoren/${englishSector.slug}/`,
+    },
   });
 }
 

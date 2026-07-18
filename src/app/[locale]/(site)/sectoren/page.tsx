@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: S
     title: locale === "en" ? "Web design, photography, video and SEO by industry | VisualVibe" : "Webdesign, fotografie, video en SEO per sector | VisualVibe",
     description: locale === "en" ? "Discover how VisualVibe helps businesses across ten industries with web design, photography, video, drone content and local SEO." : "Ontdek hoe VisualVibe bedrijven in tien sectoren versterkt met webdesign, fotografie, video, drone en lokale SEO: van bouw en horeca tot vastgoed en industrie.",
     path: "/sectoren/",
+    languagePaths: { nl: "/sectoren/", en: "/sectoren/" },
   });
 }
 

@@ -93,6 +93,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     keywords: en ? ["custom software development", "app development", "web application development", "AI application development", "API integrations"] : ["software op maat", "app laten maken", "webapplicatie laten maken", "AI applicatie laten maken", "API koppeling laten maken"],
     path: `${softwareServiceHubHref(locale as SupportedLocale)}/`,
     locale: locale as SupportedLocale,
+    languagePaths: {
+      nl: "/diensten/software-op-maat/",
+      en: "/diensten/custom-software/",
+    },
   });
 }
 

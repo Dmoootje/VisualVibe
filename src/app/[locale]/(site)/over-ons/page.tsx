@@ -16,10 +16,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: "About VisualVibe and Jens Hardy | Media agency in Limburg",
     description: "Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.",
     path: "/about/", locale: "en",
+    languagePaths: { nl: "/over-ons/", en: "/about/" },
   } : {
     title: `Over ons | ${businessConfig.displayName}`,
     description: "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
     path: "/over-ons/",
+    languagePaths: { nl: "/over-ons/", en: "/about/" },
   });
 }
 

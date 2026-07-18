@@ -27,12 +27,18 @@ import {
 import { BreadcrumbJsonLd, FaqPageJsonLd, ServiceJsonLd } from "@/components/seo";
 import { subservices, getSubservicesByParent } from "@/data/subservices";
 import { getSubserviceEditorial } from "@/data/subservice-content";
-import { getServiceBySlug, serviceHref } from "@/data/services";
+import {
+  getLocalizedServiceById,
+  getServiceByLocalizedSlug,
+  getServiceBySlug,
+  serviceHref,
+} from "@/data/services";
 import { regions } from "@/data/regions";
 import { businessConfig } from "@/config/business.config";
 import { localizedPath } from "@/lib/kennisbank/posts";
 import { getHubData } from "@/lib/realisaties/hubData";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const REALISATION_ELIGIBLE_SLUGS = new Set([
   "website-laten-maken",
@@ -73,23 +79,37 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string; sub: string }>;
+  params: Promise<{ locale: SupportedLocale; slug: string; sub: string }>;
 }): Promise<Metadata> {
-  const { slug, sub } = await params;
-  const service = getServiceBySlug(sub);
-  const parentService = getServiceBySlug(slug);
-  if (!service || !parentService || parentService.parentSlug || service.parentSlug !== slug) {
+  const { locale, slug, sub } = await params;
+  let localizedService;
+  let localizedParent;
+  try {
+    localizedService = getServiceByLocalizedSlug(sub, locale);
+    localizedParent = getServiceByLocalizedSlug(slug, locale);
+  } catch {
     return {};
   }
+  const sourceService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const sourceParent = getLocalizedServiceById(localizedParent.id, "nl").service;
+  if (sourceParent.parentSlug || sourceService.parentSlug !== localizedParent.id) return {};
 
-  const editorial = getSubserviceEditorial(sub);
+  const service = localizedService.service;
+  const editorial = locale === "nl" ? getSubserviceEditorial(localizedService.id) : undefined;
   const seo = editorial?.seo ?? service.seo;
+  const dutchService = getLocalizedServiceById(localizedService.id, "nl").service;
+  const englishService = getLocalizedServiceById(localizedService.id, "en").service;
 
   return pageMetadata({
+    locale,
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
     path: `${serviceHref(service)}/`,
+    languagePaths: {
+      nl: `${serviceHref(dutchService)}/`,
+      en: `${serviceHref(englishService)}/`,
+    },
     ogImage: seo.ogImage,
   });
 }

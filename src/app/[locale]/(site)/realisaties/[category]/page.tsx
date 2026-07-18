@@ -58,6 +58,8 @@ export async function generateMetadata({
   const { category, locale } = await params;
   const categoryDef = getRealisatieCategoryByLocalizedSlug(category, locale);
   if (!categoryDef || categoryDef.id === "applicaties") return {};
+  const dutchCategory = getLocalizedRealisatieCategoryById(categoryDef.id, "nl");
+  const englishCategory = getLocalizedRealisatieCategoryById(categoryDef.id, "en");
 
   const items = cases.filter((item) => item.category === categoryDef.slug);
   const fotoGalleryCount =
@@ -73,9 +75,14 @@ export async function generateMetadata({
     items.length > 0 ||
     shouldIndexRealisatieCategoryWithoutCases(categoryDef);
   return pageMetadata({
+    locale,
     title: categoryDef.seoTitle,
     description: categoryDef.seoDescription,
     path: `/realisaties/${categoryDef.slug}/`,
+    languagePaths: {
+      nl: `/realisaties/${dutchCategory.slug}/`,
+      en: `/realisaties/${englishCategory.slug}/`,
+    },
     noindex: !hasContent,
   });
 }
