@@ -1,0 +1,14 @@
+{
+  "translationKey": "bm-jumpfun",
+  "sourceRoute": "/be/realisaties/applicaties/bm-jumpfun-verhuurplatform/",
+  "targetRoute": "/en/case-studies/applications/bm-jumpfun-rental-platform/",
+  "audience": "Belgian rental businesses comparing custom booking and administration platforms",
+  "searchIntent": "See a real multilingual bouncy castle rental platform with booking, availability, delivery and invoicing workflows",
+  "mainKeyword": "bouncy castle rental platform",
+  "longTailKeywords": ["bouncy castle booking software", "multilingual rental booking platform", "rental website with availability calendar"],
+  "semanticTerms": ["double-booking prevention", "Google Calendar integration", "route calculation", "PDF invoicing"],
+  "title": "BM Jumpfun bouncy castle rental and booking platform | VisualVibe",
+  "metaDescription": "See how VisualVibe built BM Jumpfun's multilingual bouncy castle rental platform with bookings, availability checks, Google Calendar, route calculations and invoicing.",
+  "factsToPreserve": ["React 19 and Express", "Firestore", "Google Calendar and Google Maps", "Cloud Run", "server-side availability and price validation"],
+  "editorialNotes": "Use booking rather than reservation in visitor-facing copy. Keep the tone practical and specific; do not imply measured commercial gains that the source does not substantiate."
+}
