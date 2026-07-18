@@ -6,9 +6,9 @@ Branch: `feat/english-publication-release`
 
 ## Outcome
 
-The English publication surface is ready for release from the audited local production artifact. The sitemap publishes Dutch and English only, all 170 English sitemap routes were crawled successfully, canonical and hreflang relationships are valid, internal English links resolve to their canonical targets, and the rendered English copy, attributes and language metadata audit reports zero issues.
+The English publication surface is ready for release from the audited local production artifact. The sitemap publishes Dutch and English only, all 170 English sitemap routes were crawled successfully, canonical and hreflang relationships are valid, internal English links resolve to their canonical targets, and the rendered English copy, attributes and language metadata audit reports zero issues. The visible English sitemap matches the XML inventory exactly and uses authored English page titles from the localized content registries.
 
-No branch push or pull request was created.
+The branch is prepared for a draft pull request. No merge or deployment has been performed.
 
 ## Release scope and corrections
 
@@ -19,7 +19,11 @@ No branch push or pull request was created.
 - Canonicalized remaining English aliases and internal links, including legacy knowledge-base paths and locale-relative region, sector, service and case-study links.
 - Localized shared navigation, menus, forms, footer, consent UI, calls to action and related visitor-facing interface copy.
 - Corrected English `WebPage` and application-case JSON-LD to use `inLanguage: en-BE`; localized the application-case schema genre.
-- Corrected the English sector-hub quotation label.
+- Corrected English breadcrumb and sector service schema paths, language and audience metadata.
+- Localized the English lead-form labels while preserving stable backend values.
+- Added exact permanent redirects for the two Dutch-only English route variants.
+- Kept the visible English sitemap in exact parity with the XML inventory and sourced its labels from authored English service, region, sector, case-study and knowledge-base metadata.
+- Preserved both Dutch-only canonical sitemap routes while publishing 170 English and 174 Dutch URLs.
 - Replaced visible legacy Dutch route examples in English knowledge-base articles with canonical English examples or natural English wording.
 
 ## Audit history
@@ -30,14 +34,16 @@ An exploratory rendered-copy scan initially reported 83 flags across 77 routes. 
 
 ## Final automated evidence
 
-- `npm test`: 102 test files passed, 390 tests passed, 0 failures.
+- `npm test`: 105 test files passed, 398 tests passed, 0 failures.
 - `npm run typecheck`: passed.
 - `npm run lint`: 0 errors and 6 known warnings.
 - `npm run validate:content`: passed; 46 unique subservice pages, word range 965 to 1426, knowledge base 45 direct and 1 parent fallback, locale audit 0 issues and 0 blocking.
-- `npm run build`: passed; compiled in 9.4 seconds and generated 374 of 374 static pages.
+- `npm run build`: passed; compiled successfully and generated 374 of 374 static pages.
 - Build locale output: Dutch and English only; no French or German static locale params.
-- `npm run audit:english-publication`: 342 sitemap URLs total, 170 English sitemap URLs, 170 English pages crawled, 510 hreflang references, 5,937 internal English link references, 2 disabled-locale redirects and 0 issues.
+- Sitemap inventory: 344 URLs total, consisting of 170 English and 174 Dutch URLs; the visible English sitemap has exact 170-of-170 parity.
+- `npm run audit:english-publication`: 170 English sitemap URLs, 170 English pages crawled, 510 hreflang references, 6,080 internal English link references, 2 disabled-locale redirects and 0 issues.
 - `npm run audit:english-copy`: 170 routes, 0 issues across 0 routes.
+- Rendered sitemap title check: English labels and the authored article title present; Dutch `Fotografie`, `Videografie` and `Software Op Maat` labels absent.
 - U+2014/U+2015 scan across `src`, `content`, `scripts` and `docs`: 0 matches.
 
 ## Browser QA
@@ -48,7 +54,7 @@ The root coordinator performed release browser QA against the fresh production s
 
 - The six lint warnings are pre-existing and non-blocking: one internal style-guide unused import, two lead-form warnings, two SEO-service unused declarations and one XR unused argument.
 - The build also prints the existing multi-lockfile workspace-root notice and one ambiguous Tailwind class warning. Neither blocks compilation, static generation or the release audits.
-- A fresh production server is intentionally left running at `http://127.0.0.1:3210` for coordinator QA.
+- Four internal English alias URLs remain available for compatibility. They are absent from internal links and both sitemaps and expose the correct canonical English target, so they do not create a reachable duplicate surface.
 
 ## Final commits
 
@@ -57,3 +63,6 @@ The root coordinator performed release browser QA against the fresh production s
 - `de41940` - permanent rendered English copy audit plus JSON-LD, CTA and article corrections
 - `fce83fc` - removal of the final obsolete visible route example
 - `68699dc` - support for valid Next.js streamed metadata in the rendered-copy audit
+- `c7430c3` and `70a1668` - SEO, schema, form, redirect and sitemap inventory hardening
+- `32dbce0` - authored English titles for every visible sitemap node
+- `d528701` - canonical knowledge-base fixture and authored-title regression coverage
