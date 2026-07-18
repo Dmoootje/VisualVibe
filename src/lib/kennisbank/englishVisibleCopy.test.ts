@@ -38,5 +38,6 @@ describe("English knowledge-base visible route examples", () => {
     expect(visibleCode).toContain("/en/diensten/photography/");
     expect(visibleCode).toContain("/en/diensten/videography/");
     expect(visibleCode).toContain("/en/regio/limburg-belgium/");
+    expect(source).not.toContain("such as '/regio/");
   });
 });
