@@ -10,13 +10,13 @@ import { SectorSectionHeader } from "./SectorSectionHeader";
  * data always matches the visible content. Centered narrow reading column
  * (allowed exception to the shared left edge).
  */
-export function SectorFaq({ title, items }: { title?: string; items: ServiceFaq[] }) {
+export function SectorFaq({ title, items, locale = "nl" }: { title?: string; items: ServiceFaq[]; locale?: "nl" | "en" }) {
   if (items.length === 0) return null;
   return (
     <Section className="py-10 sm:py-14 md:py-16">
       <Container>
         <div className="mx-auto max-w-[840px]">
-          <SectorSectionHeader eyebrow="FAQ" title={title ?? "Veelgestelde vragen"} />
+          <SectorSectionHeader eyebrow="FAQ" title={title ?? (locale === "en" ? "Frequently asked questions" : "Veelgestelde vragen")} />
           <div className="flex flex-col gap-3">
             {items.map((item) => (
               <details

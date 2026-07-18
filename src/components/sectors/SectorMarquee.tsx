@@ -9,8 +9,8 @@ import { SectorIcon } from "./SectorIcon";
  * prefers-reduced-motion (see the .vv-mq styles in globals.css). Each row
  * duplicates its list so the -50% keyframe loops seamlessly.
  */
-export function SectorMarquee({ exclude, animate = true }: { exclude?: string; animate?: boolean }) {
-  const others = sectors.filter((s) => s.slug !== exclude);
+export function SectorMarquee({ exclude, animate = true, items = sectors }: { exclude?: string; animate?: boolean; items?: Sector[] }) {
+  const others = items.filter((s) => s.slug !== exclude);
   const top = [...others, ...others];
   const bottom = [...others].reverse();
   const bottomDup = [...bottom, ...bottom];

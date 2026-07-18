@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "@/components/media-patterns.css";
 import { notFound } from "next/navigation";
-import { sectors, getSectorBySlug } from "@/data/sectors";
-import { getServiceBySlug, serviceHref } from "@/data/services";
-import { getRegionBySlug } from "@/data/regions";
+import { sectors, getLocalizedSectorById, getSectorByLocalizedSlug } from "@/data/sectors";
+import { getLocalizedServiceById, serviceHref } from "@/data/services";
+import { getLocalizedRegionById } from "@/data/regions";
 import { droneMedia } from "@/config/drone.config";
 import { getAllPosts, localizedPath } from "@/lib/kennisbank/posts";
 import { scoreSectorPosts } from "@/lib/kennisbank/relatedPosts";
@@ -37,10 +37,10 @@ import {
   SectorKnowledge,
   SectorIconSprite,
 } from "@/components/sectors";
-import type { Region } from "@/types";
+type SectorLocale = "nl" | "en";
 
 export function generateStaticParams() {
-  return sectors.map((sector) => ({ slug: sector.slug }));
+  return (["nl", "en"] as const).flatMap((locale) => sectors.map((sector) => ({ locale, slug: getLocalizedSectorById(sector.slug, locale).slug })));
 }
 
 // Cases en galerijen zijn Firestore-content (admin-beheerd): net als op de
@@ -51,16 +51,14 @@ export const revalidate = 60;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: SectorLocale; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const sector = getSectorBySlug(slug);
-
-  if (!sector) {
-    return {};
-  }
+  const { locale, slug } = await params;
+  let sector;
+  try { sector = getSectorByLocalizedSlug(slug, locale); } catch { return {}; }
 
   return pageMetadata({
+    locale,
     title: sector.seo.title,
     description: sector.seo.description,
     keywords: sector.seo.keywords,
@@ -71,41 +69,36 @@ export async function generateMetadata({
 export default async function SectorDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: SectorLocale; slug: string }>;
 }) {
-  const { slug } = await params;
-  const sector = getSectorBySlug(slug);
-
-  if (!sector) {
-    notFound();
-  }
+  const { locale, slug } = await params;
+  const en = locale === "en";
+  let sector;
+  try { sector = getSectorByLocalizedSlug(slug, locale); } catch { notFound(); }
+  const localizedSectors = sectors.map((item) => getLocalizedSectorById(item.slug, locale));
 
   // Echte content: Firestore-projecten/galerijen (met seed-fallback) + YouTube.
-  const [projects, images, galleries, videoData, authorImages] = await Promise.all([
-    getWebdesignProjects(),
-    getWebdesignImages(),
-    getFotografieGalleries(),
-    getVideografieVideos(),
-    getAuthorPhotoMap(),
-  ]);
+  const projects = en ? [] : await getWebdesignProjects();
+  const images = en ? {} : await getWebdesignImages();
+  const galleries = en ? [] : await getFotografieGalleries();
+  const videoData = en ? { videos: [] } : await getVideografieVideos();
+  const authorImages = en ? {} : await getAuthorPhotoMap();
 
   const recommendedServices = sector.recommendedServices
-    .map((serviceSlug) => getServiceBySlug(serviceSlug))
-    .filter((service): service is NonNullable<typeof service> => Boolean(service));
+    .map((serviceId) => getLocalizedServiceById(serviceId, locale).service);
 
   // Selectie: curated featured ids eerst, dan admin-getagde content; niets
   // wordt aangevuld - lege selecties verbergen hun sectie.
-  const featuredProjects = selectSectorWebdesignProjects(sector, projects, images);
-  const featuredGalleries = selectSectorGalleries(sector, galleries);
-  const featuredVideos = selectSectorVideos(sector, videoData.videos, droneMedia);
+  const featuredProjects = en ? [] : selectSectorWebdesignProjects(sector, projects, images);
+  const featuredGalleries = en ? [] : selectSectorGalleries(sector, galleries);
+  const featuredVideos = en ? [] : selectSectorVideos(sector, videoData.videos, droneMedia);
 
   // Kennisbank: relevantiescore (geen nieuwste-3-fallback meer). Max 3 zodat
   // de homepage-kaartstijl netjes 1 rij van 3 vult.
-  const kennisbankPosts = scoreSectorPosts(getAllPosts({ locale: "nl" }), sector, { max: 3 });
+  const kennisbankPosts = scoreSectorPosts(getAllPosts({ locale }), sector, { max: 3 });
 
   const localRegions = (sector.localSection?.regionSlugs ?? [])
-    .map((regionSlug) => getRegionBySlug(regionSlug))
-    .filter((region): region is Region => Boolean(region));
+    .map((regionId) => getLocalizedRegionById(regionId, locale));
 
   // ItemList alleen voor zichtbare projecten met een echte live-URL.
   const listedProjects = featuredProjects.filter((project) => project.url);
@@ -116,7 +109,7 @@ export default async function SectorDetailPage({
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
-          { name: "Sectoren", path: "/sectoren" },
+          { name: en ? "Industries" : "Sectoren", path: "/sectoren" },
           { name: sector.title, path: `/sectoren/${sector.slug}` },
         ]}
       />
@@ -126,7 +119,7 @@ export default async function SectorDetailPage({
           service={{
             name: service.title,
             description: service.excerpt,
-            url: `${businessConfig.url}${localizedPath("nl", `${serviceHref(service)}/`)}`,
+            url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service)}/`)}`,
             areaServed: ["Limburg"],
           }}
         />
@@ -157,11 +150,11 @@ export default async function SectorDetailPage({
       <div className="relative z-10 border-t border-white/[0.08] pb-4 pt-7 md:-mt-[200px]">
         <div className="container mx-auto px-2.5 sm:px-4">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/35">
-            Andere sectoren
+            {en ? "Other industries" : "Andere sectoren"}
           </p>
         </div>
         {/* Full-bleed: the two rows run edge to edge, only the label stays aligned. */}
-        <SectorMarquee exclude={sector.slug} />
+        <SectorMarquee exclude={sector.slug} items={localizedSectors} />
       </div>
 
       {sector.answerIntro && <SectorAnswerIntro answer={sector.answerIntro} />}
@@ -170,12 +163,14 @@ export default async function SectorDetailPage({
         intro={sector.challengesIntro}
         expanded={sector.painPointsExpanded}
         simple={sector.painPoints}
+        locale={en ? "en" : "nl"}
       />
 
       <SectorServices
         title={sector.servicesTitle}
         intro={sector.servicesIntro}
         services={recommendedServices}
+        locale={en ? "en" : "nl"}
       />
 
       <SectorCases
@@ -198,18 +193,18 @@ export default async function SectorDetailPage({
       />
 
       {sector.processSteps && sector.processSteps.length > 0 && (
-        <SectorProcess title={sector.processTitle} steps={sector.processSteps} />
+        <SectorProcess title={sector.processTitle} steps={sector.processSteps} locale={en ? "en" : "nl"} />
       )}
 
       {sector.proofPoints && sector.proofPoints.length > 0 && (
-        <SectorProof title={sector.proofTitle} points={sector.proofPoints} />
+        <SectorProof title={sector.proofTitle} points={sector.proofPoints} locale={en ? "en" : "nl"} />
       )}
 
       {sector.localSection && localRegions.length > 0 && (
-        <SectorLocal local={sector.localSection} regions={localRegions} />
+        <SectorLocal local={sector.localSection} regions={localRegions} locale={en ? "en" : "nl"} />
       )}
 
-      {sector.faq && sector.faq.length > 0 && <SectorFaq items={sector.faq} />}
+      {sector.faq && sector.faq.length > 0 && <SectorFaq items={sector.faq} locale={en ? "en" : "nl"} />}
 
       <SectorKnowledge posts={kennisbankPosts} authorImages={authorImages} />
 

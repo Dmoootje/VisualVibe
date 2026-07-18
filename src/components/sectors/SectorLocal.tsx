@@ -12,14 +12,16 @@ import { SectorSectionHeader } from "./SectorSectionHeader";
 export function SectorLocal({
   local,
   regions,
+  locale = "nl",
 }: {
   local: NonNullable<Sector["localSection"]>;
   regions: Region[];
+  locale?: "nl" | "en";
 }) {
   return (
     <Section className="py-10 sm:py-14 md:py-16">
       <Container>
-        <SectorSectionHeader eyebrow="Regio" title={local.title} intro={local.text} />
+        <SectorSectionHeader eyebrow={locale === "en" ? "Regions" : "Regio"} title={local.title} intro={local.text} />
         {regions.length > 0 && (
           <div className="flex flex-wrap gap-2.5">
             {regions.map((region) => (

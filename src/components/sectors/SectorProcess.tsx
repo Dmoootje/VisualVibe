@@ -7,15 +7,17 @@ import { SectorSectionHeader } from "./SectorSectionHeader";
 export function SectorProcess({
   title,
   steps,
+  locale = "nl",
 }: {
   title?: string;
   steps: ServiceProcessStep[];
+  locale?: "nl" | "en";
 }) {
   if (steps.length === 0) return null;
   return (
     <Section className="py-10 sm:py-14 md:py-16">
       <Container>
-        <SectorSectionHeader eyebrow="Werkwijze" title={title ?? "Zo werken we"} />
+        <SectorSectionHeader eyebrow={locale === "en" ? "Our approach" : "Werkwijze"} title={title ?? (locale === "en" ? "How we work" : "Zo werken we")} />
         <ProcessSteps steps={steps} />
       </Container>
     </Section>
