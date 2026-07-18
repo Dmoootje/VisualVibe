@@ -7,6 +7,8 @@ import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { postHref } from "@/lib/kennisbank/urls";
 import { CARD_INTERACTIVE } from "./styles";
 import { knowledgeBaseLabels } from "@/components/kennisbank/localization";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
+import type { BlogLocale } from "@/types/blog";
 
 export type RelatedArticle = {
   title: string;
@@ -36,21 +38,24 @@ export async function RelatedArticles({
   items: RelatedArticle[];
   title?: string;
   className?: string;
-  locale?: string;
+  locale?: BlogLocale;
 }) {
   const labels = knowledgeBaseLabels(locale);
   const byHref = new Map(
-    getAllPosts({ locale: "nl" }).map((post) => [normalizeHref(postHref(post)), post]),
+    getAllPosts({ locale }).map((post) => [normalizeHref(postHref(post)), post]),
   );
   const authorImages = await getAuthorPhotoMap();
-  const resolved = items.map((item) => {
-    const post = byHref.get(normalizeHref(item.href));
+  const resolved = items.flatMap((item) => {
+    const href = normalizeKnowledgeBaseHref(item.href, locale);
+    if (!href) return [];
+    const post = byHref.get(normalizeHref(href));
     const author = item.author ?? post?.author;
-    return {
+    return [{
       ...item,
+      href,
       author,
       authorImage: item.authorImage ?? (author ? authorImages[author] : undefined),
-    };
+    }];
   });
 
   return (

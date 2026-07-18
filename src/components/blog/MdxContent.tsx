@@ -3,8 +3,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { Link } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
+import type { BlogLocale } from "@/types/blog";
 import { BlogProse } from "./BlogProse";
 import { BlogCTA } from "./BlogCTA";
 import { BlogImage } from "./BlogImage";
@@ -23,41 +24,6 @@ import { RelatedServices } from "./RelatedServices";
 import { RoadmapBlock } from "./RoadmapBlock";
 import { StatGrid } from "./StatGrid";
 
-const configuredLocalePrefixes =
-  routing.localePrefix &&
-  typeof routing.localePrefix === "object" &&
-  "prefixes" in routing.localePrefix &&
-  routing.localePrefix.prefixes
-    ? Object.values(routing.localePrefix.prefixes).filter(
-        (prefix): prefix is string => typeof prefix === "string"
-      )
-    : [];
-
-const localePrefixes: string[] = Array.from(
-  new Set([
-    ...routing.locales.map((locale) => `/${locale}`),
-    ...configuredLocalePrefixes,
-  ])
-).sort((a, b) => b.length - a.length);
-
-/**
- * MDX links are authored without a locale prefix. Strip one when it is present
- * anyway, so next-intl never turns `/be/...` into `/be/be/...`.
- */
-function withoutLocalePrefix(href: string) {
-  const suffixStart = href.search(/[?#]/);
-  const pathname = suffixStart === -1 ? href : href.slice(0, suffixStart);
-  const suffix = suffixStart === -1 ? "" : href.slice(suffixStart);
-
-  for (const prefix of localePrefixes) {
-    if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
-      return `${pathname.slice(prefix.length) || "/"}${suffix}`;
-    }
-  }
-
-  return href;
-}
-
 function safeExternalRel(rel: string | undefined, opensNewWindow: boolean) {
   const values = new Set((rel ?? "").split(/\s+/).filter(Boolean));
   values.add("external");
@@ -71,14 +37,15 @@ function safeExternalRel(rel: string | undefined, opensNewWindow: boolean) {
 }
 
 /** Keep article routes locale-aware while retaining native anchor semantics. */
-function MdxLink({
+export function MdxLink({
   href,
   children,
   className,
   rel,
   target,
+  locale = "nl",
   ...props
-}: AnchorHTMLAttributes<HTMLAnchorElement>) {
+}: AnchorHTMLAttributes<HTMLAnchorElement> & { locale?: BlogLocale }) {
   const linkClassName = cn(
     "text-[#ff7500] underline-offset-[3px] transition-colors hover:text-[#ff9440] hover:underline",
     className
@@ -105,10 +72,14 @@ function MdxLink({
 
   const isInternalRoute = href.startsWith("/") && !href.startsWith("//");
   if (isInternalRoute) {
+    const normalizedHref = normalizeKnowledgeBaseHref(href, locale);
+    if (!normalizedHref) {
+      return <span className={linkClassName}>{children}</span>;
+    }
     return (
       <Link
         className={linkClassName}
-        href={withoutLocalePrefix(href)}
+        href={normalizedHref}
         rel={rel}
         target={target}
         {...props}
@@ -189,9 +160,11 @@ const components = {
  * prose styling. Authors can drop any of the blocks above straight into the
  * .mdx file, e.g. `<NoticeBox variant="tip">…</NoticeBox>`.
  */
-export function MdxContent({ source, locale = "nl" }: { source: string; locale?: string }) {
+export function MdxContent({ source, locale = "nl" }: { source: string; locale?: BlogLocale }) {
   const localizedComponents = {
     ...components,
+    a: (props: React.ComponentProps<typeof MdxLink>) => <MdxLink {...props} locale={locale} />,
+    BlogCTA: withProseBoundary((props: React.ComponentProps<typeof BlogCTA>) => <BlogCTA {...props} locale={locale} />),
     RelatedArticles: withProseBoundary((props: React.ComponentProps<typeof RelatedArticles>) => <RelatedArticles {...props} locale={locale} />),
     RelatedRegions: withProseBoundary((props: React.ComponentProps<typeof RelatedRegions>) => <RelatedRegions {...props} locale={locale} />),
     RelatedServices: withProseBoundary((props: React.ComponentProps<typeof RelatedServices>) => <RelatedServices {...props} locale={locale} />),

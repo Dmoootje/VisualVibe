@@ -17,8 +17,7 @@ import {
 import { toBlogCardPost } from "@/lib/kennisbank/blogCard";
 import { extractToc } from "@/lib/kennisbank/toc";
 import { getCategoryBySlug } from "@/data/kennisbankCategories";
-import { getServiceBySlug, serviceHref } from "@/data/services";
-import { getRegionBySlug } from "@/data/regions";
+import { serviceHref } from "@/data/services";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { businessConfig } from "@/config/business.config";
 import { Section, Container } from "@/components/ui";
@@ -29,6 +28,11 @@ import { knowledgeBaseLabels } from "@/components/kennisbank";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
 import { getPublishedLocales } from "@/i18n/locales";
 import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
+import {
+  normalizeKnowledgeBaseHref,
+  resolveKnowledgeBaseRegion,
+  resolveKnowledgeBaseService,
+} from "@/lib/kennisbank/publicLinks";
 
 const HREFLANG: Record<BlogLocale, string> = {
   nl: "nl-BE",
@@ -122,12 +126,16 @@ function resolvePostCta(post: BlogPost): BlogCta {
     title: post.cta?.title ?? fallback.title,
     description: post.cta?.description ?? fallback.description,
     label: post.cta?.label ?? fallback.label,
-    href: post.cta?.href ?? fallback.href,
+    href:
+      normalizeKnowledgeBaseHref(post.cta?.href ?? fallback.href, post.locale) ??
+      (post.locale === "en" ? "/request-a-quotation/" : "/offerte-aanvragen/"),
   };
 }
 
 function absoluteAuthorUrl(post: BlogPost): string | undefined {
-  const authorUrl = post.authorProfile.url;
+  const authorUrl = post.authorProfile.url
+    ? normalizeKnowledgeBaseHref(post.authorProfile.url, post.locale)
+    : undefined;
   if (!authorUrl) return undefined;
   return authorUrl.startsWith("/")
     ? `${businessConfig.url}${localizedPath(post.locale, authorUrl)}`
@@ -251,11 +259,11 @@ export default async function KennisbankPostPage({
   const categoryName = categoryDef?.name ?? post.category;
 
   const relatedServices = (post.relatedServices ?? [])
-    .map((servicePath) => getServiceBySlug(slugFromPath(servicePath)))
+    .map((servicePath) => resolveKnowledgeBaseService(servicePath, post.locale))
     .filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   const relatedRegions = (post.relatedRegions ?? [])
-    .map((regionPath) => getRegionBySlug(slugFromPath(regionPath)))
+    .map((regionPath) => resolveKnowledgeBaseRegion(regionPath, post.locale))
     .filter((region): region is NonNullable<typeof region> => Boolean(region));
 
   const clusterPosts = post.pillar ? getClusterPosts(post.slug, post.locale) : [];
@@ -285,6 +293,9 @@ export default async function KennisbankPostPage({
   const cta = resolvePostCta(post);
   const canonical = `${businessConfig.url}${localizedPath(post.locale, postHref(post))}`;
   const authorUrl = absoluteAuthorUrl(post);
+  const authorProfileUrl = post.authorProfile.url
+    ? normalizeKnowledgeBaseHref(post.authorProfile.url, post.locale) ?? undefined
+    : undefined;
   const authorImage = (await getAuthorPhotoMap())[post.author];
   const keywords = [post.focusKeyword, ...(post.secondaryKeywords ?? [])].filter(
     (keyword): keyword is string => Boolean(keyword)
@@ -347,7 +358,7 @@ export default async function KennisbankPostPage({
             titleAccent={titleAccent}
             excerpt={post.excerpt}
             author={post.author}
-            authorUrl={post.authorProfile.url}
+            authorUrl={authorProfileUrl}
             authorRole={post.authorProfile.jobTitle}
             authorImage={authorImage}
             publishedAt={post.publishedAt}
@@ -424,7 +435,7 @@ export default async function KennisbankPostPage({
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">{labels.articlesInSeries}</h2>
-            <BlogGrid posts={clusterPosts.map(toBlogCardPost)} />
+            <BlogGrid posts={clusterPosts.map(toBlogCardPost)} locale={post.locale === "en" ? "en" : "nl"} />
           </Container>
         </Section>
       )}
@@ -433,7 +444,10 @@ export default async function KennisbankPostPage({
         <Section orbs="none" className="!bg-transparent">
           <Container>
             <h2 className="text-2xl font-bold mb-4">{labels.relatedArticles}</h2>
-            <BlogGrid posts={(relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated).map(toBlogCardPost)} />
+            <BlogGrid
+              posts={(relatedOutsideCluster.length > 0 ? relatedOutsideCluster : fallbackRelated).map(toBlogCardPost)}
+              locale={post.locale === "en" ? "en" : "nl"}
+            />
           </Container>
         </Section>
       )}

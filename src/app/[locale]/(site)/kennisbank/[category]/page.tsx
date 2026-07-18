@@ -29,6 +29,7 @@ import {
   knowledgeBaseLabels,
 } from "@/components/kennisbank";
 import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
 
 const OPEN_GRAPH_LOCALE: Record<string, string> = {
   nl: "nl_BE",
@@ -282,7 +283,9 @@ export default async function KennisbankCategoryPage({
               title: locale === "en" ? `Need help with ${localizedCategoryName.toLowerCase()}?` : `Hulp nodig met ${categoryDef.name}?`,
               description: locale === "en" ? "We help SMEs achieve concrete, measurable results. Ask us for advice with no obligation." : "Wij helpen KMO's in Limburg vooruit met concrete, meetbare resultaten. Vraag vrijblijvend advies aan.",
               label: locale === "en" ? "Ask for advice" : "Vraag advies aan",
-              href: "/offerte-aanvragen/",
+              href:
+                normalizeKnowledgeBaseHref("/offerte-aanvragen/", locale) ??
+                "/offerte-aanvragen/",
             }}
           />
         </div>
