@@ -1,0 +1,66 @@
+{
+  "sourceRoute": "/be/kennisbank/seo-geo/google-business-profiel-optimaliseren/",
+  "targetRoute": "/en/knowledge-base/seo-geo/optimise-google-business-profile/",
+  "audience": "Self-employed professionals and SMEs with a new or existing Google Business Profile who want to audit and improve their local presence step by step",
+  "primaryDutchSearchIntent": "KMO's een controleerbare audit geven om hun bestaande Google Business Profiel correct, volledig, betrouwbaar en meetbaar te beheren",
+  "searchIntent": {
+    "type": "informational",
+    "question": "How can an SME audit and optimise its Google Business Profile without breaching Google's policies?",
+    "geographicContext": "English-speaking SMEs in Limburg, Belgium and the wider Belgian market"
+  },
+  "mainKeyword": "Google Business Profile checklist",
+  "longTailKeywords": [
+    "optimise Google Business Profile",
+    "Google Business Profile audit",
+    "improve Google Maps business profile",
+    "choose Google Business category",
+    "Google Business Profile service area",
+    "manage Google reviews",
+    "local SEO for SMEs"
+  ],
+  "semanticTerms": [
+    "local ranking",
+    "relevance distance prominence",
+    "primary business category",
+    "service-area business",
+    "business information",
+    "profile photos",
+    "review management",
+    "profile performance",
+    "website clicks",
+    "direction requests"
+  ],
+  "directAnswer": "A Google Business Profile checklist verifies that customers see accurate information in Google Search and Maps, understand the offer and can call, request directions or visit the website without friction. Optimisation means making every visible detail accurate, current, specific and demonstrably connected to the real business, not adding as many fields or keywords as possible.",
+  "title": "Optimise your Google Business Profile: practical SME checklist",
+  "metaDescription": "Optimise your Google Business Profile with an audit of categories, service areas, services, photos, reviews and performance using this practical SME checklist.",
+  "h1": "Optimise your Google Business Profile: practical checklist for SMEs",
+  "slug": "optimise-google-business-profile",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/knowledge-base/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/knowledge-base/web-design/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to building a website" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-voor-websites-in-limburg/", "targetHref": "/en/knowledge-base/seo-geo/seo-for-websites-in-limburg/", "anchor": "SEO for websites in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/knowledge-base/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/knowledge-base/web-design/why-a-fast-website-can-rank-better/", "anchor": "why a fast website can perform better" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/knowledge-base/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/services/photography/corporate-photography/", "anchor": "corporate photography" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/knowledge-base/web-design/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/knowledge-base/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "GEO and AEO for SMEs" },
+    { "sourceHref": "/be/kennisbank/seo-geo/wat-is-aeo/", "targetHref": "/en/knowledge-base/seo-geo/what-is-aeo/", "anchor": "what AEO means" },
+    { "sourceHref": "/be/kennisbank/seo-geo/wat-is-geo-generative-engine-optimization/", "targetHref": "/en/knowledge-base/seo-geo/what-is-generative-engine-optimisation/", "anchor": "what Generative Engine Optimisation means" },
+    { "sourceHref": "/be/diensten/seo/lokale-seo/", "targetHref": "/en/services/seo/local-seo/", "anchor": "local SEO approach" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "request a profile audit" },
+    { "sourceHref": "/be/diensten/seo/google-business-profiel-optimalisatie/", "targetHref": "/en/services/seo/google-business-profile-optimisation/", "anchor": "Google Business Profile optimisation" }
+  ],
+  "factsToPreserve": [
+    "Google describes local results through relevance, distance and prominence; distance cannot be optimised away and nobody can buy or guarantee a better position",
+    "A fully online business without in-person customer contact is not automatically eligible for a Business Profile",
+    "A service-area business normally has one profile for its central location unless separate staffed locations genuinely exist",
+    "The real-world business name must not be padded with services, place names or slogans",
+    "Google allows up to twenty service areas and says the overall area should generally remain within about two hours' drive of the base",
+    "A home address should be hidden when customers are not received there",
+    "Review incentives are prohibited",
+    "A profile view, call click or website click is not proof of a lead or sale",
+    "Complete information does not guarantee a higher Google Maps position or an AI-search ranking",
+    "The profile should be reviewed monthly and receive a fuller audit quarterly, with urgent business changes updated immediately"
+  ]
+}
