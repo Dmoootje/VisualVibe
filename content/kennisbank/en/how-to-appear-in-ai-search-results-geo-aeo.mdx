@@ -43,6 +43,31 @@ cta:
   description: "We review crawlability, content, entities, sources and internal connections, then turn the findings into realistic SEO and GEO priorities."
   label: "Discuss your SEO and GEO priorities"
   href: "/en/request-a-quotation/"
+relatedServices:
+  - "/diensten/seo/"
+  - "/diensten/webdesign/"
+  - "/diensten/seo/ai-seo-aeo-geo/"
+  - "/diensten/fotografie/"
+  - "/diensten/videografie/"
+relatedRegions:
+  - "/regio/limburg/"
+  - "/regio/vlaanderen/"
+  - "/regio/antwerpen/"
+  - "/regio/nederlands-limburg/"
+relatedSectors:
+  - "/sectoren/kmo/"
+  - "/sectoren/bouw-renovatie/"
+  - "/sectoren/retail-webshops/"
+  - "/sectoren/industrie/"
+relatedPosts:
+  - "/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/"
+  - "/kennisbank/seo-geo/local-seo-for-smes-in-limburg/"
+  - "/kennisbank/seo-geo/seo-for-websites-in-limburg/"
+  - "/kennisbank/seo-geo/optimise-google-business-profile/"
+  - "/kennisbank/seo-geo/technical-seo-checklist/"
+  - "/kennisbank/seo-geo/what-is-aeo/"
+  - "/kennisbank/seo-geo/what-is-generative-engine-optimisation/"
+  - "/kennisbank/seo-geo/seo-content-for-service-businesses/"
 sources:
   - { title: "Optimizing your website for generative AI features on Google Search", url: "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide", publisher: "Google Search Central", accessedAt: "2026-07-11" }
   - { title: "AI features and your website", url: "https://developers.google.com/search/docs/appearance/ai-features", publisher: "Google Search Central", accessedAt: "2026-07-11" }
@@ -59,39 +84,91 @@ sources:
 # GEO and AEO for SMEs: appearing in Google, ChatGPT and AI search results
 
 <LeadIntro>
-**SMEs improve their chances of appearing in AI search results by publishing crawlable, well-structured and factually consistent content that answers real questions, identifies the business clearly and supports claims with evidence.** GEO and AEO build on sound SEO. No setting, schema type or writing formula can guarantee a citation.
+Search is changing. People still use Google, but they also ask questions of AI systems, chatbots and search engines that summarise answers themselves. Instead of searching only for "web design Limburg", they may ask which web designer in Limburg also provides photography and SEO, or what a professional SME website needs.
 </LeadIntro>
 
-People now move between traditional search results, AI Overviews, ChatGPT and other answer systems. That changes how information is presented, but it does not remove the need for a technically accessible website, useful content and credible evidence. For an SME, the practical goal is not to write for a mysterious algorithm. It is to make genuine expertise easy for people and systems to understand.
+**SMEs improve their chances of appearing in AI search results by publishing crawlable, well-structured and factually consistent content that answers real questions, identifies the business clearly and supports claims with evidence.** GEO and AEO build on sound SEO. No setting, schema type or writing formula can guarantee a citation.
+
+That is why terms such as **GEO**, **AEO** and **AI SEO** are appearing more often. They sound technical, but the principle is straightforward: your website and content must be clear, reliable and structured enough for people, search engines and AI systems to understand when your business is relevant.
+
+For SMEs, this is a meaningful development, not a promise of automatic visibility. Clear content, strong service pages, local SEO, appropriate structured data, genuine case studies and demonstrable expertise make information more useful to visitors and easier for search and answer systems to interpret.
+
+<NoticeBox variant="warning" title="Important update from July 2026">
+Google treats AEO and GEO for its generative Search features as part of SEO. Its official guidance states that there is no special AI schema, no mandatory `llms.txt` file and no ideal page length for AI. Unique experience, crawlability, sound technology, strong media and useful content remain the basis. Read Google's current [guidance for generative Search features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide).
+</NoticeBox>
+
+This guide explains what GEO and AEO mean, how they differ from conventional SEO and how to prepare a website for a future in which Google, ChatGPT and other AI systems provide more answers directly.
+
+<QuoteBlock>
+AI visibility does not start with tricks. It starts with clear, reliable and well-structured information.
+</QuoteBlock>
 
 ## GEO in one minute
 
-Generative engine optimisation, or GEO, is the practice of making content clear and source-worthy for systems that generate answers from information they find. It concerns structure, factual precision, evidence, entities and the relationships between pages. GEO is not a guaranteed route into an answer and does not replace SEO.
+**GEO** stands for **Generative Engine Optimization**: improving digital content so that generative search and answer systems can find and understand it accurately and may use it as a source. The term was developed in the original [GEO: Generative Engine Optimization](https://arxiv.org/abs/2311.09735) research, but there is no universal switch that forces a mention.
+
+For an SME, GEO is about clear entities, substantiated claims, sufficient context and coherent relationships between services, case studies and knowledge articles. For its own generative Search features, Google explicitly places this work within the existing SEO foundation.
 
 ## AEO in one minute
 
-Answer engine optimisation, or AEO, focuses on making a direct answer easy to find and understand. A useful page states the question, gives a bounded answer early, and then explains conditions, examples and evidence. It serves readers first and may also help search or answer systems extract meaning.
+**AEO** stands for **Answer Engine Optimization**. It organises a page so that a specific question first receives a clear, self-contained answer, followed by the necessary nuance, explanation and evidence. This helps readers who need quick orientation and makes the answer structure more explicit to search engines.
+
+AEO is broader than adding an FAQ at the foot of a page. It begins with question research, descriptive headings, factually complete answer blocks and a logical next step.
 
 ## How do SEO, AEO and GEO fit together?
 
 SEO provides crawlability, indexability, internal structure and relevance. AEO improves answer formats. GEO makes claims, entities and evidence easier to interpret in generative contexts. Google explicitly treats work for its generative Search features as part of SEO. It does not prescribe a separate AI schema, an ideal AI word count or a mandatory `llms.txt` file.
 
 <ComparisonTable
-  headers={["Discipline", "Primary contribution", "What it cannot promise"]}
+  highlightFirstColumn
+  headers={["Approach", "Goal", "Focus"]}
   rows={[
-    ["SEO", "Discovery, indexing, relevance and usable site structure", "A ranking, click or lead"],
-    ["AEO", "Direct, complete answers to real questions", "Selection as the displayed answer"],
-    ["GEO", "Clear entities, evidence and source-worthy explanations", "A citation in a generative response"],
+    ["SEO", "Being found in search engines", "Technology, content, links, keywords, speed, structure and relevance"],
+    ["AEO", "Giving a direct and useful answer", "Questions, definitions, FAQs, headings and understandable explanations"],
+    ["GEO", "Being eligible for inclusion in AI-generated answers", "Context, entities, consistency, expertise, source value and structured content"],
   ]}
+  caption="SEO is the foundation; AEO and GEO build on it."
 />
+
+A strong modern content strategy combines all three. None can promise a ranking, citation, click or lead.
 
 ## Why does this matter for SMEs?
 
-Small and medium-sized businesses rarely need to cover every topic. They need to explain their own services, audience, region, process and evidence well. A company in Limburg, Belgium, can be highly relevant for a specific local question even without the publishing volume of a national platform. Specificity and consistency create stronger signals than broad, generic marketing copy.
+Many SMEs assume that AI visibility matters only to large brands. It does not. Local businesses in particular can benefit from clear, specific and reliable content.
+
+An AI system needs context. If a website is vague, the company is hard to understand. If it explains who the business is, what it does, whom it serves, where it operates and which case studies support that story, it becomes much easier to interpret.
+
+Vague copy says: "We provide end-to-end solutions for your digital growth." It sounds polished but reveals little. Compare it with: "VisualVibe helps SMEs in Limburg, Belgium, with web design, SEO, corporate photography, video, drone footage, 3D tours and podcasting. We combine strategy, media and technology to improve online visibility and generate more enquiries."
+
+<ChecklistBlock title="Why the specific example works" items={[
+  "It names the brand and audience explicitly",
+  "It identifies the region and services",
+  "The method gives substance to the promise",
+  "The intended value and outcome are understandable",
+]} />
 
 ## How do you make content suitable for AI search?
 
-Begin with the reader's question. Give a concise answer near the top, use headings that describe what follows, define specialist terms, and support factual claims with first-hand evidence or reliable sources. Add examples, limitations and dates where information can change. Identify the author and business, and connect the page to relevant services, regions and case studies.
+Clear structure helps visitors find the answer and gives systems more context for each part of a page. It does not mean writing like a robot. Good content remains human, specific and logically organised.
+
+<FeatureGrid columns={2}>
+  <ChecklistBlock title="Answer and depth" className="my-0 h-full" items={[
+    "Begin with a clear explanation",
+    "Use descriptive headings",
+    "Give short answers to specific questions",
+    "Follow them with relevant depth and nuance",
+    "Make abstract explanations tangible with examples",
+  ]} />
+  <ChecklistBlock title="Structure and connections" className="my-0 h-full" items={[
+    "Use lists only when they genuinely help",
+    "Answer recurring questions in an FAQ",
+    "Link to relevant services and deeper content",
+    "Use consistent terms for the brand, service and audience",
+    "Add structured data that matches visible content",
+  ]} />
+</FeatureGrid>
+
+A page suited to AI search is therefore not merely a block of text. It combines direct answers, clear entities, context and meaningful internal relationships.
 
 <ChecklistBlock title="A source-worthy page" items={[
   "Answers one clearly defined question",
@@ -108,17 +185,55 @@ The term became widely known through research into Generative Engine Optimizatio
 
 ## Entities: state clearly who you are and what you do
 
-An entity is an identifiable person, organisation, place, service or concept. Use the same business name, service terms, contact details and geographic descriptions across the website. Explain relationships directly: VisualVibe is a creative media agency serving SMEs from Limburg, Belgium, with web design, SEO, photography, video, drone, immersive media and podcasting services.
+An entity is something identifiable: a brand, person, service, region, sector, product or topic. Use the same business name, service terms, contact details and geographic descriptions across the website.
+
+<FeatureGrid columns={2}>
+  <ChecklistBlock title="Brand, audience and services" className="my-0 h-full" items={[
+    "VisualVibe as a creative media agency",
+    "SMEs as the main audience",
+    "Web design and SEO",
+    "Photography and videography",
+    "Drone and FPV",
+    "3D, VR, AR and podcasting",
+  ]} />
+  <ChecklistBlock title="Region and local context" className="my-0 h-full" items={[
+    "Limburg, Belgium, and Flanders",
+    "Bilzen-Hoeselt and Tongeren-Borgloon",
+    "Hasselt and Genk where genuinely relevant",
+    "Antwerp",
+    "Dutch Limburg",
+    "Real case studies and sectors in those service areas",
+  ]} />
+</FeatureGrid>
+
+Use these entities clearly and naturally, never as keyword stuffing. "We do everything for everyone" gives systems and readers little to work with. "VisualVibe is a creative media agency in Limburg, Belgium, helping SMEs with web design, SEO, photography, video, drone footage, 3D tours and podcasting" is far more precise.
 
 ## Structured data and schema
 
-Structured data can clarify page type, organisation, author, breadcrumbs, articles, services and videos when it matches visible content. It does not create an AI citation entitlement. Follow Google's general structured data guidelines, use the most specific valid type and never mark up claims or FAQs that visitors cannot see.
+Structured data can give search engines explicit information about a page. It is not a ranking switch and, under [Google's general structured data guidelines](https://developers.google.com/search/docs/appearance/structured-data/sd-policies), it must match what visitors can actually see.
+
+<FeatureGrid columns={3}>
+  <FeatureCard title="Organisation and local business">Use `Organization` or `LocalBusiness` for accurate organisation details and local business context.</FeatureCard>
+  <FeatureCard title="Service, article and navigation">Where appropriate, use `Service`, `BlogPosting`, `BreadcrumbList` or `CreativeWork` for the visible page type.</FeatureCard>
+  <FeatureCard title="Media and reviews">Use `ImageObject`, `VideoObject`, and only honest, visible `Review` or `AggregateRating` data.</FeatureCard>
+</FeatureGrid>
+
+A knowledge article like this may use `BlogPosting` and `BreadcrumbList`; a service page may use `Service`; a contact page may support `LocalBusiness` or `Organization`; and a case study may use `CreativeWork` or suitable project information.
+
+Structured data must never contain hidden invention. It does not create an entitlement to an AI citation, and Google requires no special structured data for generative results.
 
 ## Crawler access: Search is not the same as AI training
 
 Check `robots.txt`, page robots directives, canonical tags, authentication and firewall rules separately. For Google's generative Search features, pages must be indexed and eligible for a search result snippet. Google lists no additional technical admission requirement that guarantees inclusion.
 
-OpenAI distinguishes between OAI-SearchBot, which supports discovery for ChatGPT search features, and GPTBot, which concerns content that may be used to train generative models. Access can be managed separately. Document the business and privacy decision for each crawler.
+OpenAI makes an important distinction in its [official crawler documentation](https://developers.openai.com/api/docs/bots):
+
+<FeatureGrid columns={2}>
+  <FeatureCard title="OAI-SearchBot for search">This crawler supports discovery for ChatGPT search features. Manage access separately in `robots.txt` and at infrastructure level.</FeatureCard>
+  <FeatureCard title="GPTBot for model training">This crawler concerns content that may be used to train generative models. Allowing or blocking it is separate from the decision for OAI-SearchBot.</FeatureCard>
+</FeatureGrid>
+
+This distinction prevents a common mistake: treating every AI crawler as one setting. Document the business purpose and privacy decision behind each crawler. OpenAI also explains the choice in its [FAQ for publishers and developers](https://help.openai.com/en/articles/12627856-publishers-and-developers-faq).
 
 <NoticeBox variant="info" title="Access is necessary, never sufficient">
 A crawlable page may be eligible to be found or cited. No crawler setting guarantees a position, citation, click or lead. Measure technical access, content quality and outcomes separately.
@@ -126,7 +241,7 @@ A crawlable page may be eligible to be found or cited. No crawler setting guaran
 
 ## How do you measure visibility in generative results?
 
-Avoid turning an invented GEO score into the end goal. Combine visibility, source referrals and commercial outcomes. As of July 2026, reporting differs by platform and may continue to change. Google's dedicated generative AI performance report is being rolled out to some Search Console properties. Other AI-feature activity may remain in general Search reporting. Bing AI Performance reports early signals such as citation counts, cited pages and grounding queries. OpenAI states that referrals from ChatGPT Search use `utm_source=chatgpt.com`.
+Do not turn an invented GEO score into the end goal. Combine visibility, source referrals and business outcomes. Available reports differ by platform and may still change.
 
 <ComparisonTable headers={["Signal", "Where to review it", "What it means"]} rows={[
   ["Generative impressions in Google", "Search Console where the report is available", "A visibility trend, not a guarantee of clicks or enquiries"],
@@ -135,9 +250,19 @@ Avoid turning an invented GEO score into the end goal. Combine visibility, sourc
   ["Commercial impact", "Analytics, CRM and lead records", "Whether relevant visits contribute to conversations, quotations or revenue"],
 ]}/>
 
+As of July 2026, Google is rolling out its dedicated [generative AI performance report](https://support.google.com/webmasters/answer/16984139) gradually to some site owners. For other properties, AI features remain within general Search Console reporting. Microsoft describes citations, cited pages and grounding queries in [Bing AI Performance](https://blogs.bing.com/webmaster/February-2026/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview) as early visibility signals. OpenAI states that ChatGPT Search referrals include `utm_source=chatgpt.com`. Compare trends over a longer period and always connect them with landing pages and genuine conversions.
+
 ## FAQs are useful when they answer real questions
 
-Google stopped showing FAQ rich results on 7 May 2026. FAQs should therefore help readers, not act as a search-result trick.
+FAQs can resolve real follow-up questions quickly, but they must add substance rather than append five commercial prompts to every page. Google stopped showing FAQ rich results on 7 May 2026, so a good FAQ is an editorial choice, not a trick for occupying extra search-result space.
+
+<ChecklistBlock title="A useful FAQ" items={[
+  "Answers questions customers genuinely ask",
+  "Begins with a short, clear answer",
+  "Links to deeper content where relevant",
+  "Uses natural language without keyword stuffing",
+  "Matches the search intent of the page",
+]} />
 
 <FaqAccordion withSchema items={[
   { question: "What is the difference between SEO and GEO?", answer: "SEO focuses on visibility in search engines. GEO focuses on clarity and source-worthiness in systems that generate answers. In practice they belong together because sound SEO is the foundation." },
@@ -147,11 +272,47 @@ Google stopped showing FAQ rich results on 7 May 2026. FAQs should therefore hel
 
 ## Content that AI can understand more easily
 
-Replace empty promises with concrete descriptions. "We offer complete solutions" says little. "We build websites for SMEs in Limburg with SEO, original photography and clear enquiry forms" identifies the service, audience, region and deliverable. Follow the same people-first quality principles used for conventional search.
+AI-friendly copy is not vague. Follow the same [people-first quality principles](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) that apply to ordinary search results: show who created the information, what supports its claims and whom it genuinely helps.
+
+<DoDontGrid doTitle="Specific and useful" dontTitle="Too vague without context" dos={[
+  "We build websites for SMEs in Limburg, Belgium, with SEO, strong photography and clear enquiry forms.",
+  "We create corporate videos for websites, social media and campaigns.",
+  "We help local companies with service pages, regional pages and a well-maintained Google Business Profile.",
+  "We combine web design, photography and video so a company's online presence reflects the real business.",
+]} donts={[
+  "We take care of everything from A to Z.",
+  "We provide end-to-end solutions.",
+  "Quality is central to everything we do.",
+  "We are focused on results.",
+  "Your partner in growth.",
+]} />
+
+Specific beats vague.
 
 ## The role of photography and video in GEO
 
-Original images, project footage and case studies add context and evidence. Give images meaningful alt text, explain what they show and use captions where useful. Give videos a clear title, summary or transcript, relevant thumbnail and `VideoObject` markup where appropriate. Media needs surrounding text because systems may not interpret every visual detail as a person would.
+GEO is not solely about text. Original company photography, project footage, video and case studies add context and evidence that generic stock media cannot provide.
+
+<FeatureGrid columns={2}>
+  <ChecklistBlock title="A useful image" className="my-0 h-full" items={[
+    "Has a clear file name and relevant alt text",
+    "Appears beside copy explaining what it shows and why it matters",
+    "Uses a title attribute only when that adds information",
+    "Includes a caption where useful",
+    "Uses an appropriate format and optimised file size",
+    "Shows genuine work, people or context when evidence matters",
+  ]} />
+  <ChecklistBlock title="A useful video" className="my-0 h-full" items={[
+    "Has a clear title and concise description",
+    "Includes a transcript or substantive summary",
+    "Uses a recognisable, relevant thumbnail",
+    "Uses `VideoObject` schema where appropriate",
+    "Appears on a page where it belongs editorially",
+    "Supports an explanation or evidence rather than atmosphere alone",
+  ]} />
+</FeatureGrid>
+
+AI systems may not extract every visual detail as a person would. The surrounding context therefore matters. A photograph of a corporate shoot communicates more when the adjacent text explains who is shown, what is happening, where it took place and why it matters.
 
 ## Internal links connect your expertise
 

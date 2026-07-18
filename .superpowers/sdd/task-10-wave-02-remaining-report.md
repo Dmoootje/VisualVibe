@@ -27,3 +27,30 @@
 ## Review handoff
 
 The parent agent should perform the required independent source-to-translation editorial review as part of the combined Task 10 integration review.
+
+## Independent review evidence
+
+### `dronevideo-voor-bouwprojecten`
+
+- Reviewer read the complete 4,059-word Dutch source, the original 2,155-word English draft, the approved brief, style guide, glossary and linked service context.
+- The first draft was rejected as materially incomplete. It reduced a five-purpose comparison to three rows, removed both application checklists, the milestone roadmap, the site-safety do/don't grid, the delivery grids, three FAQs and substantial operational, privacy, accessibility, archive and budget qualifications.
+- The corrected 4,447-word English article restores every source heading and the complete informational scope without treating marketing footage as inspection evidence or weakening the Belgian and European flight caveats.
+- Frontmatter now restores all five related services, four regions, four sectors and six related articles with canonical relationship paths targeting the English article slugs.
+- Independent editorial decision: APPROVED after correction.
+
+### `gevonden-worden-in-ai-zoekresultaten-geo-aeo`
+
+- Reviewer read the complete 4,082-word Dutch source, the original 2,247-word English draft, the approved brief, style guide, glossary and relevant SEO/GEO service context.
+- The first draft was rejected as materially incomplete. It removed the dated July 2026 notice, concrete vague-versus-specific examples, entity lists, schema examples, crawler comparison, FAQ checklist, media checklists and several official-source distinctions.
+- The corrected 3,277-word English article restores those examples, checklists and qualifications while retaining a more economical English syntax. Platform statements remain dated and bounded; crawler access, schema and content structure are never presented as guarantees.
+- Frontmatter now restores all five related services, four regions, four sectors and eight related articles with canonical relationship paths targeting the English article slugs.
+- Independent editorial decision: APPROVED after correction.
+
+### Fresh verification after independent correction
+
+- `npm test -- src/lib/kennisbank/translations.test.ts`: 10 tests passed.
+- `npm run typecheck`: passed.
+- `node scripts/audit-locales.mjs`: 0 blocking issues; the reported informational issues concern English partners not yet delivered by other Task 10 work.
+- `git diff --check`: no patch errors.
+- `npm test`: all 73 test files and 285 tests passed.
+- `npm run build`: MDX compilation and type/lint validation passed; static sitemap generation remains blocked by incomplete or non-canonical relationship data across the concurrently developing Task 10 English corpus. The build reported the corpus-wide list rather than an MDX syntax error in either reviewed article.
