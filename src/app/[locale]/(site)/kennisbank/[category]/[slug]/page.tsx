@@ -28,6 +28,7 @@ import { BlogHero, MdxContent, StickyBlogSidebar } from "@/components/blog";
 import { knowledgeBaseLabels } from "@/components/kennisbank";
 import type { BlogCta, BlogLocale, BlogPost } from "@/types/blog";
 import { getPublishedLocales } from "@/i18n/locales";
+import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
 
 const HREFLANG: Record<BlogLocale, string> = {
   nl: "nl-BE",
@@ -156,17 +157,19 @@ export async function generateMetadata({
   if (!post) return {};
 
   const canonical = `${businessConfig.url}${localizedPath(locale, postHref(post))}`;
+  const publishedLocales = new Set(getPublishedLocales());
   const translations = Object.values(getPostTranslations(post.translationKey)).filter(
-    (translation): translation is BlogPost => Boolean(translation),
+    (translation): translation is BlogPost =>
+      Boolean(translation && publishedLocales.has(translation.locale)),
   );
+  const dutchTranslation = translations.find((translation) => translation.locale === "nl");
+  const englishTranslation = translations.find((translation) => translation.locale === "en");
   const languageAlternates =
-    translations.length > 1
-      ? Object.fromEntries(
-          translations.map((translation) => [
-            HREFLANG[translation.locale],
-            `${businessConfig.url}${localizedPath(translation.locale, postHref(translation))}`,
-          ])
-        )
+    dutchTranslation && englishTranslation
+      ? publishedLanguageAlternates(businessConfig.url, {
+          nl: postHref(dutchTranslation),
+          en: postHref(englishTranslation),
+        })
       : undefined;
   const alternateLocales = translations
     .filter((translation) => translation.locale !== post.locale)

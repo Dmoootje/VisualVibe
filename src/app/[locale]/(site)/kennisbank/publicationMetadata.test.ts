@@ -54,4 +54,19 @@ describe("published knowledge-base metadata", () => {
     expect(html).toContain("Building an AI application");
     expect(html).toContain('href="/diensten/custom-software/"');
   });
+
+  it("uses the published language set and Dutch x-default on articles", async () => {
+    const page = await import("./[category]/[slug]/page");
+    const metadata = await page.generateMetadata({
+      params: Promise.resolve({
+        locale: "en",
+        category: "software-op-maat",
+        slug: "building-an-ai-application",
+      }),
+    });
+
+    expect(metadata.alternates).toMatchObject({ languages: expectedLanguages });
+    expect(metadata.alternates?.languages).not.toHaveProperty("fr-BE");
+    expect(metadata.alternates?.languages).not.toHaveProperty("de-DE");
+  });
 });
