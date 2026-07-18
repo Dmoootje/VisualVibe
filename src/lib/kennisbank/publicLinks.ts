@@ -26,6 +26,25 @@ const DUTCH_ONLY_ENGLISH_PATHS = new Set([
   "/realisaties/photography",
 ]);
 
+const ENGLISH_SERVICE_ALIAS_IDS: Record<string, string> = {
+  "corporate-event-aftermovie": "event-aftermovie",
+  "corporate-portraits": "zakelijke-portretten",
+  "project-drone-footage": "realisatie-dronebeelden",
+  "real-estate-drone-imagery": "vastgoed-dronebeelden",
+  "real-estate-photography": "vastgoedfotografie",
+  "seo-website-development": "seo-website-laten-maken",
+  "workshop-filming": "workshop-filmen",
+};
+
+const ENGLISH_SOFTWARE_ALIAS_IDS: Record<string, string> = {
+  "website-with-ai-features": "ai-applicatie-laten-maken",
+};
+
+const ENGLISH_KNOWLEDGE_BASE_PATH_ALIASES: Record<string, string> = {
+  "/kennisbank/webdesign/website-laten-maken-kosten":
+    "/kennisbank/webdesign/website-development-costs",
+};
+
 function splitSuffix(href: string): { pathname: string; suffix: string } {
   const suffixStart = href.search(/[?#]/);
   return suffixStart === -1
@@ -56,6 +75,9 @@ function serviceIdFromSlug(slug: string, locale: BlogLocale): string | undefined
   const source = getServiceBySlug(slug);
   if (source) return source.slug;
   if (locale !== "en") return undefined;
+
+  const aliasId = ENGLISH_SERVICE_ALIAS_IDS[slug];
+  if (aliasId) return aliasId;
 
   try {
     return getServiceByLocalizedSlug(slug, "en").id;
@@ -123,15 +145,18 @@ function normalizeServicePath(
 
   const isSoftwareHub =
     segments[1] === "software-op-maat" || segments[1] === "custom-software";
-  if (!isSoftwareHub) return undefined;
+  const softwareAliasId =
+    locale === "en" ? ENGLISH_SOFTWARE_ALIAS_IDS[slug] : undefined;
+  if (!isSoftwareHub && !softwareAliasId) return undefined;
   if (segments.length === 2) {
     return withOptionalTrailingSlash(softwareServiceHubHref(locale), trailingSlash);
   }
 
   const sourceSoftware = getSoftwareService(slug);
-  const localizedSoftware =
-    sourceSoftware ?? getLocalizedSoftwareServiceBySlug(slug, locale);
-  const softwareId = localizedSoftware?.id;
+  const localizedSoftware = softwareAliasId
+    ? undefined
+    : sourceSoftware ?? getLocalizedSoftwareServiceBySlug(slug, locale);
+  const softwareId = softwareAliasId ?? localizedSoftware?.id;
   const target = softwareId
     ? getSoftwareServices(locale).find((service) => service.id === softwareId)
     : undefined;
@@ -187,6 +212,12 @@ export function normalizeKnowledgeBaseHref(
   }
   if (comparablePath === "/over-ons" || comparablePath === "/about") {
     return `${locale === "en" ? "/about/" : "/over-ons/"}${suffix}`;
+  }
+
+  const knowledgeBaseAlias =
+    locale === "en" ? ENGLISH_KNOWLEDGE_BASE_PATH_ALIASES[comparablePath] : undefined;
+  if (knowledgeBaseAlias) {
+    return `${withOptionalTrailingSlash(knowledgeBaseAlias, trailingSlash)}${suffix}`;
   }
 
   const servicePath = normalizeServicePath(pathname, locale, trailingSlash);

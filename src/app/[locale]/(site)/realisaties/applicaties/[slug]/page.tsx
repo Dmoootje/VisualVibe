@@ -27,6 +27,7 @@ import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
 import type { SupportedLocale } from "@/i18n/locales";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
+import { localizedApplicationWebsiteUrl } from "./applicationWebsiteUrl";
 
 export const revalidate = 60;
 
@@ -147,6 +148,7 @@ export default async function ApplicationCasePage({
   try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { notFound(); }
   const images = await getApplicationCaseImages();
   const en = locale === "en";
+  const websiteUrl = localizedApplicationWebsiteUrl(project.websiteUrl, locale);
 
   const cover = images[applicationCaseImageKey(project.id, "cover")];
   const screenshots = APPLICATION_CASE_IMAGE_SLOTS.filter(
@@ -222,9 +224,9 @@ export default async function ApplicationCasePage({
                 {project.excerpt}
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                {project.websiteUrl && (
+                {websiteUrl && (
                   <a
-                    href={project.websiteUrl}
+                    href={websiteUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none"

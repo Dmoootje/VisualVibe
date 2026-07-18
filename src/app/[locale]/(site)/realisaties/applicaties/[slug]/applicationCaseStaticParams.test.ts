@@ -32,8 +32,20 @@ import {
   getLocalizedApplicationCaseById,
 } from "@/data/applicationCases";
 import { generateStaticParams } from "./page";
+import { localizedApplicationWebsiteUrl } from "./applicationWebsiteUrl";
 
 describe("application case static publication params", () => {
+  it("keeps the VisualVibe case-study website link in the current publication", () => {
+    expect(localizedApplicationWebsiteUrl(
+      "https://visualvibe.media/be/",
+      "en",
+    )).toBe("https://visualvibe.media/en/");
+    expect(localizedApplicationWebsiteUrl(
+      "https://visualvibe.media/be/",
+      "nl",
+    )).toBe("https://visualvibe.media/be/");
+  });
+
   it("keeps a published Dutch-only application in nl and excludes it from en", () => {
     const dutchOnly = {
       ...applicationCases[0],

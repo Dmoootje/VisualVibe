@@ -9,7 +9,7 @@ vi.mock("@/i18n/navigation", () => ({
 }));
 vi.mock("@/components/seo", () => ({ BreadcrumbJsonLd: () => null, ServiceJsonLd: () => null }));
 vi.mock("@/components/sections", () => ({
-  BlogGrid: () => null,
+  BlogGrid: ({ locale }: { locale?: string }) => <div data-blog-locale={locale} />,
   CTASection: ({ title, primaryHref }: { title: string; primaryHref?: string }) => <section data-cta-href={primaryHref}>{title}</section>,
 }));
 vi.mock("@/features/home/RegionIntro/components/RegionMiniMap", () => ({
@@ -29,7 +29,8 @@ describe("English region detail route", () => {
     expect(html).toContain("Limburg, Belgium");
     expect(html).toContain("Web design");
     expect(html).toContain('href="/diensten/web-design"');
-    expect(html).toContain('data-cta-href="/en/request-a-quotation/"');
+    expect(html).toContain('data-cta-href="/request-a-quotation/"');
+    expect(html).toContain('data-blog-locale="en"');
     expect(html).not.toMatch(/Onze diensten|Bekijk alle diensten|Werkgebied|Kennisbank|Uit de kennisbank|Realisaties|Offerte aanvragen/);
   });
 

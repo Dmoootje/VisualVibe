@@ -44,8 +44,17 @@ describe("English core commercial pages", () => {
 
     expect(html).toContain("The person behind VisualVibe");
     expect(html).toContain("One partner for digital experiences and visual stories");
+    expect(html).not.toContain('href="/en/trouwfotograaf-limburg/"');
     expect(html).not.toContain("Het gezicht achter VisualVibe");
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("About VisualVibe") });
+  });
+
+  it("uses the canonical English quotation route on the services page", async () => {
+    const page = await import("./diensten/page");
+    const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ locale: "en" }) }));
+
+    expect(html).toContain('href="/request-a-quotation"');
+    expect(html).not.toContain('href="/offerte-aanvragen"');
   });
 
   it("renders an English sitemap without Dutch knowledge-base fallbacks", async () => {

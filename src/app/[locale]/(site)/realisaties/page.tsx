@@ -249,7 +249,7 @@ export default async function RealisatiesHubPage({ params }: { params: Promise<{
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
-                href={en ? "/services" : "/diensten"}
+                href="/diensten"
                 className="inline-flex w-full items-center justify-center rounded-full border border-white/[0.16] px-6 py-3 font-medium text-white transition-colors hover:border-[rgba(255,117,0,0.5)] sm:w-auto"
               >
                 {en ? "Explore our services" : "Bekijk onze diensten"}

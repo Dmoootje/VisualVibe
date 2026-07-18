@@ -30,6 +30,12 @@ describe("realisation route locale integration", () => {
     expect(category).toContain('locale === "nl" ? await getVideografieVideos() : null');
   });
 
+  it("keeps the English hub service CTA on the published route namespace", () => {
+    const source = read(routeFiles[0]);
+    expect(source).toContain('href="/diensten"');
+    expect(source).not.toContain('en ? "/services" : "/diensten"');
+  });
+
   it("uses strict application selectors for list, detail, metadata and related work", () => {
     for (const file of routeFiles.slice(2)) {
       expect(read(file)).toMatch(/getLocalizedApplicationCaseById|getApplicationCaseByLocalizedSlug/);

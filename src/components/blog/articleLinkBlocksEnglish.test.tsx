@@ -6,6 +6,7 @@ import { MdxLink } from "./MdxContent";
 import { RelatedArticles } from "./RelatedArticles";
 import { RelatedRegions } from "./RelatedRegions";
 import { RelatedServices } from "./RelatedServices";
+import { normalizeKnowledgeBaseHref } from "@/lib/kennisbank/publicLinks";
 
 const { getAllPosts } = vi.hoisted(() => ({
   getAllPosts: vi.fn(() => []),
@@ -19,6 +20,48 @@ vi.mock("@/lib/kennisbank/posts", () => ({ getAllPosts }));
 vi.mock("@/lib/firestore/profiles", () => ({ getAuthorPhotoMap: async () => ({}) }));
 
 describe("English in-article knowledge-base links", () => {
+  it("resolves legacy English route wording through stable publication IDs", () => {
+    expect([
+      "/en/diensten/fotografie/real-estate-photography/",
+      "/en/diensten/photography/real-estate-photography/",
+    ].map((href) => normalizeKnowledgeBaseHref(href, "en"))).toEqual([
+      "/diensten/photography/property-photography/",
+      "/diensten/photography/property-photography/",
+    ]);
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/drone-fpv/real-estate-drone-imagery/",
+      "en",
+    )).toBe("/diensten/drone-fpv/real-estate-drone-footage/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/drone-fpv/project-drone-footage/",
+      "en",
+    )).toBe("/diensten/drone-fpv/construction-project-drone-footage/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/videography/corporate-event-aftermovie/",
+      "en",
+    )).toBe("/diensten/videography/event-aftermovie/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/photography/corporate-portraits/",
+      "en",
+    )).toBe("/diensten/photography/business-portraits/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/masterclasses/workshop-filming/",
+      "en",
+    )).toBe("/diensten/masterclasses/workshop-video-production/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/web-design/seo-website-development/",
+      "en",
+    )).toBe("/diensten/web-design/seo-ready-website/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/diensten/web-design/website-with-ai-features/",
+      "en",
+    )).toBe("/diensten/custom-software/ai-application-development/");
+    expect(normalizeKnowledgeBaseHref(
+      "/en/kennisbank/webdesign/website-laten-maken-kosten/",
+      "en",
+    )).toBe("/kennisbank/webdesign/website-development-costs/");
+  });
+
   it("canonicalizes native MDX anchors at the article locale boundary", () => {
     const html = renderToStaticMarkup(
       createElement(

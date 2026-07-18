@@ -16,7 +16,7 @@ const quotationCta = (region: string) => ({
   description:
     "Tell us where your business is based and what you want to achieve. We will propose an approach suited to your region, sector and project.",
   label: "Request a quotation",
-  href: "/en/request-a-quotation/",
+  href: "/request-a-quotation/",
 });
 
 export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> = {
@@ -44,8 +44,8 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Limburg, Belgium"),
     imageAlt: "Map highlighting VisualVibe's service area in Limburg, Belgium",
     internalLinks: [
-      { href: "/en/diensten/", label: "services" },
-      { href: "/en/request-a-quotation/", label: "request a quotation" },
+      { href: "/diensten/", label: "services" },
+      { href: "/request-a-quotation/", label: "request a quotation" },
     ],
   },
   vlaanderen: {
@@ -72,8 +72,8 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Flanders"),
     imageAlt: "Map highlighting VisualVibe's service area across Flanders",
     internalLinks: [
-      { href: "/en/diensten/", label: "services" },
-      { href: "/en/request-a-quotation/", label: "request a quotation" },
+      { href: "/diensten/", label: "services" },
+      { href: "/request-a-quotation/", label: "request a quotation" },
     ],
   },
   antwerpen: {
@@ -100,8 +100,8 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Antwerp province"),
     imageAlt: "Map highlighting VisualVibe's service area in Antwerp province",
     internalLinks: [
-      { href: "/en/diensten/", label: "services" },
-      { href: "/en/request-a-quotation/", label: "request a quotation" },
+      { href: "/diensten/", label: "services" },
+      { href: "/request-a-quotation/", label: "request a quotation" },
     ],
   },
   "nederlands-limburg": {
@@ -128,8 +128,8 @@ export const englishRegionEditorial: Record<string, EnglishRegionLocaleRecord> =
     cta: quotationCta("Dutch Limburg"),
     imageAlt: "Map highlighting VisualVibe's service area in Dutch Limburg",
     internalLinks: [
-      { href: "/en/diensten/", label: "services" },
-      { href: "/en/request-a-quotation/", label: "request a quotation" },
+      { href: "/diensten/", label: "services" },
+      { href: "/request-a-quotation/", label: "request a quotation" },
     ],
   },
 };

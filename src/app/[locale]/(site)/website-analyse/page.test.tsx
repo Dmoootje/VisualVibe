@@ -94,6 +94,8 @@ describe("WebsiteAnalysePage", () => {
     expect(html).toContain("What does our website analysis check?");
     expect(html).toContain("Is the website analysis free?");
     expect(html).toContain("/en/diensten/seo/");
+    expect(html).toContain("/en/diensten/web-design/");
+    expect(html).not.toContain("/en/diensten/webdesign/");
     expect(html).not.toContain("Wat controleert");
     expect(html).not.toContain("/be/");
   });

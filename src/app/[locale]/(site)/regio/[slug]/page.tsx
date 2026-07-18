@@ -252,7 +252,7 @@ export default async function RegionDetailPage({
         {knowledgePosts.length > 0 && (
           <section className="py-12">
             <h2 className="mb-8 text-3xl font-bold">Insights for businesses in {region.title}</h2>
-            <BlogGrid posts={knowledgePosts.map(toBlogCardPost)} />
+            <BlogGrid posts={knowledgePosts.map(toBlogCardPost)} locale="en" />
           </section>
         )}
 
