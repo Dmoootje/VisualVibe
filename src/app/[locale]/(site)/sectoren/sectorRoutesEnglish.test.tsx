@@ -31,7 +31,7 @@ describe("English sector routes", () => {
     expect(html).toContain("Construction and renovation");
     expect(html).toContain("/sectoren/construction-renovation");
     expect(html).toContain("Explore sector");
-    expect(html).toContain('data-cta-href="/en/request-a-quotation/"');
+    expect(html).toContain('data-cta-href="/request-a-quotation/"');
     expect(html).toContain("Sector-specific web design, photography, video, drone and SEO for ten business sectors");
     expect(html).not.toContain("Sectoren waarin wij uitblinken");
     expect(html).not.toContain("bouw-renovatie");
@@ -70,7 +70,9 @@ describe("English sector routes", () => {
     expect(html).toContain("/diensten/business-website-design");
     expect(html).toContain("Limburg, Belgium");
     expect(html).toContain("/regio/limburg-belgium");
-    expect(html).toContain('data-cta-href="/en/request-a-quotation/"');
+    expect(html).toContain('data-cta-href="/request-a-quotation/"');
+    expect(html).toContain('/en/kennisbank/');
+    expect(html).not.toContain('/be/kennisbank/');
     expect(html).not.toContain("Andere sectoren");
     expect(html).not.toContain(">Sectoren<");
     expect(html).not.toContain("Bekijk cases");

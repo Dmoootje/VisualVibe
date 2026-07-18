@@ -1,6 +1,6 @@
 import type { EnglishSectorLocaleRecord } from "./sectorTypes";
 
-const sharedCta = (title: string, description: string) => ({ title, description, label: "Request a quotation", href: "/en/request-a-quotation/" });
+const sharedCta = (title: string, description: string) => ({ title, description, label: "Request a quotation", href: "/request-a-quotation/" });
 
 export const englishSectorEditorialB: Record<string, EnglishSectorLocaleRecord> = {
   "opleidingen-masterclasses": {

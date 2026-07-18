@@ -55,6 +55,7 @@ export function SectorKnowledge({
               post={toBlogCardPost(post)}
               index={index}
               authorImage={authorImages?.[post.author]}
+              locale={locale}
             />
           ))}
         </div>

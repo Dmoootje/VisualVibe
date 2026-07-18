@@ -43,7 +43,7 @@ export const englishSectorHub = {
     description:
       "Tell us about your sector and objectives. We will propose an approach suited to your audience, region and project.",
     label: "Request a quotation",
-    href: "/en/request-a-quotation/",
+    href: "/request-a-quotation/",
   },
   internalLinks: [
     { href: "/en/diensten/", label: "services" },
