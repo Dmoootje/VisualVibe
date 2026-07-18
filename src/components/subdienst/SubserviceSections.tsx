@@ -141,7 +141,7 @@ export function SubserviceDeliverables({ content, locale = "nl" }: { content: Su
   return <SubserviceCardSection content={content} eyebrow={locale === "en" ? "Included" : "Inbegrepen"} icon={PackageCheck} />;
 }
 
-export function SubserviceWhyVisualVibe({ content, locale = "nl" }: { content: SubserviceCardSectionContent; locale?: SupportedLocale }) {
+export function SubserviceWhyVisualVibe({ content }: { content: SubserviceCardSectionContent }) {
   return <SubserviceCardSection content={content} eyebrow="VisualVibe" icon={Sparkles} />;
 }
 

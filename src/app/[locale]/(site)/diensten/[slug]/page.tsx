@@ -27,7 +27,6 @@ import {
   services,
   getLocalizedServiceById,
   getServiceByLocalizedSlug,
-  getServiceBySlug,
   serviceHref,
 } from "@/data/services";
 import { englishServiceEditorial } from "@/data/locales/en/services";

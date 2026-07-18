@@ -264,7 +264,7 @@ export default async function SubServiceDetailPage({
       )}
 
       {content?.pricing && <SubservicePricing content={content.pricing} locale={locale} />}
-      {content?.whyVisualVibe && <SubserviceWhyVisualVibe content={content.whyVisualVibe} locale={locale} />}
+      {content?.whyVisualVibe && <SubserviceWhyVisualVibe content={content.whyVisualVibe} />}
 
       {!en && <SubserviceRealisations projects={realisationProjects} serviceTitle={service.title} />}
 
