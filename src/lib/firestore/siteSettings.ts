@@ -19,19 +19,44 @@ const LEGACY_EMAILS = new Set([
   "podcasting.info@visualvibe.media",
 ]);
 
+const ENGLISH_OPENING_HOURS: OpeningHoursDay[] = DEFAULT_OPENING_HOURS.map((day) => ({
+  ...day,
+  label: ({ monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday", thursday: "Thursday", friday: "Friday", saturday: "Saturday", sunday: "Sunday" } as Record<string, string>)[day.day],
+  note: day.isOpen ? "" : "Closed",
+}));
+
+const ENGLISH_VISITOR_DEFAULTS = {
+  responseTimeText: "Within two business days",
+  mapMarkerTitle: "VisualVibe",
+  mapDescription: "Creative media agency in Limburg",
+  appointmentTitle: "Schedule a call",
+  appointmentText: "Would you prefer to talk directly? Book a time that suits you.",
+  appointmentButtonLabel: "Schedule a call",
+  urgentContactTitle: "Need a quick answer?",
+  urgentContactText: "For an urgent question, call us during office hours.",
+  urgentContactButtonLabel: "Call us",
+} satisfies Partial<SiteSettings>;
+
 function toOpeningHours(value: unknown, locale: SupportedLocale): OpeningHoursDay[] {
-  if (!Array.isArray(value) || value.length === 0) value = DEFAULT_OPENING_HOURS;
+  if (!Array.isArray(value) || value.length === 0) {
+    return locale === "en" ? ENGLISH_OPENING_HOURS : DEFAULT_OPENING_HOURS;
+  }
   return (value as unknown[]).map((raw) => {
     const day = (raw ?? {}) as Partial<OpeningHoursDay>;
+    const englishDefault = ENGLISH_OPENING_HOURS.find((item) => item.day === day.day);
     return {
       day: String(day.day ?? ""),
-      label: readLocalizedRequired(day.label as never, locale, `openingHours.${String(day.day)}.label`),
+      label: locale === "en" && typeof day.label !== "object"
+        ? englishDefault?.label ?? ""
+        : readLocalizedRequired(day.label as never, locale, `openingHours.${String(day.day)}.label`),
       isOpen: Boolean(day.isOpen),
       openTime: String(day.openTime ?? ""),
       closeTime: String(day.closeTime ?? ""),
       pauseStart: String(day.pauseStart ?? ""),
       pauseEnd: String(day.pauseEnd ?? ""),
-      note: readLocalizedRequired(day.note as never, locale, `openingHours.${String(day.day)}.note`),
+      note: locale === "en" && typeof day.note !== "object"
+        ? englishDefault?.note ?? ""
+        : readLocalizedRequired(day.note as never, locale, `openingHours.${String(day.day)}.note`),
     };
   });
 }
@@ -72,11 +97,17 @@ async function readSiteSettings(locale: SupportedLocale = "nl"): Promise<SiteSet
     createdAt: now,
     updatedAt: now,
   };
+  if (locale === "en") {
+    Object.assign(base, ENGLISH_VISITOR_DEFAULTS, {
+      country: "Belgium",
+      fullAddress: "Ziegelsmeer 14, 3700 Tongeren-Borgloon, Belgium",
+      openingHours: ENGLISH_OPENING_HOURS,
+    });
+  }
 
   try {
     const doc = await withTimeout(adminDb.collection(COLLECTION).doc(SETTINGS_ID).get());
     if (!doc.exists) {
-      if (locale !== "nl") throw new Error(`Missing ${locale} translation for siteSettings.responseTimeText`);
       return base;
     }
 
@@ -92,7 +123,10 @@ async function readSiteSettings(locale: SupportedLocale = "nl"): Promise<SiteSet
     };
 
     for (const field of VISITOR_FIELDS) {
-      merged[field] = readLocalizedOptional(data[field] ?? base[field], locale, `siteSettings.${field}`) as never;
+      const value = data[field];
+      merged[field] = locale === "en" && (value == null || typeof value !== "object")
+        ? ENGLISH_VISITOR_DEFAULTS[field] as never
+        : readLocalizedOptional(value ?? base[field], locale, `siteSettings.${field}`) as never;
     }
 
     // A cleared number is stored as null; surface it as "unset" (undefined) so
@@ -105,7 +139,6 @@ async function readSiteSettings(locale: SupportedLocale = "nl"): Promise<SiteSet
     return normalizeLegacyContactSettings(merged);
   } catch (error) {
     if (error instanceof Error && error.message.startsWith("Missing ")) throw error;
-    if (locale !== "nl") throw new Error(`Missing ${locale} translation for siteSettings.responseTimeText`);
     return base;
   }
 }
