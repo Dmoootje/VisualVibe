@@ -1,0 +1,31 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/wat-kost-een-app-laten-maken/",
+  "targetRoute": "/en/kennisbank/webdesign/how-much-does-app-development-cost/",
+  "audience": "SMEs and business owners setting an initial budget for an app, web application or custom platform.",
+  "primaryDutchSearchIntent": "Ondernemers helpen begrijpen welke factoren de prijs van een app bepalen en hoe ze offertes realistisch vergelijken.",
+  "searchIntent": { "type": "commercial", "question": "Which factors determine app development costs, and how can a business compare proposals and phase a realistic budget?", "geographicContext": "English-speaking SMEs, with VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "how much does app development cost",
+  "longTailKeywords": ["app development price", "app development costs", "MVP costs", "web application development cost", "compare app development quotes"],
+  "semanticTerms": ["user roles", "data model", "business logic", "third-party integration", "web app", "mobile app", "MVP", "security", "privacy", "data migration", "maintenance"],
+  "directAnswer": "There is no reliable standard app development price without knowing the users, functions, data and integrations. A realistic budget follows from user roles, business logic, platform choice, security, migration, ownership and maintenance, and should be phased through analysis, a prototype, an MVP and later extensions.",
+  "title": "How much does app development cost? Factors, phases and budget",
+  "metaDescription": "What does app development cost? Learn how features, roles, data, integrations, platforms, security and maintenance shape the budget and phases.",
+  "slug": "how-much-does-app-development-cost",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/webapp-of-mobiele-app/", "targetHref": "/en/kennisbank/webdesign/web-app-or-mobile-app/", "anchor": "web application or mobile app" },
+    { "sourceHref": "/be/kennisbank/webdesign/app-laten-maken-complete-gids/", "targetHref": "/en/kennisbank/webdesign/app-development-complete-guide/", "anchor": "app development" },
+    { "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/diensten/custom-software/app-development/", "anchor": "custom app development service" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "request an app analysis" }
+  ],
+  "factsToPreserve": [
+    "A reliable standard price cannot be given without users, functions, data and integrations.",
+    "Screen count is not a reliable proxy for technical complexity.",
+    "A web application may be more appropriate and economical than separate native apps.",
+    "Security and privacy requirements must be designed and tested rather than added at the end.",
+    "An MVP should contain the smallest usable core flow, not simply a cheap incomplete product.",
+    "External services, licences, app-store accounts, hosting and transaction costs may sit outside development fees.",
+    "Ownership, source code, accounts, documentation and access should be explicit in the proposal.",
+    "Fixed pricing requires agreed scope, assumptions, acceptance criteria and a change-request process.",
+    "Maintenance and further development require an ongoing budget after launch."
+  ]
+}
