@@ -1,0 +1,38 @@
+{
+  "sourceRoute": "/be/kennisbank/podcasting/hoe-maak-je-van-een-podcast-social-content/",
+  "targetRoute": "/en/knowledge-base/podcasting/turn-a-podcast-into-social-content/",
+  "audience": "Marketing and communications teams, experts and business owners repurposing recorded podcasts for social and owned channels",
+  "primaryDutchSearchIntent": "Bedrijven helpen podcastafleveringen omzetten naar zelfstandige, toegankelijke en rechtenveilige social content met een haalbare selectie- en publicatieworkflow",
+  "searchIntent": { "type": "commercial", "question": "How can a business turn a podcast episode into standalone, accessible and rights-safe social content through a manageable workflow?", "geographicContext": "English-speaking organisations in Belgium and neighbouring markets" },
+  "mainKeyword": "podcast social content",
+  "longTailKeywords": ["create podcast clips", "repurpose podcast for social media", "video podcast short clips", "create podcast Reels", "podcast Shorts", "podcast content repurposing", "podcast captions", "social content from a podcast"],
+  "semanticTerms": ["clip selection", "standalone insight", "vertical crop", "captions", "transcript", "guest consent", "copyright", "publication matrix", "channel version", "content measurement"],
+  "directAnswer": "Turn a podcast into social content by selecting a few passages that make sense without the preceding twenty minutes. Give every clip a clear question and conclusion, correct its captions and publish a version suited to the channel and intended next step. Agree permission for standalone fragments beforehand and measure relevant attention and follow-up action rather than the number of exports.",
+  "title": "Turn a podcast into social content: clips that work independently",
+  "metaDescription": "Turn podcast episodes into social content with standalone clips, vertical framing, captions, rights, focused CTAs, a publication matrix and honest measurement.",
+  "h1": "From podcast to social content: clips that work independently",
+  "slug": "turn-a-podcast-into-social-content",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/podcasting/bedrijfspodcast-starten/", "targetHref": "/en/knowledge-base/podcasting/how-to-start-a-business-podcast/", "anchor": "starting a business podcast" },
+    { "sourceHref": "/be/kennisbank/podcasting/videocast-vs-podcast/", "targetHref": "/en/knowledge-base/podcasting/videocast-vs-podcast/", "anchor": "videocast versus podcast" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/knowledge-base/videography/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/podcasting/podcast-opnemen-met-video/", "targetHref": "/en/knowledge-base/podcasting/recording-a-podcast-with-video/", "anchor": "recording a podcast with video" },
+    { "sourceHref": "/be/kennisbank/seo-geo/seo-content-voor-dienstverleners/", "targetHref": "/en/knowledge-base/seo-geo/seo-content-for-service-businesses/", "anchor": "SEO content for service businesses" },
+    { "sourceHref": "/be/diensten/podcasting/videopodcast/", "targetHref": "/en/services/podcasting/video-podcast/", "anchor": "video podcast" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/knowledge-base/videography/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
+    { "sourceHref": "/be/diensten/videografie/social-media-video/", "targetHref": "/en/services/videography/social-media-video/", "anchor": "social media video" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your podcast content" }
+  ],
+  "factsToPreserve": [
+    "The number of clips must follow content quality, not a fixed quota",
+    "Editing must preserve speaker intent, context, qualifications and sensitive claims",
+    "A horizontal multi-camera recording can support vertical crops only when resolution and framing are planned in advance",
+    "Automatic captions require manual correction for names, figures, dialect and specialist terms",
+    "Captions and full transcripts serve different purposes but must agree in meaning",
+    "Consent to publish a full episode does not automatically cover standalone clips, paid advertising or new contexts",
+    "Music, photographs, screen recordings, charts and contributed footage may have separate rights",
+    "Platform-specific clip features, durations and availability can change and should be checked at publication time",
+    "Views are distribution signals and not proof of understanding, trust, leads or revenue",
+    "Content efficiency includes whether selected clips are actually published and used by sales or recruitment"
+  ]
+}
