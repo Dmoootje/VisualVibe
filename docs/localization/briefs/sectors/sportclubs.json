@@ -1,0 +1,40 @@
+{
+  "sourceRoute": "/be/sectoren/sportclubs",
+  "targetRoute": "/en/sectors/sports-clubs",
+  "audience": "sports clubs and club administrators",
+  "primaryDutchSearchIntent": "leden informeren, nieuwe leden aantrekken en de clubsfeer professioneel tonen",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which web design and visual content services help sports clubs and club administrators build trust and attract customers?",
+    "geographicContext": "Limburg, Belgium and the wider Flanders region"
+  },
+  "mainKeyword": "sports club website design",
+  "longTailKeywords": [
+    "sports club website design for businesses in Limburg",
+    "sports club website design and professional photography"
+  ],
+  "semanticTerms": [
+    "web design",
+    "professional photography",
+    "local SEO",
+    "online visibility"
+  ],
+  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for sports clubs and club administrators.",
+  "title": "Web design and photography for sports clubs | VisualVibe",
+  "metaDescription": "Web design, sports photography and video for sports clubs in Limburg and Flanders.",
+  "h1": "Web design, photography and video for sports clubs",
+  "slug": "sports-clubs",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/sectoren/sportclubs",
+      "targetHref": "/en/contact",
+      "anchor": "discuss your project"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Tongeren-Borgloon.",
+    "VisualVibe works throughout Limburg and Flanders.",
+    "A tailored quotation is provided after an initial conversation.",
+    "No results or guarantees may be added."
+  ]
+}

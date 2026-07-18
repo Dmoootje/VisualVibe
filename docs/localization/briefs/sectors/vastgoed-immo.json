@@ -1,0 +1,40 @@
+{
+  "sourceRoute": "/be/sectoren/vastgoed-immo",
+  "targetRoute": "/en/sectors/real-estate",
+  "audience": "estate agents, property agencies and landlords",
+  "primaryDutchSearchIntent": "panden professioneel presenteren en sneller geschikte kopers of huurders bereiken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which web design and visual content services help estate agents, property agencies and landlords build trust and attract customers?",
+    "geographicContext": "Limburg, Belgium and the wider Flanders region"
+  },
+  "mainKeyword": "property photography Limburg",
+  "longTailKeywords": [
+    "property photography Limburg for businesses in Limburg",
+    "property photography Limburg and professional photography"
+  ],
+  "semanticTerms": [
+    "web design",
+    "professional photography",
+    "local SEO",
+    "online visibility"
+  ],
+  "directAnswer": "VisualVibe combines web design, professional visual content and local search expertise for estate agents, property agencies and landlords.",
+  "title": "Property photography and web design for estate agents | VisualVibe",
+  "metaDescription": "Property photography, 3D tours, drone footage and web design for estate agents in Limburg and Flanders.",
+  "h1": "Property photography, 3D tours and web design for estate agents",
+  "slug": "real-estate",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/sectoren/vastgoed-immo",
+      "targetHref": "/en/contact",
+      "anchor": "discuss your project"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Tongeren-Borgloon.",
+    "VisualVibe works throughout Limburg and Flanders.",
+    "A tailored quotation is provided after an initial conversation.",
+    "No results or guarantees may be added."
+  ]
+}
