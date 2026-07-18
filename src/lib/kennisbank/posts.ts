@@ -331,6 +331,18 @@ function readPostFile(filename: string): BlogPost {
   };
 }
 
+export function listPostFiles(directory: string = CONTENT_DIR, prefix = ""): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = path.join(prefix, entry.name);
+    if (entry.isDirectory()) {
+      return entry.name.startsWith("_")
+        ? []
+        : listPostFiles(path.join(directory, entry.name), relativePath);
+    }
+    return entry.isFile() && entry.name.endsWith(".mdx") ? [relativePath] : [];
+  });
+}
+
 let cachedAuthoredPosts: BlogPost[] | null = null;
 let cachedValidationIssues: KennisbankValidationIssue[] | null = null;
 
@@ -343,7 +355,7 @@ function getAuthoredPosts(): BlogPost[] {
     return cachedAuthoredPosts;
   }
 
-  const files = fs.readdirSync(CONTENT_DIR).filter((file) => file.endsWith(".mdx"));
+  const files = listPostFiles();
   const authoredPosts = files
     .map(readPostFile)
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());

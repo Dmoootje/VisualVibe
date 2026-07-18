@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import path from "node:path";
 import type { BlogPost } from "@/types/blog";
-import { getAllPosts, getPostBySlug, getPostTranslations } from "./posts";
+import { getAllPosts, getPostBySlug, getPostTranslations, listPostFiles } from "./posts";
 import { validateKennisbankPosts } from "./validation";
 import { localizedPostHref } from "./urls";
 
@@ -33,6 +34,12 @@ describe("knowledge-base translation identity", () => {
     expect(posts).toHaveLength(58);
     expect(new Set(keys)).toHaveLength(58);
     expect(keys.every((key) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(key))).toBe(true);
+  });
+
+  it("discovers English MDX posts stored in the locale subdirectory", () => {
+    expect(listPostFiles()).toContain(
+      ["en", "seo-for-websites-in-limburg.mdx"].join(path.sep),
+    );
   });
 
   it("resolves a slug only inside the requested locale", () => {
