@@ -36,6 +36,7 @@ describe("Task 7 editorial corrections", () => {
       read("src/app/[locale]/(site)/website-analyse/rapport/[token]/page.tsx"),
       read("src/app/[locale]/(site)/over-ons/page.tsx"),
       read("src/app/[locale]/(site)/sitemap/page.tsx"),
+      read("src/lib/seo/visibleSitemap.ts"),
     ].join("\n");
     for (const route of ["/en/about/", "/en/request-a-quotation/", "/en/website-analysis/"]) expect(files).toContain(route);
     expect(files).toContain('${businessConfig.url}/en/tools/seo-geo-checklist/');
@@ -63,14 +64,16 @@ describe("Task 7 editorial corrections", () => {
 
   it("uses English breadcrumb locales, final sitemap paths and report restart route", () => {
     const sitemap = read("src/app/[locale]/(site)/sitemap/page.tsx");
+    const visibleSitemap = read("src/lib/seo/visibleSitemap.ts");
     const tools = read("src/app/[locale]/(site)/tools/page.tsx");
     const checklist = read("src/app/[locale]/(site)/tools/seo-geo-checklist/page.tsx");
     const restart = read("src/components/analyse/RequestNewAnalysisButton.tsx");
     expect(sitemap).toContain('<BreadcrumbJsonLd locale="en"');
     expect(tools).toContain('locale={en ? "en" : "nl"}');
     expect(checklist).toContain('locale={en ? "en" : "nl"}');
-    expect(sitemap).toContain('<NextLink href="/en/"');
-    expect(sitemap).toContain('href: "/en/tools/"');
+    expect(visibleSitemap).toContain('homeHref: "/en/"');
+    expect(sitemap).toContain('href={visibleSitemap.homeHref}');
+    expect(visibleSitemap).toContain('hubHref: "/en/tools/"');
     expect(restart).toContain('locale === "en" ? "/en/website-analysis/"');
   });
 
@@ -100,6 +103,7 @@ describe("Task 7 editorial corrections", () => {
       read("src/app/[locale]/(site)/over-ons/page.tsx"),
       read("src/app/[locale]/(site)/website-analyse/page.tsx"),
       read("src/app/[locale]/(site)/sitemap/page.tsx"),
+      read("src/lib/seo/visibleSitemap.ts"),
     ].join("\n");
     for (const href of [
       "/en/diensten/", "/en/regio/", "/en/sectoren/", "/en/realisaties/",

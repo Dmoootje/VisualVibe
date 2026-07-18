@@ -11,6 +11,13 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 vi.mock("@/lib/firestore/applicationCases", () => ({ getApplicationCases: vi.fn(async () => []) }));
+vi.mock("@/lib/seo/siteUrls", () => ({
+  getSitemapEntries: vi.fn(async () => [
+    { url: "https://visualvibe.media/en/" },
+    { url: "https://visualvibe.media/en/about/" },
+    { url: "https://visualvibe.media/en/kennisbank/" },
+  ]),
+}));
 vi.mock("@/features/home", () => ({
   Hero: () => null, Features: () => null, RegionIntro: () => null, SectorIntro: () => null,
   HowItWorks: () => null, Testimonials: () => null, BlogPreview: () => <div>REAL_ENGLISH_BLOG_PREVIEW</div>, Cta: () => null,
