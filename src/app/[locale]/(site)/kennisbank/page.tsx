@@ -13,6 +13,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { KennisbankLandingView, knowledgeBaseLabels } from "@/components/kennisbank";
 import { toArticleCardData, type KbCategoryData } from "@/components/kennisbank/data";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
+import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
 
 // Title: 59 chars incl. " | VisualVibe"; description: 155 chars.
 const title = "Kennisbank: gidsen over webdesign, SEO & media | VisualVibe";
@@ -41,11 +42,19 @@ export async function generateMetadata({
   const socialImage = `${businessConfig.url}/image.jpg`;
   const metaTitle = locale === "en" ? "Knowledge base: web design, SEO and media guides | VisualVibe" : title;
   const metaDescription = locale === "en" ? "Practical guides for SMEs about web design, SEO, GEO, photography, video and digital growth, written by VisualVibe in Limburg, Belgium." : description;
+  const languages =
+    getAllPosts({ locale: "nl" }).length > 0 &&
+    getAllPosts({ locale: "en" }).length > 0
+      ? publishedLanguageAlternates(businessConfig.url, {
+          nl: "/kennisbank/",
+          en: "/kennisbank/",
+        })
+      : undefined;
 
   return {
     title: { absolute: metaTitle },
     description: metaDescription,
-    alternates: { canonical },
+    alternates: { canonical, languages },
     openGraph: {
       type: "website",
       url: canonical,

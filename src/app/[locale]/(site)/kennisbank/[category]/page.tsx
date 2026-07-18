@@ -28,6 +28,7 @@ import {
   toArticleCardData,
   knowledgeBaseLabels,
 } from "@/components/kennisbank";
+import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
 
 const OPEN_GRAPH_LOCALE: Record<string, string> = {
   nl: "nl_BE",
@@ -78,11 +79,19 @@ export async function generateMetadata({
   const localizedName = locale === "en" ? (featuredPost?.category ?? categoryDef.name) : categoryDef.name;
   const localizedTitle = locale === "en" ? `${localizedName} guides and advice | VisualVibe` : categoryDef.seoTitle;
   const localizedDescription = locale === "en" ? `Practical ${localizedName} guides and answers for SMEs, written by VisualVibe.` : categoryDef.seoDescription;
+  const languages =
+    getPostsByCategory(categoryDef.slug, "nl").length > 0 &&
+    getPostsByCategory(categoryDef.slug, "en").length > 0
+      ? publishedLanguageAlternates(businessConfig.url, {
+          nl: categoryHref(categoryDef.slug),
+          en: categoryHref(categoryDef.slug),
+        })
+      : undefined;
 
   return {
     title: { absolute: localizedTitle },
     description: localizedDescription,
-    alternates: { canonical },
+    alternates: { canonical, languages },
     openGraph: {
       title: localizedTitle,
       description: localizedDescription,

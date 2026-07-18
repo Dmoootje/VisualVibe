@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import "@/components/kennisbank/kennisbank.css";
 import {
   getPostBySlug,
+  getPostTranslations,
   isBlogLocale,
   localizedPath,
   postHref,
@@ -23,6 +24,7 @@ import {
   toArticleCardData,
   knowledgeBaseLabels,
 } from "@/components/kennisbank";
+import { publishedLanguageAlternates } from "@/lib/seo/publicationRoutes";
 
 const SOFTWARE_POST_SLUGS = [
   "app-laten-maken-complete-gids",
@@ -44,9 +46,10 @@ const CONTENT_LANGUAGE: Record<string, string> = {
 };
 
 function getSoftwarePosts(locale: "nl" | "fr" | "en") {
-  return SOFTWARE_POST_SLUGS.map((slug) => getPostBySlug(slug, { locale })).filter(
-    (post): post is NonNullable<typeof post> => Boolean(post)
-  );
+  return SOFTWARE_POST_SLUGS.map((translationKey) => {
+    const translation = getPostTranslations(translationKey)[locale];
+    return translation ?? getPostBySlug(translationKey, { locale });
+  }).filter((post): post is NonNullable<typeof post> => Boolean(post));
 }
 
 export async function generateMetadata({
@@ -67,24 +70,40 @@ export async function generateMetadata({
     categoryHref("software-op-maat")
   )}`;
   const socialImage = pillar?.ogImage ?? `${businessConfig.url}/image.jpg`;
+  const categoryPath = categoryHref("software-op-maat");
+  const localizedTitle =
+    locale === "en"
+      ? "Apps & software guides and advice | VisualVibe"
+      : category.seoTitle;
+  const localizedDescription =
+    locale === "en"
+      ? "Practical guides about apps, AI applications, automation and custom software for SMEs, written by VisualVibe."
+      : category.seoDescription;
+  const languages =
+    getSoftwarePosts("nl").length > 0 && getSoftwarePosts("en").length > 0
+      ? publishedLanguageAlternates(businessConfig.url, {
+          nl: categoryPath,
+          en: categoryPath,
+        })
+      : undefined;
 
   return {
-    title: { absolute: category.seoTitle },
-    description: category.seoDescription,
-    alternates: { canonical },
+    title: { absolute: localizedTitle },
+    description: localizedDescription,
+    alternates: { canonical, languages },
     openGraph: {
-      title: category.seoTitle,
-      description: category.seoDescription,
+      title: localizedTitle,
+      description: localizedDescription,
       url: canonical,
       type: "website",
       siteName: businessConfig.displayName,
       locale: OPEN_GRAPH_LOCALE[locale],
-      images: [{ url: socialImage, alt: category.name }],
+      images: [{ url: socialImage, alt: locale === "en" ? "Apps and custom software for SMEs" : category.name }],
     },
     twitter: {
       card: "summary_large_image",
-      title: category.seoTitle,
-      description: category.seoDescription,
+      title: localizedTitle,
+      description: localizedDescription,
       images: [socialImage],
     },
   };
@@ -119,6 +138,14 @@ export default async function SoftwareKennisbankPage({
     month: "long",
     year: "numeric",
   }).format(lastUpdated);
+  const localizedTitle =
+    locale === "en"
+      ? "Apps & software guides and advice | VisualVibe"
+      : category.seoTitle;
+  const localizedDescription =
+    locale === "en"
+      ? "Practical guides about apps, AI applications, automation and custom software for SMEs, written by VisualVibe."
+      : category.seoDescription;
 
   return (
     <div className="min-h-screen text-white">
@@ -135,8 +162,8 @@ export default async function SoftwareKennisbankPage({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: category.name,
-          headline: category.seoTitle,
-          description: category.seoDescription,
+          headline: localizedTitle,
+          description: localizedDescription,
           url: canonicalUrl,
           inLanguage: CONTENT_LANGUAGE[locale],
           mainEntity: {
@@ -230,7 +257,7 @@ export default async function SoftwareKennisbankPage({
               title: locale === "en" ? "Planning an app or software platform?" : "Een app of softwareplatform laten maken?",
               description: locale === "en" ? "We turn your process or idea into a viable first version with clear features, planning and technical choices." : "We vertalen je proces of idee naar een haalbare eerste versie met duidelijke functies, planning en technische keuzes.",
               label: locale === "en" ? "Explore custom software" : "Bekijk software op maat",
-              href: "/diensten/software-op-maat/",
+              href: locale === "en" ? "/diensten/custom-software/" : "/diensten/software-op-maat/",
             }}
           />
         </div>
