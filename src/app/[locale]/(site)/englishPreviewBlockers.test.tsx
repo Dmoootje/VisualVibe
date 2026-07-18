@@ -30,7 +30,8 @@ describe("English preview release blockers", () => {
     const metadata = await page.generateMetadata({ params: Promise.resolve({ locale: "en" }) });
 
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Knowledge base") });
-    expect(html).toContain("Grow your business online");
+    expect(html).toContain("Grow smarter");
+    expect(html).toContain("online as an SME");
     expect(html).not.toMatch(/Kennisbank|Slim online|Nieuwste artikels|Zoeken in/);
   });
 });
