@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/kennisbank/videografie/testimonial-video-laten-maken/",
-  "targetRoute": "/en/knowledge-base/videography/creating-a-testimonial-video/",
+  "targetRoute": "/en/kennisbank/videografie/creating-a-testimonial-video/",
   "audience": "SME owners, marketers, sales leads and communications professionals who want to use customer evidence in video",
   "primaryDutchSearchIntent": "KMO's helpen een geloofwaardige testimonial video voor te bereiden, opnemen en publiceren met een passende klant, concrete vragen, controleerbare claims en duidelijke gebruiksafspraken",
   "searchIntent": {
@@ -35,11 +35,11 @@
   "h1": "Creating a testimonial video: from real customer experience to credible evidence",
   "slug": "creating-a-testimonial-video",
   "internalLinks": [
-    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/knowledge-base/videography/why-invest-in-a-corporate-video/", "anchor": "why to invest in a corporate video" },
-    { "sourceHref": "/be/diensten/videografie/testimonial-video/", "targetHref": "/en/services/videography/customer-testimonial-video/", "anchor": "customer testimonial video production" },
-    { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/knowledge-base/photography/corporate-portrait-tips/", "anchor": "corporate portrait tips" },
-    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/knowledge-base/videography/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
-    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/knowledge-base/videography/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why to invest in a corporate video" },
+    { "sourceHref": "/be/diensten/videografie/testimonial-video/", "targetHref": "/en/services/videography/testimonial-video/", "anchor": "customer testimonial video production" },
+    { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/kennisbank/fotografie/corporate-portrait-tips/", "anchor": "corporate portrait tips" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your customer story" }
   ],
   "factsToPreserve": [
