@@ -16,12 +16,12 @@ export const englishRegionHub = {
     description:
       "Tell us where your business is based and what you want to achieve. We will propose an approach suited to your region and project.",
     label: "Request a quotation",
-    href: "/en/request-a-quotation/",
+    href: "/request-a-quotation/",
   },
   internalLinks: [
-    { href: "/en/diensten/", label: "services" },
-    { href: "/en/sectoren/", label: "sectors" },
-    { href: "/en/realisaties/", label: "case studies" },
+    { href: "/diensten/", label: "services" },
+    { href: "/sectoren/", label: "sectors" },
+    { href: "/realisaties/", label: "case studies" },
   ],
 } as const;
 
@@ -46,8 +46,8 @@ export const englishSectorHub = {
     href: "/request-a-quotation/",
   },
   internalLinks: [
-    { href: "/en/diensten/", label: "services" },
-    { href: "/en/regio/", label: "regions" },
-    { href: "/en/realisaties/", label: "case studies" },
+    { href: "/diensten/", label: "services" },
+    { href: "/regio/", label: "regions" },
+    { href: "/realisaties/", label: "case studies" },
   ],
 } as const;
