@@ -45,3 +45,25 @@ The reviewer read each complete Dutch source, English partner, translation brief
 - Assigned-file scans and `git diff --check` found no U+2014/U+2015 characters or whitespace errors.
 
 All four wave 03 partners are independently APPROVED.
+
+## Wave 06 review evidence
+
+The reviewer read the complete Dutch source, English partner and translation brief for each article, together with the English style guide and glossary. The review covered full frontmatter and informational parity, natural international English, SEO and GEO intent, headings, tables, examples, FAQs, CTAs, image text, factual limitations and locale-safe links. Official-source checks focused separately on Belgian and EU FPV requirements and platform-dependent 3D-tour functions and measurements.
+
+| Translation key | English partner | Independent review evidence | Result |
+| --- | --- | --- | --- |
+| `app-laten-maken-complete-gids` | `complete-guide-to-building-an-app.mdx` | Full comparison preserved the problem-first method, user and MVP framing, platform choice, security, privacy, integrations, cost drivers, testing, maintenance and bounded AI use. Replaced literal `convenient environment` and `administrative route` wording, corrected the author route, and checked metadata, CTA and all intended links. | APPROVED |
+| `fpv-video-voor-bedrijven` | `fpv-video-for-business.mdx` | Full comparison preserved the creative route model, indoor and outdoor distinctions, one-take caveat, privacy and image-rights limits, accessibility and non-guarantee language. Checked the legal claims against current EASA material, clarified the 120-metre reference point, replaced `radio shadows` and `emergency space`, corrected the article route and author route, and expanded the brief to record every intended link. | APPROVED |
+| `korte-video-vs-lange-video` | `short-form-vs-long-form-video.mdx` | Full comparison preserved the no-universal-length premise, viewer-task framework, platform snapshots, retention caveats, modular production model, accessibility, measurement and channel logic. Reworked literal headings and the unnatural `use by sales` sentence while preserving metadata, examples, FAQ, CTA and destinations. | APPROVED |
+| `wat-is-een-3d-tour` | `what-is-a-3d-tour.mdx` | Full comparison preserved the distinction between panoramas, spatial models, VR, AR and technical scans; capture and privacy controls; accessible alternatives; hosting and account dependency; measurement limitations; and non-guarantee language. Replaced literal media and measurement wording, aligned the brief title, and restored the complete intended link map. | APPROVED |
+
+## Wave 06 validation evidence
+
+- All four briefs pass the Draft 2020-12 translation-brief schema.
+- All four English MDX documents compile with `@mdx-js/mdx` after frontmatter extraction.
+- Glossary and knowledge-base translation tests report 26 passing assertions and one stale expectation that still assumes the concurrently authored AI-application translation is absent. The failure does not identify a wave 06 article.
+- TypeScript typecheck passes.
+- Locale audit reports 0 blocking issues. Its 32 informational notices concern untranslated articles outside wave 06.
+- Full-repository prohibited-character scanning, assigned-file whitespace scanning, link-map comparison and `git diff --check` pass after the corrections above.
+
+All four wave 06 partners are independently APPROVED.

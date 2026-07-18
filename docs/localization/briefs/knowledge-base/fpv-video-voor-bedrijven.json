@@ -34,13 +34,18 @@
     { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/knowledge-base/drone/drone-footage-for-business/", "anchor": "drone footage for business" },
     { "sourceHref": "/be/diensten/drone-fpv/fpv-video/", "targetHref": "/en/services/drone-fpv/fpv-video/", "anchor": "FPV video service" },
     { "sourceHref": "/be/kennisbank/drone/dronebeelden-combineren-met-bedrijfsvideo/", "targetHref": "/en/knowledge-base/drone/combine-drone-footage-with-corporate-video/", "anchor": "combining drone footage with corporate video" },
-    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare for a corporate shoot" }
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/knowledge-base/photography/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare for a corporate shoot" },
+    { "sourceHref": "/be/diensten/drone-fpv/dronevideo/", "targetHref": "/en/services/drone-fpv/drone-video/", "anchor": "drone video" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/knowledge-base/videography/why-invest-in-a-corporate-video/", "anchor": "why businesses invest in corporate video" },
+    { "sourceHref": "/be/diensten/videografie/promovideo/", "targetHref": "/en/services/videography/promotional-video/", "anchor": "promotional video" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/knowledge-base/videography/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/knowledge-base/videography/social-media-video-for-smes/", "anchor": "social media video for SMEs" }
   ],
   "factsToPreserve": [
     "FPV is a filming perspective, not a guarantee that a single uninterrupted take is desirable.",
     "European drone operations are classified by risk under Implementing Regulation EU 2019/947.",
     "Commercial purpose does not create a separate operational category by itself.",
-    "Open-category operations generally require VLOS, observe a 120-metre maximum height and may not fly over an assembly of people.",
+    "Open-category operations generally require VLOS, observe a 120-metre maximum distance from the closest point of the earth's surface and may not fly over an assembly of people.",
     "For FPV in the Open category, EASA describes assistance from an unmanned-aircraft observer who directly watches the aircraft and stands beside the pilot.",
     "Operational permission to fly does not automatically confer permission to record or publish identifiable people or personal data.",
     "Rules and geozone conditions can change, and the article is not legal advice.",
