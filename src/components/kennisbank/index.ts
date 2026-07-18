@@ -1,4 +1,5 @@
 export { KennisbankLandingView } from "./KennisbankLandingView";
+export { knowledgeBaseLabels } from "./localization";
 export { KbHeroShell } from "./KbHeroShell";
 export { CategoryHeroSearch } from "./CategoryHeroSearch";
 export { CategoryRingGraphic } from "./CategoryRingGraphic";

@@ -6,6 +6,7 @@ import { getAllPosts } from "@/lib/kennisbank/posts";
 import { getAuthorPhotoMap } from "@/lib/firestore/profiles";
 import { postHref } from "@/lib/kennisbank/urls";
 import { CARD_INTERACTIVE } from "./styles";
+import { knowledgeBaseLabels } from "@/components/kennisbank/localization";
 
 export type RelatedArticle = {
   title: string;
@@ -30,11 +31,14 @@ export async function RelatedArticles({
   items,
   title = "Lees ook",
   className,
+  locale = "nl",
 }: {
   items: RelatedArticle[];
   title?: string;
   className?: string;
+  locale?: string;
 }) {
+  const labels = knowledgeBaseLabels(locale);
   const byHref = new Map(
     getAllPosts({ locale: "nl" }).map((post) => [normalizeHref(postHref(post)), post]),
   );
@@ -85,12 +89,12 @@ export async function RelatedArticles({
                   {item.author && (
                     <span
                       className="inline-flex items-center gap-1"
-                      aria-label={`Auteur: ${item.author}`}
+                      aria-label={`${labels.author}: ${item.author}`}
                     >
                       {item.authorImage ? (
                         <Image
                           src={item.authorImage}
-                          alt={`Profielfoto van ${item.author}`}
+                          alt={`${labels.profilePhoto} ${item.author}`}
                           width={28}
                           height={28}
                           className="h-4 w-4 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
@@ -108,7 +112,7 @@ export async function RelatedArticles({
                 {item.title}
               </h3>
               <span className="mt-3 inline-flex items-center gap-1 text-sm text-[#ff7500]">
-                Lees meer
+                {locale === "en" ? "Read more" : "Lees meer"}
                 <ArrowRight
                   className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
                   aria-hidden="true"

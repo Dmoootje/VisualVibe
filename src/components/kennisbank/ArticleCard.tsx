@@ -4,6 +4,7 @@ import type { LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import type { ArticleCardData } from "./data";
+import { knowledgeBaseLabels } from "./localization";
 
 const CARD_BASE =
   "group relative overflow-hidden rounded-2xl border border-[#ff7500]/20 bg-neutral-950 transition-all duration-300 hover:border-[#ff7500]/45 hover:shadow-[0_0_45px_-14px_rgba(255,117,0,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] focus-visible:ring-offset-2 focus-visible:ring-offset-black";
@@ -129,6 +130,7 @@ export type ArticleCardProps = {
   /** CTA label override (e.g. "Lees de gids"). */
   ctaLabel?: string;
   className?: string;
+  locale?: string;
 };
 
 export function ArticleCard({
@@ -137,14 +139,16 @@ export function ArticleCard({
   index = 0,
   ctaLabel,
   className,
+  locale = "nl",
 }: ArticleCardProps) {
+  const labels = knowledgeBaseLabels(locale);
   const style = { "--i": index } as React.CSSProperties;
 
   if (variant === "list") {
     return (
       <Link
         href={article.href}
-        aria-label={`Lees het volledige artikel: ${article.fullTitle}`}
+        aria-label={`${labels.readArticle}: ${article.fullTitle}`}
         style={style}
         className={cn(CARD_BASE, "kb-rise grid grid-cols-1 sm:grid-cols-[300px_1fr]", className)}
       >
@@ -174,11 +178,11 @@ export function ArticleCard({
           )}
           <p className="mb-5 text-sm leading-relaxed text-white/64 line-clamp-3">{article.excerpt}</p>
           <div className="mb-5 mt-auto flex flex-wrap gap-x-6 gap-y-3">
-            <Meta icon={Clock} label="Leestijd" value={article.readingTime} />
-            <Meta icon={CalendarDays} label="Gepubliceerd" value={article.date} />
-            <Meta icon={User} imageUrl={article.authorImage} label="Auteur" value={article.author} />
+            <Meta icon={Clock} label={labels.readingTime} value={article.readingTime} />
+            <Meta icon={CalendarDays} label={labels.published} value={article.date} />
+            <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} />
           </div>
-          <Cta label={ctaLabel} />
+          <Cta label={ctaLabel ?? labels.readArticle} />
         </div>
       </Link>
     );
@@ -187,7 +191,7 @@ export function ArticleCard({
   return (
     <Link
       href={article.href}
-      aria-label={`Lees het volledige artikel: ${article.fullTitle}`}
+      aria-label={`${labels.readArticle}: ${article.fullTitle}`}
       style={style}
       className={cn(CARD_BASE, "kb-rise flex h-full flex-col", className)}
     >
@@ -198,12 +202,12 @@ export function ArticleCard({
       <div className="flex flex-1 flex-col p-5">
         {article.heroComposed && <h3 className="sr-only">{article.fullTitle}</h3>}
         <div className="grid grid-cols-2 gap-3">
-          <Meta icon={Clock} label="Leestijd" value={article.readingTime} />
-          <Meta icon={User} imageUrl={article.authorImage} label="Auteur" value={article.author} />
+          <Meta icon={Clock} label={labels.readingTime} value={article.readingTime} />
+          <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} />
         </div>
         <div className="my-4 h-px bg-white/10" />
         <p className="mb-5 flex-1 text-sm leading-relaxed text-white/64 line-clamp-3">{article.excerpt}</p>
-        <Cta label={ctaLabel} />
+        <Cta label={ctaLabel ?? labels.readArticle} />
       </div>
     </Link>
   );

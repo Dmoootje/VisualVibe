@@ -26,6 +26,7 @@ import {
   ArticleCard,
   QuestionCard,
   toArticleCardData,
+  knowledgeBaseLabels,
 } from "@/components/kennisbank";
 
 const OPEN_GRAPH_LOCALE: Record<string, string> = {
@@ -74,14 +75,17 @@ export async function generateMetadata({
   )}`;
   const featuredPost = posts.find((post) => post.pillar) ?? posts[0];
   const socialImage = featuredPost?.ogImage ?? `${businessConfig.url}/image.jpg`;
+  const localizedName = locale === "en" ? (featuredPost?.category ?? categoryDef.name) : categoryDef.name;
+  const localizedTitle = locale === "en" ? `${localizedName} guides and advice | VisualVibe` : categoryDef.seoTitle;
+  const localizedDescription = locale === "en" ? `Practical ${localizedName} guides and answers for SMEs, written by VisualVibe.` : categoryDef.seoDescription;
 
   return {
-    title: { absolute: categoryDef.seoTitle },
-    description: categoryDef.seoDescription,
+    title: { absolute: localizedTitle },
+    description: localizedDescription,
     alternates: { canonical },
     openGraph: {
-      title: categoryDef.seoTitle,
-      description: categoryDef.seoDescription,
+      title: localizedTitle,
+      description: localizedDescription,
       url: canonical,
       type: "website",
       siteName: businessConfig.displayName,
@@ -90,8 +94,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: categoryDef.seoTitle,
-      description: categoryDef.seoDescription,
+      title: localizedTitle,
+      description: localizedDescription,
       images: [socialImage],
     },
     robots: empty ? { index: false, follow: true } : undefined,
@@ -104,6 +108,7 @@ export default async function KennisbankCategoryPage({
   params: Promise<{ locale: string; category: string }>;
 }) {
   const { locale, category } = await params;
+  const labels = knowledgeBaseLabels(locale);
   if (!isBlogLocale(locale)) notFound();
 
   const categoryDef = getCategoryBySlug(category);
@@ -119,6 +124,7 @@ export default async function KennisbankCategoryPage({
 
   const posts = getPostsByCategory(categoryDef.slug, locale);
   if (posts.length === 0) notFound();
+  const localizedCategoryName = locale === "en" ? posts[0].category : categoryDef.name;
 
   const pillarPosts = posts.filter((post) => post.pillar);
   const supportingPosts = posts.filter((post) => !post.pillar);
@@ -128,12 +134,12 @@ export default async function KennisbankCategoryPage({
     .filter((c) => c.slug !== categoryDef.slug)
     .map((c) => ({
       slug: c.slug,
-      name: c.name,
+      name: locale === "en" ? (getPostsByCategory(c.slug, locale)[0]?.category ?? c.name) : c.name,
       count: getPostsByCategory(c.slug, locale).length,
     }))
     .filter((otherCategory) => otherCategory.count > 0);
 
-  const { title, titleAccent } = splitCategoryName(categoryDef.name);
+  const { title, titleAccent } = splitCategoryName(localizedCategoryName);
   const canonicalUrl = `${businessConfig.url}${localizedPath(locale, categoryHref(categoryDef.slug))}`;
 
   // Echte freshness-claim: de recentste update binnen de categorie.
@@ -151,9 +157,9 @@ export default async function KennisbankCategoryPage({
         locale={locale}
         items={[
           { name: "Home", path: "/" },
-          { name: "Kennisbank", path: "/kennisbank/" },
+          { name: labels.knowledgeBase, path: "/kennisbank/" },
           {
-            name: categoryDef.name,
+            name: localizedCategoryName,
             path: categoryHref(categoryDef.slug),
           },
         ]}
@@ -162,7 +168,7 @@ export default async function KennisbankCategoryPage({
         data={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          name: categoryDef.name,
+          name: localizedCategoryName,
           headline: categoryDef.seoTitle,
           description: categoryDef.seoDescription,
           url: canonicalUrl,
@@ -183,25 +189,25 @@ export default async function KennisbankCategoryPage({
       <KbHeroShell
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Kennisbank", href: "/kennisbank/" },
-          { label: categoryDef.name },
+          { label: labels.knowledgeBase, href: "/kennisbank/" },
+          { label: localizedCategoryName },
         ]}
         eyebrow={{
           icon: <CategoryIcon slug={categoryDef.slug} className="h-3.5 w-3.5" />,
-          label: "Categorie",
+          label: labels.category,
         }}
         title={title}
         titleAccent={titleAccent}
-        subtitle={categoryDef.description}
+        subtitle={locale === "en" ? `Practical guides and clear answers about ${localizedCategoryName.toLowerCase()} for SMEs.` : categoryDef.description}
         stats={[
-          { value: String(posts.length), label: posts.length === 1 ? "artikel" : "artikels" },
-          { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? "gids" : "gidsen" },
-          { value: lastUpdatedLabel, label: "bijgewerkt" },
+          { value: String(posts.length), label: posts.length === 1 ? labels.article : labels.articles },
+          { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? labels.guide : labels.guides },
+          { value: lastUpdatedLabel, label: labels.updated },
         ]}
         graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
         search={<CategoryHeroSearch />}
         backgroundImage={kennisbankCategoryFeatured(categoryDef.slug)}
-        backgroundImageAlt={`Kennisbank ${categoryDef.name} van VisualVibe`}
+        backgroundImageAlt={`${labels.knowledgeBase}: ${localizedCategoryName} by VisualVibe`}
       />
 
       <section className="relative z-[2]">
@@ -213,13 +219,13 @@ export default async function KennisbankCategoryPage({
                   className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
                   style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
                 >
-                  Start hier
+                  {labels.startHere}
                 </div>
                 <h2
                   className="mb-6 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
                   style={{ fontFamily: "var(--font-sora), sans-serif" }}
                 >
-                  {pillarPosts.length === 1 ? "Complete gids" : "Complete gidsen"}
+                  {pillarPosts.length === 1 ? labels.completeGuide : labels.completeGuides}
                 </h2>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   {pillarPosts.map((post, i) => (
@@ -228,7 +234,8 @@ export default async function KennisbankCategoryPage({
                       article={toArticleCardData(post, authorImages)}
                       variant="grid"
                       index={i}
-                      ctaLabel="Lees de gids"
+                      ctaLabel={labels.readGuide}
+                      locale={locale}
                     />
                   ))}
                 </div>
@@ -241,17 +248,17 @@ export default async function KennisbankCategoryPage({
                   className="mb-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]"
                   style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
                 >
-                  Verdieping
+                  {labels.deepDive}
                 </div>
                 <h2
                   className="mb-6 text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
                   style={{ fontFamily: "var(--font-sora), sans-serif" }}
                 >
-                  Artikels per vraag
+                  {labels.articlesByQuestion}
                 </h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {supportingPosts.map((post, i) => (
-                    <QuestionCard key={post.slug} article={toArticleCardData(post, authorImages)} index={i} />
+                    <QuestionCard key={post.slug} article={toArticleCardData(post, authorImages)} index={i} locale={locale} />
                   ))}
                 </div>
               </div>
@@ -259,13 +266,13 @@ export default async function KennisbankCategoryPage({
           </div>
 
           <CategorySidebar
+            locale={locale}
             tocLinks={posts.map((post) => ({ title: post.title, href: postHref(post) }))}
             otherCategories={otherCategories}
             cta={{
-              title: `Hulp nodig met ${categoryDef.name}?`,
-              description:
-                "Wij helpen KMO's in Limburg vooruit met concrete, meetbare resultaten. Vraag vrijblijvend advies aan.",
-              label: "Vraag advies aan",
+              title: locale === "en" ? `Need help with ${localizedCategoryName.toLowerCase()}?` : `Hulp nodig met ${categoryDef.name}?`,
+              description: locale === "en" ? "We help SMEs achieve concrete, measurable results. Ask us for advice with no obligation." : "Wij helpen KMO's in Limburg vooruit met concrete, meetbare resultaten. Vraag vrijblijvend advies aan.",
+              label: locale === "en" ? "Ask for advice" : "Vraag advies aan",
               href: "/offerte-aanvragen/",
             }}
           />

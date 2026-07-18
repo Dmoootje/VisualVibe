@@ -21,6 +21,7 @@ import {
   ArticleCard,
   QuestionCard,
   toArticleCardData,
+  knowledgeBaseLabels,
 } from "@/components/kennisbank";
 
 const SOFTWARE_POST_SLUGS = [
@@ -95,6 +96,7 @@ export default async function SoftwareKennisbankPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const labels = knowledgeBaseLabels(locale);
   if (!isBlogLocale(locale)) notFound();
 
   const category = getCategoryBySlug("software-op-maat");
@@ -124,7 +126,7 @@ export default async function SoftwareKennisbankPage({
         locale={locale}
         items={[
           { name: "Home", path: "/" },
-          { name: "Kennisbank", path: "/kennisbank/" },
+          { name: labels.knowledgeBase, path: "/kennisbank/" },
           { name: category.name, path: categoryHref(category.slug) },
         ]}
       />
@@ -153,25 +155,25 @@ export default async function SoftwareKennisbankPage({
       <KbHeroShell
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Kennisbank", href: "/kennisbank/" },
+          { label: labels.knowledgeBase, href: "/kennisbank/" },
           { label: category.name },
         ]}
         eyebrow={{
           icon: <CategoryIcon slug={category.slug} className="h-3.5 w-3.5" />,
-          label: "Categorie",
+          label: labels.category,
         }}
-        title="Apps &"
-        titleAccent="software"
-        subtitle={category.description}
+        title={locale === "en" ? "Apps & custom" : "Apps &"}
+        titleAccent={locale === "en" ? "software" : "software"}
+        subtitle={locale === "en" ? "Practical guides about apps, AI applications, automation and custom software for SMEs." : category.description}
         stats={[
-          { value: String(posts.length), label: "artikels" },
-          { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? "gids" : "gidsen" },
-          { value: lastUpdatedLabel, label: "bijgewerkt" },
+          { value: String(posts.length), label: labels.articles },
+          { value: String(pillarPosts.length), label: pillarPosts.length === 1 ? labels.guide : labels.guides },
+          { value: lastUpdatedLabel, label: labels.updated },
         ]}
         graphic={<CategoryRingGraphic slug={category.slug} />}
         search={<CategoryHeroSearch />}
         backgroundImage={pillarPosts[0]?.featuredImage ?? posts[0]?.featuredImage}
-        backgroundImageAlt={`${category.name}: apps, AI en software op maat laten maken`}
+        backgroundImageAlt={locale === "en" ? "Custom apps, AI and software for SMEs" : `${category.name}: apps, AI en software op maat laten maken`}
       />
 
       <section className="relative z-[2]">
@@ -180,10 +182,10 @@ export default async function SoftwareKennisbankPage({
             {pillarPosts.length > 0 && (
               <div className="mb-14">
                 <div className="mb-2.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]">
-                  Start hier
+                  {labels.startHere}
                 </div>
                 <h2 className="mb-6 font-sora text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                  Complete gids
+                  {labels.completeGuide}
                 </h2>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   {pillarPosts.map((post, index) => (
@@ -192,7 +194,8 @@ export default async function SoftwareKennisbankPage({
                       article={toArticleCardData(post, authorImages)}
                       variant="grid"
                       index={index}
-                      ctaLabel="Lees de gids"
+                      ctaLabel={labels.readGuide}
+                      locale={locale}
                     />
                   ))}
                 </div>
@@ -201,10 +204,10 @@ export default async function SoftwareKennisbankPage({
 
             <div>
               <div className="mb-2.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#ff9a45]">
-                Verdieping
+                {labels.deepDive}
               </div>
               <h2 className="mb-6 font-sora text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                Apps, AI en automatisering
+                {locale === "en" ? "Apps, AI and automation" : "Apps, AI en automatisering"}
               </h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {supportingPosts.map((post, index) => (
@@ -212,6 +215,7 @@ export default async function SoftwareKennisbankPage({
                     key={post.slug}
                     article={toArticleCardData(post, authorImages)}
                     index={index}
+                    locale={locale}
                   />
                 ))}
               </div>
@@ -219,13 +223,13 @@ export default async function SoftwareKennisbankPage({
           </div>
 
           <CategorySidebar
+            locale={locale}
             tocLinks={posts.map((post) => ({ title: post.title, href: postHref(post) }))}
             otherCategories={[]}
             cta={{
-              title: "Een app of softwareplatform laten maken?",
-              description:
-                "We vertalen je proces of idee naar een haalbare eerste versie met duidelijke functies, planning en technische keuzes.",
-              label: "Bekijk software op maat",
+              title: locale === "en" ? "Planning an app or software platform?" : "Een app of softwareplatform laten maken?",
+              description: locale === "en" ? "We turn your process or idea into a viable first version with clear features, planning and technical choices." : "We vertalen je proces of idee naar een haalbare eerste versie met duidelijke functies, planning en technische keuzes.",
+              label: locale === "en" ? "Explore custom software" : "Bekijk software op maat",
               href: "/diensten/software-op-maat/",
             }}
           />
