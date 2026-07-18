@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/kennisbank/fotografie/vastgoedfotografie-tips/",
+  "targetRoute": "/en/kennisbank/fotografie/real-estate-photography-tips/",
+  "audience": "Estate agents, property developers, landlords, architects and owners planning photography for sale, rental or project communications.",
+  "primaryDutchSearchIntent": "Makelaars en eigenaars helpen een pand doelgericht voorbereiden en volledig, verzorgd en geloofwaardig laten fotograferen.",
+  "searchIntent": { "type": "commercial", "question": "How do you prepare and photograph a property completely, professionally and honestly for sale, rental or project communications?", "geographicContext": "International English-speaking readers, with Belgian image-rights and copyright context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "real estate photography tips",
+  "longTailKeywords": ["real estate photography checklist", "prepare a home for photography", "property photography shot list", "interior photography tips", "real estate photographer Limburg", "professional property photos"],
+  "semanticTerms": ["property listing", "interior photography", "exterior photography", "wide-angle lens", "perspective correction", "virtual staging", "image rights", "alt text", "responsive images"],
+  "directAnswer": "Good real estate photography helps prospective buyers or tenants understand a property's layout, connections and genuine finishes. Prepare every space, use a logical shot list, manage light and perspective carefully, check privacy and present the property attractively without making it appear larger, brighter or more luxurious than it is.",
+  "title": "Real estate photography tips: an honest, complete property story",
+  "metaDescription": "Learn which property photos every listing needs, how to prepare and present spaces honestly, and what to agree about timing, privacy and usage rights.",
+  "h1": "Real estate photography tips: an honest, complete property story",
+  "slug": "real-estate-photography-tips",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography includes" },
+    { "sourceHref": "/be/diensten/fotografie/vastgoedfotografie/", "targetHref": "/en/diensten/fotografie/real-estate-photography/", "anchor": "real estate photography" },
+    { "sourceHref": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/", "targetHref": "/en/kennisbank/3d-vr/what-is-a-3d-tour/", "anchor": "what a 3D tour is" },
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/kennisbank/drone/drone-footage-for-businesses/", "anchor": "drone footage for businesses" },
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-webshops/", "anchor": "product photography for webshops" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "plan your property shoot" }
+  ],
+  "factsToPreserve": [
+    "Professional photography does not guarantee a faster transaction, higher price or more enquiries.",
+    "Extreme wide angles and heavy editing can distort expectations.",
+    "Photography should not hide permanent defects, dimensions, surroundings or finishes.",
+    "Virtual staging must be labelled clearly and realistic images of the current state should remain available.",
+    "Consent to create an image and consent to publish it are assessed separately.",
+    "Usage, editing, transfer and reuse rights should be agreed with photographer, agent and client.",
+    "Image SEO and alt-text practices improve implementation but do not guarantee traffic or visibility.",
+    "Comparing sales outcomes requires caution because price, location, season and market demand also vary."
+  ]
+}
