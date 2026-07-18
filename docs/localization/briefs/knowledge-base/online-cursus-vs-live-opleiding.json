@@ -1,0 +1,32 @@
+{
+  "sourceRoute": "/be/kennisbank/masterclasses/online-cursus-vs-live-opleiding/",
+  "targetRoute": "/en/kennisbank/masterclasses/online-course-vs-live-training/",
+  "audience": "Training providers, consultants, HR and L&D teams and SMEs seeking to share expertise at scale.",
+  "primaryDutchSearchIntent": "Organisaties helpen kiezen tussen een online cursus, live opleiding en hybride leertraject.",
+  "searchIntent": { "type": "commercial", "question": "Should an organisation choose an online course, live training or blended learning for a particular learning goal?", "geographicContext": "International English-speaking business and training audiences, with VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "online course or live training",
+  "longTailKeywords": ["online course vs live training", "blended training", "digitise training", "e-learning or classroom training", "blended learning for businesses", "record a training course"],
+  "semanticTerms": ["learning objective", "practice", "feedback", "facilitation", "blended learning", "learning platform", "captions", "privacy", "completion rate", "transfer to practice"],
+  "directAnswer": "Choose an online course for repeatable explanation and self-paced learning, live training for supervised practice, interaction and feedback, and blended learning when both are needed. The right choice follows from what learners must understand, practise and apply, not from reach alone.",
+  "title": "Online course or live training: which format fits your learning goal?",
+  "metaDescription": "Choosing an online course or live training? Compare learning goals, interaction, scale, production, guidance and maintenance to design the right blend.",
+  "h1": "Online course or live training: which format fits your learning goal?",
+  "slug": "online-course-vs-live-training",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/masterclasses/online-cursus-filmen/", "targetHref": "/en/kennisbank/masterclasses/filming-an-online-course/", "anchor": "filming an online course" },
+    { "sourceHref": "/be/kennisbank/masterclasses/opleiding-omzetten-naar-video-content/", "targetHref": "/en/kennisbank/masterclasses/turn-training-into-video-content/", "anchor": "turn training into video content" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-video-vs-long-video/", "anchor": "short versus long video" },
+    { "sourceHref": "/be/diensten/masterclasses/opleiding-opnemen/", "targetHref": "/en/diensten/masterclasses/training-video-production/", "anchor": "training video production service" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your training" }
+  ],
+  "factsToPreserve": [
+    "The choice between online, live and blended learning is not binary or universal.",
+    "A topic is not yet a measurable learning objective.",
+    "Online learning suits repeatable explanation, while safe or complex practice may require supervision.",
+    "Recording a live session does not automatically create an effective online course.",
+    "Accessibility should be planned through captions, clear audio, readable text and alternatives for essential information.",
+    "Platform choice follows from learning and management needs, not feature count alone.",
+    "Completion and viewing statistics do not prove mastery or transfer to practice.",
+    "Participant footage, personal data and reuse rights require explicit agreements."
+  ]
+}
