@@ -17,12 +17,12 @@ import type { SupportedLocale } from "@/i18n/locales";
 import { regionMunicipalities } from "@/data/regionMunicipalities";
 import type { EnglishRegionLocaleRecord } from "@/data/locales/en/regions";
 import type { LocalizedRegionRecord } from "@/data/regions";
+import { getPublishedLocales } from "@/i18n/locales";
 
 export function generateStaticParams() {
-  return regions.flatMap((region) => [
-    { slug: region.slug },
-    { slug: getLocalizedRegionById(region.slug, "en").slug },
-  ]);
+  return getPublishedLocales().flatMap((locale) =>
+    regions.map((region) => ({ locale, slug: getLocalizedRegionById(region.slug, locale).slug })),
+  );
 }
 
 export async function generateMetadata({
@@ -180,7 +180,11 @@ async function DutchRegionDetailPage({
         </section>
       )}
 
-      <CTASection className="bg-transparent" title={`Actief in ${region.title}? Laten we kennismaken.`} />
+      <CTASection
+        className="bg-transparent"
+        title={`Actief in ${region.title}? Laten we kennismaken.`}
+        primaryHref="/offerte-aanvragen"
+      />
       </div>
     </div>
   );
@@ -192,7 +196,7 @@ export default async function RegionDetailPage({
   params: Promise<{ locale: SupportedLocale; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  if (locale === "nl") return <DutchRegionDetailPage params={Promise.resolve({ slug })} />;
+  if (locale === "nl") return DutchRegionDetailPage({ params: Promise.resolve({ slug }) });
   if (locale !== "en") notFound();
 
   let region;
@@ -251,7 +255,7 @@ export default async function RegionDetailPage({
           title={region.cta.title}
           description={region.cta.description}
           primaryLabel={region.cta.label}
-          primaryHref="/offerte-aanvragen"
+          primaryHref={region.cta.href}
         />
       </main>
     </div>

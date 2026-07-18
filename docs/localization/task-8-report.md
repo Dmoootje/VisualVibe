@@ -242,7 +242,28 @@ All sector and region overlay links and briefs now use the actual route tree: `/
 - `npm run validate:subservices`: passed for all 46 subservice pages.
 - `npm run build`: compiled successfully and kept English disabled in the publication registry.
 - `npm run audit:locales`: still reports the pre-existing Dutch `wordpress-backup-maken.mdx` alt-text blocker and informational missing English knowledge-base partners. These are outside this sector and region correction.
-- Actual-route link scan, repository-wide U+2014/U+2015 scan and `git diff --check`: clean.
+- The overlay-link scan was clean, but it did not inspect `CTASection` destination props or production static-parameter generation. Those omissions were found in the final route review below. Repository-wide U+2014/U+2015 scan and `git diff --check` were clean.
+
+### Final CTA, schema and static-parameter correction
+
+The final route review added behavior assertions for both languages and exposed three remaining integration errors:
+
+- English sector and region CTA components still relied on the Dutch default `/offerte-aanvragen` instead of their reviewed overlay-owned `/en/request-a-quotation/` destination.
+- The English sector `CollectionPage` JSON-LD still contained the Dutch overview description.
+- Sector details generated both Dutch and disabled English static params, while region details generated an unpaired slug list without an explicit locale.
+
+RED evidence: seven expanded route tests failed against these behaviors. GREEN evidence: all seven pass after wiring English CTAs to their overlay-owned hrefs, preserving `/offerte-aanvragen` for Dutch, selecting the reviewed English sector-hub description for JSON-LD, and deriving explicit `{ locale, slug }` pairs from `getPublishedLocales()`.
+
+Because only Dutch is published, production static generation now returns Dutch sector and region pairs only. English route-render tests still call the route owners directly to verify readiness, but `/en` is not included in generated production params. When a translated locale is later published, each stable ID produces exactly one slug for that same locale, avoiding cross-product locale/slug combinations.
+
+Fresh final evidence for this correction:
+
+- focused sector and region route tests: 3 files and 7 tests passed;
+- full test suite: 72 files and 275 tests passed;
+- TypeScript check and 46-page subservice validation passed;
+- production build compiled successfully with only Dutch in the published locale registry;
+- locale audit retained the known Dutch knowledge-base alt-text blocker and informational missing English article partners;
+- repository-wide forbidden-dash scan and `git diff --check` were clean.
 
 ## Addendum: realisation and application content inventory
 

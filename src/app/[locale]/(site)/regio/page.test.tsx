@@ -12,6 +12,9 @@ vi.mock("@/components/seo", () => ({
   FaqPageJsonLd: () => null,
   JsonLd: () => null,
 }));
+vi.mock("@/components/sections", () => ({
+  CTASection: ({ title, primaryHref }: { title: string; primaryHref?: string }) => <section data-cta-href={primaryHref}>{title}</section>,
+}));
 vi.mock("@/features/home/RegionIntro/components/RegionMiniMap", () => ({
   RegionMiniMap: ({ slug }: { slug: string }) => <span data-map={slug} />,
 }));
@@ -28,6 +31,12 @@ describe("English regions hub route", () => {
     expect(html).toContain("Regions where VisualVibe works");
     expect(html).toContain('href="/regio/limburg-belgium"');
     expect(html).toContain('href="/regio/flanders"');
+    expect(html).toContain('data-cta-href="/en/request-a-quotation/"');
     expect(html).not.toMatch(/Ons werkgebied|Kies jouw regio|Bekijk pagina|gemeentes|Nederlands-Limburg|Offerte aanvragen/);
+  });
+
+  it("keeps the Dutch hub quotation destination", async () => {
+    const html = renderToStaticMarkup(await RegioHubPage({ params: Promise.resolve({ locale: "nl" }) }));
+    expect(html).toContain('data-cta-href="/offerte-aanvragen"');
   });
 });

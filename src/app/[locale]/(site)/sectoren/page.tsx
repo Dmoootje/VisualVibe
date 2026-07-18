@@ -9,6 +9,7 @@ import { Section, Container } from "@/components/ui";
 import { CTASection } from "@/components/sections";
 import { SectorCard, SectorAnswerIntro, SectorFaq, SectorSectionHeader } from "@/components/sectors";
 import type { Sector } from "@/types";
+import { englishSectorHub } from "@/data/locales/en/regionSectorHubs";
 type SectorLocale = "nl" | "en";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: SectorLocale }> }) {
@@ -131,7 +132,9 @@ export default async function SectorenHubPage({ params }: { params: Promise<{ lo
           url: baseUrl,
           name: en ? "Industries VisualVibe knows inside out" : "Sectoren waarin VisualVibe uitblinkt",
           description:
-            "Overzicht van de sectoren waarvoor VisualVibe webdesign, fotografie, video, drone en lokale SEO verzorgt, van bouw en horeca tot vastgoed en industrie.",
+            en
+              ? englishSectorHub.seo.description
+              : "Overzicht van de sectoren waarvoor VisualVibe webdesign, fotografie, video, drone en lokale SEO verzorgt, van bouw en horeca tot vastgoed en industrie.",
           inLanguage: en ? "en-BE" : "nl-BE",
           isPartOf: { "@id": `${businessConfig.url}/#website` },
           about: localizedSectors.map((sector) => sector.title),
@@ -211,6 +214,7 @@ export default async function SectorenHubPage({ params }: { params: Promise<{ lo
       <CTASection
         title={en ? "Ready to strengthen your position online?" : "Jouw sector online versterken?"}
         description={en ? "Tell us about your industry and what you want to achieve. We will propose an approach suited to your market, region and budget." : "Vertel ons in welke branche je actief bent en wat je wilt bereiken. We stellen een aanpak voor die past bij jouw sector, jouw regio en jouw budget."}
+        primaryHref={en ? englishSectorHub.cta.href : "/offerte-aanvragen"}
       />
     </div>
   );

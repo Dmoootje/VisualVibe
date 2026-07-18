@@ -404,6 +404,7 @@ function DutchRegioHubPage() {
         <CTASection
           title="Samenwerken in jouw regio?"
           description="Vertel ons waar je gevestigd bent en wat je wilt bereiken. We stellen een aanpak voor die past bij jouw regio, jouw sector en jouw budget."
+          primaryHref="/offerte-aanvragen"
         />
       </div>
     </div>
@@ -466,7 +467,7 @@ export default async function RegioHubPage({
           title={englishRegionHub.cta.title}
           description={englishRegionHub.cta.description}
           primaryLabel={englishRegionHub.cta.label}
-          primaryHref="/offerte-aanvragen"
+          primaryHref={englishRegionHub.cta.href}
         />
       </main>
     </div>

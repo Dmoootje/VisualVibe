@@ -21,6 +21,8 @@ import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, ServiceJsonLd, FaqPageJsonLd, JsonLd } from "@/components/seo";
 import { CTASection } from "@/components/sections";
+import { getPublishedLocales } from "@/i18n/locales";
+import { englishSectorEditorial } from "@/data/locales/en/sectors";
 import {
   SectorDetailHero,
   SectorMarquee,
@@ -40,7 +42,9 @@ import {
 type SectorLocale = "nl" | "en";
 
 export function generateStaticParams() {
-  return (["nl", "en"] as const).flatMap((locale) => sectors.map((sector) => ({ locale, slug: getLocalizedSectorById(sector.slug, locale).slug })));
+  return getPublishedLocales().flatMap((locale) =>
+    sectors.map((sector) => ({ locale, slug: getLocalizedSectorById(sector.slug, locale).slug })),
+  );
 }
 
 // Cases en galerijen zijn Firestore-content (admin-beheerd): net als op de
@@ -211,6 +215,7 @@ export default async function SectorDetailPage({
       <CTASection
         title={sector.ctaTitle ?? (en ? `Working in ${sector.title.toLowerCase()}? Let's talk.` : `Actief in ${sector.title.toLowerCase()}? Laten we kennismaken.`)}
         description={sector.ctaText}
+        primaryHref={en ? englishSectorEditorial[sector.id].cta.href : "/offerte-aanvragen"}
       />
     </div>
   );
