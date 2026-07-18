@@ -1,6 +1,7 @@
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "@/components/webdesign/ShowcaseImage";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const Magnifier = () => (
   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.4} aria-hidden="true">
@@ -24,9 +25,11 @@ const Check = () => (
 export function RealisatieWebdesignFeatured({
   project,
   images,
+  locale = "nl",
 }: {
   project: WebdesignProject;
   images: WebdesignImages;
+  locale?: SupportedLocale;
 }) {
   const laptop = images[imageKey(project.id, "1")];
   const tablet = images[imageKey(project.id, "3")];
@@ -45,7 +48,7 @@ export function RealisatieWebdesignFeatured({
         <div>
           <div className="mb-[22px] inline-flex items-center gap-2.5 rounded-full border border-[rgba(255,122,0,0.25)] bg-[rgba(255,122,0,0.1)] px-[15px] py-2 font-mono text-xs font-bold tracking-[0.1em] text-[#FF9A45]">
             <span className="vvw-liveDot h-[7px] w-[7px] rounded-full bg-[#FF7A00]" />
-            LAATSTE CREATIE
+            {locale === "en" ? "LATEST PROJECT" : "LAATSTE CREATIE"}
           </div>
           {project.client && (
             <div className="mb-3 font-mono text-[11px] font-bold tracking-[0.14em] text-white/40">
@@ -98,7 +101,7 @@ export function RealisatieWebdesignFeatured({
             rel="noopener noreferrer"
             className="vvw-visitLink inline-flex items-center gap-2 rounded-xl border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-[26px] py-3.5 text-[15px] font-bold text-white"
           >
-            Bekijk de live site
+            {locale === "en" ? "Visit the live site" : "Bekijk de live site"}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M7 17 17 7M9 7h8v8" />
             </svg>
@@ -138,7 +141,7 @@ export function RealisatieWebdesignFeatured({
                     </span>
                   </div>
                   <div className="relative h-[352px]">
-                    <ShowcaseImage src={laptop} alt={`${project.name} desktop-screenshot`} placeholder="Desktop-screenshot" sizes="640px" eager />
+                    <ShowcaseImage src={laptop} alt={`${project.name} desktop screenshot`} placeholder={locale === "en" ? "Desktop screenshot" : "Desktop-screenshot"} sizes="640px" eager />
                   </div>
                 </div>
               </div>
@@ -159,7 +162,7 @@ export function RealisatieWebdesignFeatured({
             {/* GSM */}
             <div className="vvw-bob2 absolute bottom-[-6px] right-[22px] z-[4] w-[132px] rounded-[24px] border border-white/[0.09] bg-[linear-gradient(160deg,#2a2622,#131110)] p-1.5 shadow-[0_38px_64px_-22px_rgba(0,0,0,0.9)]">
               <div className="relative aspect-[1/2] overflow-hidden rounded-[19px] bg-[#0e0d0c]">
-                <ShowcaseImage src={phone} alt={`${project.name} mobiel-screenshot`} placeholder="Mobiel" sizes="120px" />
+                <ShowcaseImage src={phone} alt={locale === "en" ? `${project.name} mobile screenshot` : `${project.name} mobiel-screenshot`} placeholder={locale === "en" ? "Mobile" : "Mobiel"} sizes="120px" />
               </div>
               <span className="absolute left-1/2 top-[13px] z-[2] h-[5px] w-[34px] -translate-x-1/2 rounded-full bg-white/[0.16]" />
             </div>

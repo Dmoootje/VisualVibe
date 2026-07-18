@@ -5,8 +5,9 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { FiIcon } from "@/components/fotografie";
 import type { DroneCategory, DroneMedia } from "@/config/drone.config";
+import type { SupportedLocale } from "@/i18n/locales";
 
-const ALL = "Alle";
+const ALL = "all";
 
 function ytThumb(id: string): string {
   return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
@@ -38,9 +39,11 @@ function ExpandIcon() {
 export function RealisatieDroneMedia({
   media,
   categories,
+  locale = "nl",
 }: {
   media: DroneMedia[];
   categories: DroneCategory[];
+  locale?: SupportedLocale;
 }) {
   const [cat, setCat] = useState<string>(ALL);
   const [open, setOpen] = useState(false);
@@ -145,7 +148,7 @@ export function RealisatieDroneMedia({
               onClick={() => openAt(0)}
               className="vvw-visitLink inline-flex items-center gap-[9px] rounded-xl border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-[26px] py-3.5 text-[15px] font-bold text-white"
             >
-              Bekijk realisatie <PlayIcon size={17} />
+              {locale === "en" ? "View project" : "Bekijk realisatie"} <PlayIcon size={17} />
             </button>
           </div>
         </div>
@@ -155,9 +158,9 @@ export function RealisatieDroneMedia({
       <section className="container relative z-[2] mx-auto px-2.5 sm:px-4 pb-28">
         <div className="mb-7 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">Alle realisaties</p>
+            <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#FF9A45]">{locale === "en" ? "All projects" : "Alle realisaties"}</p>
             <h2 className="font-sora text-[28px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:text-[34px]">
-              Foto én video, vanuit de lucht
+              {locale === "en" ? "Aerial photography and video" : "Foto én video, vanuit de lucht"}
             </h2>
           </div>
           <p className="max-w-[340px] text-[15px] leading-relaxed text-white/55">{catDesc}</p>
@@ -177,7 +180,7 @@ export function RealisatieDroneMedia({
                     : "inline-flex items-center rounded-[10px] border border-white/10 bg-white/[0.03] px-[15px] py-[9px] text-[13px] font-bold text-white/[0.62] transition-colors hover:border-[rgba(255,122,0,0.4)] hover:text-white"
                 }
               >
-                {f.name}
+                {f.name === ALL ? (locale === "en" ? "All" : "Alle") : f.name}
                 <span className="ml-1.5 font-mono text-[11px] font-bold opacity-55">{f.count}</span>
               </button>
             );
@@ -193,7 +196,7 @@ export function RealisatieDroneMedia({
                   key={`${x.m.title}-${x.gi}`}
                   type="button"
                   onClick={() => openAt(x.gi)}
-                  aria-label={`Open ${x.m.title}`}
+                  aria-label={locale === "en" ? `Open ${x.m.title}` : `Open ${x.m.title}`}
                   style={{ ["--i" as string]: k } as React.CSSProperties}
                   className="vvw-caseRow fg-gcard group relative aspect-[16/11] overflow-hidden rounded-[18px] border border-white/[0.09] bg-[#141210] text-left"
                 >
@@ -229,7 +232,7 @@ export function RealisatieDroneMedia({
             <span className="mb-[18px] inline-flex h-14 w-14 items-center justify-center rounded-[15px] border border-[rgba(255,122,0,0.25)] bg-[rgba(255,122,0,0.1)] text-[#FF9A45]">
               <FiIcon id="drone" size={26} strokeWidth={1.7} />
             </span>
-            <h3 className="font-sora mb-2.5 text-[22px] font-bold text-white">Binnenkort werk in deze categorie</h3>
+            <h3 className="font-sora mb-2.5 text-[22px] font-bold text-white">{locale === "en" ? "Work in this category is coming soon" : "Binnenkort werk in deze categorie"}</h3>
             <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-white/55">
               {catDesc} We voegen hier binnenkort beelden aan toe.
             </p>
@@ -249,7 +252,7 @@ export function RealisatieDroneMedia({
                 </span>
                 <h3 className="font-sora text-2xl font-extrabold tracking-[-0.02em] text-white">{current.title}</h3>
               </div>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Sluiten" className="fg-lbx flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-white/[0.14] bg-white/[0.04] text-white/75">
+              <button type="button" onClick={() => setOpen(false)} aria-label={locale === "en" ? "Close" : "Sluiten"} className="fg-lbx flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-white/[0.14] bg-white/[0.04] text-white/75">
                 <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
               </button>
             </div>
@@ -272,11 +275,11 @@ export function RealisatieDroneMedia({
 
             <div className="mt-4 flex flex-none items-center justify-between gap-3.5">
               <button type="button" onClick={() => step(-1)} className="fg-lbarrow inline-flex h-11 items-center gap-2 rounded-xl border border-white/[0.16] bg-white/[0.04] px-[18px] text-sm font-bold text-white">
-                <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>Vorige
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>{locale === "en" ? "Previous" : "Vorige"}
               </button>
               <span className="font-mono text-xs font-bold text-white/60">{idx + 1} / {len}</span>
               <button type="button" onClick={() => step(1)} className="fg-lbarrow inline-flex h-11 items-center gap-2 rounded-xl border border-white/[0.16] bg-white/[0.04] px-[18px] text-sm font-bold text-white">
-                Volgende<svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                {locale === "en" ? "Next" : "Volgende"}<svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
               </button>
             </div>
 

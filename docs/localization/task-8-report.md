@@ -244,3 +244,35 @@ Firestore still stores legacy public free text without locale-keyed editorial fi
 - Six locale suites covering categories, empty cases, application cases, web design showcase records, static media and hub dynamic boundaries pass with 18 tests.
 - `npm run typecheck` passes.
 - The repository-wide U+2014/U+2015 scan returns no matches.
+
+## Addendum: Task 8C public route integration
+
+### RED evidence
+
+`npm test -- src/app/[locale]/\(site\)/realisaties/realisaties.locale-routing.test.ts` initially failed all eight assertions. The failures showed that the hub, category, application index, application detail and application layout did not read the route locale; the hub called `getHubData()` without a locale; category and application routes bypassed the strict overlay selectors; and visitor-facing components exposed fixed Dutch labels.
+
+### GREEN evidence
+
+All five route owners now thread `SupportedLocale` into strict selectors. Stable IDs resolve locale-specific display slugs for categories and application details. Hub and direct category links use the translated display slug while Dutch routes retain their existing paths and copy. Application lists, detail metadata and the related-work carousel resolve checked-in English overlays by stable ID.
+
+Legacy dynamic data fails closed in English. Firestore-only application and web-design records without a reviewed English overlay are omitted. Firestore photography galleries, SmugMug galleries and YouTube videos are read only for Dutch. English drone and Matterport routes use the reviewed static selectors. No fallback invents English copy and no English path renders legacy Dutch free text.
+
+Visitor labels, accessibility labels, alt text, CTAs and modal controls in the shared realisation components now receive the locale. English quotation links use `/request-a-quotation/`; application and category links use their English display slugs. English remains disabled in `LOCALE_CONFIG`, and the build still generates Dutch public routes only.
+
+### Zero-bypass inventory
+
+- Hub: `getHubData(locale)` and localized category/service selectors.
+- Generic category: localized category lookup, localized web-design, drone and Matterport selectors; Dutch-only gates around photography, SmugMug and YouTube.
+- Application index: published records are localized by stable ID; unknown Firestore IDs are omitted from English.
+- Application detail and metadata: `getApplicationCaseByLocalizedSlug`; no call to the legacy Firestore slug selector.
+- Application layout and carousel: current display slug resolves to a stable ID; related records are localized individually and unknown records are omitted.
+- Shared cards, filters, headers, web-design modal and CTAs: locale is explicit, category/detail destinations are locale-safe, and English labels do not depend on Dutch fallbacks.
+
+### Final verification
+
+- Focused Task 8 route and selector suites: 6 files, 23 tests passed.
+- Full suite: 69 files, 266 tests passed.
+- `npm run typecheck`: passed.
+- `npm run build`: passed and generated only published Dutch routes. Existing unrelated lint warnings remain non-blocking.
+- `npm run audit:locales`: retained the pre-existing Dutch knowledge-base alt-text blocker and informational missing English knowledge-base partners; neither belongs to Task 8C.
+- Task-scoped U+2014/U+2015 scan and `git diff --check`: clean.

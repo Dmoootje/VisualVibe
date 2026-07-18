@@ -15,16 +15,16 @@ import {
   APPLICATION_CASE_IMAGE_SLOTS,
   applicationCaseImageKey,
   applicationCases,
+  getApplicationCaseByLocalizedSlug,
   type ApplicationCaseImageSlot,
 } from "@/data/applicationCases";
-import {
-  getApplicationCaseBySlug,
-  getApplicationCaseImages,
-} from "@/lib/firestore/applicationCases";
+import { getApplicationCaseImages } from "@/lib/firestore/applicationCases";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { buildApplicationCaseJsonLd } from "@/lib/seo/applicationCaseJsonLd";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
+import type { SupportedLocale } from "@/i18n/locales";
+import { localizedPath } from "@/lib/kennisbank/urls";
 
 export const revalidate = 60;
 
@@ -35,24 +35,22 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: SupportedLocale }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const [project, images] = await Promise.all([
-    getApplicationCaseBySlug(slug),
-    getApplicationCaseImages(),
-  ]);
-  if (!project) return {};
+  const { slug, locale } = await params;
+  let project;
+  try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { return {}; }
+  const images = await getApplicationCaseImages();
 
   return pageMetadata({
     title: project.seoTitle,
     description: project.seoDescription,
-    path: `/realisaties/applicaties/${project.slug}/`,
+    path: `/realisaties/${locale === "en" ? "applications" : "applicaties"}/${project.slug}/`,
     ogImage: images[applicationCaseImageKey(project.id, "cover")],
   });
 }
 
-function EmptyVisual({ label, compact = false }: { label: string; compact?: boolean }) {
+function EmptyVisual({ label, compact = false, locale = "nl" }: { label: string; compact?: boolean; locale?: SupportedLocale }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-[#100e0d]">
       <div
@@ -68,7 +66,7 @@ function EmptyVisual({ label, compact = false }: { label: string; compact?: bool
           <MonitorSmartphone className={compact ? "h-6 w-6" : "h-9 w-9"} strokeWidth={1.5} />
         </span>
         <span className="max-w-[240px] text-xs font-medium text-white/35">
-          {label} kan via de backend worden toegevoegd
+          {locale === "en" ? `${label} can be added through the backend` : `${label} kan via de backend worden toegevoegd`}
         </span>
       </div>
     </div>
@@ -80,11 +78,13 @@ function Screenshot({
   alt,
   label,
   slot,
+  locale,
 }: {
   src?: string;
   alt: string;
   label: string;
   slot: ApplicationCaseImageSlot;
+  locale: SupportedLocale;
 }) {
   const portrait = slot === "home-mobile" || slot === "mobile-cover";
   return (
@@ -103,7 +103,7 @@ function Screenshot({
             className="object-cover"
           />
         ) : (
-          <EmptyVisual label={label} compact />
+          <EmptyVisual label={label} compact locale={locale} />
         )}
       </div>
       <figcaption className="border-t border-white/[0.07] px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-white/40">
@@ -116,29 +116,28 @@ function Screenshot({
 export default async function ApplicationCasePage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: SupportedLocale }>;
 }) {
-  const { slug } = await params;
-  const [project, images] = await Promise.all([
-    getApplicationCaseBySlug(slug),
-    getApplicationCaseImages(),
-  ]);
-  if (!project) notFound();
+  const { slug, locale } = await params;
+  let project;
+  try { project = getApplicationCaseByLocalizedSlug(slug, locale); } catch { notFound(); }
+  const images = await getApplicationCaseImages();
+  const en = locale === "en";
 
   const cover = images[applicationCaseImageKey(project.id, "cover")];
   const screenshots = APPLICATION_CASE_IMAGE_SLOTS.filter(
     ({ slot }) => slot !== "cover" && slot !== "mobile-cover",
   );
-  const canonical = `${businessConfig.url}/be/realisaties/applicaties/${project.slug}/`;
+  const canonical = `${businessConfig.url}${localizedPath(en ? "en" : "nl", `/realisaties/${en ? "applications" : "applicaties"}/${project.slug}/`)}`;
 
   return (
     <div className="min-h-screen text-white">
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
-          { name: "Realisaties", path: "/realisaties/" },
-          { name: "Applicaties", path: "/realisaties/applicaties/" },
-          { name: project.title, path: `/realisaties/applicaties/${project.slug}/` },
+          { name: en ? "Case studies" : "Realisaties", path: "/realisaties/" },
+          { name: en ? "Applications" : "Applicaties", path: `/realisaties/${en ? "applications" : "applicaties"}/` },
+          { name: project.title, path: `/realisaties/${en ? "applications" : "applicaties"}/${project.slug}/` },
         ]}
       />
       <JsonLd
@@ -158,9 +157,9 @@ export default async function ApplicationCasePage({
           <nav className="mb-7 flex flex-wrap items-center gap-2 font-mono text-xs font-semibold text-white/40">
             <Link href="/">Home</Link>
             <span>/</span>
-            <Link href="/realisaties/">Realisaties</Link>
+            <Link href="/realisaties/">{en ? "Case studies" : "Realisaties"}</Link>
             <span>/</span>
-            <Link href="/realisaties/applicaties/">Applicaties</Link>
+            <Link href={`/realisaties/${en ? "applications" : "applicaties"}/`}>{en ? "Applications" : "Applicaties"}</Link>
             <span>/</span>
             <span className="text-[#ff9a45]">{project.title}</span>
           </nav>
@@ -175,7 +174,7 @@ export default async function ApplicationCasePage({
                       : "border-amber-400/30 bg-amber-500/10 text-amber-300"
                   }`}
                 >
-                  {project.status === "live" ? "Live platform" : "In ontwikkeling"}
+                  {project.status === "live" ? "Live platform" : en ? "In development" : "In ontwikkeling"}
                 </span>
                 {project.tags.map((tag) => (
                   <span
@@ -206,15 +205,15 @@ export default async function ApplicationCasePage({
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none"
                   >
-                    Bekijk het platform
+                    {en ? "Visit the platform" : "Bekijk het platform"}
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 )}
                 <Link
-                  href="/diensten/software-op-maat/"
+                  href={en ? "/services/" : "/diensten/software-op-maat/"}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.15] px-6 py-3 font-semibold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.45)] hover:text-white"
                 >
-                  Software op maat
+                  {en ? "Custom software" : "Software op maat"}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -224,14 +223,14 @@ export default async function ApplicationCasePage({
               {cover ? (
                 <Image
                   src={cover}
-                  alt={`${project.title} platform`}
+                  alt={project.imageAlts?.cover ?? `${project.title} platform`}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover"
                 />
               ) : (
-                <EmptyVisual label="Cover" />
+                <EmptyVisual label="Cover" locale={locale} />
               )}
             </div>
           </div>
@@ -242,16 +241,16 @@ export default async function ApplicationCasePage({
         <div className="container mx-auto grid gap-6 px-2.5 sm:px-4 lg:grid-cols-2">
           <article className="rounded-[22px] border border-white/[0.09] bg-white/[0.025] p-7 sm:p-9">
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              De uitdaging
+              {en ? "The challenge" : "De uitdaging"}
             </p>
-            <h2 className="font-sora text-2xl font-extrabold">Van versnipperd proces naar één systeem</h2>
+            <h2 className="font-sora text-2xl font-extrabold">{en ? "From fragmented processes to one system" : "Van versnipperd proces naar één systeem"}</h2>
             <p className="mt-5 text-[15.5px] leading-[1.8] text-white/65">{project.challenge}</p>
           </article>
           <article className="rounded-[22px] border border-[rgba(255,122,0,0.2)] bg-[rgba(255,122,0,0.035)] p-7 sm:p-9">
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              De oplossing
+              {en ? "The solution" : "De oplossing"}
             </p>
-            <h2 className="font-sora text-2xl font-extrabold">Frontend, backend en integraties samen</h2>
+            <h2 className="font-sora text-2xl font-extrabold">{en ? "Frontend, backend and integrations working together" : "Frontend, backend en integraties samen"}</h2>
             <p className="mt-5 text-[15.5px] leading-[1.8] text-white/65">{project.solution}</p>
           </article>
         </div>
@@ -261,9 +260,9 @@ export default async function ApplicationCasePage({
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Functionaliteit
+              {en ? "Capabilities" : "Functionaliteit"}
             </p>
-            <h2 className="font-sora text-3xl font-extrabold tracking-tight">Wat het platform werkelijk doet</h2>
+            <h2 className="font-sora text-3xl font-extrabold tracking-tight">{en ? "What the platform does" : "Wat het platform werkelijk doet"}</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {project.capabilities.map((capability) => (
@@ -285,11 +284,11 @@ export default async function ApplicationCasePage({
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Publiek & backend
+              {en ? "Public interface and backend" : "Publiek & backend"}
             </p>
-            <h2 className="font-sora text-3xl font-extrabold tracking-tight">Schermen uit de volledige gebruikersflow</h2>
+            <h2 className="font-sora text-3xl font-extrabold tracking-tight">{en ? "Screens from the complete user journey" : "Schermen uit de volledige gebruikersflow"}</h2>
             <p className="mt-4 text-[15.5px] leading-relaxed text-white/60">
-              Van de eerste publieke kennismaking tot dashboards, beheer, planning en dagelijkse opvolging.
+              {en ? "From the first public interaction to dashboards, administration, planning and day-to-day follow-up." : "Van de eerste publieke kennismaking tot dashboards, beheer, planning en dagelijkse opvolging."}
             </p>
           </div>
           <div className="grid auto-rows-auto gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -297,8 +296,9 @@ export default async function ApplicationCasePage({
               <Screenshot
                 key={slot}
                 slot={slot}
-                label={label}
-                alt={`${project.title} - ${label}`}
+                locale={locale}
+                label={en ? (project.imageAlts?.[slot] ?? label) : label}
+                alt={project.imageAlts?.[slot] ?? `${project.title} - ${label}`}
                 src={images[applicationCaseImageKey(project.id, slot)]}
               />
             ))}
@@ -315,7 +315,7 @@ export default async function ApplicationCasePage({
                   <ServerCog className="h-7 w-7" />
                 </span>
                 <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-                  SSR & technische SEO
+                  {en ? "SSR and technical SEO" : "SSR & technische SEO"}
                 </p>
                 <h2 className="mt-3 font-sora text-2xl font-extrabold sm:text-3xl">
                   {project.ssr.title}
@@ -344,7 +344,7 @@ export default async function ApplicationCasePage({
         <div className="container mx-auto grid gap-6 px-2.5 sm:px-4 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[22px] border border-white/[0.09] bg-white/[0.025] p-7 sm:p-9">
             <p className="mb-4 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Technologie
+                  {en ? "Technology" : "Technologie"}
             </p>
             <div className="flex flex-wrap gap-2">
               {project.technology.map((technology) => (
@@ -359,7 +359,7 @@ export default async function ApplicationCasePage({
           </div>
           <div className="rounded-[22px] border border-white/[0.09] bg-white/[0.025] p-7 sm:p-9">
             <p className="mb-4 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Resultaat
+              {en ? "Results" : "Resultaat"}
             </p>
             <div className="space-y-3">
               {project.results.map((result) => (
@@ -377,19 +377,19 @@ export default async function ApplicationCasePage({
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="flex flex-col items-center rounded-[26px] border border-[rgba(255,122,0,0.24)] bg-white/[0.025] px-6 py-12 text-center sm:px-10">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-              Een gelijkaardig idee?
+              {en ? "Have a similar idea?" : "Een gelijkaardig idee?"}
             </p>
             <h2 className="mt-3 max-w-2xl font-sora text-3xl font-extrabold tracking-tight">
-              Van eerste procesanalyse tot een werkende toepassing
+              {en ? "From initial process analysis to a working application" : "Van eerste procesanalyse tot een werkende toepassing"}
             </h2>
             <p className="mt-4 max-w-xl text-[15.5px] leading-relaxed text-white/60">
-              Bespreek je gebruikers, functies en integraties. We vertalen ze naar een haalbare technische aanpak en duidelijke fasering.
+              {en ? "Tell us about your users, features and integrations. We turn them into a viable technical approach and a clear phased plan." : "Bespreek je gebruikers, functies en integraties. We vertalen ze naar een haalbare technische aanpak en duidelijke fasering."}
             </p>
             <Link
-              href="/offerte-aanvragen/"
+              href={en ? "/request-a-quotation/" : "/offerte-aanvragen/"}
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-7 py-3.5 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none"
             >
-              Bespreek je applicatie
+              {en ? "Discuss your application" : "Bespreek je applicatie"}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

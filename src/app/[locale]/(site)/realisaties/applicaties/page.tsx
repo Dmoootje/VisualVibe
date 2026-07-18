@@ -4,10 +4,7 @@ import {
   getApplicationCaseImages,
   getApplicationCases,
 } from "@/lib/firestore/applicationCases";
-import {
-  getRealisatieCategoryBySlug,
-  realisatieCategories,
-} from "@/data/realisatieCategories";
+import { realisatieCategories } from "@/data/realisatieCategories";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { businessConfig } from "@/config/business.config";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
@@ -15,31 +12,35 @@ import { RealisatieHeader } from "@/components/realisaties/RealisatieHeader";
 import { RealisatieApplicatieGrid } from "@/components/realisaties/RealisatieApplicatieGrid";
 import { RealisatieCategoryGrid } from "@/components/realisaties/RealisatieCategoryGrid";
 import { Container, Section } from "@/components/ui";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getLocalizedApplicationCaseById } from "@/data/applicationCases";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
+import { localizedPath } from "@/lib/kennisbank/urls";
 
 export const revalidate = 60;
 
-const category = getRealisatieCategoryBySlug("applicaties");
+export async function generateMetadata({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
+  const { locale } = await params;
+  const category = getLocalizedRealisatieCategoryById("applicaties", locale);
+  return pageMetadata({ title: category.seoTitle, description: category.seoDescription, path: `/realisaties/${category.slug}/` });
+}
 
-export const metadata = pageMetadata({
-  title: category?.seoTitle ?? "Applicaties en software op maat | VisualVibe",
-  description:
-    category?.seoDescription ??
-    "Bekijk webapps, SaaS-platformen en software op maat van VisualVibe.",
-  path: "/realisaties/applicaties/",
-});
-
-export default async function ApplicatieRealisatiesPage() {
-  if (!category) return null;
+export default async function ApplicatieRealisatiesPage({ params }: { params: Promise<{ locale: SupportedLocale }> }) {
+  const { locale } = await params;
+  const category = getLocalizedRealisatieCategoryById("applicaties", locale);
 
   const [allProjects, images] = await Promise.all([
     getApplicationCases(),
     getApplicationCaseImages(),
   ]);
-  const projects = allProjects.filter((project) => project.published);
-  const otherCategories = realisatieCategories.filter(
-    (candidate) => candidate.slug !== category.slug,
-  );
-  const pageUrl = `${businessConfig.url}/be/realisaties/applicaties/`;
+  const projects = allProjects.flatMap((project) => {
+    if (!project.published) return [];
+    if (locale === "nl") return [project];
+    try { return [getLocalizedApplicationCaseById(project.id, locale)]; } catch { return []; }
+  });
+  const otherCategories = realisatieCategories.filter((candidate) => candidate.slug !== "applicaties").map((candidate) => getLocalizedRealisatieCategoryById(candidate.slug, locale));
+  const pageUrl = `${businessConfig.url}${localizedPath(locale === "en" ? "en" : "nl", `/realisaties/${category.slug}/`)}`;
+  const en = locale === "en";
 
   return (
     <div className="min-h-screen text-white">
@@ -58,7 +59,7 @@ export default async function ApplicatieRealisatiesPage() {
           url: pageUrl,
           name: category.seoTitle,
           description: category.seoDescription,
-          inLanguage: "nl-BE",
+          inLanguage: en ? "en-BE" : "nl-BE",
           isPartOf: { "@id": `${businessConfig.url}/#website` },
           mainEntity: {
             "@type": "ItemList",
@@ -67,35 +68,34 @@ export default async function ApplicatieRealisatiesPage() {
               "@type": "ListItem",
               position: index + 1,
               name: project.title,
-              url: `${businessConfig.url}/be/realisaties/applicaties/${project.slug}/`,
+              url: `${pageUrl}${project.slug}/`,
             })),
           },
         }}
       />
 
-      <RealisatieHeader category={category} />
-      <RealisatieApplicatieGrid projects={projects} images={images} />
+      <RealisatieHeader category={category} locale={locale} />
+      <RealisatieApplicatieGrid projects={projects} images={images} locale={locale} />
 
       <section className="relative py-8 sm:py-12">
         <div className="container mx-auto px-2.5 sm:px-4">
           <div className="flex flex-col gap-6 rounded-[24px] border border-[rgba(255,122,0,0.24)] bg-white/[0.025] p-7 sm:flex-row sm:items-center sm:justify-between sm:p-10">
             <div className="max-w-2xl">
               <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a45]">
-                Apps & software op maat
+                {en ? "Custom apps and software" : "Apps & software op maat"}
               </p>
               <h2 className="font-sora text-2xl font-extrabold tracking-tight sm:text-3xl">
-                Een eigen webapp, platform of digitale workflow nodig?
+                {en ? "Need a web app, platform or digital workflow?" : "Een eigen webapp, platform of digitale workflow nodig?"}
               </h2>
               <p className="mt-3 text-[15.5px] leading-relaxed text-white/60">
-                We brengen gebruikers, processen, gegevens en integraties samen in een haalbare
-                eerste versie die later kan doorgroeien.
+                {en ? "We bring users, processes, data and integrations together in a viable first version that can grow with your business." : "We brengen gebruikers, processen, gegevens en integraties samen in een haalbare eerste versie die later kan doorgroeien."}
               </p>
             </div>
             <Link
-              href="/diensten/software-op-maat/"
+              href={en ? "/services/custom-software/" : "/diensten/software-op-maat/"}
               className="inline-flex flex-none items-center justify-center gap-2 self-start rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:self-center"
             >
-              Bekijk software op maat
+              {en ? "Explore custom software" : "Bekijk software op maat"}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -104,8 +104,8 @@ export default async function ApplicatieRealisatiesPage() {
 
       <Section orbs="tr-bl">
         <Container>
-          <h2 className="mb-6 text-2xl font-bold">Andere categorieën</h2>
-          <RealisatieCategoryGrid items={otherCategories} />
+          <h2 className="mb-6 text-2xl font-bold">{en ? "Other categories" : "Andere categorieën"}</h2>
+          <RealisatieCategoryGrid items={otherCategories} locale={locale} />
         </Container>
       </Section>
     </div>

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
 import type { WebdesignImages } from "@/lib/firestore/webdesignImages";
 import { ShowcaseImage } from "./ShowcaseImage";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const Magnifier = () => (
   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FF9A45" strokeWidth={2.4} aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" strokeLinecap="round" /></svg>
@@ -26,10 +27,12 @@ export function RealisatieModal({
   project: c,
   images,
   onClose,
+  locale = "nl",
 }: {
   project: WebdesignProject;
   images: WebdesignImages;
   onClose: () => void;
+  locale?: SupportedLocale;
 }) {
   const img = (slot: "thumb" | "1" | "2" | "3" | "4") => images[imageKey(c.id, slot)];
 
@@ -68,7 +71,7 @@ export function RealisatieModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Sluiten"
+            aria-label={locale === "en" ? "Close" : "Sluiten"}
             className="absolute right-4 top-4 z-[2] flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
@@ -92,8 +95,8 @@ export function RealisatieModal({
                 <div className="relative aspect-video w-full overflow-hidden rounded-[13px] border border-white/[0.08]">
                   <ShowcaseImage
                     src={img("1") ?? img("2")}
-                    alt={`${c.name} hoofdscreenshot`}
-                    placeholder="Hoofdscreenshot"
+                    alt={locale === "en" ? `${c.name} main screenshot` : `${c.name} hoofdscreenshot`}
+                    placeholder={locale === "en" ? "Main screenshot" : "Hoofdscreenshot"}
                     sizes="(max-width: 1024px) 100vw, 660px"
                   />
                 </div>
@@ -102,7 +105,7 @@ export function RealisatieModal({
                 <div className="flex items-start gap-4 overflow-x-auto pb-1">
                   {img("2") && <Device label="DESKTOP" ratio="aspect-video" sizes="374px" src={img("2")} name={c.name} />}
                   {img("3") && <Device label="TABLET" ratio="aspect-[3/4]" sizes="158px" src={img("3")} name={c.name} />}
-                  {img("4") && <Device label="MOBIEL" ratio="aspect-[1/2]" sizes="105px" src={img("4")} name={c.name} />}
+                  {img("4") && <Device label={locale === "en" ? "MOBILE" : "MOBIEL"} ratio="aspect-[1/2]" sizes="105px" src={img("4")} name={c.name} />}
                 </div>
               )}
             </div>
@@ -130,7 +133,7 @@ export function RealisatieModal({
 
               {c.features.length > 0 && (
                 <>
-                  <div className="mb-3 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">WAT WE LEVERDEN</div>
+                  <div className="mb-3 font-mono text-[11px] font-bold tracking-[0.12em] text-white/40">{locale === "en" ? "WHAT WE DELIVERED" : "WAT WE LEVERDEN"}</div>
                   <div className="mb-6 flex flex-col gap-2.5">
                     {c.features.map((f) => (
                       <div key={f} className="flex items-center gap-3">
@@ -151,7 +154,7 @@ export function RealisatieModal({
                   rel="noopener noreferrer"
                   className="vvw-visitLink inline-flex items-center gap-2 rounded-[11px] border border-[rgba(255,122,0,0.35)] bg-[rgba(255,122,0,0.12)] px-5 py-3 text-sm font-bold text-white"
                 >
-                  Bekijk site
+                  {locale === "en" ? "Visit site" : "Bekijk site"}
                   <ArrowUpRight />
                 </a>
               )}
