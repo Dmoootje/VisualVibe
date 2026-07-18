@@ -23,3 +23,25 @@ The reviewer read each complete Dutch source, English partner, translation brief
 - Assigned-file scans found no U+2014/U+2015 characters, public cross-language internal links or unexplained Dutch fragments. Remaining Dutch strings are translation identities and authoritative Belgian source URLs.
 
 All six wave 01 partners are independently APPROVED.
+
+## Wave 03 review evidence
+
+The reviewer read each complete Dutch source, English partner, translation brief, style guide and glossary. The review covered full frontmatter and informational parity, natural international English, factual and legal caveats, SEO/GEO intent, headings, tables, examples, FAQs, CTAs, image text and locale-safe links.
+
+| Translation key | English partner | Independent review evidence | Result |
+| --- | --- | --- | --- |
+| `dronebeelden-combineren-met-bedrijfsvideo` | `combine-drone-footage-with-corporate-video.mdx` | Full comparison preserved the division of roles between aerial and ground footage, production planning, flight constraints, Belgian privacy context, accessibility and non-guarantee language. Reworked literal uses of `drone images`, `basic image`, `realization`, `flying lock` and other Dutch-influenced phrasing across metadata, lead copy, tables, headings and FAQ text. Internal destinations and CTA checked. | APPROVED |
+| `podcast-voor-experts-en-consultants` | `podcast-for-experts-and-consultants.mdx` | Full comparison preserved the editorial premise, pilot and format choices, preparation workload, guest and rights considerations, distribution mechanics and measurement caveats. Rewrote literal `sender`, `delivery`, `substantive owner`, `substantive letter` and related calques into natural editorial English without strengthening commercial claims. Metadata, FAQ and links checked. | APPROVED |
+| `realisatiefotografie-voor-aannemers` | `project-photography-for-contractors.mdx` | Full comparison preserved project-phase planning, site-safety requirements, image-rights limitations, attribution, copyright and licence caveats, accessibility and evidence-led case-study guidance. Replaced `realization photography`, `executor`, `readmission`, `telephone` and other machine-like wording throughout metadata, checklists, FAQ and CTA. Links and image text checked. | APPROVED |
+| `wordpress-onderhoud-checklist` | `wordpress-maintenance-checklist.mdx` | Full comparison preserved the weekly, monthly, quarterly and annual schedule, backup-versus-restore distinction, staging advice, security, permissions, performance, SEO, integrations and maintenance ownership. Corrected malformed checklist questions and literal wording such as `webshop`, `at mobile speed`, `executor` and `maintenance moment`. Metadata, CTA and internal destinations checked. | APPROVED |
+
+## Wave 03 validation evidence
+
+- All four briefs pass the Draft 2020-12 translation-brief schema.
+- All four English MDX documents compile with `@mdx-js/mdx`.
+- Knowledge-base translation and glossary tests passed before a concurrent, out-of-scope article introduced an unregistered `Videography` category. The latest run has 24 passing and 3 failing assertions, all blocked during global content loading by `why-invest-in-a-corporate-video`; none of the failures identifies a wave 03 article.
+- TypeScript typecheck passes.
+- Locale audit reports 0 blocking issues; its informational notices concern untranslated articles outside wave 03.
+- Assigned-file scans and `git diff --check` found no U+2014/U+2015 characters or whitespace errors.
+
+All four wave 03 partners are independently APPROVED.
