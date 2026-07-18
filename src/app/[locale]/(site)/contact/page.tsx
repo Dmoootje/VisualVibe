@@ -33,13 +33,18 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
   const cityLine = [settings.postalCode, settings.city].filter(Boolean).join(" ");
+  const englishCountry = locale === "en" ? "Belgium" : settings.country;
   const addressLines = [streetLine, cityLine].filter(Boolean);
-  if (addressLines.length === 0 && settings.fullAddress) addressLines.push(settings.fullAddress);
+  if (locale === "en") {
+    if (englishCountry) addressLines.push(englishCountry);
+  } else if (addressLines.length === 0 && settings.fullAddress) {
+    addressLines.push(settings.fullAddress);
+  }
 
   // Max 2-line address for the card: street, then "postcode stad, land".
-  const cityCountryLine = [cityLine, settings.country].filter(Boolean).join(", ");
+  const cityCountryLine = [cityLine, englishCountry].filter(Boolean).join(", ");
   const cardAddressLines = (
-    streetLine ? [streetLine, cityCountryLine] : [settings.fullAddress]
+    streetLine ? [streetLine, cityCountryLine] : locale === "en" ? [cityCountryLine] : [settings.fullAddress]
   ).filter((line): line is string => Boolean(line));
 
   const routeUrl = settings.routeUrl || settings.googleMapsUrl;
@@ -115,7 +120,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             embedUrl={settings.googleMapsEmbedUrl}
             latitude={settings.latitude}
             longitude={settings.longitude}
-            markerTitle={settings.mapMarkerTitle || settings.companyName}
+            markerTitle={locale === "en" ? `${settings.companyName}, Tongeren-Borgloon, Belgium` : settings.mapMarkerTitle || settings.companyName}
             addressLines={addressLines}
             routeUrl={routeUrl}
           />

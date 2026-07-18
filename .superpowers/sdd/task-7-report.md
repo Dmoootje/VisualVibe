@@ -124,3 +124,19 @@ The new four-case editorial suite initially failed all four categories: homepage
 - Locale audit: completed with the same 59 knowledge-base findings and one pre-existing blocking Dutch missing-alt finding in `wordpress-backup-maken.mdx`; none is introduced or owned by Task 7.
 
 The shared next-intl pathname table is deliberately not enabled piecemeal: adding only these four translated paths would make its generated `Link` type reject every other existing route. While English is disabled, middleware and permanent redirects continue to prevent public `/en` access. The approved English URLs above are now the sole advertised targets in Task 7 content and SEO output; the exhaustive four-language pathname table and removal of the publication redirects belong to the final all-route activation after the remaining service and knowledge-base destinations are complete.
+
+## Re-review correction evidence
+
+All seven re-review findings were resolved:
+
+1. The English homepage now renders the actual Google review records returned by `getGoogleReviews`, including real quote, author, role and rating evidence. It no longer substitutes generic review claims. The real locale-selecting `BlogPreview` owner is mounted directly; its header, dates, accessibility labels, CTA and `/en/knowledge-base/...` article destinations now localize with the records. No generic unlinked cards remain.
+2. `RequestNewAnalysisButton` now renders `/en/website-analysis/` for English reports through a fully prefixed Next link.
+3. English sitemap, tools and checklist breadcrumbs now pass locale `en`, while Dutch continues to pass or default to `nl`.
+4. The English sitemap now displays and links the final `/en/`, `/en/tools/` and prepared English child URLs consistently.
+5. Fully prefixed English destinations use `next/link`; locale-aware `@/i18n/navigation` links receive only locale-free Dutch/internal paths. Render tests assert final hrefs and reject `/en/en/` double prefixes.
+6. English contact addresses are composed only from language-neutral street, house number, postcode and city values plus the code-owned `Belgium` label. English no longer renders Firestore `country`, `fullAddress` or `mapMarkerTitle`; the map marker uses an explicit English label.
+7. The About discipline sentence is exactly `Online visibility in Google Search and AI-generated answers.`
+
+RED: the new re-review assertions failed on generic homepage substitutes, missing real review records and BlogPreview, three Dutch breadcrumb defaults, incomplete sitemap targets, the report restart route, Dutch address fallbacks and the old About sentence.
+
+GREEN: focused re-review and real-preview tests pass (3 files, 11 tests). The full suite passes (57 files, 220 tests), typecheck passes, the production build completes all 199 static pages, and `git diff --check` plus the U+2014/U+2015 scan are clean. The locale audit remains at the same 59 knowledge-base findings with the one pre-existing Dutch missing-alt block outside Task 7.

@@ -45,6 +45,7 @@ export default async function SeoGeoChecklistPage({ params }: { params?: Promise
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
       <BreadcrumbJsonLd
+        locale={en ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
           { name: "Tools", path: "/tools" },

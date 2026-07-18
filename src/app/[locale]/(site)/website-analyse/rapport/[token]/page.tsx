@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AlertTriangle, ArrowRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { getAnalysisLeadByReportToken } from "@/lib/firestore/analysisLeads";
@@ -107,14 +107,14 @@ export default async function AnalyseRapportPage({
 
         <div className="mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
           <Link
-            href={en ? "/en/contact/" : "/contact"}
+            href={en ? "/en/contact/" : "/be/contact/"}
             className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border-0 bg-gradient-to-r from-red-500 to-amber-500 px-6 text-sm font-medium text-white shadow-lg shadow-amber-500/20 transition-colors hover:from-red-600 hover:to-amber-600 sm:w-auto"
           >
             {en ? "Discuss the results" : "Resultaten bespreken"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
           <Link
-            href={en ? "/en/request-a-quotation/" : "/offerte-aanvragen"}
+            href={en ? "/en/request-a-quotation/" : "/be/offerte-aanvragen/"}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-orange-400/50 hover:bg-orange-400/[0.06] hover:text-white sm:w-auto"
           >
             {en ? "Request a quotation" : "Offerte aanvragen"}

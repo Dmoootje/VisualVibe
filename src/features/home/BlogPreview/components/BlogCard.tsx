@@ -1,6 +1,6 @@
 import { ArrowRight, CalendarDays, Clock, User } from "lucide-react";
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import type { BlogCardPost } from "@/lib/kennisbank/blogCard";
 import { postHref } from "@/lib/kennisbank/urls";
 
@@ -11,6 +11,7 @@ interface BlogCardProps {
   authorImage?: string;
   /** Alleen de homepage verbergt de auteur; overal elders hoort die zichtbaar. */
   hideAuthor?: boolean;
+  locale?: "nl" | "en";
 }
 
 // The overlaid title mirrors the mockup: the part up to (and including) the
@@ -27,13 +28,14 @@ function splitTitle(title: string): { lead: string; accent: string } {
   return { lead, accent };
 }
 
-export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps) {
+export function BlogCard({ post, index, authorImage, hideAuthor, locale = "nl" }: BlogCardProps) {
+  const en = locale === "en";
   // Vaste tijdzone: zonder timeZone formatteert de server in zijn eigen zone en
   // de browser in de zijne. Staat de bezoeker (of een Lighthouse/PageSpeed-audit)
   // in een zone achter de renderzone, dan verschuift de datum een dag en mislukt
   // de hydration (React #418). Altijd in de bedrijfszone formatteren houdt server
   // en client identiek.
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString("nl-BE", {
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString(en ? "en-GB" : "nl-BE", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -42,6 +44,7 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
   const { lead, accent } = splitTitle(post.title);
   // Uitgelichte afbeelding zonder tekst; de kaart legt zelf badge/titel/logo erop.
   const cardImage = post.featuredImage ?? post.ogImage;
+  const href = en ? `/en/knowledge-base/${post.categorySlug}/${post.slug}/` : `/be${postHref(post)}`;
 
   return (
     <div
@@ -49,8 +52,8 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <Link
-        href={postHref(post)}
-        aria-label={`Lees het volledige artikel: ${post.title}`}
+        href={href}
+        aria-label={en ? `Read the full article: ${post.title}` : `Lees het volledige artikel: ${post.title}`}
         className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#ff7500]/20 bg-neutral-950 transition-all duration-300 hover:border-[#ff7500]/40 hover:shadow-[0_0_35px_-10px_rgba(255,117,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       >
         {/* Hero image + (optional) overlaid badge, logo and title */}
@@ -58,7 +61,7 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
           {cardImage ? (
             <Image
               src={cardImage}
-              alt={post.heroImageAlt ?? `Uitgelichte afbeelding voor artikel: ${post.title}`}
+              alt={post.heroImageAlt ?? (en ? `Featured image for article: ${post.title}` : `Uitgelichte afbeelding voor artikel: ${post.title}`)}
               fill
               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -119,21 +122,21 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/55">
             {post.readingTime && (
-              <span className="inline-flex items-center gap-1.5" aria-label={`Leestijd: ${post.readingTime}`}>
+              <span className="inline-flex items-center gap-1.5" aria-label={en ? `Reading time: ${post.readingTime}` : `Leestijd: ${post.readingTime}`}>
                 <Clock className="h-3.5 w-3.5 text-[#ff7500]" aria-hidden="true" />
                 {post.readingTime}
               </span>
             )}
-            <span className="inline-flex items-center gap-1.5" aria-label={`Gepubliceerd: ${formattedDate}`}>
+            <span className="inline-flex items-center gap-1.5" aria-label={en ? `Published: ${formattedDate}` : `Gepubliceerd: ${formattedDate}`}>
               <CalendarDays className="h-3.5 w-3.5 text-[#ff7500]" aria-hidden="true" />
               {formattedDate}
             </span>
             {!hideAuthor && post.author && (
-              <span className="inline-flex items-center gap-1.5" aria-label={`Auteur: ${post.author}`}>
+              <span className="inline-flex items-center gap-1.5" aria-label={en ? `Author: ${post.author}` : `Auteur: ${post.author}`}>
                 {authorImage ? (
                   <Image
                     src={authorImage}
-                    alt={`Profielfoto van ${post.author}`}
+                    alt={en ? `Profile photo of ${post.author}` : `Profielfoto van ${post.author}`}
                     width={28}
                     height={28}
                     className="h-[18px] w-[18px] shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
@@ -154,7 +157,7 @@ export function BlogCard({ post, index, authorImage, hideAuthor }: BlogCardProps
           </p>
 
           <span className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#ff7500]/40 px-4 py-2.5 text-sm font-medium text-[#ff7500] transition-colors group-hover:border-[#ff7500] group-hover:bg-[#ff7500]/10 group-hover:text-[#ff9a45]">
-            Lees het volledige artikel
+            {en ? "Read the full article" : "Lees het volledige artikel"}
             <ArrowRight
               className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
               aria-hidden="true"

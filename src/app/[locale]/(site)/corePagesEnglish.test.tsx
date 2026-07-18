@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/reviews/google", () => ({
-  getGoogleReviews: vi.fn(async () => []),
+  getGoogleReviews: vi.fn(async () => [{ quote: "A genuine customer review.", author: "Alex", role: "Google review", avatar: "", rating: 5 }]),
   GOOGLE_MAPS_PROFILE_URL: "https://example.com/reviews",
 }));
 vi.mock("@/i18n/navigation", () => ({
@@ -13,7 +13,7 @@ vi.mock("@/i18n/navigation", () => ({
 vi.mock("@/lib/firestore/applicationCases", () => ({ getApplicationCases: vi.fn(async () => []) }));
 vi.mock("@/features/home", () => ({
   Hero: () => null, Features: () => null, RegionIntro: () => null, SectorIntro: () => null,
-  HowItWorks: () => null, Testimonials: () => null, BlogPreview: () => null, Cta: () => null,
+  HowItWorks: () => null, Testimonials: () => null, BlogPreview: () => <div>REAL_ENGLISH_BLOG_PREVIEW</div>, Cta: () => null,
 }));
 
 describe("English core commercial pages", () => {
@@ -24,6 +24,11 @@ describe("English core commercial pages", () => {
 
     expect(html).toContain("Creative media agency in Limburg");
     expect(html).toContain("What does VisualVibe do?");
+    expect(html).toContain("A genuine customer review.");
+    expect(html).toContain("Alex");
+    expect(html).toContain("REAL_ENGLISH_BLOG_PREVIEW");
+    expect(html).toContain('href="/en/request-a-quotation"');
+    expect(html).not.toContain('href="/en/en/');
     expect(html).not.toContain("Wat doet VisualVibe?");
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Creative media agency") });
     expect(metadata.alternates?.canonical).toContain("/en/");

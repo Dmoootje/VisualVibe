@@ -11,7 +11,7 @@ describe("Task 7 editorial corrections", () => {
       "Summary of our customer reviews",
       "Who we work with",
       "What our customers say",
-      "From our knowledge base",
+      "<BlogPreview />",
       "Creative media agency in Limburg | VisualVibe",
       "VisualVibe, a creative media agency in Limburg for web design, SEO, photography and video production",
     ]) expect(source).toContain(copy);
@@ -59,5 +59,38 @@ describe("Task 7 editorial corrections", () => {
       "Wedding photography has its own dedicated label: WeddingVibe.",
       "About VisualVibe and Jens Hardy | Media agency in Limburg",
     ]) expect(files).toContain(copy);
+  });
+
+  it("uses English breadcrumb locales, final sitemap paths and report restart route", () => {
+    const sitemap = read("src/app/[locale]/(site)/sitemap/page.tsx");
+    const tools = read("src/app/[locale]/(site)/tools/page.tsx");
+    const checklist = read("src/app/[locale]/(site)/tools/seo-geo-checklist/page.tsx");
+    const restart = read("src/components/analyse/RequestNewAnalysisButton.tsx");
+    expect(sitemap).toContain('<BreadcrumbJsonLd locale="en"');
+    expect(tools).toContain('locale={en ? "en" : "nl"}');
+    expect(checklist).toContain('locale={en ? "en" : "nl"}');
+    expect(sitemap).toContain('<NextLink href="/en/"');
+    expect(sitemap).toContain('href: "/en/tools/"');
+    expect(restart).toContain('locale === "en" ? "/en/website-analysis/"');
+  });
+
+  it("prevents Dutch address settings leakage and keeps exact About wording", () => {
+    const contact = read("src/app/[locale]/(site)/contact/page.tsx");
+    const about = read("src/app/[locale]/(site)/over-ons/page.tsx");
+    expect(contact).toContain('locale === "en" ? "Belgium"');
+    expect(contact).toContain('locale === "en" ? `${settings.companyName}, Tongeren-Borgloon, Belgium`');
+    expect(contact).not.toContain('locale === "en" ? settings.fullAddress');
+    expect(about).toContain("Online visibility in Google Search and AI-generated answers.");
+  });
+
+  it("localizes the real knowledge preview chrome and final article destinations", () => {
+    const preview = read("src/features/home/BlogPreview/index.tsx");
+    const header = read("src/features/home/BlogPreview/components/BlogHeader.tsx");
+    const card = read("src/features/home/BlogPreview/components/BlogCard.tsx");
+    expect(preview).toContain('<BlogHeader locale={copyLocale} />');
+    expect(preview).toContain('<BlogGrid posts={blogPosts} locale={copyLocale} />');
+    expect(header).toContain("From our knowledge base");
+    expect(card).toContain('`/en/knowledge-base/${post.categorySlug}/${post.slug}/`');
+    expect(card).toContain('en ? "Read the full article"');
   });
 });

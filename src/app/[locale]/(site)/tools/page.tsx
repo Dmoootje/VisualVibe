@@ -25,7 +25,7 @@ export default async function ToolsPage({ params }: { params?: Promise<{ locale:
   const intro = en ? "Analyse, review and improve your website with practical VisualVibe tools. Start with a free website analysis or work through the SEO/GEO checklist for Google and AI search." : "Analyseer, controleer en verbeter je website met praktische tools van VisualVibe. Begin met een gratis website analyse of werk stap voor stap door de SEO/GEO checklist voor Google en AI-zoekmachines.";
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }]} />
+      <BreadcrumbJsonLd locale={en ? "en" : "nl"} items={[{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }]} />
       <WebPageJsonLd url={en ? `${businessConfig.url}/en/tools/` : PAGE_URL} name={title} description={en ? "Free VisualVibe tools for website analysis, SEO, GEO and practical improvements." : "Gratis VisualVibe tools voor website analyse, SEO, GEO en praktische websiteverbetering."} />
       <PageAmbient />
       <main className="relative z-10"><section className="pb-12 pt-28 sm:pt-32 md:pb-16 md:pt-36"><div className="container mx-auto px-2.5 sm:px-4">
