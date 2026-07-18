@@ -1,0 +1,31 @@
+{
+  "sourceRoute": "/be/diensten/3d-vr-ar/",
+  "targetRoute": "/en/services/3d-vr-ar/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Een interactieve digitale rondleiding of immersieve ervaring laten maken.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Create an interactive digital tour or immersive experience for a physical space.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "3D tour Limburg",
+  "longTailKeywords": ["3D tour Limburg for SMEs", "3D tour Limburg Belgium"],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "Interactive 3D tours let visitors explore property, hospitality venues, showrooms and business locations online.",
+  "title": "3D Tours, VR and AR in Limburg | VisualVibe",
+  "metaDescription": "Interactive 3D tours let visitors explore property, hospitality venues, showrooms and business locations online.",
+  "h1": "3D, VR and AR",
+  "slug": "3d-vr-ar",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/3d-vr-ar/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

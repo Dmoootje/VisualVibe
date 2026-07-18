@@ -7,14 +7,17 @@ import { cn } from "@/lib/utils";
 import { categoryHref } from "./data";
 import { SearchBar } from "./SearchBar";
 import { CategoryIcon } from "./CategoryIcon";
+import { knowledgeBaseLabels } from "./localization";
 
 export type CategorySidebarProps = {
   tocLinks: { title: string; href: string }[];
   otherCategories: { slug: string; name: string; count: number }[];
   cta: { title: string; description: string; label: string; href: string };
+  locale?: string;
 };
 
-export function CategorySidebar({ tocLinks, otherCategories, cta }: CategorySidebarProps) {
+export function CategorySidebar({ tocLinks, otherCategories, cta, locale = "nl" }: CategorySidebarProps) {
+  const labels = knowledgeBaseLabels(locale);
   const [scrolled, setScrolled] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
@@ -39,7 +42,8 @@ export function CategorySidebar({ tocLinks, otherCategories, cta }: CategorySide
           onChange={setQuery}
           onSubmit={go}
           onClear={() => setQuery("")}
-          placeholder="Zoeken in kennisbank..."
+          placeholder={labels.searchPlaceholder}
+          clearLabel={labels.clearSearch}
           size="sidebar"
         />
       </div>
@@ -50,7 +54,7 @@ export function CategorySidebar({ tocLinks, otherCategories, cta }: CategorySide
             className="mb-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45"
             style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
           >
-            In deze categorie
+            {labels.inThisCategory}
           </div>
           <div className="flex flex-col">
             {tocLinks.map((item) => (
@@ -72,7 +76,7 @@ export function CategorySidebar({ tocLinks, otherCategories, cta }: CategorySide
             className="mb-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45"
             style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
           >
-            Andere categorieën
+            {labels.otherCategories}
           </div>
           <div className="flex flex-col gap-0.5">
             {otherCategories.map((category) => (

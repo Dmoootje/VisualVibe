@@ -1,0 +1,17 @@
+{
+  "sourceRoute": "/be/privacy/",
+  "targetRoute": "/en/privacy/",
+  "audience": "English-speaking VisualVibe website visitors whose personal data may be processed in Belgium",
+  "primaryDutchSearchIntent": "Begrijpen welke persoonsgegevens VisualVibe verwerkt, waarom, hoe lang en welke AVG-rechten de bezoeker heeft",
+  "searchIntent": { "type": "informational", "question": "How does VisualVibe process my personal data and exercise GDPR rights?", "geographicContext": "Belgium and the European Economic Area" },
+  "mainKeyword": "VisualVibe privacy policy",
+  "longTailKeywords": ["how VisualVibe processes personal data", "VisualVibe GDPR rights Belgium"],
+  "semanticTerms": ["personal data", "GDPR", "data controller", "retention period", "consent", "Belgian Data Protection Authority"],
+  "directAnswer": "VisualVibe processes only data visitors provide or data needed to operate and secure the website, using the legal bases, retention periods and safeguards described in this policy.",
+  "title": "Privacy policy | VisualVibe",
+  "metaDescription": "Learn how VisualVibe processes personal data, why we use it, how long we retain it and which rights you have under the GDPR.",
+  "h1": "Privacy policy",
+  "slug": "privacy",
+  "internalLinks": [{ "sourceHref": "/be/cookies/", "targetHref": "/en/cookies/", "anchor": "cookie policy" }],
+  "factsToPreserve": ["VisualVibe remains the data controller", "Belgian and GDPR jurisdiction", "30-day response period", "Three-year maximum after enquiry follow-up", "Analysis quota windows of 24 hours and 30 days", "Technical quota retention of up to 91 days", "Verification codes expire after 15 minutes", "Google Ireland Ltd. processor and transfer safeguards"]
+}

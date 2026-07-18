@@ -1,19 +1,11 @@
-"use client";
-
-import { Tabs } from "@/components/ui/tabs";
 import {
+  FeaturesInteractive,
   FeaturesHeader,
-  FeaturesTabs,
-  MobileFeatureTitle,
-  FeatureContent,
   ServiceTrustRow,
   ExtraServiceChips,
 } from "./components";
-import { useFeaturesTabs } from "./hooks/useFeaturesTabs";
 
 export default function Features() {
-  const { activeTab, handleTabChange } = useFeaturesTabs();
-
   return (
     <section
       id="features"
@@ -22,16 +14,7 @@ export default function Features() {
       <div className="container mx-auto relative z-10">
         <FeaturesHeader />
 
-        <Tabs
-          defaultValue="webdesign"
-          value={activeTab}
-          onValueChange={handleTabChange}
-          className="w-full"
-        >
-          <FeaturesTabs />
-          <MobileFeatureTitle activeTab={activeTab} />
-          <FeatureContent />
-        </Tabs>
+        <FeaturesInteractive />
 
         {/* Shared trust badges + supporting-service chips (under active content) */}
         <ServiceTrustRow />

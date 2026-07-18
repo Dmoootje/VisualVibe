@@ -76,6 +76,8 @@ export type NormalizedPartnerKeywordDensity = {
 
 export type NormalizedPartnerAuditReport = {
   schemaVersion: 1;
+  /** Language used for generated report copy, distinct from page.language. */
+  outputLanguage?: "nl" | "en" | "fr";
   url: string;
   overallScore: number;
   summary: string;
@@ -111,6 +113,8 @@ export type AnalysisLead = {
   leadId?: string;
   leadNumber?: string;
   status: AnalysisLeadStatus;
+  /** Locale selected on the visitor-facing analysis form. */
+  locale?: "nl" | "en" | "fr";
   firstName: string;
   companyName?: string;
   email: string;
@@ -166,6 +170,7 @@ export type AnalysisReportDocument = {
   schemaVersion: number;
   normalizedDomain: string;
   sourceUrl: string;
+  outputLanguage?: "nl" | "en" | "fr";
   report: NormalizedPartnerAuditReport;
   createdAt: string;
   updatedAt: string;
@@ -309,6 +314,7 @@ export type AnalysisStartRequest = {
   url: string;
   privacyAccepted: boolean;
   newsletterOptIn?: boolean;
+  locale?: "nl" | "en" | "fr";
   sourcePage?: string;
   referrer?: string;
   utmSource?: string;

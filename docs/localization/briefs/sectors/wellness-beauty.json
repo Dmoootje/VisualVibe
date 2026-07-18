@@ -1,0 +1,45 @@
+{
+  "sourceRoute": "/be/sectoren/wellness-beauty",
+  "targetRoute": "/en/sectoren/wellness-beauty",
+  "audience": "wellness centres, beauty salons and practices",
+  "primaryDutchSearchIntent": "de sfeer van de zaak online overbrengen en meer lokale afspraken aantrekken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can turn the atmosphere of our wellness or beauty business into a website that encourages local bookings?",
+    "geographicContext": "Limburg, Belgium and the wider Flanders region"
+  },
+  "mainKeyword": "beauty salon web design Limburg",
+  "longTailKeywords": [
+    "beauty salon web design Limburg Belgium",
+    "wellness website design and lifestyle photography"
+  ],
+  "semanticTerms": [
+    "lifestyle photography",
+    "virtual tour",
+    "online booking",
+    "local SEO"
+  ],
+  "directAnswer": "VisualVibe helps wellness and beauty businesses attract local clients with refined web design, authentic photography, virtual tours and local SEO.",
+  "title": "Web design and photography for wellness and beauty | VisualVibe",
+  "metaDescription": "Lifestyle photography, virtual tours and web design for wellness and beauty businesses in Limburg and Flanders.",
+  "h1": "Web design and photography for wellness and beauty businesses",
+  "slug": "wellness-beauty",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/sectoren/wellness-beauty",
+      "targetHref": "/en/diensten/web-design/",
+      "anchor": "web design for wellness businesses"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie",
+      "targetHref": "/en/diensten/photography/",
+      "anchor": "interior and lifestyle photography"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Tongeren-Borgloon.",
+    "VisualVibe works throughout Limburg and Flanders.",
+    "A tailored quotation is provided after an initial conversation.",
+    "No results or guarantees may be added."
+  ]
+}

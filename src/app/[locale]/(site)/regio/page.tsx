@@ -12,8 +12,12 @@ import { SectorAnswerIntro, SectorFaq, SectorSectionHeader } from "@/components/
 import { RegionAmbient, RegionHubCard } from "@/components/regio";
 import { RegionMiniMap } from "@/features/home/RegionIntro/components/RegionMiniMap";
 import type { Sector } from "@/types";
+import type { Metadata } from "next";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getLocalizedRegionById } from "@/data/regions";
+import { englishRegionHub } from "@/data/locales/en/regionSectorHubs";
 
-export const metadata = pageMetadata({
+const dutchMetadata = pageMetadata({
   title: "Regio's: van Limburg tot Nederlands-Limburg | VisualVibe",
   description:
     "VisualVibe werkt vanuit thuisregio Limburg voor bedrijven in Vlaanderen, Antwerpen en Nederlands-Limburg: webdesign, SEO, fotografie, video, drone en 3D-tours.",
@@ -117,7 +121,7 @@ const marqueeMunicipalities = Array.from(
 const proseLink =
   "font-semibold text-[#FF9A45] underline decoration-[rgba(255,122,0,0.35)] underline-offset-4 transition-colors hover:text-[#ff7500]";
 
-export default function RegioHubPage() {
+function DutchRegioHubPage() {
   const baseUrl = `${businessConfig.url}${localizedPath("nl", "/regio/")}`;
   // Dupliceren zodat de -50% marquee-keyframe naadloos doorloopt.
   const runner = [...marqueeMunicipalities, ...marqueeMunicipalities];
@@ -400,8 +404,72 @@ export default function RegioHubPage() {
         <CTASection
           title="Samenwerken in jouw regio?"
           description="Vertel ons waar je gevestigd bent en wat je wilt bereiken. We stellen een aanpak voor die past bij jouw regio, jouw sector en jouw budget."
+          primaryHref="/offerte-aanvragen"
         />
       </div>
+    </div>
+  );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: SupportedLocale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (locale === "nl") return dutchMetadata;
+  if (locale !== "en") throw new Error(`Missing ${locale} regions hub translation`);
+  return pageMetadata({ locale, ...englishRegionHub.seo, path: "/regio/" });
+}
+
+export default async function RegioHubPage({
+  params,
+}: {
+  params: Promise<{ locale: SupportedLocale }>;
+}) {
+  const { locale } = await params;
+  if (locale === "nl") return <DutchRegioHubPage />;
+  if (locale !== "en") throw new Error(`Missing ${locale} regions hub translation`);
+
+  const localizedRegions = regions.map((region) => getLocalizedRegionById(region.slug, locale));
+
+  return (
+    <div className="relative min-h-screen overflow-hidden pb-16 pt-28 text-white">
+      <RegionAmbient />
+      <main className="container relative z-10 mx-auto">
+        <header className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#ff7500]">Service areas</p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">{englishRegionHub.title}</h1>
+          <p className="mt-5 text-lg leading-relaxed text-white/65">{englishRegionHub.summary}</p>
+          <p className="mt-4 text-base leading-relaxed text-white/75">{englishRegionHub.directAnswer}</p>
+        </header>
+
+        <section className="mt-14 grid gap-5 md:grid-cols-2" aria-label="VisualVibe service areas">
+          {localizedRegions.map((region) => (
+            <Link
+              key={region.id}
+              href={`/regio/${region.slug}`}
+              className="rounded-[22px] border border-white/10 bg-neutral-950/60 p-7 transition-colors hover:border-[rgba(255,117,0,0.4)]"
+            >
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#ff7500]">
+                {region.type === "province" ? "Home region" : "Service area"}
+              </p>
+              <h2 className="mt-3 text-2xl font-bold">{region.title}</h2>
+              <p className="mt-3 leading-relaxed text-white/65">{region.intro}</p>
+              <span className="mt-5 inline-flex items-center gap-2 font-semibold text-[#ff7500]">
+                Explore {region.title}<ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          ))}
+        </section>
+
+        <CTASection
+          title={englishRegionHub.cta.title}
+          description={englishRegionHub.cta.description}
+          primaryLabel={englishRegionHub.cta.label}
+          primaryHref={englishRegionHub.cta.href}
+        />
+      </main>
     </div>
   );
 }

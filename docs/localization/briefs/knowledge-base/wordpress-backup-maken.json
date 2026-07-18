@@ -1,0 +1,43 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/wordpress-backup-maken/",
+  "targetRoute": "/en/kennisbank/webdesign/how-to-back-up-wordpress/",
+  "audience": "Website owners and SMEs that want to prevent data loss and reduce recovery time after a WordPress incident.",
+  "primaryDutchSearchIntent": "Uitleggen hoe een KMO een volledige en herstelbare WordPress-back-upstrategie opzet.",
+  "searchIntent": {
+    "type": "informational",
+    "question": "How do I create a complete WordPress backup and verify that I can restore the website?",
+    "geographicContext": "International English-speaking readers, with VisualVibe serving businesses from Limburg, Belgium."
+  },
+  "mainKeyword": "back up WordPress",
+  "longTailKeywords": [
+    "how to back up a WordPress website",
+    "complete WordPress backup strategy",
+    "how often to back up WordPress",
+    "test a WordPress backup restore"
+  ],
+  "semanticTerms": [
+    "WordPress database backup",
+    "off-site backup storage",
+    "backup retention",
+    "restore point",
+    "staging environment",
+    "disaster recovery"
+  ],
+  "directAnswer": "A complete WordPress backup stores both the website files and database away from the live server, keeps several restore points and is tested regularly in a safe environment. Its schedule should reflect how much new work or customer data the organisation can afford to lose.",
+  "title": "How to back up WordPress: build a recovery-ready backup strategy",
+  "metaDescription": "Learn how to back up WordPress: what files and database data to save, where to store copies, how often to run backups and why restore tests matter.",
+  "h1": "How to back up WordPress: build a recovery-ready backup strategy",
+  "slug": "how-to-back-up-wordpress",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-onderhoud-checklist/", "targetHref": "/en/kennisbank/webdesign/wordpress-maintenance-checklist/", "anchor": "WordPress maintenance checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/wordpress-voor-kmos-complete-gids/", "targetHref": "/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/", "anchor": "WordPress for SMEs" }
+  ],
+  "factsToPreserve": [
+    "A complete recovery copy requires both files and the database.",
+    "At least one backup should be kept outside the live hosting environment.",
+    "Backup frequency depends on how much changing data the organisation can afford to lose.",
+    "Recent backups may already contain an infection or unnoticed fault, so several retention periods are needed.",
+    "A successful restore test is the only reliable proof that a backup is usable.",
+    "Backups may contain personal data and require access controls, retention and potentially anonymisation in test environments."
+  ]
+}

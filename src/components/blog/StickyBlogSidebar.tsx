@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { knowledgeBaseLabels } from "@/components/kennisbank/localization";
 import { SearchBar } from "@/components/kennisbank/SearchBar";
 import { BlogToc, type TocItem } from "./BlogToc";
 import { GlowFrame } from "./GlowFrame";
 
 /** Scroll-reveal search that jumps to the kennisbank landing (?q=...), matching
  *  the landing + categoriepagina sidebars. */
-function SidebarSearch() {
+function SidebarSearch({ locale }: { locale: string }) {
+  const labels = knowledgeBaseLabels(locale);
   const [scrolled, setScrolled] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
@@ -34,7 +36,8 @@ function SidebarSearch() {
         onChange={setQuery}
         onSubmit={go}
         onClear={() => setQuery("")}
-        placeholder="Zoeken in kennisbank..."
+        placeholder={labels.searchPlaceholder}
+        clearLabel={labels.clearSearch}
         size="sidebar"
       />
     </div>
@@ -92,19 +95,22 @@ export function StickyBlogSidebar({
   cta,
   service,
   className,
+  locale = "nl",
 }: {
   toc: TocItem[];
   cta?: SidebarCta;
   service?: SidebarService;
   className?: string;
+  locale?: string;
 }) {
+  const labels = knowledgeBaseLabels(locale);
   const activeId = useActiveHeading(toc.map((item) => item.id));
 
   return (
     <div className={cn("sticky top-24 flex flex-col gap-6", className)}>
-      <SidebarSearch />
+      <SidebarSearch locale={locale} />
 
-      {toc.length > 0 && <BlogToc items={toc} activeId={activeId} />}
+      {toc.length > 0 && <BlogToc items={toc} activeId={activeId} title={labels.tableOfContents} />}
 
       {cta && (
         <GlowFrame>
@@ -142,7 +148,7 @@ export function StickyBlogSidebar({
             <p className="mt-1 text-sm leading-relaxed text-white/65">{service.description}</p>
           )}
           <span className="mt-3 inline-flex items-center gap-1 text-sm text-[#ff7500]">
-            {service.linkLabel ?? "Ontdek deze dienst"}
+            {service.linkLabel ?? labels.discoverService}
             <ArrowRight
               className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
               aria-hidden="true"

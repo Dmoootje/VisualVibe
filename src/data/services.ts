@@ -1,5 +1,10 @@
 import type { Service } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
 import { subservices } from "./subservices";
+import {
+  englishServiceEditorial,
+  englishSubserviceEditorial,
+} from "./locales/en/services";
 
 // The 8 hoofddiensten (main services) - used for the top-level grid, nav,
 // and footer. Subdiensten (child services with parentSlug set) live in
@@ -9,7 +14,8 @@ export const services: Service[] = [
     title: "Webdesign",
     slug: "webdesign",
     category: "webdesign",
-    excerpt: "Websites en webshops die klanten opleveren, niet enkel goed ogen.",
+    excerpt:
+      "Websites en webshops die klanten opleveren, niet enkel goed ogen.",
     intro:
       "VisualVibe bouwt snelle, gebruiksvriendelijke websites en webshops voor KMO's in Limburg. Van een strakke onepager tot een volledige webshop: elke website wordt opgebouwd rond snelheid, vindbaarheid en een duidelijk pad naar contact.",
     benefits: [
@@ -22,10 +28,24 @@ export const services: Service[] = [
       "SEO-website laten maken",
     ],
     process: [
-      { title: "Kennismaking & briefing", description: "We bespreken je doelen, doelgroep en gewenste uitstraling." },
-      { title: "Concept & structuur", description: "Sitemap, wireframes en een strak designvoorstel." },
-      { title: "Bouw & content", description: "Ontwikkeling van de website met aandacht voor snelheid en SEO." },
-      { title: "Lancering & onderhoud", description: "Livegang, training en optioneel doorlopend onderhoud." },
+      {
+        title: "Kennismaking & briefing",
+        description:
+          "We bespreken je doelen, doelgroep en gewenste uitstraling.",
+      },
+      {
+        title: "Concept & structuur",
+        description: "Sitemap, wireframes en een strak designvoorstel.",
+      },
+      {
+        title: "Bouw & content",
+        description:
+          "Ontwikkeling van de website met aandacht voor snelheid en SEO.",
+      },
+      {
+        title: "Lancering & onderhoud",
+        description: "Livegang, training en optioneel doorlopend onderhoud.",
+      },
     ],
     faqs: [
       {
@@ -95,10 +115,24 @@ export const services: Service[] = [
       "AI SEO / AEO / GEO",
     ],
     process: [
-      { title: "SEO-audit", description: "Technische en inhoudelijke analyse van je huidige site." },
-      { title: "Strategie & keywords", description: "Prioriteiten bepalen op basis van zoekvolume en concurrentie." },
-      { title: "Uitvoering", description: "Technische fixes, content en linkstructuur implementeren." },
-      { title: "Opvolging", description: "Maandelijkse rapportage en bijsturing." },
+      {
+        title: "SEO-audit",
+        description: "Technische en inhoudelijke analyse van je huidige site.",
+      },
+      {
+        title: "Strategie & keywords",
+        description:
+          "Prioriteiten bepalen op basis van zoekvolume en concurrentie.",
+      },
+      {
+        title: "Uitvoering",
+        description:
+          "Technische fixes, content en linkstructuur implementeren.",
+      },
+      {
+        title: "Opvolging",
+        description: "Maandelijkse rapportage en bijsturing.",
+      },
     ],
     faqs: [
       {
@@ -178,10 +212,20 @@ export const services: Service[] = [
       "Brandingfotografie",
     ],
     process: [
-      { title: "Voorbereiding", description: "Shotlist en planning afgestemd op je merk en doel." },
+      {
+        title: "Voorbereiding",
+        description: "Shotlist en planning afgestemd op je merk en doel.",
+      },
       { title: "Shoot", description: "Fotoshoot op locatie of in studio." },
-      { title: "Selectie & nabewerking", description: "Beeldselectie en professionele bewerking." },
-      { title: "Levering", description: "Beelden geleverd in de juiste formaten voor web en print." },
+      {
+        title: "Selectie & nabewerking",
+        description: "Beeldselectie en professionele bewerking.",
+      },
+      {
+        title: "Levering",
+        description:
+          "Beelden geleverd in de juiste formaten voor web en print.",
+      },
     ],
     faqs: [
       {
@@ -261,10 +305,16 @@ export const services: Service[] = [
       "Nieuwsreportage",
     ],
     process: [
-      { title: "Script & concept", description: "Verhaallijn en boodschap uitwerken." },
+      {
+        title: "Script & concept",
+        description: "Verhaallijn en boodschap uitwerken.",
+      },
       { title: "Opname", description: "Professionele opname op locatie." },
       { title: "Montage", description: "Editing, kleurcorrectie en geluid." },
-      { title: "Aflevering", description: "Video's in de juiste formaten voor web en social media." },
+      {
+        title: "Aflevering",
+        description: "Video's in de juiste formaten voor web en social media.",
+      },
     ],
     faqs: [
       {
@@ -278,7 +328,8 @@ export const services: Service[] = [
           "De prijs hangt af van de lengte, het aantal draaidagen, locaties en de montage. Een korte social video is voordeliger dan een volledige bedrijfsfilm met meerdere draaidagen. Vraag een vrijblijvende offerte aan voor een prijs op maat.",
       },
       {
-        question: "Wat is het verschil tussen een bedrijfsvideo en een promovideo?",
+        question:
+          "Wat is het verschil tussen een bedrijfsvideo en een promovideo?",
         answer:
           "Een bedrijfsvideo vertelt wie je bent en wat je doet en bouwt aan vertrouwen op langere termijn. Een promovideo is korter en scherper: die zet één product, dienst of actie in de kijker om snel tot actie aan te zetten.",
       },
@@ -327,9 +378,15 @@ export const services: Service[] = [
       "Event-dronebeelden",
     ],
     process: [
-      { title: "Vergunning & planning", description: "Vluchtplanning en waar nodig toestemmingen regelen." },
+      {
+        title: "Vergunning & planning",
+        description: "Vluchtplanning en waar nodig toestemmingen regelen.",
+      },
       { title: "Opname", description: "Drone- en/of FPV-opnames op locatie." },
-      { title: "Montage", description: "Verwerking tot een afgewerkte video of beeldenset." },
+      {
+        title: "Montage",
+        description: "Verwerking tot een afgewerkte video of beeldenset.",
+      },
     ],
     faqs: [
       {
@@ -384,7 +441,8 @@ export const services: Service[] = [
     title: "3D, VR & AR",
     slug: "3d-vr-ar",
     category: "3d-vr-ar",
-    excerpt: "3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.",
+    excerpt:
+      "3D-tours en virtuele rondleidingen voor showrooms, vastgoed en horeca.",
     intro:
       "Een virtuele rondleiding laat klanten een ruimte verkennen nog voor ze binnenstappen. VisualVibe bouwt 3D-tours voor showrooms, vastgoed en horecazaken in Limburg.",
     benefits: [
@@ -396,8 +454,14 @@ export const services: Service[] = [
     ],
     process: [
       { title: "Opname", description: "360°-opnames van de volledige ruimte." },
-      { title: "Verwerking", description: "Opbouw van de navigeerbare 3D-tour." },
-      { title: "Integratie", description: "Inbouw op je website of Google Business Profiel." },
+      {
+        title: "Verwerking",
+        description: "Opbouw van de navigeerbare 3D-tour.",
+      },
+      {
+        title: "Integratie",
+        description: "Inbouw op je website of Google Business Profiel.",
+      },
     ],
     faqs: [],
     relatedServices: ["fotografie", "videografie", "drone-fpv"],
@@ -408,7 +472,12 @@ export const services: Service[] = [
       title: "3D Tour & Virtuele Rondleiding Limburg | VisualVibe",
       description:
         "3D-tours en virtuele rondleidingen in Limburg voor vastgoed, showrooms en horeca. Laat klanten online door je ruimte wandelen.",
-      keywords: ["3D tour Limburg", "virtuele rondleiding", "showroom 3D tour", "vastgoed 3D tour"],
+      keywords: [
+        "3D tour Limburg",
+        "virtuele rondleiding",
+        "showroom 3D tour",
+        "vastgoed 3D tour",
+      ],
     },
   },
   {
@@ -426,9 +495,18 @@ export const services: Service[] = [
       "Podcast voor experts",
     ],
     process: [
-      { title: "Concept", description: "Format en insteek van de podcast bepalen." },
-      { title: "Opname", description: "Audio- en/of video-opname in studio of op locatie." },
-      { title: "Montage & publicatie", description: "Editing en voorbereiding voor publicatie." },
+      {
+        title: "Concept",
+        description: "Format en insteek van de podcast bepalen.",
+      },
+      {
+        title: "Opname",
+        description: "Audio- en/of video-opname in studio of op locatie.",
+      },
+      {
+        title: "Montage & publicatie",
+        description: "Editing en voorbereiding voor publicatie.",
+      },
     ],
     faqs: [],
     relatedServices: ["videografie", "webdesign"],
@@ -439,21 +517,33 @@ export const services: Service[] = [
       title: "Podcast Laten Opnemen Limburg | VisualVibe",
       description:
         "Podcast of videopodcast laten opnemen in Limburg? VisualVibe verzorgt concept, opname, montage en publicatieklaar materiaal voor bedrijven.",
-      keywords: ["podcast opnemen Limburg", "videopodcast", "bedrijfspodcast", "podcast studio Limburg"],
+      keywords: [
+        "podcast opnemen Limburg",
+        "videopodcast",
+        "bedrijfspodcast",
+        "podcast studio Limburg",
+      ],
     },
   },
   {
     title: "Masterclasses",
     slug: "masterclasses",
     category: "masterclasses",
-    excerpt: "Masterclasses, opleidingen en workshops professioneel laten opnemen.",
+    excerpt:
+      "Masterclasses, opleidingen en workshops professioneel laten opnemen.",
     intro:
       "Zet je opleiding, workshop of masterclass om in professionele video content - voor eigen gebruik of als online cursus.",
     benefits: ["Opleiding opnemen", "Online cursus video", "Workshop filmen"],
     process: [
-      { title: "Planning", description: "Afstemmen op locatie, timing en gewenst eindresultaat." },
+      {
+        title: "Planning",
+        description: "Afstemmen op locatie, timing en gewenst eindresultaat.",
+      },
       { title: "Opname", description: "Multicamera-opname van de sessie." },
-      { title: "Montage", description: "Verwerking tot afgewerkte modules of aftermovie." },
+      {
+        title: "Montage",
+        description: "Verwerking tot afgewerkte modules of aftermovie.",
+      },
     ],
     faqs: [],
     relatedServices: ["videografie", "podcasting"],
@@ -464,7 +554,11 @@ export const services: Service[] = [
       title: "Masterclass & Opleiding Filmen Limburg | VisualVibe",
       description:
         "Masterclasses, opleidingen en workshops professioneel laten filmen in Limburg, met multicamera-opname, montage en afleverklare modules.",
-      keywords: ["masterclass opnemen", "opleiding filmen", "workshop video Limburg"],
+      keywords: [
+        "masterclass opnemen",
+        "opleiding filmen",
+        "workshop video Limburg",
+      ],
     },
   },
 ];
@@ -489,4 +583,73 @@ export function serviceHref(service: Service): string {
 export function serviceHrefBySlug(slug: string): string {
   const service = getServiceBySlug(slug);
   return service ? serviceHref(service) : `/diensten/${slug}`;
+}
+
+export type LocalizedServiceRecord = {
+  id: string;
+  slug: string;
+  service: Service;
+};
+
+/**
+ * Resolve public copy by stable business ID. Disabled future locales do not
+ * fall back to Dutch: their missing overlay is an explicit error.
+ */
+export function getLocalizedServiceById(
+  id: string,
+  locale: SupportedLocale,
+): LocalizedServiceRecord {
+  const source = getServiceBySlug(id);
+  if (!source) throw new Error(`Unknown service ID: ${id}`);
+
+  if (locale === "nl") return { id, slug: source.slug, service: source };
+  if (locale !== "en")
+    throw new Error(`Missing ${locale} service translation: ${id}`);
+
+  const translated = source.parentSlug
+    ? englishSubserviceEditorial[id]
+    : englishServiceEditorial[id];
+  if (!translated) throw new Error(`Missing en service translation: ${id}`);
+
+  const parentSlug = source.parentSlug
+    ? englishServiceEditorial[source.parentSlug]?.displaySlug
+    : undefined;
+  if (source.parentSlug && !parentSlug) {
+    throw new Error(
+      `Missing en parent service translation: ${source.parentSlug}`,
+    );
+  }
+
+  return {
+    id,
+    slug: translated.displaySlug,
+    service: {
+      ...source,
+      title: translated.title,
+      slug: translated.displaySlug,
+      parentSlug,
+      excerpt: translated.summary,
+      intro: translated.body,
+      benefits: translated.benefits,
+      process: translated.process,
+      faqs: translated.faqs,
+      seo: translated.seo,
+    },
+  };
+}
+
+export function getServiceByLocalizedSlug(
+  slug: string,
+  locale: SupportedLocale,
+): LocalizedServiceRecord {
+  if (locale === "nl") return getLocalizedServiceById(slug, locale);
+  if (locale !== "en")
+    throw new Error(`Missing ${locale} service slug: ${slug}`);
+
+  const entry = [
+    ...Object.entries(englishServiceEditorial),
+    ...Object.entries(englishSubserviceEditorial),
+  ].find(([, record]) => record.displaySlug === slug);
+  if (!entry) throw new Error(`Unknown en service slug: ${slug}`);
+  return getLocalizedServiceById(entry[0], locale);
 }

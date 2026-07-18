@@ -4,7 +4,7 @@ import type { Sector } from "@/types";
 import { SectorIcon } from "./SectorIcon";
 
 /** Editorial overview card: icon chip + tag, title, description and a CTA link. */
-export function SectorCard({ sector }: { sector: Sector }) {
+export function SectorCard({ sector, locale = "nl" }: { sector: Sector; locale?: "nl" | "en" }) {
   return (
     <Link
       href={`/sectoren/${sector.slug}`}
@@ -27,7 +27,7 @@ export function SectorCard({ sector }: { sector: Sector }) {
       </p>
 
       <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-[#ff7500] transition-all duration-300 group-hover:gap-2.5">
-        Ontdek sector
+        {locale === "en" ? "Explore sector" : "Ontdek sector"}
         <ArrowRight className="h-4 w-4" />
       </span>
     </Link>

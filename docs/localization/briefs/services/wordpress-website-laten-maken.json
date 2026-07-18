@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/wordpress-website-laten-maken/",
+  "targetRoute": "/en/services/web-design/wordpress-website/",
+  "audience": "SMEs and independent businesses whose employees need to manage pages, news, projects, vacancies or other structured content.",
+  "primaryDutchSearchIntent": "Een professionele WordPress-website laten maken die medewerkers zelf overzichtelijk en consistent kunnen beheren.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can build a bespoke WordPress website that our SME can manage safely and consistently?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "WordPress website development",
+  "longTailKeywords": [
+    "bespoke WordPress website for SMEs",
+    "WordPress developer Limburg Belgium",
+    "self-managed WordPress business website",
+    "custom WordPress content blocks"
+  ],
+  "semanticTerms": [
+    "content management system",
+    "reusable content blocks",
+    "user roles",
+    "WordPress plugins",
+    "responsive design",
+    "technical SEO",
+    "WordPress maintenance"
+  ],
+  "directAnswer": "A well-designed WordPress website gives employees structured, reusable content blocks and appropriate user roles while protecting visual consistency, performance, SEO settings and technical configuration.",
+  "title": "WordPress Website Development in Limburg | VisualVibe",
+  "metaDescription": "Need a WordPress website your team can manage? VisualVibe builds bespoke blocks, a clear backend and a fast, SEO-ready foundation for SMEs.",
+  "h1": "A WordPress website that remains manageable",
+  "slug": "wordpress-website",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/website-laten-maken/",
+      "targetHref": "/en/services/web-design/business-website-design/",
+      "anchor": "business website design"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-onderhoud/",
+      "targetHref": "/en/services/web-design/website-maintenance/",
+      "anchor": "WordPress maintenance"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/seo-website-laten-maken/",
+      "targetHref": "/en/services/web-design/seo-ready-website/",
+      "anchor": "SEO-ready website development"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/seo-copywriting/",
+      "targetHref": "/en/services/seo/seo-copywriting/",
+      "anchor": "SEO copywriting"
+    }
+  ],
+  "factsToPreserve": [
+    "WordPress alone does not guarantee a fast, user-friendly or search-optimised website.",
+    "The approach may use bespoke reusable blocks or efficient existing components depending on brand, scope and budget.",
+    "Global styling, complex layouts and technical settings may be protected from routine editors.",
+    "WordPress core, themes, plugins, backups, accounts and hosting require ongoing maintenance and explicit responsibility.",
+    "External plugin licences and recurring maintenance costs are identified separately from development in the quotation."
+  ]
+}

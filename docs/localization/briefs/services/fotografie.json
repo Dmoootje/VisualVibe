@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/",
+  "targetRoute": "/en/services/photography/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Professionele bedrijfsfotografie laten maken voor web, print en sociale media.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Commission professional business photography for web, print and social channels.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "corporate photography Limburg",
+  "longTailKeywords": [
+    "corporate photography Limburg for SMEs",
+    "corporate photography Limburg Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "VisualVibe creates professional photography for businesses, products, events and property across Limburg, Belgium.",
+  "title": "Corporate Photography Limburg for SMEs | VisualVibe",
+  "metaDescription": "VisualVibe creates professional photography for businesses, products, events and property across Limburg, Belgium.",
+  "h1": "Photography",
+  "slug": "photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/fotografie/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

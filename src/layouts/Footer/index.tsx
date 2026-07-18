@@ -4,8 +4,29 @@ import { SocialLinks, FooterNav, FooterPartners, FooterRegioMaps } from "./compo
 import { footerConfig } from "./config/footer.config";
 import { businessConfig } from "@/config/business.config";
 import { getSiteSettings } from "@/lib/firestore/siteSettings";
+import { getTranslations } from "next-intl/server";
 
 export async function Footer() {
+  const t = await getTranslations("footer");
+  const footerGroups = footerConfig.linkGroups.map((group, index) => ({
+    ...group,
+    title: index === 0 ? t("services") : t("company"),
+    links: index === 0 ? group.links : group.links.map((link) => ({
+      ...link,
+      label: ({
+        "/over-ons": t("about"),
+        "/realisaties": t("caseStudies"),
+        "/kennisbank": t("knowledgeBase"),
+        "/sectoren": t("sectors"),
+        "/contact": t("contact"),
+      } as Record<string, string>)[link.href] ?? link.label,
+    })),
+  }));
+  const legalLabels: Record<string, string> = {
+    "/privacy": t("privacy"),
+    "/cookies": t("cookies"),
+    "/sitemap": t("sitemap"),
+  };
   const settings = await getSiteSettings();
 
   const streetLine = [settings.street, settings.houseNumber].filter(Boolean).join(" ");
@@ -35,14 +56,14 @@ export async function Footer() {
             {/* Zusterlabel: klein WeddingVibe-logo onder het VisualVibe-logo. */}
             <Link
               href="/trouwfotograaf-limburg"
-              aria-label="WeddingVibe - trouwfotografie en huwelijksvideo"
+              aria-label={t("weddingLabel")}
               className="mt-3 block w-fit opacity-70 transition-opacity hover:opacity-100"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/weddingvibe-logo-licht.svg" alt="WeddingVibe" className="h-[18px] w-auto" width={79} height={18} />
             </Link>
             <p className="mt-[18px] max-w-[340px] text-[15px] leading-relaxed text-white/55">
-              {footerConfig.description}
+              {t("description")}
             </p>
 
             <div className="mt-[26px] flex flex-col gap-[11px] text-[14.5px]">
@@ -78,7 +99,7 @@ export async function Footer() {
           </div>
 
           {/* Link columns */}
-          <FooterNav linkGroups={footerConfig.linkGroups} />
+          <FooterNav linkGroups={footerGroups} />
 
           {/* Regio: mini-kaartjes in plaats van tekstlinks */}
           <FooterRegioMaps />
@@ -86,20 +107,20 @@ export async function Footer() {
 
         {/* Partners / certifications */}
         <FooterPartners
-          title={footerConfig.partners.title}
-          subtitle={footerConfig.partners.subtitle}
+          title={t("partnersTitle")}
+          subtitle={t("partnersSubtitle")}
           partners={footerConfig.partners.items}
         />
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 py-7 sm:flex-row">
           <span className="text-[13.5px] text-white/60">
-            © {new Date().getFullYear()} {businessConfig.displayName}. Alle rechten voorbehouden.
+            © {new Date().getFullYear()} {businessConfig.displayName}. {t("rights")}
           </span>
           <div className="flex flex-wrap gap-6">
             {footerConfig.legalLinks.map((link) => (
               <Link key={link.label} href={link.href} className="vv-legal text-[13.5px]">
-                {link.label}
+                {legalLabels[link.href] ?? link.label}
               </Link>
             ))}
           </div>

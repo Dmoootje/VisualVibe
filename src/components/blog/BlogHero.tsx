@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import type { TocItem } from "./BlogToc";
 import { BlogHeroImage } from "./BlogHeroImage";
 import { ShareButtons } from "./ShareButtons";
+import { knowledgeBaseLabels } from "@/components/kennisbank/localization";
 
 const GRID_BG =
   "linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px)";
@@ -33,6 +34,7 @@ export type BlogHeroProps = {
   /** Target for the "Begin met lezen" button (an in-page hash). */
   readMoreHref?: string;
   className?: string;
+  locale?: string;
 };
 
 export function BlogHero({
@@ -54,11 +56,13 @@ export function BlogHero({
   toc = [],
   readMoreHref = "#artikel",
   className,
+  locale = "nl",
 }: BlogHeroProps) {
+  const labels = knowledgeBaseLabels(locale);
   // Vaste tijdzone zodat server en client dezelfde datum tonen; anders schuift de
   // dag voor bezoekers/audits in een andere zone en mislukt de hydration (#418).
   const date = publishedAt
-    ? new Date(publishedAt).toLocaleDateString("nl-BE", {
+    ? new Date(publishedAt).toLocaleDateString(locale === "en" ? "en-BE" : "nl-BE", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -141,7 +145,7 @@ export function BlogHero({
                       {authorImage ? (
                         <Image
                           src={authorImage}
-                          alt={author ?? "Auteur"}
+                          alt={author ?? labels.author}
                           fill
                           sizes="42px"
                           className="object-cover"
@@ -176,10 +180,10 @@ export function BlogHero({
                 href={readMoreHref}
                 className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-red-500 to-[#ff7500] px-6 py-3.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
               >
-                Begin met lezen
+                {labels.beginReading}
                 <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </a>
-              {shareUrl && <ShareButtons url={shareUrl} title={title} />}
+              {shareUrl && <ShareButtons url={shareUrl} title={title} locale={locale} />}
             </div>
           </div>
 
@@ -192,6 +196,7 @@ export function BlogHero({
               caption={imageCaption}
               category={category ?? ""}
               readingTime={readingTime}
+              locale={locale}
             />
           )}
         </div>
@@ -202,7 +207,7 @@ export function BlogHero({
               className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/40"
               style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
             >
-              In dit artikel
+              {labels.inThisArticle}
             </span>
             {toc.map((item) => (
               <a

@@ -1,7 +1,33 @@
 import React from "react";
+import {
+  BriefcaseBusiness,
+  Building2,
+  CalendarDays,
+  Dumbbell,
+  Factory,
+  GraduationCap,
+  HeartPulse,
+  House,
+  ShoppingBag,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
+
+const SECTOR_ICONS: Record<string, LucideIcon> = {
+  kmo: BriefcaseBusiness,
+  bouw: Building2,
+  horeca: Utensils,
+  vastgoed: House,
+  retail: ShoppingBag,
+  events: CalendarDays,
+  sport: Dumbbell,
+  opleidingen: GraduationCap,
+  wellness: HeartPulse,
+  industrie: Factory,
+};
 
 export type SectorIconProps = {
-  /** sector slug, e.g. "horeca" (matches the sprite symbol id) */
+  /** sector slug, e.g. "horeca" */
   id: string;
   /** rendered pixel size (square). Default 34. */
   size?: number;
@@ -12,22 +38,21 @@ export type SectorIconProps = {
 };
 
 /**
- * A single sector glyph. Requires <SectorIconSprite/> mounted once in the tree,
- * and the visualvibe.css stylesheet imported globally.
+ * A lightweight sector glyph for cards and marquees.
  * Colour comes from CSS var --vv-accent (via currentColor).
  */
 export function SectorIcon({ id, size = 34, animate = true, className, style }: SectorIconProps) {
+  const Icon = SECTOR_ICONS[id] ?? BriefcaseBusiness;
+
   return (
-    <svg
-      className={"vv-ico " + (animate ? "vv-animate " : "") + (className || "")}
-      viewBox="0 0 48 48"
+    <span
+      className={"vv-ico inline-flex items-center justify-center " + (animate ? "vv-animate " : "") + (className || "")}
       style={{ width: size, height: size, ...style }}
       role="img"
       aria-label={id}
     >
-      <use className="vv-base" href={"#sector-" + id} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      <use className="vv-shim" href={"#sector-" + id} fill="none" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+      <Icon className="vv-base" width={size} height={size} strokeWidth={1.8} aria-hidden="true" />
+    </span>
   );
 }
 

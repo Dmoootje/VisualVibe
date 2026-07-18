@@ -5,12 +5,11 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ConsentAnalytics, CookieConsent } from "@/components/consent";
 import "../globals.css";
-import { ThemeProvider } from "@/providers";
 import { SiteBackground } from "@/components/ui";
 import { routing } from "@/i18n/routing";
 import { LocalBusinessJsonLd, OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo";
-import { SectorIconSprite } from "@/components/sectors";
 import { businessConfig } from "@/config/business.config";
+import type { SupportedLocale } from "@/i18n/locales";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 // Handoff typography for the Subdiensten cards: Sora (titles) + Manrope (body),
@@ -27,72 +26,36 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const homeTitle = "Webdesign, foto, video & SEO in Limburg | VisualVibe";
 const defaultOgImage = "/api/og";
-const dutchHomeUrl = `${businessConfig.url}/be/`;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(businessConfig.url),
-  applicationName: businessConfig.displayName,
-  title: {
-    default: homeTitle,
-    template: `%s | ${businessConfig.displayName}`,
-  },
-  description: businessConfig.description,
-  authors: [{ name: businessConfig.founder, url: businessConfig.url }],
-  creator: businessConfig.founder,
-  publisher: businessConfig.displayName,
-  category: "business",
-  referrer: "origin-when-cross-origin",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const en = locale === "en";
+  const homeTitle = en ? "Creative media agency in Limburg | VisualVibe" : "Webdesign, foto, video & SEO in Limburg | VisualVibe";
+  const description = en ? "Creative media agency in Limburg, Belgium, for web design, SEO, photography, video, drone, immersive media, podcasts and custom software." : businessConfig.description;
+  const homeUrl = `${businessConfig.url}${en ? "/en/" : "/be/"}`;
+  return {
+    metadataBase: new URL(businessConfig.url),
+    applicationName: businessConfig.displayName,
+    title: { default: homeTitle, template: `%s | ${businessConfig.displayName}` },
+    description,
+    authors: [{ name: businessConfig.founder, url: businessConfig.url }],
+    creator: businessConfig.founder,
+    publisher: businessConfig.displayName,
+    category: "business",
+    referrer: "origin-when-cross-origin",
+    formatDetection: { email: false, address: false, telephone: false },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+    icons: {
+      icon: [{ url: "/favicon.ico", sizes: "any" }, { url: "/favicon.svg", type: "image/svg+xml" }, { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" }],
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
     },
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
-  openGraph: {
-    title: homeTitle,
-    description: businessConfig.description,
-    url: dutchHomeUrl,
-    siteName: businessConfig.displayName,
-    locale: "nl_BE",
-    images: [
-      {
-        url: defaultOgImage,
-        width: 1200,
-        height: 630,
-        alt: `${businessConfig.displayName}, creatief mediabureau in Limburg`,
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: homeTitle,
-    description: businessConfig.description,
-    images: [defaultOgImage],
-  },
-};
+    manifest: "/site.webmanifest",
+    openGraph: { title: homeTitle, description, url: homeUrl, siteName: businessConfig.displayName, locale: en ? "en_BE" : "nl_BE", images: [{ url: defaultOgImage, width: 1200, height: 630, alt: en ? `${businessConfig.displayName}, creative media agency in Limburg` : `${businessConfig.displayName}, creatief mediabureau in Limburg` }], type: "website" },
+    twitter: { card: "summary_large_image", title: homeTitle, description, images: [defaultOgImage] },
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -127,19 +90,11 @@ export default async function LocaleLayout({
           data-key="JFU/1WVq2PehJ+OTBgN9kg"
         />
         <SiteBackground />
-        <SectorIconSprite />
-        <OrganizationJsonLd />
-        <LocalBusinessJsonLd />
-        <WebSiteJsonLd />
+        <OrganizationJsonLd locale={locale as SupportedLocale} />
+        <LocalBusinessJsonLd locale={locale as SupportedLocale} />
+        <WebSiteJsonLd locale={locale as SupportedLocale} />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          {children}
           {/* Inside the intl provider: the banner uses next-intl <Link>, which
               needs the locale context (it opens client-side, after hydration). */}
           {gaId && <CookieConsent />}

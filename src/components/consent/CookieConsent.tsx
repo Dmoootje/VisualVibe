@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   CONSENT_CHANGE_EVENT,
   CONSENT_STORAGE_KEY,
@@ -16,6 +17,7 @@ import {
  * OPEN_CONSENT_EVENT so consent can be withdrawn as easily as given.
  */
 export function CookieConsent() {
+  const t = useTranslations("cookie");
   const [open, setOpen] = useState(false);
   const acceptRef = useRef<HTMLButtonElement>(null);
 
@@ -56,20 +58,18 @@ export function CookieConsent() {
     <div
       role="dialog"
       aria-modal="false"
-      aria-label="Cookievoorkeuren"
+      aria-label={t("label")}
       className="fixed inset-x-0 bottom-0 z-[100] px-2.5 pb-3 sm:px-4 sm:pb-4"
     >
       <div className="mx-auto flex max-w-[1400px] flex-col gap-4 rounded-2xl border border-[rgba(255,122,0,0.3)] bg-[rgba(11,11,11,0.94)] p-4 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <p className="text-sm leading-relaxed text-white/75">
-          We gebruiken analytische cookies (Google Analytics) om te meten hoe onze site gebruikt
-          wordt en die te verbeteren. Zonder jouw toestemming worden er geen analytische cookies
-          geplaatst. Lees meer in ons{" "}
+          {t("text")} {" "}
           <Link href="/cookies" className="text-[#ff9a45] underline-offset-2 hover:underline">
-            cookiebeleid
+            {t("cookies")}
           </Link>{" "}
-          en{" "}
+          {t("and")} {" "}
           <Link href="/privacy" className="text-[#ff9a45] underline-offset-2 hover:underline">
-            privacybeleid
+            {t("privacy")}
           </Link>
           .
         </p>
@@ -80,7 +80,7 @@ export function CookieConsent() {
             onClick={() => choose("denied")}
             className="order-2 w-full rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:order-1 sm:w-auto"
           >
-            Weigeren
+            {t("reject")}
           </button>
           <button
             ref={acceptRef}
@@ -92,7 +92,7 @@ export function CookieConsent() {
               boxShadow: "0 12px 32px -12px rgba(255,90,0,0.85)",
             }}
           >
-            Accepteren
+            {t("accept")}
           </button>
         </div>
       </div>

@@ -35,6 +35,7 @@ describe("runWebsiteAnalysis", () => {
       safeUrl: "https://voorbeeld.be/",
       normalizedDomain: "voorbeeld.be",
       idempotencyKey: "lead-id",
+      locale: "en",
     });
 
     expect(result).toEqual({ status: "failed", errorCode: "engine_failed" });
@@ -45,6 +46,7 @@ describe("runWebsiteAnalysis", () => {
       safeUrl: "https://voorbeeld.be/",
       externalReference: "lead-id",
       idempotencyKey: "lead-id",
+      locale: "en",
     });
   });
 

@@ -2,13 +2,15 @@ import Image from "next/image";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { ArticleCardData } from "./data";
+import { knowledgeBaseLabels } from "./localization";
 
 /** The large "Uitgelicht" hero card: image left, content right. */
-export function FeaturedCard({ article }: { article: ArticleCardData }) {
+export function FeaturedCard({ article, locale = "nl" }: { article: ArticleCardData; locale?: string }) {
+  const labels = knowledgeBaseLabels(locale);
   return (
     <Link
       href={article.href}
-      aria-label={`Lees het volledige artikel: ${article.fullTitle}`}
+      aria-label={`${labels.readArticle}: ${article.fullTitle}`}
       className="group grid grid-cols-1 overflow-hidden rounded-[22px] border border-[#ff7500]/25 bg-neutral-950 transition-all duration-300 hover:border-[#ff7500]/45 hover:shadow-[0_0_55px_-16px_rgba(255,117,0,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] focus-visible:ring-offset-2 focus-visible:ring-offset-black md:grid-cols-[1.05fr_0.95fr]"
     >
       <div className="relative min-h-[260px] overflow-hidden bg-[#161412] md:min-h-[340px]">
@@ -48,7 +50,7 @@ export function FeaturedCard({ article }: { article: ArticleCardData }) {
           style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#ff7500]" />
-          {article.pillar ? "Complete gids" : "Uitgelicht artikel"}
+          {article.pillar ? labels.completeGuide : (locale === "en" ? "Featured article" : "Uitgelicht artikel")}
         </div>
         <h3
           className="text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-[32px]"
@@ -62,13 +64,13 @@ export function FeaturedCard({ article }: { article: ArticleCardData }) {
 
         <div className="mb-6 mt-auto flex flex-wrap gap-x-6 gap-y-3">
           {article.readingTime && (
-            <MetaBlock icon={Clock} label="Leestijd" value={article.readingTime} />
+            <MetaBlock icon={Clock} label={labels.readingTime} value={article.readingTime} />
           )}
-          <MetaBlock icon={CalendarDays} label="Gepubliceerd" value={article.date} />
+          <MetaBlock icon={CalendarDays} label={labels.published} value={article.date} />
         </div>
 
         <span className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-white transition-colors group-hover:border-[#ff7500]/50 group-hover:bg-[#ff7500]/10 group-hover:text-[#ff9a45]">
-          Lees het volledige artikel
+          {labels.readArticle}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
         </span>
       </div>

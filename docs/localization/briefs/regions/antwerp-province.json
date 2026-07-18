@@ -1,0 +1,11 @@
+{
+  "sourceRoute": "/be/regio/antwerpen/", "targetRoute": "/en/regio/antwerp-province/",
+  "audience": "Businesses in Antwerp province seeking web design and professional visual content",
+  "primaryDutchSearchIntent": "Webdesign, fotografie, video of dronebeelden laten maken in de provincie Antwerpen",
+  "searchIntent": { "type": "commercial", "question": "Who provides web design, photography, video and drone footage in Antwerp province?", "geographicContext": "Antwerp province, Belgium" },
+  "mainKeyword": "web design Antwerp province", "longTailKeywords": ["corporate photographer Antwerp province", "video production Antwerp province"], "semanticTerms": ["drone footage", "creative media team", "business website"],
+  "directAnswer": "VisualVibe supports businesses across Antwerp province with web design, photography, video and drone footage.",
+  "title": "Web Design and Photography in Antwerp | VisualVibe", "metaDescription": "Web design, photography, video and drone footage for businesses in Antwerp province, delivered by one creative media team.", "h1": "Creative media services in Antwerp province", "slug": "antwerp-province",
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/diensten/", "anchor": "services" }],
+  "factsToPreserve": ["The source refers to Antwerp province, not only Antwerp city", "The named services are web design, photography, video and drone footage"]
+}

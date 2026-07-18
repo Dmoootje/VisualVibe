@@ -1,4 +1,6 @@
 import type { Region } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
+import { englishRegionEditorial } from "./locales/en/regions";
 
 // Hoofdregio's only for Fase 1. Stad-pagina's (Bilzen-Hoeselt, Tongeren-Borgloon,
 // Hasselt, ...) are added in Fase 3 once each has genuinely unique content -
@@ -76,4 +78,29 @@ export const regions: Region[] = [
 
 export function getRegionBySlug(slug: string): Region | undefined {
   return regions.find((region) => region.slug === slug);
+}
+
+export type LocalizedRegionRecord = Region & { id: string };
+
+export function getLocalizedRegionById(
+  id: string,
+  locale: SupportedLocale,
+): LocalizedRegionRecord {
+  const source = getRegionBySlug(id);
+  if (!source) throw new Error(`Unknown region ID: ${id}`);
+  if (locale === "nl") return { ...source, id };
+  if (locale !== "en") throw new Error(`Missing ${locale} translation for region.${id}`);
+  const translated = englishRegionEditorial[id];
+  if (!translated) throw new Error(`Missing en translation for region.${id}`);
+  return { ...translated, id, slug: translated.displaySlug };
+}
+
+export function getRegionByLocalizedSlug(
+  slug: string,
+  locale: SupportedLocale,
+): LocalizedRegionRecord {
+  if (locale === "nl") return getLocalizedRegionById(slug, locale);
+  const entry = Object.entries(englishRegionEditorial).find(([, value]) => value.displaySlug === slug);
+  if (!entry) throw new Error(`Unknown ${locale} region slug: ${slug}`);
+  return getLocalizedRegionById(entry[0], locale);
 }

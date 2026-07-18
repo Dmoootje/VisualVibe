@@ -27,10 +27,20 @@ const SUBS: Record<string, string[]> = {
   podcasting: ["Bedrijfspodcast", "Videopodcast"],
   masterclasses: ["Online cursus", "Masterclass opnemen", "Workshop filmen"],
 };
+const SUBS_EN: Record<string, string[]> = {
+  webdesign: ["Business website", "Online store", "One-page website"],
+  "seo-geo": ["Local SEO", "Technical SEO", "AEO & GEO"],
+  fotografie: ["Corporate photography", "Product photography", "Real estate"],
+  videografie: ["Corporate video", "Promotional video", "Social video"],
+  drone: ["Drone photography", "Drone video", "FPV"],
+  "3d-vr": ["3D tour", "Virtual tour"],
+  podcasting: ["Business podcast", "Video podcast"],
+  masterclasses: ["Online course", "Record a masterclass", "Film a workshop"],
+};
 
 type CardModel = KbCategoryData & { num: string; wide: boolean; subs: string[] };
 
-function order(categories: KbCategoryData[]): CardModel[] {
+function order(categories: KbCategoryData[], locale: string): CardModel[] {
   const bySlug = new Map(categories.map((c) => [c.slug, c]));
   const sorted = ORDER.map((slug) => bySlug.get(slug)).filter(
     (c): c is KbCategoryData => Boolean(c)
@@ -47,12 +57,12 @@ function order(categories: KbCategoryData[]): CardModel[] {
       ...category,
       num: String(i + 1).padStart(2, "0"),
       wide,
-      subs: SUBS[category.slug] ?? [],
+      subs: (locale === "en" ? SUBS_EN : SUBS)[category.slug] ?? [],
     };
   });
 }
 
-function CardBody({ card }: { card: CardModel }) {
+function CardBody({ card, locale }: { card: CardModel; locale: string }) {
   const amber = card.wide;
   return (
     <>
@@ -110,7 +120,7 @@ function CardBody({ card }: { card: CardModel }) {
           ))}
           {card.count === 0 && (
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-medium text-white/40">
-              Binnenkort
+              {locale === "en" ? "Coming soon" : "Binnenkort"}
             </span>
           )}
         </div>
@@ -134,8 +144,8 @@ const CARD_BASE =
 const CARD_INTERACTIVE =
   "hover:-translate-y-1.5 hover:border-[#ff7500]/55 hover:shadow-[0_48px_96px_-40px_rgba(255,90,0,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500] focus-visible:ring-offset-2 focus-visible:ring-offset-black";
 
-export function BladerPerOnderwerp({ categories }: { categories: KbCategoryData[] }) {
-  const cards = order(categories);
+export function BladerPerOnderwerp({ categories, locale = "nl" }: { categories: KbCategoryData[]; locale?: string }) {
+  const cards = order(categories, locale);
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-7">
       {cards.map((card) => {
@@ -145,14 +155,14 @@ export function BladerPerOnderwerp({ categories }: { categories: KbCategoryData[
           : "border-white/[0.09] bg-white/[0.02]";
         if (card.count === 0) {
           return (
-            <div key={card.slug} className={cn(CARD_BASE, span, surface, "opacity-70")} aria-label={`${card.name} (binnenkort)`}>
-              <CardBody card={card} />
+            <div key={card.slug} className={cn(CARD_BASE, span, surface, "opacity-70")} aria-label={locale === "en" ? `${card.name} (coming soon)` : `${card.name} (binnenkort)`}>
+              <CardBody card={card} locale={locale} />
             </div>
           );
         }
         return (
           <Link key={card.slug} href={categoryHref(card.slug)} className={cn(CARD_BASE, CARD_INTERACTIVE, span, surface)}>
-            <CardBody card={card} />
+            <CardBody card={card} locale={locale} />
           </Link>
         );
       })}

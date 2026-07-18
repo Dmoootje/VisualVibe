@@ -28,7 +28,7 @@ const DAY = 60 * 60 * 24;
 const stripDashes = (text: string) => text.replace(/[\u2014\u2015]/g, "-");
 
 /** Resolve the Places API place id from the business name (cached ~30 days). */
-async function resolvePlaceId(apiKey: string): Promise<string | null> {
+async function resolvePlaceId(apiKey: string, locale: "nl" | "en"): Promise<string | null> {
   const fromEnv = process.env.GOOGLE_PLACE_ID;
   if (fromEnv) return fromEnv;
 
@@ -39,7 +39,7 @@ async function resolvePlaceId(apiKey: string): Promise<string | null> {
       "X-Goog-Api-Key": apiKey,
       "X-Goog-FieldMask": "places.id",
     },
-    body: JSON.stringify({ textQuery: PLACE_TEXT_QUERY, languageCode: "nl", regionCode: "BE" }),
+    body: JSON.stringify({ textQuery: PLACE_TEXT_QUERY, languageCode: locale, regionCode: "BE" }),
     next: { revalidate: DAY * 30 },
     signal: AbortSignal.timeout(6000),
   });
@@ -66,13 +66,13 @@ type PlaceDetailsResponse = {
  * so Next's Data Cache serves the second call without another network hit.
  * Returns null when no key is configured or on any error.
  */
-async function fetchPlaceDetails(apiKey: string): Promise<PlaceDetailsResponse | null> {
+async function fetchPlaceDetails(apiKey: string, locale: "nl" | "en"): Promise<PlaceDetailsResponse | null> {
   try {
-    const placeId = await resolvePlaceId(apiKey);
+    const placeId = await resolvePlaceId(apiKey, locale);
     if (!placeId) return null;
 
     const res = await fetch(
-      `https://places.googleapis.com/v1/places/${placeId}?languageCode=nl&regionCode=BE`,
+      `https://places.googleapis.com/v1/places/${placeId}?languageCode=${locale}&regionCode=BE`,
       {
         headers: {
           "X-Goog-Api-Key": apiKey,
@@ -95,17 +95,17 @@ async function fetchPlaceDetails(apiKey: string): Promise<PlaceDetailsResponse |
  * Returns [] when no key is configured or on any error, so callers can fall
  * back to curated quotes without the homepage ever breaking.
  */
-export async function getGoogleReviews(): Promise<GoogleReview[]> {
+export async function getGoogleReviews(locale: "nl" | "en" = "nl"): Promise<GoogleReview[]> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) return [];
 
-  const data = await fetchPlaceDetails(apiKey);
+  const data = await fetchPlaceDetails(apiKey, locale);
   if (!data) return [];
 
   return (data.reviews ?? [])
     .map((review) => ({
-      quote: stripDashes(review.text?.text ?? review.originalText?.text ?? ""),
-      author: stripDashes(review.authorAttribution?.displayName ?? "Google-gebruiker"),
+      quote: stripDashes(review.text?.text ?? (locale === "nl" ? review.originalText?.text ?? "" : "")),
+      author: stripDashes(review.authorAttribution?.displayName ?? (locale === "en" ? "Google user" : "Google-gebruiker")),
       role: stripDashes(review.relativePublishTimeDescription ?? "Google review"),
       avatar: review.authorAttribution?.photoUri ?? "",
       rating: Math.round(review.rating ?? 5),
@@ -127,7 +127,7 @@ export async function getGoogleRatingSummary(): Promise<GoogleRatingSummary | nu
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) return null;
 
-  const data = await fetchPlaceDetails(apiKey);
+  const data = await fetchPlaceDetails(apiKey, "nl");
   if (!data || typeof data.rating !== "number" || typeof data.userRatingCount !== "number") {
     return null;
   }

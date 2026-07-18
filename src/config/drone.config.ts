@@ -1,4 +1,5 @@
 import type { RealisatieStat } from "@/data/realisatieCategories";
+import type { SupportedLocale } from "@/i18n/locales";
 
 // Content for the Realisaties > Drone & FPV page (design_handoff_realisaties_
 // drone_fotografie). A filterable mix of drone photos and YouTube videos.
@@ -55,3 +56,38 @@ export const droneStats: RealisatieStat[] = [
   { value: "4K", label: "luchtbeelden\n· HDR" },
   { value: "EASA", label: "gecertificeerd\n& verzekerd", accent: true },
 ];
+
+const englishDroneCategories: DroneCategory[] = [
+  { name: "Drone photography", description: "Aerial photographs that reveal a distinctive view of your business or project." },
+  { name: "Drone video", description: "Smooth aerial footage for corporate films and promotional content." },
+  { name: "FPV video", description: "Fast, dynamic FPV footage that moves through and around your project." },
+  { name: "Real-estate drone footage", description: "Aerial imagery that presents a property and its surroundings clearly." },
+  { name: "Construction project drone footage", description: "An aerial record of the progress and scale of a construction or renovation project." },
+  { name: "Event drone footage", description: "Aerial imagery that conveys the scale and atmosphere of an event." },
+];
+
+const englishDroneTitles = [
+  "Drone reel - aerial footage",
+  "Drone photography",
+  "Aerial photography",
+  "Belgium and the Netherlands",
+  "FPV video - through the project",
+];
+
+export function getLocalizedDroneContent(locale: SupportedLocale): {
+  categories: DroneCategory[];
+  media: DroneMedia[];
+  stats: RealisatieStat[];
+} {
+  if (locale === "nl") return { categories: droneCategories, media: droneMedia, stats: droneStats };
+  if (locale !== "en") throw new Error(`Missing ${locale} drone translations`);
+  return {
+    categories: englishDroneCategories,
+    media: droneMedia.map((item, index) => ({
+      ...item,
+      category: englishDroneCategories[droneCategories.findIndex(({ name }) => name === item.category)]?.name ?? item.category,
+      title: englishDroneTitles[index],
+    })),
+    stats: [{ value: "4K", label: "aerial footage\n· HDR" }, { value: "EASA", label: "certified\nand insured", accent: true }],
+  };
+}

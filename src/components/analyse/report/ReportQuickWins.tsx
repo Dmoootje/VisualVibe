@@ -1,12 +1,14 @@
 import { CircleCheckBig, FileText, Search, TriangleAlert, XCircle } from "lucide-react";
 import type { ReportViewModel } from "@/components/analyse/report/reportViewModel";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportQuickWins({ model }: { model: ReportViewModel }) {
+export function ReportQuickWins({ model, locale = "nl" }: { model: ReportViewModel; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
+  const numberLocale = locale === "en" ? "en-GB" : "nl-BE";
   const cards = [
-    { label: reportCopy.totalWords, value: model.quickWins.totalWords.toLocaleString("nl-BE"), icon: FileText, color: "text-white" },
-    { label: reportCopy.stopWords, value: model.quickWins.stopWordCount.toLocaleString("nl-BE"), icon: FileText, color: "text-white/80" },
+    { label: reportCopy.totalWords, value: model.quickWins.totalWords.toLocaleString(numberLocale), icon: FileText, color: "text-white" },
+    { label: reportCopy.stopWords, value: model.quickWins.stopWordCount.toLocaleString(numberLocale), icon: FileText, color: "text-white/80" },
     { label: reportCopy.totalChecks, value: model.quickWins.totalChecks, icon: Search, color: "text-white" },
     { label: reportCopy.passed, value: model.quickWins.passed, icon: CircleCheckBig, color: "text-emerald-300" },
     { label: reportCopy.warnings, value: model.quickWins.warnings, icon: TriangleAlert, color: "text-amber-300" },

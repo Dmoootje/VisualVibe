@@ -1,0 +1,44 @@
+{
+  "sourceRoute": "/be/realisaties/applicaties/",
+  "targetRoute": "/en/case-studies/applications/",
+  "audience": "Businesses evaluating relevant VisualVibe project experience",
+  "primaryDutchSearchIntent": "Applicaties en softwareplatformen van VisualVibe bekijken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which custom applications and software platforms has VisualVibe developed?",
+    "geographicContext": "Limburg, Belgium, Flanders and relevant projects elsewhere"
+  },
+  "mainKeyword": "custom application case studies",
+  "longTailKeywords": [
+    "custom application case studies Limburg Belgium",
+    "custom application case studies VisualVibe"
+  ],
+  "semanticTerms": [
+    "case studies",
+    "selected work",
+    "creative media",
+    "VisualVibe"
+  ],
+  "directAnswer": "VisualVibe develops web applications and software platforms that combine intuitive interfaces with robust backend logic.",
+  "title": "Custom applications and software case studies | VisualVibe",
+  "metaDescription": "Explore VisualVibe software platforms, including SaaS, booking systems, multisite commerce, admin environments, automation and server-side rendering.",
+  "h1": "Applications and custom software",
+  "slug": "applications",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/realisaties/",
+      "targetHref": "/en/case-studies/",
+      "anchor": "all case studies"
+    },
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "Preserve client names, deliverables and stated results exactly",
+    "Do not invent metrics or guarantees",
+    "Hide unlocalised dynamic records from English views"
+  ]
+}

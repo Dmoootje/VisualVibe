@@ -1,3 +1,5 @@
+import type { SupportedLocale } from "@/i18n/locales";
+
 export type LeadStatus = "new" | "contacted" | "proposal_sent" | "won" | "lost" | "archived";
 
 export const LEAD_STATUSES: LeadStatus[] = ["new", "contacted", "proposal_sent", "won", "lost", "archived"];
@@ -30,7 +32,7 @@ export const LEAD_SERVICE_IDS = [
 
 export type LeadServiceId = (typeof LEAD_SERVICE_IDS)[number];
 
-export type LeadLocale = "nl" | "fr" | "en";
+export type LeadLocale = Exclude<SupportedLocale, "de">;
 
 export type Lead = {
   id: string;

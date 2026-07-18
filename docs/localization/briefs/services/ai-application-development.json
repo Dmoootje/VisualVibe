@@ -1,0 +1,17 @@
+{
+  "sourceRoute": "/be/diensten/software-op-maat/ai-applicatie-laten-maken/",
+  "targetRoute": "/en/diensten/custom-software/ai-application-development/",
+  "audience": "Business teams exploring AI for documents, internal knowledge, classification, search or guided automation",
+  "primaryDutchSearchIntent": "Een bruikbare AI-applicatie laten maken die betrouwbaar met bedrijfskennis en processen werkt.",
+  "searchIntent": { "type": "commercial", "question": "How can we build a controlled AI application around our own information and workflow?", "geographicContext": "English-speaking SMEs and operational teams in Belgium" },
+  "mainKeyword": "AI application development",
+  "longTailKeywords": ["custom AI software for business", "AI document application", "AI workflow automation Belgium"],
+  "semanticTerms": ["evaluation set", "human review", "access control", "knowledge assistant", "logging"],
+  "directAnswer": "A reliable AI application supports one bounded task, uses approved information and is evaluated on representative examples. Permissions, logging, human review and fallback behaviour belong in the workflow before automation expands.",
+  "title": "AI application development for businesses | VisualVibe Belgium",
+  "metaDescription": "Build a focused AI application for documents, knowledge or automation, with human review, access control, logging, quality tests and system integrations.",
+  "h1": "AI application development",
+  "slug": "ai-application-development",
+  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/api-koppelingen-en-automatisering/", "targetHref": "/en/diensten/custom-software/api-integrations-and-automation/", "anchor": "API integrations and automation" }, { "sourceHref": "/be/kennisbank/webdesign/ai-applicatie-laten-maken/", "targetHref": "/en/kennisbank/webdesign/building-an-ai-application/", "anchor": "building an AI application" }],
+  "factsToPreserve": ["AI value depends on reliable information and a clear workflow", "Human control remains where decisions matter", "Quality is tested with fixed scenarios and error categories", "Models and services are selected per functional, technical and financial requirements"]
+}

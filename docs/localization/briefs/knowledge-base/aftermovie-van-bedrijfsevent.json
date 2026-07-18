@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/kennisbank/videografie/aftermovie-van-bedrijfsevent/",
+  "targetRoute": "/en/kennisbank/videografie/corporate-event-aftermovie/",
+  "audience": "SMEs, event managers and marketing or communications leads commissioning video for a corporate event, opening, conference, trade fair or staff occasion.",
+  "primaryDutchSearchIntent": "Eventorganisatoren helpen bepalen wat een aftermovie moet bereiken en hoe zij opname, rechten, montage, versies, publicatie en meting professioneel voorbereiden.",
+  "searchIntent": { "type": "commercial", "question": "How do you plan, film, edit and publish a corporate event aftermovie that remains useful after the event?", "geographicContext": "International English-speaking readers, with Belgian image-rights and copyright context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "corporate event aftermovie",
+  "longTailKeywords": ["commission an event aftermovie", "corporate event filming", "event video shot list", "aftermovie run sheet", "fast aftermovie edit", "event video Limburg"],
+  "semanticTerms": ["event video", "run sheet", "shot list", "interview soundbite", "image rights", "music licence", "captions", "same-day edit", "vertical clips", "publication plan"],
+  "directAnswer": "A corporate event aftermovie is a purposeful edit that captures an event's meaning, atmosphere and key moments for people who attended and audiences reached afterwards. Define its audience, purpose, essential shots, rights, sound, versions and publication deadline before filming starts.",
+  "title": "Corporate event aftermovie: from run sheet to publication",
+  "metaDescription": "Commissioning a corporate event aftermovie? Plan its purpose, run sheet, shot list, interviews, rights, fast edit, social versions and publication.",
+  "h1": "Corporate event aftermovie: from run sheet to publication",
+  "slug": "corporate-event-aftermovie",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why businesses commission corporate video" },
+    { "sourceHref": "/be/diensten/videografie/event-aftermovie/", "targetHref": "/en/diensten/videography/event-aftermovie/", "anchor": "event aftermovie service" },
+    { "sourceHref": "/be/kennisbank/fotografie/eventfotografie-checklist/", "targetHref": "/en/kennisbank/fotografie/event-photography-checklist/", "anchor": "event photography checklist" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short versus long video" },
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/kennisbank/drone/drone-footage-for-businesses/", "anchor": "drone footage for businesses" },
+    { "sourceHref": "/be/diensten/drone-fpv/event-dronebeelden/", "targetHref": "/en/diensten/drone-fpv/event-drone-footage/", "anchor": "event drone footage" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your event video" }
+  ],
+  "factsToPreserve": [
+    "An aftermovie is not automatically a chronological record of the event.",
+    "There is no universal ideal duration; audience, channel and story determine length.",
+    "Attendance does not automatically permit every commercial use of a recognisable person's image.",
+    "The legal basis and appropriate image-rights approach depend on context and use; legal advice may be needed.",
+    "Music rights can differ for live playback, websites, organic social media, advertising and reuse.",
+    "Automatically generated captions require review for names, timing and meaning.",
+    "A same-day edit requires a specific production plan and limited room for corrections.",
+    "Views alone do not establish the value or business effect of an aftermovie."
+  ]
+}

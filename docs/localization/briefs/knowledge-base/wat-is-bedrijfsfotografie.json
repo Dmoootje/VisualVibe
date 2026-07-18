@@ -1,0 +1,70 @@
+{
+  "sourceRoute": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/",
+  "targetRoute": "/en/kennisbank/fotografie/what-is-corporate-photography/",
+  "audience": "Business owners, marketers and communications leads at SMEs considering professional photography for their website, campaigns, recruitment or sales",
+  "primaryDutchSearchIntent": "KMO's uitleggen wat bedrijfsfotografie omvat, welke beeldtypes bij verschillende doelen passen en hoe ze een bruikbare productie voorbereiden",
+  "searchIntent": {
+    "type": "informational",
+    "question": "What does corporate photography include, when does an SME need it and how do you plan a useful image library?",
+    "geographicContext": "English-speaking SMEs in Limburg, Belgium and the surrounding Belgian market"
+  },
+  "mainKeyword": "what is corporate photography",
+  "longTailKeywords": [
+    "corporate photography for SMEs",
+    "corporate photographer Limburg Belgium",
+    "professional business photography",
+    "company photography shot list",
+    "corporate portraits and branding photography",
+    "photos for a company website"
+  ],
+  "semanticTerms": [
+    "corporate image library",
+    "business photography",
+    "corporate reportage",
+    "brand photography",
+    "corporate portraits",
+    "project photography",
+    "image rights",
+    "usage licence",
+    "image SEO",
+    "alt text"
+  ],
+  "directAnswer": "Corporate photography is professional photography that shows who an organisation is, what it does and how it works. It can cover people, processes, products, locations, completed projects and events, all planned around specific uses such as a website, sales, recruitment and campaigns.",
+  "title": "What is corporate photography and when does your SME need it?",
+  "metaDescription": "What is corporate photography? Learn which images your SME needs and how to plan the shot list, usage rights, formats, selection and publication.",
+  "h1": "What is corporate photography and when does your SME need it?",
+  "slug": "what-is-corporate-photography",
+  "internalLinks": [
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/diensten/photography/", "anchor": "photography services" },
+    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/diensten/photography/corporate-photography/", "anchor": "corporate photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare the brief, shot list, location and schedule" },
+    { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/kennisbank/fotografie/corporate-portrait-tips/", "anchor": "create consistent and recognisable corporate portraits" },
+    { "sourceHref": "/be/kennisbank/fotografie/eventfotografie-checklist/", "targetHref": "/en/kennisbank/fotografie/event-photography-checklist/", "anchor": "event photography checklist" },
+    { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-online-shops/", "anchor": "product photography for online shops" },
+    { "sourceHref": "/be/kennisbank/fotografie/vastgoedfotografie-tips/", "targetHref": "/en/kennisbank/fotografie/real-estate-photography-tips/", "anchor": "real-estate photography" },
+    { "sourceHref": "/be/kennisbank/fotografie/realisatiefotografie-voor-aannemers/", "targetHref": "/en/kennisbank/fotografie/project-photography-for-contractors/", "anchor": "project photography for contractors" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to website development" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/", "targetHref": "/en/diensten/photography/business-portraits/", "anchor": "corporate portraits" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "why a fast website can rank better" },
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "GEO and AEO for SMEs" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "corporate video" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your corporate photo shoot" }
+  ],
+  "factsToPreserve": [
+    "Corporate photography covers more than a group portrait or attractive building and may include people, processes, products, locations and completed projects",
+    "A well-prepared image library can provide value for several years but no fixed lifespan or commercial result is guaranteed",
+    "Original photography can support trust but photography alone does not guarantee sales",
+    "One production day can combine several image types only when planning and circumstances allow",
+    "Agreement to be photographed does not automatically mean agreement to every publication or distribution",
+    "File ownership, copyright and a usage licence are not automatically the same",
+    "The article gives practical production information and is not legal advice",
+    "Google recommends relevant context and useful alt text and warns against keyword stuffing in alt attributes",
+    "Meaningful non-text content requires text alternatives under WCAG 2.2",
+    "A photograph does not produce a local ranking by itself",
+    "Photography and video can be combined but require different direction, production flow and post-production",
+    "Price and lead time can include preparation, travel, location research, assistance, lighting, selection, editing, formats, licensing and archiving"
+  ]
+}

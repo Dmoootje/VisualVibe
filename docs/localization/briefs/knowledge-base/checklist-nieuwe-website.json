@@ -1,0 +1,69 @@
+{
+  "sourceRoute": "/be/kennisbank/webdesign/checklist-nieuwe-website/",
+  "targetRoute": "/en/kennisbank/webdesign/new-website-checklist/",
+  "audience": "Business owners, marketing managers and project leads preparing or commissioning a new SME website",
+  "primaryDutchSearchIntent": "KMO's een controleerbare projectchecklist geven voor de voorbereiding, bouw, lancering en overdracht van een nieuwe website",
+  "searchIntent": {
+    "type": "informational",
+    "question": "What should an SME check when preparing, building, launching and taking ownership of a new website?",
+    "geographicContext": "Belgium and the wider English-speaking market, with Belgian legal context stated explicitly"
+  },
+  "mainKeyword": "new website checklist",
+  "longTailKeywords": [
+    "website development checklist",
+    "prepare a new website",
+    "website project checklist",
+    "website launch checklist",
+    "website content requirements",
+    "website handover checklist",
+    "SEO checklist for a new website",
+    "SME website planning"
+  ],
+  "semanticTerms": [
+    "website brief",
+    "sitemap",
+    "user journeys",
+    "content planning",
+    "acceptance criteria",
+    "Core Web Vitals",
+    "accessibility",
+    "GDPR",
+    "cookie consent",
+    "redirect plan",
+    "XML sitemap",
+    "website handover"
+  ],
+  "directAnswer": "A complete new website checklist covers ownership, scope, site structure, content, SEO, media, accessibility, privacy, testing, launch, handover and ongoing maintenance. Each decision and deliverable should have a named owner, deadline and acceptance criterion.",
+  "title": "New website checklist: from brief to handover",
+  "metaDescription": "Planning a new website? Use this complete checklist for goals, content, SEO, media, technology, privacy, testing, launch and handover.",
+  "h1": "New website checklist: from brief to handover",
+  "slug": "new-website-checklist",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to commissioning a website" },
+    { "sourceHref": "/be/kennisbank/webdesign/onepager-of-volledige-website/", "targetHref": "/en/kennisbank/webdesign/one-page-or-full-website/", "anchor": "one-page or full website" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-kosten/", "targetHref": "/en/kennisbank/webdesign/website-development-costs/", "anchor": "website development costs" },
+    { "sourceHref": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/", "targetHref": "/en/kennisbank/webdesign/online-shop-development-for-smes/", "anchor": "online shop development for SMEs" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "how website speed and SEO work together" },
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/diensten/photography/", "anchor": "photography" },
+    { "sourceHref": "/be/diensten/videografie/", "targetHref": "/en/diensten/videography/", "anchor": "video production" },
+    { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-vernieuwen-wanneer/", "targetHref": "/en/kennisbank/webdesign/when-to-redesign-your-website/", "anchor": "when to redesign your website" },
+    { "sourceHref": "/be/diensten/webdesign/website-onderhoud/", "targetHref": "/en/diensten/web-design/website-maintenance/", "anchor": "website maintenance" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "plan your website project" },
+    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/diensten/web-design/business-website-design/", "anchor": "business website design" }
+  ],
+  "factsToPreserve": [
+    "The checklist is a shared project control tool, not a list for one person to complete on launch day",
+    "Roles may overlap, but ownership and feedback routes should be explicit",
+    "The seven phases run from project framework through handover and growth",
+    "SEO begins with search intent, sitemap and page objectives before development",
+    "WCAG 2.2 is referenced, while formal accessibility obligations require situation-specific assessment",
+    "Core Web Vitals are part of page experience and good scores do not guarantee top rankings",
+    "The legal and privacy section is a working checklist rather than legal advice",
+    "Belgian company information and cookie guidance is explicitly presented as Belgian context",
+    "A sitemap does not guarantee crawling or indexing",
+    "noindex is not a security measure",
+    "Old URLs should redirect to the most relevant new destination, not automatically to the homepage",
+    "Launch is followed by ownership, maintenance, measurement and review"
+  ]
+}

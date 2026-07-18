@@ -1,0 +1,45 @@
+{
+  "sourceRoute": "/be/sectoren/opleidingen-masterclasses",
+  "targetRoute": "/en/sectoren/training-courses-masterclasses",
+  "audience": "trainers and masterclass organisers",
+  "primaryDutchSearchIntent": "opleidingen en masterclasses professioneel presenteren en meer inschrijvingen aantrekken",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Which web design and visual content services help trainers and masterclass organisers attract participants and increase enrolments?",
+    "geographicContext": "Limburg, Belgium and the wider Flanders region"
+  },
+  "mainKeyword": "training video production",
+  "longTailKeywords": [
+    "training video production for businesses in Limburg",
+    "training video production and professional photography"
+  ],
+  "semanticTerms": [
+    "web design",
+    "professional photography",
+    "local SEO",
+    "online visibility"
+  ],
+  "directAnswer": "VisualVibe helps training providers attract enrolments with a clear website, professional course video, authentic photography and stronger local search visibility.",
+  "title": "Video and web design for trainers | VisualVibe",
+  "metaDescription": "Video, web design and photography for trainers and masterclass organisers in Limburg and Flanders. Promote your courses professionally.",
+  "h1": "Video and web design for trainers and masterclass organisers",
+  "slug": "training-courses-masterclasses",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/sectoren/opleidingen-masterclasses",
+      "targetHref": "/en/diensten/videography/",
+      "anchor": "professional video production"
+    },
+    {
+      "sourceHref": "/be/contact",
+      "targetHref": "/en/contact",
+      "anchor": "discuss your training project"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Tongeren-Borgloon.",
+    "VisualVibe works throughout Limburg and Flanders.",
+    "A tailored quotation is provided after an initial conversation.",
+    "No results or guarantees may be added."
+  ]
+}

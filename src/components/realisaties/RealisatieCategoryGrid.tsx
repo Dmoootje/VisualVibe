@@ -1,11 +1,12 @@
 import { ArrowRight, FolderOpen } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { RealisatieCategory } from "@/data/realisatieCategories";
+import type { SupportedLocale } from "@/i18n/locales";
 
 /** Grid of realisatie category cards linking to each category page. */
-export function RealisatieCategoryGrid({ items }: { items: RealisatieCategory[] }) {
+export function RealisatieCategoryGrid({ items, locale = "nl" }: { items: RealisatieCategory[]; locale?: SupportedLocale }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div data-locale={locale} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((category) => (
         <Link
           key={category.slug}

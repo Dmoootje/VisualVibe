@@ -1,5 +1,5 @@
 import { Header, Footer } from "@/layouts";
-import { QuoteModalProvider } from "@/components/quote";
+import { QuoteModalController } from "@/components/quote";
 import { setRequestLocale } from "next-intl/server";
 
 /**
@@ -18,10 +18,11 @@ export default async function SiteLayout({
   setRequestLocale(locale);
 
   return (
-    <QuoteModalProvider>
+    <>
       <Header locale={locale} />
       <main>{children}</main>
       <Footer />
-    </QuoteModalProvider>
+      <QuoteModalController />
+    </>
   );
 }

@@ -1,0 +1,40 @@
+{
+  "sourceRoute": "/be/kennisbank/masterclasses/opleiding-omzetten-naar-video-content/",
+  "targetRoute": "/en/kennisbank/masterclasses/turn-training-into-video-content/",
+  "audience": "Training providers, consultants, HR and L&D teams, and SMEs with an existing course, workshop or internal training programme",
+  "primaryDutchSearchIntent": "Organisaties uitleggen hoe ze een bestaande liveopleiding verantwoord modulariseren tot herbruikbare, toegankelijke en onderhoudbare video-content",
+  "searchIntent": { "type": "commercial", "question": "How can an organisation turn an existing live training course into reusable, accessible and maintainable video content?", "geographicContext": "English-speaking organisations in Belgium and neighbouring markets" },
+  "mainKeyword": "turn training into video content",
+  "longTailKeywords": ["digitise a training course", "convert training to e-learning", "film training for reuse", "turn teaching materials into video", "modular training video", "record internal training", "maintain course videos", "video content for an LMS"],
+  "semanticTerms": ["learning objectives", "content audit", "module map", "pilot module", "blended learning", "accessibility", "captions", "LMS", "course completion", "version control"],
+  "directAnswer": "Turn an existing training course into video content by redistributing its learning objectives, explanations, demonstrations and exercises across small modules that work independently. Do not automatically film the complete training day. First establish what learners must understand or perform without a trainer, then choose the right medium for each element and plan publication, measurement and updates from the outset.",
+  "title": "Turn training into video content: from course day to modular resource",
+  "metaDescription": "Turn an existing training course into modular video content with a practical plan for learning goals, scripts, LMS delivery, accessibility, measurement and updates.",
+  "h1": "Turn training into video content: from course day to modular knowledge product",
+  "slug": "turn-training-into-video-content",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/masterclasses/online-cursus-filmen/", "targetHref": "/en/kennisbank/masterclasses/filming-an-online-course/", "anchor": "filming an online course" },
+    { "sourceHref": "/be/kennisbank/masterclasses/masterclass-opnemen-voor-bedrijven/", "targetHref": "/en/kennisbank/masterclasses/record-a-masterclass-for-business/", "anchor": "recording a masterclass for business" },
+    { "sourceHref": "/be/kennisbank/masterclasses/online-cursus-vs-live-opleiding/", "targetHref": "/en/kennisbank/masterclasses/online-course-vs-live-training/", "anchor": "online course and live training" },
+    { "sourceHref": "/be/kennisbank/masterclasses/workshop-professioneel-vastleggen/", "targetHref": "/en/kennisbank/masterclasses/filming-a-workshop-professionally/", "anchor": "filming a workshop professionally" },
+    { "sourceHref": "/be/kennisbank/videografie/bedrijfsvideo-script-opbouwen/", "targetHref": "/en/kennisbank/videografie/how-to-structure-a-corporate-video-script/", "anchor": "structuring a corporate video script" },
+    { "sourceHref": "/be/diensten/masterclasses/opleiding-opnemen/", "targetHref": "/en/diensten/masterclasses/training-video-production/", "anchor": "training video production" },
+    { "sourceHref": "/be/diensten/masterclasses/online-cursus-video/", "targetHref": "/en/diensten/masterclasses/online-course-video/", "anchor": "online course video" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/sectoren/opleidingen-masterclasses/", "targetHref": "/en/sectoren/training-courses-masterclasses/", "anchor": "training courses and masterclasses" },
+    { "sourceHref": "/be/regio/limburg/", "targetHref": "/en/regio/limburg-belgium/", "anchor": "Limburg, Belgium" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your training course" }
+  ],
+  "factsToPreserve": [
+    "A live training course is not automatically a ready-made video script",
+    "Not every element belongs in video; text, downloads, exercises, feedback and live sessions may serve the learning goal better",
+    "There is no universal ideal length for a training video",
+    "A representative pilot module should be tested before producing the whole series",
+    "Accurate captions need human review for specialist terms, names, numbers and negations",
+    "Accessibility covers the complete learner journey, not only the video file",
+    "Course completion means only what the LMS criteria have been configured to mean and does not prove durable skill",
+    "Viewing behaviour, completion and quiz results do not by themselves prove business, safety or performance outcomes",
+    "Copyright, image rights, privacy and confidential data require explicit review",
+    "Module codes, versions, owners, review dates and update triggers support maintainability"
+  ]
+}

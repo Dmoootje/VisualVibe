@@ -2,6 +2,8 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { HubStackImage } from "@/lib/realisaties/hubData";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
 
 export type HubContextItem = {
   slug: string;
@@ -20,7 +22,7 @@ export type HubContextItem = {
  * zonder projecten linken naar hun bestaande categoriepagina met een eerlijke
  * "Binnenkort meer realisaties"-melding. Geen valse aantallen.
  */
-export function RealisatieContextGrid({ items }: { items: HubContextItem[] }) {
+export function RealisatieContextGrid({ items, locale = "nl" }: { items: HubContextItem[]; locale?: SupportedLocale }) {
   if (items.length === 0) return null;
   return (
     <section className="relative py-10 sm:py-14">
@@ -30,7 +32,7 @@ export function RealisatieContextGrid({ items }: { items: HubContextItem[] }) {
             <span aria-hidden="true" className="h-[1.5px] w-[22px] bg-[#ff7500]" />
             Context
           </p>
-          <h2 className="text-2xl font-bold sm:text-3xl">Werk per sector en context</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">{locale === "en" ? "Work by sector and context" : "Werk per sector en context"}</h2>
         </div>
         <div className="grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-5">
           {items.map((item) => {
@@ -53,12 +55,12 @@ export function RealisatieContextGrid({ items }: { items: HubContextItem[] }) {
                   <div className="flex items-baseline justify-between gap-2">
                     <h3 className="text-[15px] font-bold text-white">{item.title}</h3>
                     <span className="whitespace-nowrap font-mono text-[10.5px] font-bold text-white/45">
-                      {item.count > 0 ? `${item.count} projecten` : "Binnenkort"}
+                      {item.count > 0 ? `${item.count} ${locale === "en" ? "projects" : "projecten"}` : locale === "en" ? "Coming soon" : "Binnenkort"}
                     </span>
                   </div>
                   <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed text-white/60">{item.description}</p>
                   <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.06em] text-white/75">
-                    {item.count > 0 ? "BEKIJK PROJECTEN" : "BEKIJK CATEGORIE"}
+                    {item.count > 0 ? (locale === "en" ? "VIEW PROJECTS" : "BEKIJK PROJECTEN") : (locale === "en" ? "VIEW CATEGORY" : "BEKIJK CATEGORIE")}
                     <ArrowRight className="h-3 w-3 text-[#FF9A45]" aria-hidden="true" />
                   </span>
                 </div>
@@ -72,7 +74,7 @@ export function RealisatieContextGrid({ items }: { items: HubContextItem[] }) {
                 {inner}
               </a>
             ) : (
-              <Link key={item.slug} href={`/realisaties/${item.slug}`} className={className}>
+              <Link key={item.slug} href={`/realisaties/${getLocalizedRealisatieCategoryById(item.slug, locale).slug}`} className={className}>
                 {inner}
               </Link>
             );

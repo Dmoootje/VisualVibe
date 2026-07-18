@@ -5,8 +5,9 @@
 // aantallen tellen wel alle gepubliceerde cases, zodat nieuwe cases al vindbaar zijn.
 
 import { cache } from "react";
-import { imageKey, type WebdesignProject } from "@/data/webdesignShowcase";
-import { applicationCaseImageKey, type ApplicationCase } from "@/data/applicationCases";
+import { imageKey, getLocalizedWebdesignProject, type WebdesignProject } from "@/data/webdesignShowcase";
+import { applicationCaseImageKey, getLocalizedApplicationCaseById, type ApplicationCase } from "@/data/applicationCases";
+import type { SupportedLocale } from "@/i18n/locales";
 import { getWebdesignProjects } from "@/lib/firestore/webdesignProjects";
 import { getWebdesignImages, type WebdesignImages } from "@/lib/firestore/webdesignImages";
 import {
@@ -119,7 +120,31 @@ function contextsFromSectors(sectors: string[] | undefined): string[] {
   return (sectors ?? []).map((sector) => SECTOR_TO_CONTEXT[sector]).filter(Boolean);
 }
 
-function webdesignToHub(project: WebdesignProject, images: WebdesignImages): HubProject | null {
+export function localizeWebdesignHubSources(
+  projects: WebdesignProject[],
+  locale: SupportedLocale,
+): WebdesignProject[] {
+  return projects
+    .map((project) => getLocalizedWebdesignProject(project, locale))
+    .filter((project): project is WebdesignProject => Boolean(project));
+}
+
+export function localizeApplicationHubSources(
+  projects: ApplicationCase[],
+  locale: SupportedLocale,
+): ApplicationCase[] {
+  if (locale === "nl") return projects;
+  if (locale !== "en") return [];
+  return projects.flatMap((project) => {
+    try {
+      return [getLocalizedApplicationCaseById(project.id, locale)];
+    } catch {
+      return [];
+    }
+  });
+}
+
+function webdesignToHub(project: WebdesignProject, images: WebdesignImages, locale: SupportedLocale): HubProject | null {
   const image = images[imageKey(project.id, "thumb")] || images[imageKey(project.id, "1")];
   if (!image) return null;
 
@@ -139,8 +164,8 @@ function webdesignToHub(project: WebdesignProject, images: WebdesignImages): Hub
     title: project.name,
     description: project.teaser || undefined,
     image,
-    imageAlt: `Website voor ${project.name}`,
-    discipline: "Webdesign",
+    imageAlt: locale === "en" ? `Website for ${project.name}` : `Website voor ${project.name}`,
+    discipline: locale === "en" ? "Web design" : "Webdesign",
     categorySlug: "webdesign",
     contexts: [...new Set(contextsFromSectors(project.sectors))],
     serviceSlugs: [...new Set(serviceSlugs)],
@@ -150,6 +175,7 @@ function webdesignToHub(project: WebdesignProject, images: WebdesignImages): Hub
 function applicationToHub(
   project: ApplicationCase,
   images: ApplicationCaseImages,
+  locale: SupportedLocale,
 ): HubProject | null {
   if (!project.published) return null;
   const image = images[applicationCaseImageKey(project.id, "cover")];
@@ -160,8 +186,8 @@ function applicationToHub(
     title: project.title,
     description: project.excerpt || project.tagline || undefined,
     image,
-    imageAlt: `${project.title} - applicatie en software op maat door VisualVibe`,
-    discipline: "Applicaties",
+    imageAlt: locale === "en" ? `${project.title} - custom application and software by VisualVibe` : `${project.title} - applicatie en software op maat door VisualVibe`,
+    discipline: locale === "en" ? "Applications" : "Applicaties",
     categorySlug: "applicaties",
     contexts: ["bedrijven"],
     serviceSlugs: ["app-laten-maken", "webapplicatie-laten-maken"],
@@ -189,7 +215,7 @@ function galleryToHub(gallery: FotoGallery): HubProject | null {
   };
 }
 
-async function readHubData(): Promise<HubData> {
+async function readHubData(locale: SupportedLocale = "nl"): Promise<HubData> {
   const [
     projects,
     images,
@@ -206,20 +232,21 @@ async function readHubData(): Promise<HubData> {
     getVideografieVideos(),
   ]);
 
-  const webdesign = projects
-    .map((project) => webdesignToHub(project, images))
+  const localizedWebdesignProjects = localizeWebdesignHubSources(projects, locale);
+  const webdesign = localizedWebdesignProjects
+    .map((project) => webdesignToHub(project, images, locale))
     .filter((project): project is HubProject => project !== null);
 
-  const publishedApplicationProjects = applicationProjects.filter((project) => project.published);
+  const publishedApplicationProjects = localizeApplicationHubSources(applicationProjects, locale).filter((project) => project.published);
   const applications = publishedApplicationProjects
-    .map((project) => applicationToHub(project, applicationImages))
+    .map((project) => applicationToHub(project, applicationImages, locale))
     .filter((project): project is HubProject => project !== null);
 
-  const fotografie = galleries
+  const fotografie = (locale === "nl" ? galleries : [])
     .map(galleryToHub)
     .filter((project): project is HubProject => project !== null);
 
-  const videografie: HubProject[] = videoData.videos.map((video) => ({
+  const videografie: HubProject[] = (locale === "nl" ? videoData.videos : []).map((video) => ({
     id: `videografie:${video.id}`,
     title: video.title,
     description: video.description ?? undefined,
@@ -233,7 +260,7 @@ async function readHubData(): Promise<HubData> {
       : [],
   }));
 
-  const drone: HubProject[] = droneMedia
+  const drone: HubProject[] = (locale === "nl" ? droneMedia : [])
     .map((media, index): HubProject | null => {
       const image =
         media.kind === "video" && media.youtubeId ? ytThumb(media.youtubeId) : media.src;
@@ -326,8 +353,8 @@ async function readHubData(): Promise<HubData> {
   };
 
   const trajectHub = byId.get(`webdesign:${trajectProjectId}`) ?? null;
-  const trajectSource = projects.find((project) => project.id === trajectProjectId);
-  const trajectGallery = galleries.find((gallery) => gallery.id === trajectGalleryId);
+  const trajectSource = localizedWebdesignProjects.find((project) => project.id === trajectProjectId);
+  const trajectGallery = (locale === "nl" ? galleries : []).find((gallery) => gallery.id === trajectGalleryId);
   const traject =
     trajectHub && trajectSource
       ? {
@@ -337,7 +364,7 @@ async function readHubData(): Promise<HubData> {
             .filter((src): src is string => Boolean(src))
             .map((src, index) => ({
               src,
-              alt: `Website voor ${trajectSource.name} - weergave ${index + 1}`,
+              alt: locale === "en" ? `Website for ${trajectSource.name} - view ${index + 1}` : `Website voor ${trajectSource.name} - weergave ${index + 1}`,
             })),
           galleryCover: trajectGallery?.images[0]
             ? { src: trajectGallery.images[0].src, alt: galleryAlt(trajectGallery) }

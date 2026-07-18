@@ -6,6 +6,8 @@ import {
   type DronePhoto,
   type DroneVideo,
 } from "@/data/droneShowcase";
+import type { SupportedLocale } from "@/i18n/locales";
+import { mergeDutchRecords, readLocalizedRequired } from "./localizedContent";
 
 // Admin-managed media for the Drone & FPV service-page split (dronefotografie
 // photos + dronevideografie videos). One Firestore doc, same pattern as
@@ -34,7 +36,7 @@ function youtubeId(value: unknown): string {
   return /^[A-Za-z0-9_-]{11}$/.test(raw) ? raw : "";
 }
 
-function cleanPhotos(value: unknown): DronePhoto[] {
+function cleanPhotos(value: unknown, locale: SupportedLocale = "nl"): DronePhoto[] {
   if (!Array.isArray(value)) return [];
   const out: DronePhoto[] = [];
   for (const item of value) {
@@ -42,12 +44,14 @@ function cleanPhotos(value: unknown): DronePhoto[] {
     const record = item as Record<string, unknown>;
     const src = str(record.src);
     if (!/^https?:\/\//.test(src)) continue;
-    out.push({ src, title: str(record.title) || "Dronefoto", label: str(record.label) });
+    const title = record.title === undefined && locale === "nl" ? "Dronefoto" : record.title;
+    const label = record.label === undefined && locale === "nl" ? "" : record.label;
+    out.push({ src, title: readLocalizedRequired(title as never, locale, "dronePhoto.title"), label: readLocalizedRequired(label as never, locale, "dronePhoto.label") });
   }
   return out;
 }
 
-function cleanVideos(value: unknown): DroneVideo[] {
+function cleanVideos(value: unknown, locale: SupportedLocale = "nl"): DroneVideo[] {
   if (!Array.isArray(value)) return [];
   const out: DroneVideo[] = [];
   for (const item of value) {
@@ -55,23 +59,25 @@ function cleanVideos(value: unknown): DroneVideo[] {
     const record = item as Record<string, unknown>;
     const yt = youtubeId(record.yt);
     if (!yt) continue;
-    out.push({ yt, title: str(record.title) || "Dronevideo", tag: str(record.tag) });
+    const title = record.title === undefined && locale === "nl" ? "Dronevideo" : record.title;
+    const tag = record.tag === undefined && locale === "nl" ? "" : record.tag;
+    out.push({ yt, title: readLocalizedRequired(title as never, locale, "droneVideo.title"), tag: readLocalizedRequired(tag as never, locale, "droneVideo.tag") });
   }
   return out;
 }
 
-async function readDroneShowcase(): Promise<DroneShowcaseContent> {
+async function readDroneShowcase(locale: SupportedLocale = "nl"): Promise<DroneShowcaseContent> {
   const defaults: DroneShowcaseContent = {
-    photos: DEFAULT_DRONE_PHOTOS,
-    videos: DEFAULT_DRONE_VIDEOS,
+    photos: cleanPhotos(DEFAULT_DRONE_PHOTOS, locale),
+    videos: cleanVideos(DEFAULT_DRONE_VIDEOS, locale),
   };
 
   try {
     const doc = await adminDb.collection(COLLECTION).doc(DOC_ID).get();
     if (!doc.exists) return defaults;
     const data = doc.data() ?? {};
-    const photos = cleanPhotos(data.photos);
-    const videos = cleanVideos(data.videos);
+    const photos = cleanPhotos(data.photos, locale);
+    const videos = cleanVideos(data.videos, locale);
     // An empty list means "never configured" (or fully cleared); fall back to
     // the seed so the service-page bands are never blank.
     return {
@@ -88,8 +94,10 @@ export const getDroneShowcase = cache(readDroneShowcase);
 
 /** Replace the full ordered photo + video lists. */
 export async function setDroneShowcase(photos: DronePhoto[], videos: DroneVideo[]): Promise<void> {
-  await adminDb
-    .collection(COLLECTION)
-    .doc(DOC_ID)
-    .set({ photos: cleanPhotos(photos), videos: cleanVideos(videos), updatedAt: new Date() }, { merge: true });
+  const ref = adminDb.collection(COLLECTION).doc(DOC_ID);
+  const snapshot = await ref.get();
+  const data = snapshot.exists ? snapshot.data() : undefined;
+  const mergedPhotos = mergeDutchRecords(data?.photos, cleanPhotos(photos) as unknown as Record<string, unknown>[], ["title", "label"], "src");
+  const mergedVideos = mergeDutchRecords(data?.videos, cleanVideos(videos) as unknown as Record<string, unknown>[], ["title", "tag"], "yt");
+  await ref.set({ photos: mergedPhotos, videos: mergedVideos, updatedAt: new Date() }, { merge: true });
 }

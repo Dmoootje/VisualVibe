@@ -26,6 +26,7 @@ const report = {
   topIssues: [],
   strengths: [],
   technical: {},
+  outputLanguage: "en" as const,
 };
 
 describe("analysisReports", () => {
@@ -52,15 +53,37 @@ describe("analysisReports", () => {
         sourceUrl: "https://voorbeeld.be/",
         schemaVersion: 1,
         report,
+        outputLanguage: "en",
       }),
     );
     expect(firestore.create.mock.calls[0][0]).not.toHaveProperty("raw");
     expect(created.id).toBe("report-id");
+    expect(created.outputLanguage).toBe("en");
   });
 
   it("returns null for a missing report", async () => {
     firestore.get.mockResolvedValue({ exists: false });
 
     await expect(getAnalysisReport("missing")).resolves.toBeNull();
+  });
+
+  it("ignores malformed top-level output language and trusts only validated report metadata", async () => {
+    firestore.get.mockResolvedValue({
+      exists: true,
+      id: "legacy-report",
+      data: () => ({
+        partnerAnalysisId: "partner-id",
+        normalizedDomain: "voorbeeld.be",
+        sourceUrl: "https://voorbeeld.be/",
+        outputLanguage: "english",
+        report: { ...report, outputLanguage: undefined },
+        createdAt: "2026-07-18T00:00:00.000Z",
+        updatedAt: "2026-07-18T00:00:00.000Z",
+      }),
+    });
+
+    const loaded = await getAnalysisReport("legacy-report");
+    expect(loaded).not.toBeNull();
+    expect(loaded?.outputLanguage).toBeUndefined();
   });
 });

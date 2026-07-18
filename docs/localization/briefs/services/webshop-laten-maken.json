@@ -1,0 +1,62 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/webshop-laten-maken/",
+  "targetRoute": "/en/services/web-design/online-shop-development/",
+  "audience": "Belgian SMEs and independent retailers, manufacturers or specialist brands that need a manageable online sales channel.",
+  "primaryDutchSearchIntent": "Een professionele webshop laten maken die assortiment, klantreis, betaling, levering en dagelijks orderbeheer goed ondersteunt.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can build a manageable online shop around our product range and sales process?",
+    "geographicContext": "Belgium, particularly Limburg, Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "online shop development",
+  "longTailKeywords": [
+    "e-commerce website development for SMEs",
+    "online shop development Belgium",
+    "professional online shop for a retailer",
+    "mobile-friendly e-commerce checkout"
+  ],
+  "semanticTerms": [
+    "product catalogue",
+    "product variants",
+    "payment provider",
+    "delivery and collection",
+    "order management",
+    "technical SEO",
+    "product photography"
+  ],
+  "directAnswer": "Professional online shop development connects a clear product catalogue, mobile-friendly checkout, payment and delivery options, practical order management and a sound SEO foundation around the retailer's actual sales process.",
+  "title": "Online Shop Development for Belgian SMEs | VisualVibe",
+  "metaDescription": "Need an online shop that makes choosing and paying straightforward? VisualVibe builds a manageable e-commerce website around your range and sales process.",
+  "h1": "An online shop built around your range and customer journey",
+  "slug": "online-shop-development",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/website-laten-maken/",
+      "targetHref": "/en/services/web-design/business-website-design/",
+      "anchor": "business website design"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/productfotografie/",
+      "targetHref": "/en/services/photography/product-photography/",
+      "anchor": "product photography"
+    },
+    {
+      "sourceHref": "/be/diensten/seo/seo-copywriting/",
+      "targetHref": "/en/services/seo/seo-copywriting/",
+      "anchor": "SEO copywriting"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/website-onderhoud/",
+      "targetHref": "/en/services/web-design/website-maintenance/",
+      "anchor": "website maintenance"
+    }
+  ],
+  "factsToPreserve": [
+    "Platform choice depends on the product range, management requirements, integrations and growth plans.",
+    "Payment methods, transaction fees and acceptance requirements depend on the selected external payment provider.",
+    "The authoritative data source must be agreed when accounting, ERP or stock-management software is integrated.",
+    "Organic growth requires work beyond the technical foundation, including keyword research, unique category content and follow-up.",
+    "The quotation distinguishes supplied data, VisualVibe content work and recurring external platform or provider costs.",
+    "No sales, ranking, launch-date or checkout-performance guarantee is stated."
+  ]
+}

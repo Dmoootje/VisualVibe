@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/vastgoedfotografie/",
+  "targetRoute": "/en/services/photography/property-photography/",
+  "audience": "Estate agents, property developers and professional owners presenting homes, offices, commercial premises or developments.",
+  "primaryDutchSearchIntent": "Vastgoed professioneel laten fotograferen met een heldere, aantrekkelijke en geloofwaardige weergave van ruimte, indeling en materialen.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can photograph our property clearly and credibly for listings, sales documents and websites?",
+    "geographicContext": "Limburg, Belgium, with property shoots across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "property photography",
+  "longTailKeywords": [
+    "property photographer Limburg Belgium",
+    "professional real estate photography",
+    "interior photography for estate agents",
+    "commercial property photography"
+  ],
+  "semanticTerms": [
+    "interior photography",
+    "exterior photography",
+    "vertical lines",
+    "perspective correction",
+    "property listing",
+    "natural scale",
+    "architectural details"
+  ],
+  "directAnswer": "Professional property photography uses considered viewpoints, controlled lines, balanced light and a logical image sequence to present a building's layout, materials and atmosphere clearly without misrepresenting its scale or features.",
+  "title": "Property Photography for Estate Agents in Limburg | VisualVibe",
+  "metaDescription": "Property photography for homes, offices and developments, with clear spaces, refined lines and images prepared for listings, sales documents and websites.",
+  "h1": "Property photography that makes space and layout easy to understand",
+  "slug": "property-photography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/3d-vr-ar/vastgoed-3d-tour/",
+      "targetHref": "/en/services/3d-vr-ar/property-3d-tour/",
+      "anchor": "property 3D tour"
+    },
+    {
+      "sourceHref": "/be/diensten/drone-fpv/vastgoed-dronebeelden/",
+      "targetHref": "/en/services/drone-fpv/property-drone-footage/",
+      "anchor": "property drone footage"
+    },
+    {
+      "sourceHref": "/be/diensten/3d-vr-ar/virtuele-rondleiding/",
+      "targetHref": "/en/services/3d-vr-ar/virtual-tour/",
+      "anchor": "virtual tour"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/promovideo/",
+      "targetHref": "/en/services/videography/promotional-video/",
+      "anchor": "promotional video"
+    }
+  ],
+  "factsToPreserve": [
+    "Viewpoints retain a natural impression of scale rather than using extreme angles to exaggerate rooms.",
+    "Virtual staging is not included as standard and must be discussed separately and transparently.",
+    "Weather and daylight can affect whether important exterior images should be rescheduled.",
+    "Photography, drone capture and 3D tours have separate technical, legal, access and planning requirements.",
+    "Post-production does not alter essential characteristics of the property, and the client remains responsible for compliant publication."
+  ]
+}

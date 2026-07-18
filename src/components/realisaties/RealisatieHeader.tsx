@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { RealisatieCategory, RealisatieStat } from "@/data/realisatieCategories";
+import type { SupportedLocale } from "@/i18n/locales";
 
 // Per-category glyph for the header icon badge. Falls back to a monitor.
 const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
@@ -40,10 +41,12 @@ const ICON_BY_SLUG: Record<string, ComponentType<LucideProps>> = {
 export function RealisatieHeader({
   category,
   stats: statsOverride,
+  locale = "nl",
 }: {
   category: RealisatieCategory;
   /** Overrides `category.stats` for content-driven categories (e.g. fotografie). */
   stats?: RealisatieStat[];
+  locale?: SupportedLocale;
 }) {
   const Icon = ICON_BY_SLUG[category.slug] ?? Monitor;
   const stats = statsOverride ?? category.stats ?? [];
@@ -72,7 +75,7 @@ export function RealisatieHeader({
             </Link>
             <span className="text-white/20">/</span>
             <Link href="/realisaties" className="transition-colors hover:text-white">
-              Realisaties
+              {locale === "en" ? "Case studies" : "Realisaties"}
             </Link>
             <span className="text-white/20">/</span>
             <span className="text-[#FF9A45]">{category.name}</span>
@@ -84,7 +87,7 @@ export function RealisatieHeader({
             </span>
             <div>
               <div className="mb-2 font-mono text-xs font-bold tracking-[0.2em] text-[#FF9A45]">
-                REALISATIES
+                {locale === "en" ? "CASE STUDIES" : "REALISATIES"}
               </div>
               <h1 className="text-[clamp(38px,12vw,52px)] font-extrabold leading-[0.98] tracking-[-0.03em] text-white sm:text-[58px]">
                 {category.name}

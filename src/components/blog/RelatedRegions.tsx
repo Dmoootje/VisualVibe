@@ -15,11 +15,14 @@ export function RelatedRegions({
   items,
   title = "Actief in deze regio's",
   className,
+  locale = "nl",
 }: {
   items: RelatedRegion[];
   title?: string;
   className?: string;
+  locale?: string;
 }) {
+  if (locale === "en" && title === "Actief in deze regio's") title = "Active in these regions";
   return (
     <section className={cn("my-8", className)}>
       <h2 className="mb-4 text-xl font-bold text-white">{title}</h2>

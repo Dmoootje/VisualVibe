@@ -7,7 +7,8 @@ import { SectorHeroEmblem } from "./SectorIcon";
  * Sector detail hero: breadcrumb, tag eyebrow, big title, intro, CTAs and the
  * large decorative emblem (radial glow + counter-rotating dashed rings + glyph).
  */
-export function SectorDetailHero({ sector }: { sector: Sector }) {
+export function SectorDetailHero({ sector, locale = "nl" }: { sector: Sector; locale?: "nl" | "en" }) {
+  const en = locale === "en";
   return (
     <section className="relative overflow-x-clip px-4 pb-12 pt-28 sm:pb-16">
       {/* Faint background grid, fading in toward the emblem (top-right). */}
@@ -34,7 +35,7 @@ export function SectorDetailHero({ sector }: { sector: Sector }) {
           <div>
             <nav className="mb-4 text-[13px] text-white/50">
               <Link href="/sectoren" className="transition-colors hover:text-white">
-                Sectoren
+                {en ? "Industries" : "Sectoren"}
               </Link>
               <span className="mx-1.5">/</span>
               <span className="text-white/70">{sector.title}</span>
@@ -65,14 +66,14 @@ export function SectorDetailHero({ sector }: { sector: Sector }) {
                 href="/offerte-aanvragen"
                 className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black shadow-[0_10px_30px_-8px_rgba(255,117,0,0.6)] transition-transform hover:-translate-y-0.5"
               >
-                {sector.heroCtaLabel ?? "Start je project"}
+                {sector.heroCtaLabel ?? (en ? "Start your project" : "Start je project")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/realisaties"
                 className="inline-flex items-center rounded-full border border-white/[0.16] px-6 py-3 font-medium text-white transition-colors hover:border-[rgba(255,117,0,0.5)]"
               >
-                Bekijk cases
+                {en ? "View case studies" : "Bekijk cases"}
               </Link>
             </div>
           </div>

@@ -1,0 +1,26 @@
+{
+  "sourceRoute": "/be/kennisbank/videografie/korte-video-vs-lange-video/",
+  "targetRoute": "/en/kennisbank/videografie/short-form-vs-long-form-video/",
+  "audience": "Business owners and marketing, HR or communications managers planning video for social media, websites, sales, recruitment or knowledge sharing.",
+  "primaryDutchSearchIntent": "KMO's een praktisch beslismodel geven om videolengte te kiezen vanuit kijkersvraag, complexiteit, kanaal, bewijs, distributie en meetdoel in plaats van een universeel aantal seconden.",
+  "searchIntent": { "type": "commercial", "question": "Should our business use short-form or long-form video for this message, channel and viewer journey?", "geographicContext": "International English-speaking readers, with VisualVibe production support based in Limburg, Belgium." },
+  "mainKeyword": "short-form vs long-form video",
+  "longTailKeywords": ["ideal corporate video length", "how long should a business video be", "short video vs long video", "social media video length", "video strategy for SMEs", "YouTube Shorts for business"],
+  "semanticTerms": ["audience intent", "viewer question", "audience retention", "aspect ratio", "modular video production", "video accessibility", "video SEO"],
+  "directAnswer": "Choose short-form or long-form video according to the task the viewer needs to complete. Use a short video for one self-contained message, action or invitation. Use a longer video when explanation, comparison, evidence or a credible story requires several connected steps.",
+  "title": "Short-form vs long-form video: choose by purpose and channel",
+  "metaDescription": "Short-form or long-form video? Use purpose, viewer intent, channel and evidence to choose the right length and plan effective versions for social media and websites.",
+  "h1": "Short-form vs long-form video: choose by purpose, channel and viewer intent",
+  "slug": "short-form-vs-long-form-video",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why investing in a corporate video may make sense" },
+    { "sourceHref": "/be/diensten/videografie/social-media-video/", "targetHref": "/en/diensten/videography/social-media-video/", "anchor": "social media video" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "corporate video" },
+    { "sourceHref": "/be/kennisbank/videografie/bedrijfsvideo-script-opbouwen/", "targetHref": "/en/kennisbank/videografie/how-to-structure-a-corporate-video-script/", "anchor": "how to structure a corporate video script" },
+    { "sourceHref": "/be/diensten/videografie/testimonial-video/", "targetHref": "/en/diensten/videography/testimonial-video/", "anchor": "testimonial video" },
+    { "sourceHref": "/be/diensten/videografie/event-aftermovie/", "targetHref": "/en/diensten/videography/event-aftermovie/", "anchor": "event aftermovie" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your video production" }
+  ],
+  "factsToPreserve": ["There is no universal ideal video length.", "Video length should follow viewer intent, evidence, channel, distribution and measurement goal.", "YouTube platform details were checked on 12 July 2026 and can change.", "Retention percentages should be compared between videos with similar tasks and lengths.", "Short and long videos both require appropriate accessibility support.", "A short edit is a newly structured story, not simply a sped-up long edit."]
+}

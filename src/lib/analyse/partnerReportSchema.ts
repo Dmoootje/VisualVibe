@@ -81,6 +81,7 @@ const keywordDensitySchema = z.object({
 
 export const partnerAuditReportSchema = z.object({
   schemaVersion: z.literal(1),
+  outputLanguage: z.enum(["nl", "en", "fr"]).optional(),
   url: z.string().trim().max(2048).url(),
   overallScore: boundedScore,
   summary: z.string().trim().max(6000),

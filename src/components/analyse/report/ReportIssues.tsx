@@ -1,6 +1,6 @@
 import { ArrowRight, TriangleAlert } from "lucide-react";
 import type { NormalizedPartnerAuditIssue } from "@/types/analysis";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
 const severityLabels = {
@@ -9,7 +9,9 @@ const severityLabels = {
   low: "Laag",
 } as const;
 
-export function ReportIssues({ issues }: { issues: NormalizedPartnerAuditIssue[] }) {
+export function ReportIssues({ issues, locale = "nl" }: { issues: NormalizedPartnerAuditIssue[]; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
+  const labels = locale === "en" ? { high: "High", medium: "Medium", low: "Low" } : severityLabels;
   if (issues.length === 0) return null;
   return (
     <section>
@@ -20,7 +22,7 @@ export function ReportIssues({ issues }: { issues: NormalizedPartnerAuditIssue[]
             <div className="flex items-start gap-3">
               <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" aria-hidden="true" />
               <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-amber-300">{severityLabels[issue.severity]}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-amber-300">{labels[issue.severity]}</p>
                 <h3 className="mt-1 font-bold text-white">{issue.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-white/55">{issue.explanation}</p>
                 {issue.recommendation && <p className="mt-3 flex gap-2 text-sm leading-6 text-white/70"><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-orange-300" aria-hidden="true" />{issue.recommendation}</p>}

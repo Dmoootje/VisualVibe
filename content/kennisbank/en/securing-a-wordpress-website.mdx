@@ -1,0 +1,188 @@
+---
+title: "Securing a WordPress website: practical steps for SMEs"
+slug: "securing-a-wordpress-website"
+category: "Webdesign"
+categorySlug: "webdesign"
+pillar: false
+clusterType: "sub"
+parentPillar: "/kennisbank/webdesign/wordpress-for-smes-complete-guide/"
+status: "published"
+locale: "en"
+translationKey: "wordpress-website-beveiligen"
+author:
+  type: "Person"
+  name: "Jens Hardy"
+  url: "/en/about/"
+  jobTitle: "Founder and creative lead at VisualVibe"
+publishedAt: "2026-07-14"
+updatedAt: "2026-07-14T12:00:00+02:00"
+readingTime: "8 min"
+excerpt: "Protect your WordPress website with up-to-date software, limited permissions, strong accounts, reliable backups, logging and a clear recovery plan."
+focusKeyword: "secure a WordPress website"
+secondaryKeywords:
+  - "WordPress security"
+  - "prevent a WordPress hack"
+  - "make WordPress secure"
+  - "secure a business website"
+searchIntent:
+  primary: "Give SMEs a practical, layered approach to managing a WordPress website more securely"
+  type: "informational"
+  audience: "SMEs, self-employed professionals and website administrators who want to reduce the likelihood and impact of WordPress security incidents"
+  funnelStage: "awareness"
+seoTitle: "How to secure a WordPress website | VisualVibe"
+seoDescription: "Secure your WordPress website with updates, strong accounts, minimal permissions, trusted plugins, backups and a recovery plan that limits risk."
+robots: "index,follow"
+cta:
+  title: "Want a structured approach to WordPress security and maintenance?"
+  description: "We bring controlled updates, backups, monitoring and technical support together in a clear maintenance plan."
+  label: "Request a maintenance quotation"
+  href: "/en/request-a-quotation/"
+relatedServices:
+  - "/diensten/webdesign/website-onderhoud/"
+  - "/diensten/webdesign/wordpress-website-laten-maken/"
+relatedRegions:
+  - "/regio/limburg/"
+  - "/regio/vlaanderen/"
+relatedPosts:
+  - "/kennisbank/webdesign/wordpress-for-smes-complete-guide/"
+  - "/kennisbank/webdesign/how-to-back-up-wordpress/"
+  - "/kennisbank/webdesign/wordpress-maintenance-checklist/"
+
+---
+
+You cannot **secure a WordPress website** with a single setting or plugin. Effective security consists of several layers: up-to-date software, strong accounts, minimal permissions, secure hosting, reliable backups and a team that knows how to respond to an alert.
+
+No website is entirely free from risk. The goal is to reduce the likelihood of misuse, detect incidents sooner and limit their impact if something does happen.
+
+## Start with ownership and access
+
+Many problems begin with accounts rather than complex code. Give every employee a personal account. Avoid a single shared administrator password that continues to circulate in emails or chat messages for years.
+
+Check at least once a quarter:
+
+- which accounts exist;
+- who has administrator access;
+- whether former employees still have access;
+- whether external suppliers still need access;
+- whether multi-factor authentication is enabled;
+- where recovery codes are stored securely.
+
+Assign the lowest level of access each person needs. An editor who manages copy and images does not need permission to install plugins or change user roles.
+
+## Use strong, unique passwords
+
+A long, unique password matters more than a complicated pattern reused in several places. Use a password manager for WordPress, hosting, domain administration, DNS, email and external services.
+
+Pay particular attention to the email accounts used for password recovery. If someone gains access to an administrator's email address, they can often take over other accounts too.
+
+## Keep WordPress, your theme and plugins up to date
+
+Known vulnerabilities are often exploited after an update has become available. Delaying that update increases the risk. Use a controlled update process:
+
+1. create a recent backup;
+2. review the available changes;
+3. test major updates in a staging environment;
+4. update WordPress core, the theme and plugins;
+5. test login, forms and critical features;
+6. check the logs for new errors.
+
+The [WordPress maintenance checklist](/en/kennisbank/webdesign/wordpress-maintenance-checklist/) provides a recurring schedule.
+
+## Limit plugins and themes
+
+Every plugin adds code and dependencies. Only install software with a clear purpose. Before installing it, check:
+
+- when it was last updated;
+- whether it works with your version of WordPress;
+- whether its developer provides support;
+- which data it processes;
+- whether its features overlap with existing plugins;
+- whether it loads scripts on every page.
+
+Remove unused plugins and themes completely. A deactivated component can still contain files that need to be maintained.
+
+## Choose hosting with solid security foundations
+
+Hosting affects isolation, updates, backups and incident response. Look for:
+
+- recent PHP versions;
+- automatic TLS certificates;
+- server updates and firewalls;
+- malware and file scanning;
+- daily off-site backups;
+- staging facilities;
+- logging and incident support.
+
+The least expensive environment is not necessarily insecure, but you need to understand which responsibilities belong to the host and which belong to you.
+
+## Protect the login and administration area
+
+Multi-factor authentication is one of the most important safeguards for administrators. You can also limit failed login attempts and configure alerts for suspicious behaviour.
+
+Do not change the login URL without understanding the measure, and do not treat it as your main line of defence. It may reduce automated noise, but it cannot replace strong authentication, updates or access control.
+
+Use secure connections wherever possible. Do not administer the website over an unfamiliar public Wi-Fi network without appropriate protection.
+
+## Keep backups accessible outside WordPress
+
+An attacker with access to the entire website may be able to delete or encrypt local backups. Keep at least one copy outside the web server and protect it with a separate account.
+
+Test the recovery process regularly. [How to back up WordPress](/en/kennisbank/webdesign/how-to-back-up-wordpress/) explains how files, the database, external storage and retention periods work together.
+
+## Use logging and monitoring
+
+Without logs, you often cannot tell what has changed. At a minimum, monitor:
+
+- new and deleted users;
+- changes to administrator roles;
+- plugin and theme installations;
+- failed login attempts;
+- modified files;
+- unexpected redirects;
+- uptime and server errors;
+- large increases in traffic or requests.
+
+Send alerts to an address that someone actually monitors. Too many irrelevant notifications make it more likely that an important signal will be ignored.
+
+## Secure forms and data
+
+Forms may process spam, harmful uploads and personal data. Restrict file types and sizes, validate input and use anti-spam measures that do not create needless obstacles for genuine users.
+
+Do not retain more data than you need. Delete old form submissions in line with your policy, and make sure exported data is not left unprotected on laptops or in shared folders.
+
+## Pay attention to custom code and third-party scripts
+
+Custom code must handle input, permissions and output securely. Do not paste arbitrary snippets into a theme without understanding what they do. Use a child theme or separate plugin for controlled customisation, and document every change.
+
+Third-party scripts for chat, analytics, advertising and widgets gain access to a visitor's browser environment. Limit the number of suppliers and keep your privacy and cookie settings up to date.
+
+## Prepare an incident response plan
+
+Decide in advance what happens if the website displays suspicious behaviour. A practical plan sets out:
+
+1. who can temporarily block the website or put it into maintenance mode;
+2. who contacts the hosting provider and domain registrar;
+3. where recent off-site backups are stored;
+4. how passwords and keys will be replaced;
+5. which logs must be preserved;
+6. how you will check whether personal data was affected;
+7. who informs customers or other affected parties when necessary.
+
+Do not immediately start deleting files at random during an incident. Doing so can make investigation and recovery more difficult.
+
+## Common misconceptions
+
+**"My business is too small to be attacked."**  
+Many attacks are automated. They do not target a particular brand, but search for outdated software and weak accounts.
+
+**"A security plugin solves everything."**  
+A plugin can help with logging and blocking, but it cannot fix shared passwords, poor hosting, missing backups or uncontrolled updates.
+
+**"HTTPS means the website is secure."**  
+HTTPS encrypts traffic between the browser and server. It says nothing about vulnerable plugins, accounts or server configuration.
+
+## Summary
+
+Securing a WordPress website requires several layers. Keep software up to date, limit permissions and plugins, use strong accounts with multi-factor authentication, maintain off-site backups and act on alerts. Combine prevention with a tested recovery plan so an incident does not automatically lead to prolonged downtime.
+
+The pillar guide [WordPress for SMEs](/en/kennisbank/webdesign/wordpress-for-smes-complete-guide/) also brings hosting, performance, administration and maintenance together in one overview.

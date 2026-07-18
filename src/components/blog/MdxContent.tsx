@@ -189,12 +189,18 @@ const components = {
  * prose styling. Authors can drop any of the blocks above straight into the
  * .mdx file, e.g. `<NoticeBox variant="tip">…</NoticeBox>`.
  */
-export function MdxContent({ source }: { source: string }) {
+export function MdxContent({ source, locale = "nl" }: { source: string; locale?: string }) {
+  const localizedComponents = {
+    ...components,
+    RelatedArticles: withProseBoundary((props: React.ComponentProps<typeof RelatedArticles>) => <RelatedArticles {...props} locale={locale} />),
+    RelatedRegions: withProseBoundary((props: React.ComponentProps<typeof RelatedRegions>) => <RelatedRegions {...props} locale={locale} />),
+    RelatedServices: withProseBoundary((props: React.ComponentProps<typeof RelatedServices>) => <RelatedServices {...props} locale={locale} />),
+  };
   return (
     <BlogProse>
       <MDXRemote
         source={source}
-        components={components}
+        components={localizedComponents}
         options={{
           // Knowledge-base MDX is repository-owned and uses JSX expressions
           // for structured component props (tables, FAQ arrays, roadmaps).

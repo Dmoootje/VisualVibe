@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/seo/",
+  "targetRoute": "/en/services/seo/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "De online vindbaarheid van een KMO verbeteren in Google en AI-zoekmachines.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Improve an SME website's visibility in Google and AI-generated answers.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "SEO services Limburg",
+  "longTailKeywords": [
+    "SEO services Limburg for SMEs",
+    "SEO services Limburg Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "SEO combines technical improvements, local optimisation and useful content for stronger visibility in search and AI answers.",
+  "title": "SEO Services Limburg | Visibility in Google and AI",
+  "metaDescription": "SEO combines technical improvements, local optimisation and useful content for stronger visibility in search and AI answers.",
+  "h1": "Seo",
+  "slug": "seo",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/seo/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

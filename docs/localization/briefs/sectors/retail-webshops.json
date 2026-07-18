@@ -1,0 +1,45 @@
+{
+  "sourceRoute": "/be/sectoren/retail-webshops",
+  "targetRoute": "/en/sectoren/retail-ecommerce",
+  "audience": "retailers and ecommerce businesses",
+  "primaryDutchSearchIntent": "producten professioneel presenteren en online en in de winkel meer verkopen",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can build a strong ecommerce website and create product imagery that supports online and in-store sales?",
+    "geographicContext": "Limburg, Belgium and the wider Flanders region"
+  },
+  "mainKeyword": "ecommerce web design",
+  "longTailKeywords": [
+    "ecommerce website design Limburg Belgium",
+    "ecommerce web design and product photography"
+  ],
+  "semanticTerms": [
+    "web design",
+    "product photography",
+    "retail marketing",
+    "local SEO"
+  ],
+  "directAnswer": "VisualVibe helps retailers sell more effectively with a fast ecommerce website, professional product photography, video and local SEO.",
+  "title": "Ecommerce web design and product photography | VisualVibe",
+  "metaDescription": "Ecommerce websites, product photography, video and local SEO for retailers in Limburg and Flanders.",
+  "h1": "Ecommerce web design and product photography for retailers",
+  "slug": "retail-ecommerce",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/sectoren/retail-webshops",
+      "targetHref": "/en/diensten/web-design/",
+      "anchor": "ecommerce web design"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie",
+      "targetHref": "/en/diensten/photography/",
+      "anchor": "professional product photography"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Tongeren-Borgloon.",
+    "VisualVibe works throughout Limburg and Flanders.",
+    "A tailored quotation is provided after an initial conversation.",
+    "No results or guarantees may be added."
+  ]
+}

@@ -1,5 +1,3 @@
-"use client";
-
 import { CtaCard } from "./components";
 
 export default function Cta() {

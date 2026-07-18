@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/webdesign/",
+  "targetRoute": "/en/services/web-design/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Een snelle, conversiegerichte website laten maken voor een KMO.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Find a professional partner to design and build a fast, conversion-focused website for an SME.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "web design Limburg",
+  "longTailKeywords": [
+    "web design Limburg for SMEs",
+    "web design Limburg Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "A fast, user-friendly business website built around speed, search visibility and a clear path to contact.",
+  "title": "Web design Limburg | Websites for SMEs | VisualVibe",
+  "metaDescription": "A fast, user-friendly business website built around speed, search visibility and a clear path to contact.",
+  "h1": "Web design",
+  "slug": "web-design",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/webdesign/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

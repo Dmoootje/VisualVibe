@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { HubProject } from "@/lib/realisaties/hubData";
+import type { SupportedLocale } from "@/i18n/locales";
+import { getLocalizedRealisatieCategoryById } from "@/data/realisatieCategories";
 
 const PAGE_SIZE = 9;
 
@@ -20,12 +22,14 @@ export function RealisatieFilterGrid({
   projects,
   disciplines,
   contexts,
+  locale = "nl",
 }: {
   projects: HubProject[];
   /** Primaire filteropties (alleen categorieën die echt in de data zitten). */
   disciplines: HubFilterOption[];
   /** Secundaire filteropties (alleen contexten met echte projecten). */
   contexts: HubFilterOption[];
+  locale?: SupportedLocale;
 }) {
   const [discipline, setDiscipline] = useState<string>("alles");
   const [context, setContext] = useState<string | null>(null);
@@ -85,7 +89,7 @@ export function RealisatieFilterGrid({
           aria-pressed={discipline === "alles"}
           className={chip(discipline === "alles")}
         >
-          Alles
+          {locale === "en" ? "All" : "Alles"}
         </button>
         {disciplines.map((d) => (
           <button
@@ -114,7 +118,7 @@ export function RealisatieFilterGrid({
             aria-pressed={context === null}
             className={chip(context === null)}
           >
-            Alle
+            {locale === "en" ? "All" : "Alle"}
           </button>
           {contexts.map((c) => (
             <button
@@ -135,7 +139,7 @@ export function RealisatieFilterGrid({
 
       {/* Screenreader-feedback op filteracties (visueel onzichtbaar). */}
       <p role="status" className="sr-only">
-        {filtered.length === 1 ? "1 realisatie getoond" : `${filtered.length} realisaties getoond`}
+        {locale === "en" ? `${filtered.length} case ${filtered.length === 1 ? "study" : "studies"} shown` : filtered.length === 1 ? "1 realisatie getoond" : `${filtered.length} realisaties getoond`}
       </p>
 
       {shown.length > 0 ? (
@@ -143,7 +147,7 @@ export function RealisatieFilterGrid({
           {shown.map((project) => (
             <Link
               key={project.id}
-              href={`/realisaties/${project.categorySlug}`}
+              href={`/realisaties/${getLocalizedRealisatieCategoryById(project.categorySlug, locale).slug}`}
               className="group flex flex-col overflow-hidden rounded-[17px] border border-white/[0.09] bg-white/[0.02] transition-colors hover:border-[rgba(255,122,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7500]"
             >
               <div className="relative aspect-[16/10] overflow-hidden border-b border-white/[0.06] bg-[#141210]">
@@ -166,7 +170,7 @@ export function RealisatieFilterGrid({
                   </p>
                 )}
                 <span className="mt-auto pt-4 inline-flex items-center gap-[7px] font-mono text-[11px] font-bold tracking-[0.06em] text-white/75">
-                  BEKIJK DE REALISATIE
+                  {locale === "en" ? "VIEW CASE STUDY" : "BEKIJK DE REALISATIE"}
                   <ArrowRight className="h-3.5 w-3.5 text-[#FF9A45] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden="true" />
                 </span>
               </div>
@@ -175,7 +179,7 @@ export function RealisatieFilterGrid({
         </div>
       ) : (
         <p className="rounded-[16px] border border-white/[0.09] bg-white/[0.02] px-6 py-10 text-center text-[15px] text-white/55">
-          Geen projecten in deze combinatie. Kies een andere discipline of context.
+          {locale === "en" ? "No projects match this combination. Choose another discipline or context." : "Geen projecten in deze combinatie. Kies een andere discipline of context."}
         </p>
       )}
 
@@ -195,7 +199,7 @@ export function RealisatieFilterGrid({
                 : "cursor-default text-white/35"
             }`}
           >
-            {filtered.length > visible ? "Meer realisaties laden" : "Alle realisaties geladen"}
+            {filtered.length > visible ? (locale === "en" ? "Load more case studies" : "Meer realisaties laden") : (locale === "en" ? "All case studies loaded" : "Alle realisaties geladen")}
           </button>
         </div>
       )}

@@ -12,10 +12,12 @@ export function SectorChallenges({
   intro,
   expanded,
   simple,
+  locale = "nl",
 }: {
   intro?: string;
   expanded?: SectorHighlight[];
   simple: string[];
+  locale?: "nl" | "en";
 }) {
   const hasExpanded = Boolean(expanded && expanded.length > 0);
   if (!hasExpanded && simple.length === 0) return null;
@@ -23,7 +25,7 @@ export function SectorChallenges({
   return (
     <Section className="py-10 sm:py-14 md:py-16">
       <Container>
-        <SectorSectionHeader eyebrow="Uitdagingen" title="Herkenbare uitdagingen" intro={intro} />
+        <SectorSectionHeader eyebrow={locale === "en" ? "Challenges" : "Uitdagingen"} title={locale === "en" ? "Challenges you may recognise" : "Herkenbare uitdagingen"} intro={intro} />
 
         {hasExpanded ? (
           <div className="grid gap-[18px] sm:grid-cols-2">

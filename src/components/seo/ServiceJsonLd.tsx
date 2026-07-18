@@ -1,5 +1,6 @@
 import { businessConfig } from "@/config/business.config";
 import { JsonLd } from "./JsonLd";
+import type { SupportedLocale } from "@/i18n/locales";
 
 export type ServiceJsonLdData = {
   name: string;
@@ -8,8 +9,9 @@ export type ServiceJsonLdData = {
   areaServed?: string[];
 };
 
-export function ServiceJsonLd({ service }: { service: ServiceJsonLdData }) {
-  const areaServed = (service.areaServed ?? businessConfig.serviceArea).map((name) => ({
+export function ServiceJsonLd({ service, locale = "nl" }: { service: ServiceJsonLdData; locale?: SupportedLocale }) {
+  const defaultArea = locale === "en" ? ["Limburg", "Flanders", "Antwerp Province", "Dutch Limburg"] : businessConfig.serviceArea;
+  const areaServed = (service.areaServed ?? defaultArea).map((name) => ({
     "@type": "AdministrativeArea",
     name,
   }));
@@ -27,7 +29,7 @@ export function ServiceJsonLd({ service }: { service: ServiceJsonLdData }) {
         areaServed,
         audience: {
           "@type": "BusinessAudience",
-          audienceType: "Bedrijven, kmo's en zelfstandigen",
+          audienceType: locale === "en" ? "Businesses, SMEs and independent professionals" : "Bedrijven, kmo's en zelfstandigen",
         },
         provider: { "@id": `${businessConfig.url}/#localbusiness` },
       }}

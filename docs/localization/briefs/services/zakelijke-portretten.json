@@ -1,0 +1,61 @@
+{
+  "sourceRoute": "/be/diensten/fotografie/zakelijke-portretten/",
+  "targetRoute": "/en/services/photography/business-portraits/",
+  "audience": "Independent experts, executives, managers and employee teams needing consistent professional portraits for digital and print communications.",
+  "primaryDutchSearchIntent": "Professionele zakelijke portretten laten maken die personen geloofwaardig, benaderbaar en als één samenhangend team presenteren.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can photograph natural, consistent business portraits for our website, LinkedIn profiles and corporate communications?",
+    "geographicContext": "Limburg, Belgium, with on-location sessions across Flanders, Antwerp and Dutch Limburg."
+  },
+  "mainKeyword": "business portraits",
+  "longTailKeywords": [
+    "professional business portraits for teams",
+    "LinkedIn portrait photographer Limburg Belgium",
+    "on-location corporate headshots",
+    "executive and employee portrait photography"
+  ],
+  "semanticTerms": [
+    "professional profile photography",
+    "team portraits",
+    "mobile lighting",
+    "corporate headshots",
+    "natural retouching",
+    "profile crops",
+    "executive portraits"
+  ],
+  "directAnswer": "Business portrait photography creates a consistent yet personal series for websites, LinkedIn and corporate publications through planned lighting, suitable backgrounds, individual direction and natural finishing.",
+  "title": "Business Portraits for Teams in Limburg | VisualVibe",
+  "metaDescription": "Professional portraits for websites and LinkedIn, with calm direction, appropriate lighting and consistent finishing for independent experts, executives and teams.",
+  "h1": "Business portraits that feel professional and personal",
+  "slug": "business-portraits",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/",
+      "targetHref": "/en/services/photography/corporate-photography/",
+      "anchor": "corporate photography"
+    },
+    {
+      "sourceHref": "/be/diensten/fotografie/brandingfotografie/",
+      "targetHref": "/en/services/photography/brand-photography/",
+      "anchor": "brand photography"
+    },
+    {
+      "sourceHref": "/be/diensten/videografie/wervingsvideo/",
+      "targetHref": "/en/services/videography/recruitment-video/",
+      "anchor": "recruitment video"
+    },
+    {
+      "sourceHref": "/be/diensten/webdesign/",
+      "targetHref": "/en/services/web-design/",
+      "anchor": "web design"
+    }
+  ],
+  "factsToPreserve": [
+    "On-location sessions require enough suitable space for the background, lighting and camera distance.",
+    "Matching portraits of future employees depends on reproducing the background, lighting, camera position and finishing.",
+    "Natural retouching retains normal skin texture and personal features unless a different finish is agreed before the session.",
+    "The number of selections, crops, high-resolution files and intended applications are agreed in advance.",
+    "Price depends on participants, settings, variations, preparation, adjustments, retouching and exports."
+  ]
+}

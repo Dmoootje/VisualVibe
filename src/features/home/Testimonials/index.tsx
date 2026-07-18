@@ -1,65 +1,25 @@
-"use client";
-
-import {
-  TestimonialsHeader,
-  TestimonialCard,
-  TestimonialsControls,
-  QuoteIcon,
-} from "./components";
-import {
-  useTestimonialsCarousel,
-  type CarouselTestimonial,
-} from "./hooks/useTestimonialsCarousel";
-import { testimonialsConfig } from "./config/testimonials.config";
+import { TestimonialsCarousel } from "./components/TestimonialsCarousel";
+import { TestimonialsHeader } from "./components/TestimonialsHeader";
+import type { CarouselTestimonial } from "./hooks/useTestimonialsCarousel";
 
 type TestimonialsProps = {
-  /** Live Google reviews (server-fetched). Falls back to curated quotes when empty. */
   testimonials?: CarouselTestimonial[];
-  /** Link to the Google Maps profile, shown as attribution when reviews are live. */
   sourceUrl?: string;
 };
 
 export default function Testimonials({ testimonials, sourceUrl }: TestimonialsProps) {
   const isGoogle = Boolean(testimonials && testimonials.length > 0);
-  const items = isGoogle ? testimonials! : testimonialsConfig.testimonials;
-
-  const { current, total, testimonial, next, prev, goTo, rootRef } =
-    useTestimonialsCarousel(items);
 
   return (
     <section
-      ref={rootRef}
       id="testimonials"
       className="home-deferred-section relative overflow-hidden py-16 sm:py-20 md:py-24"
       aria-labelledby="testimonials-heading"
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">
         <TestimonialsHeader />
-
         <div className="relative max-w-6xl mx-auto">
-          <QuoteIcon />
-
-          <div
-            className="min-h-[400px] flex items-center"
-            role="region"
-            aria-roledescription="testimonial carousel"
-            aria-label="Klantenreviews"
-          >
-            <TestimonialCard
-              testimonial={testimonial}
-              current={current}
-              total={total}
-            />
-          </div>
-
-          <TestimonialsControls
-            onPrev={prev}
-            onNext={next}
-            current={current}
-            total={total}
-            onDotClick={goTo}
-          />
-
+          <TestimonialsCarousel testimonials={testimonials} />
           {isGoogle && (
             <p className="mt-6 text-center text-sm text-white/65">
               Reviews via{" "}

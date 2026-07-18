@@ -1,0 +1,54 @@
+{
+  "sourceRoute": "/be/kennisbank/drone/fpv-video-voor-bedrijven/",
+  "targetRoute": "/en/kennisbank/drone/fpv-video-for-business/",
+  "audience": "Business owners, marketers, communications managers, project managers and event organisers considering a dynamic FPV production in Belgium.",
+  "primaryDutchSearchIntent": "Bedrijven helpen beoordelen of FPV hun locatie, proces of event overtuigend kan tonen en uitleggen hoe een meeslepende route veilig, wettelijk en productieklaar wordt voorbereid.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "When is FPV video worthwhile for a business, and how do you plan a compelling route and a safe, legally responsible production?",
+    "geographicContext": "English-speaking decision-makers in Belgium and nearby markets, with Belgian geozones and EU drone rules explicitly retained."
+  },
+  "mainKeyword": "FPV video for business",
+  "longTailKeywords": [
+    "professional FPV drone video",
+    "FPV video production Belgium",
+    "indoor FPV drone video",
+    "how to plan an FPV drone route",
+    "FPV drone rules Belgium"
+  ],
+  "semanticTerms": [
+    "FPV corporate video",
+    "first person view drone",
+    "indoor and outdoor drone route",
+    "visual line of sight",
+    "unmanned aircraft observer",
+    "FPV production safety",
+    "drone geozones"
+  ],
+  "directAnswer": "FPV video is valuable when movement helps explain how a location, process or event fits together. A professional production starts with one viewer question, maps and rehearses the route, controls people and privacy, checks the applicable drone category and geozones, and uses an unmanned-aircraft observer wherever FPV is flown under the Open category.",
+  "title": "FPV video for business: from immersive route to safe production",
+  "metaDescription": "Planning FPV video for your business? Explore suitable stories, indoor and outdoor routes, VLOS and observers, privacy, editing and channel-ready versions.",
+  "h1": "FPV video for business: from immersive route to safe production",
+  "slug": "fpv-video-for-business",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/kennisbank/drone/drone-footage-for-businesses/", "anchor": "drone footage for business" },
+    { "sourceHref": "/be/diensten/drone-fpv/fpv-video/", "targetHref": "/en/diensten/drone-fpv/fpv-video/", "anchor": "FPV video service" },
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-combineren-met-bedrijfsvideo/", "targetHref": "/en/kennisbank/drone/combine-drone-footage-with-corporate-video/", "anchor": "combining drone footage with corporate video" },
+    { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare for a corporate shoot" },
+    { "sourceHref": "/be/diensten/drone-fpv/dronevideo/", "targetHref": "/en/diensten/drone-fpv/drone-video/", "anchor": "drone video" },
+    { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why businesses invest in corporate video" },
+    { "sourceHref": "/be/diensten/videografie/promovideo/", "targetHref": "/en/diensten/videography/promotional-video/", "anchor": "promotional video" },
+    { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" }
+  ],
+  "factsToPreserve": [
+    "FPV is a filming perspective, not a guarantee that a single uninterrupted take is desirable.",
+    "European drone operations are classified by risk under Implementing Regulation EU 2019/947.",
+    "Commercial purpose does not create a separate operational category by itself.",
+    "Open-category operations generally require VLOS, observe a 120-metre maximum distance from the closest point of the earth's surface and may not fly over an assembly of people.",
+    "For FPV in the Open category, EASA describes assistance from an unmanned-aircraft observer who directly watches the aircraft and stands beside the pilot.",
+    "Operational permission to fly does not automatically confer permission to record or publish identifiable people or personal data.",
+    "Rules and geozone conditions can change, and the article is not legal advice.",
+    "Captions should include relevant non-speech audio when it conveys meaning."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "sourceRoute": "/be/kennisbank/seo-geo/technische-seo-checklist/",
+  "targetRoute": "/en/kennisbank/seo-geo/technical-seo-checklist/",
+  "audience": "Business owners, marketers, web developers and SMEs auditing a new or existing website for search engines.",
+  "primaryDutchSearchIntent": "KMO's en websiteverantwoordelijken een uitvoerbare controlelijst geven voor crawlbaarheid, indexering, URL's, mobiel, structured data, performance en monitoring.",
+  "searchIntent": { "type": "informational", "question": "How should an SME audit crawlability, indexing, canonicals, redirects, mobile rendering, structured data, performance and monitoring?", "geographicContext": "English-speaking SMEs, with VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "technical SEO checklist",
+  "longTailKeywords": ["technical SEO audit", "website SEO checklist", "check crawlability", "check website indexing", "canonicals and redirects", "Core Web Vitals SEO"],
+  "semanticTerms": ["robots.txt", "noindex", "XML sitemap", "crawlable links", "canonical URL", "redirect", "JavaScript rendering", "structured data", "Core Web Vitals", "Search Console"],
+  "directAnswer": "A technical SEO audit first verifies that important URLs return usable pages, can be crawled and indexed as intended, and have consistent canonicals and redirects. It then checks internal discovery, mobile rendering, structured data, performance, accessibility, launch controls and ongoing monitoring.",
+  "title": "Technical SEO checklist for SME websites",
+  "metaDescription": "Auditing technical SEO? Check crawlability, indexing, canonicals, redirects, mobile usability, structured data, Core Web Vitals and monitoring.",
+  "h1": "Technical SEO checklist for SME websites",
+  "slug": "technical-seo-checklist",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
+    { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "get found in AI search results" },
+    { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "why a fast website ranks better" },
+    { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "request a technical audit" }
+  ],
+  "factsToPreserve": [
+    "Meeting Google's technical requirements does not guarantee indexing or rankings.",
+    "robots.txt controls crawling but is not a reliable method for removing a URL from search results.",
+    "A sitemap supports discovery but does not guarantee indexing.",
+    "Canonical annotations are signals, not absolute directives.",
+    "Redirect behaviour and destination pages must be tested after migration.",
+    "Structured data must match visible page content and does not guarantee rich results.",
+    "Core Web Vitals and tool scores require context and do not guarantee rankings.",
+    "Technical SEO cannot compensate for weak content, unclear intent or low credibility."
+  ]
+}

@@ -22,6 +22,176 @@
 @keyframes vvh-cardGlow { 0%, 100% { opacity: .5; } 50% { opacity: .92; } }
 .vvh-cardGlow { animation: vvh-cardGlow 5s ease-in-out infinite; }
 
+/* Compact stage structure. Repeated visual detail is painted by CSS instead
+   of hundreds of server-rendered nodes. */
+.vvh-ringOuter,
+.vvh-ringInner {
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    aspect-ratio: 1;
+    translate: 0 -50%;
+    border: 1px dashed rgba(255, 122, 0, .32);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.vvh-ringOuter { right: -110px; width: 600px; opacity: .5; }
+.vvh-ringInner { right: -30px; width: 440px; opacity: .4; }
+.vvh-cardGlow {
+    position: absolute;
+    inset: -6px;
+    z-index: 0;
+    border-radius: 30px;
+    background: radial-gradient(120% 120% at 60% 55%, rgba(255, 100, 0, .6), rgba(255, 60, 0, .15) 60%, transparent 78%);
+    filter: blur(28px);
+    pointer-events: none;
+}
+.vvh-stagecard {
+    position: relative;
+    z-index: 1;
+    padding: 2px;
+    border-radius: 26px;
+    background: linear-gradient(150deg, rgba(255, 150, 60, .9), rgba(255, 90, 0, .5) 45%, rgba(255, 80, 0, .15));
+    box-shadow: 0 40px 90px -30px rgba(255, 80, 0, .7);
+}
+.vvh-stageShell {
+    position: relative;
+    overflow: hidden;
+    padding: 22px 22px 20px;
+    border-radius: 24px;
+    background: radial-gradient(130% 120% at 50% 0%, #1a1109, #0b0a09 62%);
+}
+.vvh-stageHeader,
+.vvh-stageFooter,
+.vvh-headStart,
+.vvh-stageMeta,
+.vvh-traffic,
+.vvh-miniTraffic,
+.vvh-live,
+.vvh-editorMeta,
+.vvh-cameraMeta,
+.vvh-podcastHead,
+.vvh-podcastMeta {
+    display: flex;
+    align-items: center;
+}
+.vvh-stageHeader { position: relative; z-index: 2; justify-content: space-between; margin-bottom: 16px; }
+.vvh-headStart { gap: 12px; }
+.vvh-traffic,
+.vvh-miniTraffic { gap: 6px; }
+.vvh-traffic i,
+.vvh-miniTraffic i { display: block; border-radius: 50%; background: #ff3b2e; }
+.vvh-traffic i { width: 11px; height: 11px; }
+.vvh-miniTraffic i { width: 8px; height: 8px; }
+.vvh-traffic i:nth-child(2),
+.vvh-miniTraffic i:nth-child(2) { background: #ff7a00; }
+.vvh-traffic i:nth-child(3),
+.vvh-miniTraffic i:nth-child(3) { background: #ffa23a; }
+.vvh-labelStack { position: relative; width: 150px; height: 20px; color: #fff; font-size: 15px; font-weight: 700; }
+.vvh-stageMeta { gap: 12px; color: #ff9a45; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-countStack { position: relative; width: 44px; height: 16px; color: rgba(255, 255, 255, .4); }
+.vvh-live { gap: 6px; letter-spacing: .06em; }
+.vvh-liveDot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff7a00; }
+.vvh-stageViewport {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 352px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 16px;
+    background-color: #0a0908;
+    background-image: radial-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px), radial-gradient(120% 120% at 50% 0%, #120c07, transparent 70%);
+    background-size: 20px 20px, auto;
+}
+.vvh-stageFooter { position: relative; z-index: 2; justify-content: space-between; margin-top: 16px; color: rgba(255, 255, 255, .5); font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-stageDots { display: flex; align-items: center; gap: 7px; }
+.vvh-stageDots i { display: block; }
+
+/* Webdesign scene */
+.vvh-browser { position: relative; overflow: hidden; width: min(400px, 100%); margin: 25px auto 0; border: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; background: #0f0e0d; box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .8); }
+.vvh-browserBar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.vvh-browserBar > span { display: flex; flex: 1; align-items: center; height: 16px; margin-left: 8px; padding: 0 8px; border-radius: 6px; background: rgba(255, 255, 255, .06); color: rgba(255, 255, 255, .5); font: 10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-browserBody { position: relative; display: flex; height: 222px; flex-direction: column; gap: 11px; padding: 16px; }
+.vvh-browserBody > i { display: block; border-radius: 5px; }
+.vvh-browserHero { height: 34px; background: linear-gradient(90deg, #ff3b2e, #ff7a00); }
+.vvh-lineLong { width: 80%; height: 9px; background: rgba(255, 255, 255, .16); }
+.vvh-lineShort { width: 62%; height: 9px; background: rgba(255, 255, 255, .12); }
+.vvh-browserCards { display: flex; gap: 11px; margin-top: 4px; }
+.vvh-browserCards i { flex: 1; height: 64px; border-radius: 8px; background: rgba(255, 255, 255, .06); }
+.vvh-browserCards i:first-child { border: 1px solid rgba(255, 122, 0, .3); background: rgba(255, 122, 0, .18); }
+.vvh-cursorW { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 15px solid #fff; border-right: 9px solid transparent; filter: drop-shadow(1px 1px #000); }
+.vvh-shimmer { position: absolute; top: 0; left: 0; width: 60px; height: 100%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .12), transparent); }
+
+/* Photography scene */
+.vvh-cameraGrid { position: absolute; inset: 26px; border: 1px solid rgba(255, 255, 255, .1); background-image: linear-gradient(90deg, transparent 33%, rgba(255, 255, 255, .08) 33% 33.3%, transparent 33.3% 66%, rgba(255, 255, 255, .08) 66% 66.3%, transparent 66.3%), linear-gradient(transparent 33%, rgba(255, 255, 255, .08) 33% 33.3%, transparent 33.3% 66%, rgba(255, 255, 255, .08) 66% 66.3%, transparent 66.3%); }
+.vvh-focusBox { position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; margin: -35px; border: 2px solid #fff; border-right-color: transparent; border-bottom-color: transparent; }
+.vvh-apert { position: absolute; top: 50%; left: 50%; width: 92px; height: 92px; margin: -46px; border: 2px solid #ff7a00; border-radius: 28%; box-shadow: inset 0 0 0 20px rgba(255, 122, 0, .08), inset 0 0 0 22px #ff7a00; opacity: .5; }
+.vvh-cameraStatus,
+.vvh-cameraMeta { position: absolute; color: #ff9a45; font: 700 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-cameraStatus { top: 34px; left: 34px; }
+.vvh-cameraMeta { right: 34px; bottom: 34px; left: 34px; justify-content: space-between; color: rgba(255, 255, 255, .85); }
+.vvh-cameraMeta span:last-child { color: #ff9a45; }
+.vvh-flash { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, .9), transparent 60%); pointer-events: none; }
+
+/* Video scene */
+.vvh-editor { display: flex; height: 100%; flex-direction: column; gap: 14px; padding: 18px; }
+.vvh-editorStrip { position: relative; overflow: hidden; height: 74px; border-radius: 8px; }
+.vvh-pulseP { position: absolute; top: 50%; left: 50%; width: 42px; height: 42px; translate: -50% -50%; border-radius: 50%; background: rgba(0, 0, 0, .45); backdrop-filter: blur(4px); }
+.vvh-pulseP::after { position: absolute; top: 12px; left: 16px; content: ""; border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 13px solid #fff; }
+.vvh-timeline { position: relative; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .1); }
+.vvh-timeline i { position: absolute; inset: 0 auto 0 0; width: 38%; border-radius: inherit; background: linear-gradient(90deg, #ff3b2e, #ff7a00); }
+.vvh-playhead { position: absolute; top: -5px; width: 2px; height: 18px; background: #fff; box-shadow: 0 0 8px #fff; }
+.vvh-editorMeta { justify-content: space-between; color: rgba(255, 255, 255, .8); font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-editorMeta span:first-child { color: #ff9a45; }
+
+/* Drone scene */
+.vvh-radar { position: absolute; top: 50%; right: 24px; overflow: hidden; width: 200px; height: 200px; translate: 0 -50%; border: 1px solid rgba(255, 122, 0, .3); border-radius: 50%; background: repeating-radial-gradient(circle, transparent 0 24px, rgba(255, 122, 0, .18) 25px 26px); }
+.vvh-radar i { position: absolute; inset: 50% 0 auto; height: 1px; background: rgba(255, 122, 0, .18); box-shadow: 0 -100px rgba(255, 122, 0, .12); }
+.vvh-sweep { position: absolute; inset: 0; background: conic-gradient(rgba(255, 122, 0, .5), transparent 70deg); }
+.vvh-route { position: absolute; top: 42%; left: 20px; width: 92%; height: 90px; rotate: -12deg; border-top: 2px dashed rgba(255, 122, 0, .45); border-radius: 50%; }
+.vvh-fly { position: absolute; top: 0; left: 0; }
+.vvh-droneMini { position: relative; width: 46px; height: 40px; filter: drop-shadow(0 5px 9px rgba(0, 0, 0, .55)); }
+.vvh-droneMini i { position: absolute; width: 18px; height: 18px; border: 3px solid rgba(255, 160, 80, .55); border-radius: 50%; }
+.vvh-droneMini i:nth-child(2) { right: 0; }
+.vvh-droneMini i:nth-child(3) { bottom: 0; }
+.vvh-droneMini i:nth-child(4) { right: 0; bottom: 0; }
+.vvh-droneMini b { position: absolute; top: 14px; left: 14px; width: 18px; height: 12px; border-radius: 5px; background: #33333a; box-shadow: 0 0 0 1px #ff7a00; }
+.vvh-telemetry { position: absolute; top: 26px; left: 26px; display: flex; flex-direction: column; color: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-telemetry small { margin-top: 12px; color: rgba(255, 255, 255, .5); font-size: 11px; letter-spacing: .08em; }
+.vvh-telemetry small:first-child { margin-top: 0; }
+.vvh-telemetry strong { font-size: 30px; line-height: 1; }
+.vvh-telemetry em { color: #ff9a45; font-size: 13px; font-style: normal; }
+.vvh-coordinates { position: absolute; bottom: 24px; left: 26px; color: rgba(255, 255, 255, .7); font: 700 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+/* 3D and podcast scenes */
+.vvh-cubeStage { position: relative; width: 130px; height: 130px; margin: 104px auto 0; perspective: 640px; }
+.vvh-cube { position: absolute; inset: 0; }
+.vvh-cube i { position: absolute; width: 130px; height: 130px; border: 1.5px solid rgba(255, 122, 0, .6); background: rgba(255, 122, 0, .05); transform: translateZ(65px); }
+.vvh-cube i:nth-child(2) { transform: rotateY(180deg) translateZ(65px); }
+.vvh-cube i:nth-child(3) { transform: rotateY(90deg) translateZ(65px); }
+.vvh-cube i:nth-child(4) { transform: rotateY(-90deg) translateZ(65px); }
+.vvh-cube i:nth-child(5) { transform: rotateX(90deg) translateZ(65px); }
+.vvh-cube i:nth-child(6) { transform: rotateX(-90deg) translateZ(65px); }
+.vvh-orbit,
+.vvh-orbit2 { position: absolute; top: 50%; left: 50%; width: 9px; height: 9px; margin: -4px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px #ff7a00; }
+.vvh-orbit2 { width: 7px; height: 7px; margin: -3px; background: #ff9a45; }
+.vvh-rendering,
+.vvh-fps,
+.vvh-renderMeta { position: absolute; color: #ff9a45; font: 700 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-rendering { top: 26px; left: 26px; }
+.vvh-fps { top: 26px; right: 26px; color: rgba(255, 255, 255, .75); }
+.vvh-renderMeta { right: 0; bottom: 24px; left: 0; color: rgba(255, 255, 255, .55); text-align: center; letter-spacing: .1em; }
+.vvh-podcast { display: flex; height: 100%; flex-direction: column; justify-content: center; gap: 20px; padding: 20px; }
+.vvh-podcastHead { justify-content: space-between; }
+.vvh-podcastHead > div { display: flex; flex: 1; flex-direction: column; margin-left: 12px; }
+.vvh-podcastHead strong { color: #fff; font-size: 16px; }
+.vvh-podcastHead small { color: rgba(255, 255, 255, .5); font: 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-podcastHead > span { display: flex; align-items: center; gap: 7px; color: #ff5a1f; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.vvh-mic { position: relative; width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(140deg, #ff5a1f, #ff9500); box-shadow: 0 10px 26px -8px rgba(255, 90, 0, .8); }
+.vvh-mic::before { position: absolute; top: 10px; left: 18px; width: 10px; height: 18px; content: ""; border: 2px solid #fff; border-radius: 6px; }
+.vvh-mic::after { position: absolute; top: 26px; left: 14px; width: 18px; height: 9px; content: ""; border-bottom: 2px solid #fff; border-radius: 50%; }
+.vvh-podcastMeta { justify-content: space-between; color: rgba(255, 255, 255, .8); font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
 .vvh-btn { transition: transform .25s ease, box-shadow .25s ease; }
 .vvh-btn:hover { transform: translateY(-2px); }
 .vvh-btn .vvh-ar { transition: transform .3s ease; }
@@ -56,8 +226,37 @@
 .vvh-playhead { animation: vvh-playhead 4.5s linear infinite; }
 @keyframes vvh-strip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .vvh-strip { animation: vvh-strip 7s linear infinite; }
+.vvh-stripFrames {
+    width: 2040px;
+    height: 74px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 122, 0, .28) 0 96px,
+        transparent 96px 102px
+    );
+    border: 1px solid rgba(255, 122, 0, .25);
+    border-radius: 6px;
+    box-shadow: inset 0 0 34px rgba(255, 60, 0, .1);
+}
 @keyframes vvh-eq { 0%, 100% { transform: scaleY(.16); } 50% { transform: scaleY(1); } }
 .vvh-eq { transform-origin: bottom; animation: vvh-eq ease-in-out infinite; }
+.vvh-eqField {
+    position: relative;
+    overflow: hidden;
+    transform-origin: bottom;
+    background: repeating-linear-gradient(90deg, #ff7a00 0 7px, transparent 7px 11px);
+    clip-path: polygon(0 80%, 3% 36%, 6% 70%, 9% 18%, 12% 62%, 15% 28%, 18% 78%, 21% 42%, 24% 14%, 27% 54%, 30% 34%, 33% 76%, 36% 24%, 39% 66%, 42% 12%, 45% 48%, 48% 72%, 51% 30%, 54% 58%, 57% 20%, 60% 68%, 63% 38%, 66% 10%, 69% 52%, 72% 26%, 75% 74%, 78% 44%, 81% 16%, 84% 64%, 87% 32%, 90% 70%, 93% 22%, 96% 56%, 100% 36%, 100% 100%, 0 100%);
+    animation: vvh-eq 1.05s ease-in-out infinite alternate;
+}
+.vvh-eqField::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background: linear-gradient(180deg, #ff9500, #ff3b2e);
+    mix-blend-mode: color;
+}
+.vvh-eqVideo { flex: 1; margin: 0 2px; }
+.vvh-eqPodcast { height: 96px; }
 @keyframes vvh-pulseP { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.12); opacity: 1; } }
 .vvh-pulseP { animation: vvh-pulseP 1.6s ease-in-out infinite; }
 
@@ -80,7 +279,7 @@
 @media (prefers-reduced-motion: reduce) {
     .vvh-blk, .vvh-fl, .vvh-ring, .vvh-ringR, .vvh-liveDot, .vvh-cardGlow, .vvh-scene, .vvh-hlabel, .vvh-hdot,
     .vvh-bw, .vvh-cursorW, .vvh-shimmer, .vvh-focusBox, .vvh-apert, .vvh-flash, .vvh-playhead, .vvh-strip,
-    .vvh-eq, .vvh-pulseP, .vvh-fly, .vvh-sweep, .vvh-bob, .vvh-cube, .vvh-orbit, .vvh-orbit2 { animation: none !important; }
+    .vvh-eq, .vvh-eqField, .vvh-pulseP, .vvh-fly, .vvh-sweep, .vvh-bob, .vvh-cube, .vvh-orbit, .vvh-orbit2 { animation: none !important; }
     .vvh-scene { opacity: 0; }
     .vvh-scene[style*="--s:0"] { opacity: 1; }
 }

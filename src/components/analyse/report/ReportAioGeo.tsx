@@ -1,9 +1,10 @@
 import { CheckCircle2, CircleX, TriangleAlert } from "lucide-react";
 import type { NormalizedPartnerAuditCategory } from "@/types/analysis";
-import { reportCopy } from "@/components/analyse/report/reportCopy";
+import { getReportCopy, type ReportLocale } from "@/components/analyse/report/reportCopy";
 import { SectionTitle } from "@/components/analyse/report/SectionTitle";
 
-export function ReportAioGeo({ category }: { category?: NormalizedPartnerAuditCategory }) {
+export function ReportAioGeo({ category, locale = "nl" }: { category?: NormalizedPartnerAuditCategory; locale?: ReportLocale }) {
+  const reportCopy = getReportCopy(locale);
   if (!category) return null;
   return (
     <section>
@@ -11,7 +12,7 @@ export function ReportAioGeo({ category }: { category?: NormalizedPartnerAuditCa
       <div className="rounded-[20px] border border-orange-500/20 bg-orange-500/[0.035] p-5 sm:p-6">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm text-white/50">Gezondheidsscore</p>
+            <p className="text-sm text-white/50">{locale === "en" ? "Health score" : "Gezondheidsscore"}</p>
             <p className="mt-1 text-4xl font-black text-emerald-300">{category.score}<span className="text-base text-white/35"> / 100</span></p>
           </div>
           <div className="h-1.5 w-28 overflow-hidden rounded-full bg-white/10 sm:w-48">

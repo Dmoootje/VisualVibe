@@ -1,0 +1,42 @@
+{
+  "sourceRoute": "/be/diensten/videografie/nieuwsreportage/",
+  "targetRoute": "/en/services/videography/branded-video-report/",
+  "audience": "organisations communicating a milestone, opening, investment or initiative through owned channels",
+  "primaryDutchSearchIntent": "Een professionele videoproductiepartner vinden die concept, opname, montage en bruikbare opleverformaten duidelijk afstemt op het communicatiedoel.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Who can provide professional branded video report services in Limburg, Belgium?",
+    "geographicContext": "Limburg, Belgium, with service across Flanders, Antwerp and the Dutch province of Limburg."
+  },
+  "mainKeyword": "branded corporate video report",
+  "longTailKeywords": [
+    "branded corporate video report Limburg Belgium",
+    "professional branded corporate video report for SMEs",
+    "branded corporate video report VisualVibe"
+  ],
+  "semanticTerms": [
+    "VisualVibe",
+    "Limburg",
+    "professional production",
+    "project planning",
+    "quotation"
+  ],
+  "directAnswer": "A branded video report explains business news through facts, interviews and context while making the commercial source and purpose transparent.",
+  "title": "Branded video report in Limburg | VisualVibe",
+  "metaDescription": "Professional branded video report for businesses in Limburg, Belgium, with careful planning, clear deliverables and content prepared for its intended channels.",
+  "h1": "Branded video report shaped around a clear purpose",
+  "slug": "branded-video-report",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/offerte-aanvragen/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium, and also serves Flanders, Antwerp and the Dutch province of Limburg.",
+    "Scope, feasibility and deliverables depend on the agreed briefing and quotation.",
+    "No fixed price, turnaround time or guaranteed commercial result is stated.",
+    "All safety, privacy, permission, hosting and platform limitations in the Dutch source remain applicable."
+  ]
+}

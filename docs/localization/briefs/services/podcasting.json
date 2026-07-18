@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/podcasting/",
+  "targetRoute": "/en/services/podcasting/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Een professionele audio- of videopodcast voor een bedrijf laten ontwikkelen en produceren.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Develop and produce a professional audio or video podcast for a business.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "business podcast production",
+  "longTailKeywords": [
+    "business podcast production for SMEs",
+    "business podcast production Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "VisualVibe supports business podcasts from format and planning through recording, editing and publication.",
+  "title": "Business Podcast Production Limburg | VisualVibe",
+  "metaDescription": "VisualVibe supports business podcasts from format and planning through recording, editing and publication.",
+  "h1": "Podcasting",
+  "slug": "podcasting",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/podcasting/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

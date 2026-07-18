@@ -1,0 +1,34 @@
+{
+  "sourceRoute": "/be/diensten/videografie/",
+  "targetRoute": "/en/services/videography/",
+  "audience": "SMEs and organisations in Limburg, Belgium, and the surrounding regions",
+  "primaryDutchSearchIntent": "Een professionele bedrijfs- of promovideo laten maken.",
+  "searchIntent": {
+    "type": "commercial",
+    "question": "Commission professional corporate and promotional video for a business.",
+    "geographicContext": "Limburg, Belgium, with service available across Flanders, Antwerp and Dutch Limburg"
+  },
+  "mainKeyword": "videographer Limburg",
+  "longTailKeywords": [
+    "videographer Limburg for SMEs",
+    "videographer Limburg Belgium"
+  ],
+  "semanticTerms": ["VisualVibe", "SME", "Limburg, Belgium"],
+  "directAnswer": "VisualVibe produces corporate films, promotional video, event aftermovies and social content for businesses in Limburg and beyond.",
+  "title": "Videographer Limburg | Corporate Video Production",
+  "metaDescription": "VisualVibe produces corporate films, promotional video, event aftermovies and social content for businesses in Limburg and beyond.",
+  "h1": "Videography",
+  "slug": "videography",
+  "internalLinks": [
+    {
+      "sourceHref": "/be/diensten/videografie/",
+      "targetHref": "/en/request-a-quotation/",
+      "anchor": "request a quotation"
+    }
+  ],
+  "factsToPreserve": [
+    "VisualVibe is based in Limburg, Belgium",
+    "No prices, guarantees or results may be added",
+    "The service scope must remain equal to the Dutch source"
+  ]
+}

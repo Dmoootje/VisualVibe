@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "./globals.css";
+import nl from "../../messages/nl.json";
 
 /**
  * Root not-found for paths that never reach the [locale] segment (bot probes
@@ -16,15 +17,15 @@ export default function NotFound() {
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#ff7500]">
             404
           </p>
-          <h1 className="mt-3 text-3xl font-bold sm:text-4xl">Pagina niet gevonden</h1>
+          <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{nl.notFound.title}</h1>
           <p className="mx-auto mt-4 max-w-md text-white/60">
-            Deze pagina bestaat niet of is verplaatst.
+            {nl.notFound.description}
           </p>
           <Link
             href="/"
             className="mt-8 inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-red-500 to-[#ff7500] px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
           >
-            Terug naar de homepage
+            {nl.notFound.home}
           </Link>
         </main>
       </body>

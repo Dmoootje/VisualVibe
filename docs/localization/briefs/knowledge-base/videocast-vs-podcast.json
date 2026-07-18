@@ -1,0 +1,30 @@
+{
+  "sourceRoute": "/be/kennisbank/podcasting/videocast-vs-podcast/",
+  "targetRoute": "/en/kennisbank/podcasting/videocast-vs-podcast/",
+  "audience": "Business owners, experts and marketing or communications teams planning a business podcast and assessing whether video is editorially and operationally necessary.",
+  "primaryDutchSearchIntent": "Bedrijven helpen kiezen tussen een audio-first podcast, een videocast of een gefaseerde combinatie op basis van doel, publiek en productiecapaciteit.",
+  "searchIntent": { "type": "commercial", "question": "Should a business choose an audio-first podcast, a videocast or a phased combination?", "geographicContext": "International English-speaking business audiences, with VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "videocast vs podcast",
+  "longTailKeywords": ["videocast or podcast", "podcast vs video podcast", "audio podcast or video", "video podcast for businesses", "podcast on YouTube", "videocast versus podcast costs"],
+  "semanticTerms": ["audio-first", "video-first", "podcast distribution", "transcript", "captions", "social clips", "guest consent", "music rights", "production capacity", "pilot episode"],
+  "directAnswer": "Choose an audio-first podcast when listening context and a sustainable production rhythm matter most. Choose a videocast when visuals add information or video distribution is strategically valuable. A phased approach can test both, but the decision should follow audience needs, content, rights, accessibility and production capacity rather than trends alone.",
+  "title": "Videocast vs podcast: which format fits your business?",
+  "metaDescription": "Choosing a videocast or podcast? Compare purpose, use context, recording, editing, accessibility, distribution, social clips and measurement.",
+  "h1": "Videocast vs podcast: which format fits your business?",
+  "slug": "videocast-vs-podcast",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/podcasting/bedrijfspodcast-starten/", "targetHref": "/en/kennisbank/podcasting/how-to-start-a-business-podcast/", "anchor": "starting a business podcast" },
+    { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your podcast format" }
+  ],
+  "factsToPreserve": [
+    "Neither audio nor video is universally the better-performing format.",
+    "A video podcast label does not specify camera count, editing, deliverables or distribution rights.",
+    "Video should add information or distribution value sufficient to justify its additional production and approval work.",
+    "An accurate transcript supports prerecorded audio accessibility; video requires synchronised captions and may need visual description.",
+    "Publishing the same file on every platform is not a complete distribution strategy.",
+    "Guest consent, music, visual materials and reuse rights broaden when video is included.",
+    "Costs must compare the full workflow, outputs and team capacity, not recording price alone.",
+    "Views, downloads, watch time and leads have different definitions and do not prove business causality on their own."
+  ]
+}

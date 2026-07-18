@@ -6,11 +6,13 @@ import type { SeoGeoChecklistCategory } from "@/data/tools";
 
 type SeoGeoChecklistProps = {
   categories: SeoGeoChecklistCategory[];
+  locale?: "nl" | "en";
 };
 
 type DownloadState = "idle" | "loading" | "error";
 
-export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
+export function SeoGeoChecklist({ categories, locale = "nl" }: SeoGeoChecklistProps) {
+  const en = locale === "en";
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
   const [downloadState, setDownloadState] = useState<DownloadState>("idle");
 
@@ -55,20 +57,19 @@ export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
       <div className="mb-7 grid gap-5 lg:grid-cols-[1fr_320px] lg:items-end">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-[#ff8a2a]">
-            Interactieve checklist
+            {en ? "Interactive checklist" : "Interactieve checklist"}
           </p>
           <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            Vink af wat klaar is
+            {en ? "Tick off completed work" : "Vink af wat klaar is"}
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/62">
-            Gebruik deze lijst als snelle SEO/GEO-controle voor een belangrijke pagina. Vink je
-            punten aan en download daarna je eigen VisualVibe PDF.
+            {en ? "Use this list for a focused SEO/GEO review of an important page. Select your actions and download your own VisualVibe PDF." : "Gebruik deze lijst als snelle SEO/GEO-controle voor een belangrijke pagina. Vink je punten aan en download daarna je eigen VisualVibe PDF."}
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/[0.09] bg-black/25 p-4">
           <div className="mb-2 flex items-end justify-between gap-4">
-            <span className="text-sm font-semibold text-white/70">Voortgang</span>
+            <span className="text-sm font-semibold text-white/70">{en ? "Progress" : "Voortgang"}</span>
             <span className="text-3xl font-extrabold text-green-400">{progress}%</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/10">
@@ -78,7 +79,7 @@ export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
             />
           </div>
           <p className="mt-2 text-xs text-white/45">
-            {checkedIds.length} van {total} punten aangevinkt
+            {checkedIds.length} {en ? "of" : "van"} {total} {en ? "checkpoints selected" : "punten aangevinkt"}
           </p>
         </div>
       </div>
@@ -124,13 +125,13 @@ export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
 
       <div className="mt-7 flex flex-col gap-3 rounded-[22px] border border-[rgba(255,117,0,0.24)] bg-[radial-gradient(circle_at_top_left,rgba(255,117,0,0.14),rgba(255,255,255,0.025)_55%,rgba(0,0,0,0.18)_100%)] p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="font-bold text-white">Download als VisualVibe PDF</h3>
+          <h3 className="font-bold text-white">{en ? "Download a VisualVibe PDF" : "Download als VisualVibe PDF"}</h3>
           <p className="mt-1 text-sm text-white/58">
-            Met branding, datum, gekozen actiepunten en VisualVibe-links.
+            {en ? "Includes branding, the date, selected actions and VisualVibe links." : "Met branding, datum, gekozen actiepunten en VisualVibe-links."}
           </p>
           {downloadState === "error" && (
             <p className="mt-2 text-sm font-semibold text-red-300">
-              De PDF kon niet worden gemaakt. Probeer het opnieuw.
+              {en ? "The PDF could not be created. Please try again." : "De PDF kon niet worden gemaakt. Probeer het opnieuw."}
             </p>
           )}
         </div>
@@ -146,14 +147,14 @@ export function SeoGeoChecklist({ categories }: SeoGeoChecklistProps) {
             ) : (
               <Download className="h-4 w-4" aria-hidden="true" />
             )}
-            Download als VisualVibe PDF
+            {en ? "Download a VisualVibe PDF" : "Download als VisualVibe PDF"}
           </button>
           <a
-            href="/website-analyse"
+            href={locale === "en" ? "/en/website-analysis/" : "/website-analyse"}
             className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-black/20 px-5 py-3 text-sm font-bold text-white transition-colors hover:border-[rgba(255,117,0,0.48)] hover:text-[#ff9a45]"
           >
             <SearchCheck className="h-4 w-4" aria-hidden="true" />
-            Analyseer je pagina gratis
+            {en ? "Analyse your page for free" : "Analyseer je pagina gratis"}
           </a>
         </div>
       </div>

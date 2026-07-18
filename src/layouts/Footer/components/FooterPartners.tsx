@@ -1,8 +1,6 @@
-import { PARTNER_LOGOS } from "./partnerLogos";
 import type { FooterPartner } from "../config/footer.config";
 
-/** Partner / certification row: label block + logo chips (inlined SVG, unified
- * to white by the .vv-partner filter). */
+/** Partner / certification row with compact text wordmarks. */
 export function FooterPartners({
   title,
   subtitle,
@@ -22,11 +20,9 @@ export function FooterPartners({
       </div>
       <div className="flex flex-wrap items-center gap-3.5">
         {partners.map((p) => {
-          const html = PARTNER_LOGOS[p.logo];
-          if (!html) return null;
           const chip = (
             <div className="vv-pchip flex h-16 items-center justify-center rounded-[14px] border border-white/10 bg-white/[0.02] px-6">
-              <span className="vv-partner" dangerouslySetInnerHTML={{ __html: html }} />
+              <span className={`vv-partner vv-partner-${p.logo}`}>{p.alt}</span>
             </div>
           );
           return p.href ? (
