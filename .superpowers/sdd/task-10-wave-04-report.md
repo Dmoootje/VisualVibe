@@ -23,3 +23,19 @@ The complete Dutch sources, their metadata, linked service context, related know
 - English article word counts including frontmatter: 3,956; 4,147; and 3,302 words.
 
 English remains unpublished behind the existing locale publication controls.
+
+## Independent editorial review
+
+Reviewed independently after commit `e0bac92` against the complete Dutch sources, translation briefs, English style guide and glossary.
+
+- `why-invest-in-a-corporate-video`: APPROVED after restoring the source's factual-accuracy safeguard for testimonials and its internal routes to the performance and recruitment guides.
+- `real-estate-drone-photography`: APPROVED after replacing two translated phrases that sounded procedural rather than idiomatic. Legal limits, the 120-metre Open-category ceiling, visual-line-of-sight requirement, geozone checks, privacy qualification, plot-boundary caveat and usage-rights caveat remain intact.
+- `seo-content-for-service-businesses`: APPROVED after restoring the missing people-first and generative-search source context, explicit no-preferred-word-count qualification, pillar route and one-page-versus-full-site route. The 7 May 2026 FAQ-rich-result change, evidence controls, non-guarantee language and page-type measurement model remain intact.
+- Taxonomy: all three files use the registered category identities and slugs (`Videografie` / `videografie`, `Drone & FPV` / `drone`, and `SEO & GEO` / `seo-geo`). No owned category mismatch remains.
+- Structural parity: headings, components, tables, checklists, FAQs, CTAs, metadata, image text and factual caveats were compared with the complete source documents. Component and FAQ counts match each Dutch partner.
+- Brief validation: 3/3 passed `translation-brief.schema.json` with Python `jsonschema`.
+- Knowledge-base translation tests: 10/10 passed.
+- TypeScript typecheck: passed.
+- Locale audit: 0 blocking issues; 41 informational missing-partner notices belong to unfinished knowledge-base waves.
+- Typography, mojibake and locale-link scans: no U+2014/U+2015, mojibake or unprefixed internal body links in the three reviewed files.
+- Production compilation reached successful compilation, lint and type validation. Static generation remains blocked by 294 cross-wave canonical-reference issues across unfinished English knowledge-base and route work; this review did not alter unrelated files.
