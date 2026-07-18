@@ -116,6 +116,8 @@ export function KennisbankLandingView({
             }
             onClear={() => setQuery("")}
             placeholder={locale === "en" ? "Search for a guide or article..." : "Zoek een gids of artikel..."}
+            submitLabel={labels.search}
+            clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
           />
         }
       />
@@ -162,10 +164,10 @@ export function KennisbankLandingView({
                     {resultCount}
                   </span>
                   <div className="inline-flex gap-1 rounded-[11px] border border-white/12 bg-white/[0.03] p-1">
-                    <ToggleButton active={layout === "grid"} onClick={() => setLayout("grid")} label="Rasterweergave">
+                    <ToggleButton active={layout === "grid"} onClick={() => setLayout("grid")} label={locale === "en" ? "Grid view" : "Rasterweergave"}>
                       <LayoutGrid className="h-[17px] w-[17px]" aria-hidden="true" />
                     </ToggleButton>
-                    <ToggleButton active={layout === "list"} onClick={() => setLayout("list")} label="Lijstweergave">
+                    <ToggleButton active={layout === "list"} onClick={() => setLayout("list")} label={locale === "en" ? "List view" : "Lijstweergave"}>
                       <Rows3 className="h-[17px] w-[17px]" aria-hidden="true" />
                     </ToggleButton>
                   </div>
@@ -175,7 +177,7 @@ export function KennisbankLandingView({
               {/* Filter chips */}
               <div className="mb-6 flex flex-wrap gap-2.5">
                 <Chip active={cat === ALL} onClick={() => pickCategory(ALL)}>
-                  Alle
+                  {locale === "en" ? "All" : "Alle"}
                 </Chip>
                 {activeCategories.map((category) => (
                   <Chip key={category.slug} active={cat === category.slug} onClick={() => pickCategory(category.slug)}>
@@ -228,6 +230,7 @@ export function KennisbankLandingView({
                 onChange={setQuery}
                 onClear={() => setQuery("")}
                 placeholder={labels.searchPlaceholder}
+                clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
                 size="sidebar"
               />
             </div>
@@ -280,7 +283,7 @@ export function KennisbankLandingView({
           >
             {locale === "en" ? "Browse by topic" : "Blader per onderwerp"}
           </h2>
-          <BladerPerOnderwerp categories={allCategories} />
+          <BladerPerOnderwerp categories={allCategories} locale={locale} />
         </div>
       </section>
     </div>

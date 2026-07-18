@@ -171,7 +171,7 @@ export default async function SoftwareKennisbankPage({
           { value: lastUpdatedLabel, label: labels.updated },
         ]}
         graphic={<CategoryRingGraphic slug={category.slug} />}
-        search={<CategoryHeroSearch />}
+        search={<CategoryHeroSearch locale={locale} />}
         backgroundImage={pillarPosts[0]?.featuredImage ?? posts[0]?.featuredImage}
         backgroundImageAlt={locale === "en" ? "Custom apps, AI and software for SMEs" : `${category.name}: apps, AI en software op maat laten maken`}
       />

@@ -45,4 +45,22 @@ describe("English knowledge-base chrome", () => {
       expect(read(file), file).toContain("knowledgeBaseLabels");
     }
   });
+
+  it("localizes layout controls, the all filter and upcoming-topic cards", () => {
+    const landing = read("src/components/kennisbank/KennisbankLandingView.tsx");
+    expect(landing).toContain('locale === "en" ? "Grid view"');
+    expect(landing).toContain('locale === "en" ? "List view"');
+    expect(landing).toContain('locale === "en" ? "All"');
+    expect(landing).toContain("<BladerPerOnderwerp categories={allCategories} locale={locale}");
+
+    const topics = read("src/components/kennisbank/BladerPerOnderwerp.tsx");
+    expect(topics).toContain('locale === "en" ? "Coming soon"');
+    expect(topics).toContain('locale === "en" ? `${card.name} (coming soon)`');
+  });
+
+  it("localizes article-card author image alt text", () => {
+    const card = read("src/components/kennisbank/ArticleCard.tsx");
+    expect(card).toContain("labels.profilePhoto");
+    expect(card).not.toContain('alt={`Profielfoto van ${value}`}');
+  });
 });

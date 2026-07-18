@@ -61,12 +61,14 @@ function Meta({
   imageUrl,
   label,
   value,
+  profilePhotoPrefix = "Profielfoto van",
 }: {
   icon: LucideIcon;
   /** Rond avatarfotootje in plaats van het icoon (auteursfoto). */
   imageUrl?: string;
   label: string;
   value?: string;
+  profilePhotoPrefix?: string;
 }) {
   if (!value) return null;
   return (
@@ -74,7 +76,7 @@ function Meta({
       {imageUrl ? (
         <Image
           src={imageUrl}
-          alt={`Profielfoto van ${value}`}
+          alt={`${profilePhotoPrefix} ${value}`}
           width={32}
           height={32}
           className="h-5 w-5 shrink-0 rounded-full border border-[#ff7500]/40 object-cover"
@@ -180,7 +182,7 @@ export function ArticleCard({
           <div className="mb-5 mt-auto flex flex-wrap gap-x-6 gap-y-3">
             <Meta icon={Clock} label={labels.readingTime} value={article.readingTime} />
             <Meta icon={CalendarDays} label={labels.published} value={article.date} />
-            <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} />
+            <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} profilePhotoPrefix={labels.profilePhoto} />
           </div>
           <Cta label={ctaLabel ?? labels.readArticle} />
         </div>
@@ -203,7 +205,7 @@ export function ArticleCard({
         {article.heroComposed && <h3 className="sr-only">{article.fullTitle}</h3>}
         <div className="grid grid-cols-2 gap-3">
           <Meta icon={Clock} label={labels.readingTime} value={article.readingTime} />
-          <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} />
+          <Meta icon={User} imageUrl={article.authorImage} label={labels.author} value={article.author} profilePhotoPrefix={labels.profilePhoto} />
         </div>
         <div className="my-4 h-px bg-white/10" />
         <p className="mb-5 flex-1 text-sm leading-relaxed text-white/64 line-clamp-3">{article.excerpt}</p>

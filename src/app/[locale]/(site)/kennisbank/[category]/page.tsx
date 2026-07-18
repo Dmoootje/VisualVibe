@@ -205,7 +205,7 @@ export default async function KennisbankCategoryPage({
           { value: lastUpdatedLabel, label: labels.updated },
         ]}
         graphic={<CategoryRingGraphic slug={categoryDef.slug} />}
-        search={<CategoryHeroSearch />}
+        search={<CategoryHeroSearch locale={locale} />}
         backgroundImage={kennisbankCategoryFeatured(categoryDef.slug)}
         backgroundImageAlt={`${labels.knowledgeBase}: ${localizedCategoryName} by VisualVibe`}
       />

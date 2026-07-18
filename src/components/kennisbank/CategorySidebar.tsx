@@ -43,6 +43,7 @@ export function CategorySidebar({ tocLinks, otherCategories, cta, locale = "nl" 
           onSubmit={go}
           onClear={() => setQuery("")}
           placeholder={labels.searchPlaceholder}
+          clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
           size="sidebar"
         />
       </div>
