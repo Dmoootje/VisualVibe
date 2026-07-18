@@ -1,0 +1,26 @@
+{
+  "sourceRoute": "/be/kennisbank/3d-vr/wat-is-een-3d-tour/",
+  "targetRoute": "/en/knowledge-base/3d-vr/what-is-a-3d-tour/",
+  "audience": "SME owners, marketers and property or location managers considering an interactive tour for sales, orientation, documentation, training or support.",
+  "primaryDutchSearchIntent": "KMO's uitleggen wat een 3D-tour is, hoe capture en publicatie werken en welke keuzes rond doel, kwaliteit, hosting, privacy, toegankelijkheid en website-integratie vooraf nodig zijn.",
+  "searchIntent": { "type": "commercial", "question": "What is a 3D tour, how does it work and what should a business check before commissioning one?", "geographicContext": "International English-speaking readers, with Belgian and EU privacy context and VisualVibe services based in Limburg, Belgium." },
+  "mainKeyword": "what is a 3D tour",
+  "longTailKeywords": ["how does a 3D virtual tour work", "3D tour for business", "3D tour vs 360 virtual tour", "Matterport tour hosting", "accessible virtual tour", "3D tour privacy"],
+  "semanticTerms": ["360 panorama", "digital twin", "spatial model", "virtual walkthrough", "capture", "cloud hosting", "GDPR", "WCAG", "lazy loading"],
+  "directAnswer": "A 3D tour is an interactive digital representation of a physical space. Visitors move between capture points in a browser, look around and, depending on the platform, view a floor plan, spatial model, labels or measurements. Its usefulness depends on the purpose, capture quality, hosting, privacy, accessibility and website context.",
+  "title": "What is a 3D tour? How capture, hosting and use work",
+  "metaDescription": "What is a 3D tour and how does it work? Learn about 360 capture, spatial models, hosting, privacy, accessibility and website integration before commissioning one.",
+  "h1": "What is a 3D tour? From capture to a useful virtual walkthrough",
+  "slug": "what-is-a-3d-tour",
+  "internalLinks": [
+    { "sourceHref": "/be/kennisbank/3d-vr/hoe-verhoogt-een-virtuele-tour-vertrouwen/", "targetHref": "/en/knowledge-base/3d-vr/how-a-virtual-tour-builds-trust/", "anchor": "how a virtual tour can build trust" },
+    { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/knowledge-base/webdesign/website-development-in-limburg-complete-guide/", "anchor": "complete guide to having a website built" },
+    { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/knowledge-base/photography/what-is-corporate-photography/", "anchor": "what corporate photography involves" },
+    { "sourceHref": "/be/kennisbank/drone/dronebeelden-voor-bedrijven/", "targetHref": "/en/knowledge-base/drone/drone-footage-for-businesses/", "anchor": "drone footage for businesses" },
+    { "sourceHref": "/be/diensten/3d-vr-ar/", "targetHref": "/en/services/3d-vr-ar/", "anchor": "3D, VR and AR" },
+    { "sourceHref": "/be/diensten/3d-vr-ar/virtuele-rondleiding/", "targetHref": "/en/services/3d-vr-ar/virtual-tour/", "anchor": "virtual walkthrough" },
+    { "sourceHref": "/be/realisaties/3d-vr/", "targetHref": "/en/case-studies/3d-vr/", "anchor": "3D and VR case studies" },
+    { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your 3D tour" }
+  ],
+  "factsToPreserve": ["A 3D tour is not necessarily VR or AR.", "Available functions depend on the capture method and platform.", "Marketing viewer measurements are not automatically suitable for technical or safety-critical decisions.", "Interactive tours may depend on cloud hosting, an active subscription and platform-specific account terms.", "Privacy must be planned before capture and automatic blur is not a complete privacy control.", "An interactive tour requires accessible alternatives for essential information and actions.", "A tour alone does not prove faster sales, fewer visits or improved conversion."]
+}
