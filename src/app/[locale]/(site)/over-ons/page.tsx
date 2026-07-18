@@ -9,12 +9,18 @@ import { WeddingVibeLogo } from "@/components/over-ons/WeddingVibeLogo";
 import { OvIcon } from "@/components/over-ons/ov-icons";
 import { QuoteButton } from "@/components/quote";
 
-export const metadata = pageMetadata({
-  title: `Over ons | ${businessConfig.displayName}`,
-  description:
-    "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
-  path: "/over-ons/",
-});
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return pageMetadata(locale === "en" ? {
+    title: "About VisualVibe and Jens Hardy | Media agency Limburg",
+    description: "Meet VisualVibe and founder Jens Hardy, the Limburg creative media agency for web design, SEO, photography, video, drone and immersive media.",
+    path: "/over-ons/", locale: "en",
+  } : {
+    title: `Over ons | ${businessConfig.displayName}`,
+    description: "Maak kennis met VisualVibe en oprichter Jens Hardy: het creatief mediabureau uit Limburg voor webdesign, SEO, foto, video, drone, 3D/VR/AR en podcasting.",
+    path: "/over-ons/",
+  });
+}
 
 const SORA = "var(--font-sora), sans-serif";
 const MONO = "var(--font-jetbrains-mono), monospace";
@@ -88,7 +94,35 @@ function GalTile({ src, alt, sizes, className, children }: { src: string; alt: s
   );
 }
 
-export default function OverOnsPage() {
+function EnglishAboutPage() {
+  const englishDisciplines = [
+    ["Web design", "Fast websites and online shops designed to turn visitors into customers."],
+    ["SEO", "Online visibility in Google and the new generation of AI search engines."],
+    ["Photography", "Professional business and product photography."],
+    ["Video production", "Compelling company films that tell your story."],
+    ["Drone and FPV", "Aerial footage and dynamic first-person-view shots."],
+    ["3D, VR and AR", "Immersive 3D, virtual reality and augmented reality experiences."],
+    ["Podcasting", "From recording to a polished, ready-to-publish podcast."],
+  ];
+  return <div className="vvov-anim relative overflow-hidden text-white">
+    <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/over-ons" }]} />
+    <section className={`${SECTION} pb-16 pt-32`}>
+      <p style={eyebrow}>The person behind VisualVibe</p>
+      <h1 className="mt-5 max-w-4xl font-sora text-4xl font-extrabold sm:text-6xl">One partner for digital experiences and visual stories</h1>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe is a creative media agency based in Limburg, Belgium. We bring web design, SEO, photography, video production, drone and FPV, 3D, VR and AR, and podcasting together under one roof. This gives SMEs one point of contact for a consistent online presence.</p>
+      <div className="mt-8 flex flex-wrap gap-4"><QuoteButton mode="kennis" className="vvov-btn">Start a conversation</QuoteButton><Link href="/realisaties" className="vvov-btn rounded-xl border border-white/15 px-6 py-3">View our case studies</Link></div>
+    </section>
+    <section className={`${SECTION} py-16`}><p style={eyebrow}>VisualVibe in brief</p><div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Since 2020","Creative media agency in Limburg"],["7 disciplines","Under one roof"],["1 point of contact","From idea to delivery"],["3 partners","Google · Meta · Leadinfo"]].map(([big,label]) => <div key={big} className="rounded-2xl border border-white/10 bg-white/[.03] p-6"><strong className="text-2xl">{big}</strong><p className="mt-2 text-white/60">{label}</p></div>)}</div></section>
+    <section className={`${SECTION} py-16`}><p style={eyebrow}>Founder</p><h2 style={h2} className="mt-4">Meet Jens Hardy</h2><div className="mt-8 grid gap-8 md:grid-cols-[280px_1fr] md:items-center"><Image src={IMG.portrait} alt="Jens Hardy, photographer and founder of VisualVibe" width={368} height={492} className="rounded-3xl"/><div className="space-y-4 text-lg leading-relaxed text-white/70"><p>Jens founded VisualVibe in 2020 to bring creative production, digital expertise and personal guidance together in one agency.</p><p>As a photographer, camera operator, marketer, drone pilot, web designer and adviser, he looks beyond a single deliverable. Every project starts with your goals and ends with work that fits your business.</p></div></div></section>
+    <section className={`${SECTION} py-16`}><p style={eyebrow}>Seven disciplines, one team</p><h2 style={h2} className="mt-4">Everything your brand needs to be seen and understood</h2><div className="mt-8 grid gap-4 md:grid-cols-2">{englishDisciplines.map(([name,desc]) => <div key={name} className="rounded-2xl border border-white/10 p-6"><h3 className="text-xl font-bold">{name}</h3><p className="mt-2 text-white/60">{desc}</p></div>)}</div></section>
+    <section className={`${SECTION} py-16`}><p style={eyebrow}>How we work</p><h2 style={h2} className="mt-4">Local, personal and involved from start to finish</h2><p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70">From Limburg, we work with SMEs across Flanders, Antwerp and Dutch Limburg. You deal with one partner from the first conversation through to launch or delivery, without having to coordinate several separate agencies.</p></section>
+    <section className={`${SECTION} py-16 text-center`}><h2 style={h2}>Ready to discuss your project?</h2><p className="mx-auto mt-4 max-w-2xl text-white/65">Tell us what you want to create and we will explore the right mix of strategy, technology and visual production.</p><div className="mt-7"><QuoteButton mode="kennis" className="vvov-btn">Request a quotation</QuoteButton></div></section>
+  </div>;
+}
+
+export default async function OverOnsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (locale === "en") return <EnglishAboutPage />;
   return (
     <div className="vvov-anim" style={{ position: "relative", overflow: "hidden", color: "#fff", fontFamily: "var(--font-manrope), sans-serif" }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Over ons", path: "/over-ons" }]} />

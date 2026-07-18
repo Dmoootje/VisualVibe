@@ -26,12 +26,18 @@ import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { PageAmbient } from "@/components/ui";
 import { BreadcrumbJsonLd } from "@/components/seo";
 
-export const metadata: Metadata = pageMetadata({
-  title: `Sitemap | ${businessConfig.displayName}`,
-  description:
-    "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
-  path: "/sitemap/",
-});
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return pageMetadata(locale === "en" ? {
+    title: `Sitemap | ${businessConfig.displayName}`,
+    description: "Browse the VisualVibe sitemap for a clear overview of services, case studies, sectors and regions, plus tools, company information and contact pages.",
+    path: "/sitemap/", locale: "en",
+  } : {
+    title: `Sitemap | ${businessConfig.displayName}`,
+    description: "Volledige sitemap van VisualVibe: alle diensten, regio's, realisaties, sectoren en kennisbank-artikels overzichtelijk onder elkaar.",
+    path: "/sitemap/",
+  });
+}
 
 export const revalidate = 60;
 
@@ -60,7 +66,22 @@ function TreeList({ nodes }: { nodes: SmNode[] }) {
   );
 }
 
-export default async function SitemapPage() {
+export default async function SitemapPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (locale === "en") {
+    const englishSections: SmSection[] = [
+      { icon: FileText, title: "General pages", href: "/over-ons", intro: "Company information and ways to get in touch.", nodes: [
+        { title: "About VisualVibe", href: "/over-ons" }, { title: "Contact", href: "/contact" },
+        { title: "Request a quotation", href: "/offerte-aanvragen" }, { title: "Privacy policy", href: "/privacy" },
+        { title: "Cookie policy", href: "/cookies" }, { title: "Sitemap", href: "/sitemap" },
+      ] },
+      { icon: LayoutGrid, title: "Tools", href: "/tools", intro: "Free tools to improve your website and online visibility.", nodes: [
+        { title: "Website analysis", href: "/website-analyse" }, { title: "SEO and GEO checklist", href: "/tools/seo-geo-checklist" },
+      ] },
+    ];
+    const total = 1 + englishSections.reduce((sum, section) => sum + section.nodes.length, 0);
+    return <div className="relative min-h-screen overflow-hidden text-white"><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Sitemap", path: "/sitemap" }]} /><PageAmbient /><div className="relative z-10 mx-auto max-w-[980px] px-4 pb-24 pt-28 sm:px-8 sm:pt-32"><header className="mb-12 max-w-2xl"><p className="mb-3.5 font-mono text-xs font-bold uppercase tracking-[.18em] text-[#FF9A45]">Sitemap</p><h1 className="font-sora text-4xl font-extrabold sm:text-5xl">All pages at a glance</h1><p className="mt-4 text-white/60">This sitemap groups every English page currently prepared for VisualVibe. Each title is a link and the path beneath it shows where the page sits. There are {total} pages in total.</p></header><Link href="/" className="vvsm-node"><span className="vvsm-title">Home</span><span className="vvsm-path">/</span></Link><div className="mt-6 flex flex-col">{englishSections.map((section) => { const Icon = section.icon; return <section key={section.title} className="border-t border-white/[.06] py-8"><div className="mb-4 flex gap-4"><Icon className="h-6 w-6 text-[#FF9A45]"/><div><Link href={section.href} className="font-sora text-xl font-extrabold">{section.title}</Link><p className="mt-1 text-sm text-white/45">{section.intro}</p></div></div><TreeList nodes={section.nodes}/></section>; })}</div></div></div>;
+  }
   const applicationProjects = (await getApplicationCases()).filter((project) => project.published);
 
   const dienstenNodes: SmNode[] = [
