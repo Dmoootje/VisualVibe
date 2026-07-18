@@ -25,7 +25,7 @@ export function BlogHeader({ locale = "nl" }: { locale?: "nl" | "en" }) {
           variant="outline"
           className="border-white/20 text-white hover:bg-white/10 text-sm sm:text-base focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
         >
-          {en ? <NextLink href="/en/knowledge-base/" aria-label="View all knowledge-base articles">
+          {en ? <NextLink href="/en/kennisbank/" aria-label="View all knowledge-base articles">
             View all articles
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </NextLink> : <Link href="/kennisbank" aria-label="Bekijk alle kennisbank-artikelen">

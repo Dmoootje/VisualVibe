@@ -129,7 +129,7 @@ The shared next-intl pathname table is deliberately not enabled piecemeal: addin
 
 All seven re-review findings were resolved:
 
-1. The English homepage now renders the actual Google review records returned by `getGoogleReviews`, including real quote, author, role and rating evidence. It no longer substitutes generic review claims. The real locale-selecting `BlogPreview` owner is mounted directly; its header, dates, accessibility labels, CTA and `/en/knowledge-base/...` article destinations now localize with the records. No generic unlinked cards remain.
+1. The English homepage now renders the actual Google review records returned by `getGoogleReviews`, including real quote, author, role and rating evidence. It no longer substitutes generic review claims. The real locale-selecting `BlogPreview` owner is mounted directly; its header, dates, accessibility labels, CTA and `/en/kennisbank/...` article destinations now localize with the records. No generic unlinked cards remain.
 2. `RequestNewAnalysisButton` now renders `/en/website-analysis/` for English reports through a fully prefixed Next link.
 3. English sitemap, tools and checklist breadcrumbs now pass locale `en`, while Dutch continues to pass or default to `nl`.
 4. The English sitemap now displays and links the final `/en/`, `/en/tools/` and prepared English child URLs consistently.
@@ -152,3 +152,7 @@ RED: focused tests reproduced the hard-coded `languageCode=nl`, Dutch `originalT
 Task 7 now links only to destinations that exist in the current shared route tree: `/en/diensten/`, `/en/regio/`, `/en/sectoren/`, `/en/realisaties/`, `/en/diensten/seo/`, `/en/diensten/webdesign/` and `/en/trouwfotograaf-limburg/`. The invented English route names were removed. The analysis restart button resolves to `/be/website-analyse/` in Dutch and `/en/website-analysis/` in English. The commercial translation briefs use the same implemented destinations.
 
 `website-analysis-report.json` is a supplemental brief for the private, noindex analysis result. It is not an indexable public landing page and is not counted among the eight required indexable commercial briefs.
+
+## Knowledge route ownership correction
+
+The English homepage preview now uses the currently owned `/en/kennisbank/` route tree for both its hub CTA and article cards. It deliberately does not advertise `/en/knowledge-base/` before Task 10 supplies and verifies that pathname mapping. Dutch hub and article destinations remain unchanged. The homepage brief records the same hub and article-link contract.

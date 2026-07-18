@@ -36,6 +36,16 @@
       "sourceHref": "/be/offerte-aanvragen",
       "targetHref": "/en/request-a-quotation/",
       "anchor": "Request a quotation"
+    },
+    {
+      "sourceHref": "/be/kennisbank/",
+      "targetHref": "/en/kennisbank/",
+      "anchor": "View all articles"
+    },
+    {
+      "sourceHref": "/be/kennisbank/3d-vr/3d-tour-voor-horeca/",
+      "targetHref": "/en/kennisbank/3d-vr/3d-tour-voor-horeca/",
+      "anchor": "Read the full article"
     }
   ],
   "factsToPreserve": [

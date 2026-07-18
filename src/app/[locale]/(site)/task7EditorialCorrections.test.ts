@@ -90,7 +90,7 @@ describe("Task 7 editorial corrections", () => {
     expect(preview).toContain('<BlogHeader locale={copyLocale} />');
     expect(preview).toContain('<BlogGrid posts={blogPosts} locale={copyLocale} />');
     expect(header).toContain("From our knowledge base");
-    expect(card).toContain('`/en/knowledge-base/${post.categorySlug}/${post.slug}/`');
+    expect(card).toContain('`/en/kennisbank/${post.categorySlug}/${post.slug}/`');
     expect(card).toContain('en ? "Read the full article"');
   });
 

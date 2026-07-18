@@ -44,7 +44,7 @@ export function BlogCard({ post, index, authorImage, hideAuthor, locale = "nl" }
   const { lead, accent } = splitTitle(post.title);
   // Uitgelichte afbeelding zonder tekst; de kaart legt zelf badge/titel/logo erop.
   const cardImage = post.featuredImage ?? post.ogImage;
-  const href = en ? `/en/knowledge-base/${post.categorySlug}/${post.slug}/` : `/be${postHref(post)}`;
+  const href = en ? `/en/kennisbank/${post.categorySlug}/${post.slug}/` : `/be${postHref(post)}`;
 
   return (
     <div
