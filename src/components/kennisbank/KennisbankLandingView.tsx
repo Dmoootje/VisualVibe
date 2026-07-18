@@ -117,7 +117,7 @@ export function KennisbankLandingView({
             onClear={() => setQuery("")}
             placeholder={locale === "en" ? "Search for a guide or article..." : "Zoek een gids of artikel..."}
             submitLabel={labels.search}
-            clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
+            clearLabel={labels.clearSearch}
           />
         }
       />
@@ -230,7 +230,7 @@ export function KennisbankLandingView({
                 onChange={setQuery}
                 onClear={() => setQuery("")}
                 placeholder={labels.searchPlaceholder}
-                clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
+                clearLabel={labels.clearSearch}
                 size="sidebar"
               />
             </div>

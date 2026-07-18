@@ -27,7 +27,7 @@ export function CategoryHeroSearch({ locale = "nl" }: { locale?: string }) {
       onClear={() => setValue("")}
       placeholder={locale === "en" ? "Search for a guide or article..." : "Zoek een gids of artikel..."}
       submitLabel={labels.search}
-      clearLabel={locale === "en" ? "Clear search" : "Zoekopdracht wissen"}
+      clearLabel={labels.clearSearch}
     />
   );
 }

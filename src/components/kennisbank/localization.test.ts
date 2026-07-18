@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { knowledgeBaseLabels } from "./localization";
+import { SearchBar } from "./SearchBar";
 
 const read = (path: string) => readFileSync(path, "utf8");
 
@@ -13,6 +16,7 @@ describe("English knowledge-base chrome", () => {
       readArticle: "Read the full article",
       tableOfContents: "Contents",
       share: "Share",
+      clearSearch: "Clear search",
     });
     expect(knowledgeBaseLabels("nl")).toMatchObject({
       knowledgeBase: "Kennisbank",
@@ -21,6 +25,7 @@ describe("English knowledge-base chrome", () => {
       readArticle: "Lees het volledige artikel",
       tableOfContents: "Inhoud",
       share: "Delen",
+      clearSearch: "Zoekopdracht wissen",
     });
   });
 
@@ -62,5 +67,22 @@ describe("English knowledge-base chrome", () => {
     const card = read("src/components/kennisbank/ArticleCard.tsx");
     expect(card).toContain("labels.profilePhoto");
     expect(card).not.toContain('alt={`Profielfoto van ${value}`}');
+  });
+
+  it("renders English search controls without Dutch fallback labels", () => {
+    const labels = knowledgeBaseLabels("en");
+    const html = renderToStaticMarkup(createElement(SearchBar, {
+      value: "seo",
+      onChange: () => undefined,
+      onClear: () => undefined,
+      submitLabel: labels.search,
+      clearLabel: labels.clearSearch,
+      placeholder: labels.searchPlaceholder,
+    }));
+
+    expect(html).toContain(">Search<");
+    expect(html).toContain('aria-label="Clear search"');
+    expect(html).not.toContain("Zoeken");
+    expect(html).not.toContain("Zoekopdracht wissen");
   });
 });

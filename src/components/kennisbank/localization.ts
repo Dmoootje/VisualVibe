@@ -12,6 +12,7 @@ const nl = {
   tableOfContents: "Inhoud", inThisArticle: "In dit artikel", beginReading: "Begin met lezen",
   share: "Delen", shareLinkedIn: "Deel op LinkedIn", shareFacebook: "Deel op Facebook", copyLink: "Link kopiëren",
   search: "Zoeken", searchPlaceholder: "Zoeken in kennisbank...", inThisCategory: "In deze categorie",
+  clearSearch: "Zoekopdracht wissen",
   otherCategories: "Andere categorieën", discoverService: "Ontdek deze dienst",
 } as const;
 
@@ -27,6 +28,7 @@ const en: Record<keyof typeof nl, string> = {
   tableOfContents: "Contents", inThisArticle: "In this article", beginReading: "Start reading",
   share: "Share", shareLinkedIn: "Share on LinkedIn", shareFacebook: "Share on Facebook", copyLink: "Copy link",
   search: "Search", searchPlaceholder: "Search the knowledge base...", inThisCategory: "In this category",
+  clearSearch: "Clear search",
   otherCategories: "Other categories", discoverService: "Discover this service",
 };
 
