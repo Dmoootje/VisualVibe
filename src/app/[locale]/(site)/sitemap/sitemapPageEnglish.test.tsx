@@ -22,7 +22,7 @@ vi.mock("@/lib/seo/siteUrls", () => ({
     { url: "https://visualvibe.media/en/sectoren/construction-renovation/" },
     { url: "https://visualvibe.media/en/realisaties/web-design/" },
     { url: "https://visualvibe.media/en/kennisbank/" },
-    { url: "https://visualvibe.media/en/kennisbank/webdesign/what-does-a-website-cost/" },
+    { url: "https://visualvibe.media/en/kennisbank/webdesign/website-development-costs/" },
     { url: "https://visualvibe.media/en/tools/" },
   ]),
 }));
@@ -42,6 +42,7 @@ describe("English visible sitemap page", () => {
     expect(html).toContain('href="/en/regio/limburg-belgium/"');
     expect(html).toContain('href="/en/sectoren/construction-renovation/"');
     expect(html).toContain('href="/en/realisaties/web-design/"');
-    expect(html).toContain('href="/en/kennisbank/webdesign/what-does-a-website-cost/"');
+    expect(html).toContain('href="/en/kennisbank/webdesign/website-development-costs/"');
+    expect(html).toContain("How much does a website cost in Belgium?");
   });
 });
