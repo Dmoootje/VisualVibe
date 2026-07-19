@@ -230,7 +230,7 @@ export default async function RealisatieCategoryPage({
                   </p>
                 </div>
                 <Link
-                  href={`${serviceHref(mappedService)}/`}
+                  href={`${serviceHref(mappedService, locale)}/`}
                   className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-xl border border-white/[0.14] px-[22px] py-3 text-sm font-bold text-white/85 transition-colors hover:border-[rgba(255,122,0,0.5)] hover:bg-[rgba(255,122,0,0.06)] hover:text-white sm:self-center"
                 >
                   {en ? "Explore the service" : "Bekijk de dienst"}

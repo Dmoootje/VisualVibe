@@ -1,5 +1,6 @@
 import { Header, Footer } from "@/layouts";
 import { QuoteModalController } from "@/components/quote";
+import { FloatingActions } from "@/components/share";
 import { setRequestLocale } from "next-intl/server";
 
 /**
@@ -23,6 +24,7 @@ export default async function SiteLayout({
       <main>{children}</main>
       <Footer />
       <QuoteModalController />
+      <FloatingActions locale={locale} />
     </>
   );
 }

@@ -24,7 +24,7 @@ Approved after editorial and routing corrections. The English article preserves 
 ## Editorial and technical corrections
 
 - Replaced several literal phrases with idiomatic English, including “stable foundational knowledge”, “scenarios”, “live session” and “practical applications”.
-- Corrected public English knowledge-base links to `/en/kennisbank/` and service links to `/en/diensten/`.
+- Corrected public English knowledge-base links to `/en/kennisbank/` and service links to `/en/services/`.
 - Restored canonical internal relationship paths in frontmatter for services, regions, sectors, parent pillar and related posts.
 - Updated the localisation brief to match the actual public target route and internal-link architecture.
 - Confirmed that the article does not use long dashes or mojibake and does not rely on a separate humaniser pass.

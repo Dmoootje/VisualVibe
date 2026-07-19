@@ -28,7 +28,7 @@ A minimal switch would make English pages return `200`, but it would leave some 
 - Every Dutch and English page pair emits valid `nl-BE`, `en-BE` and `x-default` hreflang references. `x-default` points to the Dutch partner.
 - A hreflang entry is emitted only when the translated partner genuinely exists. No French or German alternates are advertised.
 - The XML sitemap includes the complete canonical English inventory: commercial pages, forms, legal pages, services and subservices, sectors, regions, case studies, custom software pages, tools and all 58 English knowledge-base articles.
-- The sitemap uses the real public English canonical path for exceptions such as `/en/request-a-quotation/` and `/en/diensten/custom-software/`.
+- The sitemap uses the real public English canonical path for exceptions such as `/en/request-a-quotation/` and `/en/services/custom-software/`.
 - English pages remain `index, follow`. There is no preview `noindex` layer.
 - `robots.txt` continues to allow `/en/` and continues to reference the XML sitemap.
 - Existing English structured data must use the English URL and `en-BE` language where the page has localized schema.

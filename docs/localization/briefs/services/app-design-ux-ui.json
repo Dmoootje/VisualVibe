@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/diensten/software-op-maat/app-design-ux-ui/",
-  "targetRoute": "/en/diensten/custom-software/app-design-ux-ui/",
+  "targetRoute": "/en/services/custom-software/app-design-ux-ui/",
   "audience": "Founders, product owners and development teams that need to validate or improve an application before coding",
   "primaryDutchSearchIntent": "Appdesign en UX/UI laten maken dat complexe functies omzet in duidelijke gebruikersflows en schermen.",
   "searchIntent": { "type": "commercial", "question": "How can we validate an app journey and interface before committing to development?", "geographicContext": "English-speaking startups, SMEs and product teams in Belgium" },
@@ -12,6 +12,6 @@
   "metaDescription": "UX/UI design for web and mobile apps, from user journeys and wireframes to a clickable prototype, responsive screens and implementation-ready design systems.",
   "h1": "App design and UX/UI",
   "slug": "app-design-ux-ui",
-  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/diensten/custom-software/app-development/", "anchor": "app development" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your app design" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/services/custom-software/app-development/", "anchor": "app development" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your app design" }],
   "factsToPreserve": ["UX covers logic, tasks and experience while UI covers visual screens and components", "Design can be delivered without development", "Existing applications can be redesigned after analysing usability issues", "Responsive behaviour and important interface states are included where needed"]
 }

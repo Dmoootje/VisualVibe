@@ -27,4 +27,4 @@ Independently reviewed the complete Dutch source, English translation and locali
 
 - Restored the canonical author identity path in frontmatter.
 - Smoothed the CTA into idiomatic English.
-- Confirmed production public routes under `/en/kennisbank/` and `/en/diensten/`, canonical internal relationship identities, complete metadata and a matching localisation brief.
+- Confirmed production public routes under `/en/kennisbank/` and `/en/services/`, canonical internal relationship identities, complete metadata and a matching localisation brief.

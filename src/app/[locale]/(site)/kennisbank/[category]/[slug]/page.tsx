@@ -406,7 +406,7 @@ export default async function KennisbankPostPage({
                     ? {
                         title: sidebarService.title,
                         description: sidebarService.excerpt,
-                        href: `${serviceHref(sidebarService)}/`,
+                        href: `${serviceHref(sidebarService, post.locale)}/`,
                         icon: <BookOpen className="h-5 w-5" aria-hidden="true" />,
                         linkLabel: labels.viewService,
                       }

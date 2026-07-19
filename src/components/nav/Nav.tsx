@@ -10,6 +10,7 @@ import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { toolCards as toolPreviewCards } from "@/data/toolCards";
 import { NavIcon } from "./nav-icons";
+import { QuoteButton } from "@/components/quote";
 import type { NavCard, NavPillar, NavRegion } from "./navData";
 import {
   getChromeRoutes,
@@ -297,7 +298,7 @@ export function Nav({
                         </span>
                         <span style={{ flex: 1, minWidth: 0 }}>
                           <span style={{ display: "block", fontFamily: SORA, fontWeight: 700, fontSize: 15, color: on ? "#fff" : "rgba(255,255,255,.9)" }}>{p.name}</span>
-                          <span style={{ display: "block", fontSize: 11.5, color: "rgba(255,255,255,.42)", marginTop: 1 }}>{p.tag}</span>
+                          <span style={{ ...CLAMP2, fontSize: 11.5, color: "rgba(255,255,255,.42)", marginTop: 1 }}>{p.tag}</span>
                         </span>
                         <ChevRight className="vvnav-rchev" color={on ? "#FF7A00" : "rgba(255,255,255,.28)"} />
                       </Link>
@@ -332,7 +333,7 @@ export function Nav({
                           ))}
                         </div>
 
-                        <Link href={routes.quotation} className="vvnav-featCard" style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 16, padding: "16px 18px", borderRadius: 14, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 62%),rgba(255,255,255,.02)" }}>
+                        <QuoteButton className="vvnav-featCard" style={{ marginTop: 16, display: "flex", width: "100%", alignItems: "center", gap: 16, padding: "16px 18px", borderRadius: 14, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.16),transparent 62%),rgba(255,255,255,.02)", textAlign: "left", font: "inherit", color: "#fff", cursor: "pointer" }}>
                           <span style={{ flex: "none", width: 48, height: 48, borderRadius: 12, background: "radial-gradient(circle at 35% 30%,rgba(255,122,0,.2),rgba(255,122,0,.05))", border: "1px solid rgba(255,122,0,.25)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF7A00" }}>
                             <NavIcon id={ap.icon} size={26} strokeWidth={1.6} />
                           </span>
@@ -341,9 +342,9 @@ export function Nav({
                             <span style={{ display: "block", fontSize: 12.5, color: "rgba(255,255,255,.55)", marginTop: 2 }}>{t("fixedPrice")}</span>
                           </span>
                           <span style={{ flex: "none", display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, fontSize: 13, color: "#fff", padding: "10px 16px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 28px -12px rgba(255,90,0,.8)", whiteSpace: "nowrap" }}>
-                            Offerte <ArrowRight />
+                            {t("shortQuotation")} <ArrowRight />
                           </span>
-                        </Link>
+                        </QuoteButton>
 
                         {ap.id === "fotografie" && routes.wedding && (
                           <WeddingCtaCard href={routes.wedding} onClick={closeMenu} />
@@ -375,9 +376,9 @@ export function Nav({
           <NextLink href="/admin/login" prefetch={false} aria-label={t("login")} style={{ display: "inline-flex" }}>
             <UserIcon />
           </NextLink>
-          <Link href={routes.quotation} className="vvnav-navBtn" style={{ fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)" }}>
+          <QuoteButton className="vvnav-navBtn" style={{ font: "inherit", fontWeight: 700, fontSize: 14, color: "#fff", padding: "11px 20px", borderRadius: 10, border: 0, background: GRADIENT, boxShadow: "0 12px 30px -12px rgba(255,90,0,.8)", cursor: "pointer" }}>
             {t("quotation")}
-          </Link>
+          </QuoteButton>
         </div>
 
         {/* ===== mobile hamburger ===== */}

@@ -36,7 +36,7 @@ describe("rendered footer routes", () => {
     localeState.current = "en";
     const html = renderToStaticMarkup(await Footer());
 
-    expect(html).toContain('href="/diensten/web-design"');
+    expect(html).toContain('href="/services/web-design"');
     expect(html).toContain('href="/regio/limburg-belgium"');
     expect(html).toContain('href="/about"');
     expect(html).not.toContain('href="/diensten/webdesign"');

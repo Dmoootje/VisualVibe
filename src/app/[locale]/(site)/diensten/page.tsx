@@ -11,6 +11,7 @@ import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { localizedPath } from "@/lib/kennisbank/urls";
 import { BreadcrumbJsonLd, FaqPageJsonLd, JsonLd, ServiceJsonLd } from "@/components/seo";
+import { QuoteButton } from "@/components/quote";
 import { Section, Container, PageAmbient } from "@/components/ui";
 import { CTASection } from "@/components/sections";
 import { SectorAnswerIntro, SectorFaq, SectorSectionHeader } from "@/components/sectors";
@@ -33,7 +34,7 @@ const dutchMetadata = pageMetadata({
     "podcast opnemen Limburg",
   ],
   path: "/diensten/",
-  languagePaths: { nl: "/diensten/", en: "/diensten/" },
+  languagePaths: { nl: "/diensten/", en: "/services/" },
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -43,8 +44,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       locale: "en",
       title: "Services for ambitious businesses | VisualVibe",
       description: "Explore VisualVibe's web design, SEO, photography, video, drone, 3D, podcast and masterclass production services in Limburg, Belgium.",
-      path: "/diensten/",
-      languagePaths: { nl: "/diensten/", en: "/diensten/" },
+      path: "/services/",
+      languagePaths: { nl: "/diensten/", en: "/services/" },
     });
   }
   return dutchMetadata;
@@ -548,7 +549,7 @@ function EnglishServicesPage() {
   const englishServices = services.map((service) => getLocalizedServiceById(service.slug, "en"));
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Services", path: "/diensten" }]} />
+      <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
       <PageAmbient />
       <main className="relative z-10">
         <section className="pb-14 pt-32">
@@ -557,7 +558,7 @@ function EnglishServicesPage() {
             <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">Creative services for businesses that want to stand out</h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe brings web design, SEO, photography, video production, drone footage, immersive 3D experiences, podcasting and masterclass production together in one team. Strategy, technology and visual content therefore support the same business goal.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/request-a-quotation" className="inline-flex items-center gap-2 rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black">Request a quotation <ArrowRight className="h-4 w-4" /></Link>
+              <QuoteButton className="inline-flex cursor-pointer items-center gap-2 rounded-full border-0 bg-[#ff7500] px-6 py-3 font-semibold text-black">Request a quotation <ArrowRight className="h-4 w-4" /></QuoteButton>
               <Link href="/realisaties" className="rounded-full border border-white/15 px-6 py-3 font-semibold">View our work</Link>
             </div>
           </Container>
@@ -567,7 +568,7 @@ function EnglishServicesPage() {
             <h2 className="mb-8 text-3xl font-bold">Eight services, one consistent direction</h2>
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
               {englishServices.map(({ id, slug, service }) => (
-                <Link key={id} href={`/diensten/${slug}`} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-[#ff7500]/50">
+                <Link key={id} href={`/services/${slug}`} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-[#ff7500]/50">
                   <h3 className="text-xl font-bold">{service.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-white/65">{service.excerpt}</p>
                   <span className="mt-5 inline-flex items-center gap-2 font-semibold text-[#ff9a45]">Explore this service <ArrowRight className="h-4 w-4" /></span>

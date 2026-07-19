@@ -8,7 +8,7 @@ describe("localized footer links", () => {
 
     expect(groups[0]?.links).toContainEqual({
       label: "Web design",
-      href: "/diensten/web-design",
+      href: "/services/web-design",
     });
     expect(hrefs).toContain("/about");
     expect(hrefs).not.toContain("/over-ons");

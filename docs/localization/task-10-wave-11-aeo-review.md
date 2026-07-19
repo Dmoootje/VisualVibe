@@ -10,7 +10,7 @@ Reviewed the complete Dutch source, English translation and localisation brief. 
 - All 12 H2 sections and all content components are preserved, including 2 FeatureGrids, 2 ComparisonTables, 5 ChecklistBlocks and the complete 8-question FAQ.
 - The answer-first structure, SME audience, SEO/AEO/GEO distinctions, question mapping, snippet controls, editorial checks and measurement framework retain the source intent.
 - Literal uses of “cases” were changed to “case studies”, and an awkward performance phrase was made idiomatic without changing meaning.
-- Public links now use the real `/en/kennisbank/` and `/en/diensten/` routes; frontmatter relationships use canonical internal identities.
+- Public links now use the real `/en/kennisbank/` and `/en/services/` routes; frontmatter relationships use canonical internal identities.
 
 ## Claim verification
 

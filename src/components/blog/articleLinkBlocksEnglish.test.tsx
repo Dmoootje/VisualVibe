@@ -25,37 +25,37 @@ describe("English in-article knowledge-base links", () => {
       "/en/diensten/fotografie/real-estate-photography/",
       "/en/diensten/photography/real-estate-photography/",
     ].map((href) => normalizeKnowledgeBaseHref(href, "en"))).toEqual([
-      "/diensten/photography/property-photography/",
-      "/diensten/photography/property-photography/",
+      "/services/photography/property-photography/",
+      "/services/photography/property-photography/",
     ]);
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/drone-fpv/real-estate-drone-imagery/",
       "en",
-    )).toBe("/diensten/drone-fpv/real-estate-drone-footage/");
+    )).toBe("/services/drone-fpv/real-estate-drone-footage/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/drone-fpv/project-drone-footage/",
       "en",
-    )).toBe("/diensten/drone-fpv/construction-project-drone-footage/");
+    )).toBe("/services/drone-fpv/construction-project-drone-footage/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/videography/corporate-event-aftermovie/",
       "en",
-    )).toBe("/diensten/videography/event-aftermovie/");
+    )).toBe("/services/videography/event-aftermovie/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/photography/corporate-portraits/",
       "en",
-    )).toBe("/diensten/photography/business-portraits/");
+    )).toBe("/services/photography/business-portraits/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/masterclasses/workshop-filming/",
       "en",
-    )).toBe("/diensten/masterclasses/workshop-video-production/");
+    )).toBe("/services/masterclasses/workshop-video-production/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/web-design/seo-website-development/",
       "en",
-    )).toBe("/diensten/web-design/seo-ready-website/");
+    )).toBe("/services/web-design/seo-ready-website/");
     expect(normalizeKnowledgeBaseHref(
       "/en/diensten/web-design/website-with-ai-features/",
       "en",
-    )).toBe("/diensten/custom-software/ai-application-development/");
+    )).toBe("/services/custom-software/ai-application-development/");
     expect(normalizeKnowledgeBaseHref(
       "/en/kennisbank/webdesign/website-laten-maken-kosten/",
       "en",
@@ -86,7 +86,7 @@ describe("English in-article knowledge-base links", () => {
     );
 
     expect(html).toContain('href="/about/"');
-    expect(html).toContain('href="/diensten/seo/technical-seo/"');
+    expect(html).toContain('href="/services/seo/technical-seo/"');
     expect(html).not.toContain("realisaties/photography");
   });
 
@@ -119,7 +119,7 @@ describe("English in-article knowledge-base links", () => {
     );
 
     expect(html).toContain('href="/request-a-quotation/"');
-    expect(html).toContain('href="/diensten/seo/technical-seo/"');
+    expect(html).toContain('href="/services/seo/technical-seo/"');
     expect(html).toContain('href="/regio/limburg-belgium/"');
     expect(html).not.toContain("offerte-aanvragen");
     expect(html).not.toContain("trouwfotograaf-limburg");

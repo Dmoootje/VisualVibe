@@ -74,6 +74,19 @@ const PILLAR_TAG: Record<string, string> = {
   masterclasses: "Kennis die groeit",
 };
 
+// Short English mirror of PILLAR_TAG (nav rail space is narrow - this must
+// stay a 2-4 word tagline, never the full marketing excerpt).
+const PILLAR_TAG_EN: Record<string, string> = {
+  webdesign: "Websites & online shops",
+  seo: "Found in Google & AI",
+  fotografie: "Imagery that sells",
+  videografie: "Video that moves",
+  "drone-fpv": "From the air",
+  "3d-vr-ar": "Immersive experiences",
+  podcasting: "Your voice, everywhere",
+  masterclasses: "Skills that grow",
+};
+
 // Webdesign sub-services carry their own bespoke glyph; other pillars' subs
 // reuse the pillar icon.
 const WEBDESIGN_SUB_ICON: Record<string, string> = {
@@ -104,7 +117,7 @@ export function getNavPillars(locale: PublicChromeLocale): NavPillar[] {
       const localizedSub = getLocalizedServiceById(sourceSub.slug, locale).service;
       return {
         name: localizedSub.title,
-        href: serviceHref(localizedSub),
+        href: serviceHref(localizedSub, locale),
         icon:
           sourceService.slug === "webdesign"
             ? WEBDESIGN_SUB_ICON[sourceSub.slug] ?? "website"
@@ -117,10 +130,10 @@ export function getNavPillars(locale: PublicChromeLocale): NavPillar[] {
       name: localizedService.title,
       tag:
         locale === "en"
-          ? localizedService.excerpt
+          ? PILLAR_TAG_EN[sourceService.slug] ?? localizedService.excerpt
           : PILLAR_TAG[sourceService.slug] ?? "",
       icon: pillarIcon,
-      href: serviceHref(localizedService),
+      href: serviceHref(localizedService, locale),
       subs:
         sourceService.slug === "webdesign" && locale === "nl"
           ? [
@@ -140,7 +153,7 @@ export function getNavPillars(locale: PublicChromeLocale): NavPillar[] {
     name: locale === "en" ? "Custom software" : "Apps & software",
     tag:
       locale === "en"
-        ? "Web applications, AI and automation"
+        ? "Web apps, AI & automation"
         : "Webapps, AI & automatisering",
     icon: "software",
     href: softwareServiceHubHref(locale),

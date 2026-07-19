@@ -28,9 +28,9 @@ describe("English visible sitemap inventory", () => {
       .filter((pathname) => pathname.startsWith("/en/"))
       .sort();
 
-    expect(xmlPaths).toHaveLength(170);
+    expect(xmlPaths).toHaveLength(169);
     expect(flattenVisibleSitemapHrefs(view).sort()).toEqual(xmlPaths);
-    expect(view.total).toBe(170);
+    expect(view.total).toBe(169);
   });
 
   it("groups representative services, regions, sectors, case studies and knowledge pages", async () => {
@@ -38,7 +38,7 @@ describe("English visible sitemap inventory", () => {
     const hrefs = flattenVisibleSitemapHrefs(view);
 
     expect(hrefs).toEqual(expect.arrayContaining([
-      "/en/diensten/web-design/business-website-design/",
+      "/en/services/web-design/business-website-design/",
       "/en/regio/limburg-belgium/",
       "/en/sectoren/construction-renovation/",
       "/en/realisaties/web-design/",
@@ -66,9 +66,9 @@ describe("English visible sitemap inventory", () => {
       ]),
     );
 
-    expect(titlesByHref.get("/en/diensten/photography/")).toBe("Photography");
-    expect(titlesByHref.get("/en/diensten/videography/")).toBe("Videography");
-    expect(titlesByHref.get("/en/diensten/custom-software/")).toBe("Custom software");
+    expect(titlesByHref.get("/en/services/photography/")).toBe("Photography");
+    expect(titlesByHref.get("/en/services/videography/")).toBe("Videography");
+    expect(titlesByHref.get("/en/services/custom-software/")).toBe("Custom software");
     expect(titlesByHref.get("/en/kennisbank/fotografie/")).toBe("Photography");
     expect(titlesByHref.get("/en/kennisbank/webdesign/website-development-costs/")).toBe(
       "How much does a website cost in Belgium?",

@@ -45,7 +45,7 @@ type SectionDefinition = Omit<EnglishVisibleSitemapSection, "href" | "nodes"> & 
 
 const sectionDefinitions: readonly SectionDefinition[] = [
   { id: "general", title: "General pages", hubHref: "/en/about/", intro: "Company information and ways to get in touch." },
-  { id: "services", title: "Services", hubHref: "/en/diensten/", intro: "Digital services, production and custom software." },
+  { id: "services", title: "Services", hubHref: "/en/services/", intro: "Digital services, production and custom software." },
   { id: "regions", title: "Regions", hubHref: "/en/regio/", intro: "The regions where VisualVibe works." },
   { id: "industries", title: "Industries", hubHref: "/en/sectoren/", intro: "Industry-specific expertise and solutions." },
   { id: "realisations", title: "Case studies", hubHref: "/en/realisaties/", intro: "Selected work across every discipline." },
@@ -56,7 +56,6 @@ const sectionDefinitions: readonly SectionDefinition[] = [
 const fixedTitles: Readonly<Record<string, string>> = {
   "/en/about/": "About VisualVibe",
   "/en/contact/": "Contact",
-  "/en/request-a-quotation/": "Request a quotation",
   "/en/privacy/": "Privacy policy",
   "/en/cookies/": "Cookie policy",
   "/en/sitemap/": "Sitemap",
@@ -75,7 +74,7 @@ function englishPath(pathname: string): string {
 function buildAuthoredEnglishTitles(): ReadonlyMap<string, string> {
   const serviceTitles = allServices.map((source) => {
     const translated = getLocalizedServiceById(source.slug, "en").service;
-    return [englishPath(serviceHref(translated)), translated.title] as const;
+    return [englishPath(serviceHref(translated, "en")), translated.title] as const;
   });
   const softwareTitles = getSoftwareServices("en").map((service) => [
     englishPath(softwareServiceHref(service, "en")),
@@ -126,7 +125,7 @@ function buildAuthoredEnglishTitles(): ReadonlyMap<string, string> {
 const authoredEnglishTitles = buildAuthoredEnglishTitles();
 
 function sectionIdFor(pathname: string): EnglishVisibleSitemapSection["id"] {
-  if (pathname.startsWith("/en/diensten/")) return "services";
+  if (pathname.startsWith("/en/services/")) return "services";
   if (pathname.startsWith("/en/regio/")) return "regions";
   if (pathname.startsWith("/en/sectoren/")) return "industries";
   if (pathname.startsWith("/en/realisaties/")) return "realisations";

@@ -35,12 +35,12 @@
   "slug": "event-photography-checklist",
   "internalLinks": [
     { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography involves" },
-    { "sourceHref": "/be/diensten/videografie/event-aftermovie/", "targetHref": "/en/diensten/videography/event-aftermovie/", "anchor": "corporate event aftermovie" },
-    { "sourceHref": "/be/diensten/drone-fpv/event-dronebeelden/", "targetHref": "/en/diensten/drone-fpv/event-drone-footage/", "anchor": "event drone footage" },
+    { "sourceHref": "/be/diensten/videografie/event-aftermovie/", "targetHref": "/en/services/videography/event-aftermovie/", "anchor": "corporate event aftermovie" },
+    { "sourceHref": "/be/diensten/drone-fpv/event-dronebeelden/", "targetHref": "/en/services/drone-fpv/event-drone-footage/", "anchor": "event drone footage" },
     { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
     { "sourceHref": "/be/kennisbank/fotografie/realisatiefotografie-voor-aannemers/", "targetHref": "/en/kennisbank/fotografie/project-photography-for-contractors/", "anchor": "project photography for contractors" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your event" },
-    { "sourceHref": "/be/diensten/fotografie/eventfotografie/", "targetHref": "/en/diensten/photography/event-photography/", "anchor": "explore event photography" }
+    { "sourceHref": "/be/diensten/fotografie/eventfotografie/", "targetHref": "/en/services/photography/event-photography/", "anchor": "explore event photography" }
   ],
   "factsToPreserve": [
     "An event cannot be restaged and one photographer cannot cover simultaneous moments in different rooms",

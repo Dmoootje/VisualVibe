@@ -160,7 +160,6 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
       nodes: [
         { title: "Over ons", href: "/over-ons" },
         { title: "Contact", href: "/contact" },
-        { title: "Offerte aanvragen", href: "/offerte-aanvragen" },
         { title: "Trouwfotograaf Limburg (WeddingVibe)", href: "/trouwfotograaf-limburg" },
         { title: "Privacybeleid", href: "/privacy" },
         { title: "Cookiebeleid", href: "/cookies" },

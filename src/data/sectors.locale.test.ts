@@ -58,7 +58,7 @@ describe("English sector localisation", () => {
     for (const record of Object.values(englishSectorEditorial)) {
       for (const { href } of record.internalLinks) {
         const segments = href.replace(/^\/en\//u, "").replace(/\/$/u, "").split("/");
-        if (segments[0] === "diensten") {
+        if (segments[0] === "services") {
           const service = getServiceByLocalizedSlug(segments.at(-1) ?? "", "en");
           expect(segments.length).toBe(service.service.parentSlug ? 3 : 2);
         } else if (segments[0] === "regio") {

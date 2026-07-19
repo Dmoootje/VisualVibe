@@ -1,3 +1,11 @@
+// Next.js dev-mode Fast Refresh (react-refresh + webpack HMR) evaluates code
+// with eval(), which needs 'unsafe-eval' in script-src. Without it the refresh
+// runtime throws on load, which aborts main-app.js before React hydrates, so
+// the whole page renders as static HTML with NO interactivity (menus, quote
+// slide-up, forms all dead). Production has no react-refresh, so it stays
+// locked down: 'unsafe-eval' is added ONLY when not building for production.
+const isProduction = process.env.NODE_ENV === "production";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -12,6 +20,7 @@ const contentSecurityPolicy = [
     "script-src",
     "'self'",
     "'unsafe-inline'",
+    ...(isProduction ? [] : ["'unsafe-eval'"]),
     "https://analytics.ahrefs.com",
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",

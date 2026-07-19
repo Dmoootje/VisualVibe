@@ -1,7 +1,7 @@
 import { HeroMessage, HeroStage, HeroFalling } from "./components";
 import "../home-performance.css";
 
-export default function Hero() {
+export default function Hero({ locale = "nl" }: { locale?: string }) {
   return (
     <section className="relative flex min-h-[100svh] items-center overflow-hidden pb-14 pt-24">
       {/* Ambient glow, bottom-left behind the headline */}
@@ -13,7 +13,7 @@ export default function Hero() {
       <HeroFalling />
 
       <div className="container relative z-[4] mx-auto grid w-full items-center gap-10 px-2.5 sm:px-4 lg:grid-cols-[1fr_540px] lg:gap-12">
-        <HeroMessage />
+        <HeroMessage locale={locale} />
         <HeroStage />
       </div>
     </section>

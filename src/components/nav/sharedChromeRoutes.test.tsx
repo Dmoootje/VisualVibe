@@ -62,7 +62,9 @@ describe("rendered mobile chrome routes", () => {
     );
 
     expect(html).toContain('href="/about"');
-    expect(html).toContain('href="/request-a-quotation"');
+    // The quote CTA is a slide-up trigger, never a page link.
+    expect(html).toContain('data-quote-modal="offerte"');
+    expect(html).not.toContain('href="/request-a-quotation"');
     expect(html).not.toContain('href="/over-ons"');
     expect(html).not.toContain('href="/offerte-aanvragen"');
     expect(html).not.toContain('href="/trouwfotograaf-limburg"');
@@ -77,7 +79,8 @@ describe("rendered mobile chrome routes", () => {
     const html = renderToStaticMarkup(<MobileNavDrawer {...sharedProps} locale="nl" />);
 
     expect(html).toContain('href="/over-ons"');
-    expect(html).toContain('href="/offerte-aanvragen"');
+    expect(html).toContain('data-quote-modal="offerte"');
+    expect(html).not.toContain('href="/offerte-aanvragen"');
     expect(html).toContain('href="/trouwfotograaf-limburg"');
   });
 });

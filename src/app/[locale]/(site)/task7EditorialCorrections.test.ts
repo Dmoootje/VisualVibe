@@ -9,20 +9,28 @@ describe("Task 7 editorial corrections", () => {
     for (const copy of [
       "Personal guidance, clear communication and one point of contact from briefing to delivery.",
       "Summary of our customer reviews",
-      "Who we work with",
-      "What our customers say",
       "<BlogPreview />",
       "Creative media agency in Limburg | VisualVibe",
       "VisualVibe, a creative media agency in Limburg for web design, SEO, photography and video production",
     ]) expect(source).toContain(copy);
+    // Every homepage section reuses the real, shared component and threads the
+    // resolved locale into it - the fix for the English release replacing the
+    // whole design with a duplicated, un-styled page body (see hero.config.ts,
+    // features.config.tsx, etc. for the matching English copy per component).
+    for (const usage of [
+      "<Hero locale={locale} />",
+      "<Features locale={locale} />",
+      "<SectorIntro locale={locale} />",
+      "<HowItWorks locale={locale} />",
+      '<Testimonials testimonials={reviews} sourceUrl={GOOGLE_MAPS_PROFILE_URL} locale={locale} />',
+      "<Cta locale={locale} />",
+    ]) expect(source).toContain(usage);
   });
 
-  it("passes locale into both lead forms and hides Dutch settings prose on English contact", () => {
+  it("passes locale into the contact lead form and hides Dutch settings prose on English contact", () => {
     const contact = read("src/app/[locale]/(site)/contact/page.tsx");
-    const quotation = read("src/app/[locale]/(site)/offerte-aanvragen/page.tsx");
     const form = read("src/components/forms/LeadForm.tsx");
     expect(contact).toContain('<LeadForm variant="contact" locale={locale}');
-    expect(quotation).toContain('<LeadForm variant="offerte" locale={locale}');
     expect(form).toContain('locale: SupportedLocale');
     expect(contact).toContain('locale !== "en" && settings.responseTimeText');
     expect(contact).toContain('locale !== "en" && (');
@@ -53,7 +61,6 @@ describe("Task 7 editorial corrections", () => {
     ].join("\n");
     for (const copy of [
       "Have a question or an idea for a project? Tell us what you want to achieve and we will help you shape it.",
-      "Tell us briefly about your project. We will send you a tailored, no-obligation quotation within two working days.",
       "Email verification helps prevent abuse and automated spam requests, keeping free analyses available to genuine businesses and website owners.",
       "See a clear score, findings by category and practical recommendations you can review immediately.",
       "Tick off completed work, track your progress and share a branded PDF with your team.",
@@ -105,13 +112,15 @@ describe("Task 7 editorial corrections", () => {
       read("src/app/[locale]/(site)/sitemap/page.tsx"),
       read("src/lib/seo/visibleSitemap.ts"),
     ].join("\n");
+    // English services publish under the /en/services/ alias (rewritten onto
+    // the internal /diensten route tree; old /en/diensten URLs 308 over).
     for (const href of [
-      "/en/diensten/", "/en/regio/", "/en/sectoren/", "/en/realisaties/",
-      "/en/diensten/seo/", "/en/diensten/web-design/",
+      "/en/services/", "/en/regio/", "/en/sectoren/", "/en/realisaties/",
+      "/en/services/seo/", "/en/services/web-design/",
     ]) expect(files).toContain(href);
-    expect(files).not.toContain("/en/diensten/webdesign/");
+    expect(files).not.toContain("/en/diensten/");
     expect(files).not.toContain("/en/trouwfotograaf-limburg/");
-    for (const invented of ["/en/services/", "/en/regions/", "/en/sectors/", "/en/case-studies/", "/en/wedding-photographer-limburg/"]) {
+    for (const invented of ["/en/regions/", "/en/sectors/", "/en/case-studies/", "/en/wedding-photographer-limburg/"]) {
       expect(files).not.toContain(invented);
     }
   });

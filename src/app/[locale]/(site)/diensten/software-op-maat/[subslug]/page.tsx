@@ -65,7 +65,7 @@ export default async function SoftwareServicePage({
         locale={en ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
-          { name: en ? "Services" : "Diensten", path: "/diensten" },
+          { name: en ? "Services" : "Diensten", path: en ? "/services" : "/diensten" },
           { name: en ? "Custom software" : "Software op maat", path: hubPath },
           { name: service.title, path: canonicalPath },
         ]}

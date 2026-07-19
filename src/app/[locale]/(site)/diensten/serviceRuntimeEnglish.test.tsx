@@ -27,10 +27,10 @@ vi.mock("@/components/sections", () => ({
     primaryLabel?: string;
     primaryHref?: string;
   }) => <section><h2>{title}</h2><p>{description}</p><a href={primaryHref}>{primaryLabel}</a></section>,
-  ServiceGrid: ({ services }: { services: Array<{ slug: string; parentSlug?: string; title: string }> }) => (
+  ServiceGrid: ({ services, locale = "nl" }: { services: Array<{ slug: string; parentSlug?: string; title: string }>; locale?: string }) => (
     <ul>{services.map((service) => (
       <li key={service.slug}>
-        <a href={`/diensten/${service.parentSlug ? `${service.parentSlug}/` : ""}${service.slug}`}>
+        <a href={`/${locale === "en" ? "services" : "diensten"}/${service.parentSlug ? `${service.parentSlug}/` : ""}${service.slug}`}>
           {service.title}
         </a>
       </li>
@@ -87,14 +87,14 @@ describe("English dynamic service runtime", () => {
       { locale: "nl", slug: "webdesign" },
       { locale: "en", slug: "web-design" },
     ]));
-    expect(metadata.alternates?.canonical).toContain("/en/diensten/web-design/");
+    expect(metadata.alternates?.canonical).toContain("/en/services/web-design/");
     expect(html).toContain("Web design");
-    expect(html).toContain('href="/diensten/web-design/business-website-design"');
+    expect(html).toContain('href="/services/web-design/business-website-design"');
     expect(html).toContain("Service overview");
     expect(html).toContain("How we work");
     expect(html).toContain("Request a quotation");
     expect(html).toContain('href="/request-a-quotation/"');
-    expect(html).toContain("https://visualvibe.media/en/diensten/web-design/");
+    expect(html).toContain("https://visualvibe.media/en/services/web-design/");
     expect(html).not.toMatch(/\/en\/en\/|href="\/en\/request-a-quotation\/"|data-dutch-bespoke|data-dutch-related-posts|Diensten overzicht|Hoe we werken|Offerte aanvragen|Bekijk de realisaties/);
   });
 
@@ -113,19 +113,19 @@ describe("English dynamic service runtime", () => {
       { locale: "en", slug: "web-design", sub: "business-website-design" },
     ]));
     expect(metadata.alternates?.canonical).toContain(
-      "/en/diensten/web-design/business-website-design/",
+      "/en/services/web-design/business-website-design/",
     );
     expect(html).toContain("Business website design");
     expect(html).toContain("Having a website built involves more than putting a new design online");
     expect(html).toContain("A website designed to do a clear job");
-    expect(html).toContain('href="/diensten/web-design/online-shop-development"');
+    expect(html).toContain('href="/services/web-design/online-shop-development"');
     expect(html).toContain("Part of Web design");
     expect(html).toContain("Frequently asked questions");
     expect(html).toContain("Related services");
     expect(html).toContain("Request a quotation");
     expect(html).toContain('href="/request-a-quotation/"');
     expect(html).toContain(
-      "https://visualvibe.media/en/diensten/web-design/business-website-design/",
+      "https://visualvibe.media/en/services/web-design/business-website-design/",
     );
     expect(html).not.toMatch(/\/en\/en\/|href="\/en\/request-a-quotation\/"|data-dutch-related-posts|Onderdeel van|Veelgestelde vragen|Gerelateerde diensten|Offerte aanvragen|Actief in deze regio/);
   });

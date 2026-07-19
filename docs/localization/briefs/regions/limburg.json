@@ -12,6 +12,6 @@
   "metaDescription": "Creative media agency in Limburg, Belgium, for web design, SEO, photography, video, drone and 3D tours for SMEs across the province.",
   "h1": "Creative media services in Limburg, Belgium",
   "slug": "limburg-belgium",
-  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/diensten/", "anchor": "services" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "request a quotation" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/services/", "anchor": "services" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "request a quotation" }],
   "factsToPreserve": ["Limburg, Belgium, is VisualVibe's home region", "The source names Hasselt, Genk, Bilzen and Sint-Truiden", "The service scope includes web design, SEO, photography, video, drone and 3D tours"]
 }

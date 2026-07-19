@@ -131,7 +131,7 @@ export default async function SectorDetailPage({
           service={{
             name: service.title,
             description: service.excerpt,
-            url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service)}/`)}`,
+            url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service, locale)}/`)}`,
             areaServed: [en ? "Limburg, Belgium" : "Limburg"],
           }}
         />

@@ -122,7 +122,7 @@ git commit -m "feat: publish English locale routing"
 
 **Interfaces:**
 - Consumes: Next.js `beforeFiles` rewrites and the established internal route tree.
-- Produces: public English aliases that resolve to internal localized pages; source-owned English links that point at canonical `/en/diensten/`, `/en/realisaties/` and `/en/about/` destinations.
+- Produces: public English aliases that resolve to internal localized pages; source-owned English links that point at canonical `/en/services/`, `/en/realisaties/` and `/en/about/` destinations.
 
 - [ ] **Step 1: Write failing alias and source-route tests**
 
@@ -166,7 +166,7 @@ Add the four exact `beforeFiles` rewrites before the existing custom-software ru
 Replace source-owned route families mechanically and review every changed destination:
 
 ```text
-/en/services/      -> /en/diensten/
+/en/services/      -> /en/services/
 /en/case-studies/  -> /en/realisaties/
 /en/about-us/      -> /en/about/
 ```
@@ -386,12 +386,12 @@ const requiredRepresentativePaths = [
   "/en/contact/",
   "/en/request-a-quotation/",
   "/en/privacy/",
-  "/en/diensten/",
-  "/en/diensten/web-design/",
+  "/en/services/",
+  "/en/services/web-design/",
   "/en/regio/limburg-belgium/",
   "/en/sectoren/construction-renovation/",
   "/en/realisaties/",
-  "/en/diensten/custom-software/",
+  "/en/services/custom-software/",
 ];
 ```
 
@@ -433,7 +433,7 @@ Expected: every sitemap and internal English target is successful, canonical and
 
 - [ ] **Step 4: Perform desktop and mobile visual smoke checks**
 
-Inspect `/en/`, `/en/diensten/`, `/en/request-a-quotation/`, `/en/privacy/`, `/en/kennisbank/`, one English article and `/en/diensten/custom-software/` at desktop and 390 by 844 mobile widths. Require English chrome, no horizontal overflow, no broken images, no visible Dutch text in shared controls and no application error content.
+Inspect `/en/`, `/en/services/`, `/en/request-a-quotation/`, `/en/privacy/`, `/en/kennisbank/`, one English article and `/en/services/custom-software/` at desktop and 390 by 844 mobile widths. Require English chrome, no horizontal overflow, no broken images, no visible Dutch text in shared controls and no application error content.
 
 - [ ] **Step 5: Record evidence and commit**
 

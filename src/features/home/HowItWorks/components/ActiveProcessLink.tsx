@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PROCESS_TRACK_EVENT } from "../process-events";
 import { processTracks } from "../config/process.config";
 
-export function ActiveProcessLink() {
+export function ActiveProcessLink({ locale = "nl" }: { locale?: string }) {
   const [href, setHref] = useState(processTracks[0].href);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function ActiveProcessLink() {
       variant="outline"
       className="gap-2 border-white/15 bg-white/[0.03] text-white hover:border-amber-500/40 hover:bg-amber-500/[0.06] hover:text-white"
     >
-      <Link href={href}>Bekijk deze dienst</Link>
+      <Link href={href}>{locale === "en" ? "View this service" : "Bekijk deze dienst"}</Link>
     </Button>
   );
 }

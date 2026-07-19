@@ -1,22 +1,24 @@
 "use client";
 
-import { processTracks } from "../config/process.config";
+import { processTracks, processTracksEn } from "../config/process.config";
 
 interface ProcessTabsProps {
   activeId: string;
   onSelect: (id: string) => void;
+  locale?: string;
 }
 
 /** Controlled tab selector for the process tracks; active tab gets the orange glow. */
-export function ProcessTabs({ activeId, onSelect }: ProcessTabsProps) {
+export function ProcessTabs({ activeId, onSelect, locale = "nl" }: ProcessTabsProps) {
+  const tracks = locale === "en" ? processTracksEn : processTracks;
   return (
     <div className="mb-8 flex justify-center overflow-x-auto pb-2 scrollbar-hide sm:mb-10">
       <div
         role="tablist"
-        aria-label="Kies een traject"
+        aria-label={locale === "en" ? "Choose a track" : "Kies een traject"}
         className="inline-flex flex-nowrap gap-1 rounded-xl border border-white/10 bg-white/5 p-1 backdrop-blur-sm"
       >
-        {processTracks.map((track) => {
+        {tracks.map((track) => {
           const isActive = track.id === activeId;
           return (
             <button

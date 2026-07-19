@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     locale: locale as SupportedLocale,
     languagePaths: {
       nl: "/diensten/software-op-maat/",
-      en: "/diensten/custom-software/",
+      en: "/services/custom-software/",
     },
   });
 }
@@ -116,7 +116,7 @@ export default async function SoftwareOpMaatPage({ params }: { params: Promise<{
         locale={en ? "en" : "nl"}
         items={[
           { name: "Home", path: "/" },
-          { name: en ? "Services" : "Diensten", path: "/diensten" },
+          { name: en ? "Services" : "Diensten", path: en ? "/services" : "/diensten" },
           { name: en ? "Custom software" : "Software op maat", path: hubPath },
         ]}
       />
@@ -188,7 +188,7 @@ export default async function SoftwareOpMaatPage({ params }: { params: Promise<{
                 {en ? "A website presents your offer, builds trust and guides visitors towards contact or purchase. Useful AI features can strengthen that experience, while the public customer journey remains central." : "Een website presenteert je aanbod, bouwt vertrouwen op en leidt bezoekers naar contact of aankoop. Slimme AI-functionaliteiten kunnen die ervaring versterken, maar de publieke klantreis blijft centraal staan."}
               </p>
               <Link
-                href={en ? "/diensten/web-design/" : "/diensten/webdesign/website-met-ai-functionaliteiten/"}
+                href={en ? "/services/web-design/" : "/diensten/webdesign/website-met-ai-functionaliteiten/"}
                 className="mt-6 inline-flex items-center gap-2 font-bold text-[#FF9A45]"
               >
                 {en ? "Explore web design" : "Website met AI-functionaliteiten"}

@@ -32,13 +32,12 @@ export type DataPublicRouteInput = Readonly<{
 
 const coreRoutePairs: readonly LocalePathPair[] = [
   { nl: "/", en: "/" },
-  { nl: "/diensten/", en: "/diensten/" },
+  { nl: "/diensten/", en: "/services/" },
   { nl: "/regio/", en: "/regio/" },
   { nl: "/sectoren/", en: "/sectoren/" },
   { nl: "/realisaties/", en: "/realisaties/" },
   { nl: "/over-ons/", en: "/about/" },
   { nl: "/contact/", en: "/contact/" },
-  { nl: "/offerte-aanvragen/", en: "/request-a-quotation/" },
   { nl: "/privacy/", en: "/privacy/" },
   { nl: "/cookies/", en: "/cookies/" },
   { nl: "/sitemap/", en: "/sitemap/" },
@@ -110,7 +109,7 @@ function getStaticRealisationRoutes(): PublicRoutePair[] {
 export function getStaticPublicRoutePairs(): PublicRoutePair[] {
   const serviceRoutes = allServices.map((source): LocalePathPair => ({
     nl: withTrailingSlash(serviceHref(getLocalizedServiceById(source.slug, "nl").service)),
-    en: withTrailingSlash(serviceHref(getLocalizedServiceById(source.slug, "en").service)),
+    en: withTrailingSlash(serviceHref(getLocalizedServiceById(source.slug, "en").service, "en")),
   }));
 
   const dutchSoftware = getSoftwareServices("nl");

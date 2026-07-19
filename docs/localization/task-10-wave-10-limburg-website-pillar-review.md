@@ -12,7 +12,7 @@ The reviewer read the complete 4,957-word Dutch source, the complete 4,763-word 
 - Preserved the commercial boundaries: scope drives price; one-page and full websites suit different needs; photography and video can support but not guarantee conversion; Core Web Vitals do not guarantee rankings; and ongoing content and monthly optimisation are normally separate from the website's SEO foundation.
 - Preserved the legal caveat that WCAG 2.2 is a testing framework and that applicable formal obligations require an assessment for the individual organisation.
 - Corrected frontmatter relationships to canonical internal identities and all public knowledge-base links to `/en/kennisbank/`.
-- Corrected public service paths to the implemented `/en/diensten/` routes and repaired the website-development and online-shop slugs.
+- Corrected public service paths to the implemented `/en/services/` routes and repaired the website-development and online-shop slugs.
 - Replaced literal uses of `cases` with the approved `case studies` terminology and corrected several smaller grammatical issues.
 
 ## Validation evidence

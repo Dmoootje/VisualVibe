@@ -5,14 +5,15 @@ import { ProcessCard } from "./ProcessCard";
 import { ProcessPathLine } from "./ProcessPathLine";
 import { ProcessTabs } from "./ProcessTabs";
 import { PROCESS_TRACK_EVENT } from "../process-events";
-import { processTracks } from "../config/process.config";
+import { processTracks, processTracksEn } from "../config/process.config";
 
-export function ProcessExplorer() {
-  const [activeId, setActiveId] = useState(processTracks[0].id);
-  const activeTrack = processTracks.find((track) => track.id === activeId) ?? processTracks[0];
+export function ProcessExplorer({ locale = "nl" }: { locale?: string }) {
+  const tracks = locale === "en" ? processTracksEn : processTracks;
+  const [activeId, setActiveId] = useState(tracks[0].id);
+  const activeTrack = tracks.find((track) => track.id === activeId) ?? tracks[0];
 
   function selectTrack(id: string) {
-    const track = processTracks.find((item) => item.id === id) ?? processTracks[0];
+    const track = tracks.find((item) => item.id === id) ?? tracks[0];
     setActiveId(track.id);
     window.dispatchEvent(
       new CustomEvent(PROCESS_TRACK_EVENT, { detail: { href: track.href } }),
@@ -21,7 +22,7 @@ export function ProcessExplorer() {
 
   return (
     <>
-      <ProcessTabs activeId={activeId} onSelect={selectTrack} />
+      <ProcessTabs activeId={activeId} onSelect={selectTrack} locale={locale} />
       <div className="relative">
         <ProcessPathLine />
         <div

@@ -227,7 +227,7 @@ Hub and detail metadata, canonical URLs, Open Graph data, breadcrumbs and visibl
 
 English sector routes do not request Firestore projects, Firestore images or galleries, profile images, YouTube videos or other Dutch dynamic showcase records. Those sections stay hidden until their public fields have explicit reviewed English localization. Dutch routes retain their existing dynamic behavior.
 
-All sector and region overlay links and briefs now use the actual route tree: `/en/diensten/`, `/en/sectoren/`, `/en/regio/`, `/en/realisaties/`, `/en/contact/` and `/en/request-a-quotation/`. Nested service links resolve through the localized service selector. Invented `/en/services`, `/en/regions`, `/en/sectors`, `/en/case-studies` and `/en/region/limburg` paths were removed.
+All sector and region overlay links and briefs now use the actual route tree: `/en/services/`, `/en/sectoren/`, `/en/regio/`, `/en/realisaties/`, `/en/contact/` and `/en/request-a-quotation/`. Nested service links resolve through the localized service selector. Invented `/en/services`, `/en/regions`, `/en/sectors`, `/en/case-studies` and `/en/region/limburg` paths were removed.
 
 `getRealisatieCategoryByLocalizedSlug` now rejects unsupported locales consistently with the ID selector instead of returning `undefined` and allowing a caller to continue silently.
 

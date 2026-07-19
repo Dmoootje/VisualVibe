@@ -42,10 +42,12 @@ describe("public sitemap locale boundary", () => {
       "https://visualvibe.media/be/diensten/webdesign/website-laten-maken/",
     );
     expect(urls).toContain(
-      "https://visualvibe.media/en/diensten/web-design/business-website-design/",
+      "https://visualvibe.media/en/services/web-design/business-website-design/",
     );
-    expect(urls).toContain("https://visualvibe.media/be/offerte-aanvragen/");
-    expect(urls).toContain("https://visualvibe.media/en/request-a-quotation/");
+    // The quotation page was removed (quote slide-up everywhere): neither
+    // locale may advertise it in the sitemap anymore.
+    expect(urls.some((url) => url.includes("offerte-aanvragen"))).toBe(false);
+    expect(urls.some((url) => url.includes("request-a-quotation"))).toBe(false);
     expect(urls).toContain("https://visualvibe.media/be/trouwfotograaf-limburg/");
     expect(urls).toContain(
       "https://visualvibe.media/be/diensten/webdesign/website-met-ai-functionaliteiten/",

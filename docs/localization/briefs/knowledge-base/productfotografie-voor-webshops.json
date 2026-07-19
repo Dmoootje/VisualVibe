@@ -34,8 +34,8 @@
   "h1": "Product photography for online shops: from shot list to product feed",
   "slug": "product-photography-for-online-shops",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/diensten/photography/product-photography/", "anchor": "professional product photography" },
-    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/diensten/web-design/online-shop-development/", "anchor": "online shop development" },
+    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/services/photography/product-photography/", "anchor": "professional product photography" },
+    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/services/web-design/online-shop-development/", "anchor": "online shop development" },
     { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what is corporate photography" },
     { "sourceHref": "/be/kennisbank/fotografie/vastgoedfotografie-tips/", "targetHref": "/en/kennisbank/fotografie/real-estate-photography-tips/", "anchor": "property photography tips" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your product shoot" }

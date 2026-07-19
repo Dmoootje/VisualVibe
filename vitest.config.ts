@@ -19,6 +19,9 @@ export default defineConfig({
       ".worktrees/**",
       "**/.worktrees/**",
       "scripts/lib/analysis-quota-rollout.test.mjs",
+      // Playwright specs (tests/, see playwright.config.ts) run via
+      // `npx playwright test`, not vitest.
+      "tests/**",
     ],
   },
 });

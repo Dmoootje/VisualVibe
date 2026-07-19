@@ -117,7 +117,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Responsive business website designed by VisualVibe",
     internalLinks: [
-      { href: "/en/diensten/seo/", label: "SEO services" },
+      { href: "/en/services/seo/", label: "SEO services" },
       { href: "/en/request-a-quotation/", label: "request a quotation" },
     ],
   },
@@ -204,7 +204,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "SEO and web design project presented by VisualVibe",
     internalLinks: [
-      { href: "/en/diensten/web-design/", label: "web design" },
+      { href: "/en/services/web-design/", label: "web design" },
       { href: "/en/request-a-quotation/", label: "request an SEO quotation" },
     ],
   },
@@ -295,7 +295,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Corporate photography session by VisualVibe in Limburg",
     internalLinks: [
-      { href: "/en/diensten/videography/", label: "videography" },
+      { href: "/en/services/videography/", label: "videography" },
       {
         href: "/en/request-a-quotation/",
         label: "request a photography quotation",
@@ -379,7 +379,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Corporate video production by VisualVibe",
     internalLinks: [
-      { href: "/en/diensten/photography/", label: "photography" },
+      { href: "/en/services/photography/", label: "photography" },
       { href: "/en/request-a-quotation/", label: "request a video quotation" },
     ],
   },
@@ -455,7 +455,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Certified drone filming a business project in Limburg",
     internalLinks: [
-      { href: "/en/diensten/videography/", label: "videography" },
+      { href: "/en/services/videography/", label: "videography" },
       { href: "/en/request-a-quotation/", label: "request a drone quotation" },
     ],
   },
@@ -514,7 +514,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Interactive 3D tour of a business location",
     internalLinks: [
-      { href: "/en/diensten/photography/", label: "professional photography" },
+      { href: "/en/services/photography/", label: "professional photography" },
       {
         href: "/en/request-a-quotation/",
         label: "request a 3D tour quotation",
@@ -577,7 +577,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Professional business podcast recording setup",
     internalLinks: [
-      { href: "/en/diensten/videography/", label: "video production" },
+      { href: "/en/services/videography/", label: "video production" },
       {
         href: "/en/request-a-quotation/",
         label: "request a podcast quotation",
@@ -638,7 +638,7 @@ export const englishServiceEditorial: Record<
     },
     imageAlt: "Masterclass recorded with professional cameras and sound",
     internalLinks: [
-      { href: "/en/diensten/videography/", label: "videography" },
+      { href: "/en/services/videography/", label: "videography" },
       {
         href: "/en/request-a-quotation/",
         label: "request a training video quotation",

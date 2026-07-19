@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/diensten/software-op-maat/",
-  "targetRoute": "/en/diensten/custom-software/",
+  "targetRoute": "/en/services/custom-software/",
   "audience": "SME owners and operations teams in Belgium considering a purpose-built app, web application, AI workflow or systems integration",
   "primaryDutchSearchIntent": "Een betrouwbare partner vinden voor software op maat die vertrekt van het echte bedrijfsproces.",
   "searchIntent": { "type": "commercial", "question": "Which type of custom software should our business build, and how should we scope the first release?", "geographicContext": "English-speaking SMEs in Limburg, Belgium and neighbouring regions" },
@@ -13,8 +13,8 @@
   "h1": "Custom apps and software built around your business",
   "slug": "custom-software",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/diensten/custom-software/app-development/", "anchor": "app development" },
-    { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/web-application-development/", "anchor": "web application development" },
+    { "sourceHref": "/be/diensten/software-op-maat/app-laten-maken/", "targetHref": "/en/services/custom-software/app-development/", "anchor": "app development" },
+    { "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/services/custom-software/web-application-development/", "anchor": "web application development" },
     { "sourceHref": "/be/kennisbank/software-op-maat/", "targetHref": "/en/kennisbank/software-op-maat/", "anchor": "apps and custom software" }
   ],
   "factsToPreserve": ["The solution format depends on users, context, data and expected growth", "Analysis and user journeys precede development", "AI is only proposed for a clear bounded task", "No price, timeline or outcome guarantee may be added"]

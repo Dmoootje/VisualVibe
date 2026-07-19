@@ -33,10 +33,10 @@
   "h1": "Online shop development for SMEs: from product data to checkout",
   "slug": "online-shop-development-for-smes",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/diensten/web-design/online-shop-development/", "anchor": "online shop development" },
-    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/diensten/photography/product-photography/", "anchor": "product photography" },
+    { "sourceHref": "/be/diensten/webdesign/webshop-laten-maken/", "targetHref": "/en/services/web-design/online-shop-development/", "anchor": "online shop development" },
+    { "sourceHref": "/be/diensten/fotografie/productfotografie/", "targetHref": "/en/services/photography/product-photography/", "anchor": "product photography" },
     { "sourceHref": "/be/kennisbank/fotografie/productfotografie-voor-webshops/", "targetHref": "/en/kennisbank/fotografie/product-photography-for-online-shops/", "anchor": "product photography for online shops" },
-    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/diensten/web-design/", "anchor": "web design" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/services/web-design/", "anchor": "web design" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your online shop" }
   ],
   "factsToPreserve": [

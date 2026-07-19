@@ -31,9 +31,15 @@ describe("English public routes", () => {
       },
       {
         source: "/en/diensten/webdesign/website-met-ai-functionaliteiten",
-        destination: "/en/diensten/custom-software/ai-application-development/",
+        destination: "/en/services/custom-software/ai-application-development/",
         permanent: true,
       },
+      // English services moved from /en/diensten/* to /en/services/*.
+      { source: "/en/diensten", destination: "/en/services/", permanent: true },
+      { source: "/en/diensten/:path+", destination: "/en/services/:path+/", permanent: true },
+      // The quotation page was removed; old URLs land on the contact page.
+      { source: "/en/request-a-quotation", destination: "/en/contact/", permanent: true },
+      { source: "/en/offerte-aanvragen", destination: "/en/contact/", permanent: true },
     ]));
     expect(redirects.some(({ source }) =>
       source === "/en" || source === "/en/:path+"
@@ -47,10 +53,6 @@ describe("English public routes", () => {
     const { beforeFiles } = await config.rewrites();
     const expected = [
       { source: "/en/about", destination: "/en/over-ons" },
-      {
-        source: "/en/request-a-quotation",
-        destination: "/en/offerte-aanvragen",
-      },
       {
         source: "/en/website-analysis",
         destination: "/en/website-analyse",
@@ -66,7 +68,7 @@ describe("English public routes", () => {
     const customSoftwareIndex = beforeFiles.findIndex(
       (rule) =>
         (rule as { source?: string }).source ===
-        "/en/diensten/custom-software",
+        "/en/services/custom-software",
     );
     for (const rule of expected) {
       const aliasIndex = beforeFiles.findIndex(
@@ -76,6 +78,14 @@ describe("English public routes", () => {
       expect(aliasIndex).toBeGreaterThanOrEqual(0);
       expect(aliasIndex).toBeLessThan(customSoftwareIndex);
     }
+
+    // The specific custom-software mapping must win before the generic
+    // /en/services catch-all rewrite.
+    const genericServicesIndex = beforeFiles.findIndex(
+      (rule) => (rule as { source?: string }).source === "/en/services/:path*",
+    );
+    expect(customSoftwareIndex).toBeGreaterThanOrEqual(0);
+    expect(genericServicesIndex).toBeGreaterThan(customSoftwareIndex);
   });
 
   it("keeps source-owned English links on canonical public path families", () => {
@@ -85,7 +95,7 @@ describe("English public routes", () => {
     ].join("\n");
 
     for (const forbidden of [
-      "/en/services/",
+      "/en/diensten/",
       "/en/case-studies/",
       "/en/about-us/",
       "/en/regions/",
@@ -128,10 +138,10 @@ describe("English public routes", () => {
       ),
     ];
 
-    expect(categorySource).not.toContain("/services/");
+    expect(categorySource).not.toContain('"/diensten/custom-software/"');
     for (const source of applicationSources) {
-      expect(source).not.toContain("/services/");
-      expect(source).toContain("/diensten/custom-software/");
+      expect(source).toContain('"/services/custom-software/"');
+      expect(source).not.toContain('en ? "/diensten/');
     }
   });
 

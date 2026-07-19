@@ -54,7 +54,11 @@ export function QuoteModalController() {
         return;
       }
 
-      if (anchor.pathname.replace(/\/+$/, "").endsWith("/offerte-aanvragen")) {
+      // The quote page no longer exists: any internal link to the old Dutch
+      // or English quotation URL opens the slide-up sheet instead. (No-JS
+      // visitors hit the permanent redirect to /contact in next.config.js.)
+      const path = anchor.pathname.replace(/\/+$/, "");
+      if (path.endsWith("/offerte-aanvragen") || path.endsWith("/request-a-quotation")) {
         event.preventDefault();
         openModal("offerte");
       }

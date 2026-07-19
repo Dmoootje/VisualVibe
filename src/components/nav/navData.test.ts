@@ -73,17 +73,17 @@ describe("localized navigation routes", () => {
 
     expect(webDesign).toEqual(expect.objectContaining({
       name: "Web design",
-      href: "/diensten/web-design",
+      href: "/services/web-design",
     }));
     expect(webDesign?.subs).toContainEqual(expect.objectContaining({
       name: "Business website design",
-      href: "/diensten/web-design/business-website-design",
+      href: "/services/web-design/business-website-design",
     }));
     expect(software).toEqual(expect.objectContaining({
-      href: "/diensten/custom-software",
+      href: "/services/custom-software",
     }));
     expect(software?.subs).toContainEqual(expect.objectContaining({
-      href: "/diensten/custom-software/app-development",
+      href: "/services/custom-software/app-development",
     }));
 
     const hrefs = pillars.flatMap((pillar) => [

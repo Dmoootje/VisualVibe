@@ -16,11 +16,11 @@ describe("localized custom software services", () => {
       "app-design-ux-ui",
     ]);
     expect(services.map((service) => softwareModule.softwareServiceHref!(service, "en"))).toEqual([
-      "/diensten/custom-software/app-development",
-      "/diensten/custom-software/web-application-development",
-      "/diensten/custom-software/ai-application-development",
-      "/diensten/custom-software/api-integrations-and-automation",
-      "/diensten/custom-software/app-design-ux-ui",
+      "/services/custom-software/app-development",
+      "/services/custom-software/web-application-development",
+      "/services/custom-software/ai-application-development",
+      "/services/custom-software/api-integrations-and-automation",
+      "/services/custom-software/app-design-ux-ui",
     ]);
   });
 
@@ -40,7 +40,7 @@ describe("localized custom software services", () => {
 
   it("resolves every English knowledge-base custom-software target", () => {
     const routeSet = new Set([
-      "/en/diensten/custom-software/",
+      "/en/services/custom-software/",
       ...softwareModule.getSoftwareServices!("en").map(
         (service) => `/en${softwareModule.softwareServiceHref!(service, "en")}/`,
       ),
@@ -48,7 +48,7 @@ describe("localized custom software services", () => {
     const directory = resolve("content/kennisbank/en");
     const targets = readdirSync(directory)
       .filter((name) => name.endsWith(".mdx"))
-      .flatMap((name) => [...readFileSync(resolve(directory, name), "utf8").matchAll(/\]\((\/en\/diensten\/custom-software\/[^)#?]*\/?)\)/g)].map((match) => match[1]))
+      .flatMap((name) => [...readFileSync(resolve(directory, name), "utf8").matchAll(/\]\((\/en\/services\/custom-software\/[^)#?]*\/?)\)/g)].map((match) => match[1]))
       .map((href) => href.endsWith("/") ? href : `${href}/`);
 
     expect(targets.length).toBeGreaterThan(0);
@@ -60,7 +60,7 @@ describe("localized custom software services", () => {
     for (const filename of filenames) {
       const brief = JSON.parse(readFileSync(resolve(`docs/localization/briefs/services/${filename}.json`), "utf8"));
       expect(brief).toMatchObject({
-        targetRoute: expect.stringMatching(/^\/en\/diensten\/custom-software\//),
+        targetRoute: expect.stringMatching(/^\/en\/services\/custom-software\//),
         audience: expect.any(String),
         primaryDutchSearchIntent: expect.any(String),
         directAnswer: expect.any(String),

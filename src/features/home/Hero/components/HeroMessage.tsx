@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
-import { heroConfig } from "../config/hero.config";
+import { QuoteButton } from "@/components/quote";
+import { heroConfig, heroConfigEn } from "../config/hero.config";
 import "./home-hero.css";
 
 const Spark = () => (
@@ -33,43 +34,45 @@ const Arrow = () => (
 );
 
 /** Left column: the static marketing message (eyebrow, title, copy, CTAs, trust). */
-export function HeroMessage() {
+export function HeroMessage({ locale = "nl" }: { locale?: string }) {
+  const en = locale === "en";
+  const copy = en ? heroConfigEn : heroConfig;
+
   return (
     <div className="max-w-[640px]">
       <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-bold text-white">
         <Spark />
-        {heroConfig.eyebrow}
+        {copy.eyebrow}
       </div>
 
       <h1 className="mb-6 text-balance text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] text-white sm:text-6xl lg:text-[74px] lg:leading-[1.03]">
-        {heroConfig.titleLine1}
+        {copy.titleLine1}
         <br />
         <span className="bg-gradient-to-r from-[#FF3B2E] to-[#FF7A00] bg-clip-text text-transparent">
-          {heroConfig.titleLine2}
+          {copy.titleLine2}
         </span>
       </h1>
 
       <p className="mb-9 max-w-[520px] text-lg leading-relaxed text-white/60 sm:text-xl">
-        {heroConfig.description}
+        {copy.description}
       </p>
 
       <div className="mb-11 flex flex-wrap gap-4">
-        <Link
-          href={heroConfig.primaryCta.href}
-          className="vvh-btn inline-flex items-center gap-2.5 rounded-xl px-7 py-4 text-[17px] font-bold text-white"
+        <QuoteButton
+          className="vvh-btn inline-flex cursor-pointer items-center gap-2.5 rounded-xl border-0 px-7 py-4 text-[17px] font-bold text-white"
           style={{
             background: "linear-gradient(90deg,#FF3B2E,#FF7A00)",
             boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)",
           }}
         >
-          {heroConfig.primaryCta.label}
+          {copy.primaryCta.label}
           <Arrow />
-        </Link>
+        </QuoteButton>
         <Link
-          href={heroConfig.secondaryCta.href}
+          href={copy.secondaryCta.href}
           className="vvh-btn inline-flex items-center rounded-xl border border-white/[0.14] bg-white/5 px-7 py-4 text-[17px] font-bold text-white"
         >
-          {heroConfig.secondaryCta.label}
+          {copy.secondaryCta.label}
         </Link>
       </div>
 
@@ -86,8 +89,8 @@ export function HeroMessage() {
           ))}
         </div>
         <span className="text-[15px] text-white/60">
-          Vertrouwd door <strong className="text-white">{heroConfig.trustedBy}</strong>{" "}
-          {heroConfig.trustLabel}
+          {en ? "Trusted by" : "Vertrouwd door"} <strong className="text-white">{copy.trustedBy}</strong>{" "}
+          {copy.trustLabel}
         </span>
         <span className="inline-flex gap-0.5">
           {[0, 1, 2, 3, 4].map((i) => (

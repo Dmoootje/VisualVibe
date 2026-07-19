@@ -1,9 +1,10 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import type { Service } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
 import { serviceHref } from "@/data/services";
 
-export function ServiceGrid({ services }: { services: Service[] }) {
+export function ServiceGrid({ services, locale = "nl" }: { services: Service[]; locale?: SupportedLocale }) {
   if (services.length === 0) {
     return null;
   }
@@ -13,7 +14,7 @@ export function ServiceGrid({ services }: { services: Service[] }) {
       {services.map((service) => (
         <Link
           key={service.slug}
-          href={serviceHref(service)}
+          href={serviceHref(service, locale)}
           className="group flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
         >
           <span className="flex items-center justify-between font-semibold group-hover:text-amber-400 transition-colors">

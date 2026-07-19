@@ -2,15 +2,16 @@ import { ArrowRight, Route, HeartHandshake } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import { featuresConfig, type Feature } from "../config/features.config";
+import { featuresConfig, featuresConfigEn, type Feature } from "../config/features.config";
 import { ServiceFeatureList } from "./ServiceFeatureList";
 import { ServiceMiniBlock } from "./ServiceMiniBlock";
 import { ServiceImageCard } from "./ServiceImageCard";
 
-export function FeatureContent() {
+export function FeatureContent({ locale = "nl" }: { locale?: string }) {
+  const copy = locale === "en" ? featuresConfigEn : featuresConfig;
   return (
     <div className="relative min-h-[900px] md:min-h-[520px]">
-      {featuresConfig.features.map((feature) => (
+      {copy.features.map((feature) => (
         <TabsContent
           key={feature.id}
           value={feature.id}
@@ -18,7 +19,7 @@ export function FeatureContent() {
           className="scroll-mt-20 focus-visible:outline-none focus-visible:ring-0"
         >
           <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-            <FeatureDescription feature={feature} />
+            <FeatureDescription feature={feature} locale={locale} />
             <ServiceImageCard
               image={feature.image}
               title={feature.title}
@@ -32,7 +33,8 @@ export function FeatureContent() {
   );
 }
 
-function FeatureDescription({ feature }: { feature: Feature }) {
+function FeatureDescription({ feature, locale = "nl" }: { feature: Feature; locale?: string }) {
+  const en = locale === "en";
   return (
     <div className="home-reveal-left">
       {/* Image first on mobile */}
@@ -62,12 +64,12 @@ function FeatureDescription({ feature }: { feature: Feature }) {
       <div className="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <ServiceMiniBlock
           icon={<Route className="h-3.5 w-3.5" />}
-          label="Onze aanpak"
+          label={en ? "Our approach" : "Onze aanpak"}
           text={feature.approach}
         />
         <ServiceMiniBlock
           icon={<HeartHandshake className="h-3.5 w-3.5" />}
-          label="Menselijke aanpak"
+          label={en ? "The human touch" : "Menselijke aanpak"}
           text={feature.human}
           accent
         />
@@ -80,7 +82,7 @@ function FeatureDescription({ feature }: { feature: Feature }) {
           className="gap-2 border-0 bg-gradient-to-r from-red-500 to-amber-500 text-white shadow-lg shadow-amber-500/20 hover:from-red-600 hover:to-amber-600"
         >
           <Link href="/contact">
-            Bespreek je project
+            {en ? "Discuss your project" : "Bespreek je project"}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
@@ -89,7 +91,7 @@ function FeatureDescription({ feature }: { feature: Feature }) {
           variant="outline"
           className="gap-2 border-white/15 bg-white/[0.03] text-white hover:border-amber-500/40 hover:bg-amber-500/[0.06] hover:text-white"
         >
-          <Link href={feature.href}>Bekijk dienst</Link>
+          <Link href={feature.href}>{en ? "View service" : "Bekijk dienst"}</Link>
         </Button>
       </div>
     </div>

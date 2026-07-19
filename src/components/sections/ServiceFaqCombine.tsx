@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Service, ServiceFaq } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
 import { serviceHref } from "@/data/services";
 import { serviceCategories } from "@/data/serviceCategories";
 import {
@@ -55,11 +56,13 @@ function CombineColumn({
   relatedServices,
   eyebrow,
   heading,
+  locale = "nl",
 }: {
   combineWith: string;
   relatedServices: Service[];
   eyebrow: string;
   heading?: string;
+  locale?: SupportedLocale;
 }) {
   return (
     <div>
@@ -71,7 +74,7 @@ function CombineColumn({
           return (
             <Link
               key={related.slug}
-              href={serviceHref(related)}
+              href={serviceHref(related, locale)}
               style={{ ["--i" as string]: i } as React.CSSProperties}
               className="vvw-caseRow vg-ovrow flex items-center gap-4 rounded-[14px] border border-white/[0.08] bg-white/[0.02] px-[22px] py-5"
             >
@@ -124,6 +127,7 @@ export function ServiceFaqCombine({
   combineEyebrow = "Meer diensten",
   combineHeading,
   relatedServices,
+  locale = "nl",
 }: {
   faqs: ServiceFaq[];
   faqHeading?: string;
@@ -131,6 +135,7 @@ export function ServiceFaqCombine({
   combineEyebrow?: string;
   combineHeading?: string;
   relatedServices: Service[];
+  locale?: SupportedLocale;
 }) {
   const hasFaqs = faqs.length > 0;
   const hasRelated = relatedServices.length > 0;
@@ -146,6 +151,7 @@ export function ServiceFaqCombine({
             relatedServices={relatedServices}
             eyebrow={combineEyebrow}
             heading={combineHeading}
+            locale={locale}
           />
         </div>
       ) : (
@@ -158,6 +164,7 @@ export function ServiceFaqCombine({
               relatedServices={relatedServices}
               eyebrow={combineEyebrow}
               heading={combineHeading}
+              locale={locale}
             />
           )}
         </div>

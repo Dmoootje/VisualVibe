@@ -1,0 +1,161 @@
+/* Floating language picker (bottom-right site-wide chrome). Scoped .vvlang-*
+   classes, co-located and imported by LanguagePicker.tsx so the styles only
+   ship on routes that render it. */
+
+.vvlang {
+  position: relative;
+  font-family: var(--font-sora), sans-serif;
+  animation: vvlang-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.35s;
+}
+
+@keyframes vvlang-enter {
+  from { opacity: 0; transform: translateY(16px) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ===== trigger pill ===== */
+.vvlang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px 8px 9px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(28, 24, 21, 0.92), rgba(16, 14, 13, 0.92));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 122, 0, 0.05);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.vvlang-trigger:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 0, 0.5);
+  box-shadow: 0 22px 46px -18px rgba(255, 90, 0, 0.5), 0 0 0 1px rgba(255, 122, 0, 0.12);
+}
+.vvlang-trigger:focus-visible {
+  outline: 2px solid #ff7a00;
+  outline-offset: 3px;
+}
+.vvlang-code {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.92);
+}
+.vvlang-chev {
+  color: #ff9a45;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vvlang.is-open .vvlang-chev { transform: rotate(180deg); }
+
+/* ===== flag chip ===== */
+.vvlang-flag {
+  position: relative;
+  flex: none;
+  width: 26px;
+  height: 18px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 2px 5px -2px rgba(0, 0, 0, 0.7);
+  transition: transform 0.25s ease;
+}
+.vvlang-flag svg { display: block; width: 100%; height: 100%; }
+/* subtle gloss */
+.vvlang-flag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.14));
+}
+.vvlang-trigger:hover .vvlang-flag { transform: scale(1.09); }
+
+/* ===== popover ===== */
+.vvlang-pop {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  width: 214px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(16, 14, 13, 0.97);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 122, 0, 0.05);
+  transform-origin: bottom right;
+  animation: vvlang-pop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vvlang-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+.vvlang-pop-label {
+  padding: 6px 10px 10px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.vvlang-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 11px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.vvlang-opt + .vvlang-opt { margin-top: 3px; }
+.vvlang-opt:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(2px);
+}
+.vvlang-opt:hover .vvlang-flag { transform: scale(1.09); }
+.vvlang-opt:focus-visible {
+  outline: none;
+  border-color: rgba(255, 122, 0, 0.5);
+  background: rgba(255, 122, 0, 0.08);
+}
+.vvlang-opt.is-active {
+  border-color: rgba(255, 122, 0, 0.3);
+  background: rgba(255, 122, 0, 0.1);
+}
+.vvlang-opt-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.vvlang-opt-sub {
+  display: block;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+.vvlang-check { flex: none; color: #ff9a45; }
+.vvlang-opt:not(.is-active) .vvlang-check { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vvlang { animation: none; }
+  .vvlang-pop { animation: none; }
+  .vvlang-trigger,
+  .vvlang-chev,
+  .vvlang-flag,
+  .vvlang-opt { transition: none; }
+}

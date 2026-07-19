@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/diensten/software-op-maat/api-koppelingen-en-automatisering/",
-  "targetRoute": "/en/diensten/custom-software/api-integrations-and-automation/",
+  "targetRoute": "/en/services/custom-software/api-integrations-and-automation/",
   "audience": "Operations teams that repeatedly enter the same data or need reliable workflows across existing systems",
   "primaryDutchSearchIntent": "Een API-koppeling laten maken die systemen veilig gegevens laat uitwisselen en manueel werk vermindert.",
   "searchIntent": { "type": "commercial", "question": "How can we connect existing business systems and automate data flows without losing control of failures?", "geographicContext": "English-speaking SMEs and organisations in Belgium" },
@@ -12,6 +12,6 @@
   "metaDescription": "Connect your website, CRM, planning and accounting software. VisualVibe builds reliable API integrations with monitoring, logging and robust error handling.",
   "h1": "API integrations and automation",
   "slug": "api-integrations-and-automation",
-  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/", "targetHref": "/en/diensten/custom-software/", "anchor": "custom software" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your integration" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/", "targetHref": "/en/services/custom-software/", "anchor": "custom software" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your integration" }],
   "factsToPreserve": ["Not every automation requires a complete application", "Systems without modern APIs may sometimes connect through files, email or an intermediary layer", "Important processes require logging, retries and alerts", "External system changes require monitoring and maintenance"]
 }

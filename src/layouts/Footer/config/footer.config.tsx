@@ -35,7 +35,7 @@ export function getFooterLinkGroups(
         ).service;
         return {
           label: localizedService.title,
-          href: serviceHref(localizedService),
+          href: serviceHref(localizedService, locale),
         };
       }),
     },

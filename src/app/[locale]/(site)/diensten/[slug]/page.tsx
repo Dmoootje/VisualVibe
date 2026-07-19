@@ -78,10 +78,10 @@ export async function generateMetadata({
     title: service.seo.title,
     description: service.seo.description,
     keywords: service.seo.keywords,
-    path: `${serviceHref(service)}/`,
+    path: `${serviceHref(service, locale)}/`,
     languagePaths: {
       nl: `${serviceHref(dutchService)}/`,
-      en: `${serviceHref(englishService)}/`,
+      en: `${serviceHref(englishService, "en")}/`,
     },
     ogImage: service.seo.ogImage,
   });
@@ -108,7 +108,7 @@ export default async function ServiceDetailPage({
   // A sub-service reached via its old flat URL: 308 straight to the final
   // localized nested URL (prefix + trailing slash) so there is exactly one hop.
   if (sourceService.parentSlug) {
-    permanentRedirect(localizedPath(locale, `${serviceHref(service)}/`));
+    permanentRedirect(localizedPath(locale, `${serviceHref(service, locale)}/`));
   }
 
   const relatedServices = sourceService.relatedServices.flatMap((relatedId) => {
@@ -216,11 +216,11 @@ export default async function ServiceDetailPage({
 
   const breadcrumbItems = [
     { name: "Home", path: "/" },
-    { name: en ? "Services" : "Diensten", path: "/diensten" },
+    { name: en ? "Services" : "Diensten", path: en ? "/services" : "/diensten" },
     ...(parentService
-      ? [{ name: parentService.title, path: serviceHref(parentService) }]
+      ? [{ name: parentService.title, path: serviceHref(parentService, locale) }]
       : []),
-    { name: service.title, path: serviceHref(service) },
+    { name: service.title, path: serviceHref(service, locale) },
   ];
 
   const jsonLd = (
@@ -231,7 +231,7 @@ export default async function ServiceDetailPage({
         service={{
           name: service.title,
           description: service.excerpt,
-          url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service)}/`)}`,
+          url: `${businessConfig.url}${localizedPath(locale, `${serviceHref(service, locale)}/`)}`,
         }}
       />
       {service.faqs.length > 0 && <FaqPageJsonLd items={service.faqs} />}
@@ -371,7 +371,7 @@ export default async function ServiceDetailPage({
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">
               {en ? "Service overview" : `${service.title} diensten overzicht`}
             </h2>
-            <ServiceGrid services={childServices} />
+            <ServiceGrid services={childServices} locale={locale} />
           </Container>
         </Section>
       ) : (
@@ -422,6 +422,7 @@ export default async function ServiceDetailPage({
         combineEyebrow={en ? "More services" : undefined}
         combineHeading={en ? `Combine ${service.title} with` : undefined}
         relatedServices={relatedServices}
+        locale={locale}
       />
 
       <CTASection

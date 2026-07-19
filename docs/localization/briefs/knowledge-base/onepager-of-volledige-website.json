@@ -38,8 +38,8 @@
   "slug": "one-page-or-full-website",
   "internalLinks": [
     { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to commissioning a website" },
-    { "sourceHref": "/be/diensten/webdesign/onepager-laten-maken/", "targetHref": "/en/diensten/web-design/one-page-website/", "anchor": "one-page website designed" },
-    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/diensten/web-design/business-website-design/", "anchor": "full business website" },
+    { "sourceHref": "/be/diensten/webdesign/onepager-laten-maken/", "targetHref": "/en/services/web-design/one-page-website/", "anchor": "one-page website designed" },
+    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/services/web-design/business-website-design/", "anchor": "full business website" },
     { "sourceHref": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/", "targetHref": "/en/kennisbank/webdesign/online-shop-development-for-smes/", "anchor": "online shop development for SMEs" },
     { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
     { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-kosten/", "targetHref": "/en/kennisbank/webdesign/website-development-costs/", "anchor": "website development costs" },
@@ -47,7 +47,7 @@
     { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "how website speed and SEO work together" },
     { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "complete new website checklist" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your website" },
-    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/diensten/web-design/", "anchor": "web design approach" }
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/services/web-design/", "anchor": "web design approach" }
   ],
   "factsToPreserve": [
     "The choice is not a contest between cheap and professional; either format can be well executed",

@@ -23,4 +23,4 @@ Independently reviewed the complete Dutch source, English translation and locali
 
 ## Technical review
 
-Confirmed production public routes under `/en/kennisbank/` and `/en/diensten/`, canonical internal relationship identities, natural UK English, complete SEO/GEO metadata, a matching localisation brief and clean route, encoding and long-dash scans.
+Confirmed production public routes under `/en/kennisbank/` and `/en/services/`, canonical internal relationship identities, natural UK English, complete SEO/GEO metadata, a matching localisation brief and clean route, encoding and long-dash scans.

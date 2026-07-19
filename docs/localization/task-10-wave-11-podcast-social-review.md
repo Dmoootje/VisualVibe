@@ -24,4 +24,4 @@ Reviewed the complete Dutch source, English translation and localisation brief. 
 
 ## Route and metadata corrections
 
-Public English links now use the production `/en/kennisbank/` and `/en/diensten/` routes. Frontmatter relationship fields use canonical internal service, region, sector and knowledge-base identities. The localisation brief matches those production routes.
+Public English links now use the production `/en/kennisbank/` and `/en/services/` routes. Frontmatter relationship fields use canonical internal service, region, sector and knowledge-base identities. The localisation brief matches those production routes.

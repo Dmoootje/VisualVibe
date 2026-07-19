@@ -9,8 +9,10 @@ describe("English custom-software public routes", () => {
     const rewrites = await config.rewrites();
 
     expect(rewrites.beforeFiles).toEqual(expect.arrayContaining([
-      { source: "/en/diensten/custom-software", destination: "/en/diensten/software-op-maat" },
-      { source: "/en/diensten/custom-software/:subslug", destination: "/en/diensten/software-op-maat/:subslug" },
+      { source: "/en/services/custom-software", destination: "/en/diensten/software-op-maat" },
+      { source: "/en/services/custom-software/:subslug", destination: "/en/diensten/software-op-maat/:subslug" },
+      { source: "/en/services", destination: "/en/diensten" },
+      { source: "/en/services/:path*", destination: "/en/diensten/:path*" },
     ]));
   });
 });

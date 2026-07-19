@@ -79,7 +79,7 @@ describe("English service localisation", () => {
     const canonicalPaths = new Set(
       [...services, ...subservices].map(({ slug }) => {
         const localized = getLocalizedServiceById(slug, "en").service;
-        return `/en${serviceHref(localized)}/`;
+        return `/en${serviceHref(localized, "en")}/`;
       }),
     );
     const invalidLinks = [
@@ -87,7 +87,7 @@ describe("English service localisation", () => {
       ...Object.values(englishSubserviceEditorial),
     ].flatMap((record) =>
       record.internalLinks
-        .filter(({ href }) => href.startsWith("/en/diensten/"))
+        .filter(({ href }) => href.startsWith("/en/services/"))
         .filter(({ href }) => !canonicalPaths.has(href))
         .map(({ href }) => `${record.displaySlug}: ${href}`),
     );

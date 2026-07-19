@@ -110,10 +110,10 @@ export async function generateMetadata({
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
-    path: `${serviceHref(service)}/`,
+    path: `${serviceHref(service, locale)}/`,
     languagePaths: {
       nl: `${serviceHref(dutchService)}/`,
-      en: `${serviceHref(englishService)}/`,
+      en: `${serviceHref(englishService, "en")}/`,
     },
     ogImage: seo.ogImage,
   });
@@ -181,11 +181,11 @@ export default async function SubServiceDetailPage({
     ? (await getHubData()).projects.filter((project) => project.serviceSlugs.includes(sourceService.slug)).slice(0, 3)
     : [];
 
-  const servicePath = `${serviceHref(service)}/`;
+  const servicePath = `${serviceHref(service, locale)}/`;
   const breadcrumbItems = [
     { name: "Home", path: "/" },
-    { name: en ? "Services" : "Diensten", path: "/diensten" },
-    { name: parentService.title, path: serviceHref(parentService) },
+    { name: en ? "Services" : "Diensten", path: en ? "/services" : "/diensten" },
+    { name: parentService.title, path: serviceHref(parentService, locale) },
     { name: service.title, path: servicePath },
   ];
 
@@ -206,7 +206,7 @@ export default async function SubServiceDetailPage({
       <SubdienstHero
         locale={locale}
         pillar={parentService.title}
-        pillarHref={serviceHref(parentService)}
+        pillarHref={serviceHref(parentService, locale)}
         pillarSlug={parentService.slug}
         hero={{
           slug: service.slug,
@@ -296,7 +296,7 @@ export default async function SubServiceDetailPage({
               {relatedServices.map((related) => (
                 <li key={related.slug}>
                   <Link
-                    href={serviceHref(related)}
+                    href={serviceHref(related, locale)}
                     className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition-colors hover:border-amber-400/30 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                   >
                     {related.title}

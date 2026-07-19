@@ -106,7 +106,6 @@ function build(): string {
   out.push("## Contact & bedrijf");
   out.push(line("Over ons", "/over-ons"));
   out.push(line("Contact", "/contact"));
-  out.push(line("Offerte aanvragen", "/offerte-aanvragen"));
   out.push("");
 
   out.push("## Optioneel");

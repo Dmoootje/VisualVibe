@@ -128,8 +128,11 @@ function normalizeServicePath(
   trailingSlash: boolean,
 ): string | undefined {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments[0] !== "diensten") return undefined;
-  if (segments.length === 1) return withOptionalTrailingSlash("/diensten", trailingSlash);
+  // Accept both authored prefixes; the canonical output prefix follows the
+  // locale (English publishes services under /services, Dutch under /diensten).
+  if (segments[0] !== "diensten" && segments[0] !== "services") return undefined;
+  const hubPath = locale === "en" ? "/services" : "/diensten";
+  if (segments.length === 1) return withOptionalTrailingSlash(hubPath, trailingSlash);
 
   const slug = segments.at(-1)!;
   const serviceId = serviceIdFromSlug(slug, locale);
@@ -139,7 +142,7 @@ function normalizeServicePath(
         ? getLocalizedServiceById(serviceId, "en").service
         : getServiceBySlug(serviceId);
     return service
-      ? withOptionalTrailingSlash(serviceHref(service), trailingSlash)
+      ? withOptionalTrailingSlash(serviceHref(service, locale), trailingSlash)
       : undefined;
   }
 

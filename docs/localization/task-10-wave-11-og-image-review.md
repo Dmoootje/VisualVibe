@@ -29,4 +29,4 @@ The platform and metadata caveats are retained:
 
 ## Route corrections
 
-Public English links now use the real `/en/kennisbank/` and `/en/diensten/` architecture. Frontmatter relationship fields use canonical internal identities. The localisation brief and the example `og:url` now match the production route.
+Public English links now use the real `/en/kennisbank/` and `/en/services/` architecture. Frontmatter relationship fields use canonical internal identities. The localisation brief and the example `og:url` now match the production route.

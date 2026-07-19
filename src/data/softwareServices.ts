@@ -434,7 +434,7 @@ export function getLocalizedSoftwareServiceBySlug(
 }
 
 export function softwareServiceHubHref(locale: SupportedLocale): string {
-  return locale === "en" ? "/diensten/custom-software" : "/diensten/software-op-maat";
+  return locale === "en" ? "/services/custom-software" : "/diensten/software-op-maat";
 }
 
 export function softwareServiceHref(service: SoftwareService, locale: SupportedLocale): string {

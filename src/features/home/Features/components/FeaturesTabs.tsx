@@ -1,16 +1,17 @@
 "use client";
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { featuresConfig } from "../config/features.config";
+import { featuresConfig, featuresConfigEn } from "../config/features.config";
 import "./features-tabs.css";
 
-export function FeaturesTabs() {
+export function FeaturesTabs({ locale = "nl" }: { locale?: string }) {
+  const copy = locale === "en" ? featuresConfigEn : featuresConfig;
   return (
     <div className="mt-4 mb-10 flex justify-center overflow-x-auto pb-3 scrollbar-hide sm:mt-6 sm:mb-14 sm:pb-0">
       <TabsList className="ftabs-list h-auto flex-nowrap gap-1 rounded-2xl border border-white/10 bg-white/5 p-1.5 backdrop-blur-sm">
         {/* Soft sweeping affordance (see features-tabs.css). */}
         <span aria-hidden="true" className="ftabs-runner" />
-        {featuresConfig.features.map((feature) => (
+        {copy.features.map((feature) => (
           <TabsTrigger
             key={feature.id}
             value={feature.id}

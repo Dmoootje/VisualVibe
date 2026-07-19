@@ -572,11 +572,15 @@ export function getServiceBySlug(slug: string): Service | undefined {
 /**
  * Canonical path for a service. Sub-services are nested under their hoofddienst
  * (`/diensten/<parent>/<sub>`); hoofddiensten stay flat (`/diensten/<slug>`).
+ * English pages publish under `/services/...` (a next.config rewrite maps it
+ * onto the internal /diensten route tree; old /en/diensten URLs 308 over).
+ * Pass the SAME locale the service record was localized for.
  */
-export function serviceHref(service: Service): string {
+export function serviceHref(service: Service, locale: SupportedLocale = "nl"): string {
+  const base = locale === "en" ? "/services" : "/diensten";
   return service.parentSlug
-    ? `/diensten/${service.parentSlug}/${service.slug}`
-    : `/diensten/${service.slug}`;
+    ? `${base}/${service.parentSlug}/${service.slug}`
+    : `${base}/${service.slug}`;
 }
 
 /** serviceHref by slug; falls back to a flat path for an unknown slug. */

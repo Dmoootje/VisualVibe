@@ -101,6 +101,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/mailparser": "^3.4.6",
     "@types/node": "^22",
     "@types/nodemailer": "^8.0.1",

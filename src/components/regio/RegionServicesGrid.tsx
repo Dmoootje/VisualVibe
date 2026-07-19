@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Service } from "@/types";
+import type { SupportedLocale } from "@/i18n/locales";
 import { serviceHref } from "@/data/services";
 import { SvcIcon } from "@/components/subdiensten/icons";
 import "./region-services-grid.css";
@@ -48,10 +49,12 @@ function bentoSpans(n: number): number[] {
 export function RegionServicesGrid({
   services,
   featuredWork,
+  locale = "nl",
 }: {
   services: Service[];
   /** Per dienst-slug een uitgelichte realisatie; alleen de /diensten-hub geeft dit mee. */
   featuredWork?: Record<string, FeaturedWork>;
+  locale?: SupportedLocale;
 }) {
   if (services.length === 0) return null;
 
@@ -69,7 +72,7 @@ export function RegionServicesGrid({
         return (
           <Link
             key={service.slug}
-            href={serviceHref(service)}
+            href={serviceHref(service, locale)}
             className={`rbento-card${accent ? " is-accent" : ""}`}
             style={{ gridColumn: `span ${span}` }}
           >

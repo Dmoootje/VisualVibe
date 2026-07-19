@@ -1,13 +1,15 @@
 import { Link } from "@/i18n/navigation";
-import { featuresConfig } from "../config/features.config";
+import { featuresConfig, featuresConfigEn } from "../config/features.config";
 
 /** Supporting services as subtle chips / mini-links (not extra tabs). */
-export function ExtraServiceChips() {
+export function ExtraServiceChips({ locale = "nl" }: { locale?: string }) {
+  const en = locale === "en";
+  const copy = en ? featuresConfigEn : featuresConfig;
   return (
     <div className="mt-8 flex flex-col items-center gap-3">
-      <p className="text-xs uppercase tracking-wide text-white/60">Ook onder één dak</p>
+      <p className="text-xs uppercase tracking-wide text-white/60">{en ? "Also under one roof" : "Ook onder één dak"}</p>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
-        {featuresConfig.extraServices.map((service) => (
+        {copy.extraServices.map((service) => (
           <Link
             key={service.href}
             href={service.href}

@@ -6,7 +6,7 @@ import { FeaturesTabs } from "./FeaturesTabs";
 import { MobileFeatureTitle } from "./MobileFeatureTitle";
 import { useFeaturesTabs } from "../hooks/useFeaturesTabs";
 
-export function FeaturesInteractive() {
+export function FeaturesInteractive({ locale = "nl" }: { locale?: string }) {
   const { activeTab, handleTabChange } = useFeaturesTabs();
 
   return (
@@ -16,9 +16,9 @@ export function FeaturesInteractive() {
       onValueChange={handleTabChange}
       className="w-full"
     >
-      <FeaturesTabs />
-      <MobileFeatureTitle activeTab={activeTab} />
-      <FeatureContent />
+      <FeaturesTabs locale={locale} />
+      <MobileFeatureTitle activeTab={activeTab} locale={locale} />
+      <FeatureContent locale={locale} />
     </Tabs>
   );
 }

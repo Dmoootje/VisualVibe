@@ -2,7 +2,6 @@ import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import "./over-ons.css";
 import { Link } from "@/i18n/navigation";
-import NextLink from "next/link";
 import { businessConfig } from "@/config/business.config";
 import { pageMetadata } from "@/lib/seo/pageMetadata";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -97,31 +96,281 @@ function GalTile({ src, alt, sizes, className, children }: { src: string; alt: s
   );
 }
 
+const factsEn = [
+  { big: "Since 2020", label: "Creative media agency in Limburg" },
+  { big: "7 disciplines", label: "Under one roof" },
+  { big: "1 point of contact", label: "From idea to delivery" },
+  { big: "3 partners", label: "Google · Meta · Leadinfo" },
+];
+const rolesEn = ["Photographer", "Camera operator", "Marketer", "Drone pilot", "Web designer", "Consultant"];
+const disciplinesEn = [
+  { id: "website", name: "Web design", desc: "Fast websites & online shops that turn visitors into customers." },
+  { id: "seo", name: "SEO", desc: "Online visibility in Google Search and AI-generated answers." },
+  { id: "foto", name: "Photography", desc: "Professional business and product photography." },
+  { id: "video", name: "Video production", desc: "Compelling business video that tells your story." },
+  { id: "drone", name: "Drone & FPV", desc: "Aerial footage and dynamic FPV shots." },
+  { id: "cube", name: "3D, VR & AR", desc: "Immersive 3D, VR and AR experiences." },
+  { id: "mic", name: "Podcasting", desc: "From recording to a finished podcast." },
+];
+const valuesEn = [
+  { id: "website", title: "Everything under one roof", body: "Web design, SEO, photography, video, drone, 3D/VR/AR and podcasting with one partner. No switching between separate agencies." },
+  { id: "pin", title: "Locally rooted", body: "From Limburg, we work with SMEs across Flanders, Antwerp and Dutch Limburg, close by and closely involved." },
+  { id: "heart", title: "From first contact to delivery", body: "We think along from the very first conversation and stay involved until the project is live." },
+];
+const regionPillsEn = ["Hasselt", "Tongeren", "Bilzen", "Borgloon", "Genk", "Sint-Truiden", "Antwerp", "Maastricht", "Flanders", "Dutch Limburg"];
+
 function EnglishAboutPage() {
-  const englishDisciplines = [
-    ["Web design", "Fast websites and online shops designed to turn visitors into customers."],
-    ["SEO", "Online visibility in Google Search and AI-generated answers."],
-    ["Photography", "Professional business and product photography."],
-    ["Video production", "Compelling company films that tell your story."],
-    ["Drone and FPV", "Aerial footage and dynamic first-person-view shots."],
-    ["3D, VR and AR", "Immersive 3D, virtual reality and augmented reality experiences."],
-    ["Podcasting", "From recording to a polished, ready-to-publish podcast."],
-  ];
-  return <div className="vvov-anim relative overflow-hidden text-white">
-    <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
-    <section className={`${SECTION} pb-16 pt-32`}>
-      <p style={eyebrow}>The person behind VisualVibe</p>
-      <h1 className="mt-5 max-w-4xl font-sora text-4xl font-extrabold sm:text-6xl">One partner for digital experiences and visual stories</h1>
-      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-white/70">VisualVibe is a creative media agency based in Limburg, Belgium. We bring web design, SEO, photography, video production, drone and FPV, 3D, VR and AR, and podcasting together under one roof. This gives SMEs one point of contact for a consistent online presence.</p>
-      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/70">Wedding photography has its own dedicated label: WeddingVibe.</p>
-      <div className="mt-8 flex flex-wrap gap-4"><QuoteButton mode="kennis" className="vvov-btn">Start a conversation</QuoteButton><NextLink href="/en/realisaties/" className="vvov-btn rounded-xl border border-white/15 px-6 py-3">View our case studies</NextLink></div>
-    </section>
-    <section className={`${SECTION} py-16`}><p style={eyebrow}>VisualVibe in brief</p><div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Since 2020","Creative media agency in Limburg"],["7 disciplines","Under one roof"],["1 point of contact","From idea to delivery"],["3 partners","Google · Meta · Leadinfo"]].map(([big,label]) => <div key={big} className="rounded-2xl border border-white/10 bg-white/[.03] p-6"><strong className="text-2xl">{big}</strong><p className="mt-2 text-white/60">{label}</p></div>)}</div></section>
-    <section className={`${SECTION} py-16`}><p style={eyebrow}>Founder</p><h2 style={h2} className="mt-4">Meet Jens Hardy</h2><div className="mt-8 grid gap-8 md:grid-cols-[280px_1fr] md:items-center"><Image src={IMG.portrait} alt="Jens Hardy, photographer and founder of VisualVibe" width={368} height={492} className="rounded-3xl"/><div className="space-y-4 text-lg leading-relaxed text-white/70"><p>Jens founded VisualVibe in 2020 to bring creative production, digital expertise and personal guidance together in one agency.</p><p>As a photographer, camera operator, marketer, drone pilot, web designer and adviser, he looks beyond a single deliverable. Every project starts with your goals and ends with work that fits your business.</p></div></div></section>
-    <section className={`${SECTION} py-16`}><p style={eyebrow}>Seven disciplines, one team</p><h2 style={h2} className="mt-4">Everything your brand needs to be seen and understood</h2><div className="mt-8 grid gap-4 md:grid-cols-2">{englishDisciplines.map(([name,desc]) => <div key={name} className="rounded-2xl border border-white/10 p-6"><h3 className="text-xl font-bold">{name}</h3><p className="mt-2 text-white/60">{desc}</p></div>)}</div></section>
-    <section className={`${SECTION} py-16`}><p style={eyebrow}>How we work</p><h2 style={h2} className="mt-4">Local, personal and involved from start to finish</h2><p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70">From Limburg, we work with SMEs across Flanders, Antwerp and Dutch Limburg. You deal with one partner from the first conversation through to launch or delivery, without having to coordinate several separate agencies.</p></section>
-    <section className={`${SECTION} py-16 text-center`}><h2 style={h2}>Ready to discuss your project?</h2><p className="mx-auto mt-4 max-w-2xl text-white/65">Tell us what you want to create and we will explore the right mix of strategy, technology and visual production.</p><div className="mt-7"><QuoteButton mode="kennis" className="vvov-btn">Request a quotation</QuoteButton></div></section>
-  </div>;
+  return (
+    <div className="vvov-anim relative overflow-hidden text-white">
+      <BreadcrumbJsonLd locale="en" items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
+
+      {/* ===== HERO ===== */}
+      <section style={{ position: "relative", overflow: "hidden", padding: "clamp(96px,11vw,120px) 0 46px" }}>
+        <div className="vvov-glowpulse" style={{ position: "absolute", top: -180, right: -80, width: 820, height: 820, background: "radial-gradient(circle at center,rgba(255,90,0,.18),transparent 62%)", pointerEvents: "none", zIndex: 0 }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px)", backgroundSize: "54px 54px", WebkitMaskImage: "radial-gradient(ellipse at 74% 40%,#000,transparent 68%)", maskImage: "radial-gradient(ellipse at 74% 40%,#000,transparent 68%)" }} />
+
+        <div className={`relative z-[2] ${SECTION}`}>
+          <div className="grid items-center gap-10 lg:gap-14 lg:grid-cols-[1.05fr_.95fr]">
+            {/* left */}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "8px 15px", borderRadius: 9999, background: "rgba(255,122,0,.1)", border: "1px solid rgba(255,122,0,.25)", fontFamily: MONO, fontWeight: 700, fontSize: 12, letterSpacing: ".08em", color: "#FF9A45", marginBottom: 24, textTransform: "uppercase" }}>
+                <span className="vvov-liveDot" style={{ width: 7, height: 7, borderRadius: 9999, background: "#FF7A00" }} />
+                The person behind VisualVibe
+              </div>
+              <h1 style={{ fontFamily: SORA, fontWeight: 800, fontSize: "clamp(40px,7vw,64px)", lineHeight: 1.0, letterSpacing: "-.03em", color: "#fff", margin: "0 0 24px", textWrap: "balance" }}>
+                One partner for digital experiences and visual stories
+              </h1>
+              <p style={{ fontSize: 19, lineHeight: 1.62, color: "rgba(255,255,255,.68)", margin: "0 0 20px", maxWidth: 520, textWrap: "pretty" }}>
+                VisualVibe is the creative media agency from Limburg, Belgium. We bring web design, SEO, photography, video production, drone/FPV, 3D/VR/AR and podcasting together under one roof, so SMEs never have to juggle several separate agencies for their online presence.
+              </p>
+              <p style={{ fontSize: 16.5, lineHeight: 1.62, color: "rgba(255,255,255,.55)", margin: "0 0 34px", maxWidth: 520, textWrap: "pretty" }}>
+                One partner, from the first conversation to delivery.
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+                <QuoteButton mode="kennis" className="vvov-btn" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 16, color: "#fff", padding: "15px 28px", borderRadius: 12, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)", border: 0, cursor: "pointer" }}>
+                  Let&apos;s talk <Arrow />
+                </QuoteButton>
+                <Link href="/realisaties" className="vvov-btn" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 16, color: "#fff", padding: "15px 28px", borderRadius: 12, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.14)" }}>
+                  View our case studies
+                </Link>
+              </div>
+            </div>
+
+            {/* right visual */}
+            <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", minHeight: 480, minWidth: 0 }}>
+              <div className="vvov-conic" style={{ position: "absolute", width: "min(560px,100%)", aspectRatio: "1", borderRadius: 9999, background: "conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,.30) 80deg,transparent 180deg,rgba(255,90,0,.22) 280deg,transparent 360deg)", filter: "blur(50px)", pointerEvents: "none" }} />
+              <svg viewBox="0 0 200 200" style={{ position: "absolute", width: "min(520px,96%)", height: "auto", pointerEvents: "none" }}>
+                <circle className="vvov-ring1" cx="100" cy="100" r="96" fill="none" stroke="rgba(255,122,0,.30)" strokeWidth="1" strokeDasharray="2 9" strokeLinecap="round" />
+                <circle className="vvov-ring2" cx="100" cy="100" r="82" fill="none" stroke="rgba(255,122,0,.18)" strokeWidth="1" strokeDasharray="1 11" strokeLinecap="round" />
+              </svg>
+              <div style={{ position: "relative", zIndex: 2 }}>
+                {/* Jens card */}
+                <div style={{ position: "relative", width: "min(368px,80vw)", aspectRatio: "368 / 492", borderRadius: 28, overflow: "hidden", border: "1px solid rgba(255,122,0,.28)", boxShadow: "0 46px 100px -32px rgba(255,90,0,.5),inset 0 0 0 1px rgba(255,255,255,.04)" }}>
+                  <Image src={IMG.portrait} alt="Jens Hardy, photographer and founder of VisualVibe" fill priority sizes="(max-width: 640px) 80vw, 368px" style={{ objectFit: "cover" }} />
+                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg,transparent 46%,rgba(10,10,10,.9))" }} />
+                  <div style={{ position: "absolute", left: 15, top: 15, display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 9999, background: "rgba(12,10,14,.8)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em" }}>
+                    <span className="vvov-liveDot" style={{ width: 6, height: 6, borderRadius: 9999, background: "#FF7A00" }} />IN FRAME
+                  </div>
+                  <div style={{ position: "absolute", left: 22, bottom: 20, right: 22 }}>
+                    <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 25, color: "#fff" }}>Jens Hardy</div>
+                    <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".03em", color: "#FF9A45", marginTop: 5 }}>Photographer · Camera operator · Marketer</div>
+                  </div>
+                </div>
+                {/* secret card */}
+                <div className="vvov-secret" style={{ position: "absolute", right: -26, bottom: -24, zIndex: 3, width: 134, height: 178, borderRadius: 18, overflow: "hidden", border: "1px dashed rgba(255,122,0,.45)", background: "radial-gradient(120% 85% at 50% 24%,rgba(72,46,108,.6),transparent 62%),linear-gradient(180deg,#151019,#0b0a0e)", boxShadow: "0 30px 70px -26px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.03)", cursor: "pointer" }}>
+                  <div className="vvov-twiglow" style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(62% 46% at 50% 38%,rgba(255,122,0,.22),transparent 66%)", opacity: 0.5 }} />
+                  <svg className="vvov-silho" viewBox="0 0 100 120" style={{ position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)", width: 106, height: "auto", opacity: 0.55 }}>
+                    <defs><linearGradient id="ov-silg-en" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="rgba(255,255,255,.16)" /><stop offset="1" stopColor="rgba(255,255,255,.015)" /></linearGradient></defs>
+                    <circle cx="50" cy="33" r="17" fill="url(#ov-silg-en)" />
+                    <path d="M20 120 C20 86 33 69 50 69 C67 69 80 86 80 120 Z" fill="url(#ov-silg-en)" />
+                  </svg>
+                  <div className="vvov-qwrap" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 34, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+                    <span className="vvov-qmark" style={{ fontFamily: SORA, fontWeight: 800, fontSize: 58, lineHeight: 1, color: "#FF7A00", textShadow: "0 8px 26px rgba(255,90,0,.55)" }}>?</span>
+                    <svg className="vvov-smiley" viewBox="0 0 24 24" style={{ position: "absolute", width: 46, height: 46, filter: "drop-shadow(0 6px 18px rgba(255,90,0,.5))" }} fill="none" stroke="#FF7A00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="9.5" /><path d="M8 14.5s1.4 2 4 2 4-2 4-2" /><path d="M9 9.5h.01M15 9.5h.01" />
+                    </svg>
+                  </div>
+                  <div style={{ position: "absolute", right: 9, top: 9, color: "#FF9A45", opacity: 0.85 }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></svg>
+                  </div>
+                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg,transparent 56%,rgba(10,10,10,.94))" }} />
+                  <div style={{ position: "absolute", left: 11, bottom: 10, right: 11 }}>
+                    <div style={{ fontFamily: SORA, fontWeight: 800, fontSize: 14, color: "#fff", letterSpacing: ".16em" }}>???</div>
+                    <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: ".02em", color: "#FF9A45", marginTop: 2 }}>Secret webdesigner</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* fact strip */}
+          <div className="mt-[52px] grid grid-cols-2 gap-x-5 gap-y-7 border-t border-white/[0.08] pt-[30px] sm:gap-6 lg:grid-cols-4">
+            {factsEn.map((f) => (
+              <div key={f.big} style={{ minWidth: 0 }}>
+                <div style={{ fontFamily: SORA, fontWeight: 800, fontSize: "clamp(20px,5.4vw,30px)", letterSpacing: "-.02em", color: "#fff", overflowWrap: "break-word" }}>{f.big}</div>
+                <div style={{ fontSize: 14, color: "rgba(255,255,255,.55)", marginTop: 5, overflowWrap: "break-word" }}>{f.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FOUNDER STORY ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 64, paddingBottom: 64 }}>
+        <div className="grid items-start gap-10 lg:gap-14 lg:grid-cols-[.42fr_.58fr]">
+          <div style={{ minWidth: 0 }}>
+            <p style={{ ...eyebrow, marginBottom: 14 }}>Meet Jens Hardy</p>
+            <h2 style={{ ...h2, fontSize: "clamp(30px,4.6vw,40px)", lineHeight: 1.06, marginBottom: 22 }}>One face, from first idea to delivery</h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 9 }}>
+              {rolesEn.map((r) => (
+                <span key={r} className="vvov-role" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 15px", borderRadius: 9999, border: "1px solid rgba(255,122,0,.25)", background: "rgba(255,122,0,.07)", fontSize: 13.5, fontWeight: 600, color: "#fff" }}>
+                  <span style={{ width: 6, height: 6, borderRadius: 9999, background: "#FF7A00" }} />{r}
+                </span>
+              ))}
+            </div>
+            <p style={{ marginTop: 26, fontSize: 15, lineHeight: 1.6, color: "rgba(255,255,255,.55)", maxWidth: 460 }}>
+              Wedding photography has its own dedicated label: WeddingVibe.
+            </p>
+          </div>
+          <div style={{ position: "relative", paddingLeft: 30, minWidth: 0 }}>
+            <span style={{ position: "absolute", left: 0, top: 2, fontFamily: SORA, fontWeight: 800, fontSize: 64, lineHeight: 0.6, color: "rgba(255,122,0,.28)" }}>&#8220;</span>
+            <p style={{ fontSize: 22, lineHeight: 1.55, fontWeight: 600, color: "#fff", margin: "0 0 22px", textWrap: "pretty" }}>Welcome to VisualVibe. I&apos;m Jens Hardy, a passionate photographer, camera operator and experienced marketer, and the driving force behind everything we make.</p>
+            <p style={{ fontSize: 16.5, lineHeight: 1.68, color: "rgba(255,255,255,.62)", margin: "0 0 16px", textWrap: "pretty" }}>VisualVibe specialises in photography, video and website projects. Whether it&apos;s a new website, professional business photography, a compelling company video or a strong local SEO strategy, I think along with you from the very first conversation.</p>
+            <p style={{ fontSize: 16.5, lineHeight: 1.68, color: "rgba(255,255,255,.62)", margin: 0, textWrap: "pretty" }}>By keeping imagery, story and technology in one hand, I make sure everything fits together, so your brand shows exactly the vibe it deserves online.</p>
+            <div style={{ marginTop: 26, fontFamily: SORA, fontWeight: 700, fontSize: 20, color: "rgba(255,255,255,.85)", fontStyle: "italic" }}>Jens Hardy</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PHOTO GALLERY ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 24, paddingBottom: 64 }}>
+        <div className="mb-[26px] flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p style={{ ...eyebrow, marginBottom: 12 }}>Behind the lens</p>
+            <h2 style={h2}>Images that tell a story from above</h2>
+          </div>
+          <p style={{ fontSize: 15.5, lineHeight: 1.6, color: "rgba(255,255,255,.55)", maxWidth: 360, margin: 0, textWrap: "pretty" }}>A selection of our drone, aerial and business photography work, from company premises to mountaintops.</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 auto-rows-[220px] sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[230px]">
+          <GalTile src={IMG.g1} alt="Drone night photography" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:1/span_2]">
+            <div style={{ position: "absolute", left: 20, top: 18, display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 13px", borderRadius: 9999, background: "rgba(12,10,14,.82)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: ".06em" }}>
+              <OvIcon id="drone" size={14} strokeWidth={1.8} />DRONE · NIGHT
+            </div>
+            <div style={{ position: "absolute", left: 22, bottom: 22, right: 22 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 23, color: "#fff" }}>Night photography from above</div>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,.72)", marginTop: 5 }}>Atmospheric aerial shots as the city lights up.</div>
+            </div>
+          </GalTile>
+
+          <GalTile src={IMG.g2} alt="The Alps from above" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:1]">
+            <div style={{ position: "absolute", left: 16, top: 14, display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 9999, background: "rgba(12,10,14,.82)", border: "1px solid rgba(255,122,0,.3)", backdropFilter: "blur(6px)", color: "#FF9A45", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em" }}>
+              <OvIcon id="drone" size={13} strokeWidth={1.8} />DRONE &amp; FPV
+            </div>
+            <div style={{ position: "absolute", left: 18, bottom: 16, right: 18 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 18, color: "#fff" }}>The Alps from above</div>
+            </div>
+          </GalTile>
+
+          <GalTile src={IMG.g3} alt="Business photography with a drone" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 342px" className="lg:[grid-column:3] lg:[grid-row:2]">
+            <div style={{ position: "absolute", left: 15, bottom: 14, right: 15 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>Business photography</div>
+            </div>
+          </GalTile>
+
+          <GalTile src={IMG.g4} alt="On-location business imagery with a drone" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 342px" className="lg:[grid-column:4] lg:[grid-row:2]">
+            <div style={{ position: "absolute", left: 15, bottom: 14, right: 15 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 15.5, color: "#fff" }}>On-location business imagery</div>
+            </div>
+          </GalTile>
+
+          <GalTile src={IMG.g5} alt="Aerial photo of your hometown" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:1/span_2] lg:[grid-row:3]">
+            <div style={{ position: "absolute", left: 18, bottom: 16, right: 18 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 18, color: "#fff" }}>Aerial photo of your hometown</div>
+            </div>
+          </GalTile>
+
+          <GalTile src={IMG.g6} alt="Drone inspection of solar panels" sizes="(max-width: 1024px) 100vw, 684px" className="sm:col-span-2 lg:[grid-column:3/span_2] lg:[grid-row:3]">
+            <div style={{ position: "absolute", left: 18, bottom: 16, right: 18 }}>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 18, color: "#fff" }}>Solar panel inspection</div>
+            </div>
+          </GalTile>
+        </div>
+      </section>
+
+      {/* ===== DISCIPLINES ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 20, paddingBottom: 30 }}>
+        <div className="mb-[30px] flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p style={{ ...eyebrow, marginBottom: 12 }}>Everything under one roof</p>
+            <h2 style={h2}>Seven disciplines, one point of contact</h2>
+          </div>
+          <p style={{ fontSize: 15.5, lineHeight: 1.6, color: "rgba(255,255,255,.55)", maxWidth: 340, margin: 0, textWrap: "pretty" }}>No fragmentation across separate suppliers. Everything you need online, in one coherent whole.</p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {disciplinesEn.map((d) => (
+            <div key={d.id} className="vvov-svc" style={{ position: "relative", overflow: "hidden", borderRadius: 16, border: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)", padding: "22px 22px 24px" }}>
+              <OvIcon id={d.id} className="vvov-wm" size={150} strokeWidth={1} style={{ position: "absolute", right: -24, bottom: -28, color: "rgba(255,122,0,.055)", pointerEvents: "none" }} aria-hidden="true" />
+              <div style={{ position: "relative" }}>
+                <div style={{ marginBottom: 16 }}><IconChip id={d.id} /></div>
+                <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 17, color: "#fff", marginBottom: 6 }}>{d.name}</div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.5, color: "rgba(255,255,255,.52)", textWrap: "pretty" }}>{d.desc}</div>
+              </div>
+            </div>
+          ))}
+          <Link href="/services" className="vvov-disc" style={{ padding: "22px 20px", borderRadius: 16, border: "1px solid rgba(255,122,0,.3)", background: "radial-gradient(120% 140% at 100% 0%,rgba(255,90,0,.16),transparent 65%),rgba(255,255,255,.02)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 16 }}>
+            <span style={{ display: "flex", width: 46, height: 46, borderRadius: 12, background: GRAD, alignItems: "center", justifyContent: "center", color: "#fff" }}><Arrow size={22} /></span>
+            <div>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 17, color: "#fff", marginBottom: 6 }}>Explore all services</div>
+              <div style={{ fontSize: 13.5, lineHeight: 1.5, color: "rgba(255,255,255,.6)" }}>See what we can do for your business.</div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ===== VALUES ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 44, paddingBottom: 20 }}>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {valuesEn.map((v) => (
+            <div key={v.title} className="vvov-val" style={{ padding: "30px 26px", borderRadius: 18, border: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
+              <div style={{ marginBottom: 18 }}><IconChip id={v.id} size={44} /></div>
+              <div style={{ fontFamily: SORA, fontWeight: 700, fontSize: 20, color: "#fff", marginBottom: 10 }}>{v.title}</div>
+              <div style={{ fontSize: 15, lineHeight: 1.62, color: "rgba(255,255,255,.58)", textWrap: "pretty" }}>{v.body}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== REGION MARQUEE ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ paddingTop: 44, paddingBottom: 20 }}>
+        <p style={{ fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(255,255,255,.45)", margin: "0 0 18px", textAlign: "center" }}>For SMEs in Limburg, Flanders, Antwerp &amp; Dutch Limburg</p>
+        <div className="vvov-mq">
+          <div className="vvov-mqTrack vvov-mqL">
+            {[...regionPillsEn, ...regionPillsEn].map((r, i) => (
+              <span key={`${r}-${i}`} style={{ flex: "none", display: "inline-flex", alignItems: "center", gap: 11, padding: "12px 22px", borderRadius: 9999, border: "1px solid rgba(255,255,255,.1)", background: "rgba(255,255,255,.02)" }}>
+                <span style={{ color: "#FF9A45", display: "inline-flex" }}><OvIcon id="pin" size={16} strokeWidth={1.8} /></span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(255,255,255,.82)", whiteSpace: "nowrap" }}>{r}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CTA BAND ===== */}
+      <section className={`relative z-[2] ${SECTION}`} style={{ margin: "44px auto 80px" }}>
+        <div style={{ position: "relative", overflow: "hidden", borderRadius: 24, border: "1px solid rgba(255,122,0,.25)", background: "radial-gradient(120% 160% at 100% 0%,rgba(255,90,0,.18),transparent 60%),rgba(255,255,255,.02)", padding: "clamp(36px,5vw,52px)", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 28 }}>
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px)", backgroundSize: "44px 44px", WebkitMaskImage: "radial-gradient(ellipse at 90% 10%,#000,transparent 70%)", maskImage: "radial-gradient(ellipse at 90% 10%,#000,transparent 70%)" }} />
+          <div style={{ position: "relative" }}>
+            <h3 style={{ fontFamily: SORA, fontWeight: 800, fontSize: "clamp(26px,4vw,34px)", letterSpacing: "-.025em", color: "#fff", margin: "0 0 10px" }}>Let&apos;s talk</h3>
+            <p style={{ fontSize: 16.5, lineHeight: 1.6, color: "rgba(255,255,255,.65)", margin: 0, maxWidth: 560, textWrap: "pretty" }}>Tell us briefly about your project, you&apos;ll quickly get a clear proposal, straight from Jens.</p>
+          </div>
+          <Link href="/offerte-aanvragen" className="vvov-btn" style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 16.5, color: "#fff", padding: "17px 32px", borderRadius: 12, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)" }}>
+            Request a quotation <Arrow size={18} />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 export default async function OverOnsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -379,9 +628,9 @@ export default async function OverOnsPage({ params }: { params: Promise<{ locale
             <h3 style={{ fontFamily: SORA, fontWeight: 800, fontSize: "clamp(26px,4vw,34px)", letterSpacing: "-.025em", color: "#fff", margin: "0 0 10px" }}>Laten we kennismaken</h3>
             <p style={{ fontSize: 16.5, lineHeight: 1.6, color: "rgba(255,255,255,.65)", margin: 0, maxWidth: 560, textWrap: "pretty" }}>Vertel kort over je project - je krijgt snel een helder voorstel, rechtstreeks van Jens.</p>
           </div>
-          <Link href="/offerte-aanvragen" className="vvov-btn" style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 16.5, color: "#fff", padding: "17px 32px", borderRadius: 12, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)" }}>
+          <QuoteButton className="vvov-btn" style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, font: "inherit", fontWeight: 700, fontSize: 16.5, color: "#fff", padding: "17px 32px", borderRadius: 12, border: 0, background: GRAD, boxShadow: "0 16px 40px -14px rgba(255,90,0,.85)", cursor: "pointer" }}>
             Offerte aanvragen <Arrow size={18} />
-          </Link>
+          </QuoteButton>
         </div>
       </section>
     </div>

@@ -16,12 +16,12 @@ describe("English custom software pages", () => {
     const metadata = await page.generateMetadata!({ params });
 
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("Custom software") });
-    expect(metadata.alternates?.canonical).toContain("/en/diensten/custom-software/");
+    expect(metadata.alternates?.canonical).toContain("/en/services/custom-software/");
     expect(html).toContain("Custom apps and software built around your business");
-    expect(html).toContain('href="/diensten/custom-software/app-development/"');
-    expect(html).toContain('href="/diensten/web-design/"');
+    expect(html).toContain('href="/services/custom-software/app-development/"');
+    expect(html).toContain('href="/services/web-design/"');
     expect(html).not.toContain("website-with-ai-features");
-    expect(html).toContain("https://visualvibe.media/en/diensten/custom-software/");
+    expect(html).toContain("https://visualvibe.media/en/services/custom-software/");
     expect(html).toContain("Request a quotation");
     expect(html).not.toMatch(/Software op maat|Welke digitale|Bekijk deze dienst|Veelgestelde vragen|Bedrijven, kmo|Vlaanderen|Offerte aanvragen/);
   });
@@ -33,10 +33,10 @@ describe("English custom software pages", () => {
     const metadata = await page.generateMetadata({ params });
 
     expect(metadata.title).toMatchObject({ absolute: expect.stringContaining("App development") });
-    expect(metadata.alternates?.canonical).toContain("/en/diensten/custom-software/app-development/");
+    expect(metadata.alternates?.canonical).toContain("/en/services/custom-software/app-development/");
     expect(html).toContain("App development for your business");
-    expect(html).toContain("https://visualvibe.media/en/diensten/custom-software/app-development/");
-    expect(html).toContain('href="/diensten/custom-software/web-application-development/"');
+    expect(html).toContain("https://visualvibe.media/en/services/custom-software/app-development/");
+    expect(html).toContain('href="/services/custom-software/web-application-development/"');
     expect(html).toContain("Request a quotation");
     expect(html).not.toMatch(/Wat deze oplossing|Geschikt voor|Aanpak|Veelgestelde vragen|Andere mogelijkheden|Bedrijven, kmo|Vlaanderen|Offerte aanvragen/);
   });
@@ -54,7 +54,7 @@ describe("English custom software pages", () => {
 
     expect(html).toContain(heading);
     expect(html).toContain("Frequently asked questions about");
-    expect(metadata.alternates?.canonical).toContain(`/en/diensten/custom-software/${subslug}/`);
+    expect(metadata.alternates?.canonical).toContain(`/en/services/custom-software/${subslug}/`);
     expect(html).not.toMatch(/Wat deze oplossing|Geschikt voor|Aanpak|Veelgestelde vragen|Andere mogelijkheden/);
   });
 });

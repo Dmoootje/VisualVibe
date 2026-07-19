@@ -33,11 +33,23 @@ const nextConfig = {
         destination: '/be/trouwfotograaf-limburg/',
         permanent: true,
       },
+      // De offertepagina is verwijderd: elke interne offerte-CTA opent nu de
+      // slide-up (QuoteModalController). Oude/geindexeerde URL's en no-JS
+      // bezoekers landen permanent op de contactpagina met formulier.
+      { source: '/offerte-aanvragen', destination: '/be/contact/', permanent: true },
+      { source: '/be/offerte-aanvragen', destination: '/be/contact/', permanent: true },
+      { source: '/en/offerte-aanvragen', destination: '/en/contact/', permanent: true },
+      { source: '/en/request-a-quotation', destination: '/en/contact/', permanent: true },
       {
         source: '/en/diensten/webdesign/website-met-ai-functionaliteiten',
-        destination: '/en/diensten/custom-software/ai-application-development/',
+        destination: '/en/services/custom-software/ai-application-development/',
         permanent: true,
       },
+      // Engelse diensten-URL's zijn verhuisd van /en/diensten/* naar
+      // /en/services/*. De specifieke regel hierboven vangt zijn pad eerst;
+      // daarna vouwt deze catch-all alle oude Engelse paden permanent om.
+      { source: '/en/diensten', destination: '/en/services/', permanent: true },
+      { source: '/en/diensten/:path+', destination: '/en/services/:path+/', permanent: true },
       // Dutch and English are published. Fold the still-disabled French and
       // German prefixes permanently onto their Dutch counterparts until those
       // translations are complete (see src/i18n/routing.ts).
@@ -58,10 +70,6 @@ const nextConfig = {
         { source: '/image.jpg', destination: '/api/og' },
         { source: '/en/about', destination: '/en/over-ons' },
         {
-          source: '/en/request-a-quotation',
-          destination: '/en/offerte-aanvragen',
-        },
-        {
           source: '/en/website-analysis',
           destination: '/en/website-analyse',
         },
@@ -77,14 +85,19 @@ const nextConfig = {
           source: '/en/realisaties/applications/:slug',
           destination: '/en/realisaties/applicaties/:slug',
         },
+        // Engelse diensten leven publiek op /en/services/*; intern blijft de
+        // routeboom /diensten. De specifieke custom-software regels staan vóór
+        // de catch-all zodat hun Nederlandse interne map (software-op-maat) wint.
         {
-          source: '/en/diensten/custom-software',
+          source: '/en/services/custom-software',
           destination: '/en/diensten/software-op-maat',
         },
         {
-          source: '/en/diensten/custom-software/:subslug',
+          source: '/en/services/custom-software/:subslug',
           destination: '/en/diensten/software-op-maat/:subslug',
         },
+        { source: '/en/services', destination: '/en/diensten' },
+        { source: '/en/services/:path*', destination: '/en/diensten/:path*' },
       ],
       // IndexNow verifieert de eigenaar via een sleutelbestand op /{sleutel}.txt.
       // De sleutel is dynamisch (beheerbaar in de admin), dus we kunnen geen

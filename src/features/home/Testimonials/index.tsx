@@ -5,9 +5,10 @@ import type { CarouselTestimonial } from "./hooks/useTestimonialsCarousel";
 type TestimonialsProps = {
   testimonials?: CarouselTestimonial[];
   sourceUrl?: string;
+  locale?: string;
 };
 
-export default function Testimonials({ testimonials, sourceUrl }: TestimonialsProps) {
+export default function Testimonials({ testimonials, sourceUrl, locale = "nl" }: TestimonialsProps) {
   const isGoogle = Boolean(testimonials && testimonials.length > 0);
 
   return (
@@ -17,9 +18,9 @@ export default function Testimonials({ testimonials, sourceUrl }: TestimonialsPr
       aria-labelledby="testimonials-heading"
     >
       <div className="container mx-auto px-2.5 sm:px-4 relative z-10">
-        <TestimonialsHeader />
+        <TestimonialsHeader locale={locale} />
         <div className="relative max-w-6xl mx-auto">
-          <TestimonialsCarousel testimonials={testimonials} />
+          <TestimonialsCarousel testimonials={testimonials} locale={locale} />
           {isGoogle && (
             <p className="mt-6 text-center text-sm text-white/65">
               Reviews via{" "}

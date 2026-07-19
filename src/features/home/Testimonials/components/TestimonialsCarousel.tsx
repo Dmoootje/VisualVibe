@@ -7,16 +7,19 @@ import {
   useTestimonialsCarousel,
   type CarouselTestimonial,
 } from "../hooks/useTestimonialsCarousel";
-import { testimonialsConfig } from "../config/testimonials.config";
+import { testimonialsConfig, testimonialsConfigEn } from "../config/testimonials.config";
 
 export function TestimonialsCarousel({
   testimonials,
+  locale = "nl",
 }: {
   testimonials?: CarouselTestimonial[];
+  locale?: string;
 }) {
+  const fallback = locale === "en" ? testimonialsConfigEn : testimonialsConfig;
   const items = testimonials && testimonials.length > 0
     ? testimonials
-    : testimonialsConfig.testimonials;
+    : fallback.testimonials;
   const { current, total, testimonial, next, prev, goTo, rootRef } =
     useTestimonialsCarousel(items);
 
@@ -28,7 +31,7 @@ export function TestimonialsCarousel({
         className="min-h-[400px] flex items-center"
         role="region"
         aria-roledescription="testimonial carousel"
-        aria-label="Klantenreviews"
+        aria-label={locale === "en" ? "Customer reviews" : "Klantenreviews"}
       >
         <TestimonialCard testimonial={testimonial} current={current} total={total} />
       </div>

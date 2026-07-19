@@ -95,7 +95,7 @@ export default async function ApplicatieRealisatiesPage({ params }: { params: Pr
               </p>
             </div>
             <Link
-              href={en ? "/diensten/custom-software/" : "/diensten/software-op-maat/"}
+              href={en ? "/services/custom-software/" : "/diensten/software-op-maat/"}
               className="inline-flex flex-none items-center justify-center gap-2 self-start rounded-full bg-[#ff7500] px-6 py-3 font-semibold text-black transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:self-center"
             >
               {en ? "Explore custom software" : "Bekijk software op maat"}

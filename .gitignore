@@ -48,3 +48,11 @@ ds-bundle/
 
 # local feature worktrees
 .worktrees/
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

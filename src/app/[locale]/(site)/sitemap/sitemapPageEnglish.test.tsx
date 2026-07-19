@@ -16,8 +16,8 @@ vi.mock("@/lib/seo/siteUrls", () => ({
   getSitemapEntries: vi.fn(async () => [
     { url: "https://visualvibe.media/en/" },
     { url: "https://visualvibe.media/en/about/" },
-    { url: "https://visualvibe.media/en/diensten/" },
-    { url: "https://visualvibe.media/en/diensten/web-design/business-website-design/" },
+    { url: "https://visualvibe.media/en/services/" },
+    { url: "https://visualvibe.media/en/services/web-design/business-website-design/" },
     { url: "https://visualvibe.media/en/regio/limburg-belgium/" },
     { url: "https://visualvibe.media/en/sectoren/construction-renovation/" },
     { url: "https://visualvibe.media/en/realisaties/web-design/" },
@@ -38,7 +38,7 @@ describe("English visible sitemap page", () => {
     }));
 
     expect(html).toContain("There are 10 pages in total.");
-    expect(html).toContain('href="/en/diensten/web-design/business-website-design/"');
+    expect(html).toContain('href="/en/services/web-design/business-website-design/"');
     expect(html).toContain('href="/en/regio/limburg-belgium/"');
     expect(html).toContain('href="/en/sectoren/construction-renovation/"');
     expect(html).toContain('href="/en/realisaties/web-design/"');

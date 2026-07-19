@@ -33,8 +33,8 @@
   "slug": "record-a-podcast-with-video",
   "internalLinks": [
     { "sourceHref": "/be/kennisbank/podcasting/bedrijfspodcast-starten/", "targetHref": "/en/kennisbank/podcasting/how-to-start-a-business-podcast/", "anchor": "how to start a business podcast" },
-    { "sourceHref": "/be/diensten/podcasting/videopodcast/", "targetHref": "/en/diensten/podcasting/video-podcast/", "anchor": "video podcast production" },
-    { "sourceHref": "/be/diensten/videografie/podcast-video/", "targetHref": "/en/diensten/videography/podcast-video/", "anchor": "podcast video" },
+    { "sourceHref": "/be/diensten/podcasting/videopodcast/", "targetHref": "/en/services/podcasting/video-podcast/", "anchor": "video podcast production" },
+    { "sourceHref": "/be/diensten/videografie/podcast-video/", "targetHref": "/en/services/videography/podcast-video/", "anchor": "podcast video" },
     { "sourceHref": "/be/kennisbank/videografie/social-media-video-voor-kmo/", "targetHref": "/en/kennisbank/videografie/social-media-video-for-smes/", "anchor": "social media video for SMEs" },
     { "sourceHref": "/be/kennisbank/podcasting/videocast-vs-podcast/", "targetHref": "/en/kennisbank/podcasting/videocast-vs-podcast/", "anchor": "videocast versus podcast" },
     { "sourceHref": "/be/kennisbank/videografie/korte-video-vs-lange-video/", "targetHref": "/en/kennisbank/videografie/short-form-vs-long-form-video/", "anchor": "short-form versus long-form video" },

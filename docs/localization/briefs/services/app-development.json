@@ -1,6 +1,6 @@
 {
   "sourceRoute": "/be/diensten/software-op-maat/app-laten-maken/",
-  "targetRoute": "/en/diensten/custom-software/app-development/",
+  "targetRoute": "/en/services/custom-software/app-development/",
   "audience": "SME owners and product teams that need a customer app, employee app or new digital platform",
   "primaryDutchSearchIntent": "Een app laten maken die rond echte gebruikers, gegevens en bedrijfsprocessen is ontworpen.",
   "searchIntent": { "type": "commercial", "question": "How can our business turn an app idea into a secure, scalable first release?", "geographicContext": "English-speaking SMEs in Belgium" },
@@ -12,6 +12,6 @@
   "metaDescription": "Custom app development for customers or employees. VisualVibe designs and builds practical, scalable applications for SMEs in Limburg and across Belgium.",
   "h1": "App development for your business",
   "slug": "app-development",
-  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/diensten/custom-software/web-application-development/", "anchor": "web application development" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your app idea" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/software-op-maat/webapplicatie-laten-maken/", "targetHref": "/en/services/custom-software/web-application-development/", "anchor": "web application development" }, { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your app idea" }],
   "factsToPreserve": ["The investment depends on roles, data, integrations, platform and automation", "An MVP is usually preferable to building every feature immediately", "VisualVibe can deliver front end, back end, database and integrations", "The architecture should support later expansion"]
 }

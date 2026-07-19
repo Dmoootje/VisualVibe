@@ -1647,14 +1647,14 @@ export const englishFotografieEditorial: Record<
       "Corporate photographer capturing a team at work on location in Limburg, Belgium",
     internalLinks: [
       {
-        href: "/en/diensten/photography/business-portraits/",
+        href: "/en/services/photography/business-portraits/",
         label: "business portraits",
       },
       {
-        href: "/en/diensten/photography/brand-photography/",
+        href: "/en/services/photography/brand-photography/",
         label: "brand photography",
       },
-      { href: "/en/diensten/web-design/", label: "web design" },
+      { href: "/en/services/web-design/", label: "web design" },
     ],
     editorial: corporatePhotographyEditorial,
   },
@@ -1684,18 +1684,18 @@ export const englishFotografieEditorial: Record<
       "Consistent professional business portraits photographed for a company team",
     internalLinks: [
       {
-        href: "/en/diensten/photography/corporate-photography/",
+        href: "/en/services/photography/corporate-photography/",
         label: "corporate photography",
       },
       {
-        href: "/en/diensten/photography/brand-photography/",
+        href: "/en/services/photography/brand-photography/",
         label: "brand photography",
       },
       {
-        href: "/en/diensten/videography/recruitment-video/",
+        href: "/en/services/videography/recruitment-video/",
         label: "recruitment video",
       },
-      { href: "/en/diensten/web-design/", label: "web design" },
+      { href: "/en/services/web-design/", label: "web design" },
     ],
     editorial: businessPortraitsEditorial,
   },
@@ -1726,18 +1726,18 @@ export const englishFotografieEditorial: Record<
       "Consistent product photography with packshots, details and styled images for an online shop",
     internalLinks: [
       {
-        href: "/en/diensten/web-design/online-shop-development/",
+        href: "/en/services/web-design/online-shop-development/",
         label: "online shop development",
       },
       {
-        href: "/en/diensten/photography/brand-photography/",
+        href: "/en/services/photography/brand-photography/",
         label: "brand photography",
       },
       {
-        href: "/en/diensten/videography/social-media-video/",
+        href: "/en/services/videography/social-media-video/",
         label: "social media video",
       },
-      { href: "/en/diensten/seo/seo-copywriting/", label: "SEO copywriting" },
+      { href: "/en/services/seo/seo-copywriting/", label: "SEO copywriting" },
     ],
     editorial: productPhotographyEditorial,
   },
@@ -1767,19 +1767,19 @@ export const englishFotografieEditorial: Record<
       "Event photographer capturing a speaker, audience and branded details at a corporate event",
     internalLinks: [
       {
-        href: "/en/diensten/videography/event-aftermovie/",
+        href: "/en/services/videography/event-aftermovie/",
         label: "event aftermovie",
       },
       {
-        href: "/en/diensten/drone-fpv/event-drone-footage/",
+        href: "/en/services/drone-fpv/event-drone-footage/",
         label: "event drone footage",
       },
       {
-        href: "/en/diensten/photography/brand-photography/",
+        href: "/en/services/photography/brand-photography/",
         label: "brand photography",
       },
       {
-        href: "/en/diensten/videography/social-media-video/",
+        href: "/en/services/videography/social-media-video/",
         label: "social media video",
       },
     ],
@@ -1812,16 +1812,16 @@ export const englishFotografieEditorial: Record<
       "Bright, balanced property photograph showing the layout and natural scale of an interior",
     internalLinks: [
       {
-        href: "/en/diensten/3d-vr-ar/real-estate-3d-tour/",
+        href: "/en/services/3d-vr-ar/real-estate-3d-tour/",
         label: "property 3D tour",
       },
       {
-        href: "/en/diensten/drone-fpv/real-estate-drone-footage/",
+        href: "/en/services/drone-fpv/real-estate-drone-footage/",
         label: "property drone footage",
       },
-      { href: "/en/diensten/3d-vr-ar/virtual-tour/", label: "virtual tour" },
+      { href: "/en/services/3d-vr-ar/virtual-tour/", label: "virtual tour" },
       {
-        href: "/en/diensten/videography/promotional-video/",
+        href: "/en/services/videography/promotional-video/",
         label: "promotional video",
       },
     ],
@@ -1854,19 +1854,19 @@ export const englishFotografieEditorial: Record<
       "Project photography showing the construction quality, materials and finishing details of completed work",
     internalLinks: [
       {
-        href: "/en/diensten/drone-fpv/construction-project-drone-footage/",
+        href: "/en/services/drone-fpv/construction-project-drone-footage/",
         label: "project drone footage",
       },
       {
-        href: "/en/diensten/photography/corporate-photography/",
+        href: "/en/services/photography/corporate-photography/",
         label: "corporate photography",
       },
       {
-        href: "/en/diensten/photography/property-photography/",
+        href: "/en/services/photography/property-photography/",
         label: "property photography",
       },
       {
-        href: "/en/diensten/videography/corporate-video/",
+        href: "/en/services/videography/corporate-video/",
         label: "corporate video",
       },
     ],
@@ -1898,20 +1898,20 @@ export const englishFotografieEditorial: Record<
       "Strategic brand photography combining a founder, workplace, products and distinctive visual details",
     internalLinks: [
       {
-        href: "/en/diensten/photography/corporate-photography/",
+        href: "/en/services/photography/corporate-photography/",
         label: "corporate photography",
       },
       {
-        href: "/en/diensten/photography/business-portraits/",
+        href: "/en/services/photography/business-portraits/",
         label: "business portraits",
       },
       {
-        href: "/en/diensten/videography/promotional-video/",
+        href: "/en/services/videography/promotional-video/",
         label: "promotional video",
       },
-      { href: "/en/diensten/web-design/", label: "web design" },
+      { href: "/en/services/web-design/", label: "web design" },
       {
-        href: "/en/diensten/videography/social-media-video/",
+        href: "/en/services/videography/social-media-video/",
         label: "social media video",
       },
     ],

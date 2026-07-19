@@ -6,6 +6,6 @@
   "mainKeyword": "VisualVibe service areas", "longTailKeywords": ["creative media agency Limburg Belgium", "web design agency Flanders"], "semanticTerms": ["Antwerp province", "Dutch Limburg", "photography on location"],
   "directAnswer": "VisualVibe's core service area covers Limburg, Belgium, the rest of Flanders, Antwerp province and the Dutch province of Limburg.",
   "title": "Service Areas in Belgium and the Netherlands | VisualVibe", "metaDescription": "Explore VisualVibe's service areas for web design, SEO, photography, video, drone and 3D tours across Belgium and Dutch Limburg.", "h1": "Regions where VisualVibe works", "slug": "regions",
-  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/diensten/", "anchor": "services" }, { "sourceHref": "/be/sectoren/", "targetHref": "/en/sectoren/", "anchor": "sectors" }],
+  "internalLinks": [{ "sourceHref": "/be/diensten/", "targetHref": "/en/services/", "anchor": "services" }, { "sourceHref": "/be/sectoren/", "targetHref": "/en/sectoren/", "anchor": "sectors" }],
   "factsToPreserve": ["The four core regions are Limburg, Flanders, Antwerp province and Dutch Limburg", "Limburg, Belgium, is the home region", "No thin city pages are created"]
 }

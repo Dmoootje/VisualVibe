@@ -44,13 +44,13 @@
     { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-kosten/", "targetHref": "/en/kennisbank/webdesign/website-development-costs/", "anchor": "website development costs" },
     { "sourceHref": "/be/kennisbank/webdesign/webshop-laten-maken-voor-kmo/", "targetHref": "/en/kennisbank/webdesign/online-shop-development-for-smes/", "anchor": "online shop development for SMEs" },
     { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "how website speed and SEO work together" },
-    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/diensten/photography/", "anchor": "photography" },
-    { "sourceHref": "/be/diensten/videografie/", "targetHref": "/en/diensten/videography/", "anchor": "video production" },
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/services/photography/", "anchor": "photography" },
+    { "sourceHref": "/be/diensten/videografie/", "targetHref": "/en/services/videography/", "anchor": "video production" },
     { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
     { "sourceHref": "/be/kennisbank/webdesign/website-vernieuwen-wanneer/", "targetHref": "/en/kennisbank/webdesign/when-to-redesign-your-website/", "anchor": "when to redesign your website" },
-    { "sourceHref": "/be/diensten/webdesign/website-onderhoud/", "targetHref": "/en/diensten/web-design/website-maintenance/", "anchor": "website maintenance" },
+    { "sourceHref": "/be/diensten/webdesign/website-onderhoud/", "targetHref": "/en/services/web-design/website-maintenance/", "anchor": "website maintenance" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "plan your website project" },
-    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/diensten/web-design/business-website-design/", "anchor": "business website design" }
+    { "sourceHref": "/be/diensten/webdesign/website-laten-maken/", "targetHref": "/en/services/web-design/business-website-design/", "anchor": "business website design" }
   ],
   "factsToPreserve": [
     "The checklist is a shared project control tool, not a list for one person to complete on launch day",

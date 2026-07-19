@@ -35,8 +35,8 @@
   "h1": "What is corporate photography and when does your SME need it?",
   "slug": "what-is-corporate-photography",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/diensten/photography/", "anchor": "photography services" },
-    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/diensten/photography/corporate-photography/", "anchor": "corporate photography" },
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/services/photography/", "anchor": "photography services" },
+    { "sourceHref": "/be/diensten/fotografie/bedrijfsfotografie/", "targetHref": "/en/services/photography/corporate-photography/", "anchor": "corporate photography" },
     { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "prepare the brief, shot list, location and schedule" },
     { "sourceHref": "/be/kennisbank/fotografie/zakelijke-portretten-tips/", "targetHref": "/en/kennisbank/fotografie/corporate-portrait-tips/", "anchor": "create consistent and recognisable corporate portraits" },
     { "sourceHref": "/be/kennisbank/fotografie/eventfotografie-checklist/", "targetHref": "/en/kennisbank/fotografie/event-photography-checklist/", "anchor": "event photography checklist" },
@@ -45,12 +45,12 @@
     { "sourceHref": "/be/kennisbank/fotografie/realisatiefotografie-voor-aannemers/", "targetHref": "/en/kennisbank/fotografie/project-photography-for-contractors/", "anchor": "project photography for contractors" },
     { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to website development" },
     { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
-    { "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/", "targetHref": "/en/diensten/photography/business-portraits/", "anchor": "corporate portraits" },
+    { "sourceHref": "/be/diensten/fotografie/zakelijke-portretten/", "targetHref": "/en/services/photography/business-portraits/", "anchor": "corporate portraits" },
     { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "why a fast website can rank better" },
     { "sourceHref": "/be/kennisbank/seo-geo/lokale-seo-voor-kmos-in-limburg/", "targetHref": "/en/kennisbank/seo-geo/local-seo-for-smes-in-limburg/", "anchor": "local SEO for SMEs in Limburg" },
     { "sourceHref": "/be/kennisbank/seo-geo/gevonden-worden-in-ai-zoekresultaten-geo-aeo/", "targetHref": "/en/kennisbank/seo-geo/how-to-appear-in-ai-search-results-geo-aeo/", "anchor": "GEO and AEO for SMEs" },
     { "sourceHref": "/be/kennisbank/videografie/waarom-een-bedrijfsvideo-laten-maken/", "targetHref": "/en/kennisbank/videografie/why-invest-in-a-corporate-video/", "anchor": "why invest in a corporate video" },
-    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "corporate video" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/services/videography/corporate-video/", "anchor": "corporate video" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your corporate photo shoot" }
   ],
   "factsToPreserve": [

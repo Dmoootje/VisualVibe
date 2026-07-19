@@ -21,9 +21,9 @@
     { "sourceHref": "/be/kennisbank/seo-geo/technische-seo-checklist/", "targetHref": "/en/kennisbank/seo-geo/technical-seo-checklist/", "anchor": "technical SEO checklist" },
     { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
     { "sourceHref": "/be/kennisbank/webdesign/waarom-een-snelle-website-beter-rankt/", "targetHref": "/en/kennisbank/webdesign/why-a-fast-website-can-rank-better/", "anchor": "fast website" },
-    { "sourceHref": "/be/diensten/seo/seo-copywriting/", "targetHref": "/en/diensten/seo/seo-copywriting/", "anchor": "SEO copywriting" },
-    { "sourceHref": "/be/diensten/seo/ai-seo-aeo-geo/", "targetHref": "/en/diensten/seo/ai-seo-aeo-geo/", "anchor": "AI SEO, AEO and GEO" },
-    { "sourceHref": "/be/diensten/webdesign/seo-website-laten-maken/", "targetHref": "/en/diensten/web-design/seo-ready-website/", "anchor": "SEO-ready website" },
+    { "sourceHref": "/be/diensten/seo/seo-copywriting/", "targetHref": "/en/services/seo/seo-copywriting/", "anchor": "SEO copywriting" },
+    { "sourceHref": "/be/diensten/seo/ai-seo-aeo-geo/", "targetHref": "/en/services/seo/ai-seo-aeo-geo/", "anchor": "AI SEO, AEO and GEO" },
+    { "sourceHref": "/be/diensten/webdesign/seo-website-laten-maken/", "targetHref": "/en/services/web-design/seo-ready-website/", "anchor": "SEO-ready website" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your AEO content" }
   ],
   "factsToPreserve": [

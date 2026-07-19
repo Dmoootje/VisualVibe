@@ -32,8 +32,8 @@
   "h1": "Recruitment video for employers: show the work, culture and expectations",
   "slug": "recruitment-video-for-employers",
   "internalLinks": [
-    { "sourceHref": "/be/diensten/videografie/wervingsvideo/", "targetHref": "/en/diensten/videography/recruitment-video/", "anchor": "recruitment video production" },
-    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/diensten/videography/corporate-video/", "anchor": "corporate video production" },
+    { "sourceHref": "/be/diensten/videografie/wervingsvideo/", "targetHref": "/en/services/videography/recruitment-video/", "anchor": "recruitment video production" },
+    { "sourceHref": "/be/diensten/videografie/bedrijfsvideo/", "targetHref": "/en/services/videography/corporate-video/", "anchor": "corporate video production" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your recruitment video" }
   ],
   "factsToPreserve": [

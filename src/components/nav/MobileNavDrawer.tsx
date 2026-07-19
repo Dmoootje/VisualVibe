@@ -7,6 +7,7 @@ import { WeddingVibeLogo } from "@/components/fotografie/WeddingVibeLogo";
 import { SectorIcon } from "@/components/sectors/SectorIcon";
 import { Link } from "@/i18n/navigation";
 import { NavIcon } from "./nav-icons";
+import { QuoteButton } from "@/components/quote";
 import type { NavCard, NavPillar, NavRegion } from "./navData";
 import {
   getChromeRoutes,
@@ -719,7 +720,7 @@ export function MobileNavDrawer({
                       </span>
                       <span
                         style={{
-                          display: "block",
+                          ...CLAMP2,
                           fontSize: 12,
                           color: "rgba(255,255,255,.45)",
                           marginTop: 1,
@@ -797,10 +798,13 @@ export function MobileNavDrawer({
                       <ChevRight color="rgba(255,255,255,.28)" size={14} />
                     </Link>
                   ))}
-                  <Link
-                    href={routes.quotation}
+                  <QuoteButton
                     onClick={onClose}
                     style={{
+                      font: "inherit",
+                      textAlign: "left",
+                      width: "100%",
+                      cursor: "pointer",
                       marginTop: 4,
                       display: "flex",
                       alignItems: "center",
@@ -871,7 +875,7 @@ export function MobileNavDrawer({
                     >
                       <ArrowRight />
                     </span>
-                  </Link>
+                  </QuoteButton>
                   {currentPillar.id === "fotografie" && routes.wedding && (
                     <WeddingCtaCard href={routes.wedding} onClick={onClose} />
                   )}
@@ -1026,11 +1030,12 @@ export function MobileNavDrawer({
             gap: 10,
           }}
         >
-          <Link
-            href={routes.quotation}
+          <QuoteButton
             onClick={onClose}
             style={{
+              font: "inherit",
               display: "flex",
+              width: "100%",
               alignItems: "center",
               justifyContent: "center",
               gap: 9,
@@ -1039,12 +1044,14 @@ export function MobileNavDrawer({
               color: "#fff",
               padding: 15,
               borderRadius: 12,
+              border: 0,
               background: GRADIENT,
               boxShadow: "0 14px 34px -14px rgba(255,90,0,.85)",
+              cursor: "pointer",
             }}
           >
              {t("quotation")} <ArrowRight size={16} />
-          </Link>
+          </QuoteButton>
           <NextLink
             href="/admin/login"
             prefetch={false}

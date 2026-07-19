@@ -28,7 +28,7 @@ describe("English region detail route", () => {
     expect(metadata.alternates?.canonical).toContain("/en/regio/limburg-belgium/");
     expect(html).toContain("Limburg, Belgium");
     expect(html).toContain("Web design");
-    expect(html).toContain('href="/diensten/web-design"');
+    expect(html).toContain('href="/services/web-design"');
     expect(html).toContain('data-cta-href="/request-a-quotation/"');
     expect(html).toContain('data-blog-locale="en"');
     expect(html).not.toMatch(/Onze diensten|Bekijk alle diensten|Werkgebied|Kennisbank|Uit de kennisbank|Realisaties|Offerte aanvragen/);

@@ -236,7 +236,7 @@ export default async function RegionDetailPage({
         {services.length > 0 && (
           <section className="py-16">
             <h2 className="mb-8 text-3xl font-bold">Creative services in {region.title}</h2>
-            <RegionServicesGrid services={services} />
+            <RegionServicesGrid services={services} locale="en" />
           </section>
         )}
 

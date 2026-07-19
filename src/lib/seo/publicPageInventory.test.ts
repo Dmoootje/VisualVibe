@@ -16,19 +16,18 @@ describe("public page inventory", () => {
 
     expect(paths).toContainEqual(expect.objectContaining({
       nl: "/diensten/webdesign/website-laten-maken/",
-      en: "/diensten/web-design/business-website-design/",
+      en: "/services/web-design/business-website-design/",
     }));
-    expect(paths).toContainEqual({
-      nl: "/offerte-aanvragen/",
-      en: "/request-a-quotation/",
-    });
+    // The quotation page was removed; every quote CTA opens the slide-up.
+    expect(JSON.stringify(paths)).not.toContain("offerte-aanvragen");
+    expect(JSON.stringify(paths)).not.toContain("request-a-quotation");
     expect(paths).toContainEqual(expect.objectContaining({
       nl: "/regio/limburg/",
       en: "/regio/limburg-belgium/",
     }));
     expect(paths).toContainEqual({
       nl: "/diensten/software-op-maat/",
-      en: "/diensten/custom-software/",
+      en: "/services/custom-software/",
     });
     expect(paths).toContainEqual({
       nl: "/website-analyse/",

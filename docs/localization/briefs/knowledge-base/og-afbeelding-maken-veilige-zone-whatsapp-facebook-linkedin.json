@@ -16,11 +16,11 @@
     { "sourceHref": "/be/kennisbank/webdesign/website-laten-maken-limburg-complete-gids/", "targetHref": "/en/kennisbank/webdesign/complete-guide-to-building-a-website-in-limburg/", "anchor": "complete guide to building a website in Limburg" },
     { "sourceHref": "/be/kennisbank/webdesign/checklist-nieuwe-website/", "targetHref": "/en/kennisbank/webdesign/new-website-checklist/", "anchor": "new website checklist" },
     { "sourceHref": "/be/kennisbank/fotografie/wat-is-bedrijfsfotografie/", "targetHref": "/en/kennisbank/fotografie/what-is-corporate-photography/", "anchor": "what corporate photography is" },
-    { "sourceHref": "/be/diensten/fotografie/brandingfotografie/", "targetHref": "/en/diensten/photography/brand-photography/", "anchor": "brand photography" },
+    { "sourceHref": "/be/diensten/fotografie/brandingfotografie/", "targetHref": "/en/services/photography/brand-photography/", "anchor": "brand photography" },
     { "sourceHref": "/be/kennisbank/fotografie/hoe-bereid-je-een-bedrijfsshoot-voor/", "targetHref": "/en/kennisbank/fotografie/how-to-prepare-a-corporate-photo-shoot/", "anchor": "preparing a corporate photo shoot" },
-    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/diensten/web-design/", "anchor": "web design" },
-    { "sourceHref": "/be/diensten/seo/", "targetHref": "/en/diensten/seo/", "anchor": "SEO and online visibility" },
-    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/diensten/photography/", "anchor": "professional photography" },
+    { "sourceHref": "/be/diensten/webdesign/", "targetHref": "/en/services/web-design/", "anchor": "web design" },
+    { "sourceHref": "/be/diensten/seo/", "targetHref": "/en/services/seo/", "anchor": "SEO and online visibility" },
+    { "sourceHref": "/be/diensten/fotografie/", "targetHref": "/en/services/photography/", "anchor": "professional photography" },
     { "sourceHref": "/be/offerte-aanvragen/", "targetHref": "/en/request-a-quotation/", "anchor": "discuss your website" }
   ],
   "factsToPreserve": [
